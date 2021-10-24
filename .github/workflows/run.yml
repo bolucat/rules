@@ -1,0 +1,36 @@
+on:
+  push:
+    paths:
+      - ".github/workflows/*"
+  schedule:
+    - cron: "0 18 */1 * *"
+
+name: rules
+jobs:
+  sync:
+    runs-on: ubuntu-20.04
+    env:
+      TZ: Europe/Busingen
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Sync
+        run: |
+          chmod +x run.sh
+          ./run.sh --all
+
+      - name: Commit Changes
+        run: |
+          echo "update on $(date)" >> .github/log.txt
+          git config --local user.name "github-action[bot]"
+          git config --local user.email "${{ secrets.EMAIL }}"
+          git add .
+          git commit -am "update on $(date)"
+
+      - name: Push Changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }} 
