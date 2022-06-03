@@ -61,7 +61,7 @@ clash() {
 	cat temp2.txt | sort | cut -d '.' -f 1-3 | sed $'s/$/&.0\/24/g' >> ip-list-temp.txt
 	# ip-list
 	cat ip-list-temp.txt | sort | uniq > ip-list.txt
-	echo echo "payload:" > my-reject-ip.yaml && cat ip-list.txt | sed $'s/^/  - \'/g' | sed $'s/$/&\'/g' >> my-reject-ip.yaml
+	echo "payload:" > my-reject-ip.yaml && cat ip-list.txt | sed $'s/^/  - \'/g' | sed $'s/$/&\'/g' >> my-reject-ip.yaml
 	# import domains
 	export DOMAINS=$(($(sed -n '$=' temp3.txt)+1))
 	for ((i=1;i<${DOMAINS};i++)); do
