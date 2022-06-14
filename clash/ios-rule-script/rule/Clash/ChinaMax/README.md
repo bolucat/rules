@@ -21,18 +21,18 @@
 
 ## 规则统计
 
-最后更新时间：2022-06-13 02:26:46
+最后更新时间：2022-06-14 16:54:01
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
 | DOMAIN | 83  | 
 | DOMAIN-KEYWORD | 14  | 
-| DOMAIN-SUFFIX | 69766  | 
-| IP-CIDR | 6255  | 
+| DOMAIN-SUFFIX | 69796  | 
+| IP-CIDR | 6254  | 
 | IP-CIDR6 | 4179  | 
 | PROCESS-NAME | 7  | 
-| TOTAL | 80304  | 
+| TOTAL | 80333  | 
 
 
 ## Clash 
@@ -236,6 +236,9 @@ https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@release/rule/Clash/Chin
 - https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/ruleset/greatfire.txt
 - https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/ruleset/gfw.txt
 - https://raw.githubusercontent.com/GeQ1an/Rules/master/QuantumultX/Filter/Outside.list
+- https://raw.githubusercontent.com/DivineEngine/Profiles/master/Surge/Ruleset/StreamingMedia/Video/TikTok.list
+- https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/TikTok.list
+- https://raw.githubusercontent.com/LM-Firefly/Rules/master/Global-Services/TikTok.list
 - https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/source/rule/WhiteList/WhiteList.list
 - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list
 - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Surge/Ruleset/Unbreak.list
@@ -481,6 +484,7 @@ https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@release/rule/Clash/Chin
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/BaiShanYunKeJi.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/DiLianWangLuo.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/WeiZhiYunDong.list
+- https://raw.githubusercontent.com/Semporia/Quantumult-X/master/Filter/TikTok.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/8btc.list
 - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Surge/Ruleset/StreamingMedia/Video/iQIYI.list
 - https://raw.githubusercontent.com/misakaio/chnroutes2/master/chnroutes.txt
