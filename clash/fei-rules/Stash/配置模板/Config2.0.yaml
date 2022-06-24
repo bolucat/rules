@@ -12,8 +12,7 @@ subscribe-url: 你的订阅链接
 #替换上面文字用于Stash获取机场流量信息并在主页显示
 
 proxy-providers:
-  #全部节点
-  All: &All #建立锚点
+  All:
     type: http
     url: "https://api.v1.mk/sub?target=clash&url=你的订阅链接&list=true&udp=true&emoji=true"
     # 以下方法任选其一⚠️有Clash订阅优先使用方法二❗️
@@ -26,26 +25,6 @@ proxy-providers:
       interval: 600
       url: http://www.gstatic.com/generate_204
 
-  #美国节点    
-  US:
-    <<: *All #引用锚点内容
-    filter: 美|🇺🇲|US|(?i)States|American
-    
-  #香港节点
-  HK:
-    <<: *All
-    filter: 港|🇭🇰|HK|(?i)Hong
-
-  #日本节点
-  JP:
-    <<: *All
-    filter: 日|🇯🇵|东京|JP|(?i)Japan
- 
-  #台湾节点
-  TW:
-    <<: *All
-    filter: 台|🇨🇳|🇹🇼|湾|TW|(?i)Taiwan
-   
 dns:
   enable: true
   ipv6: true
@@ -190,25 +169,29 @@ proxy-groups:
     type: select
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png
     use:
-      - HK
+      - All
+    filter: (?=.*(港|🇭🇰|HK|(?i)Hong))^((?!(台|日|韩|新|美)).)*$
       
   - name: 日本节点
     type: select
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png
     use:
-      - JP
+      - All
+    filter: (?=.*(日|🇯🇵|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$
      
   - name: 台湾节点
     type: select
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Taiwan.png
     use:
-      - TW
+      - All
+    filter: (?=.*(台|🇨🇳|🇹🇼|TW|(?i)Taiwan))^((?!(港|日|韩|新|美)).)*$
 
   - name: 美国节点
     type: select
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png
     use:
-      - US
+      - All
+    filter: (?=.*(美|🇺🇸|US|(?i)States|American))^((?!(港|台|日|韩|新)).)*$
 
 rule-providers:
 
