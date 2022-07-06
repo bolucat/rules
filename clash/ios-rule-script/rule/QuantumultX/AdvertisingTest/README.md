@@ -21,16 +21,16 @@
 
 ## 规则统计
 
-最后更新时间：2022-07-05 02:29:14
+最后更新时间：2022-07-06 02:29:43
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
-| HOST | 46043  | 
+| HOST | 46041  | 
 | HOST-KEYWORD | 264  | 
-| HOST-SUFFIX | 89258  | 
+| HOST-SUFFIX | 89351  | 
 | IP-CIDR | 256  | 
-| TOTAL | 135821  | 
+| TOTAL | 135912  | 
 
 
 ## QuantumultX 
@@ -126,6 +126,7 @@ https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_scri
 - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Surge/Ruleset/Unbreak.list
 - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/Unbreak.list
 - https://raw.githubusercontent.com/sve1r/Rules-For-Quantumult-X/develop/Rules/Services/Unbreak.list
+- https://raw.githubusercontent.com/githubacct001/QuantumultX/master/Filters/githubacct001_AD.list
 - https://raw.githubusercontent.com/geekdada/surge-list/master/domain-set/annoyances-filter.txt
 - https://raw.githubusercontent.com/geekdada/surge-list/master/domain-set/social-media-filter.txt
 - https://raw.githubusercontent.com/geekdada/surge-list/master/domain-set/dns-filter.txt
