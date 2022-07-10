@@ -12,6 +12,7 @@
 #	   https://github.com/Infatuation-Fei/rule
 #	   https://github.com/blackmatrix7/ios_rule_script
 #	   https://github.com/bolucat/domain-list
+#	   https://github.com/entr0pia/No-other-Search-in-Google-Search
 
 OPTION=$1
 CUR=${PWD}
@@ -119,6 +120,7 @@ seo() {
 	wget -qO- https://raw.githubusercontent.com/cobaltdisco/Google-Chinese-Results-Blocklist/master/uBlacklist_subscription.txt > seo.txt
 	wget -qO- https://raw.githubusercontent.com/cobaltdisco/Google-Chinese-Results-Blocklist/master/uBlacklist_match_patterns.txt >> seo.txt
 	wget -qO- https://raw.githubusercontent.com/dallaslu/penzai-list/main/uBlacklist.txt >> seo.txt
+	wget -qO- https://raw.githubusercontent.com/entr0pia/No-other-Search-in-Google-Search/master/main_rules.txt > no-other-search-in-google.txt
 	popd || exit 1
 }
 
