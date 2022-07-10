@@ -141,6 +141,7 @@
 - [openclash_sniffing_domain_filter.yaml](https://rules.neuq.de/clash/openclash/openclash_sniffing_domain_filter.yaml)
 - [openclash_sniffing_port_filter.yaml](https://rules.neuq.de/clash/openclash/openclash_sniffing_port_filter.yaml)
 # seo
+- [no-other-search-in-google.txt](https://rules.neuq.de/seo/no-other-search-in-google.txt)
 - [seo.txt](https://rules.neuq.de/seo/seo.txt)
 # adblock
 - [AdGuard-Simplified-Domain-Names-Filter.txt](https://rules.neuq.de/adblock/AdGuard-Simplified-Domain-Names-Filter.txt)
