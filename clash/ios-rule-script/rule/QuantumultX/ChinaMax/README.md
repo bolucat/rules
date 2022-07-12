@@ -21,18 +21,18 @@
 
 ## 规则统计
 
-最后更新时间：2022-07-11 02:29:02
+最后更新时间：2022-07-12 16:01:54
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
 | HOST | 83  | 
 | HOST-KEYWORD | 14  | 
-| HOST-SUFFIX | 69476  | 
+| HOST-SUFFIX | 69501  | 
 | IP-CIDR | 6256  | 
 | IP6-CIDR | 4203  | 
 | USER-AGENT | 64  | 
-| TOTAL | 80096  | 
+| TOTAL | 80121  | 
 
 
 ## QuantumultX 
@@ -160,7 +160,6 @@ https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_scri
 - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Surge/Ruleset/Guard/Privacy.list
 - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanEasyPrivacy.list
 - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Surge/Ruleset/Extra/Game/Steam.list
-- https://raw.githubusercontent.com/lhie1/Rules/master/Surge/Surge%203/Provider/Steam.list
 - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Steam.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Game/Steam.list
 - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/SteamCN.list
