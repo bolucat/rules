@@ -57,6 +57,7 @@
 |[Dood](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Dood) |[Tesla](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Tesla) |[Embl](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Embl) |[HashiCorp](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/HashiCorp) |[Scaleflex](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Scaleflex) |
 |[CWSeed](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/CWSeed) |[EHGallery](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/EHGallery) |[FuboTV](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/FuboTV) |[NBC](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/NBC) |[Faronics](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Faronics) |
 |[Salesforce](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Salesforce) |[Ubuntu](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/Ubuntu) |[iQIYIIntl](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/iQIYIIntl) |[谷歌推送](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/GoogleFCM) |[QuickConnect](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/QuickConnect) |
+|[HamiVideo](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/HamiVideo) |
 
 
 |🌏GlobalMedia|  |  |  |  |
