@@ -57,6 +57,7 @@
 |[Dood](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Dood) |[Tesla](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Tesla) |[Embl](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Embl) |[HashiCorp](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/HashiCorp) |[Scaleflex](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Scaleflex) |
 |[CWSeed](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/CWSeed) |[EHGallery](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/EHGallery) |[FuboTV](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/FuboTV) |[NBC](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/NBC) |[Faronics](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Faronics) |
 |[Salesforce](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Salesforce) |[Ubuntu](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Ubuntu) |[iQIYIIntl](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/iQIYIIntl) |[QuickConnect](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/QuickConnect) |[HamiVideo](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/HamiVideo) |
+|[Emby](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Emby) |
 
 
 |🌏GlobalMedia|  |  |  |  |
@@ -67,7 +68,7 @@
 |[HBO(美国)](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/HBOUSA) |[HuluJP](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/HuluJP) |[HuluUSA](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/HuluUSA) |[FOX NOW](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/FOXNOW) |[FOXPlus](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/FOXPlus) |
 |[KKTV](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/KKTV) |[NaverTV](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/NaverTV) |[NowE](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/NowE) |[ParamountPlus](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/ParamountPlus) |[PrimeVideo](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/PrimeVideo) |
 |[TVer](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/TVer) |[myTVSUPER](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/myTVSUPER) |[HBOAsia](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/HBOAsia) |[BiliBiliIntl](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/BiliBiliIntl) |[DiscoveryPlus](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/DiscoveryPlus) |
-|[Overcast](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Overcast) |[Peacock](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Peacock) |
+|[Overcast](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Overcast) |[Peacock](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Peacock) |[Emby](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Loon/Emby) |
 
 
 |🇨🇳Mainland|  |  |  |  |
