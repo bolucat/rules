@@ -12,22 +12,28 @@ EHGallery规则由《RULE GENERATOR 规则生成器》自动生成。
 
 ## 规则统计
 
-最后更新时间：2022-07-19 20:16:25
+最后更新时间：2022-07-21 21:40:50
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
 | DOMAIN-SUFFIX | 6  | 
-| TOTAL | 6  | 
+| IP-CIDR | 1  | 
+| TOTAL | 7  | 
 
 
 ## Surge 
 
 #### 使用说明
 - EHGallery.list，请使用RULE-SET。
+- EHGallery_Resolve.list，请使用RULE-SET。
+
+#### 文件区别
+- EHGallery_Resolve.list与EHGallery.list的区别仅在于后者IP-CIDR(6)类型带no-resolve。
 
 #### 配置建议
 - EHGallery.list 单独使用。
+- EHGallery_Resolve.list 单独使用。
 
 #### 规则链接
 **MASTER分支 (每日更新)**
