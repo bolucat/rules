@@ -1,0 +1,27 @@
+name: Bilibili去广告🍥
+desc: 需iOS15，去除开屏页、推荐页广告
+
+http:
+  mitm:
+    - "app.bilibili.com"
+    - "grpc.biliapi.net"
+  script:
+    - match: ^https:\/\/app\.bilibili\.com\/x\/(v2\/(splash\/(list|show)|feed\/index\?)|resource\/show\/tab\/v2)
+      name: bilibili
+      type: response
+      require-body: true
+      timeout: 10
+    #去除动态页广告(目前不支持，注释掉)
+    # - match: ^https:\/\/app\.bilibili\.com\/bilibili\.app\.(view\.v1\.View\/View|dynamic\.v2\.Dynamic\/DynAll)$
+      # name: bilibili2
+      # type: response
+      # require-body: true
+      # timeout: 10
+script-providers:
+  bilibili:
+    url: https://raw.githubusercontent.com/app2smile/rules/master/js/bilibili-json.js
+    interval: 86400
+  #去除动态页广告(目前不支持，注释掉)
+  # bilibili2:
+    # url: https://raw.githubusercontent.com/app2smile/rules/master/js/bilibili-proto.js
+    # interval: 86400

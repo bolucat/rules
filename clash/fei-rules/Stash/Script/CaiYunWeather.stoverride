@@ -1,0 +1,17 @@
+name: 彩云天气SVIP🍥
+desc: 登录账号后显示为SVIP,但脚本已无实际解锁作用
+
+http:
+  mitm:
+    - "biz.caiyunapp.com"
+  script:
+    - match: https?:\/\/biz\.caiyunapp\.com\/(membership_rights|v2\/user)
+      name: caiyun
+      type: response
+      require-body: true
+      timeout: 10
+      
+script-providers:
+  caiyun:
+    url: https://raw.githubusercontent.com/ddgksf2013/Cuttlefish/master/Crack/caiyun.js
+    interval: 86400

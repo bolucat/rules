@@ -1,0 +1,97 @@
+name: 开屏去广告🍥
+desc: 去除部分APP开屏广告，具体APP请直接进入链接查看
+
+http:
+  mitm:
+    - "capis.didapinche.com"
+    - "capis*.didapinche.com"
+    - "fmapp.chinafamilymart.com.cn"
+    - "app.bilibili.com"
+    - "wmapi.meituan.com"
+    - "hd.mina.mi.com"
+    - "api.m.jd.com"
+    - "mi.gdt.qq.com"
+    - "cmsapi.dmall.com"
+  script:
+# 嘀嗒出行
+    - match: ^https?:\/\/capis(-?\w*)?\.didapinche\.com\/ad\/cx\/startup\?
+      name: dida
+      type: response
+      require-body: true
+      timeout: 10
+# Fa米家
+    - match: ^https?:\/\/fmapp\.chinafamilymart\.com\.cn\/api\/app\/market\/start\/ad
+      name: fami
+      type: response
+      require-body: true
+      timeout: 10
+# BiliBili
+    - match: ^https?:\/\/app\.bilibili\.com\/x\/v2\/splash\/list
+      name: biliAD
+      type: response
+      require-body: true
+      timeout: 10
+# 美团外卖
+    - match: ^https?:\/\/wmapi\.meituan\.com\/api\/v\d+\/loadInfo?
+      name: meituan
+      type: response
+      require-body: true
+      timeout: 10
+# 小爱音箱
+    - match: ^https?:\/\/hd\.mina\.mi\.com\/splashscreen\/alert
+      name: xiaoai
+      type: response
+      require-body: true
+      timeout: 10  
+# 京东
+    - match: ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start
+      name: jingdong
+      type: response
+      require-body: true
+      timeout: 10
+# 联享家
+    - match: ^https?:\/\/mi\.gdt\.qq\.com\/gdt_mview.fcg
+      name: lxj
+      type: response
+      require-body: true
+      timeout: 10
+# 多点
+    - match: ^https?:\/\/cmsapi\.dmall\.com\/app\/home\/homepageStartUpPic
+      name: duodian
+      type: response
+      require-body: true
+      timeout: 10
+    
+script-providers:
+# 嘀嗒出行
+  dida:
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/startup/startup.js
+    interval: 86400
+# Fa米家
+  fami:
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/famijia/famijia_checkin.js
+    interval: 86400
+# BiliBili
+  biliAD:
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/bilibili/bilibili_plus.js
+    interval: 86400
+# 美团外卖
+  meituan:
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/startup/startup.js
+    interval: 86400
+# 小爱音箱
+  xiaoai:
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/startup/startup.js
+    interval: 86400
+# 京东
+  jingdong:
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/startup/startup.js
+    interval: 86400
+# 联享家
+  lxj:
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/startup/startup.js
+    interval: 86400
+# 多点
+  duodian:
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/startup/startup.js
+    interval: 86400

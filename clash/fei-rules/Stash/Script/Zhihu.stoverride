@@ -1,0 +1,122 @@
+name: 知乎🍥
+desc: 去广告及阅读体验增强,适配知乎8.3.0(8020)
+
+http:
+  mitm:
+    - "www.zhihu.com"
+    - "api.zhihu.com"
+    - "zhuanlan.zhihu.com"
+    - "appcloud2.zhihu.com"
+    - "103.41.167.236"
+    - "103.41.167.234"
+    - "103.41.167.235"
+    - "103.41.167.226"
+  rewrite:
+    # 屏蔽知乎下发的配置，如皮肤等
+    - ^https?:\/\/api\.zhihu\.com\/ab\/api\/v1\/products\/zhihu\/platforms\/ios\/config - reject
+    # 屏蔽知乎“我的”页面推荐开通会员的卡片
+    - ^https?:\/\/api\.zhihu\.com\/people\/self\/new_user_card - reject
+    # 知乎去除回答下的广告
+    - ^https?:\/\/www\.zhihu\.com\/api\/v4\/answers\/\d+\/recommendations - reject
+  script:
+   # 知乎_处理用户信息
+    - match: ^https?:\/\/api\.zhihu\.com\/people\/
+      name: zhihu
+      type: response
+      require-body: true
+      timeout: 10
+   # 知乎_信息流去广告
+    - match: ^https?:\/\/api\.zhihu\.com\/(moments|topstory)(\/|\?)?(recommend|action=|feed_type=)(?!\/people)
+      name: zhihu
+      type: response
+      require-body: true
+      timeout: 10   
+   # 知乎_获取黑名单
+    - match: ^https?:\/\/api\.zhihu\.com\/settings\/blocked_users
+      name: zhihu
+      type: response
+      require-body: true
+      timeout: 10 
+   # 知乎_官方消息去广告
+    - match: ^https?:\/\/api\.zhihu\.com\/notifications\/v3\/(message|timeline\/entry\/system_message)
+      name: zhihu
+      type: response
+      require-body: true
+      timeout: 10 
+   # 知乎_预置关键词去广告
+    - match: ^https?:\/\/api\.zhihu\.com\/search\/preset_words\?
+      name: zhihu
+      type: response
+      require-body: true
+      timeout: 10 
+   # 知乎_回答列表去广告
+    - match: ^https?:\/\/api\.zhihu\.com\/v4\/questions
+      name: zhihu
+      type: response
+      require-body: true
+      timeout: 10 
+   # 知乎_回答内容优化
+    - match: ^https?:\/\/www\.zhihu\.com\/appview\/v2\/answer\/.*(entry=(?!(preload-topstory|preload-search|preload-subscription)))?
+      name: zhihu
+      type: response
+      require-body: true
+      timeout: 10 
+   # 知乎_优化软件配置
+    - match: ^https?:\/\/appcloud2\.zhihu\.com\/v\d+\/config
+      name: zhihu
+      type: response
+      require-body: true
+      timeout: 10 
+   # 知乎_热搜去广告
+    - match: ^https?:\/\/api\.zhihu\.com\/search\/top_search\/tabs\/hot\/items
+      name: zhihu
+      type: response
+      require-body: true
+      timeout: 10 
+   # 知乎_热榜去广告2
+    - match: ^https?:\/\/api\.zhihu\.com\/topstory\/hot-lists?(\?|\/)
+      name: zhihu
+      type: response
+      require-body: true
+      timeout: 10 
+   # 知乎_评论去广告
+    - match: ^https?:\/\/api\.zhihu\.com\/(comment_v5\/)?(answers|comments?|articles|pins)\/\d+\/(root_|child_)?comments?
+      name: zhihu
+      type: response
+      require-body: true
+      timeout: 10 
+   # 知乎_解锁关键词屏蔽
+    - match: ^https?:\/\/api\.zhihu\.com\/feed-root\/block
+      name: zhihu
+      type: request
+      require-body: true
+      timeout: 10 
+      
+script-providers:
+  zhihu:
+    url: https://gist.githubusercontent.com/blackmatrix7/2e550ebf28ca60d620654e394ec47e0b/raw/zhihu.js
+    interval: 86400
+
+rules:
+  - DOMAIN,118.89.204.198,REJECT
+  # 知乎去广告
+  - IP-CIDR,118.89.204.198/32,REJECT,no-resolve
+  - IP-CIDR6,2402:4e00:1200:ed00:0:9089:6dac:96b6/128,REJECT,no-resolve
+  - DOMAIN,appcloud2.in.zhihu.com,REJECT
+  - DOMAIN,mqtt.zhihu.com,REJECT
+  - DOMAIN,sugar.zhihu.com,REJECT
+  - USER-AGENT,AVOS*,REJECT
+  # 拦截知乎开屏广告
+  - URL-REGEX,^https?:\/\/api\.zhihu\.com\/commercial_api\/launch_v2\?,REJECT
+  # 拦截知乎品牌提问广告
+  - URL-REGEX,^https?:\/\/api\.zhihu\.com\/brand\/question\/\d+/card\?,REJECT
+  - URL-REGEX,^https?:\/\/www\.zhihu\.com\/api\/v\d+\/brand\/question/\d+/card\?,REJECT
+  # 拦截知乎回答下的广告
+  - URL-REGEX,^https?:\/\/www\.zhihu\.com\/api\/v4\/answers\/\d+\/recommendations,REJECT
+  # 知乎拦截部分预加载
+  - URL-REGEX,^https?:\/\/www\.zhihu\.com\/appview\/(p|v2\/answer|zvideo)\/.*entry=(preload-topstory|preload-search|preload-subscription),REJECT
+  # 知乎网页版去广告
+  - URL-REGEX,^https?:\/\/www\.zhihu\.com\/api\/v4/(questions|anwsers)\/\d+/related-readings,REJECT
+  - URL-REGEX,^https?:\/\/www\.zhihu\.com\/api\/v4\/hot_recommendation,REJECT
+  - URL-REGEX,^https?:\/\/www\.zhihu\.com\/commercial_api\/banners_v3\/mobile_banner,REJECT
+  - URL-REGEX,^https?:\/\/zhuanlan\.zhihu\.com\/api\/articles\/\d+\/recommendation,REJECT

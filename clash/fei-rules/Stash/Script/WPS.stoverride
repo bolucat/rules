@@ -1,0 +1,17 @@
+name: WPS Office🍥
+desc: 解锁超级会员部分功能
+
+http:
+  mitm:
+    - "account.wps.cn"
+  script:
+    - match: ^https?:\/\/account\.wps\.cn\/api\/users
+      name: wps
+      type: response
+      require-body: true
+      timeout: 10
+      
+script-providers:
+  wps:
+    url: https://raw.githubusercontent.com/NobyDa/Script/master/Surge/JS/Wps.js
+    interval: 86400
