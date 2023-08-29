@@ -1,14 +1,19 @@
 on:
   push:
-    paths:
-      - ".github/workflows/*"
+    branches:
+      - 'master'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release Tag'
+        required: false
   schedule:
     - cron: "0 18 */1 * *"
 
 name: rules
 jobs:
   sync:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       TZ: Europe/Busingen
     steps:
@@ -18,6 +23,7 @@ jobs:
         
       - name: Sync
         run: |
+          sudo apt-get install -y nodejs jsonlint
           chmod +x run.sh
           ./run.sh --all
 
@@ -33,4 +39,16 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }} 
+          branch: ${{ github.ref }}
+          
+      - name: Publish
+        run: |
+          mv adblock clash seo iptv bpc clearurls userscripts index
+
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          target_branch: gh-pages
+          build_dir: index
