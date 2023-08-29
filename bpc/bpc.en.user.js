@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.1.0
+// @version         3.3.1.1
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -1239,6 +1239,10 @@ else if (matchDomain('financialexpress.com')) {
   let ads_selector = window.location.pathname.endsWith('/lite/') ? 'amp-ad, amp-embed, .ad-bg-container' : 'div[class*="-ads-blocks-ad-unit"]';
   let ads = document.querySelectorAll(ads_selector);
   removeDOMElement(register, ...ads);
+}
+
+else if (matchDomain('forbes.com')) {
+  waitDOMAttribute('body', 'body', 'class', node => node.removeAttribute('class'), true);
 }
 
 else if (matchDomain('foreignaffairs.com')) {
