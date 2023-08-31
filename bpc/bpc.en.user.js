@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.1.2
+// @version         3.3.1.4
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -324,11 +324,11 @@ else {
                 json_content = json_pub.content.blocks;
                 url_loaded = json_pub._self;
               } else
-                window.location.reload(true);
+                refreshCurrentTab();
               //let json_video = json_pub.mainVideo;
               let url = window.location.href;
               if (!url_loaded || !url.includes(url_loaded.slice(-10)))
-                window.location.reload(true);
+                refreshCurrentTab();
               let par_elem, par_sub1, par_sub2;
               let par_dom = document.createElement('div');
               let tweet_id = 1;
@@ -545,7 +545,7 @@ else if (matchDomain('businesspost.ie')) {
         });
       }
     } else
-      window.location.reload(true);
+      refreshCurrentTab();
   }
   window.setTimeout(function () {
     let paywall = document.querySelector('div#bp_paywall_content');
@@ -892,7 +892,7 @@ else if (matchDomain('artnet.com')) {
 
 else if (matchDomain('asia.nikkei.com')) {
   setCookie('xbc', '', 'nikkei.com', '/', 0);
-  let paywall = document.querySelector('div.tp-container-inner');
+  let paywall = document.querySelector('div#paywall-offer > div.tp-container-inner');
   if (paywall) {
     removeDOMElement(paywall);
     refreshCurrentTab();
@@ -1285,10 +1285,9 @@ else if (matchDomain('foreignpolicy.com')) {
 }
 
 else if (matchDomain('fortune.com')) {
-  let paywall = document.querySelector('.paywall');
+  let paywall = document.querySelector('div.paywallActive');
   if (window.location.pathname.match(/\/amp(\/)?/)) {
-    amp_unhide_access_hide('="NOT p.showRegWall AND NOT p.showPayWall"', '', '[class^="amp-ad"]');
-    removeDOMElement(paywall);
+    amp_unhide_access_hide('="NOT p.showRegWall AND NOT p.showPayWall"', '="p.showPayWall"', '[class^="amp-ad"], div.paywall');
   } else {
     if (paywall)
       paywall.removeAttribute('class');
