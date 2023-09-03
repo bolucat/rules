@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.3.1.6
+// @version         3.3.1.7
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -239,7 +239,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('link[href*
     }
   }
   let ads = document.querySelectorAll('.top__ad, .marketingblock-article');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain(nl_mediahuis_region_domains)) {
@@ -539,6 +539,13 @@ function removeDOMElement(...elements) {
   for (let element of elements) {
     if (element)
       element.remove();
+  }
+}
+
+function hideDOMElement(...elements) {
+  for (let element of elements) {
+    if (element)
+      element.style = 'display:none;';
   }
 }
 

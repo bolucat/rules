@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.3.0.9
+// @version         3.3.1.0
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -40,10 +40,10 @@ else if (matchDomain('corrieredellosport.it')) {
       window.location.href = amphtml.href;
     }
     let ads = document.querySelectorAll('div[class^="AdUnit_placeholder"]');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   } else {
     let ads = document.querySelectorAll('amp-ad, amp-embed');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -157,7 +157,7 @@ else if (matchDomain('ilfoglio.it')) {
       window.location.href = amphtml.href;
     }
     let ads = document.querySelectorAll('.advertisement');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -181,15 +181,13 @@ else if (matchDomain('ilmanifesto.it')) {
               article.appendChild(content_new);
             }
           } else
-            window.location.reload(true);
+            refreshCurrentTab();
         }
       }
     }
     let service_page = document.querySelector('div.service-page');
     if (service_page) {
-      window.setTimeout(function () {
-        window.location.reload(true);
-      }, 1000);
+      refreshCurrentTab();
     }
   }, 2000);
 }
@@ -235,7 +233,7 @@ else if (matchDomain(it_quotidiano_domains)) {
       window.location.href = amphtml.href;
     } else {
       let ads = document.querySelectorAll('div[id^="div-gpt-ad"]');
-      removeDOMElement(...ads);
+      hideDOMElement(...ads);
     }
   }
 }
@@ -276,8 +274,9 @@ else if (domain = matchDomain('lastampa.it')) {
       if (!story_text)
         refreshCurrentTab();
       let modal = document.querySelector('aside#widgetDP');
+      removeDOMElement(modal);
       let ads = document.querySelectorAll('div[id^="adv"]');
-      removeDOMElement(modal, ...ads);
+      hideDOMElement(...ads);
     } else
       ampToHtml();
   }
@@ -297,7 +296,7 @@ else if (matchDomain('money.it')) {
     }
   } else {
     let ads = document.querySelectorAll('amp-ad');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -354,6 +353,13 @@ function removeDOMElement(...elements) {
   }
 }
 
+function hideDOMElement(...elements) {
+  for (let element of elements) {
+    if (element)
+      element.style = 'display:none;';
+  }
+}
+
 function amp_iframes_replace(weblink = false, source = '') {
   let amp_iframes = document.querySelectorAll('amp-iframe' + (source ? '[src*="'+ source + '"]' : ''));
   let elem;
@@ -391,7 +397,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad, .ad', replace_iframes 
   for (let elem of subscr_section)
     elem.removeAttribute('subscriptions-section');
   let amp_ads = document.querySelectorAll(amp_ads_sel);
-  removeDOMElement(...amp_ads);
+  hideDOMElement(...amp_ads);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
@@ -405,7 +411,7 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
     removeDOMElement(...amp_access_not_dom);
   }
   let amp_ads = document.querySelectorAll(amp_ads_sel);
-  removeDOMElement(...amp_ads);
+  hideDOMElement(...amp_ads);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }

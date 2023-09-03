@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.3.1.4
+// @version         3.3.1.5
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -101,7 +101,7 @@ else if (matchDomain('elconfidencial.com')) {
   if (premium)
     premium.classList.remove('newsType__content--closed');
   let ads = document.querySelectorAll('div[id^="mega_"], div[id^="roba_"]');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('eldiario.es')) {
@@ -109,7 +109,7 @@ else if (matchDomain('eldiario.es')) {
     amp_unhide_access_hide('^="access"');
   } else {
     let ads = document.querySelectorAll('.edi-advertising, .header-ad');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -118,8 +118,9 @@ else if (matchDomain('elespanol.com')) {
     amp_unhide_subscr_section('amp-ad, amp-embed');
   } else {
     let paywall = document.querySelector('div.full-suscriptor-container');
-    let adverts = document.querySelectorAll('[id*="superior"], [class*="adv"]');
-    removeDOMElement(paywall, ...adverts);
+    removeDOMElement(paywall);
+    let ads = document.querySelectorAll('[id*="superior"], [class*="adv"]');
+    hideDOMElement(...ads);
   }
 }
 
@@ -195,7 +196,7 @@ else if (matchDomain(es_grupo_vocento_domains)) {
       window.location.href = amphtml.href;
     } else {
       let banners = document.querySelectorAll('.voc-advertising, div.ev-em-modal, span.mega-superior, .v-adv');
-      removeDOMElement(...banners);
+      hideDOMElement(...banners);
     }
   } else {
     amp_unhide_access_hide('="result=\'ALLOW_ACCESS\'"', '="result!=\'ALLOW_ACCESS\'"', 'amp-ad, amp-embed, .v-adv');
@@ -216,7 +217,7 @@ else if (matchDomain(es_epiberica_domains)) {
     amp_unhide_access_hide('="loggedIn"', '="NOT loggedIn"', 'amp-ad, amp-embed, amp-next-page');
   } else {
     let ads = document.querySelectorAll('div.commercial-up-full__wrapper, div.sidebar--sticky__space, div[data-bbnx-id*="cxense"]');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -271,8 +272,9 @@ else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
 if (matchDomain('abril.com.br')) {
   if (window.location.pathname.endsWith('/amp/')) {
     let paywall = document.querySelector('.piano-modal');
+    removeDOMElement(paywall);
     let amp_ads = document.querySelectorAll('amp-ad, amp-embed');
-    removeDOMElement(paywall, ...amp_ads);
+    hideDOMElement(...amp_ads);
   } else {
     let ads = document.querySelectorAll('div.ads, div[class^="ads-"]');
     hideDOMElement(...ads);
@@ -280,8 +282,11 @@ if (matchDomain('abril.com.br')) {
 }
 
 else if (matchDomain(ar_grupo_clarin_domains)) {
-  let ads = document.querySelectorAll('.ad-slot, .box-adv, .sticky, .wrapperblock');
-  removeDOMElement(...ads);
+  let ads = document.querySelectorAll('div.ad-slot, div.box-adv, div.wrapperblock, div.banner, div[id^="div-gpt-ad-flotante"]');
+  hideDOMElement(...ads);
+  let ads_inline = document.querySelectorAll('div > div.sticky, div > div[id^="div-gpt-ad-inread"], div > div[id^="div-gpt-ad-caja"], div > div[id^="div-gpt-ad-horizontal"]');
+  for (let ad of ads_inline)
+    hideDOMElement(ad.parentNode);
 }
 
 else if (matchDomain(pe_grupo_elcomercio_domains)) {
@@ -294,7 +299,7 @@ else if (matchDomain(pe_grupo_elcomercio_domains)) {
       fade.classList.remove('story-contents--fade');
   }
   let ads = document.querySelectorAll('div[class^="content_gpt"]');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('elespectador.com')) {
@@ -355,7 +360,7 @@ else if (matchDomain('em.com.br')) {
       window.location.href = amphtml.href;
     }
     let ads = document.querySelectorAll('.ads, .containerads');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   } else {
     amp_unhide_subscr_section('amp-ad, amp-embed, amp-fx-flying-carpet');
     let compress_text = document.querySelector('div.compress-text');
@@ -369,8 +374,9 @@ else if (matchDomain('estadao.com.br')) {
     amp_unhide_access_hide('="outputValue=\'hide_paywall\'"', '="outputValue=\'show_paywall\'"', 'amp-ad, amp-embed, amp-fx-flying-carpet, div[class^="pAd"]');
   } else {
     let paywall = document.getElementById('paywall-wrapper-iframe-estadao');
+    removeDOMElement(paywall);
     let ads = document.querySelectorAll('div[class^="styles__Container-sc-"]');
-    removeDOMElement(paywall, ...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -423,7 +429,7 @@ else if (matchDomain('globo.com')) {
     ampToHtml();
   if (!window.location.pathname.includes('/amp/')) {
     let ads = document.querySelectorAll('div[id^="ad-container"], div.content-ads, div[class^="block__advertising"]');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -519,7 +525,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad, .ad', replace_iframes 
   for (let elem of subscr_section)
     elem.removeAttribute('subscriptions-section');
   let amp_ads = document.querySelectorAll(amp_ads_sel);
-  removeDOMElement(...amp_ads);
+  hideDOMElement(...amp_ads);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
@@ -533,7 +539,7 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
     removeDOMElement(...amp_access_not_dom);
   }
   let amp_ads = document.querySelectorAll(amp_ads_sel);
-  removeDOMElement(...amp_ads);
+  hideDOMElement(...amp_ads);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }

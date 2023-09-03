@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.2.9.4
+// @version         3.2.9.5
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -137,8 +137,9 @@ else if (matchDomain('cicero.de')) {
       teasered_content.classList.remove('teasered-content');
     let teasered_content_fader = document.querySelector('.teasered-content-fader');
     let btn_read_more = document.querySelector('.btn--read-more');
+    removeDOMElement(teasered_content_fader, btn_read_more);
     let amp_ads = document.querySelectorAll('amp-ad');
-    removeDOMElement(teasered_content_fader, btn_read_more, ...amp_ads);
+    hideDOMElement(...amp_ads);
   }
   let urban_ad_sign = document.querySelectorAll('.urban-ad-sign');
   removeDOMElement(...urban_ad_sign);

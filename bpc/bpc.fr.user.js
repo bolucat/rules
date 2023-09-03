@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.3.0.5
+// @version         3.3.0.6
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -80,7 +80,7 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {// Group
     let html = document.documentElement.outerHTML;
     let og_url = document.querySelector('meta[name="og:url"][content]');
     if (og_url && !og_url.content.endsWith(url_id))
-      window.location.reload(true);
+      refreshCurrentTab();
     let json;
     if (html.includes('window.__NUXT__='))
       json = html.split('window.__NUXT__=')[1].split('</script>')[0].trim().replace(/blocs:\[\{.*?\}\],/g, '');
@@ -112,7 +112,7 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {// Group
           article_top = article;
         article_top.appendChild(content_new.querySelector('div'));
       } else {
-        window.location.reload(true);
+        refreshCurrentTab();
       }
     }
   }
@@ -179,7 +179,7 @@ else if (matchDomain('cieletespace.fr')) {
 
 else if (matchDomain('connaissancedesarts.com')) {
   let ads = document.querySelectorAll('div.ad-container');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('elle.fr')) {
@@ -317,11 +317,11 @@ else if (matchDomain('la-croix.com')) {
   let url = window.location.href;
   if (!url.includes('la-croix.com/amp/')) {
     let ads = document.querySelectorAll('div[class^="ads-wrapper-"]');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   } else {
     let paywall_block = document.querySelector('#paywall_block');
     let amp_ads = document.querySelectorAll('amp-ad, amp-embed');
-    removeDOMElement(paywall_block, ...amp_ads);
+    hideDOMElement(paywall_block, ...amp_ads);
   }
 }
 
@@ -377,7 +377,7 @@ else if (matchDomain(['lejdd.fr', 'parismatch.com', 'public.fr'])) {
   let poool_banners = document.querySelectorAll('#poool-container, #poool-widget-content, #poool-widget');
   let forbidden = document.querySelector('.forbidden');
   let ads = document.querySelectorAll('div[class^="lmn-"]');
-  removeDOMElement(...poool_banners, forbidden, ...ads);
+  hideDOMElement(...poool_banners, forbidden, ...ads);
   let bottom_hide = document.querySelector('.cnt[data-poool-mode="hide"]');
   if (bottom_hide) {
     bottom_hide.removeAttribute('data-poool-mode');
@@ -668,7 +668,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad, .ad', replace_iframes 
   for (let elem of subscr_section)
     elem.removeAttribute('subscriptions-section');
   let amp_ads = document.querySelectorAll(amp_ads_sel);
-  removeDOMElement(...amp_ads);
+  hideDOMElement(...amp_ads);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
@@ -682,7 +682,7 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
     removeDOMElement(...amp_access_not_dom);
   }
   let amp_ads = document.querySelectorAll(amp_ads_sel);
-  removeDOMElement(...amp_ads);
+  hideDOMElement(...amp_ads);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }

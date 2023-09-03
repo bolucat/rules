@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         3.2.3.4
+// @version         3.2.3.5
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -28,7 +28,7 @@ if (matchDomain('etc.se')) {
     removeDOMElement(footer.parentNode);
   }
   let ads = document.querySelectorAll('div[class$="-ad"]');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
   let video_iframes = document.querySelectorAll('div.embed-block > iframe[width][height]');
   for (let elem of video_iframes) {
     if (elem.width > 1000) {

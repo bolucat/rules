@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.1.4
+// @version         3.3.1.6
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -817,8 +817,9 @@ else if (matchDomain('thetimes.co.uk')) {
     }
     let paywall_page = document.querySelector('div#paywall-portal-page-footer');
     let block = document.querySelector('.subscription-block');
+    removeDOMElement(paywall_page, block);
     let ads = document.querySelectorAll('#ad-article-inline, #sticky-ad-header, div[class*="InlineAdWrapper"], div[class*="NativeAd"], div.gyLkkj');
-    removeDOMElement(paywall_page, block, ...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -1114,8 +1115,9 @@ else if (matchDomain('economictimes.com')) {
         window.location.href = 'https://economictimes.indiatimes.com' + window.location.pathname.replace('amp_prime', 'prime');
       let intro = document.querySelector('.art_wrap');
       let article_blocker = document.querySelector('.articleBlocker');
+      removeDOMElement(paywall, intro, article_blocker);
       let amp_ads = document.querySelectorAll('amp-ad');
-      removeDOMElement(paywall, intro, article_blocker, ...amp_ads);
+      hideDOMElement(...amp_ads);
     }
   } else {
     window.setTimeout(function () {
@@ -1678,8 +1680,9 @@ else if (matchDomain('newleftreview.org')) {
 else if (matchDomain('newrepublic.com')) {
   let modal = document.querySelector('div.article-scheduled-modal');
   let pw_popups = document.querySelector('div#pwPopups');
+  removeDOMElement(modal, pw_popups);
   let ads = document.querySelectorAll('.ad-unit, .ad-container');
-  removeDOMElement(modal, pw_popups, ...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('newscientist.com')) {
@@ -2048,6 +2051,16 @@ else if (matchDomain(['techtarget.com', 'computerweekly.com'])) {
 else if (matchDomain('the-american-interest.com')) {
   let counter = document.getElementById('article-counter');
   removeDOMElement(counter);
+}
+
+else if (matchDomain('the-scientist.com')) {
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    paywall.classList.remove('paywall');
+    let fader = document.querySelector('div.gated-fader');
+    let modal = document.querySelector('div#Modal');
+    removeDOMElement(fader, modal);
+  }
 }
 
 else if (matchDomain('theamericanconservative.com')) {
@@ -2670,8 +2683,8 @@ else if (domain = matchDomain(usa_madavor_domains)) {
 
 else if (matchDomain('washingtonpost.com')) {
   let leaderboard = document.querySelector('#leaderboard-wrapper');
-  let adverts = document.querySelectorAll('div[data-qa$="-ad"]');
-  removeDOMElement(leaderboard, ...adverts);
+  let ads = document.querySelectorAll('div[data-qa$="-ad"]');
+  hideDOMElement(leaderboard, ...ads);
 }
 
 else if (matchDomain('winnipegfreepress.com')) {
