@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.2.9.3
+// @version         3.3.1.4
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -44,6 +44,7 @@
 // @match           *://*.politicaexterior.com/*
 // @match           *://*.record.pt/*
 // @match           *://*.regio7.cat/*
+// @match           *://*.revistaoeste.com/*
 // @match           *://*.sabado.pt/*
 // @match           *://*.uol.com.br/*
 // @match           *://webcache.googleusercontent.com/*
@@ -265,7 +266,7 @@ else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
   }
 }
 
-} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['clarin.com', 'elespectador.com', 'eltiempo.com', 'eltribuno.com', 'globo.com', 'lasegunda.com', 'latercera.com'])) {//south america
+} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['clarin.com', 'elespectador.com', 'eltiempo.com', 'eltribuno.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com'])) {//south america
 
 if (matchDomain('abril.com.br')) {
   if (window.location.pathname.endsWith('/amp/')) {
@@ -423,6 +424,21 @@ else if (matchDomain('globo.com')) {
   if (!window.location.pathname.includes('/amp/')) {
     let ads = document.querySelectorAll('div[id^="ad-container"], div.content-ads, div[class^="block__advertising"]');
     removeDOMElement(...ads);
+  }
+}
+
+else if (matchDomain('revistaoeste.com')) {
+  if (window.location.pathname.startsWith('/revista/')) {
+    let intro = document.querySelector('div.is-locked');
+    let sub_panel = document.querySelector('div.subscribe-panel');
+    removeDOMElement(intro, sub_panel);
+    let div_hidden = document.querySelector('div.hidden[data-url]');
+    if (div_hidden)
+      div_hidden.classList.remove('hidden');
+  } else {
+    let div_expandable = document.querySelector('div.expandable');
+    if (div_expandable)
+      div_expandable.classList.remove('expandable');
   }
 }
 

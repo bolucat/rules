@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.3.1.3
+! Version: 3.3.1.6
 
 ! General
 
@@ -243,6 +243,10 @@ philosophynow.org##+js(cookie-remover, /^/)
 ||kinja-static.com/assets/*/regwalled-content.*.js$script,domain=qz.com
 ||reuters.com/pf/resources/dist/reuters/js/index.js$script,~third-party
 ||reuters.com/arc/subs/p.min.js$script,~third-party
+||revistaoeste.com/wp-content/*/js/app.*.js$script,~third-party
+revistaoeste.com##+js(rc, hidden, div.hidden[data-url])
+revistaoeste.com##+js(rc, expandable, div.expandable)
+revistaoeste.com##div.is-locked,div.subscribe-panel
 ||rugbypass.com/plus/$inline-script
 rugbypass.com##.plus-article-offer
 rugbypass.com##+js(rc, premium-fold-bottom, .premium-fold-bottom)
@@ -436,6 +440,9 @@ artsenkrant.com##+js(ra, class, div.article-body > div)
 artsenkrant.com##+js(rc, locked, body.locked)
 artsenkrant.com,femmesdaujourdhui.be,flair.be,knack.be,kw.be,levif.be,libelle.be##div[id*="wall-modal"]
 artsenkrant.com,femmesdaujourdhui.be,flair.be,knack.be,kw.be,levif.be,libelle.be##+js(ra, class|style, html, stay)
+beleggersbelangen.nl##+js(rc, no-account, div.no-account)
+beleggersbelangen.nl##+js(ra, style, div.content-inner[style])
+beleggersbelangen.nl##div.unlimited-access
 !#if env_firefox
 /\.(femmesdaujourdhui|flair|knack|levif|libelle)\.be\/.+\/((\w)+(\-)+){3,}/$inline-script
 !#endif
@@ -505,7 +512,6 @@ splainer.in##+js(rc, hide-section, .hide-section)
 splainer.in##.subscription-prompt
 stateaffairs.com##div.c-memberships-message
 stateaffairs.com##+js(rc, access-restricted, body.access-restricted)
-thecricketer.com##+js(rc, premium, .premium)
 ||thedriftmag.com/wp-content/plugins/drift-paywall-plugin/$script,~third-party
 ||subs.theepochtimes.com/lib/api.bundle.js$script,~third-party
 thegardenisland.com##+js(ra, style, #single-paywall)
