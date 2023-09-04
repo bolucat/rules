@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.1.6
+// @version         3.3.1.7
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -758,11 +758,15 @@ else if (matchDomain('telegraph.co.uk')) {
 }
 
 else if (matchDomain('tes.com')) {
-  let overlay = document.querySelector('div.tg-paywall-body-overlay');
-  if (overlay)
-    overlay.removeAttribute('class');
-  let banners = document.querySelectorAll('div.js-paywall-info, div.tg-paywall-message');
-  removeDOMElement(...banners);
+  let paywall = document.querySelector('div.tg-paywall-message');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let overlay = document.querySelector('div.tg-paywall-body-overlay');
+    if (overlay)
+      overlay.removeAttribute('class');
+  }
+  let banner = document.querySelector('div.js-paywall-info');
+  removeDOMElement(banner);
 }
 
 else if (matchDomain('the-tls.co.uk')) {
