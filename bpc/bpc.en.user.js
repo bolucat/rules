@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.1.7
+// @version         3.3.2.1
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -72,17 +72,6 @@ else if (matchDomain('webcache.googleusercontent.com')) {
         elem.src = elem.getAttribute('data-src').split('?')[0] + '?width=800';
       let ads = document.querySelectorAll('div[class*="Advert"]');
       removeDOMElement(...ads);
-    } else if (window.location.search.includes('q=cache:https://puck.news')) {
-      let paywall = document.querySelectorAll('div[class*="paywall"]');
-      if (paywall.length) {
-        removeDOMElement(...paywall);
-        let overlay = document.querySelector('body.paywall-active');
-        if (overlay)
-          overlay.classList.remove('paywall-active');
-        let article_style = document.querySelector('article[style]');
-        if (article_style)
-          article_style.removeAttribute('style');
-      }
     }
   }, 1000);
 }
@@ -1376,37 +1365,21 @@ else if (matchDomain(usa_hearst_comm_domains)) {
 }
 
 else if (matchDomain('inc42.com')) {
-  let url = window.location.href;
-  let paywall = document.querySelector('div#inc42_article_content_lock');
-  let article_sel = 'div.content-wrapper, section[amp-access="status"]';
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector(article_sel);
-    if (article)
-      article.firstChild.before(ext_12ftLink(url));
+  if (window.location.pathname.endsWith('/amp/')) {
+    amp_unhide_access_hide('="status"', '="NOT status"', 'amp-ad, amp-embed, div.wru-widget');
+    let amp_images = document.querySelectorAll('body amp-img[src^="https://"]');
+    for (let amp_image of amp_images) {
+      let elem = document.createElement('img');
+      Object.assign(elem, {
+        src: amp_image.getAttribute('src'),
+        alt: amp_image.getAttribute('alt')
+      });
+      amp_image.parentNode.replaceChild(elem, amp_image);
+    }
+  } else {
+    let banner = document.querySelector('div[id*="_leaderboard_"]');
+    hideDOMElement(banner);
   }
-  window.setTimeout(function () {
-    if (window.location.pathname.endsWith('/amp/')) {
-      let lazy_images = document.querySelectorAll('img.lazyload[src^="data:image/"][data-src]');
-      for (let elem of lazy_images) {
-        elem.src = elem.getAttribute('data-src');
-        elem.classList.remove('lazyload');
-        if (elem.width > 1000) {
-          let ratio = elem.width / 640;
-          if (window.navigator.userAgent.toLowerCase().includes('mobile'))
-            ratio = elem.width / 320;
-          elem.width = elem.width / ratio;
-          elem.height = elem.height / ratio;
-        }
-      }
-    }
-    let also_read = document.querySelector('div > .also-read');
-    if (also_read) {
-      let article = document.querySelector(article_sel);
-      if (article)
-        article.appendChild(also_read.parentNode);
-    }
-  }, 1000);
 }
 
 else if (matchDomain('indianexpress.com')) {
@@ -1795,13 +1768,37 @@ else if (matchDomain('project-syndicate.org')) {
 }
 
 else if (matchDomain('puck.news')) {
-  let url = window.location.href;
-  let paywall = document.querySelector('div.paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.entry-content');
-    if (article)
-      article.firstChild.before(googleWebcacheLink(url));
+  let paywall = document.querySelectorAll('div[class*="paywall"]');
+  if (paywall.length) {
+    removeDOMElement(...paywall);
+    let json_url_dom = document.querySelector('link[rel="alternate"][type="application/json"][href]');
+    if (json_url_dom) {
+      let json_url = json_url_dom.href;
+      fetch(json_url)
+      .then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            let json_text = json.content.rendered;
+            let content = document.querySelector('div.entry-content');
+            if (json_text && content) {
+              let parser = new DOMParser();
+              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+              content.innerHTML = '';
+              let content_new = doc.querySelector('div');
+              content.appendChild(content_new, content);
+            }
+          });
+        }
+      });
+    }
+    let modal = document.querySelector('div#paywall-modal');
+    removeDOMElement(modal);
+    let overlay = document.querySelector('body.paywall-active');
+    if (overlay)
+      overlay.classList.remove('paywall-active');
+    let article_style = document.querySelector('article[style]');
+    if (article_style)
+      article_style.removeAttribute('style');
   }
 }
 
