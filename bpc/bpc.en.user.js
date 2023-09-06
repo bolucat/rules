@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.2.1
+// @version         3.3.2.2
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -479,7 +479,7 @@ else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
                         elem.appendChild(document.createElement('br'));
                       }
                     }
-                  } else if (type !== 'ad') {
+                  } else if (!['ad', 'streamone'].includes(type)) {
                     let html = parser.parseFromString('<p style="font-size: 18px; font-family: Georgia, serif; margin: 10px;">' + item + '</p>', 'text/html');
                     elem = html.querySelector('p');
                     if (!['p', 'subhead', 'legacy-ml'].includes(type)) {
@@ -2211,10 +2211,18 @@ else if (matchDomain('thedailybeast.com')) {
 
 else if (matchDomain('thediplomat.com')) {
   setCookie('dpl-pw', '', 'thediplomat.com', '/', 0);
-  let preview = document.querySelector('.dpl-preview');
-  if (preview)
-    preview.classList.remove('dpl-preview');
+  if (matchDomain('magazine.thediplomat.com')) {
+    csDoneOnce = true;
+    for (let n = 0; n < 5; n++) {
+      setTimeout(function () {
+        let preview = document.querySelector('article.dpl-preview');
+        if (preview)
+          preview.classList.remove('dpl-preview');
+      }, n * 500);
+    }
+  }
 }
+
 
 else if (matchDomain('theglobeandmail.com')) {
   let article_body_subscribed = document.querySelector('.c-article-body--subscribed');
