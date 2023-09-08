@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.2.3
+// @version         3.3.2.4
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -71,7 +71,7 @@ else if (matchDomain('webcache.googleusercontent.com')) {
       for (let elem of lazy_images)
         elem.src = elem.getAttribute('data-src').split('?')[0] + '?width=800';
       let ads = document.querySelectorAll('div[class*="Advert"]');
-      removeDOMElement(...ads);
+      hideDOMElement(...ads);
     }
   }, 1000);
 }
@@ -239,7 +239,7 @@ else {
       elem.removeAttribute('style');
     let story_generic_iframe = document.querySelector('.story-generic__iframe');
     let ads = document.querySelectorAll('.ad-placeholder, .sticky, [id*="-container"], #hindsight-ads-iframe');
-    removeDOMElement(story_generic_iframe, blocker, ...overlays, ...ads);
+    hideDOMElement(story_generic_iframe, blocker, ...overlays, ...ads);
   } else if (window.location.hostname.endsWith('.com.au')) {
     // Australia News Corp
     let au_news_corp_domains = ['adelaidenow.com.au', 'cairnspost.com.au', 'codesports.com.au', 'couriermail.com.au', 'dailytelegraph.com.au', 'geelongadvertiser.com.au', 'goldcoastbulletin.com.au', 'heraldsun.com.au', 'ntnews.com.au', 'theaustralian.com.au', 'thechronicle.com.au', 'themercury.com.au', 'townsvillebulletin.com.au', 'weeklytimesnow.com.au'];
@@ -278,7 +278,7 @@ else {
           }
         }
         let ads = document.querySelectorAll('.header_ads-container, .ad-block, .ad-container');
-        removeDOMElement(...ads);
+        hideDOMElement(...ads);
       }
     } else {
       // Australian Seven West Media
@@ -574,7 +574,7 @@ else if (matchDomain('independent.co.uk')) {
   let url = window.location.href;
   if (window.location.search.match(/(\?|&)amp/)) {
     let ads = document.querySelectorAll('amp-ad, amp-embed, [id^="ad-"]');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   } else {
     let paywall = document.querySelector('div.article-premium');
     let related = document.querySelector('div.related');
@@ -737,12 +737,12 @@ else if (matchDomain('telegraph.co.uk')) {
       amp_unhide_access_hide('="c.result=\'ALLOW_ACCESS\'"', '', 'amp-ad, amp-embed', false);
     } else {
       let amp_ads = document.querySelectorAll('amp-ad, amp-embed');
-      removeDOMElement(...amp_ads);
+      hideDOMElement(...amp_ads);
     }
   } else {
     let subwall = document.querySelectorAll('[class^="subwall"]');
     let ads = document.querySelectorAll('.advert, .commercial-unit');
-    removeDOMElement(...subwall, ...ads);
+    hideDOMElement(...subwall, ...ads);
   }
 }
 
@@ -830,7 +830,7 @@ else if (matchDomain(uk_nat_world_domains) || document.querySelector('footer > d
     amp_image.parentNode.replaceChild(elem, amp_image);
   }
   let ads = document.querySelectorAll('div[class^="MarkupAds__Container-"], div[class*="_AdContainer-"], div[class^="Dailymotion__Wrapper-"], div.OUTBRAIN');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 } else {
@@ -839,7 +839,7 @@ if (matchDomain(usa_adv_local_domains)) {
   let url = window.location.href;
   if (url.includes('?outputType=amp')) {
     let amp_ads = document.querySelectorAll('.amp-ad-container, amp-embed');
-    removeDOMElement(...amp_ads);
+    hideDOMElement(...amp_ads);
   } else {
     let paywall = document.querySelector('.paywall');
     let amphtml = document.querySelector('link[rel="amphtml"]');
@@ -850,7 +850,7 @@ if (matchDomain(usa_adv_local_domains)) {
       window.location.href = amphtml.href;
     }
     let ads = document.querySelectorAll('div.ad');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -937,7 +937,7 @@ else if (matchDomain('barrons.com')) {
     for (let elem of continue_buttons)
       elem.addEventListener('click', function () { window.location.reload(); });
     let barrons_ads = document.querySelectorAll('.barrons-body-ad-placement');
-    removeDOMElement(...barrons_ads);
+    hideDOMElement(...barrons_ads);
   } else {
     amp_unhide_subscr_section('.wsj-ad, amp-ad');
     let login = document.querySelector('div.login-section-container');
@@ -975,7 +975,7 @@ else if (matchDomain('bloombergadria.com')) {
   if (article_hidden)
     article_hidden.removeAttribute('style');
   let ads = document.querySelectorAll('.banner');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('bostonglobe.com')) {
@@ -1015,7 +1015,7 @@ else if (matchDomain('business-standard.com')) {
     }
     let banner = document.querySelector('section.sbcrbtmlfull');
     let ads = document.querySelectorAll('div.advertisement-bg');
-    removeDOMElement(banner, ...ads);
+    hideDOMElement(banner, ...ads);
   } else
     ampToHtml();
 }
@@ -1030,7 +1030,7 @@ else if (matchDomain('businessoffashion.com')) {
     amp_unhide_access_hide();
   } else {
     let ads = document.querySelectorAll('div[class^="default__AdsBlockWrapper"]');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -1127,7 +1127,7 @@ else if (matchDomain('economictimes.com')) {
           window.location.href = 'https://economictimes.indiatimes.com' + window.location.pathname;
       } else {
         let ads = document.querySelectorAll('.adContainer');
-        removeDOMElement(...ads);
+        hideDOMElement(...ads);
       }
     }, 500);
   }
@@ -1173,7 +1173,7 @@ else if (matchDomain('enotes.com')) {
       removeDOMElement(elem);
     let section_words = pageContains('p[class="u-align--center"]', /\(The entire section contains/);
     let ads = document.querySelectorAll('.ad-hfu');
-    removeDOMElement(...section_words, ...ads);
+    hideDOMElement(...section_words, ...ads);
   }
 }
 
@@ -1233,7 +1233,7 @@ else if (matchDomain('financialexpress.com')) {
   let register = document.querySelector('div.pcl-wrap');
   let ads_selector = window.location.pathname.endsWith('/lite/') ? 'amp-ad, amp-embed, .ad-bg-container' : 'div[class*="-ads-blocks-ad-unit"]';
   let ads = document.querySelectorAll(ads_selector);
-  removeDOMElement(register, ...ads);
+  hideDOMElement(register, ...ads);
 }
 
 else if (matchDomain('forbes.com')) {
@@ -1333,7 +1333,7 @@ else if (matchDomain('hindustantimes.com')) {
     noscroll.classList.remove('open-popup');
   let close_story = document.querySelector('.closeStory');
   let ads = document.querySelectorAll('div[class^="adHeight"]');
-  removeDOMElement(close_story, ...ads);
+  hideDOMElement(close_story, ...ads);
 }
 
 else if (matchDomain('hindutamil.in')) {
@@ -1361,7 +1361,7 @@ else if (matchDomain('historyextra.com')) {
 else if (matchDomain(usa_hearst_comm_domains)) {
   let wrapper = document.querySelector('.belowMastheadWrapper');
   let ads = document.querySelectorAll('div.adModule');
-  removeDOMElement(wrapper, ...ads);
+  hideDOMElement(wrapper, ...ads);
 }
 
 else if (matchDomain('inc42.com')) {
@@ -1391,7 +1391,7 @@ else if (matchDomain('indianexpress.com')) {
       paywall.removeAttribute('style');
     let register = document.querySelector('div#app-pcl');
     let ads = document.querySelectorAll('div[class^="adsbox"]');
-    removeDOMElement(register, ...ads);
+    hideDOMElement(register, ...ads);
   }
 }
 
@@ -1529,7 +1529,7 @@ else if (matchDomain('jpost.com')) {
 
 else if (matchDomain(['latimes.com', 'sandiegouniontribune.com'])) {
   let ads = document.querySelectorAll('div.enhancement, div.google-dfp-ad-wrapper');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('livelaw.in')) {
@@ -1545,7 +1545,7 @@ else if (matchDomain('livelaw.in')) {
       paywall_content.classList.remove('hide');
   }
   let ads = document.querySelectorAll('inside-post-ad, amp-ad');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('livemint.com')) {
@@ -1557,7 +1557,7 @@ else if (matchDomain('livemint.com')) {
     if (paywall)
       paywall.classList.remove('paywall');
     let ads = document.querySelectorAll('[class^="ad"], [id^="ad"], #subscribeAd, .taboolaHeight');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -1572,12 +1572,12 @@ else if (matchDomain('magazine.atavist.com')) {
 }
 
 else if (matchDomain('marketwatch.com')) {
-  let premium = document.querySelector('html.is-paywall');
-  let url = window.location.href;
-  if (!url.includes('/amp/')) {
-    if (premium) {
-      premium.classList.remove('is-paywall');
-      window.location.href = url.replace('.marketwatch.com/', '.marketwatch.com/amp/');
+  if (!window.location.pathname.startsWith('/amp/')) {
+    let paywall = document.querySelector('div#cx-snippet');
+    let amphtml = document.querySelector('link[rel="amphtml"]');
+    if (paywall && amphtml) {
+      removeDOMElement(paywall);
+      window.location.href = amphtml.href;
     }
   } else {
     let meter = document.querySelector('div.meter');
@@ -1586,12 +1586,12 @@ else if (matchDomain('marketwatch.com')) {
     amp_unhide_subscr_section('.display-ad');
   }
   let ads = document.querySelectorAll('div.element--ad, div.j-ad');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('medscape.com')) {
   let ads = document.querySelectorAll('.AdUnit, [id^="ads-"]');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('mid-day.com')) {
@@ -1632,7 +1632,7 @@ else if (matchDomain('nationalgeographic.com')) {
       overlay.classList.remove('Article__Content__Overlay--gated');
   }
   let ads = document.querySelectorAll('div.ad-slot, div.InsertedAd');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('nautil.us')) {
@@ -1845,7 +1845,7 @@ else if (matchDomain('scmp.com')) {
 
 else if (matchDomain('seattletimes.com')) {
   let ads = document.querySelectorAll('.top-ad-wrapper, .ad-container');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('seekingalpha.com')) {
@@ -1870,7 +1870,7 @@ else if (matchDomain('seekingalpha.com')) {
 else if (matchDomain('slate.com')) {
   let slate_roadblock = document.querySelector('.slate-roadblock');
   let ads = document.querySelectorAll('section[class*="-ad"]');
-  removeDOMElement(slate_roadblock, ...ads);
+  hideDOMElement(slate_roadblock, ...ads);
 }
 
 else if (matchDomain('slideshare.net')) {
@@ -1936,8 +1936,9 @@ else if (matchDomain('startribune.com')) {
   if (noscroll)
     noscroll.style = 'overflow: auto !important; position: static !important;';
   let modal = document.querySelector('div.modal-backdrop');
+  removeDOMElement(modal);
   let ads = document.querySelectorAll('div.ad-placeholder');
-  removeDOMElement(modal, ...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('stereogum.com')) {
@@ -2123,7 +2124,7 @@ else if (matchDomain('theathletic.com')) {
   }
   let apron = document.querySelector('div#free-apron-cta, div.slideup-free-apron-container');
   let ads = document.querySelectorAll('div.ad-container');
-  removeDOMElement(apron, ...ads);
+  hideDOMElement(apron, ...ads);
 }
 
 else if (matchDomain('theatlantic.com')) {
@@ -2239,10 +2240,10 @@ else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
   if (!window.location.pathname.endsWith('/amp/')) {
     let counter = document.querySelector('#test');
     let ads = document.querySelectorAll('.ad, .article-ad, .dfp-ad');
-    removeDOMElement(counter, ...ads);
+    hideDOMElement(counter, ...ads);
   } else {
     let ads = document.querySelectorAll('amp-ad, amp-embed, [class^="height"], [class^="advt"], [id^="piano"]');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -2536,7 +2537,7 @@ else if (matchDomain('timeshighereducation.com')) {
     hidden_image.parentElement.classList.remove('media--loading');
   }
   let ads = document.querySelectorAll('div[id^="div-gpt-in-article-ad-"], div[class^="the-dfp__in-article-ATD"]');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain(timesofindia_domains)) {
@@ -2654,7 +2655,7 @@ else if (matchDomain(usa_craincomm_domains)) {
   if (sponsored_article)
     sponsored_article.classList.remove('sponsored-article');
   let banners = document.querySelectorAll('div.footer__ads-footer');
-  removeDOMElement(...banners);
+  hideDOMElement(...banners);
 }
 
 else if (matchDomain(usa_outside_mag_domains)) {
@@ -2668,7 +2669,7 @@ else if (matchDomain(usa_outside_mag_domains)) {
   }
   if (matchDomain('cyclingtips.com')) {
     let ads = document.querySelectorAll('div[data-block-name="ads"], div#takeover');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -2722,7 +2723,7 @@ else if (matchDomain('washingtonpost.com')) {
 
 else if (matchDomain('winnipegfreepress.com')) {
   let ads = document.querySelectorAll('.billboard-ad-space, .ad, .article-ad, .fixed-sky');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('wsj.com')) {
@@ -2768,7 +2769,7 @@ else if (matchDomain('wsj.com')) {
     }
   }
   let ads = document.querySelectorAll('div.wsj-ad, div.adWrapper, div.uds-ad-container');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('zerohedge.com')) {
@@ -2840,7 +2841,7 @@ else if ((domain = matchDomain(usa_lee_ent_domains)) || matchDomain(ca_torstar_d
       removeDOMElement(...banners);
     }
     let ads = document.querySelectorAll('div.tnt-ads-container, div[class*="adLabelWrapper"]');
-    removeDOMElement(...ads);
+    hideDOMElement(...ads);
   }
 }
 
@@ -2871,7 +2872,7 @@ else if (domain = matchDomain(usa_mcc_domains) || document.querySelector('meta[c
       premium_link.href = premium_link.href.replace('www.', 'amp.');
   }
   let ads = document.querySelectorAll('div[id^="zone-el-"]');
-  removeDOMElement(...ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain(usa_mng_domains) || (window.location.href.match(/\.com\/(\d){4}\/(\d){2}\/(\d){2}\/.+\/amp\//) && document.querySelector('amp-img#paywall[src*=".com/wp-content/plugins/dfm-amp-mods/"]'))) {
@@ -3166,7 +3167,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad, .ad', replace_iframes 
   for (let elem of subscr_section)
     elem.removeAttribute('subscriptions-section');
   let amp_ads = document.querySelectorAll(amp_ads_sel);
-  removeDOMElement(...amp_ads);
+  hideDOMElement(...amp_ads);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
@@ -3180,7 +3181,7 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
     removeDOMElement(...amp_access_not_dom);
   }
   let amp_ads = document.querySelectorAll(amp_ads_sel);
-  removeDOMElement(...amp_ads);
+  hideDOMElement(...amp_ads);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
