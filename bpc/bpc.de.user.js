@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.2.9.5
+// @version         3.3.2.5
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -425,6 +425,26 @@ else if (matchDomain('spiegel.de')) {
   }
 }
 
+else if (matchDomain('springermedizin.de')) {
+  let paywall = document.querySelector('div#pay-wall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = json.articleBody;
+        let article = document.querySelector('div > p.intro--paragraph');
+        if (json_text && article) {
+          let article_new = document.createElement('p');
+          article_new.innerText = json_text;
+          article.parentNode.replaceChild(article_new, article);
+        }
+      }
+    }
+  }
+}
+
 else if (matchDomain('weltkunst.de')) {
   let paywall = document.querySelector('section.paywall');
   if (paywall) {
@@ -644,11 +664,12 @@ function amp_iframes_replace(weblink = false, source = '') {
       elem = document.createElement('iframe');
       Object.assign(elem, {
         src: amp_iframe.getAttribute('src'),
-        sandbox: amp_iframe.getAttribute('sandbox'),
         height: amp_iframe.getAttribute('height'),
         width: 'auto',
         style: 'border: 0px;'
       });
+      if (amp_iframe.getAttribute('sandbox'))
+        elem.sandbox = amp_iframe.getAttribute('sandbox');
       amp_iframe.parentNode.replaceChild(elem, amp_iframe);
     } else {
       par = document.createElement('p');
