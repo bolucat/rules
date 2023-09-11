@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.2.5
+// @version         3.3.2.6
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -1833,13 +1833,16 @@ else if (matchDomain('science.org')) {
 }
 
 else if (matchDomain('scmp.com')) {
-  if (window.location.href.includes('/amp.')) {
-    let div_hidden = document.querySelectorAll('div.article-body[amp-access][amp-access-hide]');
-    for (let elem of div_hidden)
-      elem.removeAttribute('amp-access-hide');
-    let default_meters = document.querySelectorAll('div.default-meter, div#archive-article-meter');
-    let adverts = document.querySelectorAll('amp-ad, div.ad-banner, div.advert-fly-carpet-container, div.inline-advert');
-    removeDOMElement(...default_meters, ...adverts);
+  if (window.location.hostname.startsWith('amp.')) {
+    amp_unhide_subscr_section('amp-ad, div.ad-banner, div.advert-fly-carpet-container, div.inline-advert');
+    let default_meters = document.querySelectorAll('div[id^="default-meter-page-views"]');
+    removeDOMElement(...default_meters);
+  } else {
+    let section_hidden = document.querySelectorAll('section[data-qa="ContentBody-ContentBodyContainer"][class]');
+    for (let elem of section_hidden)
+      elem.removeAttribute('class');
+    let ads = document.querySelectorAll('div[data-qa*="AdSlot"]');
+    hideDOMElement(...ads);
   }
 }
 
