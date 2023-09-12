@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: LO/DZgAjMsmS7UBICl+THg
+! Checksum: XfSfaFJ+rBQzZHuixYUD6g
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.0.98.33
-! TimeUpdated: 2023-09-11T16:31:10+00:00
+! Version: 2.0.98.41
+! TimeUpdated: 2023-09-12T17:03:10+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -868,6 +868,8 @@ nfmovies.com#$#a[onclick*="openurl"][target="_blank"] img[src^="/static/"] { pos
 ! Good: example.org#?#main > div.row:has(> div.ad)
 ! Bad: example.org##main > div.ad (should be in specific.txt)
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/161411
+yuanxue365.com#?#.content-main > div > .container-fluid:has(span:contains(广告))
 ! https://github.com/AdguardTeam/AdguardFilters/issues/157190
 youku.com#$?#.swiper-container-horizontal > div.swiper-wrapper > div.swiper-slide:has(a[href*="/tg.602.com/"]) { remove: true; }
 youku.com#$?#.newswiper_big_swiper_container > div.swiper-container-horizontal > div.swiper-wrapper > div.swiper-slide:has(> a[data-href]:not([data-href^="https://v.youku.com/"]):not([data-scm])) { remove: true; }
@@ -1392,7 +1394,7 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 ! Incorrectly blocked domains can be excluded using regex(synchronize this regexp in all filters)
 /^(?!.*(statically.io|sharecast.ws|bunnycdn.ru|bootstrapcdn.com|cdn.ampproject.org|cloudflare.com|cdn.staticfile.org|disqus.com|disquscdn.com|dmca.com|ebacdn.com|facebook.net|fastlylb.net|fbcdn.net|fluidplayer.com|fontawesome.com|github.io|google.com|googleapis.com|googletagmanager.com|gstatic.com|jquery.com|jsdelivr.net|jwpcdn.com|jwplatform.com|polyfill.io|recaptcha.net|shrink.pe|twitter.com|ulogin.ru|unpkg.com|userapi.com|vidazoo.com|vk.com|yandex.|yastatic.net|ytimg.com|zencdn.net|player|youtube.com|cackle.me|googleoptimize.com|vuukle.com|chatango.com|twimg.com|google-analytics.com|hcaptcha.com|raincaptcha.com|media-imdb.com|blogger.com|hwcdn.net|instagram.com|wp.com|imgsmail.ru)).*$/$third-party,script,_____,domain=manshuxs.com|yemancomic.com|qimiaoxiaoshuo.com|gaofuwu.org|nxpaaq.com|dengbi2.com|92hm.top|634.tv|myhaitang.cc
 ! Similar to regexp above, but using the denyallow modifier
-$script,third-party,denyallow=statically.io|sharecast.ws|bunnycdn.ru|bootstrapcdn.com|cdn.ampproject.org|cloudflare.com|cdn.staticfile.org|disqus.com|disquscdn.com|dmca.com|ebacdn.com|facebook.net|fastlylb.net|fbcdn.net|fluidplayer.com|fontawesome.com|github.io|google.com|googleapis.com|googletagmanager.com|gstatic.com|jquery.com|jsdelivr.net|jwpcdn.com|jwplatform.com|polyfill.io|recaptcha.net|shrink.pe|twitter.com|ulogin.ru|unpkg.com|userapi.com|vidazoo.com|vk.com|yastatic.net|ytimg.com|zencdn.net|youtube.com|cackle.me|googleoptimize.com|vuukle.com|chatango.com|twimg.com|google-analytics.com|hcaptcha.com|raincaptcha.com|media-imdb.com|blogger.com|hwcdn.net|instagram.com|wp.com|fastcomments.com|plyr.io,_____,domain=wap.dmwenku.com|m.wfxs.tw|h.fkxs.net|wap.ishuquge.la|m.91zww.com|592mh.top|dubuxiaoshuo.com|clm410.buzz|bookbl.com|shuku99.com|qiyoudy2.com|1yydstxt178.com
+$script,third-party,denyallow=fastly.net|statically.io|sharecast.ws|bunnycdn.ru|bootstrapcdn.com|cdn.ampproject.org|cloudflare.com|cdn.staticfile.org|disqus.com|disquscdn.com|dmca.com|ebacdn.com|facebook.net|fastlylb.net|fbcdn.net|fluidplayer.com|fontawesome.com|github.io|google.com|googleapis.com|googletagmanager.com|gstatic.com|jquery.com|jsdelivr.net|jwpcdn.com|jwplatform.com|polyfill.io|recaptcha.net|shrink.pe|twitter.com|ulogin.ru|unpkg.com|userapi.com|vidazoo.com|vk.com|yastatic.net|ytimg.com|zencdn.net|youtube.com|cackle.me|googleoptimize.com|vuukle.com|chatango.com|twimg.com|google-analytics.com|hcaptcha.com|raincaptcha.com|media-imdb.com|blogger.com|hwcdn.net|instagram.com|wp.com|fastcomments.com|plyr.io,_____,domain=wap.dmwenku.com|m.wfxs.tw|h.fkxs.net|wap.ishuquge.la|m.91zww.com|592mh.top|dubuxiaoshuo.com|clm410.buzz|bookbl.com|shuku99.com|qiyoudy2.com|1yydstxt178.com
 !
 !
 !
@@ -2835,6 +2837,8 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_chinese
 ! Good: example.org#@#.ad
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/161486
+@@||cdn.theguardian.tv/ad/*.m3u8$domain=theguardian.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/160679
 m.xiaomiyoupin.com#@#[style*="mi-img.com"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/158104
@@ -3466,8 +3470,10 @@ nfmovies.com#@?#div[id]:-abp-has(>img[onclick="openurl()"])
 /js/ggtop.js
 /js/guanggao_gg.js
 /js/home/ad/ad.
+/js/huath_2.js
 /js/index_adfloat.js
 /js/jsstyle-$third-party
+/js/mmdaohang_2.js
 /js/mob/cpc_bottom.js
 /js/pcbook.js?
 /js/piaofu_bet.
@@ -3478,6 +3484,7 @@ nfmovies.com#@?#div[id]:-abp-has(>img[onclick="openurl()"])
 /js/utils78.js
 /js/wahha/*
 /js/wlfloat.js
+/js/yueyupp_3.js
 /js/yzgg.js
 /js_php/ajsf.php?id=$third-party
 /jsadv/*
@@ -4132,6 +4139,7 @@ newduba.cn###jq_youxi
 ##.add-gg
 ##.addddddwarp
 ##.adlistcss
+##.adpc
 ##.ads > #video_playr_sider
 ##.ads > a > img[src*=".sinaimg."]
 ##.ads-after-content
@@ -4637,6 +4645,7 @@ newduba.cn###jq_youxi
 ##a[href*="/9966699.vip"]
 ##a[href*="/mug749.vip"]
 ||1267a.xyz^
+||126ccb.xyz^
 ||1378a.xyz^
 ||1379a.xyz^
 ||1u5gy.xyz^
@@ -4680,6 +4689,7 @@ newduba.cn###jq_youxi
 ||akdie.xyz^
 ||allcp.xyz^
 ||amerzbj.cn^
+||anei.tv^$third-party
 ||anwqj0i.xyz^
 ||anyunwl04.com^
 ||apdfmhp.cn^
@@ -4761,6 +4771,7 @@ newduba.cn###jq_youxi
 ||chozarpeases.com^
 ||ciadre.fun^
 ||cix0wk.com^
+||cocloud.site^
 ||connectreadoasis.com^
 ||cqtlimi.cn^
 ||csedasdme.xyz^
@@ -4857,6 +4868,7 @@ newduba.cn###jq_youxi
 ||feiln.xyz^
 ||fengyukun03.cn^
 ||fgetmzx.icu^
+||fgnzdb.xyz^
 ||fhglcpf.icu^
 ||fiktvlnc.icu^
 ||fjsytjs.cn^
@@ -4996,6 +5008,7 @@ newduba.cn###jq_youxi
 ||jqkcett.icu^
 ||jrltdiu.cn^
 ||jrmrijv.icu^
+||jsgdvkjz.com^
 ||jslbaha.top^
 ||jszavs1.com^
 ||jtbunh.xyz^
@@ -5008,6 +5021,7 @@ newduba.cn###jq_youxi
 ||jxmiyrh.icu^
 ||jxtejf.xyz^
 ||jygiizv.icu^
+||jynthelon.com^
 ||jyvith.xyz^
 ||jzdgn.cn^
 ||jzdwl4.cn^
@@ -5151,6 +5165,7 @@ newduba.cn###jq_youxi
 ||oqyiapj.cn^
 ||oslbahk.top^
 ||ossfile001.com^
+||otienlk.top^
 ||owlinggnomist.com^
 ||oyfnkle.cn^
 ||p11q.cn^
@@ -5202,6 +5217,7 @@ newduba.cn###jq_youxi
 ||qwdbsjnql.com^
 ||qxakzox.cn^
 ||qxrvmu.com^
+||qzpbwq.com^
 ||r5dfwjtb.icu^
 ||rabuagc.cn^
 ||rbodwtj.icu^
@@ -5244,6 +5260,7 @@ newduba.cn###jq_youxi
 ||sdvfvgj.cn^
 ||sensifyfugged.com^
 ||sfg11rr.com^
+||sgeth7.icu^
 ||shulsbs.cn^
 ||simblotusitate.com^
 ||sjbgyak.cn^
@@ -5299,6 +5316,7 @@ newduba.cn###jq_youxi
 ||tuplzt.xyz^
 ||tushwjp.icu^
 ||tuwaqtjcood.com^
+||tuyyex.icu^
 ||tvdpebx.cn^
 ||tvrshv.xyz^
 ||txcv68f.com^
@@ -5384,6 +5402,7 @@ newduba.cn###jq_youxi
 ||xn--521-x72fh66s.cn^
 ||xn--jvrp4x1zyfta.net^
 ||xn--zw0autp42d.cn^
+||xolerkr.cn^
 ||xopxptn.cn^
 ||xpcwrgy.cn^
 ||xpicj1.cc^
@@ -5414,6 +5433,7 @@ newduba.cn###jq_youxi
 ||yuanxiang19.fun^
 ||yuifgh.fun^
 ||yunliunet.com^
+||yxvoud.com^
 ||yyuivw6.com^
 ||yzllux.xyz^
 ||z3yfkdjd.icu^
@@ -5441,6 +5461,7 @@ newduba.cn###jq_youxi
 ||zifyeldq.top^
 ||ziravd.xyz^
 ||zlbcxr.xyz^
+||zlyhslx.icu^
 ||zmdjbl.xyz^
 ||znyjmbh.icu^
 ||zonyff.xyz^
@@ -14246,6 +14267,9 @@ chinaqking.com###cnt-ad
 2345.com###cnxh
 sina.com.tw###colorbox
 qq.com###comic_ad
+fzd3.com###comiis_app_block_22
+fzd3.com###comiis_app_block_74
+fzd3.com###comiis_app_block_84
 haianw.com###comiis_haianw01
 haianw.com###comiis_haianw13
 haianw.com###comiis_haianw14
@@ -14306,7 +14330,6 @@ hao.360.cn###daily-hotword
 6789.com,hao.360.cn,hao.360.com###daily-hotwords
 iask.sina.com.cn###daily_topic_flnr
 kpw6.com###daojs
-fzdao.cn###datu
 my0511.com###dbdcc
 ytbbs.com###dd1
 4399.com###defaultbglink
@@ -15648,7 +15671,6 @@ xineurope.com##.adft
 92wy.com##.adhengfu
 huanqiu.com##.adindexList
 13tv.top,sina.com##.aditem
-fzdao.cn##.adlan
 jsphp.net##.adleft-wrap
 cww.net.cn##.adlinkL
 cww.net.cn##.adlinkR
@@ -15797,6 +15819,7 @@ sm.cn##.article.ali_row + #sc ~ .article.ali_row
 hahamx.cn##.article.mt-20
 xvna.com##.articleAD
 xuite.net##.articleExtAd
+360kuai.com##.article__content__yyconfig
 toutiao.com##.article_link[data-tag="ad"]
 24en.com##.article_part_top
 ssr.tools##.asb
@@ -16494,6 +16517,7 @@ so.com##.g-a-noline[data-md*="sad"]
 onlinedown.net##.g-huodong
 qq.com##.g-qzp-bottom
 weiyun001.com##.g-side-r > a[onclick^="onLogs"]
+360kuai.com##.g4.undefined
 mobanwang.com##.g960
 126.com,163.com##.gWel-promt
 gmw.cn##.g_adMain
