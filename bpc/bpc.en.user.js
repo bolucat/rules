@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.2.6
+// @version         3.3.2.8
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -2751,7 +2751,7 @@ else if (matchDomain('wsj.com')) {
       } else {
         let snippet = document.querySelector('.snippet-promotion, div#cx-snippet-overlay');
         let wsj_pro = document.querySelector('meta[name="page.site"][content="wsjpro"]');
-        if (snippet || wsj_pro) {
+        if (false && (snippet || wsj_pro)) {
           removeDOMElement(snippet, wsj_pro);
           if (url_article)
             window.location.href = window.location.href.replace('wsj.com', 'wsj.com/amp');

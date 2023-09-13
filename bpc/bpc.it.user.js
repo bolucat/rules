@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.3.1.0
+// @version         3.3.2.8
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -362,30 +362,27 @@ function hideDOMElement(...elements) {
 
 function amp_iframes_replace(weblink = false, source = '') {
   let amp_iframes = document.querySelectorAll('amp-iframe' + (source ? '[src*="'+ source + '"]' : ''));
-  let elem;
+  let par, elem;
   for (let amp_iframe of amp_iframes) {
     if (!weblink) {
       elem = document.createElement('iframe');
       Object.assign(elem, {
         src: amp_iframe.getAttribute('src'),
-        sandbox: amp_iframe.getAttribute('sandbox'),
         height: amp_iframe.getAttribute('height'),
         width: 'auto',
         style: 'border: 0px;'
       });
-      amp_iframe.parentElement.insertBefore(elem, amp_iframe);
-      removeDOMElement(amp_iframe);
+      if (amp_iframe.getAttribute('sandbox'))
+        elem.sandbox = amp_iframe.getAttribute('sandbox');
+      amp_iframe.parentNode.replaceChild(elem, amp_iframe);
     } else {
-      let video_link = document.querySelector('a#bpc_video_link');
-      if (!video_link) {
-        amp_iframe.removeAttribute('class');
-        elem = document.createElement('a');
-        elem.id = 'bpc_video_link';
-        elem.innerText = 'Video-link';
-        elem.setAttribute('href', amp_iframe.getAttribute('src'));
-        elem.setAttribute('target', '_blank');
-        amp_iframe.parentElement.insertBefore(elem, amp_iframe);
-      }
+      par = document.createElement('p');
+      elem = document.createElement('a');
+      elem.innerText = 'Media-link';
+      elem.setAttribute('href', amp_iframe.getAttribute('src'));
+      elem.setAttribute('target', '_blank');
+      par.appendChild(elem);
+      amp_iframe.parentNode.replaceChild(par, amp_iframe);
     }
   }
 }

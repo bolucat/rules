@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.3.1.5
+// @version         3.3.2.6
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -8,6 +8,7 @@
 // @match           *://*.abril.com.br/*
 // @match           *://*.ara.cat/*
 // @match           *://*.arabalears.cat/*
+// @match           *://*.cambiocolombia.com/*
 // @match           *://*.clarin.com/*
 // @match           *://*.cmjornal.pt/*
 // @match           *://*.diaridegirona.cat/*
@@ -267,7 +268,7 @@ else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
   }
 }
 
-} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['clarin.com', 'elespectador.com', 'eltiempo.com', 'eltribuno.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com'])) {//south america
+} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['cambiocolombia.com', 'clarin.com', 'elespectador.com', 'eltiempo.com', 'eltribuno.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com'])) {//south america
 
 if (matchDomain('abril.com.br')) {
   if (window.location.pathname.endsWith('/amp/')) {
@@ -287,6 +288,18 @@ else if (matchDomain(ar_grupo_clarin_domains)) {
   let ads_inline = document.querySelectorAll('div > div.sticky, div > div[id^="div-gpt-ad-inread"], div > div[id^="div-gpt-ad-caja"], div > div[id^="div-gpt-ad-horizontal"]');
   for (let ad of ads_inline)
     hideDOMElement(ad.parentNode);
+}
+
+else if (matchDomain('cambiocolombia.com')) {
+  if (!window.location.pathname.startsWith('/amp/')) {
+    let paywall = document.querySelector('div#require-access');
+    if (paywall) {
+      removeDOMElement(paywall);
+      window.location.href = '/amp' + window.location.pathname;
+    }
+  } else {
+    amp_unhide_subscr_section('amp-ad, amp-embed');
+  }
 }
 
 else if (matchDomain(pe_grupo_elcomercio_domains)) {
@@ -490,30 +503,27 @@ function hideDOMElement(...elements) {
 
 function amp_iframes_replace(weblink = false, source = '') {
   let amp_iframes = document.querySelectorAll('amp-iframe' + (source ? '[src*="'+ source + '"]' : ''));
-  let elem;
+  let par, elem;
   for (let amp_iframe of amp_iframes) {
     if (!weblink) {
       elem = document.createElement('iframe');
       Object.assign(elem, {
         src: amp_iframe.getAttribute('src'),
-        sandbox: amp_iframe.getAttribute('sandbox'),
         height: amp_iframe.getAttribute('height'),
         width: 'auto',
         style: 'border: 0px;'
       });
-      amp_iframe.before(elem);
-      removeDOMElement(amp_iframe);
+      if (amp_iframe.getAttribute('sandbox'))
+        elem.sandbox = amp_iframe.getAttribute('sandbox');
+      amp_iframe.parentNode.replaceChild(elem, amp_iframe);
     } else {
-      let video_link = document.querySelector('a#bpc_video_link');
-      if (!video_link) {
-        amp_iframe.removeAttribute('class');
-        elem = document.createElement('a');
-        elem.id = 'bpc_video_link';
-        elem.innerText = 'Video-link';
-        elem.setAttribute('href', amp_iframe.getAttribute('src'));
-        elem.setAttribute('target', '_blank');
-        amp_iframe.before(elem);
-      }
+      par = document.createElement('p');
+      elem = document.createElement('a');
+      elem.innerText = 'Media-link';
+      elem.setAttribute('href', amp_iframe.getAttribute('src'));
+      elem.setAttribute('target', '_blank');
+      par.appendChild(elem);
+      amp_iframe.parentNode.replaceChild(par, amp_iframe);
     }
   }
 }

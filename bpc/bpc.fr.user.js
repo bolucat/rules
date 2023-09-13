@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.3.0.6
+// @version         3.3.2.8
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -643,11 +643,12 @@ function amp_iframes_replace(weblink = false, source = '') {
       elem = document.createElement('iframe');
       Object.assign(elem, {
         src: amp_iframe.getAttribute('src'),
-        sandbox: amp_iframe.getAttribute('sandbox'),
         height: amp_iframe.getAttribute('height'),
         width: 'auto',
         style: 'border: 0px;'
       });
+      if (amp_iframe.getAttribute('sandbox'))
+        elem.sandbox = amp_iframe.getAttribute('sandbox');
       amp_iframe.parentNode.replaceChild(elem, amp_iframe);
     } else {
       par = document.createElement('p');

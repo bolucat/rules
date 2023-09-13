@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.3.2.5
+! Version: 3.3.2.8
 
 ! General
 
@@ -140,6 +140,9 @@ forbes.com##+js(ra, class, body[class], stay)
 ||foreignaffairs.com/modules/custom/fa_paywall_js/js/paywall.js$script,~third-party
 foreignaffairs.com##.article-dropcap:style(height: auto !important;)
 foreignaffairs.com##.paywall,.loading-indicator,.messages--container--bottom
+!#if adguard_app_ios
+||foreignaffairs.com/sites/default/files/css/css_ZNZ*.css$stylesheet,~third-party
+!#endif
 foreignpolicy.com##div.content-ungated
 foreignpolicy.com##+js(rc, content-gated, div.content-gated.content-gated--main-article)
 fortune.com##+js(ra, class, div.paywallActive)
@@ -181,7 +184,7 @@ lanacion.com.ar##+js(aopr, localStorage)
 ||emol.cl/assets/js/vendor/modal.js$script,domain=lasegunda.com
 digital.lasegunda.com##+js(rc, lessreadmore, article.lessreadmore, stay)
 digital.lasegunda.com##div[id*="bt_readmore_"]
-||lastampa.it$inline-script
+||lastampa.it/*/news/$inline-script
 lastampa.it##+js(cookie-remover, blaize_session)
 lastampa.it##aside#widgetDP,div[id^="adv"]
 ||latercera.com/arc/subs/p.min.js$script,~third-party
@@ -572,8 +575,8 @@ amp.brisbanetimes.com.au,amp.smh.com.au,amp.theage.com.au,amp.watoday.com.au##+j
 amp.brisbanetimes.com.au,amp.smh.com.au,amp.theage.com.au,amp.watoday.com.au##[subscriptions-section="content-not-granted"]
 
 ! Spanish/Portugese/Brazilian/Colombian sites
-amp.elmundo.es,amp.expansion.com,amp.marca.com,elespanol.com,elespectador.com,em.com.br,folha.uol.com.br,observador.pt##+js(ra, subscriptions-section, [subscriptions-section="content"])
-amp.elmundo.es,amp.expansion.com,amp.marca.com,elespanol.com,elespectador.com,em.com.br,folha.uol.com.br,observador.pt##[subscriptions-section="content-not-granted"]
+amp.elmundo.es,amp.expansion.com,amp.marca.com,elespanol.com,cambiocolombia.com,elespectador.com,em.com.br,folha.uol.com.br,observador.pt##+js(ra, subscriptions-section, [subscriptions-section="content"])
+amp.elmundo.es,amp.expansion.com,amp.marca.com,elespanol.com,cambiocolombia.com,elespectador.com,em.com.br,folha.uol.com.br,observador.pt##[subscriptions-section="content-not-granted"]
 abc.es,amp.elperiodico.com,cmjornal.pt,eldiario.es,elpais.com,estadao.com.br,record.pt,sabado.pt##+js(ra, amp-access-hide, [amp-access][amp-access-hide])
 abc##div.ev-em-modal,span.mega-superior
 abc.es##+js(ra, id, body#top)
