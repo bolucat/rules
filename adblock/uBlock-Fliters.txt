@@ -27,6 +27,8 @@ youtube.com,youtubekids.com,youtube-nocookie.com#@#+js(rpnt, script, /(\(functio
 youtube.com,youtubekids.com,youtube-nocookie.com#@#+js(rpnt, script, (function serverContract(), 'const pruner=text=>{const json=JSON.parse(text);for(k of["playerAds","adPlacements","adSlots"]){json[k]=[];}return JSON.stringify(json);};const urlFromArg=arg=>{if(typeof arg==="string"){return arg;}if(arg instanceof Request){return arg.url;}return String(arg);};const realFetch=window.fetch;window.fetch=new Proxy(window.fetch,{apply:function(target,thisArg,args){if(!(urlFromArg(args[0]).includes("player?key="))){return Reflect.apply(target,thisArg,args);}return realFetch(...args).then(realResponse=>realResponse.text().then(text=>new Response(pruner(text),{status:realResponse.status,statusText:realResponse.statusText,headers:realResponse.headers,})));}}); (function serverContract()')
 youtube.com,youtubekids.com,youtube-nocookie.com#@#+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots, responseContext.mainAppWebResponseContext.datasyncId)
 youtube.com,youtubekids.com,youtube-nocookie.com#@#+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots, playerResponse.responseContext.mainAppWebResponseContext.datasyncId)
+youtube.com,youtubekids.com,youtube-nocookie.com##+js(json-prune-fetch-response, [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots)
+youtube.com,youtubekids.com,youtube-nocookie.com##+js(json-prune-xhr-response, [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots)
 ! https://www.reddit.com/r/uBlockOrigin/comments/154vtwy/getting_ads_on_youtube/jsu299l/
 youtube.com,youtubekids.com,youtube-nocookie.com##+js(set, ytInitialPlayerResponse.playerAds, undefined)
 youtube.com,youtubekids.com,youtube-nocookie.com##+js(set, ytInitialPlayerResponse.adPlacements, undefined)
@@ -1684,7 +1686,6 @@ freebeacon.com##.uppercase:has-text(/advertisement/i)
 sankakucomplex.com##+js(aopr, sankAdCurrentScript)
 sankakucomplex.com##+js(aeld, DOMContentLoaded, prestitialData)
 sankakucomplex.com##+js(acs, document.querySelectorAll, popMagic)
-@@||sankakucomplex.com^$ghide
 sankakucomplex.com##.vce-ad-container
 
 ! https://github.com/uBlockOrigin/uAssets/issues/778
@@ -7966,6 +7967,9 @@ hulu.com##.ad-choices
 ! https://github.com/uBlockOrigin/uAssets/issues/17382
 ! https://www.reddit.com/r/uBlockOrigin/comments/14b5lbw/
 ! https://www.reddit.com/r/uBlockOrigin/comments/158nvca/not_blocking_hulu_ads/jti29qk/
+! https://www.reddit.com/r/uBlockOrigin/comments/16hr6pk/hulu_subtitles_getting_delayed_again/
+hulu.com##+js(json-prune-fetch-response, breaks pause_ads video_metadata.end_credits_time, pause_ads)
+hulu.com##+js(json-prune-fetch-response, breaks pause_ads video_metadata.end_credits_time, breaks)
 hulu.com##+js(json-prune, breaks pause_ads video_metadata.end_credits_time, pause_ads)
 hulu.com##+js(json-prune, breaks pause_ads video_metadata.end_credits_time, breaks)
 hulu.com##+js(xml-prune, xpath(//*[name()="MPD"]/@mediaPresentationDuration | //*[name()="Period"][.//*[name()="BaseURL" and contains(text()\,'/ads-')]] | //*[name()="Period"]/@start), Period[id^="Ad"i], .mpd)
@@ -11385,6 +11389,7 @@ odkrywamyzakryte.com##+js(nofab)
 ! https://github.com/uBlockOrigin/uAssets/issues/6052
 xtapes.to##+js(acs, jQuery, popunder)
 xtapes.to##+js(aopw, open)
+55k.io##+js(set, cRAds, true)
 
 ! https://github.com/uBlockOrigin/uAssets/commit/5b3b660a548cc01973ea5fbf6a1a492a20d936e2#commitcomment-34599062
 ! https://github.com/NanoMeow/QuickReports/issues/1885
@@ -12598,6 +12603,7 @@ imagetwist.com##+js(acs, document.getElementsByTagName, "script")
 imagehaha.com,imagenpic.com,imageshimage.com,imagetwist.com##+js(aeld, , checkTarget)
 imagehaha.com,imagenpic.com,imageshimage.com,imagetwist.com,picshick.com###rang2
 imagehaha.com,imagenpic.com,imageshimage.com,imagetwist.com##video
+imagehaha.com##+js(nowoif)
 
 ! https://github.com/NanoMeow/QuickReports/issues/2011
 @@||watchsuitsonline.net^$ghide
@@ -14760,7 +14766,7 @@ tvn24.pl##+js(json-prune, playlist.movie.advertising.ad_server)
 @@||cdntvn.pl/*/advert.js$xhr,domain=tvn24.pl
 
 ! https://github.com/uBlockOrigin/uAssets/issues/6959
-clicknupload.*##+js(aopw, _pop)
+clickndownload.*,clicknupload.*##+js(aopw, _pop)
 
 ! https://www.reddit.com/r/uBlockOrigin/comments/f45bvt/stop_ublock_from_creating_new_tabs/
 gomoviesfree.*##+js(aopr, glxopen)

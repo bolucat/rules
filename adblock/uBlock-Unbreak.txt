@@ -1685,6 +1685,10 @@ pcgamer.com#@#.hawk-widget
 @@||tags.crwdcntrl.net/*/cc.js$script,domain=telegraph.co.uk
 ! https://www.reddit.com/r/uBlockOrigin/comments/jg2gxq/videos_wont_load_on_telegraphcouk/
 @@||privacy-mgmt.com^$script,domain=telegraph.co.uk
+! https://github.com/uBlockOrigin/uAssets/issues/12635
+||adobedtm.com^*/satellitelib-$script,domain=telegraph.co.uk,important
+telegraph.co.uk##+js(set, _satellite, {})
+telegraph.co.uk##+js(set, _satellite.getVisitorId, noopFunc)
 
 ! https://github.com/NanoMeow/QuickReports/issues/2489
 @@||costco.com.mx/*/js/trackermediator.js$script,1p
@@ -5126,3 +5130,7 @@ neurotray.com##+js(nano-stb, /EzoIvent|TDELAY/, 5000)
 virginmediatelevision.ie##+js(set, google.ima.dai, {})
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect-rule=google-ima.js,domain=virginmediatelevision.ie
 @@||imasdk.googleapis.com/js/sdkloader/ima3_dai.js$script,domain=virginmediatelevision.ie
+
+! https://www.3bmeteo.com/meteo/italia/video - Video breakage
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,domain=3bmeteo.com,important
+3bmeteo.com##+js(nano-sib, adv, *)
