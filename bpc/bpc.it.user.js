@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.3.2.8
+// @version         3.3.2.9
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -91,14 +91,6 @@ if (matchDomain('espresso.repubblica.it')) {
 }
 
 else if (matchDomain('gazzetta.it')) {
-  function header_nofix(header) {
-    if (header) {
-      let nofix_div = document.createElement('div');
-      nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
-      nofix_div.innerText = 'BPC > no fix';
-      header.appendChild(nofix_div);
-    }
-  }
   if (window.location.pathname.endsWith('_preview.shtml')) {
     let paywall = document.querySelector('section.bck-freemium__wall');
     if (paywall) {
@@ -357,6 +349,15 @@ function hideDOMElement(...elements) {
   for (let element of elements) {
     if (element)
       element.style = 'display:none;';
+  }
+}
+
+function header_nofix(header) {
+  if (header) {
+    let nofix_div = document.createElement('div');
+    nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
+    nofix_div.innerText = 'BPC > no fix';
+    header.appendChild(nofix_div);
   }
 }
 

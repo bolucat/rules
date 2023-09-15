@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.2.9
+// @version         3.3.3.1
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -2751,12 +2751,19 @@ else if (matchDomain('wsj.com')) {
       } else {
         let snippet = document.querySelector('.snippet-promotion, div#cx-snippet-overlay');
         let wsj_pro = document.querySelector('meta[name="page.site"][content="wsjpro"]');
-        if (!matchDomain('www.wsj.com') && (snippet || wsj_pro)) {
+        if (snippet || wsj_pro) {
           removeDOMElement(snippet, wsj_pro);
-          if (url_article)
-            window.location.href = window.location.href.replace('wsj.com', 'wsj.com/amp');
-          else
-            window.location.href = '/amp/articles/' + path_article[0];
+          if (!matchDomain('www.wsj.com')) {
+            if (url_article)
+              window.location.href = window.location.href.replace('wsj.com', 'wsj.com/amp');
+            else
+              window.location.href = '/amp/articles/' + path_article[0];
+          } else if (window.location.search) {
+            window.location.href = window.location.pathname;
+          } else {
+            let header = document.querySelector('article > div');
+            header_nofix(header);
+          }
         }
       }
     }
@@ -3034,6 +3041,15 @@ function encode_utf8(str) {
 
 function decode_utf8(str) {
   return decodeURIComponent(escape(str));
+}
+
+function header_nofix(header) {
+  if (header) {
+    let nofix_div = document.createElement('div');
+    nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
+    nofix_div.innerText = 'BPC > no fix';
+    header.appendChild(nofix_div);
+  }
 }
 
 function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', selector_source = selector) {
