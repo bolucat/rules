@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.3.3.0
+! Version: 3.3.3.1
 
 ! General
 
@@ -233,7 +233,7 @@ nybooks.com##div.toast-cta
 nyteknik.se##+js(rc, locked-article, div.locked-article)
 ||meter-svc.nytimes.com/meter.js$xmlhttprequest,~third-party
 nytimes.com##+js(json-prune, data.user)
-!#if adguard_app_ios
+!#if adguard_app_ios || ext_ublock
 ||nytimes.com/graphql/v2$xmlhttprequest,~third-party
 !#endif
 ||mwcm.nyt.com/$script,domain=nytimes.com
@@ -465,6 +465,7 @@ bisnow.com##+js(ra, style, div.story-container > p[style], stay)
 bisnow.com##div.storyLogin
 bizwest.com##div.fp-paywall
 bizwest.com##+js(ra, class, div.fp-content)
+brainly.com,brainly.com.br##+js(aopr, localStorage)
 ||account.brandonsun.com/api/v*/auth/identify$xmlhttprequest,~third-party
 cmcmarkets.com##+js(rc, activePaywall, .activePaywall)
 ||paywall.correiodopovo.com.br$script,~third-party

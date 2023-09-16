@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.3.1
+// @version         3.3.3.2
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -2761,7 +2761,7 @@ else if (matchDomain('wsj.com')) {
           } else if (window.location.search) {
             window.location.href = window.location.pathname;
           } else {
-            let header = document.querySelector('article > div');
+            let header = document.querySelector('div.article-header, article > div');
             header_nofix(header);
           }
         }
