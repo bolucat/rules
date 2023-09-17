@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.3.2
+// @version         3.3.3.4
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -2389,6 +2389,27 @@ else if (matchDomain('thenewatlantis.com')) {
     article_gated.classList.remove('article-gated');
 }
 
+else if (matchDomain('thenewsminute.com')) {
+  let paywall = document.querySelector('div#paywall-banner');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = breakText(parseHtmlEntities(json.articleBody.replace(/\.\./g, '.\r\n\r\n')));
+        let article = document.querySelector('div.arr--story-page-card-wrapper');
+        if (json_text && article) {
+          article.innerHTML = '';
+          let article_new = document.createElement('p');
+          article_new.innerText = json_text;
+          article.appendChild(article_new);
+        }
+      }
+    }
+  }
+}
+
 else if (matchDomain('thepointmag.com')) {
   setCookie('monthly_history', '', 'thepointmag.com', '/', 0);
   let overlay = document.querySelectorAll('div.overlay, div#tpopup-');
@@ -2706,6 +2727,32 @@ else if (domain = matchDomain(usa_madavor_domains)) {
   setCookie(/^article_/, '');
   let banner = document.querySelector('div.free-articles-remaining');
   hideDOMElement(banner);
+}
+
+else if (matchDomain('vikatan.com')) {
+  window.setTimeout(function () {
+    let paywall = document.querySelector('div#paywallDisplay');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let json_script = getArticleJsonScript();
+      if (json_script) {
+        let json = JSON.parse(json_script.text);
+        if (json) {
+          let json_text = parseHtmlEntities(json.articleBody);
+          let content = document.querySelector('div.story-element > div');
+          if (json_text && content) {
+            let parser = new DOMParser();
+            let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+            let content_new = doc.querySelector('div');
+            content.parentNode.replaceChild(content_new, content);
+          }
+        }
+      }
+    }
+    let story_hidden = document.querySelector('div[class^="styles-m__story-card-wrapper_"]');
+    if (story_hidden)
+      story_hidden.removeAttribute('class');
+  }, 500);
 }
 
 else if (matchDomain('washingtonpost.com')) {

@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.3.3.1
+! Version: 3.3.3.3
 
 ! General
 
@@ -140,7 +140,7 @@ forbes.com##+js(ra, class, body[class], stay)
 ||foreignaffairs.com/modules/custom/fa_paywall_js/js/paywall.js$script,~third-party
 foreignaffairs.com##.article-dropcap:style(height: auto !important;)
 foreignaffairs.com##.paywall,.loading-indicator,.messages--container--bottom
-!#if adguard_app_ios
+!#if (adguard_app_ios)
 ||foreignaffairs.com/sites/default/files/css/css_ZNZ*.css$stylesheet,~third-party
 !#endif
 foreignpolicy.com##div.content-ungated
@@ -233,7 +233,7 @@ nybooks.com##div.toast-cta
 nyteknik.se##+js(rc, locked-article, div.locked-article)
 ||meter-svc.nytimes.com/meter.js$xmlhttprequest,~third-party
 nytimes.com##+js(json-prune, data.user)
-!#if adguard_app_ios || ext_ublock
+!#if (adguard_app_ios || ext_ublock)
 ||nytimes.com/graphql/v2$xmlhttprequest,~third-party
 !#endif
 ||mwcm.nyt.com/$script,domain=nytimes.com
@@ -304,7 +304,7 @@ theatlantic.com##.c-nudge__container,.c-non-metered-nudge,div[class^="ArticleInj
 thediplomat.com##+js(cookie-remover, dpl-pw)
 thediplomat.com##+js(rc, dpl-preview, article.dpl-preview, stay)
 theglobeandmail.com##+js(set, Fusion.globalContent._id, '')
-!#if adguard_app_ios
+!#if (adguard_app_ios)
 ||theglobeandmail.com/pf/dist/engine/react.js$script,~third-party
 !#endif
 ||smartwall.theglobeandmail.com^$xmlhttprequest,~third-party
@@ -440,7 +440,7 @@ artsenkrant.com,femmesdaujourdhui.be,flair.be,knack.be,kw.be,levif.be,libelle.be
 beleggersbelangen.nl##+js(rc, no-account, div.no-account)
 beleggersbelangen.nl##+js(ra, style, div.content-inner[style])
 beleggersbelangen.nl##div.unlimited-access
-!#if env_firefox
+!#if (env_firefox)
 /\.(femmesdaujourdhui|flair|knack|levif|libelle)\.be\/.+\/((\w)+(\-)+){3,}/$inline-script
 !#endif
 
@@ -486,6 +486,8 @@ ipsoa.it##+js(ra, style, div.paywall)
 ||irishexaminer.com/pu_examiner/scripts/engage/$script,~third-party
 ||irishnews.com/*/js/bundle.js$script,~third-party
 ||irishnews.com/*/js/mpppaywall.js$script,~third-party
+legalbites.in##+js(ra, class, div.hide.paywall-content)
+legalbites.in##div#subscription_paid_message,div.restricted_message > div.story
 lepetitjournal.net##.message-restricted-woocommerce
 lepetitjournal.net##+js(rc, excerpt, div.excerpt)
 lydogbillede.dk,lydogbilde.no##+js(rc, thecontent, div.thecontent)
