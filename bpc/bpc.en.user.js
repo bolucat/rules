@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.3.4
+// @version         3.3.3.5
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -2511,6 +2511,14 @@ else if (matchDomain('theverge.com')) {
       }
     }
   }
+}
+
+else if (matchDomain('theweek.com')) {
+  let paywall = document.querySelector('div.kiosq-main-layer');
+  removeDOMElement(paywall);
+  let locker = document.querySelector('div.paywall-locker');
+  if (locker)
+    locker.classList.remove('paywall-locker');
 }
 
 else if (matchDomain('thewrap.com')) {
