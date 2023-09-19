@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.3.5
+// @version         3.3.3.6
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -1014,7 +1014,7 @@ else if (matchDomain('business-standard.com')) {
       }
     }
     let banner = document.querySelector('section.sbcrbtmlfull');
-    let ads = document.querySelectorAll('div.advertisement-bg');
+    let ads = document.querySelectorAll('div.advertisement-bg, div[id^="between_article_content_"]');
     hideDOMElement(banner, ...ads);
   } else
     ampToHtml();
@@ -1291,12 +1291,6 @@ else if (matchDomain('fortune.com')) {
 
 else if (matchDomain('harpers.org')) {
   setCookie('hr_session', '', 'harpers.org', '/', 0);
-}
-
-else if (matchDomain('hbrchina.org')) {
-  let div_hidden = document.querySelector('div#the_content');
-  if (div_hidden)
-    div_hidden.removeAttribute('style');
 }
 
 else if (matchDomain('hilltimes.com')) {
