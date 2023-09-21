@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.3.6
+// @version         3.3.3.7
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -1090,6 +1090,9 @@ else if (matchDomain('dallasnews.com')) {
 else if (matchDomain('digiday.com')) {
   if (window.location.pathname.endsWith('/amp/')) {
     amp_unhide_access_hide('="NOT p.showPageviewExpired AND NOT p.showPayWall"', '', 'amp-ad, .advertisement, .ad-wrapper');
+  } else {
+    let ads = document.querySelectorAll('div[class^="ad_"]');
+    hideDOMElement(...ads);
   }
 }
 
@@ -2717,12 +2720,6 @@ else if (matchDomain('usatoday.com')) {
       }
     }
   }
-}
-
-else if (matchDomain('venturebeat.com')) {
-  let paywall = document.querySelector('div.paywall');
-  if (paywall)
-    paywall.classList.remove('paywall');
 }
 
 else if (domain = matchDomain(usa_madavor_domains)) {
