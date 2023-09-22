@@ -8,7 +8,7 @@
 
 ! aternos anti adb
 aternos.org##.header-center:style(margin-top:-5000px !important;)
-aternos.org##.sidebar:style(width: 1.745px !important; padding: 0.005px !important;)
+aternos.org##.sidebar:style(width: 1.745px !important; padding: 0.005cm !important;)
 aternos.org##.ad-dfp:style(min-height: 0.1485mm !important; height: 0.1485mm !important;)
 
 ! https://github.com/uBlockOrigin/uAssets/issues/11152
@@ -40,12 +40,16 @@ ylilauta.org##+js(spoof-css, iframe.a, opacity, 1, pointer-events, auto)
 ! pixsera
 ! https://github.com/uBlockOrigin/uAssets/issues/9123
 ! https://github.com/orgs/uBlockOrigin/teams/ublock-filters-volunteers/discussions/423/comments/6
-picbbdr.one,picbest.one,picbhrt.one##+js(aopr, console.clear)
-picbbdr.one,picbest.one,picbhrt.one##+js(nano-sib, timer)
-picbbdr.one,picbest.one,picbhrt.one##div[id][style^="position: fixed; display: block; width: 100%;"]
-picbbdr.one,picbest.one,picbhrt.one##div[style="width:100%;height:110px"]
-picbbdr.one,picbest.one,picbhrt.one##+js(nowoif, !/prcf.fiyar|themes|pixsense|.jpg/)
-picbbdr.one,picbest.one,picbhrt.one##div[class][style="display: block;"]
+picbbdr.one,picbest.one,picbhrt.one,picnrrt.one##+js(aopr, console.clear)
+picbbdr.one,picbest.one,picbhrt.one,picnrrt.one##+js(nano-sib, timer)
+picbbdr.one,picbest.one,picbhrt.one,picnrrt.one##div[id][style^="position: fixed; display: block; width: 100%;"]
+picbbdr.one,picbest.one,picbhrt.one,picnrrt.one##div[style="width:100%;height:110px"]
+picbbdr.one,picbest.one,picbhrt.one,picnrrt.one##+js(nowoif, !/prcf.fiyar|themes|pixsense|.jpg/)
+picbbdr.one,picbest.one,picbhrt.one,picnrrt.one##div[class][style="display: block;"]
+
+! https://github.com/uBlockOrigin/uAssets/issues/17125
+megaup.net##body .metaRedirectWrapperBottomAds:style(width: 10306px !important;)
+megaup.net##+js(rpnt, script, /;\$.+?:/, ;)
 
 ! https://github.com/uBlockOrigin/uAssets/issues/17548
 @@*$ghide,domain=dev.miuiflash.com|djxmaza.in|thecubexguide.com
@@ -68,15 +72,28 @@ dropgalaxy.co##+js(set, isAdblockActive, false)
 ! https://github.com/uBlockOrigin/uAssets/issues/17711
 ||plagiarismdetector.net/img-pop25/popup2.png$image,1p
 ||plagiarismdetector.net/bb_cc/_grammarly_popup.svg$image,1p
-||plagiarismdetector.net/pd-imgs/ax.png$image,1p
-||plagiarismdetector.net/pd-imgs/ab.png$image,1p
-duplichecker.com##.container > div[style*="margin-top:"]:has(a[href^="https://www.duplichecker.com/linksmgm"])
+||plagiarismdetector.net/pd-imgs/jj.png$image,1p
+||plagiarismdetector.net/pd-imgs/kk.png$image,1p
+||plagiarismchecker.co/design_images/p_home/checking_image.svg$image,1p
+plagiarismchecker.co##[class$="_heading"] + div[class]:has(img[src^="https://www.plagiarismchecker.co/"])
+plagiarismchecker.co##p[class^="ccc"] + [class]:has(img[src^="https://www.plagiarismchecker.co/"])
+plagiarismchecker.co##div.side_image_remove + section > p + div[class]
+plagiarismchecker.co##[style="margin-left:-25px;margin-top:13px;"] + div > [class]:has(img[src^="https://www.plagiarismchecker.co/"])
+plagiarismchecker.co##article[class] > div > a:not([href]) > img[src^="https://www.plagiarismchecker.co/"]
+plagiarismchecker.co##div[class] > span > a:not([href]) > img[src^="https://www.plagiarismchecker.co/"]
 
 ! https://www.reddit.com/r/uBlockOrigin/comments/163cy47/youtube_antiadblock_and_ads_weekly_thread_august/jyu8u8v/
 ! https://www.reddit.com/r/uBlockOrigin/comments/169iri2/youtube_antiadblock_and_ads_september_04_2023/jzkgsjz/
 ! https://www.reddit.com/r/uBlockOrigin/comments/16ncj4f/
+! https://www.reddit.com/r/uBlockOrigin/comments/16lmeri/youtube_antiadblock_and_ads_september_18_2023/k1ow2es/
+!#if env_firefox
+youtube.com,youtubekids.com,youtube-nocookie.com##+js(trusted-replace-fetch-response, /\"adPlacements.*?\"\}\}\}\]\,/, , player?key=)
+youtube.com,youtubekids.com,youtube-nocookie.com##+js(trusted-replace-fetch-response, /\"adSlots.*?\}\]\}\}\]\,/, , player?key=)
+youtube.com,youtubekids.com,youtube-nocookie.com##+js(trusted-replace-fetch-response, /\"playerAds.*?\}\}\]\,/, , player?key=)
+!#endif
 youtube.com,youtubekids.com,youtube-nocookie.com##+js(json-prune-fetch-response, [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots)
-youtube.com,youtubekids.com,youtube-nocookie.com##+js(json-prune-xhr-response, [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots, , propsToMatch, url:/player\?key=|watch\?key=|youtubei\/v1\/player/)
+youtube.com,youtubekids.com,youtube-nocookie.com##+js(json-prune-xhr-response, [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots, , propsToMatch, url:/player\?key=|watch\?v=|youtubei\/v1\/player/)
+youtube.com,youtubekids.com,youtube-nocookie.com#@#+js(json-prune-xhr-response, [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots, , propsToMatch, url:/player\?key=|watch\?key=|youtubei\/v1\/player/)
 youtube.com,youtubekids.com,youtube-nocookie.com#@#+js(json-prune-xhr-response, [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots)
 youtube.com,youtubekids.com,youtube-nocookie.com#@#+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots, responseContext.mainAppWebResponseContext.datasyncId)
 youtube.com,youtubekids.com,youtube-nocookie.com#@#+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots, playerResponse.responseContext.mainAppWebResponseContext.datasyncId)
@@ -110,7 +127,6 @@ cryptfaucet.com##[href="javascript:hidepromolll();"]
 ||thanks.viewfr.com/webroot/ads/adsterra/
 
 ! https://github.com/uBlockOrigin/uAssets/discussions/17361#discussioncomment-6895297
-techcyan.com#@#a[href*=".click"]:style(opacity: 0 !important; pointer-events: none !important;)
 techcyan.com#@#+js(spoof-css, #btx1, display, block)
 techcyan.com#@#+js(spoof-css, #btx2, display, block)
 techcyan.com#@##btx1, #btx2
@@ -129,7 +145,7 @@ btcbitco.in,btcsatoshi.net,wiour.com##+js(nowoif, ?key=)
 chip.de##div[class] > a:is(a[href*="https://x.chip.de/intern/dl/?url="], a[href*="https://www.chip.de/downloads/"]):has(div img[src*="https://im.chip.de/ii/"]):upward(1)
 chip.de#@#.ob-ad-carousel-layout
 chip.de##body:not(.l-DownloadDetail, .l-DownloadListing) .ob-ad-carousel-layout
-/im\.chip\.de\/ii\/[0-9\/]{14,17}\/[a-zA-Z0-9]{4,9}\-[a-zA-Z0-9]{3,6}\-[a-zA-Z0-9\-]{20,31}\..*&hash=[a-z0-9]{60,}/$image,xhr,match-case,1p,domain=chip.de
+/im\.chip\.de\/ii\/[0-9\/]{14,17}\/[a-zA-Z0-9]{4,9}\-[a-zA-Z0-9]{3,6}\-[a-zA-Z0-9\-]{20,32}\..*&hash=[a-z0-9]{60,}/$image,xhr,match-case,1p,domain=chip.de
 @@/im\.chip\.de\/ii\/[0-9\/]{14,17}\/.*(logo|launcher|player|tool|messenger|game|microsoft|windows).*&hash=[a-z0-9]{64}/$image,xhr,1p,domain=chip.de
 ||im.chip.de/ii/*AspectCrop*gravity*&hash=*esi:vars%3E*(randomString)%3C/esi:vars$image,xhr,1p
 
@@ -166,3 +182,9 @@ lifestyle.bg,money.bg,news.bg,topsport.bg,webcafe.bg##+js(nostif, /adblock|locat
 
 ! https://github.com/uBlockOrigin/uAssets/issues/19796 - Remove after 24.9.2023
 ||arc.io^$script,redirect-rule=noopjs,domain=hinatasoul.com
+
+! https://github.com/uBlockOrigin/uAssets/issues/19817 - Remove after 2023-09-28
+rookieroad.com#@#body > div #sticky-footer:upward(body > div)
+
+! https://github.com/AdguardTeam/AdguardFilters/issues/161459
+||yimg.jp/images/listing/tool/yads/

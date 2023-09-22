@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.3.7
+// @version         3.3.3.8
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -86,6 +86,7 @@ var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 't
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
 var no_nhst_media_domains = ['europower-energi.no', 'fiskeribladet.no', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
 var timesofindia_domains = ['timesofindia.com', 'timesofindia.indiatimes.com'];
+var uk_incisive_media_domains = ['businessgreen.com', 'internationalinvestment.net', 'investmentweek.co.uk', 'professionaladviser.com', 'professionalpensions.com'];
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
@@ -123,7 +124,7 @@ if (matchDomain('gitlab.com') && window.location.pathname.startsWith('/magnolia1
 }
 
 if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || (!matchDomain('webcache.googleusercontent.com') && document.querySelector('script[src*=".medium.com/"]'))) {
-  let url = window.location.href;
+  let url = window.location.href.split('?')[0];
   let paywall = document.querySelector('article.meteredContent');
   if (paywall) {
     paywall.removeAttribute('class');
@@ -416,7 +417,7 @@ else {
   }
 }
 
-} else if (window.location.hostname.match(/\.(ie|uk)$/) || matchDomain(['citywire.com', 'ft.com', 'scotsman.com', 'tes.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['investmentweek.co.uk'])) || matchDomain(['citywire.com', 'ft.com', 'scotsman.com', 'tes.com'])) {//united kingdom/ireland
 
 if (matchDomain('autocar.co.uk')) {
   let url = window.location.href;
@@ -2659,6 +2660,17 @@ else if (matchDomain(no_nhst_media_domains)) {
   }
 }
 
+else if (matchDomain(uk_incisive_media_domains)) {
+  let url = window.location.href.split('?')[0];
+  let paywall = document.querySelector('div#d-wrapper');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.article-content');
+    if (article)
+      article.firstChild.before(googleWebcacheLink(url));
+  }
+}
+
 else if (domain = matchDomain(usa_conde_nast_domains)) {
   setCookie(/^pay_ent_/, '', domain, '/', 0);
   if (window.location.pathname.endsWith('/amp')) {
@@ -3154,7 +3166,7 @@ function ext_12ftLink(url, text_fail = 'BPC > Full article text:\r\n') {
 function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full article text:\r\n') {
   let text_fail_div = document.createElement('div');
   text_fail_div.id = 'bpc_archive';
-  text_fail_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
+  text_fail_div.setAttribute('style', 'margin: 20px; font-size: 15px; font-weight: bold; color: red;');
   let parser = new DOMParser();
   text_fail = text_fail.replace(/\[([^\]]+)\]/g, "<a href='$1' target='_blank' style='color: red'>$1</a>");
   let doc = parser.parseFromString('<span>' + text_fail + '</span>', 'text/html');

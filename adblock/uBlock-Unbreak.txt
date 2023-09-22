@@ -10,12 +10,6 @@
 ! GitHub issues: https://github.com/uBlockOrigin/uAssets/issues
 ! GitHub pull requests: https://github.com/uBlockOrigin/uAssets/pulls
 
-! https://github.com/gorhill/uBlock/issues/1164
-! GA plugins are pulled if and only if `analytics.js` was already allowed in
-! the first place: it is thus safe to create a global exception filter for
-! all GA plugins.
-@@||google-analytics.com/plugins/$script
-
 ! https://github.com/uBlockOrigin/uAssets/issues/729
 ! https://github.com/NanoMeow/QuickReports/issues/1636
 ||2mdn.net/instream/video/client.js$script,redirect=noopjs,domain=video.foxnews.com
@@ -24,40 +18,15 @@
 @@||global.fncstatic.com^*/ads.js$script,domain=foxnews.com
 @@||imasdk.googleapis.com/js/sdkloader/ima3.js$script,domain=insider.foxnews.com
 
-! cnet.com needs this for video players
-! https://github.com/chrisaljoudi/uBlock/issues/227
-! To counter `2mdn.net` in Peter Lowe's
-@@||s0.2mdn.net/instream/*$domain=cnet.com
-
 ! Chrome store feedback
 ! To counter `top.mail.ru` in Peter Lowe's
 ||top.mail.ru^$badfilter
 ||top.mail.ru^$3p
 
-! Chrome store feedback: "totaljobs.com [...] with μBlock enabled, I can't click any links"
-! To counter `2o7.net` in Peter Lowe's
-||2o7.net^$badfilter
-||2o7.net^$3p
-
 ! https://github.com/chrisaljoudi/uBlock/issues/841
 ! https://github.com/uBlockOrigin/uAssets/issues/5889
 ! To counter `quantcast.com` in Peter Lowe's
 ||quantcast.com^$badfilter
-
-! https://github.com/gorhill/uBlock/issues/182
-! http://www.okgoals.com/match-highlights-1425491618---41
-! To counter `intergi.com` in Peter Lowe's. For example, breaks:
-! explosm.net
-! lastminutegoals.org
-! okgoals.com
-! tvgolo.com
-@@||cdn.phoenix.intergi.com^
-
-! http://www.reddit.com/r/AsianBeauty/comments/3ak15v/til_if_youre_using_ublock_origin_some_of_the/
-@@||img.echosting.cafe24.com/design$image,domain=jolse.com
-
-! Chrome store: "Some of the useful content on website such as pictures and maps on redfin get blocked"
-@@||ssl.cdn-redfin.com/*/redfin/common/analytics/PixelTracking.js$script,domain=redfin.com
 
 ! `amazon-adsystem.com` is blocked by Peter Lowe's. The neutered script should
 ! help lower chances of breakage. Examples:
@@ -156,18 +125,6 @@
 ||bbci.co.uk^*/analytics.js$script,redirect=noopjs,domain=bbc.co.uk
 ||static.bbc.co.uk/bbcdotcom/*/adverts.js$script,1p,important,redirect=noopjs
 
-! https://twitter.com/ensignricky/status/875484027297255424
-||googletagmanager.com/gtm.js$script,redirect=noopjs,domain=homes.co.nz
-
-! https://github.com/uBlockOrigin/uAssets/issues/478
-! https://github.com/uBlockOrigin/uAssets/issues/1906
-! https://www.reddit.com/r/uBlockOrigin/comments/9c6j8u/
-! https://github.com/uBlockOrigin/uAssets/issues/5531
-! https://github.com/uBlockOrigin/uAssets/issues/10860
-/google-analytics.$~image,badfilter
-/googleanalytics.js$badfilter
--google-analytics.$badfilter
-/google-analytics.$script,badfilter
 ! https://forums.lanik.us/viewtopic.php?f=64&p=136474
 /ga_setup.js$badfilter
 
@@ -195,10 +152,6 @@ pythonjobshq.com##+js(aopr, Keen)
 @@||myaccounts.capitalone.com^$script,1p
 ! https://github.com/uBlockOrigin/uAssets/issues/16469
 @@||travel.capitalone.com/api/v0/tracking/event$xhr,1p
-
-! https://github.com/uBlockOrigin/uAssets/issues/631
-||cj.com^$badfilter
-||cj.com^$3p
 
 ! https://github.com/uBlockOrigin/uAssets/issues/646
 @@||players.brightcove.net^$frame,domain=usatoday.com
@@ -294,17 +247,11 @@ energy.de#@##ad_home
 @@||rtl.be/videos/player/vp4_webanalytics.js$script,1p
 @@||videoplaza.tv/*/pulse-sdk-html5/*$script,domain=rtl.be
 
-! https://github.com/uBlockOrigin/uAssets/issues/1134
-@@||imasdk.googleapis.com/js/sdkloader/ima3.js$script,domain=juegosflash.dibujos.net
-
 ! https://github.com/jspenguin2017/uBlockProtector/issues/778
 reyada.com#@#.ads_area
 
 ! https://github.com/uBlockOrigin/uAssets/issues/1152#issuecomment-354683032
 @@||ads.adaptv.advertising.com/*einthusan.tv*$xhr,domain=imasdk.googleapis.com
-
-! https://github.com/uBlockOrigin/uAssets/issues/1263
-@@||industrybrains.com^$domain=sendmyway.com
 
 ! https://github.com/uBlockOrigin/uAssets/issues/1308
 @@||js.center.io^$domain=randpac.com
@@ -386,9 +333,6 @@ vhacks.org#@#.sponsor-logo
 ! https://github.com/jspenguin2017/uBlockProtector/issues/1020
 @@||userscloud.com/js/vendor/core/bootstrap.js$script,1p
 @@||usercdn.com^$frame,domain=userscloud.com
-
-! https://github.com/uBlockOrigin/uAssets/issues/1682
-*/content/libs/comscore/comscore.min.js$script,1p,redirect=noopjs
 
 ! https://www.reddit.com/r/uBlockOrigin/comments/8371j7/ublockorigin_blocking_the_submit_button_on_my_web/
 @@||cdn.mxpnl.com/libs/mixpanel-*.min.js$script,domain=demandforce.com
@@ -476,11 +420,6 @@ cyclingnews.com##.global-banner
 
 ! https://forums.lanik.us/viewtopic.php?p=136057#p136057
 @@|https://api-secure.solvemedia.com^$script
-
-! https://twitter.com/andrewvijay/status/995297630371495941
-! These Adguard Mobile procedural cosmetic filters are causing issues
-mobile.twitter.com#@#section[role="region"] > div > div[style^="padding-bottom"] > div[class] > div[class][-ext-has='div.rn-1uif7bo[dir="auto"]']
-mobile.twitter.com#@#._29ahSMvH section.rn-1oszu61 div[class][style*="padding-"] > ._1_KafmK5[-ext-has='svg.YunaQoc2']
 
 ! https://forums.lanik.us/viewtopic.php?p=136565#p136565
 @@||openx.tv/embed/$domain=m4ufree.com
@@ -617,13 +556,6 @@ britannica.com###md-media-overlay-ad
 ! https://github.com/NanoMeow/QuickReports/issues/865
 ||src.litix.io/core/*/mux.js$script,redirect=noopjs,domain=kanald.com.tr
 @@||gatr.hit.gemius.pl/gplayer.js$script,domain=kanald.com.tr
-
-! https://github.com/uBlockOrigin/uAssets/issues/2912
-||dashradio.com^*/fingerprint2.min.js$script,redirect=fingerprint2.js,1p
-! https://github.com/uBlockOrigin/uAssets/issues/2912#issuecomment-408127639
-!#if env_firefox
-@@||dashradio.com/*/library/js/libs/fingerprint2.min.js$script,1p
-!#endif
 
 ! https://github.com/uBlockOrigin/uAssets/issues/2930
 ||bridgetrack.com^$badfilter
@@ -5145,3 +5077,6 @@ larazon.es##+js(set, gfkS2sExtension.HTML5VODExtension, noopFunc)
 ! https://www.reddit.com/r/uBlockOrigin/comments/16od89r/ublock_blocking_cloudflare_security_challenge/
 @@||toolbaz.com/tardisrocinante/screx.js$script,1p
 @@||toolbaz.com/tardisrocinante/vitals.js$script,1p
+
+! simple counter
+||rays-counter.com^$3p,badfilter
