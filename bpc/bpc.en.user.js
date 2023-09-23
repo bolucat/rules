@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.3.8
+// @version         3.3.4.3
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -124,7 +124,7 @@ if (matchDomain('gitlab.com') && window.location.pathname.startsWith('/magnolia1
 }
 
 if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || (!matchDomain('webcache.googleusercontent.com') && document.querySelector('script[src*=".medium.com/"]'))) {
-  let url = window.location.href.split('?')[0];
+  let url = window.location.href;
   let paywall = document.querySelector('article.meteredContent');
   if (paywall) {
     paywall.removeAttribute('class');
@@ -872,6 +872,18 @@ else if (matchDomain('americanbanker.com') || matchDomain(usa_arizent_custom_dom
     let inline_gated = document.querySelectorAll('.inline-gated');
     for (let elem of inline_gated)
       elem.classList.remove('inline-gated');
+  }
+}
+
+if (matchDomain('arkansasonline.com')) {
+  setCookie('blaize_session', '', 'arkansasonline.com', '/', 0);
+  let url = window.location.href;
+  let paywall = document.querySelector('div.bee-page-container');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div#article_body');
+    if (article)
+      article.firstChild.before(googleWebcacheLink(url));
   }
 }
 
@@ -2661,7 +2673,7 @@ else if (matchDomain(no_nhst_media_domains)) {
 }
 
 else if (matchDomain(uk_incisive_media_domains)) {
-  let url = window.location.href.split('?')[0];
+  let url = window.location.href;
   let paywall = document.querySelector('div#d-wrapper');
   if (paywall) {
     removeDOMElement(paywall);
@@ -3151,11 +3163,13 @@ function refreshCurrentTab() {
   window.location.reload(true);
 }
 
-function archiveLink(url, text_fail = 'BPC > Full article text (only report issue if not working for over a week):\r\n') {
+function archiveLink(url, text_fail = 'BPC > Try for full article text (only report issue if not working for over a week):\r\n') {
   return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
 }
 
-function googleWebcacheLink(url, text_fail = 'BPC > Full article text:\r\n') {
+function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
+  if (!matchUrlDomain(['hbrchina.org'], url))
+    url = url.split('?')[0];
   return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
 }
 
