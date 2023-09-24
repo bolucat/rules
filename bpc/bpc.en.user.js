@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.4.3
+// @version         3.3.4.4
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -180,8 +180,8 @@ else if (matchDomain('macrobusiness.com.au')) {
         let json_text = json.filter(x => typeof x === 'string' && x.match(/(<|\\u003C)p>/))[0];
         let parser = new DOMParser();
         let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-        let content_new = doc.querySelector('div')
-          let article = document.querySelector('div.content');
+        let content_new = doc.querySelector('div');
+        let article = document.querySelector('div.content');
         if (article) {
           article.innerHTML = '';
           article.appendChild(content_new);

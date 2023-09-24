@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.3.2.5
+// @version         3.3.4.7
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -12,6 +12,7 @@
 // @match           *://*.nzz.ch/*
 // @match           *://*.topagrar.at/*
 // @match           *://*.topagrar.com/*
+// @match           *://*.vol.at/*
 // @match           *://*.wochenblatt.com/*
 // @match           *://webcache.googleusercontent.com/*
 // ==/UserScript==
@@ -445,6 +446,53 @@ else if (matchDomain('springermedizin.de')) {
   }
 }
 
+else if (matchDomain('vol.at')) {
+  if (!window.location.pathname.match(/\/amp\/?$/)) {
+    window.setTimeout(function () {
+      let paywall = document.querySelector('div.vodl-region-article__premium-content');
+      if (paywall) {
+        paywall.removeAttribute('class');
+        if (!paywall.hasChildNodes()) {
+          console.log('empty');
+          let json_script = document.querySelector('script#externalPostDataNode');
+          if (json_script) {
+            try {
+              let json = JSON.parse(json_script.text);
+              let json_text = json.content.data.post.content;
+              let parser = new DOMParser();
+              let doc = parser.parseFromString('<div class="entry-content">' + json_text + '</div>', 'text/html');
+              let article_new = doc.querySelector('div');
+              let hidden_images = article_new.querySelectorAll('img[src^="/"][srcset]');
+              let json_domain = json.content.data.post.thumbnail.src.match(/https:\/\/(www\.)?\w+\.at/)[0];
+              for (let elem of hidden_images) {
+                elem.src = elem.src.replace('https://www.vol.at', json_domain);
+                elem.removeAttribute('srcset');
+              }
+              let hidden_comments = document.querySelector('div.vodl-region-article__content[hidden]');
+              if (hidden_comments) {
+                hidden_comments.removeAttribute('hidden');
+                let blurred = hidden_comments.querySelector('div.blur');
+                if (blurred)
+                  blurred.classList.remove('blur');
+              }
+              let article = document.querySelector('div.article-body');
+              if (article) {
+                article.innerHTML = '';
+                article.appendChild(article_new);
+              }
+            } catch (err) {
+              console.log(err);
+            }
+          }
+        }
+      }
+    }, 500);
+    let banners = document.querySelectorAll('div[id^="rm-adslot-"], div[id^="piano_rec"]');
+    hideDOMElement(...banners);
+  } else
+    ampToHtml();
+}
+
 else if (matchDomain('weltkunst.de')) {
   let paywall = document.querySelector('section.paywall');
   if (paywall) {
@@ -716,11 +764,13 @@ function ampToHtml() {
   }, 500);
 }
 
-function archiveLink(url, text_fail = 'BPC > Full article text (only report issue if not working for over a week):\r\n') {
+function archiveLink(url, text_fail = 'BPC > Try for full article text (only report issue if not working for over a week):\r\n') {
   return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
 }
 
-function googleWebcacheLink(url, text_fail = 'BPC > Full article text:\r\n') {
+function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
+  if (!matchUrlDomain([], url))
+    url = url.split('?')[0];
   return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
 }
 
