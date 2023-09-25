@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.4.4
+// @version         3.3.4.6
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -90,7 +90,7 @@ var uk_incisive_media_domains = ['businessgreen.com', 'internationalinvestment.n
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
-var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'epicurious.com,', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.com', 'wired.com'];
+var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntraveler.com', 'epicurious.com,', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.com', 'wired.com'];
 var usa_craincomm_domains = ['360dx.com', 'adage.com', 'autonews.com', 'chicagobusiness.com', 'crainscleveland.com', 'crainsdetroit.com', 'crainsnewyork.com', 'genomeweb.com', 'modernhealthcare.com', 'pionline.com', 'precisionmedicineonline.com'];
 var usa_hearst_comm_domains = ['expressnews.com', 'houstonchronicle.com', 'sfchronicle.com'];
 var usa_lee_ent_domains = ['buffalonews.com', 'journalnow.com', 'journalstar.com', 'madison.com', 'nwitimes.com', 'omaha.com', 'richmond.com', 'stltoday.com', 'tucson.com', 'tulsaworld.com'];
@@ -1254,6 +1254,14 @@ else if (matchDomain('financialexpress.com')) {
 
 else if (matchDomain('forbes.com')) {
   waitDOMAttribute('body', 'body', 'class', node => node.removeAttribute('class'), true);
+  if (window.location.pathname.startsWith('/newsletters/')) {
+    let paywall = document.querySelector('div > div.newsletter-teaser');
+    if (paywall) {
+      paywall.classList.remove('newsletter-teaser');
+      let header = paywall.parentNode;
+      header_nofix(header);
+    }
+  }
 }
 
 else if (matchDomain('foreignaffairs.com')) {
