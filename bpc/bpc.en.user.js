@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.4.6
+// @version         3.3.5.1
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -1082,6 +1082,20 @@ else if (matchDomain('cnbc.com')) {
   }
 }
 
+else if (matchDomain('columbian.com')) {
+  setCookie('blaize_session', '', 'columbian.com', '/', 0);
+  let url = window.location.href;
+  let paywall = document.querySelector('div#inline-paywall');
+  if (paywall) {
+    let modal = document.querySelector('div.modal');
+    let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
+    removeDOMElement(paywall, modal, fade);
+    let article = document.querySelector('div[itemprop="articleBody');
+    if (article)
+      article.firstChild.before(googleWebcacheLink(url));
+  }
+}
+
 else if (matchDomain('csmonitor.com')) {
   let paywall = document.querySelector('div.paywall');
   removeDOMElement(paywall);
@@ -1610,6 +1624,12 @@ else if (matchDomain('marketwatch.com')) {
 else if (matchDomain('medscape.com')) {
   let ads = document.querySelectorAll('.AdUnit, [id^="ads-"]');
   hideDOMElement(...ads);
+}
+
+else if (matchDomain('mexiconewsdaily.com')) {
+  let div_hidden = document.querySelector('body.single div.td-post-content > div.tdb-block-inner');
+  if (div_hidden)
+    div_hidden.classList.remove('tdb-block-inner');
 }
 
 else if (matchDomain('mid-day.com')) {
