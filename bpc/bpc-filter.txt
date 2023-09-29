@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.3.5.3
+! Version: 3.3.5.4
 
 ! General
 
@@ -140,9 +140,11 @@ financialexpress.com##div.pcl-wrap
 ||paywall.folha.uol.com.br^$script,~third-party
 forbes.com##+js(ra, class, body[class], stay)
 ||foreignaffairs.com/modules/custom/fa_paywall_js/js/paywall.js$script,~third-party
-||foreignaffairs.com/sites/default/files/css/css_*-*.css$stylesheet,~third-party
 foreignaffairs.com##.article-dropcap:style(height: auto !important;)
 foreignaffairs.com##.paywall,.loading-indicator,.messages--container--bottom
+!#if (adguard_app_ios)
+||foreignaffairs.com/sites/default/files/css/css_0dS*.css$stylesheet,~third-party
+!#endif
 foreignpolicy.com##div.content-ungated
 foreignpolicy.com##+js(rc, content-gated, div.content-gated.content-gated--main-article)
 fortune.com##+js(ra, class, div.paywallActive)

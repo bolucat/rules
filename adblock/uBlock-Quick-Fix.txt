@@ -67,7 +67,7 @@ dev.miuiflash.com,djxmaza.in,thecubexguide.com##[id*="iframe"]:style(height:250p
 
 ! https://github.com/uBlockOrigin/uAssets/issues/18036
 ! https://github.com/uBlockOrigin/uAssets/issues/19016
-dropgalaxy.co##+js(set, isAdblockActive, false)
+dropgalaxy.co,dropgalaxy.com##+js(set, isAdblockActive, false)
 
 ! https://github.com/uBlockOrigin/uAssets/issues/17711
 ! https://github.com/uBlockOrigin/uAssets/issues/19836
@@ -146,7 +146,7 @@ btcbitco.in,btcsatoshi.net,crypto4yu.com,readbitcoin.org,wiour.com##+js(nowoif, 
 btcbitco.in,btcsatoshi.net,crypto4yu.com,readbitcoin.org,wiour.com##div.text-center[id]:style(height: 100px !important;)
 
 ! https://github.com/easylist/easylistgermany/issues/216
-/im\.chip\.de\/ii\/[0-9\/]{14,17}\/[a-zA-Z0-9]{4,9}\-[a-zA-Z0-9]{3,6}\-[a-zA-Z0-9]{3,6}\-([a-zA-Z0-9]{3,6}\-)?([a-zA-Z0-9]{3,6}\-)?[a-zA-Z0-9]{16}\..*\?im=Resize.*&hash=[a-z0-9]{60,}/$image,xhr,match-case,1p,domain=chip.de
+/im\.chip\.de\/ii\/[0-9\/]{14,17}\/[a-zA-Z0-9]{4,9}\-[a-zA-Z0-9]{3,6}\-([a-zA-Z0-9]{3,6}\-)?([a-zA-Z0-9]{3,6}\-)?([a-zA-Z0-9]{3,6}\-)?[a-zA-Z0-9]{16}\..*\?im=Resize.*&hash=[a-z0-9]{60,}/$image,xhr,match-case,1p,domain=chip.de
 @@/im\.chip\.de\/ii\/[0-9\/]{14,17}\/.*(logo|launcher|player|tool|messenger|game|microsoft|windows).*&hash=[a-z0-9]{64}/$image,xhr,1p,domain=chip.de
 chip.de#@#a[href^="https://im.chip.de/"]
 ! https://github.com/uBlockOrigin/uAssets/issues/6587
@@ -159,10 +159,8 @@ apkmirror.com##+js(rmnt, script, /style:last-of-type|:empty|APKM\..+?\.innerHTML
 !#endif
 
 ! https://github.com/uBlockOrigin/uAssets/issues/19855
-lifestyle.bg,money.bg,news.bg,topsport.bg,webcafe.bg##^script:has-text(/charAt|innerHTML|appendChild|contains|join|jQuery.*length|jQuery\S+?\.html|\$\S+?\.html/)
-!#if !cap_html_filtering
-lifestyle.bg,money.bg,news.bg,topsport.bg,webcafe.bg##+js(rmnt, script, /charAt|innerHTML|appendChild|contains|join|jQuery.*length|jQuery\S+?\.html|\$\S+?\.html/)
-!#endif
+lifestyle.bg,money.bg,news.bg,topsport.bg,webcafe.bg##+js(no-fetch-if, method:GET)
+lifestyle.bg,money.bg,news.bg,topsport.bg,webcafe.bg##+js(nostif, google)
 
 ! https://github.com/uBlockOrigin/uAssets/issues/19817 - Remove after 2023-09-28
 rookieroad.com#@#body > div #sticky-footer:upward(body > div)
@@ -243,3 +241,18 @@ streamtape.*#@#^script:has-text(/0x|\\x/)
 #@#.jeg_ad
 #@#.jeg_ad_top
 #@#.jnews_header_top_ads
+
+! homad - Remove after 2.10.2023
+welt.de,~dutyfarm.welt.de##div[id][style^="z-index: 2"][style*="margin"][style*="auto"][style*="top"][style$="px; position: absolute;"]:remove()
+
+! https://github.com/uBlockOrigin/uAssets/issues/19808 - Remove after 2.10.2023
+teltarif.de##+js(nostif, null), 10)
+!#if cap_html_filtering
+teltarif.de##^script:has-text(/getAdUnitPath|\.then\(eval\)|DisplayAcceptableAdIfAdblocked/)
+!#else
+teltarif.de##+js(rmnt, script, /getAdUnitPath|\.then\(eval\)|DisplayAcceptableAdIfAdblocked/)
+100percentfedup.com,thegatewaypundit.com##+js(rmnt, script, /==undefined.*body/)
+!#endif
+
+! https://www.reddit.com/r/uBlockOrigin/comments/16unn3u/
+@@||jobillico.com/js/vuejs/gtag/gtag.js$script,1p

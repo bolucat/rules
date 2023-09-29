@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.5.1
+// @version         3.3.5.2
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -70,6 +70,18 @@ else if (matchDomain('webcache.googleusercontent.com')) {
       let lazy_images = document.querySelectorAll('img.lazyload[data-src]:not([src])');
       for (let elem of lazy_images)
         elem.src = elem.getAttribute('data-src').split('?')[0] + '?width=800';
+      let break_pre_array = pageContains('div.non-paywall > p', /…\s?$/);
+      if (break_pre_array.length) {
+        let break_pre = break_pre_array[0];
+        let break_post = document.querySelector('div.paywall > p');
+        if (break_post) {
+          let parser = new DOMParser();
+          let doc = parser.parseFromString('<p>' + break_pre.innerHTML.replace(/\s…\s?/, ' ') + break_post.innerHTML + '</p>', 'text/html');
+          let content_new = doc.querySelector('p');
+          break_pre.parentNode.replaceChild(content_new, break_pre);
+          removeDOMElement(break_post);
+        }
+      }
       let ads = document.querySelectorAll('div[class*="Advert"]');
       hideDOMElement(...ads);
     }
