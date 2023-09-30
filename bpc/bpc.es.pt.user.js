@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.3.2.6
+// @version         3.3.5.3
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -69,26 +69,16 @@ var pe_grupo_elcomercio_domains = ['diariocorreo.pe', 'elcomercio.pe', 'gestion.
 if (window.location.hostname.match(/\.(es|pt|cat)$/) || matchDomain(['diariocordoba.com', 'diariovasco.com', 'elconfidencial.com', 'elcorreo.com', 'elespanol.com', 'elpais.com', 'elperiodico.com', 'elperiodicodearagon.com', 'elperiodicoextremadura.com', 'elperiodicomediterraneo.com', 'emporda.info', 'expansion.com', 'larioja.com', 'levante-emv.com', 'marca.com', 'politicaexterior.com'])) {//spain/portugal
 
 if (matchDomain(['ara.cat', 'arabalears.cat'])) {
-  let url = window.location.href;
   if (!window.location.pathname.endsWith('.amp.html')) {
-    let paywall = document.querySelector('div.paywall');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('div.paywall');
+    let ads = document.querySelectorAll('div.advertising');
+    hideDOMElement(...ads);
   }
 }
 
 else if (matchDomain(['cmjornal.pt', 'record.pt', 'sabado.pt'])) {
-  let paywall = document.querySelector('.bloqueio_exclusivos, .container_assinatura, .bloco_bloqueio');
-  let amphtml = document.querySelector('link[rel="amphtml"]');
-  let url = window.location.href;
-  if (!url.includes('/amp/')) {
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+  if (!window.location.pathname.includes('/amp/')) {
+    amp_redirect('.bloqueio_exclusivos, .container_assinatura, .bloco_bloqueio');
   } else {
     amp_unhide_access_hide('="subscriber"', '="NOT subscriber"', 'amp-ad, amp-embed, amp-consent, .detalheAds, .exclusivos_bar');
     let amp_links = document.querySelectorAll('a[href^="https://www-cmjornal-pt.cdn.ampproject.org/c/s/"]');
@@ -140,22 +130,12 @@ else if (matchDomain(es_unidad_domains)) {
 }
 
 else if (matchDomain('elpais.com')) {
-  let login_register = document.querySelector('.login_register');
   if (window.location.pathname.endsWith('.amp.html') || window.location.search.match(/(\?|&)outputType=amp/)) {
     amp_unhide_access_hide('="vip"], [amp-access="success"', '="NOT vip"], [amp-access="NOT success"');
-    removeDOMElement(login_register);
   } else {
-    let counter = document.querySelector('#counterLayerDiv');
-    removeDOMElement(counter);
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (login_register && amphtml) {
-      removeDOMElement(login_register, video);
-      window.location.href = amphtml.href;
-    }
+    let banners = document.querySelectorAll('div#ctn_freemium_article, div#ctn_premium_article, div.ad');
+    hideDOMElement(...banners);
   }
-  let paywall_offer = document.querySelector('.paywallOffer');
-  let ctn_closed_article = document.querySelector('#ctn_closed_article, #ctn_freemium_article, #ctn_premium_article');
-  removeDOMElement(paywall_offer, ctn_closed_article);
 }
 
 else if (matchDomain('elperiodico.com')) {
@@ -187,18 +167,14 @@ else if (matchDomain('elperiodico.com')) {
 }
 
 else if (matchDomain(es_grupo_vocento_domains)) {
-  let paywall = document.querySelector('.voc-paywall, .container-wall-exclusive, .cierre-suscripcion:not([style*="display: none;"])');
+  let paywall_sel = '.voc-paywall, .container-wall-exclusive, .cierre-suscripcion:not([style*="display: none;"])';
+  let paywall = document.querySelector(paywall_sel);
   if (!window.location.pathname.endsWith('_amp.html')) {
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (!amphtml && !matchDomain(['eldiariomontanes.es']))
-      amphtml = {href: window.location.pathname.replace('.html', '_amp.html')};
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    } else {
-      let banners = document.querySelectorAll('.voc-advertising, div.ev-em-modal, span.mega-superior, .v-adv');
-      hideDOMElement(...banners);
+    if (!matchDomain(['eldiariomontanes.es'])) {
+      amp_redirect(paywall_sel, '', window.location.pathname.replace('.html', '_amp.html'));
     }
+    let banners = document.querySelectorAll('.voc-advertising, div.ev-em-modal, span.mega-superior, .v-adv');
+    hideDOMElement(...banners);
   } else {
     amp_unhide_access_hide('="result=\'ALLOW_ACCESS\'"', '="result!=\'ALLOW_ACCESS\'"', 'amp-ad, amp-embed, .v-adv');
     removeDOMElement(paywall);
@@ -224,12 +200,9 @@ else if (matchDomain(es_epiberica_domains)) {
 
 else if (matchDomain('observador.pt')) {
   if (!window.location.pathname.endsWith('/amp/')) {
-    let paywall = document.querySelector('.premium-article');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      paywall.classList.remove('premium-article');
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('body.premium-article', {rm_class: "premium-article"});
+    let ads = document.querySelectorAll('div.obs-ad-placeholder');
+    hideDOMElement(...ads);
   } else {
     amp_unhide_subscr_section('amp-ad, amp-consent, section > .modal');
   }
@@ -319,12 +292,7 @@ else if (matchDomain('elespectador.com')) {
   if (window.location.search.match(/(\?|&)outputType=amp/)) {
     amp_unhide_subscr_section('amp-ad, amp-embed, [class^="Widget"], amp-fx-flying-carpet');
   } else {
-    let paywall = document.querySelector('div.exclusive_validation');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('div.exclusive_validation');
   }
 }
 
@@ -366,12 +334,7 @@ else if (matchDomain('eltribuno.com')) {
 
 else if (matchDomain('em.com.br')) {
   if (!window.location.pathname.endsWith('/amp.html')) {
-    let paywall = document.querySelector('.news-blocked-content');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('.news-blocked-content');
     let ads = document.querySelectorAll('.ads, .containerads');
     hideDOMElement(...ads);
   } else {
@@ -421,12 +384,7 @@ else if (matchDomain('lasegunda.com')) {
 else if (matchDomain('globo.com')) {
   if (matchDomain('valor.globo.com')) {
     if (!window.location.pathname.startsWith('/google/amp/')) {
-      let paywall = document.querySelector('div.paywall');
-      let amphtml = document.querySelector('link[rel="amphtml"]');
-      if (paywall && amphtml) {
-        removeDOMElement(paywall);
-        window.location.href = amphtml.href;
-      }
+      amp_redirect('div.paywall');
     } else {
       amp_unhide_subscr_section('amp-ad, amp-embed');
       let amp_images = document.querySelectorAll('figure > amp-img[src^="https://"]');
@@ -501,6 +459,15 @@ function hideDOMElement(...elements) {
   }
 }
 
+function header_nofix(header, msg = 'BPC > no fix') {
+  if (header) {
+    let nofix_div = document.createElement('div');
+    nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
+    nofix_div.innerText = msg;
+    header.before(nofix_div);
+  }
+}
+
 function amp_iframes_replace(weblink = false, source = '') {
   let amp_iframes = document.querySelectorAll('amp-iframe' + (source ? '[src*="'+ source + '"]' : ''));
   let par, elem;
@@ -525,6 +492,35 @@ function amp_iframes_replace(weblink = false, source = '') {
       par.appendChild(elem);
       amp_iframe.parentNode.replaceChild(par, amp_iframe);
     }
+  }
+}
+
+function amp_redirect_not_loop(amphtml) {
+  let amp_redirect_date = Number(sessionStorage.getItem('###_amp_redirect'));
+  if (!(amp_redirect_date && Date.now() - amp_redirect_date < 2000)) {
+    sessionStorage.setItem('###_amp_redirect', Date.now());
+    window.location.href = amphtml.href;
+  } else {
+    let header = (document.body && document.body.firstChild) || document.documentElement;
+    header_nofix(header, 'BPC > redirect to amp failed (disable amp-to-html extension/add-on or browser setting)');
+  }
+}
+
+function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
+  let paywall = document.querySelector(paywall_sel);
+  let amphtml = document.querySelector('head > link[rel="amphtml"]');
+  if (!amphtml && amp_url)
+    amphtml = {href: amp_url};
+  if (paywall && amphtml) {
+    if (!paywall_action)
+      removeDOMElement(paywall);
+    else {
+      if (paywall_action.rm_class)
+        paywall.classList.remove(paywall_action.rm_class);
+      else if (paywall_action.rm_attrib)
+        paywall.removeAttribute(paywall_action.rm_attrib);
+    }
+    amp_redirect_not_loop(amphtml);
   }
 }
 

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.3.4.5
+// @version         3.3.4.6
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -124,7 +124,7 @@ else if (matchDomain('groene.nl')) {
   }
 }
 
-else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('link[href*=".ndcmediagroep.nl/"]')) {
+else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > link[href*=".ndcmediagroep.nl/"]')) {
   let paywall = document.querySelector('div.signupPlus, div.pw-wrapper');
   if (paywall) {
     let intro = document.querySelector('div.startPayWall');
@@ -493,7 +493,7 @@ else if (matchDomain('vn.nl')) {
     let article_content = document.querySelector('section[data-article-content-element]');
     if (article_content)
       article_content.style = 'max-height:none !important;';
-    let json_url_dom = document.querySelector('link[rel="alternate"][type="application/json"][href]');
+    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
     if (json_url_dom) {
       let json_url = json_url_dom.href;
       fetch(json_url)

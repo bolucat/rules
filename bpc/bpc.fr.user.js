@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.3.2.8
+// @version         3.3.5.5
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -78,7 +78,7 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {// Group
     removeDOMElement(paywall);
     let url_id = window.location.pathname.match(/\d+$/).pop();
     let html = document.documentElement.outerHTML;
-    let og_url = document.querySelector('meta[name="og:url"][content]');
+    let og_url = document.querySelector('head > meta[name="og:url"][content]');
     if (og_url && !og_url.content.endsWith(url_id))
       refreshCurrentTab();
     let json;
@@ -233,12 +233,9 @@ else if (matchDomain('sudinfo.be')) {
 
 else if (matchDomain(fr_groupe_ebra_domains)) {
   if (!window.location.pathname.startsWith('/amp/')) {
-    let paywall = document.querySelector('div.preview');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('div#paywall-dynamic');
+    let ads = document.querySelectorAll('div.wrapperPub');
+    hideDOMElement(...ads);
   } else {
     amp_unhide_access_hide('="access"', '="NOT access"', 'amp-ad, amp-embed');
   }
@@ -249,26 +246,32 @@ else if (matchDomain(fr_groupe_la_depeche_domains)) {
     amp_unhide_subscr_section('amp-ad, amp-embed');
   } else {
     let paywall = document.querySelector('div.paywall');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
+    let amphtml = document.querySelector('head > link[rel="amphtml"]');
     if (paywall) {
       removeDOMElement(paywall);
       if (amphtml)
-        window.location.href = amphtml.href;
+        amp_redirect_not_loop(amphtml);
       else {
         let json_script = getArticleJsonScript();
         if (json_script) {
-          let json = JSON.parse(json_script.text);
-          if (json) {
-            let json_text = parseHtmlEntities(json.articleBody);
-            let content = document.querySelector('div.article-full__body-content');
-            if (json_text && content) {
-              content.innerHTML = '';
-              let article_new = document.createElement('p');
-              article_new.innerText = json_text;
-              content.appendChild(article_new);
-              content.removeAttribute('style');
-              content.removeAttribute('data-state');
+          try {
+            let json = JSON.parse(json_script.text);
+            if (json) {
+              if (json[0])
+                json = json[0];
+              let json_text = parseHtmlEntities(json.articleBody);
+              let content = document.querySelector('div.article-full__body-content');
+              if (json_text && content) {
+                content.innerHTML = '';
+                let article_new = document.createElement('p');
+                article_new.innerText = json_text;
+                content.appendChild(article_new);
+                content.removeAttribute('style');
+                content.removeAttribute('data-state');
+              }
             }
+          } catch (err) {
+            console.log(err);
           }
         }
       }
@@ -408,11 +411,7 @@ else if (matchDomain('leparisien.fr')) {
         mask.classList.remove('amp-premium-first-content');
     }
   } else {
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('div.paywall');
   }
 }
 
@@ -635,6 +634,15 @@ function hideDOMElement(...elements) {
   }
 }
 
+function header_nofix(header, msg = 'BPC > no fix') {
+  if (header) {
+    let nofix_div = document.createElement('div');
+    nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
+    nofix_div.innerText = msg;
+    header.before(nofix_div);
+  }
+}
+
 function amp_iframes_replace(weblink = false, source = '') {
   let amp_iframes = document.querySelectorAll('amp-iframe' + (source ? '[src*="'+ source + '"]' : ''));
   let par, elem;
@@ -659,6 +667,35 @@ function amp_iframes_replace(weblink = false, source = '') {
       par.appendChild(elem);
       amp_iframe.parentNode.replaceChild(par, amp_iframe);
     }
+  }
+}
+
+function amp_redirect_not_loop(amphtml) {
+  let amp_redirect_date = Number(sessionStorage.getItem('###_amp_redirect'));
+  if (!(amp_redirect_date && Date.now() - amp_redirect_date < 2000)) {
+    sessionStorage.setItem('###_amp_redirect', Date.now());
+    window.location.href = amphtml.href;
+  } else {
+    let header = (document.body && document.body.firstChild) || document.documentElement;
+    header_nofix(header, 'BPC > redirect to amp failed (disable amp-to-html extension/add-on or browser setting)');
+  }
+}
+
+function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
+  let paywall = document.querySelector(paywall_sel);
+  let amphtml = document.querySelector('head > link[rel="amphtml"]');
+  if (!amphtml && amp_url)
+    amphtml = {href: amp_url};
+  if (paywall && amphtml) {
+    if (!paywall_action)
+      removeDOMElement(paywall);
+    else {
+      if (paywall_action.rm_class)
+        paywall.classList.remove(paywall_action.rm_class);
+      else if (paywall_action.rm_attrib)
+        paywall.removeAttribute(paywall_action.rm_attrib);
+    }
+    amp_redirect_not_loop(amphtml);
   }
 }
 
@@ -768,7 +805,7 @@ function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full artic
 
 function ampToHtml() {
   window.setTimeout(function () {
-    let canonical = document.querySelector('link[rel="canonical"]');
+    let canonical = document.querySelector('head > link[rel="canonical"]');
     window.location.href = canonical.href;
   }, 500);
 }

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.5.2
+// @version         3.3.5.5
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -155,7 +155,7 @@ if (matchDomain('crikey.com.au')) {
   let paywall = document.querySelector('div.locked-content');
   if (paywall) {
     removeDOMElement(paywall);
-    let json_url_dom = document.querySelector('link[rel="alternate"][type="application/json"][href]');
+    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
     if (json_url_dom) {
       let json_url = json_url_dom.href;
       fetch(json_url)
@@ -215,12 +215,7 @@ else if (matchDomain('thesaturdaypaper.com.au')) {
 
 else if (matchDomain(['brisbanetimes.com.au', 'smh.com.au', 'theage.com.au', 'watoday.com.au'])) {
   if (!window.location.hostname.startsWith('amp.')) {
-    let paywall = document.querySelector('meta[content^="FOR SUBSCRIBERS"], #paywall_prompt');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('head > meta[content^="FOR SUBSCRIBERS"], #paywall_prompt');
   } else {
     amp_unhide_subscr_section();
   }
@@ -775,7 +770,7 @@ else if (matchDomain('the-tls.co.uk')) {
   let paywall = document.querySelector('.tls-single-article__closed-paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    let json_url_dom = document.querySelector('link[rel="alternate"][type="application/json"][href]');
+    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
     if (json_url_dom) {
       let json_url = json_url_dom.href;
       fetch(json_url)
@@ -854,14 +849,7 @@ if (matchDomain(usa_adv_local_domains)) {
     let amp_ads = document.querySelectorAll('.amp-ad-container, amp-embed');
     hideDOMElement(...amp_ads);
   } else {
-    let paywall = document.querySelector('.paywall');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (!amphtml)
-      amphtml = {href: window.location.pathname + '?outputType=amp'};
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('div.paywall', '', window.location.pathname + '?outputType=amp');
     let ads = document.querySelectorAll('div.ad');
     hideDOMElement(...ads);
   }
@@ -953,7 +941,7 @@ else if (matchDomain('barrons.com')) {
   let url = window.location.href;
   if (!url.includes('barrons.com/amp/')) {
     let body_continuous = document.querySelector('body.is-continuous');
-    let snippet = document.querySelector('meta[content="snippet"]');
+    let snippet = document.querySelector('head > meta[content="snippet"]');
     if (body_continuous && snippet) {
       removeDOMElement(snippet);
       window.location.href = url.replace('barrons.com', 'barrons.com/amp');
@@ -1158,7 +1146,7 @@ else if (matchDomain('economictimes.com')) {
     window.setTimeout(function () {
       let paywall = document.querySelector('div#blocker_layer');
       let data_prime = document.querySelector('div[data-prime="1"]');
-      let amphtml = document.querySelector('link[rel="amphtml"]');
+      let amphtml = document.querySelector('head > link[rel="amphtml"]');
       if (paywall || data_prime) {
         removeDOMElement(paywall);
         if (data_prime)
@@ -1344,24 +1332,35 @@ else if (matchDomain('harpers.org')) {
 }
 
 else if (matchDomain('hilltimes.com')) {
-  let paywall = document.querySelectorAll('div[class^="paywallcont"]');
-  if (paywall.length) {
-    removeDOMElement(...paywall);
+  function hilltimes_main(node) {
+    let paywall_banner = document.querySelector('div.paywallcont2');
+    removeDOMElement(node, paywall_banner);
     let json_script = document.querySelector('script.saswp-schema-markup-output');
     if (json_script) {
       try {
         let json = JSON.parse(json_script.text);
-        json_text = json.filter(x => x.articleBody)[0].articleBody.replace(/\s{2,}/g, '\r\n\r\n');
+        let json_text = json.filter(x => x.articleBody)[0].articleBody.replace(/\s{2,}/g, '\r\n\r\n');
         let article = document.querySelector('div#fadebg > p');
-        if (article)
+        if (article) {
           article.innerText = parseHtmlEntities(json_text);
+          article.parentNode.removeAttribute('id');
+        }
       } catch (err) {
         console.log(err);
       }
     }
   }
-  let banner = document.querySelector('section.hide_this_section');
-  hideDOMElement(banner);
+  let paywall_sel = 'div.paywallcont';
+  let paywall = document.querySelector(paywall_sel);
+  if (paywall) {
+    hilltimes_main(paywall);
+  } else {
+    waitDOMElement(paywall_sel, 'DIV', hilltimes_main, false);
+  }
+  window.setTimeout(function () {
+    let banner = document.querySelector('section.hide_this_section');
+    hideDOMElement(banner);
+  }, 1000);
 }
 
 else if (matchDomain('hindustantimes.com')) {
@@ -1382,12 +1381,7 @@ else if (matchDomain('hindustantimes.com')) {
 
 else if (matchDomain('hindutamil.in')) {
   if (!window.location.pathname.startsWith('/amp/')) {
-    let paywall = document.querySelector('div.premium-class-bt');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('div.premium-class-bt');
   }
 }
 
@@ -1443,12 +1437,7 @@ else if (matchDomain('indiatoday.in')) {
   if (window.location.pathname.match(/(\/amp)?\/magazine\//)) {
     let url = window.location.href;
     if (!url.includes('/amp/')) {
-      let paywall = document.querySelector('#csc-paywall');
-      let amphtml = document.querySelector('link[rel="amphtml"]');
-      if (paywall && amphtml) {
-        removeDOMElement(paywall);
-        window.location.href = amphtml.href;
-      }
+      amp_redirect('div#csc-paywall');
     } else {
       amp_unhide_access_hide('="granted"', '="NOT NOT granted"', 'amp-ad, amp-embed');
     }
@@ -1617,12 +1606,7 @@ else if (matchDomain('magazine.atavist.com')) {
 
 else if (matchDomain('marketwatch.com')) {
   if (!window.location.pathname.startsWith('/amp/')) {
-    let paywall = document.querySelector('div#cx-snippet');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('div#cx-snippet');
   } else {
     let meter = document.querySelector('div.meter');
     let container_sponsored = document.querySelector('div.container--sponsored');
@@ -1648,16 +1632,10 @@ else if (matchDomain('mid-day.com')) {
   if (window.location.pathname.startsWith('/amp/')) {
     amp_unhide_access_hide('="granted"', '="NOT granted"', 'amp-ad, amp-embed, [class*="BannerAd"]');
   } else {
-    let paywall = document.querySelector('div#widget-_csc');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    } else {
-      let read_more = document.querySelector('#read-more-my');
-      if (read_more)
-        read_more.click();
-    }
+    amp_redirect('div#widget-_csc');
+    let read_more = document.querySelector('#read-more-my');
+    if (read_more)
+      read_more.click();
   }
 }
 
@@ -1821,7 +1799,7 @@ else if (matchDomain('puck.news')) {
   let paywall = document.querySelectorAll('div[class*="paywall"]');
   if (paywall.length) {
     removeDOMElement(...paywall);
-    let json_url_dom = document.querySelector('link[rel="alternate"][type="application/json"][href]');
+    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
     if (json_url_dom) {
       let json_url = json_url_dom.href;
       fetch(json_url)
@@ -1903,16 +1881,10 @@ else if (matchDomain('seattletimes.com')) {
 
 else if (matchDomain('seekingalpha.com')) {
   if (!window.location.pathname.startsWith('/amp/')) {
-    let locked = document.querySelector('div[data-test-id="post-locked-banner"]');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (locked && amphtml) {
-      locked.removeAttribute('data-test-id');
-      window.location.href = amphtml.href;
-    } else {
-      let read_more = document.querySelector('button[id^="continueReadingButton"]');
-      if (read_more)
-        read_more.click();
-    }
+    amp_redirect('div[data-test-id="post-locked-banner"]', {rm_attrib: "data-test-id"});
+    let read_more = document.querySelector('button[id^="continueReadingButton"]');
+    if (read_more)
+      read_more.click();
   } else {
     amp_unhide_access_hide('*="premium_access OR"', '', '.ad-wrap');
     let paywall = document.querySelector('[class*="paywall-container"]');
@@ -1998,7 +1970,7 @@ else if (matchDomain('stereogum.com')) {
   let paywall = document.querySelector('div.members-only-overlay-wrapper');
   if (paywall) {
     removeDOMElement(paywall);
-    let json_url_dom = document.querySelector('link[rel="alternate"][type="application/json"][href]');
+    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
     if (json_url_dom) {
       let json_url = json_url_dom.href;
       fetch(json_url)
@@ -2122,7 +2094,7 @@ else if (matchDomain('theamericanconservative.com')) {
   let paywall = document.querySelector('section.c-blog-post__body--locked');
   if (paywall) {
     paywall.classList.remove('c-blog-post__body--locked');
-    let json_url_dom = document.querySelector('link[rel="alternate"][type="application/json"][href]');
+    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
     if (json_url_dom) {
       let json_url = json_url_dom.href;
       fetch(json_url)
@@ -2159,7 +2131,7 @@ else if (matchDomain('theamericanconservative.com')) {
 }
 
 else if (matchDomain('theathletic.com')) {
-  if (!(window.location.search.match(/(\?|&)amp/) && !document.querySelector('link[rel="amphtml"]'))) {
+  if (!(window.location.search.match(/(\?|&)amp/) && !document.querySelector('head > link[rel="amphtml"]'))) {
     function theathletic_func(node) {
       removeDOMElement(node);
       let overlays = document.querySelectorAll('div[id*="overlay"], div:empty:not([data-rjs])');
@@ -2266,7 +2238,6 @@ else if (matchDomain('thedailybeast.com')) {
 else if (matchDomain('thediplomat.com')) {
   setCookie('dpl-pw', '', 'thediplomat.com', '/', 0);
   if (matchDomain('magazine.thediplomat.com')) {
-    csDoneOnce = true;
     for (let n = 0; n < 5; n++) {
       setTimeout(function () {
         let preview = document.querySelector('article.dpl-preview');
@@ -2576,7 +2547,7 @@ else if (matchDomain('thewrap.com')) {
   let paywall = document.querySelector('div#zephr-payment-form-root');
   if (paywall) {
     removeDOMElement(paywall);
-    let json_url_dom = document.querySelector('link[rel="alternate"][type="application/json"][href]');
+    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
     if (json_url_dom) {
       let json_url = json_url_dom.href;
       fetch(json_url)
@@ -2765,12 +2736,7 @@ else if (matchDomain('usatoday.com')) {
   if (window.location.hostname.startsWith('amp.')) {
     amp_unhide_access_hide('="gup.hasAssetAccess"', '', 'div[class*="ad-"]');
   } else {
-    let paywall = document.querySelector('div.gnt_rb');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('div.gnt_rb');
     let roadblock = document.querySelector('.roadblock-container');
     if (roadblock) {
       removeDOMElement(roadblock);
@@ -2833,11 +2799,11 @@ else if (matchDomain('wsj.com')) {
   if (window.location.pathname.startsWith('/livecoverage/')) {
     window.setTimeout(function () {
       let paywall = document.querySelector('div#cx-lc-snippet');
-      let amphtml = document.querySelector('link[rel="amphtml"]');
+      let amphtml = document.querySelector('head > link[rel="amphtml"]');
       if (paywall) {
         removeDOMElement(paywall);
         if (amphtml) {
-          window.location.href = amphtml.href;
+          amp_redirect_not_loop(amphtml);
         } else if (window.location.pathname.includes('/card/')) {
           let article = document.querySelector('div > div[class*="-ParagraphContainer"]');
           if (article) {
@@ -2860,7 +2826,7 @@ else if (matchDomain('wsj.com')) {
           masthead_link.href = 'https://www.wsj.com';
       } else {
         let snippet = document.querySelector('.snippet-promotion, div#cx-snippet-overlay');
-        let wsj_pro = document.querySelector('meta[name="page.site"][content="wsjpro"]');
+        let wsj_pro = document.querySelector('head > meta[name="page.site"][content="wsjpro"]');
         if (snippet || wsj_pro) {
           removeDOMElement(snippet, wsj_pro);
           if (!matchDomain('www.wsj.com')) {
@@ -2955,7 +2921,7 @@ else if ((domain = matchDomain(usa_lee_ent_domains)) || matchDomain(ca_torstar_d
   }
 }
 
-else if (domain = matchDomain(usa_mcc_domains) || document.querySelector('meta[content^="https://www.mcclatchy-wires.com/"], a[href^="https://classifieds.mcclatchy.com/"], script[src*=".mcclatchyinteractive.com/"]')) {
+else if (domain = matchDomain(usa_mcc_domains) || document.querySelector('head > meta[content^="https://www.mcclatchy-wires.com/"], a[href^="https://classifieds.mcclatchy.com/"], script[src*=".mcclatchyinteractive.com/"]')) {
   let url = window.location.href;
   let hostname = window.location.hostname;
   if (!domain)
@@ -3078,6 +3044,15 @@ function hideDOMElement(...elements) {
   }
 }
 
+function header_nofix(header, msg = 'BPC > no fix') {
+  if (header) {
+    let nofix_div = document.createElement('div');
+    nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
+    nofix_div.innerText = msg;
+    header.before(nofix_div);
+  }
+}
+
 function waitDOMElement(selector, tagName = '', callback, multiple = false) {
   new window.MutationObserver(function (mutations) {
     for (let mutation of mutations) {
@@ -3153,15 +3128,6 @@ function decode_utf8(str) {
   return decodeURIComponent(escape(str));
 }
 
-function header_nofix(header) {
-  if (header) {
-    let nofix_div = document.createElement('div');
-    nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
-    nofix_div.innerText = 'BPC > no fix';
-    header.appendChild(nofix_div);
-  }
-}
-
 function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', selector_source = selector) {
   let proxyurl = proxy ? '' : '';
   let article = document.querySelector(selector);
@@ -3194,7 +3160,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
 
 function ampToHtml() {
   window.setTimeout(function () {
-    let canonical = document.querySelector('link[rel="canonical"]');
+    let canonical = document.querySelector('head > link[rel="canonical"]');
     window.location.href = canonical.href;
   }, 1000);
 }
@@ -3278,6 +3244,35 @@ function amp_iframes_replace(weblink = false, source = '') {
       par.appendChild(elem);
       amp_iframe.parentNode.replaceChild(par, amp_iframe);
     }
+  }
+}
+
+function amp_redirect_not_loop(amphtml) {
+  let amp_redirect_date = Number(sessionStorage.getItem('###_amp_redirect'));
+  if (!(amp_redirect_date && Date.now() - amp_redirect_date < 2000)) {
+    sessionStorage.setItem('###_amp_redirect', Date.now());
+    window.location.href = amphtml.href;
+  } else {
+    let header = (document.body && document.body.firstChild) || document.documentElement;
+    header_nofix(header, 'BPC > redirect to amp failed (disable amp-to-html extension/add-on or browser setting)');
+  }
+}
+
+function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
+  let paywall = document.querySelector(paywall_sel);
+  let amphtml = document.querySelector('head > link[rel="amphtml"]');
+  if (!amphtml && amp_url)
+    amphtml = {href: amp_url};
+  if (paywall && amphtml) {
+    if (!paywall_action)
+      removeDOMElement(paywall);
+    else {
+      if (paywall_action.rm_class)
+        paywall.classList.remove(paywall_action.rm_class);
+      else if (paywall_action.rm_attrib)
+        paywall.removeAttribute(paywall_action.rm_attrib);
+    }
+    amp_redirect_not_loop(amphtml);
   }
 }
 

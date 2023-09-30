@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.3.2.9
+// @version         3.3.5.4
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -33,12 +33,7 @@ if (matchDomain('corriere.it')) {
 
 else if (matchDomain('corrieredellosport.it')) {
   if (!window.location.pathname.startsWith('/amp/')) {
-    let paywall = document.querySelector('div[class^="MainTextTruncated_paragraph__"]');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('div[class^="MainTextTruncated_paragraph__"]');
     let ads = document.querySelectorAll('div[class^="AdUnit_placeholder"]');
     hideDOMElement(...ads);
   } else {
@@ -60,12 +55,7 @@ else if (matchDomain('eastwest.eu')) {
 
 if (matchDomain('espresso.repubblica.it')) {
   if (!window.location.pathname.match(/\amp(\/)?$/)) {
-    let paywall = document.querySelector('div#paywall');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('div#paywall');
   } else {
     amp_unhide_access_hide('="showContent"', '="NOT (showContent)"', 'amp-ad, amp-embed');
     let logo = document.querySelector('div.logo-container > a');
@@ -142,12 +132,7 @@ else if (matchDomain('ilfoglio.it')) {
   if (window.location.pathname.endsWith('/amp/')) {
     amp_unhide_subscr_section('amp-ad, [class^="adv-"], div#gmpVideoContainer');
   } else {
-    let paywall = document.querySelector('div.paywall');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    }
+    amp_redirect('div.paywall');
     let ads = document.querySelectorAll('.advertisement');
     hideDOMElement(...ads);
   }
@@ -216,17 +201,9 @@ else if (matchDomain(it_quotidiano_domains)) {
   if (window.location.pathname.endsWith('/amp') || window.location.search.startsWith('?amp')) {
     amp_unhide_access_hide('="c.customGranted"', '="NOT c.customGranted"', 'amp-ad, amp-embed, amp-fx-flying-carpet, .watermark-adv, .amp__watermark');
   } else {
-    let paywall = document.querySelector('div[data-testid="paywall-container"], div[class^="Paywall_paywall_"]');
-    let amphtml = document.querySelector('link[rel="amphtml"]');
-    if (!amphtml)
-      amphtml = {href: window.location.pathname + '/amp'};
-    if (paywall && amphtml) {
-      removeDOMElement(paywall);
-      window.location.href = amphtml.href;
-    } else {
-      let ads = document.querySelectorAll('div[id^="div-gpt-ad"]');
-      hideDOMElement(...ads);
-    }
+    amp_redirect('div[data-testid="paywall-container"], div[class^="Paywall_paywall_"]', '', window.location.pathname + '/amp');
+    let ads = document.querySelectorAll('div[id^="div-gpt-ad"]');
+    hideDOMElement(...ads);
   }
 }
 
@@ -352,12 +329,12 @@ function hideDOMElement(...elements) {
   }
 }
 
-function header_nofix(header) {
+function header_nofix(header, msg = 'BPC > no fix') {
   if (header) {
     let nofix_div = document.createElement('div');
     nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
-    nofix_div.innerText = 'BPC > no fix';
-    header.appendChild(nofix_div);
+    nofix_div.innerText = msg;
+    header.before(nofix_div);
   }
 }
 
@@ -416,7 +393,7 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
 
 function ampToHtml() {
   window.setTimeout(function () {
-    let canonical = document.querySelector('link[rel="canonical"]');
+    let canonical = document.querySelector('head > link[rel="canonical"]');
     window.location.href = canonical.href;
   }, 500);
 }
