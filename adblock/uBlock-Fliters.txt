@@ -133,9 +133,9 @@ designbump.com,thedesigninspiration.com##+js(aost, Math.random, /(?=.*onerror)(?
 ! https://github.com/uBlockOrigin/uAssets/issues/19808
 teltarif.de##+js(nostif, null), 10)
 !#if cap_html_filtering
-teltarif.de##^script:has-text(/getAdUnitPath|\.then\(eval\)|DisplayAcceptableAdIfAdblocked/)
+teltarif.de##^script:has-text(/getAdUnitPath|\.then\(eval\)|DisplayAcceptableAdIfAdblocked|\,eval\)\)\)\;/)
 !#else
-teltarif.de##+js(rmnt, script, /getAdUnitPath|\.then\(eval\)|DisplayAcceptableAdIfAdblocked/)
+teltarif.de##+js(rmnt, script, /getAdUnitPath|\.then\(eval\)|DisplayAcceptableAdIfAdblocked|\,eval\)\)\)\;/)
 100percentfedup.com,thegatewaypundit.com##+js(rmnt, script, /==undefined.*body/)
 !#endif
 
@@ -591,6 +591,7 @@ x1337x.*##+js(acs, setTimeout, admc)
 1337x.*##a[href^="/spyoff"]
 1337x.*##a[href*="//steepto.com/"]
 1337x.*##[href*="vpn"]
+1337x.*##[href^="/anoy"]
 1337x.*,x1337x.*##.no-top-radius div > a[href]:has-text(VPN)
 /^https:\/\/x?1337x\.(?:[0-9a-z]{3,9}\.)?[a-z]{2,4}\/(?:css\/)?(?:images\/)?[0-9a-zA-Z]+\.(?:gif|jpe?g|png)/$image,1p,domain=1337x.*|1337x.g3g.*|x1337x.*|unblockit.*
 ||1337x.*/sw.js^
@@ -4378,10 +4379,6 @@ imx.to##+js(aopr, ExoLoader.serve)
 imx.to##+js(aopw, _pop)
 imx.to##+js(popads-dummy)
 
-! https://github.com/uBlockOrigin/uAssets/issues/1979
-baomay01.com##+js(aost, Math.random, injectedScript)
-@@||baomay01.com^$ghide
-
 ! https://github.com/uBlockOrigin/uAssets/issues/1980
 crazyshit.com##+js(acs, jQuery, document.cookie)
 ||crazyshit.com/aff/$frame
@@ -5443,7 +5440,7 @@ naughtymachinima.com##.col-md-8 > a[href][target="_blank"]
 ||chaturbate.com^$frame,domain=naughtymachinima.com
 
 ! https://github.com/uBlockOrigin/uAssets/issues/10336
-uploadbank.com##+js(aost, Math, /(?=^(?!.*(api|jquery|inlineScript|form|Progress)))/)
+!uploadbank.com##+js(aost, Math, /(?=^(?!.*(api|jquery|inlineScript|form|Progress)))/)
 uploadbank.com###container > div[style="width:970px; height:200px;"]
 uploadbank.com##+js(set, console.clear, noopFunc)
 @@||uploadbank.com^$ghide
@@ -10434,9 +10431,6 @@ sbsun.com##+js(set, CnnXt.Event.fire, noopFunc)
 citynow.it##+js(aopr, advads_passive_ads)
 ||citynow.it/wp-content/uploads/*/banner$image,1p
 citynow.it##.advads-close-button
-
-! https://github.com/uBlockOrigin/uAssets/issues/5646
-||baomay01.com^$3p
 
 ! https://github.com/uBlockOrigin/uAssets/issues/5647
 @@||myshorturls.blogspot.com^$ghide
