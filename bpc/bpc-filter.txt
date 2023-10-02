@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.3.5.6
+! Version: 3.3.5.8
 
 ! General
 
@@ -412,6 +412,9 @@ dnn.de,gnz.de,goettinger-tageblatt.de,haz.de,kn-online.de,landeszeitung.de,ln-on
 independent.ie##+js(ra, style, div#flip-pay[style])
 ||cdn.flip-pay.com/clients/*/flip-pay.js$script,domain=belfasttelegraph.co.uk|independent.ie
 
+! Mediahuis Nederland Regional
+||tnet.nl/static/assets/js/login_v*.js$script,domain=gooieneemlander.nl|haarlemsdagblad.nl|ijmuidercourant.nl|leidschdagblad.nl|noordhollandsdagblad.nl
+
 ! Mediahuis Noord
 .nl\/_\/zh\/worker$xmlhttprequest,~third-party,domain=lc.nl|dvhn.nl
 
@@ -487,6 +490,8 @@ inman.com##+js(rc, paywalled-block, .paywalled-block)
 inman.com##+js(ra, class, div.entry-content-inner)
 inman.com##div.content-wrap > div:not([class]):style(margin: 5% !important)
 inman.com##.ism-article-block
+interestingengineering.com##+js(ra, class, div[class*="Product_makeBlur__"])
+interestingengineering.com##div#paywall-div
 ||meter.in.bonhill.pbc.io/api/views$xmlhttprequest,domain=investmentnews.com
 ipsoa.it##+js(ra, style, div.paywall)
 ||irishexaminer.com/pu_examiner/scripts/engage/$script,~third-party
@@ -582,8 +587,6 @@ amp.bnd.com,amp.charlotteobserver.com,amp.fresnobee.com,amp.kansas.com,amp.kansa
 amp.sacbee.com##+js(ra, subscriptions-action, div[subscriptions-action][subscriptions-display="NOT data.hasError"])
 
 ! Nine Entertainment (Australia)
-||api.afr.com/graphql?query=*PaywallRuleQuery$xmlhttprequest,~third-party
-.com.au/graphql?query=*PaywallRuleQuery$xmlhttprequest,~third-party,domain=brisbanetimes.com.au|smh.com.au|theage.com.au|watoday.com.au
 amp.brisbanetimes.com.au,amp.smh.com.au,amp.theage.com.au,amp.watoday.com.au##+js(ra, subscriptions-section, [subscriptions-section="content"])
 amp.brisbanetimes.com.au,amp.smh.com.au,amp.theage.com.au,amp.watoday.com.au##[subscriptions-section="content-not-granted"]
 
