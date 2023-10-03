@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.3.5.8
+! Version: 3.3.5.9
 
 ! General
 
@@ -164,6 +164,8 @@ hindustantimes.com##+js(rc, open-popup, body.open-popup)
 indianexpress.com##+js(ra, style, div#pcl-rest-content[style])
 inkl.com##+js(ra, class, div.paywall)
 inkl.com##div.gradient-container
+interestingengineering.com##+js(ra, class, div[class*="Product_makeBlur__"])
+interestingengineering.com##div#paywall-div
 japantimes.co.jp##+js(cookie-remover, /xbc/)
 journaldunet.com##.reg_wall
 journaldunet.com##+js(ra, style, .entry_reg_wall)
@@ -300,7 +302,7 @@ theathletic.com##div[id^="slideup-"],div[id*="overlay"],div:empty:not([data-rjs]
 theathletic.com##body[class]:style(overflow:visible !important; position:relative !important)
 ||theatlantic.com/_next/static/chunks/pages/*/archive/$script,~third-party
 theatlantic.com##+js(cookie-remover, articleViews)
-theatlantic.com##+js(rc, Image_lazy__tutlP, img.Image_lazy__tutlP)
+theatlantic.com##img[class*="Image_lazy__"]:style(opacity: 1 !important)
 theatlantic.com##.c-nudge__container,.c-non-metered-nudge,div[class^="ArticleInjector_"]
 ||thediplomat.com/*/js/angular-cookies.min.js$script,~third-party
 thediplomat.com##+js(cookie-remover, dpl-pw)
@@ -490,8 +492,6 @@ inman.com##+js(rc, paywalled-block, .paywalled-block)
 inman.com##+js(ra, class, div.entry-content-inner)
 inman.com##div.content-wrap > div:not([class]):style(margin: 5% !important)
 inman.com##.ism-article-block
-interestingengineering.com##+js(ra, class, div[class*="Product_makeBlur__"])
-interestingengineering.com##div#paywall-div
 ||meter.in.bonhill.pbc.io/api/views$xmlhttprequest,domain=investmentnews.com
 ipsoa.it##+js(ra, style, div.paywall)
 ||irishexaminer.com/pu_examiner/scripts/engage/$script,~third-party
@@ -511,6 +511,7 @@ meritnation.com##+js(rc, maxHeight75px, div.exp_content.maxHeight75px)
 nation.africa##+js(rc, nmgp, .nmgp)
 nation.africa##div.modal
 ||newbostonpost.com/*/paywall/js/main.js$script,~third-party
+newoxfordreview.org##+js(rc, not-viewable, div.not-viewable)
 nu.nl##+js(rc, authorized-content, div.authorized-content)
 nu.nl##.login-wall
 ||odt.co.nz/bwtw/scripts/tw.js$script,~third-party

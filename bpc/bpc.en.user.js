@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.5.6
+// @version         3.3.5.9
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -2154,11 +2154,11 @@ else if (matchDomain('theathletic.com')) {
 
 else if (matchDomain('theatlantic.com')) {
   setCookie('articleViews', '', 'theatlantic.com', '/', 0);
-  let lazy_images = document.querySelectorAll('img.Image_lazy__tutlP');
+  let lazy_images = document.querySelectorAll('img[class*="Image_lazy__"]');
   for (let elem of lazy_images)
-    elem.classList.remove('Image_lazy__tutlP');
+    removeClassesByPrefix(elem, 'Image_lazy__');
   let banners = document.querySelectorAll('.c-nudge__container, .c-non-metered-nudge, div[class^="ArticleInjector_"]');
-  removeDOMElement(...banners);
+  hideDOMElement(...banners);
 }
 
 else if (matchDomain('thebulletin.org')) {
