@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.5.9
+// @version         3.3.6.1
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -2650,43 +2650,12 @@ else if (matchDomain(no_nhst_media_domains)) {
     if (blurred)
       blurred.removeAttribute('style');
   } else {
-    window.setTimeout(function () {
-      let paywall = document.querySelector('iframe#paywall-iframe, div#sub-paywall-container');
-      if (paywall) {
-        let article = paywall.parentNode;
-        removeDOMElement(paywall);
-        fetch(url)
-        .then(response => {
-          if (response.ok) {
-            response.text().then(html => {
-              if (html.includes('window.__INITIAL_STATE__=')) {
-                let split1 = html.split('window.__INITIAL_STATE__=')[1];
-                let state = (split1.split('};')[0] + '}').split('</script>')[0];
-                if (state) {
-                  try {
-                    let json = JSON.parse(state);
-                    if (json) {
-                      let json_text = json.article.body;
-                      let parser = new DOMParser();
-                      let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-                      let article_new = doc.querySelector('div');
-                      if (article && article_new)
-                        article.appendChild(article_new);
-                      let intro = document.querySelector('div.global-article-selector');
-                      let promo = document.querySelectorAll('div[data-ah5-type="promobox"], div.dn-relation-block');
-                      removeDOMElement(intro, ...promo);
-                    }
-                  } catch (err) {
-                    console.log(err);
-                  }
-                }
-              } else
-                header_nofix(article);
-            })
-          }
-        })
-      }
-    }, 500);
+    let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
+    if (fade) {
+      removeDOMElement(fade);
+      let header = document.querySelector('div.article-body > div');
+      header_nofix(header);
+    }
   }
 }
 
@@ -3054,7 +3023,7 @@ function hideDOMElement(...elements) {
 function header_nofix(header, msg = 'BPC > no fix') {
   if (header) {
     let nofix_div = document.createElement('div');
-    nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
+    nofix_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
     nofix_div.innerText = msg;
     header.before(nofix_div);
   }
@@ -3193,7 +3162,7 @@ function ext_12ftLink(url, text_fail = 'BPC > Full article text:\r\n') {
 function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full article text:\r\n') {
   let text_fail_div = document.createElement('div');
   text_fail_div.id = 'bpc_archive';
-  text_fail_div.setAttribute('style', 'margin: 20px; font-size: 15px; font-weight: bold; color: red;');
+  text_fail_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
   let parser = new DOMParser();
   text_fail = text_fail.replace(/\[([^\]]+)\]/g, "<a href='$1' target='_blank' style='color: red'>$1</a>");
   let doc = parser.parseFromString('<span>' + text_fail + '</span>', 'text/html');
