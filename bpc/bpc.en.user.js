@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.6.1
+// @version         3.3.6.2
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -424,7 +424,7 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['investmentweek.co.uk'])) || matchDomain(['citywire.com', 'ft.com', 'scotsman.com', 'tes.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['investmentweek.co.uk'])) || matchDomain(['citywire.com', 'ft.com', 'granta.com', 'scotsman.com', 'tes.com'])) {//united kingdom/ireland
 
 if (matchDomain('autocar.co.uk')) {
   let url = window.location.href;
@@ -575,6 +575,32 @@ else if (matchDomain('ft.com')) {
     removeDOMElement(...paywall);
     let site_content = document.querySelector('div#site-content');
     site_content.appendChild(archiveLink(url));
+  }
+}
+
+else if (matchDomain('granta.com')) {
+  let paywall = document.querySelector('div.article-sign-up-container');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
+    if (json_url_dom) {
+      let json_url = json_url_dom.href;
+      fetch(json_url)
+      .then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            let json_text = json.content.rendered;
+            let content = document.querySelector('div.article-excerpt');
+            if (json_text && content) {
+              let parser = new DOMParser();
+              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+              let content_new = doc.querySelector('div');
+              content.parentNode.replaceChild(content_new, content);
+            }
+          });
+        }
+      });
+    }
   }
 }
 

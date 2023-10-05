@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.3.5.5
+// @version         3.3.5.6
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -319,7 +319,7 @@ else if (matchDomain('journaldunet.com')) {
 else if (matchDomain('la-croix.com')) {
   let url = window.location.href;
   if (!url.includes('la-croix.com/amp/')) {
-    let ads = document.querySelectorAll('div[class^="ads-wrapper-"]');
+    let ads = document.querySelectorAll('div[class^="ads-wrapper-"], div#poool-widget');
     hideDOMElement(...ads);
   } else {
     let paywall_block = document.querySelector('#paywall_block');
@@ -637,7 +637,7 @@ function hideDOMElement(...elements) {
 function header_nofix(header, msg = 'BPC > no fix') {
   if (header) {
     let nofix_div = document.createElement('div');
-    nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
+    nofix_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
     nofix_div.innerText = msg;
     header.before(nofix_div);
   }
@@ -789,8 +789,12 @@ function ext_12ftLink(url, text_fail = 'BPC > Full article text:\r\n') {
 function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full article text:\r\n') {
   let text_fail_div = document.createElement('div');
   text_fail_div.id = 'bpc_archive';
-  text_fail_div.setAttribute('style', 'margin: 20px; font-weight: bold; color:red;');
-  text_fail_div.appendChild(document.createTextNode(text_fail));
+  text_fail_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
+  let parser = new DOMParser();
+  text_fail = text_fail.replace(/\[([^\]]+)\]/g, "<a href='$1' target='_blank' style='color: red'>$1</a>");
+  let doc = parser.parseFromString('<span>' + text_fail + '</span>', 'text/html');
+  let elem = doc.querySelector('span');
+  text_fail_div.appendChild(elem);
   for (let domain of domains) {
     let ext_url = ext_url_templ.replace('{domain}', domain).replace('{url}', url.split('?')[0]);
     let a_link = document.createElement('a');

@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: FRdDOi81HpS+xjk6jNGqbg
+! Checksum: 4Rd3BfuKh/l1gZYwIThcUw
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.0.11
-! TimeUpdated: 2023-10-04T16:31:11+00:00
+! Version: 2.1.0.19
+! TimeUpdated: 2023-10-05T16:31:08+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1215,6 +1215,10 @@ $script,third-party,denyallow=fastly.net|statically.io|sharecast.ws|bunnycdn.ru|
 !
 !
 !
+tw.news.yahoo.com###sda-WPS-iframe
+tw.news.yahoo.com###sda-LDRB-iframe
+tw.news.yahoo.com###sda-LREC2-iframe
+tw.news.yahoo.com###mrt-node-Lead-1-Ad
 iyf.tv##.ss-ctn
 iyf.tv##.video-player > div.ng-star-inserted > div#PB
 ablesci.com##.fly-panel img[src*="-alipay-autumn-hongbao.png"]
@@ -2733,6 +2737,8 @@ csdn.net###footerRightAds
 ! https://github.com/AdguardTeam/AdguardFilters/issues/134240
 ! Do not hide .bili-video-card container to not mess up content, related - https://github.com/AdguardTeam/AdguardFilters/issues/147194#issuecomment-1500803042
 ! bilibili.com#?#.bili-video-card.is-rcmd > div > a[href*="cm.bilibili.com"][data-target-url]:not([data-target-url*=".bili"]) + .bili-video-card__info:upward(2)
+bilibili.com#?#.feed-card:has(> div.bili-video-card > div.bili-video-card__wrap[style="display: none !important;"])
+bilibili.com#?#.bili-video-card:has(> div.bili-video-card__wrap[style="display: none !important;"])
 bilibili.com#$?#.container > div.floor-single-card:has(> div.skeleton) { remove: true; }
 bilibili.com#?#.bili-video-card:has(.bili-video-card__info--ad) > .bili-video-card__wrap
 bilibili.com#?#.bili-video-card:has(.bili-video-card__info--creative-ad) > .bili-video-card__wrap
@@ -4611,14 +4617,21 @@ newduba.cn###jq_youxi
 ||23.234.217.11^
 ||23.234.217.12^
 ||cupfox.app^$third-party
+||273knt.xyz^
 ||88lajs3.com^
 ||anhlnnm.cn^
 ||beste3.icu^
 ||bydcxdy.cn^
 ||ddvoht.xyz^
 ||dhgfhedxx.xyz^
+||gmx27.top^
+||gmx30.top^
+||hwuogmusthxfpk.xyz^
 ||jofknbpe.xyz^
+||kvskknklssv.com^
 ||ldvnehc.xyz^
+||lnxpdj.xyz^
+||mads7.icu^
 ||neeujqf.cn^
 ||pexavfro.xyz^
 ||psroyx.icu^
@@ -4626,9 +4639,14 @@ newduba.cn###jq_youxi
 ||serda10.icu^
 ||tcgaqh.icu^
 ||ulrvkee.xyz^
+||vdggsd005.com^
 ||vttqld.xyz^
 ||xkfigjh.cn^
+||xmvmir.icu^
+||xvzfyra.xyz^
 ||xxkswdf.icu^
+||yepgdita.xyz^
+||yhtpsy8888.cc^
 ##[style*="sotv.me"]
 ##a[href$="/1c626.com"]
 ##a[href$="/77adc.com"]
@@ -13997,7 +14015,7 @@ wjx.cn###ctl01_ContentPlaceHolder1_divProMsg
 free.com.tw###custom_html-11
 hexieshe.cn###custom_html-2
 24kplus.com###custom_html-3
-18avinin.com,sunnylife.tw###custom_html-5
+18avinin.com,27ka.cn,sunnylife.tw###custom_html-5
 vikacg.com###custom_html-9
 makaidong.com###cyWallsplugin
 eworldship.com###d1
@@ -18063,6 +18081,7 @@ galacg.me##a[href*="/game"]
 ccav1.com##a[href*="/go"]
 423down.com##a[href*="/go."] > img
 php.cn##a[href*="/go."]:not([href*="Fwww.php"])
+27ka.cn##a[href*="/go/"]
 dy2018.com,xiaopian.com##a[href*="/htmlcode/"]
 cableabc.com##a[href*="/img1/"]
 ooopn.com##a[href*="/jump.html"]
@@ -19026,6 +19045,7 @@ moe.gov.cn,qspfw.com#@#.ad_title
 howbuy.com#@#.ad_wrapper
 hibox.hinet.net#@#.adarea
 gameflier.com#@#.adbanner
+fmprc.gov.cn,mfa.gov.cn#@#.adbox2
 en8848.com.cn#@#.adcenter
 china.com#@#.adclass
 51cto.com#@#.addarea
