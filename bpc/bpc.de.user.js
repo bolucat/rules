@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.3.6.2
+// @version         3.3.6.3
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -12,6 +12,7 @@
 // @match           *://*.nzz.ch/*
 // @match           *://*.topagrar.at/*
 // @match           *://*.topagrar.com/*
+// @match           *://*.vn.at/*
 // @match           *://*.vol.at/*
 // @match           *://*.wochenblatt.com/*
 // @match           *://webcache.googleusercontent.com/*
@@ -424,6 +425,24 @@ else if (matchDomain('springermedizin.de')) {
   }
 }
 
+else if (matchDomain('vn.at')) {
+  if (window.location.href.match(/\.vn\.at\/.+\/\d{4}/)) {
+    let paywall = document.querySelector('div.paywalled-content');
+    if (paywall) {
+      let par = paywall.querySelector('p');
+      if (!par) {
+        refreshCurrentTab();
+      } else {
+        let lazy_images = document.querySelectorAll('img[src^="data:image/"][lazy-src]');
+        for (let elem of lazy_images) {
+          elem.src = elem.getAttribute('lazy-src');
+        }
+      }
+    } else
+      refreshCurrentTab();
+  }
+}
+
 else if (matchDomain('vol.at')) {
   if (!window.location.pathname.match(/\/amp\/?$/)) {
     window.setTimeout(function () {
@@ -646,7 +665,7 @@ function hideDOMElement(...elements) {
 function header_nofix(header, msg = 'BPC > no fix') {
   if (header) {
     let nofix_div = document.createElement('div');
-    nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
+    nofix_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
     nofix_div.innerText = msg;
     header.before(nofix_div);
   }
@@ -795,8 +814,12 @@ function ext_12ftLink(url, text_fail = 'BPC > Full article text:\r\n') {
 function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full article text:\r\n') {
   let text_fail_div = document.createElement('div');
   text_fail_div.id = 'bpc_archive';
-  text_fail_div.setAttribute('style', 'margin: 20px; font-weight: bold; color:red;');
-  text_fail_div.appendChild(document.createTextNode(text_fail));
+  text_fail_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
+  let parser = new DOMParser();
+  text_fail = text_fail.replace(/\[([^\]]+)\]/g, "<a href='$1' target='_blank' style='color: red'>$1</a>");
+  let doc = parser.parseFromString('<span>' + text_fail + '</span>', 'text/html');
+  let elem = doc.querySelector('span');
+  text_fail_div.appendChild(elem);
   for (let domain of domains) {
     let ext_url = ext_url_templ.replace('{domain}', domain).replace('{url}', url.split('?')[0]);
     let a_link = document.createElement('a');

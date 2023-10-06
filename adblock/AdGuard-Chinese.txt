@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: 4Rd3BfuKh/l1gZYwIThcUw
+! Checksum: 8lIR05DbwjFH1zuOiRGxVg
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.0.19
-! TimeUpdated: 2023-10-05T16:31:08+00:00
+! Version: 2.1.0.29
+! TimeUpdated: 2023-10-06T16:31:12+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -75,6 +75,8 @@
 ! Bad: ||adssubdomain.legitwebsite.com^ (should be in adservers_firstparty.txt)
 !
 !
+||lqxbkqdtvtdhw.xyz^
+||noafoaji.xyz^
 ||bilec.xyz^
 ||vkjsnvk.com^
 ||3337126.com^
@@ -1211,10 +1213,12 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 ! Incorrectly blocked domains can be excluded using regex(synchronize this regexp in all filters)
 /^(?!.*(statically.io|sharecast.ws|bunnycdn.ru|bootstrapcdn.com|cdn.ampproject.org|cloudflare.com|cdn.staticfile.org|disqus.com|disquscdn.com|dmca.com|ebacdn.com|facebook.net|fastlylb.net|fbcdn.net|fluidplayer.com|fontawesome.com|github.io|google.com|googleapis.com|googletagmanager.com|gstatic.com|jquery.com|jsdelivr.net|jwpcdn.com|jwplatform.com|polyfill.io|recaptcha.net|shrink.pe|twitter.com|ulogin.ru|unpkg.com|userapi.com|vidazoo.com|vk.com|yandex.|yastatic.net|ytimg.com|zencdn.net|player|youtube.com|cackle.me|googleoptimize.com|vuukle.com|chatango.com|twimg.com|google-analytics.com|hcaptcha.com|raincaptcha.com|media-imdb.com|blogger.com|hwcdn.net|instagram.com|wp.com|imgsmail.ru)).*$/$third-party,script,_____,domain=manshuxs.com|yemancomic.com|qimiaoxiaoshuo.com|gaofuwu.org|nxpaaq.com|dengbi2.com|92hm.top|634.tv|myhaitang.cc
 ! Similar to regexp above, but using the denyallow modifier
-$script,third-party,denyallow=fastly.net|statically.io|sharecast.ws|bunnycdn.ru|bootstrapcdn.com|cdn.ampproject.org|cloudflare.com|cdn.staticfile.org|disqus.com|disquscdn.com|dmca.com|ebacdn.com|facebook.net|fastlylb.net|fbcdn.net|fluidplayer.com|fontawesome.com|github.io|google.com|googleapis.com|googletagmanager.com|gstatic.com|jquery.com|jsdelivr.net|jwpcdn.com|jwplatform.com|polyfill.io|recaptcha.net|shrink.pe|twitter.com|ulogin.ru|unpkg.com|userapi.com|vidazoo.com|vk.com|yastatic.net|ytimg.com|zencdn.net|youtube.com|cackle.me|googleoptimize.com|vuukle.com|chatango.com|twimg.com|google-analytics.com|hcaptcha.com|raincaptcha.com|media-imdb.com|blogger.com|hwcdn.net|instagram.com|wp.com|fastcomments.com|plyr.io,_____,domain=wap.dmwenku.com|m.wfxs.tw|h.fkxs.net|wap.ishuquge.la|m.91zww.com|592mh.top|dubuxiaoshuo.com|clm410.buzz|bookbl.com|shuku99.com|qiyoudy2.com|1yydstxt178.com|rouman5.com
+$script,third-party,denyallow=fastly.net|statically.io|sharecast.ws|bunnycdn.ru|bootstrapcdn.com|cdn.ampproject.org|cloudflare.com|cdn.staticfile.org|disqus.com|disquscdn.com|dmca.com|ebacdn.com|facebook.net|fastlylb.net|fbcdn.net|fluidplayer.com|fontawesome.com|github.io|google.com|googleapis.com|googletagmanager.com|gstatic.com|jquery.com|jsdelivr.net|jwpcdn.com|jwplatform.com|polyfill.io|recaptcha.net|shrink.pe|twitter.com|ulogin.ru|unpkg.com|userapi.com|vidazoo.com|vk.com|yastatic.net|ytimg.com|zencdn.net|youtube.com|cackle.me|googleoptimize.com|vuukle.com|chatango.com|twimg.com|google-analytics.com|hcaptcha.com|raincaptcha.com|media-imdb.com|blogger.com|hwcdn.net|instagram.com|wp.com|fastcomments.com|plyr.io,_____,domain=wap.dmwenku.com|m.wfxs.tw|h.fkxs.net|wap.ishuquge.la|m.91zww.com|592mh.top|dubuxiaoshuo.com|clm410.buzz|bookbl.com|shuku99.com|qiyoudy2.com|1yydstxt178.com|rouman5.com|feijisu20.com
 !
 !
 !
+cnbeta.com.tw##[class^="cbv"]
+cnbeta.com.tw##div[id^="cbh"]
 tw.news.yahoo.com###sda-WPS-iframe
 tw.news.yahoo.com###sda-LDRB-iframe
 tw.news.yahoo.com###sda-LREC2-iframe
@@ -2736,9 +2740,8 @@ csdn.net###footerRightAds
 !
 ! https://github.com/AdguardTeam/AdguardFilters/issues/134240
 ! Do not hide .bili-video-card container to not mess up content, related - https://github.com/AdguardTeam/AdguardFilters/issues/147194#issuecomment-1500803042
+! https://user-images.githubusercontent.com/3976203/273172163-25ff30a0-c988-4ec3-9e51-cf4722a90976.jpg
 ! bilibili.com#?#.bili-video-card.is-rcmd > div > a[href*="cm.bilibili.com"][data-target-url]:not([data-target-url*=".bili"]) + .bili-video-card__info:upward(2)
-bilibili.com#?#.feed-card:has(> div.bili-video-card > div.bili-video-card__wrap[style="display: none !important;"])
-bilibili.com#?#.bili-video-card:has(> div.bili-video-card__wrap[style="display: none !important;"])
 bilibili.com#$?#.container > div.floor-single-card:has(> div.skeleton) { remove: true; }
 bilibili.com#?#.bili-video-card:has(.bili-video-card__info--ad) > .bili-video-card__wrap
 bilibili.com#?#.bili-video-card:has(.bili-video-card__info--creative-ad) > .bili-video-card__wrap
@@ -4625,21 +4628,32 @@ newduba.cn###jq_youxi
 ||ddvoht.xyz^
 ||dhgfhedxx.xyz^
 ||gmx27.top^
+||gmx28.top^
 ||gmx30.top^
+||huhwllvk.xyz^
 ||hwuogmusthxfpk.xyz^
+||jndxsuy.xyz^
 ||jofknbpe.xyz^
 ||kvskknklssv.com^
 ||ldvnehc.xyz^
+||liuyi22.cn^
 ||lnxpdj.xyz^
+||lwwlkj1.cn^
+||lxznbz.xyz^
 ||mads7.icu^
+||mcds9.icu^
+||mmvjuti.cn^
+||mwfyab.icu^
 ||neeujqf.cn^
 ||pexavfro.xyz^
+||pqjeoqa.cn^
 ||psroyx.icu^
 ||roxewwq.cn^
 ||serda10.icu^
 ||tcgaqh.icu^
 ||ulrvkee.xyz^
 ||vdggsd005.com^
+||vdggsd006.com^
 ||vttqld.xyz^
 ||xkfigjh.cn^
 ||xmvmir.icu^
@@ -8877,6 +8891,7 @@ newduba.cn###jq_youxi
 ||7xi9g1.com1.z0.glb.clouddn.com^
 ||876920.com^
 ||87uq.com^
+||94lm.com^
 ||a.youdao.com^
 ||aafuck.xyz^$third-party
 ||achicih.gitee.io^$third-party
@@ -13224,6 +13239,7 @@ hxsame.hexun.com$domain=~quote.hexun.com
 ||vodttdy.com/template/zsy_badian/js/stui_
 ||vps234.com/resources/images/hosting-promotion/
 ||vrrw.net//templets/default/js/ad.js
+||vsping.com/website/ads?
 ||vupload.duowan.com^
 ||vvvkp.com/template/ttk/img/
 ||vxotu.com/i/*.gif
@@ -15770,6 +15786,7 @@ cnbeta.com.tw##.cbv:not(#cb_share) a
 meizhou.com##.cc_z1
 alypw.com##.ceadd
 mabiji.com##.celan
+vsping.com##.cell > span > a[href]:not([href*=".vsping.com"])
 iqiyi.com##.cell-left
 iqiyi.com##.cell-right
 11luba.com,niluba.cc##.center > div:last-child
@@ -16204,6 +16221,7 @@ mobanwang.com##.g960
 126.com,163.com##.gWel-promt
 gmw.cn##.g_adMain
 smzdm.com##.g_g
+windowszj.net##.g_slide_title > .feedback
 233.com##.gads
 233.com##.gads2
 feeds.qq.com,lenovo.com.cn##.game
