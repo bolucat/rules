@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.3.6.4
+// @version         3.3.6.5
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -244,6 +244,39 @@ else if (matchDomain('jacobin.de')) {
   }
 }
 
+else if (matchDomain('jungefreiheit.de')) {
+  let paywall = document.querySelector('div.paywall-teaser-box');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
+    if (json_url_dom) {
+      let json_url = json_url_dom.href;
+      fetch(json_url)
+      .then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            let json_text = json.content.rendered;
+            let content = document.querySelector('div.elementor-widget-container > p');
+            if (json_text && content) {
+              let parser = new DOMParser();
+              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+              let content_new = doc.querySelector('div');
+              content.parentNode.replaceChild(content_new, content);
+            }
+          });
+        }
+      });
+    }
+    let fade = document.querySelector('div[style*="background-image: url"]');
+    removeDOMElement(fade);
+  }
+  window.setTimeout(function () {
+    let banners = document.querySelectorAll('div > small');
+    for (let elem of banners)
+      hideDOMElement(elem.parentNode);
+  }, 1000);
+}
+
 else if (matchDomain('krautreporter.de')) {
   let paywall = document.querySelector('.js-article-paywall');
   if (paywall) {
@@ -426,7 +459,7 @@ else if (matchDomain('springermedizin.de')) {
 }
 
 else if (matchDomain('vn.at')) {
-  if (window.location.href.match(/\.vn\.at\/.+\/\d{4}/)) {
+  if (window.location.href.match(/\.vn\.at\/.+\/\d{4}\//)) {
     let paywall = document.querySelector('div.paywalled-content');
     if (paywall) {
       let par = paywall.querySelector('p');
@@ -450,7 +483,6 @@ else if (matchDomain('vol.at')) {
       if (paywall) {
         paywall.removeAttribute('class');
         if (!paywall.hasChildNodes()) {
-          console.log('empty');
           let json_script = document.querySelector('script#externalPostDataNode');
           if (json_script) {
             try {
