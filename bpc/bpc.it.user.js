@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.3.5.4
+// @version         3.3.6.2
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -270,18 +270,36 @@ else if (matchDomain('money.it')) {
 }
 
 else if (matchDomain('tuttosport.com')) {
-  let article_images = document.querySelectorAll('div > img[data-src]:not([src])');
-  for (let elem of article_images) {
-    elem.src = elem.getAttribute('data-src');
-    elem.removeAttribute('class');
-    elem.parentNode.removeAttribute('style');
+  if (!window.location.pathname.startsWith('/amp/')) {
+    let article_images = document.querySelectorAll('div > img[data-src]:not([src])');
+    for (let elem of article_images) {
+      elem.src = elem.getAttribute('data-src');
+      elem.removeAttribute('class');
+      elem.parentNode.removeAttribute('style');
+    }
+    let main_images = document.querySelectorAll('div > img[class*="ArticleImage_image__"][src]');
+    for (let elem of main_images) {
+      elem.removeAttribute('class');
+    }
+    let video = document.querySelector('div[class^="VideoFloat_videoFloatCont__"]');
+    if (video) {
+      let og_image = document.querySelector('head > meta[property="og:image"][content]');
+      if (og_image) {
+        let og_image_url = og_image.getAttribute('content');
+        if (og_image_url) {
+          let elem = document.createElement('img');
+          elem.src = og_image_url;
+          elem.style = 'width: ' + (mobile ? 360 : 640) + 'px;';
+          video.parentNode.replaceChild(elem, video);
+        }
+      }
+    }
+    let ads = document.querySelectorAll('div[class^="AdUnit_"]');
+    hideDOMElement(...ads);
+  } else {
+    let ads = document.querySelectorAll('amp-ad, amp-embed');
+    hideDOMElement(...ads);
   }
-  let main_images = document.querySelectorAll('div > img[class*="ArticleImage_image__"][src]');
-  for (let elem of main_images) {
-    elem.removeAttribute('class');
-  }
-  let ads = document.querySelectorAll('div[class^="AdUnit_"]');
-  hideDOMElement(...ads);
 }
 
 }, 1000);
@@ -362,6 +380,35 @@ function amp_iframes_replace(weblink = false, source = '') {
       par.appendChild(elem);
       amp_iframe.parentNode.replaceChild(par, amp_iframe);
     }
+  }
+}
+
+function amp_redirect_not_loop(amphtml) {
+  let amp_redirect_date = Number(sessionStorage.getItem('###_amp_redirect'));
+  if (!(amp_redirect_date && Date.now() - amp_redirect_date < 2000)) {
+    sessionStorage.setItem('###_amp_redirect', Date.now());
+    window.location.href = amphtml.href;
+  } else {
+    let header = (document.body && document.body.firstChild) || document.documentElement;
+    header_nofix(header, 'BPC > redirect to amp failed (disable amp-to-html extension/add-on or browser setting)');
+  }
+}
+
+function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
+  let paywall = document.querySelector(paywall_sel);
+  let amphtml = document.querySelector('head > link[rel="amphtml"]');
+  if (!amphtml && amp_url)
+    amphtml = {href: amp_url};
+  if (paywall && amphtml) {
+    if (!paywall_action)
+      removeDOMElement(paywall);
+    else {
+      if (paywall_action.rm_class)
+        paywall.classList.remove(paywall_action.rm_class);
+      else if (paywall_action.rm_attrib)
+        paywall.removeAttribute(paywall_action.rm_attrib);
+    }
+    amp_redirect_not_loop(amphtml);
   }
 }
 

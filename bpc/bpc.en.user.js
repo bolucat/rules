@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.6.2
+// @version         3.3.6.3
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -1839,7 +1839,7 @@ else if (matchDomain('puck.news')) {
               let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
               content.innerHTML = '';
               let content_new = doc.querySelector('div');
-              content.appendChild(content_new, content);
+              content.appendChild(content_new);
             }
           });
         }
@@ -2138,7 +2138,7 @@ else if (matchDomain('theamericanconservative.com')) {
               let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
               let content_new = doc.querySelector('div');
               content.innerHTML = '';
-              content.appendChild(content_new, content);
+              content.appendChild(content_new);
             }
           });
         }
@@ -2587,7 +2587,7 @@ else if (matchDomain('thewrap.com')) {
               let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
               content.innerHTML = '';
               let content_new = doc.querySelector('div');
-              content.appendChild(content_new, content);
+              content.appendChild(content_new);
             }
           });
         }
