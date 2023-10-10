@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.3.6.2
+// @version         3.3.6.3
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -289,7 +289,7 @@ else if (matchDomain('tuttosport.com')) {
         if (og_image_url) {
           let elem = document.createElement('img');
           elem.src = og_image_url;
-          elem.style = 'width: ' + (mobile ? 360 : 640) + 'px;';
+          elem.style = 'width: 95%;';
           video.parentNode.replaceChild(elem, video);
         }
       }

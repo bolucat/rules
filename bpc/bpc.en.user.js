@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.6.3
+// @version         3.3.6.4
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -686,7 +686,7 @@ else if (matchDomain('stylist.co.uk')) {
                     let img = document.createElement('img');
                     img.src = img_elem.url;
                     img.alt = img_elem.alt;
-                    img.style = mobile ? 'width: 320px;' : 'width: 640px;';
+                    img.style = 'width: 95%;';
                     figure.appendChild(img);
                     if (img_elem.caption || img_elem.description || img_elem.alt) {
                       let caption = document.createElement('figcaption');
@@ -717,7 +717,7 @@ else if (matchDomain('stylist.co.uk')) {
                       let img = document.createElement('img');
                       img.src = sub_item.image.url;
                       img.alt = sub_item.image.alt;
-                      img.style = mobile ? 'width: 320px;' : 'width: 640px;';
+                      img.style = 'width: 95%;';
                       li.appendChild(img);
                       li.appendChild(document.createElement('br'));
                     }

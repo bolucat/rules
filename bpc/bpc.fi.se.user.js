@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         3.2.3.5
+// @version         3.3.6.5
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -147,14 +147,14 @@ else if (matchDomain('hs.fi')) {// dynamic.hs.fi only
 }
 
 else if (matchDomain('nyteknik.se')) {
-  let locked_article = document.querySelector('div.locked-article');
-  if (locked_article)
-    locked_article.classList.remove('locked-article');
-  window.setTimeout(function () {
-    let hidden_images = document.querySelectorAll('img[src=""][data-proxy-image]');
-    for (let hidden_image of hidden_images)
-      hidden_image.setAttribute('src', hidden_image.getAttribute('data-proxy-image').replace('_320', '_640'));
-  }, 2000);
+  let url = window.location.href;
+  let paywall = document.querySelector('div.paywallTeaser');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('article h2');
+    if (article)
+      article.firstChild.before(googleWebcacheLink(url));
+  }
 }
 
 else if (matchDomain('suomensotilas.fi')) {
@@ -191,23 +191,29 @@ function hideDOMElement(...elements) {
   }
 }
 
-function archiveLink(url, text_fail = 'BPC > Full article text (only report issue if not working for over a week):\r\n') {
+function archiveLink(url, text_fail = 'BPC > Try for full article text (only report issue if not working for over a week):\r\n') {
   return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
 }
 
-function googleWebcacheLink(url, text_fail = 'BPC > Full article text:\r\n') {
+function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
+  if (!matchUrlDomain(['hbrchina.org'], url))
+    url = url.split('?')[0];
   return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
 }
 
-function ext_12ftLink(url, text_fail = 'BPC > Full article text:\r\n') {
+function ext_12ftLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
   return externalLink(['12ft.io'], 'https://{domain}/{url}', url, text_fail);
 }
 
 function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full article text:\r\n') {
   let text_fail_div = document.createElement('div');
   text_fail_div.id = 'bpc_archive';
-  text_fail_div.setAttribute('style', 'margin: 20px; font-weight: bold; color:red;');
-  text_fail_div.appendChild(document.createTextNode(text_fail));
+  text_fail_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
+  let parser = new DOMParser();
+  text_fail = text_fail.replace(/\[([^\]]+)\]/g, "<a href='$1' target='_blank' style='color: red'>$1</a>");
+  let doc = parser.parseFromString('<span>' + text_fail + '</span>', 'text/html');
+  let elem = doc.querySelector('span');
+  text_fail_div.appendChild(elem);
   for (let domain of domains) {
     let ext_url = ext_url_templ.replace('{domain}', domain).replace('{url}', url.split('?')[0]);
     let a_link = document.createElement('a');
