@@ -1,11 +1,11 @@
 name: 复写去广告(严格版)
-desc: 最后更新时间 2023-10-08 13:57:11
+desc: 最后更新时间 2023-10-12 02:15:18
 # author: blackmatrix7
 # repo: https://github.com/blackmatrix7/ios_rule_script
-# reject: 524
-# mitm: 434
+# reject: 540
+# mitm: 446
 # force-http-engine-hosts: 6
-# total: 964
+# total: 992
 
 
 
@@ -13,9 +13,23 @@ desc: 最后更新时间 2023-10-08 13:57:11
 
 http:
   rewrite:
+    - ^http:\/\/apicloud\.zol\.com\.cn\/Article\/WapLaunchLogo - reject
+    - ^http:\/\/go\.babytree\.com\/go_tool\/api\/feeding_record\/get_home_banner_info - reject
+    - ^https:\/\/api-overmind\.youdao\.com\/openapi\/get\/luna\/dict\/dict-mobile\/prod\/dictCommonConfig - reject
     - ^https:\/\/api\.sfacg\.com\/ioscfg - reject
+    - ^https:\/\/cdke\.youdao\.com\/course3\/recommend\/dict\/startup - reject
+    - ^https:\/\/dict\.youdao\.com\/commonsearch - reject
+    - ^https:\/\/dict\.youdao\.com\/course\/tab\/translateTab - reject
+    - ^https:\/\/dict\.youdao\.com\/dictusertask\/system - reject
+    - ^https:\/\/dict\.youdao\.com\/homepage\/tile - reject
+    - ^https:\/\/dict\.youdao\.com\/vip\/activity\/couponinfo - reject
+    - ^https:\/\/imcs\.citicbank\.com\/cloud\/.+(1125.+2436|1242.+2688) - reject
+    - ^https:\/\/live\.inst-service\.htsc\.com\/live - reject
+    - ^https:\/\/midc\.cdn-static\.abchina\.com\.cn\/distributecenterimg\/file\/download\/bdfb4 - reject
+    - ^https:\/\/minipro\.95504\.net\/app\/json\/ad\/getPopAdData - reject
     - ^https:\/\/mxsa\.mxbc\.net\/api\/v1\/adinfo\/limitedAds$ - reject
     - ^https:\/\/router-app-api\.jdcloud\.com\/v\d\/board\/routerAppSplash - reject
+    - ^https:\/\/service\.haiersmarthomes\.com\/management\/banner\/getBannerList\?source=4 - reject
     - ^https:\/\/vip7\.fzwdyy\.cn:8083\/api\/(getAdvertInfo|getGOOGAdvert) - reject
     - ^https?:\/\/(api|api-bk\d+)\.tv\.sohu\.com\/agg\/api\/app\/config\/bootstrap - reject
     - ^https?:\/\/(api|b)\.zhuishushenqi\.com\/advert - reject
@@ -299,6 +313,7 @@ http:
     - ^https?:\/\/ih2\.ireader\.com\/zyapi\/bookstore\/ad\/ - reject
     - ^https?:\/\/ih2\.ireader\.com\/zyapi\/self\/screen\/ad - reject
     - ^https?:\/\/ih2\.ireader\.com\/zycl\/api\/ad\/ - reject
+    - ^https?:\/\/image\.spdbccc\.com\.cn\/group\d\/M00\/[A-Z0-9]{2}\/[A-Z0-9]{2}\/rBsZ.+(4038|0571|M511) - reject
     - ^https?:\/\/image\.suning\.cn\/uimg\/ma\/ad\/ - reject
     - ^https?:\/\/images\.client\.vip\.xunlei\.com\/.+?\/advert\/ - reject
     - ^https?:\/\/imeclient\.openspeech\.cn\/adservice\/ - reject
@@ -468,6 +483,7 @@ http:
     - ^https?:\/\/sso\.ifanr\.com\/jiong\/IOS\/appso\/splash\/ - reject
     - ^https?:\/\/ssp\.dzh\.com\.cn\/v2api\/adgroupjson - reject
     - ^https?:\/\/stat\.peopleapp\.com\/ - reject
+    - ^https?:\/\/static\.95508\.com\/mmg\/images\/ads\/.+\/(.+1125?.+2436|.+60176|.+_qx\.|.+SC5\.) - reject
     - ^https?:\/\/static\.vuevideo\.net\/styleAssets\/.+?\/splash_ad - reject
     - ^https?:\/\/static\.vuevideo\.net\/styleAssets\/advertisement\/ - reject
     - ^https?:\/\/status\.boohee\.com\/api\/v\d\/app_square\/start_up_with_ad - reject
@@ -579,6 +595,7 @@ http:
     - "api-mifit.huami.com"
     - "api-new.app.acfun.cn"
     - "api-one.wallstcn.com"
+    - "api-overmind.youdao.com"
     - "api-release.wuta-cam.com"
     - "api.00bang.cn"
     - "api.21ec74.com"
@@ -645,6 +662,7 @@ http:
     - "api1.34580.com"
     - "api3.cls.cn"
     - "api4.bybutter.com"
+    - "apicloud.zol.com.cn"
     - "apis.lifeweek.com.cn"
     - "app-api.jinse.com"
     - "app-api.niu.com"
@@ -693,6 +711,7 @@ http:
     - "capi.mwee.cn"
     - "capis*.didapinche.com"
     - "ccsp-egmas.sf-express.com"
+    - "cdke.youdao.com"
     - "cdn-evone-ceph.echargenet.com"
     - "cdn.api.fotoable.com"
     - "cdn.cmgadx.com"
@@ -723,6 +742,7 @@ http:
     - "daoyu.sdo.com"
     - "data-collector.soulapp.cn"
     - "dict-mobile.iciba.com"
+    - "dict.youdao.com"
     - "dili.bdatu.com"
     - "dispatcher.camera360.com"
     - "djcapp.game.qq.com"
@@ -757,6 +777,7 @@ http:
     - "gfp.veta.naver.com"
     - "gg*.cmvideo.cn"
     - "gha.ghac.cn"
+    - "go.babytree.com"
     - "goblin.hupu.com"
     - "god.gameyw.netease.com"
     - "gongdu.youshu.cc"
@@ -779,8 +800,10 @@ http:
     - "iface.iqiyi.com"
     - "igetcool-gateway.igetcool.com"
     - "ih2.ireader.com"
+    - "image.spdbccc.com.cn"
     - "image.suning.cn"
     - "images.client.vip.xunlei.com"
+    - "imcs.citicbank.com"
     - "imeclient.openspeech.cn"
     - "img*.10101111cdn.com"
     - "img.360buyimg.com"
@@ -806,6 +829,7 @@ http:
     - "lchttpapi.xczim.com"
     - "learn.chaoxing.com"
     - "list-app-m.i4.cn"
+    - "live.inst-service.htsc.com"
     - "m*.amap.com"
     - "m.ads.8le8le.com"
     - "m.caijing.com.cn"
@@ -830,7 +854,9 @@ http:
     - "mbd.baidu.com"
     - "media.qyer.com"
     - "mi.gdt.qq.com"
+    - "midc.cdn-static.abchina.com.cn"
     - "mime.baidu.com"
+    - "minipro.95504.net"
     - "mix-api.camera360.com"
     - "mlife.jf365.boc.cn"
     - "mlol.qt.qq.com"
@@ -901,6 +927,7 @@ http:
     - "sdkapp.uve.weibo.com"
     - "service.4gtv.tv"
     - "service.busi.inke.cn"
+    - "service.haiersmarthomes.com"
     - "service.iciba.com"
     - "sh-gateway.shihuo.cn"
     - "shop-api.retail.mi.com"
@@ -918,6 +945,7 @@ http:
     - "sso.ifanr.com"
     - "ssp.dzh.com.cn"
     - "stat.peopleapp.com"
+    - "static.95508.com"
     - "static.vuevideo.net"
     - "status.boohee.com"
     - "superapp.xgimi.com"
