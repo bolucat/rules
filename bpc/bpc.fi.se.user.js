@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         3.3.6.5
+// @version         3.3.6.6
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -196,8 +196,6 @@ function archiveLink(url, text_fail = 'BPC > Try for full article text (only rep
 }
 
 function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
-  if (!matchUrlDomain(['hbrchina.org'], url))
-    url = url.split('?')[0];
   return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
 }
 

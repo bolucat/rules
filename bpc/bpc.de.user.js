@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.3.6.5
+// @version         3.3.7.1
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -337,6 +337,17 @@ else if (matchDomain('kurier.at')) {
   }
   let banners = document.querySelectorAll('div#view-offer, app-paywall, adfullbanner, outbrain');
   removeDOMElement(...banners);
+}
+
+else if (matchDomain(['mz.de', 'volksstimme.de'])) {
+  let url = window.location.href;
+  let paywall = document.querySelector('div.fp-paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div[data-t-name="Article"]');
+    if (article)
+      article.firstChild.before(googleWebcacheLink(url));
+  }
 }
 
 else if (matchDomain(['shz.de', 'svz.de'])) {
@@ -838,8 +849,6 @@ function archiveLink(url, text_fail = 'BPC > Try for full article text (only rep
 }
 
 function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
-  if (!matchUrlDomain([], url))
-    url = url.split('?')[0];
   return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
 }
 

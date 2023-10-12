@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.3.5.7
+// @version         3.3.5.8
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -500,8 +500,6 @@ function archiveLink(url, text_fail = 'BPC > Full article text (only report issu
 }
 
 function googleWebcacheLink(url, text_fail = 'BPC > Full article text:\r\n') {
-  if (!matchUrlDomain([], url))
-    url = url.split('?')[0];
   return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
 }
 

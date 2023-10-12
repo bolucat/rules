@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.6.4
+// @version         3.3.7.4
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -424,7 +424,7 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['investmentweek.co.uk'])) || matchDomain(['citywire.com', 'ft.com', 'granta.com', 'scotsman.com', 'tes.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['investmentweek.co.uk'])) || matchDomain(['citywire.com', 'ft.com', 'granta.com', 'scotsman.com', 'tes.com', 'unherd.com'])) {//united kingdom/ireland
 
 if (matchDomain('autocar.co.uk')) {
   let url = window.location.href;
@@ -847,6 +847,16 @@ else if (matchDomain('thetimes.co.uk')) {
     removeDOMElement(paywall_page, block);
     let ads = document.querySelectorAll('#ad-article-inline, #sticky-ad-header, div[class*="InlineAdWrapper"], div[class*="NativeAd"], div.gyLkkj');
     hideDOMElement(...ads);
+  }
+}
+
+else if (matchDomain('unherd.com')) {
+  let preview = document.querySelector('div#premiumpreview');
+  if (preview) {
+    removeDOMElement(preview);
+    let premium = document.querySelector('div#premiumcontent');
+    if (premium)
+      premium.removeAttribute('id');
   }
 }
 
