@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.7.4
+// @version         3.3.7.5
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -442,7 +442,8 @@ else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
   if (flip_pay) {
     let content = document.querySelector('script[data-fragment-type="ArticleContent"]');
     if (content) {
-      removeDOMElement(flip_pay);
+      let fade = document.querySelector('div[class*="_fadetowhite"]');
+      removeDOMElement(flip_pay, fade);
       let intro = document.querySelector('div[data-auth-intro="article"]');
       if (intro && intro.parentNode) {
         let content_text = content.innerText;
@@ -471,6 +472,8 @@ else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
                     let figure = document.createElement('figure');
                     let img = document.createElement('img');
                     img.src = item.url;
+                    if (item.cropped && item.cropped.url)
+                      img.src = item.cropped.url;
                     figure.appendChild(img);
                     let caption = document.createElement('figcaption');
                     caption.innerText = item.caption;
