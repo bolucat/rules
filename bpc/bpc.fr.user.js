@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.3.5.6
+// @version         3.3.7.5
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -412,6 +412,17 @@ else if (matchDomain('leparisien.fr')) {
     }
   } else {
     amp_redirect('div.paywall');
+  }
+}
+
+else if (matchDomain('lepoint.fr')) {
+  let url = window.location.href;
+  let paywall = document.querySelector('aside.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div#contenu');
+    if (article)
+      article.firstChild.before(googleWebcacheLink(url));
   }
 }
 
