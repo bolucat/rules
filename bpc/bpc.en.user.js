@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.7.5
+// @version         3.3.7.6
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -1368,6 +1368,19 @@ else if (matchDomain('fortune.com')) {
 
 else if (matchDomain('harpers.org')) {
   setCookie('hr_session', '', 'harpers.org', '/', 0);
+}
+
+else if (matchDomain('hbr.org')) {
+  function hbr_main() {
+    window.top.postMessage({type: 'article-paywall:full-content'}, '*');
+  }
+  let popup = document.querySelector('.persistent-banner');
+  removeDOMElement(popup);
+  let paywall = document.querySelector('site-paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    insert_script(hbr_main);
+  }
 }
 
 else if (matchDomain('hilltimes.com')) {
