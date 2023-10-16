@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.7.6
+// @version         3.3.7.7
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -1084,12 +1084,6 @@ else if (matchDomain('businessoffashion.com')) {
     let ads = document.querySelectorAll('div[class^="default__AdsBlockWrapper"]');
     hideDOMElement(...ads);
   }
-}
-
-else if (matchDomain('cen.acs.org')) {
-  setCookie('paywall-cookie', '', 'cen.acs.org', '/', 0);
-  let meteredBar = document.querySelector('.meteredBar');
-  removeDOMElement(meteredBar);
 }
 
 else if (matchDomain(['chronicle.com', 'philanthropy.com'])) {
