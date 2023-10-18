@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.3.7.1
+// @version         3.3.8.1
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -144,29 +144,40 @@ else if (matchDomain('cicero.de')) {
 
 else if (matchDomain('faz.net')) {
   if (matchDomain('zeitung.faz.net')) {
-    let paywall_z = document.querySelector('.c-red-carpet');
+    let paywall_z = document.querySelector('div.c-red-carpet');
     if (paywall_z) {
       removeDOMElement(paywall_z);
       let og_url = document.querySelector('head > meta[property="og:url"][content]');
       if (og_url)
         window.location.href = og_url.content;
     }
-    let sticky_advt = document.querySelector('.sticky-advt');
+    let sticky_advt = document.querySelector('div.sticky-advt');
     removeDOMElement(sticky_advt);
   } else {
-    let paywall = document.querySelector('#paywall-form-container-outer, .atc-ContainerPaywall');
+    let paywall = document.querySelector('#paywall-form-container-outer, section.atc-ContainerPaywall');
     if (paywall) {
       removeDOMElement(paywall);
       let json_script = getArticleJsonScript();
       if (json_script) {
         let json_text = JSON.parse(json_script.text).articleBody;
         if (json_text) {
-          let article_text = document.querySelector('.art_txt.paywall,.atc-Text.js-atc-Text');
-          article_text.innerText = '';
-          let elem = document.createElement("p");
-          elem.setAttribute('class', 'atc-TextParagraph');
-          elem.innerText = json_text;
-          article_text.appendChild(elem);
+          let article_text = document.querySelector('div.art_txt.paywall, div.atc-Text.js-atc-Text');
+          if (article_text) {
+            article_text.innerText = '';
+            let elem = document.createElement("p");
+            elem.setAttribute('class', 'atc-TextParagraph');
+            elem.innerText = json_text;
+            article_text.appendChild(elem);
+          } else {
+            let article_text = document.querySelectorAll('div.copy');
+            if (article_text.length) {
+              for (let elem of article_text)
+                elem.innerText = '';
+              article_text[0].innerText = json_text;
+              let copy_intro = document.querySelector('p.copy--intro');
+              removeDOMElement(copy_intro);
+            }
+          }
         }
       }
     }
