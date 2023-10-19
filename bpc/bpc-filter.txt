@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.3.7.7
+! Version: 3.3.8.2
 
 ! General
 
@@ -12,7 +12,7 @@
 ||loader-cdn.azureedge.net^$third-party
 ||blueconic.net^$third-party
 ||cdn.cxense.com^$script,third-party
-@@cdn.cxense.com^$script,domain=bizjournals.com
+@@cdn.cxense.com^$script,domain=bizjournals.com|journaldemontreal.com|journaldequebec.com
 ||ensighten.com/*/Bootstrap.js$script,third-party
 ||evolok.net^$third-party
 ||paywall.fewcents.co/static/js/paywall.js
@@ -170,6 +170,8 @@ inkl.com##div.gradient-container
 interestingengineering.com##+js(ra, class, div[class*="Product_makeBlur__"])
 interestingengineering.com##div#paywall-div
 japantimes.co.jp##+js(cookie-remover, /xbc/)
+journaldemontreal.com##+js(rc, composer-content, div.article-main-txt.composer-content)
+journaldequebec.com##+js(rc, composer-content, div.article-main-txt.composer-content)
 journaldunet.com##.reg_wall
 journaldunet.com##+js(ra, style, .entry_reg_wall)
 ||jpost.com/js/js_article.min.js$script,~third-party
