@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.7.7
+// @version         3.3.8.2
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -152,32 +152,10 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || (!matchDo
 else if (window.location.hostname.match(/\.(com|net)\.au$/)) {//australia
 
 if (matchDomain('crikey.com.au')) {
-  let paywall = document.querySelector('div.locked-content');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
-    if (json_url_dom) {
-      let json_url = json_url_dom.href;
-      fetch(json_url)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(json => {
-            let json_text = json.content.rendered;
-            let content = document.querySelector('div.article-body > div.paywall');
-            if (json_text && content) {
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-              let content_new = doc.querySelector('div');
-              content.parentNode.replaceChild(content_new, content);
-            }
-          });
-        }
-      });
-    }
-    let fade = document.querySelector('article.article-locked');
-    if (fade)
-      fade.classList.remove('article-locked');
-  }
+  getJsonUrl('div.locked-content', '', 'div.article-body > div.paywall');
+  let fade = document.querySelector('article.article-locked');
+  if (fade)
+    fade.classList.remove('article-locked');
 }
 
 else if (matchDomain('macrobusiness.com.au')) {
@@ -582,29 +560,7 @@ else if (matchDomain('ft.com')) {
 }
 
 else if (matchDomain('granta.com')) {
-  let paywall = document.querySelector('div.article-sign-up-container');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
-    if (json_url_dom) {
-      let json_url = json_url_dom.href;
-      fetch(json_url)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(json => {
-            let json_text = json.content.rendered;
-            let content = document.querySelector('div.article-excerpt');
-            if (json_text && content) {
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-              let content_new = doc.querySelector('div');
-              content.parentNode.replaceChild(content_new, content);
-            }
-          });
-        }
-      });
-    }
-  }
+  getJsonUrl('div.article-sign-up-container', '', 'div.article-excerpt');
 }
 
 else if (matchDomain('independent.co.uk')) {
@@ -796,31 +752,10 @@ else if (matchDomain('tes.com')) {
 }
 
 else if (matchDomain('the-tls.co.uk')) {
-  let paywall = document.querySelector('.tls-single-article__closed-paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
-    if (json_url_dom) {
-      let json_url = json_url_dom.href;
-      fetch(json_url)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(json => {
-            let json_text = json.content.rendered;
-            let content = document.querySelector('div.tls-article-body');
-            if (json_text && content) {
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div class="tls-article-body">' + json_text + '</div>', 'text/html');
-              let content_new = doc.querySelector('div');
-              content.parentNode.replaceChild(content_new, content);
-            }
-          });
-        }
-      });
-    }
-  }
+  getJsonUrl('div.tls-single-article__closed-paywall', '', 'div.tls-article-body', {art_class: 'tls-article-body'});
   let fade = document.querySelector('div.tls-single-article__closed-paywall-wrapper');
-  removeDOMElement(fade);
+  let ads = document.querySelectorAll('div[class*="tls-single-article__ad-slot"]');
+  hideDOMElement(fade, ...ads);
 }
 
 else if (matchDomain('theneweuropean.co.uk')) {
@@ -956,6 +891,10 @@ else if (matchDomain('axios.com')) {
   waitDOMAttribute('html', 'HTML', 'style', axios_noscroll, true);
   let banners = document.querySelectorAll('div[data-vars-experiment="pro-paywall"], .apexAd');
   hideDOMElement(...banners);
+}
+
+else if (matchDomain('balkaninsight.com')) {
+  getJsonUrl('div.subscribeWrapper', '', 'div.post_teaser', {art_append: true, art_hold: true});
 }
 
 else if (matchDomain('barandbench.com')) {
@@ -1842,38 +1781,15 @@ else if (matchDomain('project-syndicate.org')) {
 }
 
 else if (matchDomain('puck.news')) {
-  let paywall = document.querySelectorAll('div[class*="paywall"]');
-  if (paywall.length) {
-    removeDOMElement(...paywall);
-    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
-    if (json_url_dom) {
-      let json_url = json_url_dom.href;
-      fetch(json_url)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(json => {
-            let json_text = json.content.rendered;
-            let content = document.querySelector('div.entry-content');
-            if (json_text && content) {
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-              content.innerHTML = '';
-              let content_new = doc.querySelector('div');
-              content.appendChild(content_new);
-            }
-          });
-        }
-      });
-    }
-    let modal = document.querySelector('div#paywall-modal');
-    removeDOMElement(modal);
-    let overlay = document.querySelector('body.paywall-active');
-    if (overlay)
-      overlay.classList.remove('paywall-active');
-    let article_style = document.querySelector('article[style]');
-    if (article_style)
-      article_style.removeAttribute('style');
-  }
+  getJsonUrl('div[class*="paywall"]', '', 'div.entry-content', {art_append: true});
+  let modal = document.querySelector('div#paywall-modal');
+  removeDOMElement(modal);
+  let overlay = document.querySelector('body.paywall-active');
+  if (overlay)
+    overlay.classList.remove('paywall-active');
+  let article_style = document.querySelector('article[style]');
+  if (article_style)
+    article_style.removeAttribute('style');
 }
 
 else if (matchDomain('quora.com')) {
@@ -2137,33 +2053,20 @@ else if (matchDomain('the-scientist.com')) {
 }
 
 else if (matchDomain('theamericanconservative.com')) {
-  let paywall = document.querySelector('section.c-blog-post__body--locked');
+  let paywall_sel = 'section.c-blog-post__body--locked';
+  let paywall = document.querySelector(paywall_sel);
   if (paywall) {
-    paywall.classList.remove('c-blog-post__body--locked');
-    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
-    if (json_url_dom) {
-      let json_url = json_url_dom.href;
-      fetch(json_url)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(json => {
-            let json_text = json.content.rendered;
-            if (json_text.includes('<p class="has-drop-cap">')) {
-              let split = json_text.split(/(<p class="has-drop-cap">)/);
-              json_text = split[1] + split[2];
-            }
-            let content = document.querySelector('div.c-blog-post__content');
-            if (json_text && content) {
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-              let content_new = doc.querySelector('div');
-              content.innerHTML = '';
-              content.appendChild(content_new);
-            }
-          });
-        }
-      });
-    }
+    let art_options = {
+      art_append: true,
+      func_text: function (json_text) {
+        if (json_text.includes('<p class="has-drop-cap">')) {
+          let split = json_text.split(/(<p class="has-drop-cap">)/);
+          json_text = split[1] + split[2];
+        };
+        return json_text;
+      }
+    };
+    getJsonUrl(paywall_sel, {rm_class: 'c-blog-post__body--locked'}, 'div.c-blog-post__content', art_options);
   } else {
     let img_dark = document.querySelector('div.c-hero-article__image-img.o-image');
     if (img_dark)
@@ -2590,32 +2493,9 @@ else if (matchDomain('theweek.com')) {
 
 else if (matchDomain('thewrap.com')) {
   setCookie('blaize_session', '', 'thewrap.com', '/', 0);
-  let paywall = document.querySelector('div#zephr-payment-form-root');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
-    if (json_url_dom) {
-      let json_url = json_url_dom.href;
-      fetch(json_url)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(json => {
-            let json_text = json.content.rendered;
-            let content = document.querySelector('div.entry-content');
-            if (json_text && content) {
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-              content.innerHTML = '';
-              let content_new = doc.querySelector('div');
-              content.appendChild(content_new);
-            }
-          });
-        }
-      });
-    }
-    let fade = document.querySelector('div.content-area div[style*="background-image: linear-gradient"]');
-    removeDOMElement(fade);
-  }
+  getJsonUrl('div#zephr-payment-form-root', '', 'div.entry-content', {art_append: true});
+  let fade = document.querySelector('div.content-area div[style*="background-image: linear-gradient"]');
+  removeDOMElement(fade);
 }
 
 else if (matchDomain('timeshighereducation.com')) {
@@ -3345,6 +3225,69 @@ function getArticleJsonScript() {
     }
   }
   return json_script;
+}
+
+function getJsonUrlText(article, callback) {
+  let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
+  let json_url = json_url_dom.href;
+  fetch(json_url)
+  .then(response => {
+    if (response.ok) {
+      response.json().then(json => {
+        try {
+          let json_text = parseHtmlEntities(json.content.rendered);
+          callback(json_text, article);
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    }
+  });
+}
+
+function getJsonUrlAdd(json_text, article, art_options = {}) {
+  let art_type = 'div';
+  let art_attrib = '';
+  if (Object.keys(art_options).length) {
+    if (art_options.art_type)
+      art_type = art_options.art_type;
+    if (art_options.art_class)
+      art_attrib += ' class="' + art_options.art_class + '"';
+    if (art_options.art_style)
+      art_attrib += ' style="' + art_options.art_style + '"';
+    if (art_options.func_text)
+      json_text = art_options.func_text(json_text);
+  }
+  let parser = new DOMParser();
+  let doc = parser.parseFromString('<' + art_type + art_attrib + '>' + json_text + '</' + art_type + '>', 'text/html');
+  let article_new = doc.querySelector(art_type);
+  if (art_options.art_append || !article.parentNode) {
+    if (!art_options.art_hold)
+      article.innerHTML = '';
+    article.appendChild(article_new);
+  } else
+    article.parentNode.replaceChild(article_new, article);
+}
+  
+function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}) {
+  let paywall = document.querySelectorAll(paywall_sel);
+  let article = document.querySelector(article_sel);
+  if (paywall.length && article) {
+    if (!paywall_action)
+      removeDOMElement(...paywall);
+    else {
+      for (let elem of paywall) {
+        if (paywall_action.rm_class)
+          elem.classList.remove(paywall_action.rm_class);
+        else if (paywall_action.rm_attrib)
+          elem.removeAttribute(paywall_action.rm_attrib);
+      }
+    }
+    getJsonUrlText(article, (json_text, article) => {
+      if (json_text && article)
+        getJsonUrlAdd(json_text, article, art_options);
+    });
+  }
 }
 
 function randomInt(max) {

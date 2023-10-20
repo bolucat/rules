@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.3.5.8
+// @version         3.3.8.1
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -391,35 +391,15 @@ else if (matchDomain('telegraaf.nl')) {
 }
 
 else if (matchDomain('vn.nl')) {
-  let paywall = document.querySelector('div.content__message-no-access-container');
-  if (paywall) {
-    let content_restriction = document.querySelector('div.content__restriction');
-    removeDOMElement(paywall, content_restriction);
+  getJsonUrl('div.content__message-no-access-container', '', 'div[data-article-content-target]', {art_append: true});
+  let content_restriction = document.querySelector('div.content__restriction');
+  removeDOMElement(content_restriction);
+  let article_content = document.querySelector('section[data-article-content-element]');
+  if (article_content) {
+    article_content.style = 'max-height:none !important;';
     let body = document.querySelector('body');
     if (body)
       body.style = 'height:auto !important;';
-    let article_content = document.querySelector('section[data-article-content-element]');
-    if (article_content)
-      article_content.style = 'max-height:none !important;';
-    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
-    if (json_url_dom) {
-      let json_url = json_url_dom.href;
-      fetch(json_url)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(json => {
-            let json_text = json.content.rendered;
-            let content = document.querySelector('div[data-article-content-target]');
-            if (json_text && content) {
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div data-article-content-target>' + json_text + '</div>', 'text/html');
-              let content_new = doc.querySelector('div');
-              content.parentNode.replaceChild(content_new, content);
-            }
-          });
-        }
-      });
-    }
   }
 }
 
@@ -534,6 +514,81 @@ function getArticleJsonScript() {
     }
   }
   return json_script;
+}
+
+function getJsonUrlText(article, callback) {
+  let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
+  let json_url = json_url_dom.href;
+  fetch(json_url)
+  .then(response => {
+    if (response.ok) {
+      response.json().then(json => {
+        try {
+          let json_text = parseHtmlEntities(json.content.rendered);
+          callback(json_text, article);
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    }
+  });
+}
+
+function getJsonUrlAdd(json_text, article, art_options = {}) {
+  let art_type = 'div';
+  let art_attrib = '';
+  if (Object.keys(art_options).length) {
+    if (art_options.art_type)
+      art_type = art_options.art_type;
+    if (art_options.art_class)
+      art_attrib += ' class="' + art_options.art_class + '"';
+    if (art_options.art_style)
+      art_attrib += ' style="' + art_options.art_style + '"';
+    if (art_options.func_text)
+      json_text = art_options.func_text(json_text);
+  }
+  let parser = new DOMParser();
+  let doc = parser.parseFromString('<' + art_type + art_attrib + '>' + json_text + '</' + art_type + '>', 'text/html');
+  let article_new = doc.querySelector(art_type);
+  if (art_options.art_append || !article.parentNode) {
+    if (!art_options.art_hold)
+      article.innerHTML = '';
+    article.appendChild(article_new);
+  } else
+    article.parentNode.replaceChild(article_new, article);
+}
+  
+function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}) {
+  let paywall = document.querySelectorAll(paywall_sel);
+  let article = document.querySelector(article_sel);
+  if (paywall.length && article) {
+    if (!paywall_action)
+      removeDOMElement(...paywall);
+    else {
+      for (let elem of paywall) {
+        if (paywall_action.rm_class)
+          elem.classList.remove(paywall_action.rm_class);
+        else if (paywall_action.rm_attrib)
+          elem.removeAttribute(paywall_action.rm_attrib);
+      }
+    }
+    getJsonUrlText(article, (json_text, article) => {
+      if (json_text && article)
+        getJsonUrlAdd(json_text, article, art_options);
+    });
+  }
+}
+
+function parseHtmlEntities(encodedString) {
+  let translate_re = /&(nbsp|amp|quot|lt|gt|deg|hellip|laquo|raquo|ldquo|rdquo|lsquo|rsquo|mdash);/g;
+  let translate = {"nbsp": " ", "amp": "&", "quot": "\"", "lt": "<", "gt": ">", "deg": "°", "hellip": "…",
+      "laquo": "«", "raquo": "»", "ldquo": "“", "rdquo": "”", "lsquo": "‘", "rsquo": "’", "mdash": "—"};
+  return encodedString.replace(translate_re, function (match, entity) {
+      return translate[entity];
+  }).replace(/&#(\d+);/gi, function (match, numStr) {
+      let num = parseInt(numStr, 10);
+      return String.fromCharCode(num);
+  });
 }
 
 })();

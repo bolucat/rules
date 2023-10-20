@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.3.8.1
+// @version         3.3.8.2
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -256,31 +256,9 @@ else if (matchDomain('jacobin.de')) {
 }
 
 else if (matchDomain('jungefreiheit.de')) {
-  let paywall = document.querySelector('div.paywall-teaser-box');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
-    if (json_url_dom) {
-      let json_url = json_url_dom.href;
-      fetch(json_url)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(json => {
-            let json_text = json.content.rendered;
-            let content = document.querySelector('div.elementor-widget-container > p');
-            if (json_text && content) {
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-              let content_new = doc.querySelector('div');
-              content.parentNode.replaceChild(content_new, content);
-            }
-          });
-        }
-      });
-    }
-    let fade = document.querySelector('div[style*="background-image: url"]');
-    removeDOMElement(fade);
-  }
+  getJsonUrl('div.paywall-teaser-box', '', 'div.elementor-widget-container > p');
+  let fade = document.querySelector('div[style*="background-image: url"]');
+  removeDOMElement(fade);
   window.setTimeout(function () {
     let banners = document.querySelectorAll('div > small');
     for (let elem of banners)
@@ -969,6 +947,69 @@ function getArticleJsonScript() {
     }
   }
   return json_script;
+}
+
+function getJsonUrlText(article, callback) {
+  let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
+  let json_url = json_url_dom.href;
+  fetch(json_url)
+  .then(response => {
+    if (response.ok) {
+      response.json().then(json => {
+        try {
+          let json_text = parseHtmlEntities(json.content.rendered);
+          callback(json_text, article);
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    }
+  });
+}
+
+function getJsonUrlAdd(json_text, article, art_options = {}) {
+  let art_type = 'div';
+  let art_attrib = '';
+  if (Object.keys(art_options).length) {
+    if (art_options.art_type)
+      art_type = art_options.art_type;
+    if (art_options.art_class)
+      art_attrib += ' class="' + art_options.art_class + '"';
+    if (art_options.art_style)
+      art_attrib += ' style="' + art_options.art_style + '"';
+    if (art_options.func_text)
+      json_text = art_options.func_text(json_text);
+  }
+  let parser = new DOMParser();
+  let doc = parser.parseFromString('<' + art_type + art_attrib + '>' + json_text + '</' + art_type + '>', 'text/html');
+  let article_new = doc.querySelector(art_type);
+  if (art_options.art_append || !article.parentNode) {
+    if (!art_options.art_hold)
+      article.innerHTML = '';
+    article.appendChild(article_new);
+  } else
+    article.parentNode.replaceChild(article_new, article);
+}
+  
+function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}) {
+  let paywall = document.querySelectorAll(paywall_sel);
+  let article = document.querySelector(article_sel);
+  if (paywall.length && article) {
+    if (!paywall_action)
+      removeDOMElement(...paywall);
+    else {
+      for (let elem of paywall) {
+        if (paywall_action.rm_class)
+          elem.classList.remove(paywall_action.rm_class);
+        else if (paywall_action.rm_attrib)
+          elem.removeAttribute(paywall_action.rm_attrib);
+      }
+    }
+    getJsonUrlText(article, (json_text, article) => {
+      if (json_text && article)
+        getJsonUrlAdd(json_text, article, art_options);
+    });
+  }
 }
 
 function pageContains(selector, text) {
