@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.8.2
+// @version         3.3.8.3
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -15,6 +15,7 @@
 // @match           *://*.businesspost.ie/*
 // @match           *://*.europower.no/*
 // @match           *://*.fiskeribladet.no/*
+// @match           *://*.haaretz.co.il/*
 // @match           *://*.hindutamil.in/*
 // @match           *://*.independent.ie/*
 // @match           *://*.indiatoday.in/*
@@ -1297,6 +1298,19 @@ else if (matchDomain('fortune.com')) {
     if (paywall)
       paywall.removeAttribute('class');
   }
+}
+
+else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
+  window.setTimeout(function () {
+    let url = window.location.href;
+    let paywall = document.querySelector('div[data-test="paywallMidpage"]');
+	console.log(paywall);
+    if (paywall) {
+      removeDOMElement(paywall);
+      let article = document.querySelector('div[data-test="articleBody"]');
+      article.firstChild.before(archiveLink(url));
+    }
+  }, 1000);
 }
 
 else if (matchDomain('harpers.org')) {
@@ -2739,8 +2753,8 @@ else if (matchDomain('wsj.com')) {
           } else if (window.location.search) {
             window.location.href = window.location.pathname;
           } else {
-            let header = document.querySelector('div.article-header, article > div');
-            header_nofix(header);
+            let article = document.querySelector('article');
+            article.firstChild.before(googleSearchToolLink(window.location.href));
           }
         }
       }
@@ -3079,6 +3093,10 @@ function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r
   if (!matchUrlDomain(['hbrchina.org'], url))
     url = url.split('?')[0];
   return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
+}
+
+function googleSearchToolLink(url, text_fail = 'BPC > Full article text (test url & copy html (tab) code to [https://codebeautify.org/htmlviewer]:\r\n') {
+  return externalLink(['search.google.com'], 'https://search.google.com/test/rich-results?url={url}', encodeURIComponent(url), text_fail);
 }
 
 function ext_12ftLink(url, text_fail = 'BPC > Full article text:\r\n') {

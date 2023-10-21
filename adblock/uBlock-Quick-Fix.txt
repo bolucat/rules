@@ -68,12 +68,13 @@ plagiarismchecker.co##[class^="tata"], [class^="baba"], [class^="caca"], #top-ad
 plagiarismchecker.co##.col-md-9 > section + span > section[class]
 plagiarismchecker.co##[class][style*="display"][style*="block"]:has(a img[src^="https://www.plagiarismchecker.co/"])
 
-! https://old.reddit.com/r/uBlockOrigin/comments/16lmeri/youtube_antiadblock_and_ads_september_18_2023/k1uf2s1/ - f9e9fd40
+! https://old.reddit.com/r/uBlockOrigin/comments/16lmeri/youtube_antiadblock_and_ads_september_18_2023/k1uf2s1/ - b926992e
 youtube.com#@#+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots)
 !#if env_firefox
 www.youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots, , /^(?=.*\.js)(?!.*j\.s[ \S]+polymer).*/)
 !#else
-www.youtube.com##+js(trusted-replace-fetch-response, /"adPlacements.*?\/(aclk\?sa=L&ai=C[-_0-9A-Za-z]+__________|get_midroll_info\S+&token=ALHj).*?"\}\}\}\]\,/, , url:player?key=)
+www.youtube.com##+js(trusted-replace-fetch-response, /(maxAgeSeconds.*?"loggedOut":[ft].*?)"adPlacements.*?"\}\}\}\]\,/, $1, url:player?key=)
+www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?\/(aclk\?sa=L&ai=C[-_0-9A-Za-z]+__________|get_midroll_info\S+&token=ALHj).*?"\}\}\}\]\,/, , url:player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?\/(aclk\?sa=L&ai=C[-_0-9A-Za-z]+__________|get_midroll_info\S+&token=ALH).*?"\}\}\}\]\,/, , url:player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /(itag=.*?)"adSlots.*?\}\]\}\}\]\,/, $1, url:player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /(itag=.*?)"adPlacements.*?"\}\}\}\]\,/, $1, url:player?key=)
@@ -144,6 +145,8 @@ sankaku.app##+js(no-xhr-if, googlesyndication)
 
 ! https://github.com/uBlockOrigin/uAssets/discussions/17361#discussioncomment-7251777
 @@||surfe.pro/net/teaser$xhr,domain=btcbitco.in|btcsatoshi.net|crypto4yu.com|readbitcoin.org
+btcbitco.in##+js(set, s13OWh18hhnqp6eta, true)
+btcsatoshi.net##+js(set, aOWh18hhnqp6eta, true)
 
 ! https://github.com/uBlockOrigin/uAssets/issues/20013
 @@||adobedtm.com^*/satelliteLib-$script,domain=costco.*
@@ -188,3 +191,6 @@ teltarif.de##img[referrerpolicy="unsafe-url"][src^="/img/"][src$=".jpg"]
 ! https://github.com/uBlockOrigin/uAssets/issues/20181
 washingtonpost.com#@#+js(rmnt, script, /adblock/)
 washingtonpost.com##+js(rmnt, script, /\badblock\b/)
+
+! https://github.com/uBlockOrigin/uAssets/issues/20199
+@@||assets.adobedtm.com^$script,domain=as.com
