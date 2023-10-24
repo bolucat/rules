@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.8.4
+// @version         3.3.9.1
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -183,6 +183,10 @@ else if (matchDomain('macrobusiness.com.au')) {
       }
     }
   }
+}
+
+else if (matchDomain('spectator.com.au')) {
+  getJsonUrl('section.paywall', '', 'div.article-body', {art_append: true});
 }
 
 else if (matchDomain('thesaturdaypaper.com.au')) {
@@ -404,9 +408,15 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['investmentweek.co.uk'])) || matchDomain(['citywire.com', 'ft.com', 'granta.com', 'scotsman.com', 'tes.com', 'unherd.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['investmentweek.co.uk'])) || matchDomain(['apollo-magazine.com', 'citywire.com', 'ft.com', 'granta.com', 'scotsman.com', 'tes.com', 'unherd.com'])) {//united kingdom/ireland
 
-if (matchDomain('autocar.co.uk')) {
+if (matchDomain('apollo-magazine.com')) {
+  setCookie('blaize_session', '', 'apollo-magazine.com', '/', 0);
+  let banner = document.querySelector('#subscribe-ribbon');
+  removeDOMElement(banner);
+}
+
+else if (matchDomain('autocar.co.uk')) {
   let url = window.location.href;
   let paywall = document.querySelector('div.ms-block, div.register-block');
   if (paywall) {
@@ -2743,19 +2753,22 @@ else if (matchDomain('wsj.com')) {
           masthead_link.href = 'https://www.wsj.com';
       } else {
         let snippet = document.querySelector('.snippet-promotion, div#cx-snippet-overlay');
-        let wsj_pro = document.querySelector('head > meta[name="page.site"][content="wsjpro"]');
-        if (snippet || wsj_pro) {
-          removeDOMElement(snippet, wsj_pro);
+        if (snippet) {
+          removeDOMElement(snippet);
           if (!matchDomain('www.wsj.com')) {
             if (url_article)
               window.location.href = window.location.href.replace('wsj.com', 'wsj.com/amp');
             else
               window.location.href = '/amp/articles/' + path_article[0];
-          } else if (window.location.search) {
-            window.location.href = window.location.pathname;
           } else {
+            let wsj_pro = snippet.querySelector('a[href^="https://wsjpro.com/"]');
             let article = document.querySelector('article');
-            article.firstChild.before(googleSearchToolLink(window.location.href));
+            if (article) {
+              if (wsj_pro)
+                article.firstChild.before(googleSearchToolLink(window.location.href));
+              else
+                article.firstChild.before(archiveLink(window.location.href));
+            }
           }
         }
       }
