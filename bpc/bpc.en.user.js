@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.9.1
+// @version         3.3.9.3
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -930,17 +930,12 @@ else if (matchDomain('barandbench.com')) {
 else if (matchDomain('barrons.com')) {
   let url = window.location.href;
   if (!url.includes('barrons.com/amp/')) {
-    let body_continuous = document.querySelector('body.is-continuous');
-    let snippet = document.querySelector('head > meta[content="snippet"]');
-    if (body_continuous && snippet) {
-      removeDOMElement(snippet);
-      window.location.href = url.replace('barrons.com', 'barrons.com/amp');
-    }
+    amp_redirect('div#cx-interstitial-snippet', '', '/amp' + window.location.pathname);
     let continue_buttons = document.querySelectorAll('button.snippet__buttons--continue');
     for (let elem of continue_buttons)
       elem.addEventListener('click', function () { window.location.reload(); });
-    let barrons_ads = document.querySelectorAll('.barrons-body-ad-placement');
-    hideDOMElement(...barrons_ads);
+    let ads = document.querySelectorAll('div[class*="_AdWrapper-"], div[class*="-adWrapper-"]');
+    hideDOMElement(...ads);
   } else {
     amp_unhide_subscr_section('.wsj-ad, amp-ad');
     let login = document.querySelector('div.login-section-container');
@@ -2768,6 +2763,8 @@ else if (matchDomain('wsj.com')) {
                 article.firstChild.before(googleSearchToolLink(window.location.href));
               else
                 article.firstChild.before(archiveLink(window.location.href));
+              if (!mobile)
+                header_nofix(document.querySelector('div#bpc_archive'), 'BPC > hard refresh page (for Windows: Ctrl + Enter in address bar) or use link below');
             }
           }
         }
@@ -3099,7 +3096,7 @@ function refreshCurrentTab() {
   window.location.reload(true);
 }
 
-function archiveLink(url, text_fail = 'BPC > Try for full article text (only report issue if not working for over a week):\r\n') {
+function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
   return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
 }
 
