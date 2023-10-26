@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.9.3
+// @version         3.3.9.4
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -234,8 +234,8 @@ else {
     hideDOMElement(story_generic_iframe, blocker, ...overlays, ...ads);
   } else if (window.location.hostname.endsWith('.com.au')) {
     // Australia News Corp
-    let au_news_corp_domains = ['adelaidenow.com.au', 'cairnspost.com.au', 'codesports.com.au', 'couriermail.com.au', 'dailytelegraph.com.au', 'geelongadvertiser.com.au', 'goldcoastbulletin.com.au', 'heraldsun.com.au', 'ntnews.com.au', 'theaustralian.com.au', 'thechronicle.com.au', 'themercury.com.au', 'townsvillebulletin.com.au', 'weeklytimesnow.com.au'];
-    let au_news_corp_no_amp_fix = ['codesports.com.au'];
+    let au_news_corp_domains = ['adelaidenow.com.au', 'cairnspost.com.au', 'couriermail.com.au', 'dailytelegraph.com.au', 'geelongadvertiser.com.au', 'goldcoastbulletin.com.au', 'heraldsun.com.au', 'ntnews.com.au', 'theaustralian.com.au', 'thechronicle.com.au', 'themercury.com.au', 'townsvillebulletin.com.au', 'weeklytimesnow.com.au'];
+    let au_news_corp_no_amp_fix = [];
     if (matchDomain(au_news_corp_domains)) {
       let url = window.location.href;
       if (url.includes('/subscribe/') && !matchDomain(au_news_corp_no_amp_fix)) {
@@ -262,13 +262,6 @@ else {
         }
         removeDOMElement(comments);
       } else {
-        if (matchDomain('codesports.com.au')) {
-          let lazy_images = document.querySelectorAll('img.lazyload[data-src]:not([src])');
-          for (let elem of lazy_images) {
-            elem.src = elem.getAttribute('data-src');
-            elem.classList.remove('lazyload');
-          }
-        }
         let ads = document.querySelectorAll('.header_ads-container, .ad-block, .ad-container');
         hideDOMElement(...ads);
       }

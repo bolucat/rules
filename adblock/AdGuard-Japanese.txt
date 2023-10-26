@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: KjFoqxxnNiXbavGpjOsdEg
+! Checksum: 4B1k498Y9Y0JHCAKuD1R6Q
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.44.99
-! TimeUpdated: 2023-10-25T13:04:19+00:00
+! Version: 2.0.45.6
+! TimeUpdated: 2023-10-26T14:32:29+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -992,8 +992,6 @@ jav380.com##+js(set-constant, document.write, noopFunc)
 anacap.doorblog.jp##+js(addEventListener-defuser, scroll, b.type)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/144212
 anianierosuki.work##+js(addEventListener-defuser, click, event)
-! https://github.com/AdguardTeam/AdguardFilters/issues/142720
-trpger.us,mk.yopo.work,sushi.ski,warpday.net,zadankai.club,misskey.io,misskey.oga.ninja##+js(json-prune, ads.[].imageUrl)
 ! popup
 oppaideippai.net##+js(window.open-defuser)
 ! ads
@@ -1610,6 +1608,10 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+||media.misskeyusercontent.com/*.png?ad=
+khb-tv.co.jp#?#ul[class^="list"][class$="__list"] > li:has(> div[id^="div-gpt-"])
+itmedia.co.jp##div[style="min-width:600px;min-height:32px;"]
+itmedia.co.jp###BelowArtLink
 ||subscription.ximera.com^$subdocument,domain=ryukyushimpo.jp
 ryukyushimpo.jp##.ryukyushimpo-fourteen-container
 ryukyushimpo.jp#?#article ~ .flex-col:has(div[id^="gpt-"][style^="min-width:"])
@@ -2444,6 +2446,7 @@ kensetsunews.com###sidebar > div > div > div.g
 fc2.com##iframe[src^="https://media5.fc2.com/"]
 ||fc2.com/a/pagead/
 ||fc2.com/pagead/
+rakuten-sec.co.jp##.list-banner-01
 rakuten-sec.co.jp##.footerBanner
 blog.kaerucloud.com,kojintekibikematomeblog.com##.side-topad
 city.sumida.lg.jp##.bnr_area
@@ -7831,6 +7834,7 @@ alc.co.jp###news > ul
 alc.co.jp###container > div[style^="width:1100px; "]
 ||aacdn.jp/js/aa/matome/ad.js
 news.allabout.co.jp##.layout_sidebar > div.obtain-height
+allabout.co.jp##div[data-tracking-zone*="-ad"]
 allabout.co.jp##.aa_content-side > div[data-tracking-zone] > div.obtain-height
 allabout.co.jp##.sys-aa_placement
 allabout.co.jp##.docomo_custom_alliance
@@ -7840,7 +7844,6 @@ allabout.co.jp##.fixed_bottom_aa_ad
 allabout.co.jp##.ec-site-box.sys-ga-event-affiliate
 allabout.co.jp###sys-article-upper-afc
 allabout.co.jp##.aa_rec-box
-allabout.co.jp##.js-ui-top-banner-animation
 asia.nikkei.com##.article__footer:last-child
 atwiki.jp###google_relate_ads
 atwiki.jp##.atwiki-ads-margin
@@ -10070,8 +10073,6 @@ eromanga-school.com#@#.related-ad-area
 @@||hbb.afl.rakuten.co.jp/hgb/*%3A%2F%2Fthumbnail.*%3D128x128$image,domain=blog.livedoor.jp|seesaa.net
 ! potentially useful
 komachi.yomiuri.co.jp#@#._popIn_recommend_article_ad_reserved
-! fix Topics on news.ameba.jp,ameblo.jp
-@@||ad.pr.ameba.jp/tpc/list/$xmlhttprequest
 ! https://github.com/AdguardTeam/AdguardFilters/issues/84055
 @@||cdn.relaido.jp/rplayer/$script,domain=tv.golfnetwork.co.jp
 ! https://github.com/AdguardTeam/AdguardFilters/issues/83252
