@@ -73,8 +73,10 @@ clash() {
 	# resolve some problems
 	# delete 'mobile-verif.253.365.457.14.strangled.net' and its root domain
 	# delete 'us-east-2.protection.sophos.com'
+ 	# delete 'ns.800.160.0.52-207-7-170.cprapid.com' and its root domain
 	sed -i $"/strangled\.net/d" phishing-temp.txt
 	sed -i $"/us-east-2\.protection\.sophos\.com/d" phishing-temp.txt
+ 	sed -i $"/cprapid\.com/d" phishing-temp.txt
 	cat phishing-temp.txt | grep -oE '([0-9]{1,3}[\.]){3}[0-9]{1,3}' > phishing-temp-ips.txt
 	# delete ips
 	export IPS=$(($(sed -n '$=' phishing-temp-ips.txt)+1))
