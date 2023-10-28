@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.3.7.3
+// @version         3.3.9.1
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -9,6 +9,7 @@
 // @match           *://*.ara.cat/*
 // @match           *://*.arabalears.cat/*
 // @match           *://*.cambiocolombia.com/*
+// @match           *://*.cartacapital.com.br/*
 // @match           *://*.clarin.com/*
 // @match           *://*.cmjornal.pt/*
 // @match           *://*.diaridegirona.cat/*
@@ -272,6 +273,31 @@ else if (matchDomain('cambiocolombia.com')) {
     }
   } else {
     amp_unhide_subscr_section('amp-ad, amp-embed');
+  }
+}
+
+else if (matchDomain('cartacapital.com.br')) {
+  let paywall = document.querySelector('aside.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      try {
+        let json = JSON.parse(json_script.text);
+        if (json) {
+          let json_text = json[1].articleBody.replace(/\s{2,}/g, '\r\n\r\n');
+          let content = document.querySelector('section.s-content__text');
+          if (json_text && content) {
+            content.innerHTML = '';
+            let article_new = document.createElement('p');
+            article_new.innerText = json_text;
+            content.appendChild(article_new);
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 }
 

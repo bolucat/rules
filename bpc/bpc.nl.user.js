@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.3.8.1
+// @version         3.3.9.1
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
@@ -18,7 +18,6 @@
 // @match           *://*.frieschdagblad.nl/*
 // @match           *://*.gelderlander.nl/*
 // @match           *://*.groene.nl/*
-// @match           *://*.hln.be/*
 // @match           *://*.hoogeveenschecourant.nl/*
 // @match           *://*.humo.be/*
 // @match           *://*.knack.be/*
@@ -237,7 +236,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
   hideDOMElement(...ads);
 }
 
-else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
+else if (matchDomain(nl_dpg_adr_domains)) {
   let url = window.location.href;
   let paywall = document.querySelector('div#remaining-paid-content');
   if (paywall) {
@@ -475,7 +474,7 @@ function waitDOMAttribute(selector, tagName = '', attributeName = '', callback, 
   });
 }
 
-function archiveLink(url, text_fail = 'BPC > Full article text (only report issue if not working for over a week):\r\n') {
+function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
   return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
 }
 
