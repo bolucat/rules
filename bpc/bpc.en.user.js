@@ -1,8 +1,11 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.9.5
+// @version         3.3.9.6
+// @description     Bypass Paywalls of news sites
+// @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
+// @supportURL      https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.com/*
 // @match           *://*.co.uk/*
@@ -2794,7 +2797,7 @@ else if (matchDomain('zerohedge.com')) {
   }
 }
 
-else if ((domain = matchDomain(usa_lee_ent_domains)) || matchDomain(ca_torstar_domains.concat(['abqjournal.com']) || document.querySelector('script[src*=".townnews.com/"][src*="/tncms/"]')) {
+else if ((domain = matchDomain(usa_lee_ent_domains)) || matchDomain(ca_torstar_domains.concat(['abqjournal.com'])) || document.querySelector('script[src*=".townnews.com/"][src*="/tncms/"]')) {
   if (window.location.pathname.endsWith('.amp.html')) {
     amp_unhide_access_hide('="hasAccess"', '="NOT hasAccess"', 'amp-ad, amp-embed, .amp-ads-container');
     let elem_hidden = document.querySelectorAll('html[class], body[class]');
