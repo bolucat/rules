@@ -1,8 +1,11 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.3.9.1
+// @version         3.3.9.2
+// @description     Bypass Paywalls of news sites
+// @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
+// @supportURL      https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.ad.nl/*
 // @match           *://*.artsenkrant.com/*
@@ -113,7 +116,7 @@ else if (matchDomain('groene.nl')) {
     removeDOMElement(paywall);
     let article = document.querySelector('section.article-wrapper');
     if (article)
-      article.firstChild.before(ext_12ftLink(url));
+      article.firstChild.before(nftLink(url));
   }
 }
 
@@ -482,8 +485,8 @@ function googleWebcacheLink(url, text_fail = 'BPC > Full article text:\r\n') {
   return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
 }
 
-function ext_12ftLink(url, text_fail = 'BPC > Full article text:\r\n') {
-  return externalLink(['12ft.io'], 'https://{domain}/{url}', url, text_fail);
+function nftLink(url, text_fail = 'BPC > Full article text:\r\n') {
+  return externalLink(['1ft.io'], 'https://{domain}/{url}', url, text_fail);
 }
 
 function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full article text:\r\n') {

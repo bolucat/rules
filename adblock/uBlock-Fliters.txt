@@ -28,13 +28,7 @@ www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?\/(aclk\?
 www.youtube.com#@#+js(trusted-replace-fetch-response, /(maxAgeSeconds.*?"loggedOut":[ft].*?)"adPlacements.*?"\}\}\}\]\,/, $1, url:player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?\/(aclk\?sa=L&ai=C[-_0-9A-Za-z]+__________|get_midroll_info\S+&token=ALHj).*?"\}\}\}\]\,/, , url:player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?\/(aclk\?sa=L&ai=C[-_0-9A-Za-z]+__________|get_midroll_info\S+&token=ALH).*?"\}\}\}\]\,/, , url:player?key=)
-www.youtube.com#@#+js(trusted-replace-fetch-response, /(itag=.*?)"adSlots.*?\}\]\}\}\]\,/, $1, url:player?key=)
-www.youtube.com#@#+js(trusted-replace-fetch-response, /(itag=.*?)"adPlacements.*?"\}\}\}\]\,/, $1, url:player?key=)
-www.youtube.com#@#+js(trusted-replace-fetch-response, /(itag=.*?)"playerAds.*?\}\}\]\,/, $1, url:player?key=)
 !#endif
-www.youtube.com#@#+js(trusted-replace-fetch-response, /("lastModified":"[^"]{3}.*?)"adSlots.*?\}\]\}\}\]\,/, $1, url:player?key=)
-www.youtube.com#@#+js(trusted-replace-fetch-response, /("lastModified":"[^"]{3}.*?)"adPlacements.*?"\}\}\}\]\,/, $1, url:player?key=)
-www.youtube.com#@#+js(trusted-replace-fetch-response, /("lastModified":"[^"]{3}.*?)"playerAds.*?\}\}\]\,/, $1, url:player?key=)
 ! https://www.reddit.com/r/uBlockOrigin/comments/154vtwy/getting_ads_on_youtube/jsu299l/
 youtube.com,youtubekids.com,youtube-nocookie.com##+js(set, ytInitialPlayerResponse.playerAds, undefined)
 youtube.com,youtubekids.com,youtube-nocookie.com##+js(set, ytInitialPlayerResponse.adPlacements, undefined)
@@ -6169,6 +6163,7 @@ file-upload.*##+js(noeval-if, ppu)
 file-upload.*##+js(nosiif, visibility, 1000)
 file-upload.*##+js(nowoif)
 file-upload.*##+js(acs, document.getElementById, undefined)
+file-upload.*##+js(acs, getCookie, setCookie)
 file-upload.*##ins.adsbygoogle
 ! https://github.com/uBlockOrigin/uAssets/issues/13862
 ||file-upload.com^$csp=sandbox allow-forms allow-same-origin allow-scripts allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation
@@ -14746,8 +14741,6 @@ azarplus.com###overbox3
 ||imgzong.*^$csp=script-src * 'unsafe-inline'
 cloudgallery.net,imghot.net##+js(aopr, AaDetector)
 cloudgallery.net,imghot.net##+js(aopr, console.clear)
-||imgair.net^$3p
-||pixsense.net^$3p
 
 ! https://github.com/NanoMeow/QuickReports/issues/3097
 ! https://github.com/uBlockOrigin/uAssets/issues/7335

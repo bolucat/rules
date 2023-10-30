@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.9.6
+// @version         3.3.9.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -843,7 +843,7 @@ else if (matchDomain('adweek.com')) {
   if (paywall) {
     removeDOMElement(paywall);
     let article = document.querySelector('div.adw-article-body');
-    article.appendChild(ext_12ftLink(url));
+    article.appendChild(nftLink(url));
   }
 }
 
@@ -3106,8 +3106,8 @@ function googleSearchToolLink(url, text_fail = 'BPC > Full article text (test ur
   return externalLink(['search.google.com'], 'https://search.google.com/test/rich-results?url={url}', encodeURIComponent(url), text_fail);
 }
 
-function ext_12ftLink(url, text_fail = 'BPC > Full article text:\r\n') {
-  return externalLink(['12ft.io'], 'https://{domain}/{url}', url, text_fail);
+function nftLink(url, text_fail = 'BPC > Full article text:\r\n') {
+  return externalLink(['1ft.io'], 'https://{domain}/{url}', url, text_fail);
 }
 
 function freediumLink(url, text_fail = 'BPC > Try for full article text:\r\n') {

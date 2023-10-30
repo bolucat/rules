@@ -1,8 +1,11 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.3.8.2
+// @version         3.3.9.1
+// @description     Bypass Paywalls of news sites
+// @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
+// @supportURL      https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.de/*
 // @match           *://*.beobachter.ch/*
@@ -833,7 +836,7 @@ function refreshCurrentTab() {
   window.location.reload(true);
 }
 
-function archiveLink(url, text_fail = 'BPC > Try for full article text (only report issue if not working for over a week):\r\n') {
+function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
   return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
 }
 
@@ -841,8 +844,8 @@ function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r
   return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
 }
 
-function ext_12ftLink(url, text_fail = 'BPC > Full article text:\r\n') {
-  return externalLink(['12ft.io'], 'https://{domain}/{url}', url, text_fail);
+function nftLink(url, text_fail = 'BPC > Full article text:\r\n') {
+  return externalLink(['1ft.io'], 'https://{domain}/{url}', url, text_fail);
 }
 
 function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full article text:\r\n') {

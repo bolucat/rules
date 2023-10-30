@@ -1,8 +1,11 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
 // @version         3.3.9.1
+// @description     Bypass Paywalls of news sites
+// @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
+// @supportURL      https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.es/*
 // @match           *://*.abril.com.br/*
