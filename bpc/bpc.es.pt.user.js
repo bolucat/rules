@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.3.9.1
+// @version         3.4.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
+// @homepageURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.es/*
@@ -137,8 +138,10 @@ else if (matchDomain('elpais.com')) {
   if (window.location.pathname.endsWith('.amp.html') || window.location.search.match(/(\?|&)outputType=amp/)) {
     amp_unhide_access_hide('="vip"], [amp-access="success"', '="NOT vip"], [amp-access="NOT success"');
   } else {
-    let banners = document.querySelectorAll('div#ctn_freemium_article, div#ctn_premium_article, div.ad');
-    hideDOMElement(...banners);
+    let paywall = document.querySelector('div#ctn_freemium_article, div#ctn_premium_article');
+    removeDOMElement(paywall);
+    let ads = document.querySelectorAll('div.ad');
+    hideDOMElement(...ads);
   }
 }
 

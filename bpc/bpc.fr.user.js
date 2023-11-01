@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.3.9.2
+// @version         3.3.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
+// @homepageURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.fr/*
@@ -375,6 +376,17 @@ else if (matchDomain('ledevoir.com')) {
   removeDOMElement(counter);
 }
 
+else if (matchDomain('lefigaro.fr')) {
+  let url = window.location.href;
+  let paywall = document.querySelector('div#fig-premium-paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.fig-content-body');
+    if (article)
+      article.firstChild.before(archiveLink(url));
+  }
+}
+
 else if (matchDomain('legrandcontinent.eu')) {
   let paywall = document.querySelector('body.paywall, body.pw, body.softwall');
   if (paywall)
@@ -401,6 +413,20 @@ else if (matchDomain('lemagit.fr')) {
     paywall.classList.remove('paywall');
     let banners = document.querySelectorAll('p#firstP, div#inlineRegistrationWrapper');
     removeDOMElement(...banners);
+  }
+}
+
+else if (matchDomain('lemonde.fr')) {
+  let url = window.location.href;
+  let paywall = document.querySelector('section.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('article');
+    if (article)
+      article.firstChild.before(archiveLink(url));
+    let hide = document.querySelector('section.article__content--restricted-media');
+    if (hide)
+      hide.classList.remove('article__content--restricted-media');
   }
 }
 

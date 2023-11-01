@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         3.3.9.1
+// @version         3.3.9.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js
+// @homepageURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.etc.se/*

@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.3.9.1
+// @version         3.4.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
+// @homepageURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.de/*
@@ -458,6 +459,22 @@ else if (matchDomain('springermedizin.de')) {
         }
       }
     }
+  }
+}
+
+else if (matchDomain('sueddeutsche.de')) {
+  let url = window.location.href;
+  let paywall = document.querySelector('div#sz-paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.article-content, div.text');
+    if (article)
+      article.firstChild.before(archiveLink(url), article.firstChild);
+    let reduced = document.querySelector('p.sz-article-body__paragraph--reduced');
+    if (reduced)
+      reduced.classList.remove('sz-article-body__paragraph--reduced');
+    let ads = document.querySelectorAll('div.ad-container');
+    hideDOMElement(...ads);
   }
 }
 

@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.3.9.7
+// @version         3.4.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
 // @updateURL       https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
+// @homepageURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.com/*
@@ -36,6 +37,50 @@
 // @match           *://*.uxdesign.cc/*
 // @match           *://*.wellandtribune.ca/*
 // @exclude         *://*.google.com/*
+// @exclude         *://*.artsenkrant.com/*
+// @exclude         *://*.bienpublic.com/*
+// @exclude         *://*.cambiocolombia.com/*
+// @exclude         *://*.clarin.com/*
+// @exclude         *://*.connaissancedesarts.com/*
+// @exclude         *://*.diariocordoba.com/*
+// @exclude         *://*.diariovasco.com/*
+// @exclude         *://*.elconfidencial.com/*
+// @exclude         *://*.elcorreo.com/*
+// @exclude         *://*.elespanol.com/*
+// @exclude         *://*.elespectador.com/*
+// @exclude         *://*.elpais.com/*
+// @exclude         *://*.elperiodico.com/*
+// @exclude         *://*.elperiodicodearagon.com/*
+// @exclude         *://*.elperiodicoextremadura.com/*
+// @exclude         *://*.elperiodicomediterraneo.com/*
+// @exclude         *://*.eltiempo.com/*
+// @exclude         *://*.eltribuno.com/*
+// @exclude         *://*.expansion.com/*
+// @exclude         *://*.faz.net/*
+// @exclude         *://*.globo.com/*
+// @exclude         *://*.journaldunet.com/*
+// @exclude         *://*.la-croix.com/*
+// @exclude         *://*.larioja.com/*
+// @exclude         *://*.lasegunda.com/*
+// @exclude         *://*.latercera.com/*
+// @exclude         *://*.lavenir.net/*
+// @exclude         *://*.ledauphine.com/*
+// @exclude         *://*.ledevoir.com/*
+// @exclude         *://*.lejsl.com/*
+// @exclude         *://*.lesinrocks.com/*
+// @exclude         *://*.levante-emv.com/*
+// @exclude         *://*.loeildelaphotographie.com/*
+// @exclude         *://*.marca.com/*
+// @exclude         *://*.marianne.net/*
+// @exclude         *://*.parismatch.com/*
+// @exclude         *://*.politicaexterior.com/*
+// @exclude         *://*.quotidiano.net/*
+// @exclude         *://*.revistaoeste.com/*
+// @exclude         *://*.science-et-vie.com/*
+// @exclude         *://*.topagrar.com/*
+// @exclude         *://*.tuttosport.com/*
+// @exclude         *://*.wochenblatt.com/*
+// @exclude         *://elpais.com/*
 // ==/UserScript==
 
 (function() {
@@ -2722,14 +2767,10 @@ else if (matchDomain('wsj.com')) {
         removeDOMElement(paywall);
         if (amphtml) {
           amp_redirect_not_loop(amphtml);
-        } else if (window.location.pathname.includes('/card/')) {
-          let article = document.querySelector('div > div[class*="-ParagraphContainer"]');
-          if (article) {
-            let weblink = document.createElement('a');
-            weblink.href = window.location.href.split('/card/')[0];
-            weblink.innerText = 'BPC > full text in feed';
-            article.parentNode.firstChild.before(weblink);
-          }
+        } else {
+          let fade = document.querySelectorAll('div[class*="-CardWrapper"]');
+          for (let elem of fade)
+            elem.removeAttribute('class');
         }
       }
     }, 1000);
@@ -2755,12 +2796,11 @@ else if (matchDomain('wsj.com')) {
             let wsj_pro = snippet.querySelector('a[href^="https://wsjpro.com/"]');
             let article = document.querySelector('article');
             if (article) {
-              if (wsj_pro)
+              if (wsj_pro) {
                 article.firstChild.before(googleSearchToolLink(window.location.href));
-              else
+                article.firstChild.before(archiveLink(window.location.href, 'BPC > Try for full article text (articles before 2023-10-28)'));
+              } else
                 article.firstChild.before(archiveLink(window.location.href));
-              if (!mobile)
-                header_nofix(document.querySelector('div#bpc_archive'), 'BPC > hard refresh page (for Windows: Ctrl + Enter in address bar) or use link below');
             }
           }
         }
