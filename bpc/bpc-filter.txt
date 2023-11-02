@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.3.9.6
+! Version: 3.4.0.1
 
 ! General
 
@@ -125,6 +125,9 @@ elconfidencial.com##+js(rc, newsType__content--closed, div.newsType__content--cl
 ||elobservador.com.uy/shares$xmlhttprequest,~third-party
 ||elpais.com.uy/user/authStatus$script,~third-party
 ||elpais.com/arc/subs/p.min.js$script,~third-party
+!#if (env_firefox)
+elpais.com##^div#ctn_freemium_article,div#ctn_premium_article
+!#endif
 eltiempo.com##+js(rc, modulos, div.modulos)
 ||eltribuno.com/scripts/Bellhop/dist/bellhop.min.js$script,~third-party
 em.com.br##+js(rc, compress-text, .div.compress-text)
@@ -528,6 +531,7 @@ lydogbillede.dk,lydogbilde.no##div.paywallbox
 marketnews.com##+js(ra, class, div.body-description)
 meritnation.com##.view-full-answer 
 meritnation.com##+js(rc, maxHeight75px, div.exp_content.maxHeight75px)
+||moscout.com$inline-script
 nacion.com##+js(ra, style, div.article-body-wrapper__styled[style], stay)
 nacion.com##div.post
 nation.africa##+js(rc, nmgp, .nmgp)

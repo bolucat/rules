@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.0.1
+// @version         3.4.0.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -19,20 +19,11 @@
 // @match           *://*.vn.at/*
 // @match           *://*.vol.at/*
 // @match           *://*.wochenblatt.com/*
-// @match           *://webcache.googleusercontent.com/*
+// @grant           GM.xmlHttpRequest
 // ==/UserScript==
 
 (function() {
   'use strict';
-
-if (matchDomain('webcache.googleusercontent.com')) {
-  window.setTimeout(function () {
-    if (window.location.search.startsWith('?q=cache:https://www.schwaebische.de')) {
-      let ads = document.querySelectorAll('div.fp-ad-placeholder');
-      hideDOMElement(...ads);
-    }
-  }, 1000);
-}
 
 window.setTimeout(function () {
 
@@ -334,13 +325,7 @@ else if (matchDomain('kurier.at')) {
 
 else if (matchDomain(['mz.de', 'volksstimme.de'])) {
   let url = window.location.href;
-  let paywall = document.querySelector('div.fp-paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div[data-t-name="Article"]');
-    if (article)
-      article.firstChild.before(googleWebcacheLink(url));
-  }
+  getGoogleWebcache(url, 'div.fp-paywall', '', 'div[data-t-name="Article"]');
 }
 
 else if (matchDomain(['shz.de', 'svz.de'])) {
@@ -416,19 +401,19 @@ else if (matchDomain('philomag.de')) {
 
 else if (matchDomain('schwaebische.de')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div.sve-paywall-wrapper');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.article_body');
-    if (article)
-      article.firstChild.before(googleWebcacheLink(url));
-    let body = document.querySelector('body');
-    if (body)
-      body.removeAttribute('style');
-    waitDOMAttribute('body', 'body', 'style', node => node.removeAttribute('style'), true);
-  }
-  let ads = document.querySelectorAll('div.fp-ad-placeholder');
-  hideDOMElement(...ads);
+  let paywall_sel = 'div > div.sve-paywall-wrapper_overlay';
+  let paywall = document.querySelector(paywall_sel);
+  getGoogleWebcache(url, paywall_sel, '', 'div.article_body');
+  if (paywall)
+    removeDOMElement(paywall.parentNode);
+  let body = document.querySelector('body');
+  if (body)
+    body.removeAttribute('style');
+  waitDOMAttribute('body', 'body', 'style', node => node.removeAttribute('style'), true);
+  window.setTimeout(function () {
+    let ads = document.querySelectorAll('div.fp-ad-placeholder');
+    hideDOMElement(...ads);
+  }, 1000);
 }
 
 else if (matchDomain('spiegel.de')) {
@@ -851,6 +836,37 @@ function ampToHtml() {
 
 function refreshCurrentTab() {
   window.location.reload(true);
+}
+
+function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, article_new_sel = article_sel) {
+  let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split('?')[0];
+  let paywall = document.querySelectorAll(paywall_sel);
+  if (paywall.length) {
+    if (!paywall_action)
+      removeDOMElement(...paywall);
+    else {
+      for (let elem of paywall) {
+        if (paywall_action.rm_class)
+          elem.classList.remove(paywall_action.rm_class);
+        else if (paywall_action.rm_attrib)
+          elem.removeAttribute(paywall_action.rm_attrib);
+      }
+    }
+    let article = document.querySelector(article_sel);
+    if (article) {
+      GM.xmlHttpRequest({
+        method: "GET",
+        url: url_cache,
+        onload: function (response) {
+          let parser = new DOMParser();
+          let doc = parser.parseFromString(response.responseText, 'text/html');
+          let article_new = doc.querySelector(article_new_sel);
+          if (article.parentNode && article_new)
+            article.parentNode.replaceChild(article_new, article);
+        }
+      });
+    }
+  }
 }
 
 function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {

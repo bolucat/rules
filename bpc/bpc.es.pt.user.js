@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.4.0.1
+// @version         3.4.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -53,7 +53,6 @@
 // @match           *://*.revistaoeste.com/*
 // @match           *://*.sabado.pt/*
 // @match           *://*.uol.com.br/*
-// @match           *://webcache.googleusercontent.com/*
 // ==/UserScript==
 
 (function() {

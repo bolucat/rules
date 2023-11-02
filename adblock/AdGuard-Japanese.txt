@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: 6T1HwPRbcQCmYYMDA8BV0g
+! Checksum: swWx5VjQ+Q+7taBvveBqxg
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.45.29
-! TimeUpdated: 2023-11-01T17:32:05+00:00
+! Version: 2.0.45.35
+! TimeUpdated: 2023-11-02T16:32:33+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1010,7 +1010,6 @@ shico.xyz##+js(abort-on-property-read, fanza_link)
 trendynailwraps.com##+js(window.open-defuser)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/133903
 kijomatomelog.com,gundamlog.com,doorblog.jp,digital-thread.com,livedoor.blog,blog.jp,blog.livedoor.jp##+js(abort-current-script, jQuery, floatingAd)
-! https://github.com/AdguardTeam/AdguardFilters/issues/133218
 ! https://github.com/AdguardTeam/AdguardFilters/issues/132631
 giocox.jp##+js(remove-attr, href, .game_amazon > a[href*=".amazon."])
 ! https://github.com/AdguardTeam/AdguardFilters/issues/128599
@@ -1019,9 +1018,11 @@ uraaka-joshi.com##+js(addEventListener-defuser, playing, VAST_TARGET)
 collepic.net##+js(nano-setInterval-booster, .run()}, 1000)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/68275
 yavtube.com##+js(no-setTimeout-if, getAdCookie)
+! https://github.com/AdguardTeam/AdguardFilters/issues/133218
 ! https://github.com/AdguardTeam/AdguardFilters/issues/114915
 ! https://github.com/AdguardTeam/AdguardFilters/issues/111968
-gametohkenranbu.sakuraweb.com,jisakuhibi.jp,rank1-media.com##+js(remove-node-text, #text, /スポンサード?リンク/)
+! https://github.com/AdguardTeam/AdguardFilters/issues/94170
+tcg-bloglife.com,ch-review.net,gametohkenranbu.sakuraweb.com,jisakuhibi.jp,rank1-media.com,resizer.myct.jp##+js(remove-node-text, #text, /スポンサード?リンク/)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/113729
 phileweb.com##+js(remove-class, has-topbanner, body > header.has-topbanner)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/109086
@@ -1040,7 +1041,6 @@ xn--gmq92kd2rm1kx34a.com,javmix.*##+js(abort-current-script, addEventListener, s
 embed.share-videos.se##+js(window.open-defuser)
 ! skip in-game ad
 simplegame.jp##+js(nano-setTimeout-booster, simplegameAdCountDown, 1000, 0.02)
-! https://github.com/AdguardTeam/AdguardFilters/issues/94170
 ! tokyomotion.net ad initiator
 tokyomotion.net##+js(addEventListener-defuser, DOMContentLoaded, window[)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/93604#issuecomment-913651082
@@ -1098,6 +1098,8 @@ avgle.com##+js(abort-current-script, __htapop)
 !-------CSS---------
 !-------------------
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/165195
+telling.asahi.com#$#.u-mb64 .p-new__row { margin-top: 100px !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/164490
 ryukyushimpo.jp#$?#main > .homepage:not(:matches-css(max-width: 1150px)) { margin-top: 0px !important; }
 ! placeholder
@@ -1602,6 +1604,15 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+tcg-bloglife.com###top-editarea center a[href*="utm_"] > img
+tcg-bloglife.com###top-editarea center a[target="_blank"]
+tcg-bloglife.com###under-pager-edit-area
+tcg-bloglife.com#?#.hatena-module-html > div > a[href^="https://affiliate.suruga-ya.jp"][rel="nofollow"]
+ddnavi.com#?#.ranking-list > ul > li[class*="_"]:has(> div[id^="div-gpt-ad"])
+ellegirl.jp#?#section[data-vars-block-curation] > div[class*=" "]:has(> .ad-container)
+businesschatmaster.com##.article_Banner_under
+businesschatmaster.com##.side-menu-serviceLink
+limia.jp##li[id^="js-rankingIdeasAds"]
 amatou-papa.com###widget-in-article
 amatou-papa.com##.af-box
 amatou-papa.com##.custom-box02

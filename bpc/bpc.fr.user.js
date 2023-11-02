@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.3.9.3
+// @version         3.4.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -34,28 +34,11 @@
 // @match           *://*.parismatch.com/*
 // @match           *://*.science-et-vie.com/*
 // @match           *://*.sudinfo.be/*
-// @match           *://webcache.googleusercontent.com/*
+// @grant           GM.xmlHttpRequest
 // ==/UserScript==
 
 (function() {
   'use strict';
-
-if (matchDomain('webcache.googleusercontent.com')) {
-  window.setTimeout(function () {
-    if (window.location.search.includes('q=cache:https://www.letemps.ch')) {
-      let lazy_images = document.querySelectorAll('img.lazy[src="/placeholder.png"][data-src]');
-      for (let elem of lazy_images) {
-        elem.src = elem.getAttribute('data-src');
-        elem.removeAttribute('class');
-      }
-      let fade = document.querySelector('div.post__content--faded');
-      if (fade)
-        fade.classList.remove('post__content--faded');
-      let ads = document.querySelectorAll('div.topad');
-      hideDOMElement(...ads);
-    }
-  }, 1000);
-}
 
 window.setTimeout(function () {
 
@@ -176,13 +159,7 @@ else if (matchDomain('charliehebdo.fr')) {
 
 else if (matchDomain('cieletespace.fr')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div.article-content__subscribe');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.article-content');
-    if (article)
-      article.firstChild.before(googleWebcacheLink(url));
-  }
+  getGoogleWebcache(url, 'div.article-content__subscribe', '', 'div.article-content');
 }
 
 else if (matchDomain('connaissancedesarts.com')) {
@@ -204,15 +181,19 @@ else if (matchDomain('elle.fr')) {
 
 else if (matchDomain('letemps.ch')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div.post-subscribe');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.post__content');
-    if (article)
-      article.firstChild.before(googleWebcacheLink(url));
-  }
-  let ads = document.querySelectorAll('div.topad');
-  hideDOMElement(...ads);
+  getGoogleWebcache(url, 'div.post-subscribe', '', 'div.post__content');
+  window.setTimeout(function () {
+    let lazy_images = document.querySelectorAll('img.lazy[src="/placeholder.png"][data-src]');
+    for (let elem of lazy_images) {
+      elem.src = elem.getAttribute('data-src');
+      elem.removeAttribute('class');
+    }
+    let fade = document.querySelector('div.post__content--faded');
+    if (fade)
+      fade.classList.remove('post__content--faded');
+    let ads = document.querySelectorAll('div.topad');
+    hideDOMElement(...ads);
+  }, 1000);
 }
 
 else if (matchDomain('sudinfo.be')) {
@@ -876,6 +857,37 @@ function decode_utf8(str) {
 
 function refreshCurrentTab() {
   window.location.reload(true);
+}
+
+function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, article_new_sel = article_sel) {
+  let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split('?')[0];
+  let paywall = document.querySelectorAll(paywall_sel);
+  if (paywall.length) {
+    if (!paywall_action)
+      removeDOMElement(...paywall);
+    else {
+      for (let elem of paywall) {
+        if (paywall_action.rm_class)
+          elem.classList.remove(paywall_action.rm_class);
+        else if (paywall_action.rm_attrib)
+          elem.removeAttribute(paywall_action.rm_attrib);
+      }
+    }
+    let article = document.querySelector(article_sel);
+    if (article) {
+      GM.xmlHttpRequest({
+        method: "GET",
+        url: url_cache,
+        onload: function (response) {
+          let parser = new DOMParser();
+          let doc = parser.parseFromString(response.responseText, 'text/html');
+          let article_new = doc.querySelector(article_new_sel);
+          if (article.parentNode && article_new)
+            article.parentNode.replaceChild(article_new, article);
+        }
+      });
+    }
+  }
 }
 
 function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
