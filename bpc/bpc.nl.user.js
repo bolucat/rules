@@ -545,6 +545,8 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
       art_type = art_options.art_type;
     if (art_options.art_class)
       art_attrib += ' class="' + art_options.art_class + '"';
+    if (art_options.art_id)
+      art_attrib += ' id="' + art_options.art_id + '"';
     if (art_options.art_style)
       art_attrib += ' style="' + art_options.art_style + '"';
     if (art_options.func_text)

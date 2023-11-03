@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: 3RXueoBvjJ5v1ws79zCluA
+! Checksum: zcHi/FPTS2feu7XsHTarKQ
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.2.49
-! TimeUpdated: 2023-11-02T16:31:11+00:00
+! Version: 2.1.2.56
+! TimeUpdated: 2023-11-03T16:31:17+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -947,7 +947,7 @@ baiyangzuo.xkyn.com##+js(set-constant, conone_lmg, noopFunc)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/109829 popunder
 520cc.cc##+js(no-setTimeout-if, location.href, 3000)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/105329
-51zxw.net##+js(nano-setTimeout-booster, adCountDown, , 0.02)
+51zxw.net##+js(adjust-setTimeout, adCountDown, , 0.02)
 ! tangdoucdn.com - skip ad timer
 ! https://www.tangdoucdn.com/h5/play?vid=8709180
 tangdoucdn.com##+js(nano-setInterval-booster, .s--, , 0.02)
@@ -957,7 +957,7 @@ dianyingim.com##+js(set-constant, dy_card_dyrun, undefined)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/99153
 ! https://github.com/AdguardTeam/AdguardFilters/issues/98514
 iwatchme2u.com##+js(window.open-defuser, /bit\.ly|kbtv/)
-iwatchme2u.com##+js(nano-setTimeout-booster, video-ad-timeout, *, 0.02)
+iwatchme2u.com##+js(adjust-setTimeout, video-ad-timeout, *, 0.02)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/94617
 o8tv.com##+js(abort-current-script, document.write, tips)
 ! popup
@@ -975,8 +975,8 @@ v-wb.youku.com##+js(set-constant, Object.prototype.adData, {})
 ! https://github.com/AdguardTeam/AdguardFilters/issues/54359
 ! https://github.com/AdguardTeam/AdguardFilters/issues/26318
 ! https://forum.adguard.com/index.php?threads/youku-com-v-qq-com.30749/
-youku.com##+js(nano-setTimeout-booster, e-, , 0.02)
-youku.com##+js(nano-setTimeout-booster, r--, , 0.02)
+youku.com##+js(adjust-setTimeout, e-, , 0.02)
+youku.com##+js(adjust-setTimeout, r--, , 0.02)
 m.youku.com,v.youku.com##+js(set-constant, Object.prototype._adData, {})
 ! https://github.com/AdguardTeam/AdguardFilters/issues/87232
 qciss.net##+js(window.open-defuser, 0, qciss.net)
@@ -1006,7 +1006,7 @@ pixnet.net##+js(abort-current-script, window.leave)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/87033
 freejavbt.com##+js(window.open-defuser)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/84970
-zhenbuka3.com,zhenbuka2.com,bukaivip.com##+js(nano-setTimeout-booster, CloseAd, , 0.02)
+zhenbuka3.com,zhenbuka2.com,bukaivip.com##+js(adjust-setTimeout, CloseAd, , 0.02)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/81172
 m.biqiugege8.com##+js(set-constant, lists, undefined)
 ! popup/popunder
@@ -4750,6 +4750,7 @@ newduba.cn###jq_youxi
 ||dwerzv.xyz^
 ||ebmlsvw.cn^
 ||eejwvwoo.xyz^
+||eglizqf.cn^
 ||eht116.com^
 ||ekzzed.icu^
 ||esnysd.icu^
@@ -4760,6 +4761,7 @@ newduba.cn###jq_youxi
 ||faxffjo.com^
 ||fcgmoas.cn^
 ||fcgxidqwcx.xyz^
+||fenem.top^
 ||fepmpify.xyz^
 ||fkjsjwbs.xyz^
 ||fluhmmr.cn^
@@ -4927,6 +4929,7 @@ newduba.cn###jq_youxi
 ||pajhvd.xyz^
 ||pdweoyw.cn^
 ||pexavfro.xyz^
+||pfrbnl.xyz^
 ||phwrju.xyz^
 ||pidurrmu.xyz^
 ||ppvpmrt.xyz^
@@ -4936,6 +4939,7 @@ newduba.cn###jq_youxi
 ||pxxnejx.xyz^
 ||qauksl.icu^
 ||qbhjokk.xyz^
+||qboywc.xyz^
 ||qbswezw.cn^
 ||qinjgh.icu^
 ||qmoxxhc.cn^
@@ -4987,6 +4991,7 @@ newduba.cn###jq_youxi
 ||uwfxvvm.cn^
 ||vdggsd001.com^
 ||vdggsd002.com^
+||vdggsd003.com^
 ||vdggsd005.com^
 ||vdggsd006.com^
 ||vdggsd007.com^
@@ -5015,6 +5020,7 @@ newduba.cn###jq_youxi
 ||wqvbuj.icu^
 ||wrtjojn.xyz^
 ||wuruigroup.com^
+||wutsldsk.xyz^
 ||wuyaw.cn^
 ||wvtem.com^
 ||wyoaij.icu^
@@ -5022,6 +5028,7 @@ newduba.cn###jq_youxi
 ||xdfdqce.xyz^
 ||xg6hb.xyz^
 ||xkfigjh.cn^
+||xlca666.site^
 ||xmvmir.icu^
 ||xqgduov.cn^
 ||xrcembm.cn^
@@ -5030,6 +5037,7 @@ newduba.cn###jq_youxi
 ||xxfphsg.cn^
 ||xxkswdf.icu^
 ||y341i.xyz^
+||ybrbdft.xyz^
 ||ycgkol.icu^
 ||ycmgeb.icu^
 ||yepgdita.xyz^
@@ -14437,6 +14445,7 @@ wjx.cn###ctl01_ContentPlaceHolder1_divProMsg
 free.com.tw###custom_html-11
 hexieshe.cn###custom_html-2
 24kplus.com###custom_html-3
+tmioe.com###custom_html-4
 18avinin.com,27ka.cn,sunnylife.tw###custom_html-5
 vikacg.com###custom_html-9
 makaidong.com###cyWallsplugin
@@ -15729,6 +15738,7 @@ huanqiu.com##.ad_all
 download.csdn.net##.ad_area_1
 zhibo8.cc##.ad_box_250
 csdn.net##.ad_class
+gamersky.com##.ad_cmt_cont
 gamme.com.tw##.ad_down
 benxiang.com##.ad_duilian
 smm.cn##.ad_front_container
@@ -15946,6 +15956,7 @@ xvna.com##.articleAD
 xuite.net##.articleExtAd
 eprice.com.hk##.article__content > div[style*="text-align"]
 360kuai.com##.article__content__yyconfig
+toy-people.com##.article_insertAD
 toutiao.com##.article_link[data-tag="ad"]
 24en.com##.article_part_top
 ssr.tools##.asb
@@ -16519,7 +16530,7 @@ eprice.com.tw##.emome-ad
 huya.com##.end-ab-wrap
 firefoxchina.cn##.engine-jokes
 hao123.com##.enter1
-423down.com##.entry > p[style$="center;"]
+423down.com##.entry > p[style="font-size: 20px;"]
 423down.com##.entry > p[style^="color:red"]
 hackhw.com##.entry-banner
 idanmu.ee##.entry-body > div[class]:first-child
@@ -17645,6 +17656,7 @@ baby-kingdom.com##.right5
 baidu.com##.rightAd-skin
 jsphp.net##.rightAdBtm-wrap
 toy-people.com##.rightAd_300250
+toy-people.com##.rightAd_3002502
 afzhan.com,iqiyi.com##.rightAdv
 jmw.com.cn##.rightCouplet
 iqiyi.com##.rightLink
@@ -17654,6 +17666,7 @@ niotv.com##.right_ad1
 eastday.com##.right_adv_1
 eastday.com##.right_adv_2
 eastday.com##.right_adv_3
+toy-people.com##.right_bottom_bb
 cztv.com##.right_box
 qqyy.com##.right_dcotor_tab
 ifeng.com##.right_gg

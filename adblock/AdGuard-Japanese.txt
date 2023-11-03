@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: swWx5VjQ+Q+7taBvveBqxg
+! Checksum: JPUf/1WaMsLb8wM+lycM3A
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.45.35
-! TimeUpdated: 2023-11-02T16:32:33+00:00
+! Version: 2.0.45.40
+! TimeUpdated: 2023-11-03T16:32:43+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1040,7 +1040,7 @@ xn--gmq92kd2rm1kx34a.com,javmix.*##+js(abort-current-script, addEventListener, s
 ! popup on mobile
 embed.share-videos.se##+js(window.open-defuser)
 ! skip in-game ad
-simplegame.jp##+js(nano-setTimeout-booster, simplegameAdCountDown, 1000, 0.02)
+simplegame.jp##+js(adjust-setTimeout, simplegameAdCountDown, 1000, 0.02)
 ! tokyomotion.net ad initiator
 tokyomotion.net##+js(addEventListener-defuser, DOMContentLoaded, window[)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/93604#issuecomment-913651082
@@ -1064,7 +1064,7 @@ blog.livedoor.jp##+js(abort-current-script, document.write, sitejack)
 wav.tv##+js(window.open-defuser)
 wav.tv##+js(remove-attr, data-popup-url)
 ! skip in-game ads
-minigame.aeriagames.jp##+js(nano-setTimeout-booster, aeriaGamesAdCountDown, , 0.02)
+minigame.aeriagames.jp##+js(adjust-setTimeout, aeriaGamesAdCountDown, , 0.02)
 ! popup
 asg.to##+js(window.open-defuser)
 ! www.380cc.cc auto-redirect
@@ -1074,10 +1074,10 @@ dl.520cc.cc##+js(window.open-defuser)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/57825
 sexpixbox.com##+js(no-setTimeout-if, affId, 2000)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/57490
-ponta.abstractpainting.work##+js(nano-setTimeout-booster, visibility, 4000)
-ponta.abstractpainting.work##+js(nano-setTimeout-booster, [native code], 2000, 0.3)
-ponta.abstractpainting.work##+js(nano-setTimeout-booster, [native code], 3000, 0.25)
-ponta.abstractpainting.work##+js(nano-setTimeout-booster, [native code], 4000, 0.2)
+ponta.abstractpainting.work##+js(adjust-setTimeout, visibility, 4000)
+ponta.abstractpainting.work##+js(adjust-setTimeout, [native code], 2000, 0.3)
+ponta.abstractpainting.work##+js(adjust-setTimeout, [native code], 3000, 0.25)
+ponta.abstractpainting.work##+js(adjust-setTimeout, [native code], 4000, 0.2)
 ponta.abstractpainting.work##+js(set-constant, FIRST_DELAY, 0)
 ponta.abstractpainting.work##+js(set-constant, NEXT_DELAY, 0)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/54943
@@ -1109,6 +1109,7 @@ maonline.jp#$#.media_article .articlegroups .d-block:not(:first-of-type) { borde
 peko-step.com#$##cgrig_base_pic { grid-auto-rows: auto !important; }
 peko-step.com#$##cgrig_cont { grid-row-start: auto !important; grid-row-end: auto !important; }
 peko-step.com#$##cgrig_left { grid-row-start: 3 !important; grid-row-end: 7 !important; }
+oricon.co.jp#$#.block-sub-recommend[style="margin-top:30px;"] { margin-top: 0 !important; }
 oricon.co.jp#$#.block-sub-ad + .block-sub { margin-top: 0 !important; }
 mapfan.com#$#.side-ad-area.half-margin { margin-top: 0 !important; }
 mapfan.com#$#.nav-menu-width.margin.no-side-margin { margin-top: 0 !important; }
@@ -1383,8 +1384,6 @@ otakomu.jp,blog.esuteru.com#$#.jackFix + div.siteContent { margin-top: 0 !import
 otakomu.jp,blog.esuteru.com#$#.siteRanking-main { margin-left: 0!important; }
 ! https://github.com/AdguardTeam/AdguardFilters/pull/131231
 otakomu.jp#$#.siteRanking-main { margin-left: 0!important; }
-! https://github.com/AdguardTeam/AdguardFilters/issues/55576
-webcartop.jp#$##widget_code_php_in_widget-23 { height: 24px!important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/26823
 hostlove.com#$##index_nav > h1 { padding-top: 30px!important; }
 !
@@ -1604,6 +1603,15 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+yamatogokoro.jp#?#div.sd_bnr01:has(> a:not([href*="//"]))
+||webcartop.jp/wp-content/themes/cartop/media/weds
+||webcartop.jp/wp-content/themes/cartop/images/banners/
+webcartop.jp##.billboard-ads-wrapper
+webcartop.jp##.execphpwidget > div.video-wrapper
+webcartop.jp#?#.wct-recommend-posts li:has(div[data-uz-url])
+chimolog.co#?#.sidebar > div.widget_text:has(> div.textwidget > a[target="_blank"][href^="https://px.a8.net/"])
+news-postseven.com##.st-Block > div[style="min-height: 395px; margin-bottom:10px;"]
+imaonline.jp##.add01
 tcg-bloglife.com###top-editarea center a[href*="utm_"] > img
 tcg-bloglife.com###top-editarea center a[target="_blank"]
 tcg-bloglife.com###under-pager-edit-area
@@ -1643,6 +1651,7 @@ itmedia.co.jp###BelowArtLink
 ryukyushimpo.jp##.ryukyushimpo-fourteen-container
 ryukyushimpo.jp#?#article ~ .flex-col:has(div[id^="gpt-"][style^="min-width:"])
 ryukyushimpo.jp##div[id^="gpt-"][style^="min-width:"]
+comedydouga.com###fixedbanner
 comedydouga.com#?#.entry-letterbody > blockquote.gazou:has(> p > a[rel="noopener noreferrer"])
 patanouchi.com#?#td[valign="top"] > table[border="0"][cellspacing="0"] > tbody > tr > td > ins.adsbygoogle:upward(1)
 patanouchi.com##td > font[size="2"] > span[style="font-family:HGP創英角ﾎﾟｯﾌﾟ体; font-size:2em; color:darkgreen;"] ~ a
@@ -7788,7 +7797,7 @@ bakotv.com,9tsu.*##.ads-system
 bakotv.com,9tsu.*##.cactus-sidebar-content > .widget_text:not(.style-5)
 ||rakuten.co.jp/com/img/thumb/logout/bnr/
 toyokeizai.net###adexchange
-city.kitami.lg.jp,freesoft-concierge.com,toyokeizai.net##.banners
+allreviews.jp,city.kitami.lg.jp,freesoft-concierge.com,toyokeizai.net##.banners
 toyokeizai.net##.ad-bnr
 toyokeizai.net##ul > li.block-pr
 lifehacker.jp,gizmodo.jp##.inner-buy-box
@@ -8128,6 +8137,9 @@ huyosoku.com##.ad-lr
 workingnews.blog117.fc2.com###mainBlock > div.free_area
 cherio199.blog120.fc2.com##.free_space_body
 mindhack2ch.com##.ninki
+oricon.co.jp##.break-ad-box
+oricon.co.jp#?#.stickyfill tr:has(> td > div[class^="gmossp_"])
+oricon.co.jp#?#.block-sub-recommend li:has(> a > div.pr)
 oricon.co.jp##.overlay-ad-area
 oricon.co.jp##.ad-tver
 oricon.co.jp##.block-header-banner-wrapper

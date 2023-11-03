@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.0.3
+// @version         3.4.0.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -14,6 +14,7 @@
 // @match           *://*.handelszeitung.ch/*
 // @match           *://*.kurier.at/*
 // @match           *://*.nzz.ch/*
+// @match           *://*.schweizermonat.ch/*
 // @match           *://*.topagrar.at/*
 // @match           *://*.topagrar.com/*
 // @match           *://*.vn.at/*
@@ -414,6 +415,10 @@ else if (matchDomain('schwaebische.de')) {
     let ads = document.querySelectorAll('div.fp-ad-placeholder');
     hideDOMElement(...ads);
   }, 1000);
+}
+
+else if (matchDomain('schweizermonat.ch')) {
+  getJsonUrl('div.entry-paywall-login', '', 'div.entry-main > div.entry__post-content');
 }
 
 else if (matchDomain('spiegel.de')) {
@@ -1011,6 +1016,8 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
       art_type = art_options.art_type;
     if (art_options.art_class)
       art_attrib += ' class="' + art_options.art_class + '"';
+    if (art_options.art_id)
+      art_attrib += ' id="' + art_options.art_id + '"';
     if (art_options.art_style)
       art_attrib += ' style="' + art_options.art_style + '"';
     if (art_options.func_text)

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.0.2
+// @version         3.4.0.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -124,7 +124,7 @@ var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 't
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
 var no_nhst_media_domains = ['europower.no', 'fiskeribladet.no', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
 var timesofindia_domains = ['timesofindia.com', 'timesofindia.indiatimes.com'];
-var uk_incisive_media_domains = ['businessgreen.com', 'internationalinvestment.net', 'investmentweek.co.uk', 'professionaladviser.com', 'professionalpensions.com'];
+var uk_incisive_media_domains = ['internationalinvestment.net', 'investmentweek.co.uk', 'professionaladviser.com', 'professionalpensions.com'];
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
@@ -1216,21 +1216,6 @@ else if (matchDomain('euobserver.com')) {
     div_hidden.classList.remove('show');
 }
 
-else if (matchDomain(['euromoney.com', 'globalcapital.com', 'iflr.com', 'insuranceinsider.com', 'institutionalinvestor.com', 'internationaltaxreview.com', 'managingip.com', 'trading-risk.com'])) {
-  let url = window.location.href;
-  let paywall_sel = 'div.paywall';
-  let article_sel = 'div[class*="-articleContainer"]';
-  if (matchDomain(['insuranceinsider.com', 'trading-risk.com'])) {
-    paywall_sel = 'div[class*="-articleContainer"] div.sectionBlock';
-  } else if (matchDomain('institutionalinvestor.com')) {
-    paywall_sel = 'div.call_to_action';
-    article_sel = 'div.Page-articleBody';
-  }
-  getGoogleWebcache(url, paywall_sel, '', article_sel);
-  let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
-  removeDOMElement(fade);
-}
-
 else if (matchDomain('fastcompany.com')) {
   let ads = document.querySelectorAll('div[class*="ad-wrapper"]');
   hideDOMElement(...ads);
@@ -1507,6 +1492,13 @@ if (matchDomain('inkl.com')) {
       }
     }
   }
+}
+
+else if (matchDomain('institutionalinvestor.com')) {
+  let url = window.location.href;
+  getGoogleWebcache(url, 'div.call_to_action', '', 'div.Page-articleBody');
+  let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
+  removeDOMElement(fade);
 }
 
 else if (matchDomain('ipolitics.ca')) {
@@ -2139,8 +2131,7 @@ else if (matchDomain('theatlantic.com')) {
 }
 
 else if (matchDomain('thebulletin.org')) {
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div.article--cropped', '', 'div#body-copy');
+  getJsonUrl('div.article--cropped', '', 'div#body-copy', {art_append: true});
 }
 
 else if (matchDomain('thedailybeast.com')) {
@@ -3292,6 +3283,8 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
       art_type = art_options.art_type;
     if (art_options.art_class)
       art_attrib += ' class="' + art_options.art_class + '"';
+    if (art_options.art_id)
+      art_attrib += ' id="' + art_options.art_id + '"';
     if (art_options.art_style)
       art_attrib += ' style="' + art_options.art_style + '"';
     if (art_options.func_text)
