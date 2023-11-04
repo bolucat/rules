@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: JPUf/1WaMsLb8wM+lycM3A
+! Checksum: l1HU9ZMRxq9wPbk8MkTQwg
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.45.40
-! TimeUpdated: 2023-11-03T16:32:43+00:00
+! Version: 2.0.45.42
+! TimeUpdated: 2023-11-04T17:32:01+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1098,6 +1098,8 @@ avgle.com##+js(abort-current-script, __htapop)
 !-------CSS---------
 !-------------------
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/164977
+allabout.co.jp#$#.aa_footer { padding-bottom: unset !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/165195
 telling.asahi.com#$#.u-mb64 .p-new__row { margin-top: 100px !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/164490
@@ -1448,6 +1450,7 @@ hostlove.com#$##index_nav > h1 { padding-top: 30px!important; }
 /wp-content/themes/CashLINESystem/js/modal.$script
 !
 ! Malware/Phishing
+||z13.web.core.windows.net/win/$all
 .xyz/*.apk|$document
 .com/chrome.apk|$document
 .xyz/signin/index.php?*&openid_return_to=https%3A%2F%2Fwww.amazon.co.jp$document
@@ -1603,6 +1606,10 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+chanto.jp.net###wrapper > div[style*="min-height"]:not([id],[class])
+chanto.jp.net##div[class^="geniee_"]
+chanto.jp.net##.cha_sp_all_header
+firecross.jp###reader_ad_overlay
 yamatogokoro.jp#?#div.sd_bnr01:has(> a:not([href*="//"]))
 ||webcartop.jp/wp-content/themes/cartop/media/weds
 ||webcartop.jp/wp-content/themes/cartop/images/banners/
@@ -2050,6 +2057,7 @@ sexytvcap.com##.category2:last-child
 shirotomaster.com##.fc2cm-td
 shirotomaster.com##.pcolle-parts
 x.fc2.com##center > center > table[width="478"][height="70"]
+numan.tokyo##.sw-Ad-Banner
 numan.tokyo##.sw-Pcjack
 tipstour.net###custom_html-65
 ||city.toyokawa.lg.jp/banner/
@@ -7874,7 +7882,7 @@ alc.co.jp###news > ul
 alc.co.jp###container > div[style^="width:1100px; "]
 ||aacdn.jp/js/aa/matome/ad.js
 news.allabout.co.jp##.layout_sidebar > div.obtain-height
-allabout.co.jp##div[data-tracking-zone*="-ad"]
+allabout.co.jp##div[data-tracking-zone*="-ad"]:not([data-tracking-zone*="BrowserBack"],[data-tracking-zone*="Article"])
 allabout.co.jp##.aa_content-side > div[data-tracking-zone] > div.obtain-height
 allabout.co.jp##.sys-aa_placement
 allabout.co.jp##.docomo_custom_alliance

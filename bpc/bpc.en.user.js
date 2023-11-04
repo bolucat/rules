@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.0.4
+// @version         3.4.0.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -17,6 +17,7 @@
 // @match           *://*.org/*
 // @match           *://*.pub/*
 // @match           *://*.businesspost.ie/*
+// @match           *://*.epoch.org.il/*
 // @match           *://*.europower.no/*
 // @match           *://*.fiskeribladet.no/*
 // @match           *://*.haaretz.co.il/*
@@ -1184,6 +1185,10 @@ else if (matchDomain('enotes.com')) {
     let ads = document.querySelectorAll('.ad-hfu');
     hideDOMElement(...section_words, ...ads);
   }
+}
+
+else if (matchDomain('epoch.org.il')) {
+  getJsonUrl('div.register-login-box', '', 'div.m-article > div.paywall');
 }
 
 else if (matchDomain('espn.com')) {

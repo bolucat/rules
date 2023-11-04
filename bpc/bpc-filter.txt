@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.4.0.1
+! Version: 3.4.0.5
 
 ! General
 
@@ -58,6 +58,7 @@ apollo-magazine.com,spectator.co.uk###subscribe-ribbon
 arkansasonline.com##+js(cookie-remover, blaize_session)
 artforum.com##+js(cookie-remover, /^/)
 ||artnet.com/paywall-ajax.php$xmlhttprequest,~third-party
+artnet.com##div.article-body:style(display:block !important;)
 magazine.atavist.com##+js(aopr, localStorage)
 ||auto-motor-und-sport.de/thenewsbar/static/pw.js$script,~third-party
 ||automobilwoche.de/sites/camw/files/js/js_wB7*.js$script,~third-party
@@ -475,6 +476,12 @@ beleggersbelangen.nl##div.unlimited-access
 computerweekly.com,lemagit.fr,techtarget.com##+js(rc, paywall, div.paywall, stay)
 computerweekly.com,lemagit.fr,techtarget.com##p#firstP,div#inlineRegistrationWrapper
 
+! The Epoch Times sites (main + cz|de|fr|il|jp|ro)
+||theepochtimes.com/rules/get$xmlhttprequest,~third-party
+||epochbase.com/rules/get$xmlhttprequest,third-party
+||epochbase.eu/rules/get$xmlhttprequest,third-party
+||epoch.org.il$inline-script
+
 ! additional adblocker-fix
 ||flowerstreatment.com^$third-party
 ||assets.guim.co.uk/assets/SignInGate*.js$script,domain=theguardian.com
@@ -556,8 +563,6 @@ stateaffairs.com##div.c-memberships-message
 stateaffairs.com##+js(rc, access-restricted, body.access-restricted)
 strangematters.coop##+js(cookie-remover, pmpro_lpv_count)
 ||thedriftmag.com/wp-content/plugins/drift-paywall-plugin/$script,~third-party
-theepochtimes.com##+js(ra, style, body[style], stay)
-theepochtimes.com##div.modal
 thegardenisland.com##+js(ra, style, #single-paywall)
 thegardenisland.com###single-login-box,#single-excerpt
 aap.thestreet.com##+js(rc, is-paywalled, body.is-paywalled)
