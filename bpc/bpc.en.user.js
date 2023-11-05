@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.0.6
+// @version         3.4.0.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -445,10 +445,16 @@ else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
   if (flip_pay) {
     let content = document.querySelector('script[data-fragment-type="ArticleContent"]');
     if (content) {
-      let fade = document.querySelector('div[class*="_fadetowhite"]');
-      removeDOMElement(flip_pay, fade);
-      let intro = document.querySelector('div[data-auth-intro="article"]');
-      if (intro && intro.parentNode) {
+      window.setTimeout(function () {
+        let fade = document.querySelector('div[class*="_fadetowhite"]');
+        removeDOMElement(flip_pay, fade);
+      }, 500);
+      let intro = document.querySelector('div > div[data-auth-intro="article"]');
+      if (intro) {
+        let intro_par = intro.querySelector('p[class]');
+        let intro_par_class;
+        if (intro_par)
+          intro_par_class = intro_par.getAttribute('class');
         let content_text = content.innerText;
         if (content_text.includes('__PRELOADED_STATE_GRAPH')) {
           content_text = content_text.replace(/window\["__PRELOADED_STATE_GRAPH__.+"\]\s=\s/, '');
@@ -494,7 +500,7 @@ else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
                       }
                     }
                   } else if (!['ad', 'streamone'].includes(type)) {
-                    let html = parser.parseFromString('<p style="font-size: 18px; font-family: Georgia, serif; margin: 10px;">' + item + '</p>', 'text/html');
+                    let html = parser.parseFromString('<p class="' + intro_par_class + '">' + item + '</p>', 'text/html');
                     elem = html.querySelector('p');
                     if (!['p', 'subhead', 'legacy-ml'].includes(type)) {
                       console.log(type);
@@ -1533,6 +1539,27 @@ else if (matchDomain('ipolitics.ca')) {
         }
       } catch (err) {
         console.log(err);
+      }
+    }
+  }
+}
+
+else if (matchDomain('janes.com')) {
+  let articles = document.querySelectorAll('div.article-box');
+  for (let article of articles) {
+    let gated_text = article.querySelector('div > div.gated-text');
+    if (gated_text) {
+      let art_link = article.querySelector('a[href^="mailto:"][href*="&body="]');
+      if (art_link) {
+        let url = decodeURIComponent(art_link.href.split('&body=')[1]);
+        let url_pathname = new URL(url).pathname;
+        let og_url = url_pathname.match(/\/[\w-]+\//)[0] + 'news-detail' + url_pathname.match(/\/[\w-]+$/)[0];
+        let par = document.createElement('p');
+        let weblink = document.createElement('a');
+        weblink.href = og_url;
+        weblink.innerText = 'BPC > full text';
+        par.appendChild(weblink);
+        gated_text.parentNode.replaceChild(par, gated_text);
       }
     }
   }
