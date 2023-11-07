@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.0.7
+// @version         3.4.0.9
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -972,12 +972,19 @@ else if (matchDomain('bloomberg.com')) {
   let leaderboard = document.querySelector('div[id^="leaderboard"], div[class^="leaderboard"], div.canopy-container');
   let ads = document.querySelectorAll('div[data-ad-status], div.dvz-v0-ad, div[class^="FullWidthAd_"]');
   hideDOMElement(...paywall, leaderboard, ...ads);
+  waitDOMAttribute('body', 'BODY', 'data-paywall-overlay-status', node => node.removeAttribute('data-paywall-overlay-status'), true);
   if (window.location.pathname.startsWith('/live/')) {
     setInterval(function () {
       window.localStorage.clear();
     }, 15 * 60 * 1000);
   } else
     window.localStorage.clear();
+  window.setTimeout(function () {
+    let shimmering = document.querySelector('div[class^="Placeholder_placeholderParagraphWrapper-"]');
+    if (shimmering) {
+      header_nofix(shimmering.parentNode, 'BPC > disable Dark Reader or enable Javascript for site');
+    }
+  }, 3000);
 }
 
 else if (matchDomain('bloombergadria.com')) {
@@ -3000,9 +3007,10 @@ function hideDOMElement(...elements) {
 }
 
 function header_nofix(header, msg = 'BPC > no fix') {
-  if (header) {
+  if (header && !document.querySelector('div#bpc_nofix')) {
     let nofix_div = document.createElement('div');
-    nofix_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
+    nofix_div.id = 'bpc_nofix';
+    nofix_div.style = 'margin: 20px; font-size: 20px; font-weight: bold; color: red;';
     nofix_div.innerText = msg;
     header.before(nofix_div);
   }
