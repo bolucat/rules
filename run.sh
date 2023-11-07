@@ -212,7 +212,7 @@ adblock() {
 	wget https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/unbreak.txt -O uBlock-Unbreak.txt
 	wget https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt -O uBlock-Annoyances.txt
 	wget https://malware-filter.gitlab.io/malware-filter/phishing-filter-agh.txt -O Phishing-URL-Blocklist.txt
-	wget https://malware-filter.gitlab.io/malware-filter/pup-filter-agh.txt -O PUP-Domains-Blocklist.txt
+	wget https://malware-filter.gitlab.io/malware-filter/botnet-filter-ag.txt -O Botnet-Blocklist.txt
 	wget https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-agh.txt -O Malicious-URL-Blocklist.txt
 	wget https://someonewhocares.org/hosts/hosts -O Dan-Pollocks-hosts.txt
 	wget https://raw.githubusercontent.com/List-KR/List-KR/master/filter-AdGuard.txt -O List-KR.txt
