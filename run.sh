@@ -217,6 +217,7 @@ adblock() {
 	wget https://someonewhocares.org/hosts/hosts -O Dan-Pollocks-hosts.txt
 	wget https://raw.githubusercontent.com/List-KR/List-KR/master/filter-AdGuard.txt -O List-KR.txt
 	wget https://easylist-downloads.adblockplus.org/ruadlist.txt -O RU-AdList.txt
+ 	echo "! Title: Adguard Base Filter" > AdGurad-Base.txt && wget -qO- https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_2_Base/filter.txt >> AdGurad-Base.txt
 	wget https://filters.adtidy.org/extension/ublock/filters/224.txt -O AdGuard-Chinese.txt
 	wget https://easylist.to/easylistgermany/easylistgermany.txt -O EasyList-Germany.txt
 	wget https://filters.adtidy.org/extension/ublock/filters/7.txt -O AdGuard-Japanese.txt
