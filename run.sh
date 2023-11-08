@@ -193,7 +193,8 @@ adblock() {
 	wget https://www.fanboy.co.nz/fanboy-antifacebook.txt -O Fanboy-Anti-Facebook.txt
 	wget https://www.i-dont-care-about-cookies.eu/abp/ -O I-dont-care-about-cookies.txt
 	wget https://raw.githubusercontent.com/Spam404/lists/master/adblock-list.txt -O Spam404.txt
-	wget https://raw.githubusercontent.com/privacy-protection-tools/anti-AD/master/anti-ad-easylist.txt -O Anti-AD.txt
+	wget https://raw.githubusercontent.com/privacy-protection-tools/anti-AD/master/anti-ad-easylist.txt -O Anti-AD-Easylist.txt
+ 	wget https://raw.githubusercontent.com/privacy-protection-tools/anti-AD/master/anti-ad-adguard.txt -O Anti-AD-Adguard.txt
 	wget https://raw.githubusercontent.com/xinggsf/Adblock-Plus-Rule/master/rule.txt -O Cheng-Feng.txt
 	wget https://raw.githubusercontent.com/xinggsf/Adblock-Plus-Rule/master/mv.txt -O Cheng-Feng-mv.txt
 	wget https://raw.githubusercontent.com/xinggsf/Adblock-Plus-Rule/master/ublock-dynamic-rule.txt -O Cheng-Feng-dynamic.txt
