@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.4.0.2
+// @version         3.4.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -46,7 +46,6 @@
 // @match           *://*.levante-emv.com/*
 // @match           *://*.losandes.com.ar/*
 // @match           *://*.marca.com/*
-// @match           *://*.observador.pt/*
 // @match           *://*.politicaexterior.com/*
 // @match           *://*.record.pt/*
 // @match           *://*.regio7.cat/*
@@ -201,16 +200,6 @@ else if (matchDomain(es_epiberica_domains)) {
   } else {
     let ads = document.querySelectorAll('div.commercial-up-full__wrapper, div.sidebar--sticky__space, div[data-bbnx-id*="cxense"]');
     hideDOMElement(...ads);
-  }
-}
-
-else if (matchDomain('observador.pt')) {
-  if (!window.location.pathname.endsWith('/amp/')) {
-    amp_redirect('body.premium-article', {rm_class: "premium-article"});
-    let ads = document.querySelectorAll('div.obs-ad-placeholder');
-    hideDOMElement(...ads);
-  } else {
-    amp_unhide_subscr_section('amp-ad, amp-consent, section > .modal');
   }
 }
 
@@ -491,9 +480,10 @@ function hideDOMElement(...elements) {
 }
 
 function header_nofix(header, msg = 'BPC > no fix') {
-  if (header) {
+  if (header && !document.querySelector('div#bpc_nofix')) {
     let nofix_div = document.createElement('div');
-    nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
+    nofix_div.id = 'bpc_nofix';
+    nofix_div.style = 'margin: 20px; font-size: 20px; font-weight: bold; color: red;';
     nofix_div.innerText = msg;
     header.before(nofix_div);
   }
