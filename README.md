@@ -166,6 +166,7 @@
 - [AdGuard-Chinese.txt](https://rules.neuq.de/adblock/AdGuard-Chinese.txt)
 - [AdGuard-DNS-Filter.txt](https://rules.neuq.de/adblock/AdGuard-DNS-Filter.txt)
 - [AdGuard-Japanese.txt](https://rules.neuq.de/adblock/AdGuard-Japanese.txt)
+- [AdGurad-Base.txt](https://rules.neuq.de/adblock/AdGurad-Base.txt)
 - [Adblock-Warning-Removal.txt](https://rules.neuq.de/adblock/Adblock-Warning-Removal.txt)
 - [Anti-AD.txt](https://rules.neuq.de/adblock/Anti-AD.txt)
 - [Botnet-Blocklist.txt](https://rules.neuq.de/adblock/Botnet-Blocklist.txt)

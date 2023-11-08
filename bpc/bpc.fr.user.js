@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.4.0.1
+// @version         3.4.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -26,6 +26,7 @@
 // @match           *://*.lejsl.com/*
 // @match           *://*.lenouvelliste.ch/*
 // @match           *://*.lesinrocks.com/*
+// @match           *://*.lesoir.be/*
 // @match           *://*.letemps.ch/*
 // @match           *://*.levif.be/*
 // @match           *://*.loeildelaphotographie.com/*
@@ -48,6 +49,7 @@ var csDoneOnce;
 
 var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net'];
 var be_roularta_domains = ['femmesdaujourdhui.be', 'flair.be', 'levif.be'];
+var fr_be_groupe_rossel = ['aisnenouvelle.fr', 'courrier-picard.fr', 'lardennais.fr', 'lavoixdunord.fr', 'lesoir.be', 'lest-eclair.fr', 'liberation-champagne.fr', 'lunion.fr', 'nordlittoral.fr', 'paris-normandie.fr', 'sudinfo.be'];
 var fr_groupe_ebra_domains = ['bienpublic.com', 'dna.fr', 'estrepublicain.fr', 'lalsace.fr', 'ledauphine.com', 'lejsl.com', 'leprogres.fr', 'republicain-lorrain.fr'];
 var fr_groupe_la_depeche_domains = ['centrepresseaveyron.fr', 'ladepeche.fr', 'lindependant.fr', 'midilibre.fr', 'nrpyrenees.fr', 'petitbleu.fr', 'rugbyrama.fr'];
 var fr_groupe_nice_matin_domains = ['monacomatin.mc', 'nicematin.com', 'varmatin.com'];
@@ -196,25 +198,14 @@ else if (matchDomain('letemps.ch')) {
   }, 1000);
 }
 
-else if (matchDomain('sudinfo.be')) {
-  let paywall = document.querySelector('div.r-blurred');
+else if (matchDomain(fr_be_groupe_rossel)) {
+  let url = window.location.href;
+  let paywall = document.querySelector('div.qiota_reserve, r-panel.r-paywall--header');
   if (paywall) {
-    let paywall_header = document.querySelector('.r-paywall--header');
-    let intro = document.querySelector('div.r-not-blurred');
-    removeDOMElement(paywall, paywall_header, intro);
-    let json_script = getArticleJsonScript();
-    if (json_script) {
-      let json = JSON.parse(json_script.text);
-      if (json) {
-        let json_text = json.articleBody.replace(/&nbsp;/g, '').replace(/\[.*\]/, '');
-        let content = document.querySelector('article');
-        if (json_text && content) {
-          let par = document.createElement('p');
-          par.innerText = '\r\n' + json_text;
-          content.appendChild(par);
-        }
-      }
-    }
+    removeDOMElement(paywall);
+    let article = document.querySelector('article');
+    if (article)
+      article.firstChild.before(archiveLink(url));
   }
   let ads = document.querySelectorAll('div[id^="article_"], r-pub, div#rossel-leader-top');
   hideDOMElement(...ads);
@@ -709,9 +700,10 @@ function hideDOMElement(...elements) {
 }
 
 function header_nofix(header, msg = 'BPC > no fix') {
-  if (header) {
+  if (header && !document.querySelector('div#bpc_nofix')) {
     let nofix_div = document.createElement('div');
-    nofix_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
+    nofix_div.id = 'bpc_nofix';
+    nofix_div.style = 'margin: 20px; font-size: 20px; font-weight: bold; color: red;';
     nofix_div.innerText = msg;
     header.before(nofix_div);
   }

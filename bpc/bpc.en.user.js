@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.0.9
+// @version         3.4.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -2237,7 +2237,6 @@ else if (matchDomain('thedailybeast.com')) {
 }
 
 else if (matchDomain('thediplomat.com')) {
-  setCookie('dpl-pw', '', 'thediplomat.com', '/', 0);
   if (matchDomain('magazine.thediplomat.com')) {
     for (let n = 0; n < 5; n++) {
       setTimeout(function () {
