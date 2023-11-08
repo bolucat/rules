@@ -49,7 +49,7 @@ clash() {
 	popd || exit 1
 	# DivineEngine
     	pushd clash/DivineEngine || exit 1
-    	git clone -b master https://github.com/DivineEngine/Profiles Profiles
+    	git clone --depth 1 -b master https://github.com/DivineEngine/Profiles Profiles
     	mv Profiles/Clash/* . && rm -rf Profiles
 	sed $'/DOMAIN-SUFFIX,cn/d' -i RuleSet/China.yaml
     	popd || exit 1
@@ -137,7 +137,7 @@ clash() {
 	rm -rf GeoLite2-Country GeoLite2-Country.tar.gz
 	popd || exit 1
 	pushd clash/ip-show-list || exit 1
-	git clone https://github.com/bolucat/domain-list domain-list
+	git clone --depth 1 https://github.com/bolucat/domain-list domain-list
 	mv domain-list/clash/* .
 	rm -rf domain-list
 	popd || exit 1
@@ -163,9 +163,9 @@ clash() {
 	popd || exit 1
 	# import other repositories
 	pushd clash || exit 1
-	git clone https://github.com/Infatuation-Fei/rule fei-rules
+	git clone --depth 1 https://github.com/Infatuation-Fei/rule fei-rules
 	rm -rf fei-rules/.git
-	git clone https://github.com/blackmatrix7/ios_rule_script ios-rule-script
+	git clone --depth 1 https://github.com/blackmatrix7/ios_rule_script ios-rule-script
 	rm -rf ios-rule-script/.git
 	popd || exit 1
 }
