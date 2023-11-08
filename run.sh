@@ -215,7 +215,7 @@ adblock() {
 	wget https://malware-filter.gitlab.io/malware-filter/phishing-filter-agh.txt -O Phishing-URL-Blocklist.txt
 	wget https://malware-filter.gitlab.io/malware-filter/botnet-filter-ag.txt -O Botnet-Blocklist.txt
 	wget https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-agh.txt -O Malicious-URL-Blocklist.txt
-	wget https://someonewhocares.org/hosts/hosts -O Dan-Pollocks-hosts.txt
+	echo "! Title: Dan Pollocks hosts" > Dan-Pollocks-hosts.txt && wget -qO- https://someonewhocares.org/hosts/hosts >> Dan-Pollocks-hosts.txt
 	wget https://raw.githubusercontent.com/List-KR/List-KR/master/filter-AdGuard.txt -O List-KR.txt
 	wget https://easylist-downloads.adblockplus.org/ruadlist.txt -O RU-AdList.txt
  	echo "! Title: Adguard Base Filter" > AdGurad-Base.txt && wget -qO- https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_2_Base/filter.txt >> AdGurad-Base.txt
