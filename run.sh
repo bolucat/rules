@@ -212,7 +212,7 @@ adblock() {
 	wget https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/resource-abuse.txt -O uBlock-Resource-Abuse.txt
 	wget https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/unbreak.txt -O uBlock-Unbreak.txt
 	wget https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt -O uBlock-Annoyances.txt
-	wget https://malware-filter.gitlab.io/malware-filter/phishing-filter-agh.txt -O Phishing-URL-Blocklist.txt
+	wget https://malware-filter.gitlab.io/malware-filter/phishing-filter-ag.txt -O Phishing-URL-Blocklist.txt
 	wget https://malware-filter.gitlab.io/malware-filter/botnet-filter-ag.txt -O Botnet-Blocklist.txt
 	wget https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-ag-online.txt -O Malicious-URL-Blocklist.txt
 	echo "! Title: Dan Pollocks hosts" > Dan-Pollocks-hosts.txt && wget -qO- https://someonewhocares.org/hosts/hosts >> Dan-Pollocks-hosts.txt
