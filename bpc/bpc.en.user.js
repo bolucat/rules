@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.1.1
+// @version         3.4.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -857,13 +857,9 @@ if (matchDomain(usa_adv_local_domains)) {
 }
 
 else if (matchDomain('adweek.com')) {
+  setCookie('blaize_session', '', '.www.adweek.com', '/', 0);
   let url = window.location.href;
-  let paywall = document.querySelector('div#paywall-subscribe');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.adw-article-body');
-    article.appendChild(nftLink(url));
-  }
+  getGoogleWebcache(url, 'div#paywall-subscribe', '', 'div.adw-article-body');
 }
 
 else if (matchDomain('americanbanker.com') || matchDomain(usa_arizent_custom_domains)) {
