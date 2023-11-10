@@ -22,16 +22,17 @@ youtube.com##ytd-video-masthead-ad-advertiser-info-renderer,ytm-promoted-sparkle
 ! https://redd.it/ggcmkp https://redd.it/gx03e0
 ! https://github.com/uBlockOrigin/uAssets/pull/18106/
 www.youtube.com##+js(trusted-replace-xhr-response, /"adPlacements.*?\"\}\}\}\]\,/, , /player\?key=|watch\?v=|youtubei\/v1\/player/)
+www.youtube.com##+js(trusted-replace-fetch-response, /(contextParams":"Q0F[A-Z]U.*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
+www.youtube.com#@#+js(trusted-replace-fetch-response, /(contextParams":"Q0FFU.*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /(hqdefault\.jpg\?sqp=-oaym.*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
-www.youtube.com##+js(trusted-replace-fetch-response, /((?:hqdefault\.jpg\?sqp=-oaym|hqdefault_live).*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
-www.youtube.com##+js(trusted-replace-fetch-response, /"adPlacements.*?"\}\}\}\]\,(.*?hqdefault\.jpg(?:\?|%3F)sqp(?:=|%3D)-oaym)/, $1, player?key=)
+www.youtube.com#@#+js(trusted-replace-fetch-response, /((?:hqdefault\.jpg\?sqp=-oaym|hqdefault_live).*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
+www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?"\}\}\}\]\,(.*?hqdefault\.jpg(?:\?|%3F)sqp(?:=|%3D)-oaym)/, $1, player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?privateDoNotAccessOrElseTrustedResourceUrlWrappedValue":"https:\/\/www\.youtube\.com\/aboutthisad\?pf=web&source=youtube&reasons=A.*?"\}\}\}\]\,/, , player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?privateDoNotAccessOrElseTrustedResourceUrlWrappedValue":"https:\/\/(www\.youtube\.com\/aboutthisad\?pf=web&source=youtube&reasons=A|fundingchoices).*?"\}\}\}\]\,/, , player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?("getAdBreakUrl":"https:\/\/www\.youtube\.com\/get_midroll_info\S+&token=ALHj|"(base)?[Uu]rl":"https:\/\/(secure)?pubads\.g\.doubleclick\.net).*?"\}\}\}\]\,/, , player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?"getAdBreakUrl":"https:\/\/www\.youtube\.com\/get_midroll_info\S+&token=ALHj.*?"\}\}\}\]\,/, , player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?get_midroll_info\S+&token=ALHj.*?"\}\}\}\]\,/, , player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?\/(aclk\?sa=L&ai=C(?!3OQpfbUyZYWKL_)[-_0-9A-Za-z]+__________[-_0-9A-Za-z]+A[A-Za-z]AA&|get_midroll_info\S+&token=ALHj).*?"\}\}\}\]\,/, , player?key=)
-www.youtube.com#@#+js(trusted-replace-fetch-response, /(trackingParam":"kx_fmPxh.*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
 ! https://www.reddit.com/r/uBlockOrigin/comments/154vtwy/getting_ads_on_youtube/jsu299l/
 youtube.com,youtubekids.com,youtube-nocookie.com##+js(set, ytInitialPlayerResponse.playerAds, undefined)
 youtube.com,youtubekids.com,youtube-nocookie.com##+js(set, ytInitialPlayerResponse.adPlacements, undefined)
@@ -1506,6 +1507,7 @@ kimcartoon.*##.kcAds1
 kimcartoon.*###ads-top-wrap
 ||kimcartoon.*/Ads/$frame
 *$script,redirect-rule=noopjs,domain=kimcartoon.*
+*$script,3p,denyallow=fastly.net|statically.io|sharecast.ws|bunnycdn.ru|bootstrapcdn.com|cdn.ampproject.org|cloudflare.com|cdn.staticfile.org|disqus.com|disquscdn.com|dmca.com|ebacdn.com|facebook.net|fastlylb.net|fbcdn.net|fluidplayer.com|fontawesome.com|github.io|google.com|googleapis.com|googletagmanager.com|gstatic.com|jquery.com|jsdelivr.net|jwpcdn.com|jwplatform.com|polyfill.io|recaptcha.net|shrink.pe|twitter.com|ulogin.ru|unpkg.com|userapi.com|vidazoo.com|vk.com|yastatic.net|ytimg.com|zencdn.net|youtube.com|cackle.me|googleoptimize.com|vuukle.com|chatango.com|twimg.com|google-analytics.com|hcaptcha.com|raincaptcha.com|media-imdb.com|blogger.com|hwcdn.net|instagram.com|wp.com|fastcomments.com|plyr.io,domain=kimcartoon.*
 
 ! https://forums.lanik.us/viewtopic.php?p=124271#p124271
 dailyuploads.net##+js(acs, document.getElementById, adblockinfo)
@@ -7563,12 +7565,13 @@ veedi.com##+js(set, adBlocker, false)
 4j.com##body:style(overflow: auto !important;)
 
 ! https://www.reddit.com/r/uBlockOrigin/comments/a09q3o/anti_adblock_uonano_defender/
+! https://github.com/uBlockOrigin/uAssets/issues/20572
 anitube.*##+js(aopr, exoJsPop101)
 anitube.*##+js(set, adBlockDetected, noopFunc)
-anitube.*##+js(acs, document.createElement, 'script')
 anitube.*###iframeCore____
 ||anitube.*/sw.js$script,1p
 anitube.*##div[style^="pointer-events: none; position: absolute; "]
+||arc.io^$3p,badfilter
 
 ! https://github.com/uBlockOrigin/uAssets/issues/4193
 goltelevision.com##+js(set, adblock, false)
@@ -12036,7 +12039,7 @@ birdurls.com##+js(aopw, _pop)
 birdurls.com##.box-main p
 birdurls.com##.box-main center
 birdurls.com###link-view > br
-*$frame,script,3p,denyallow=consensu.org|google.com|gstatic.com|recaptcha.net|quantcast.com,domain=birdurls.com
+*$frame,script,3p,denyallow=consensu.org|google.com|gstatic.com|recaptcha.net|quantcast.com|cloudflare.com,domain=birdurls.com
 
 ! https://github.com/NanoMeow/QuickReports/issues/1815
 @@||video.bestjavporn.com^$ghide

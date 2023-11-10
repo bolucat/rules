@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.4.1.1
+! Version: 3.4.1.3
 
 ! General
 
@@ -39,7 +39,7 @@ gadget.pico.tools##+js(json-prune, locked)
 ||zephr.com/zephr-browser/$third-party
 /c/assets/pigeon.js$script,~third-party
 /evolok/*/ev-widgets.min.js$script,~third-party
-/shared-content/art/tncms/api/access.js$script,~third-party
+/shared-content/art/tncms/api/access.*.js$script,~third-party
 /wp-content/*/ev-em.min.js$script,~third-party
 /zephr/feature$xmlhttprequest,~third-party
 @@/zephr/feature$xmlhttprequest,domain=nationalreview.com
@@ -210,9 +210,6 @@ ledevoir.com##+js(cookie-remover, pw6)
 legrandcontinent.eu##+js(rc, paywall|pw|softwall, body)
 lejdd.fr,parismatch.com,public.fr###poool-container,#poool-widget-content,#poool-widget,.forbidden
 lejdd.fr,parismatch.com,public.fr##+js(ra, data-poool-mode, .cnt[data-poool-mode="hide"])
-||scripts.repubblica.it/pw/pw.js$script,domain=lescienze.it|italian.tech
-lescienze.it##.paywall-adagio,#detail-body-paywall,.shade
-lescienze.it##+js(ra, hidden|style, .detail_body[hidden])
 livelaw.in##+js(rc, hide, div.paywall-content.hide)
 livelaw.in##+js(rc, restricted_message, div.restricted_message)
 livelaw.in##div#subscription_paid_message,div.subscribeNow
@@ -380,6 +377,14 @@ architecturaldigest.com,bonappetit.com,cntraveler.com,epicurious.com,gq.com,newy
 .com/*/js_$script,domain=360dx.com|adage.com|autonews.com|chicagobusiness.com|crainscleveland.com|crainsdetroit.com|crainsnewyork.com|genomeweb.com|modernhealthcare.com|precisionmedicineonline.com
 360dx.com,adage.com,autonews.com,chicagobusiness.com,crainscleveland.com,crainsdetroit.com,crainsnewyork.com,genomeweb.com,modernhealthcare.com,precisionmedicineonline.com##+js(ra, class, body[class])
 modernhealthcare.com##+js(rc, sponsored-article, div.sponsored-article)
+
+! GEDI.it sites
+||scripts.repubblica.it/pw/pw.js$script,domain=italian.tech|moda.it
+italian.tech,moda.it##div#ph-paywall
+italian.tech,moda.it##+js(ra, style, div#article-body, stay)
+!#if (env_firefox)
+italian.tech,moda.it##^div#ph-paywall
+!#endif
 
 ! Groupe SudOuest.fr
 sudouest.fr,charentelibre.fr,larepubliquedespyrenees.fr##div.article-premium-footer,div.footer-premium,div.article-body-wrapper.visible-not-premium,div.pub,div.ph-easy-subscription

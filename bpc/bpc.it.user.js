@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.3.9.2
+// @version         3.4.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
@@ -10,6 +10,7 @@
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.it/*
 // @match           *://*.eastwest.eu/*
+// @match           *://*.italian.tech/*
 // @match           *://*.quotidiano.net/*
 // @match           *://*.tuttosport.com/*
 // ==/UserScript==
@@ -240,6 +241,11 @@ else if (matchDomain('italiaoggi.it')) {
   }
 }
 
+else if (matchDomain(['italian.tech', 'moda.it'])) {
+  let paywall = document.querySelector('div#ph-paywall');
+  removeDOMElement(paywall);
+}
+
 else if (domain = matchDomain('lastampa.it')) {
   if (window.location.pathname.includes('/news/')) {
     if (!window.location.pathname.match(/\amp(\/)?$/)) {
@@ -352,9 +358,10 @@ function hideDOMElement(...elements) {
 }
 
 function header_nofix(header, msg = 'BPC > no fix') {
-  if (header) {
+  if (header && !document.querySelector('div#bpc_nofix')) {
     let nofix_div = document.createElement('div');
-    nofix_div.setAttribute('style', 'margin: 20px; font-weight: bold; color: red;');
+    nofix_div.id = 'bpc_nofix';
+    nofix_div.style = 'margin: 20px; font-size: 20px; font-weight: bold; color: red;';
     nofix_div.innerText = msg;
     header.before(nofix_div);
   }
