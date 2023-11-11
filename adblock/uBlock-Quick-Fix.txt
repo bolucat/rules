@@ -75,13 +75,11 @@ www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?\/(aclk\?
 youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots legacyImportant)
 !#endif
 !#endif
-! https://github.com/uBlockOrigin/uAssets/issues/19976#issuecomment-1783652842
-||googlevideo.com/videoplayback$xhr,3p,method=get,domain=www.youtube.com,badfilter
 
 ! https://github.com/uBlockOrigin/uAssets/issues/18476
 ! VOE sites
-||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,domain=nonesnanking.com,important
-nonesnanking.com##+js(nowoif)
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=kathleenmemberhistory.com,important
+kathleenmemberhistory.com##+js(nowoif)
 
 ! https://github.com/uBlockOrigin/uAssets/issues/16083
 dragontea.ink##html:not(:has(link[href="https://dragontea.ink/xmlrpc.php"], link[href="/cdn-cgi/styles/challenges.css"])) > body:not(.page-template)
@@ -189,3 +187,12 @@ chip.de##.ob-widget:not([style^="display:block;"]) .ob-p
 chip.de##.Ad:not([style^="display:block;"]):not(.Ad.align)
 chip.de###R1C2:not([style^="display:block;"]) > .Ad.align
 chip.de###contentad-top-adsense-1
+
+! https://www.reddit.com/r/uBlockOrigin/comments/17sd1co/request_fix_for_spacecom/
+androidcentral.com,gamesradar.com,livescience.com,pcgamer.com,space.com,techradar.com,tomsguide.com,tomshardware.com,whathifi.com,windowscentral.com#@##article-body > ul:has(a[rel="sponsored noopener"])
+
+! https://github.com/uBlockOrigin/uAssets/issues/20608
+||teads.tv^$3p,script,redirect-rule=noop.js,from=tf1info.fr
+
+! https://github.com/uBlockOrigin/uAssets/issues/17807
+||edge.api.brightcove.com/playback/v1/accounts/6415718365001/$3p,xhr,removeparam=ad_config_id,domain=brightcove.net
