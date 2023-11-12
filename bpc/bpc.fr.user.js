@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.4.1.0
+// @version         3.4.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -200,7 +200,7 @@ else if (matchDomain('letemps.ch')) {
 
 else if (matchDomain(fr_be_groupe_rossel)) {
   let url = window.location.href;
-  let paywall = document.querySelector('div.qiota_reserve, r-panel.r-paywall--header');
+  let paywall = document.querySelector('div.qiota_reserve, r-panel.r-paywall--header, r-panel.r-panel--paywall');
   if (paywall) {
     removeDOMElement(paywall);
     let article = document.querySelector('article');

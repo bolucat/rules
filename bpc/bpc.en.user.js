@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.1.2
+// @version         3.4.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -918,6 +918,9 @@ else if (matchDomain('barandbench.com')) {
   let paywall = document.querySelector('div#paywall-banner');
   if (paywall) {
     removeDOMElement(paywall);
+    let fade = document.querySelector('div[class^="paywall-story-styles-"]');
+    if (fade)
+      fade.removeAttribute('class');
     let json_script = getArticleJsonScript();
     if (json_script) {
       let json = JSON.parse(json_script.text);
@@ -1004,23 +1007,38 @@ else if (matchDomain('bqprime.com')) {
 }
 
 else if (matchDomain('business-standard.com')) {
-  if (!window.location.pathname.startsWith('/amp/')) {
-    let paywall = document.querySelector('div.subscribe-page');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let json_script = getArticleJsonScript();
-      if (json_script) {
+  function bs_main(node) {
+    removeDOMElement(node);
+    let json_script = document.querySelector('script#__NEXT_DATA__');
+    if (json_script) {
+      try {
         let json = JSON.parse(json_script.text);
-        if (json) {
-          let json_text = breakText(parseHtmlEntities(json.articleBody));
+        if (json && json.props.pageProps.data.htmlContent) {
+          let json_text = json.props.pageProps.data.htmlContent;
           let content = document.querySelector('div.storycontent');
           if (json_text && content) {
-            content.innerHTML = '';
-            let article_new = document.createElement('p');
-            article_new.innerText = json_text;
-            content.appendChild(article_new);
+            let intro = content.querySelectorAll('div:not([class]');
+            removeDOMElement(...intro);
+            let parser = new DOMParser();
+            let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+            let content_new = doc.querySelector('div');
+            content.firstChild.before(content_new);
           }
-        }
+        } else
+          refreshCurrentTab();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+  if (!window.location.pathname.startsWith('/amp/')) {
+    if (true) {
+      let paywall_sel = 'div.subscribe-page';
+      let paywall = document.querySelector(paywall_sel);
+      if (paywall) {
+        bs_main(paywall)
+      } else {
+        waitDOMElement(paywall_sel, 'DIV', bs_main, false);
       }
     }
     let banner = document.querySelector('section.sbcrbtmlfull');
@@ -2407,6 +2425,9 @@ else if (matchDomain('thenewsminute.com')) {
   let paywall = document.querySelector('div#paywall-banner');
   if (paywall) {
     removeDOMElement(paywall);
+    let fade = document.querySelector('div[class^="paywall-story-styles-"]');
+    if (fade)
+      fade.removeAttribute('class');
     let json_script = getArticleJsonScript();
     if (json_script) {
       let json = JSON.parse(json_script.text);
@@ -3048,23 +3069,6 @@ function waitDOMAttribute(selector, tagName = '', attributeName = '', callback, 
 function breakText(str) {
   str = str.replace(/(?:^|[A-Za-z\"\“\)])(\.|\?|!)(?=[A-ZÖÜ\„\d][A-Za-zÀ-ÿ\„\d]{1,})/gm, "$&\n\n");
   str = str.replace(/(([a-z]{2,}|[\"\“]))(?=[A-Z](?=[A-Za-zÀ-ÿ]+))/gm, "$&\n\n");
-  // exceptions: names with alternating lower/uppercase (no general fix)
-  let str_rep_arr = ['AstraZeneca', 'BaFin', 'BerlHG', 'BfArM', 'BilMoG', 'BioNTech', 'DiGA', 'EuGH', 'FinTechRat', 'GlaxoSmithKline', 'IfSG', 'medRxiv', 'mmHg', 'PlosOne', 'StVO'];
-  let str_rep_split,
-  str_rep_src;
-  for (let str_rep of str_rep_arr) {
-    str_rep_split = str_rep.split(/([a-z]+)(?=[A-Z](?=[A-Za-z]+))/);
-    str_rep_src = str_rep_split.reduce(function (accumulator, currentValue) {
-        return accumulator + currentValue + ((currentValue !== currentValue.toUpperCase()) ? '\n\n' : '');
-      });
-    if (str_rep_src.endsWith('\n\n'))
-      str_rep_src = str_rep_src.slice(0, -2);
-    str = str.replace(new RegExp(str_rep_src, "g"), str_rep);
-  }
-  str = str.replace(/De\n\n([A-Z])/g, "De$1");
-  str = str.replace(/La\n\n([A-Z])/g, "La$1");
-  str = str.replace(/Le\n\n([A-Z])/g, "Le$1");
-  str = str.replace(/Mc\n\n([A-Z])/g, "Mc$1");
   return str;
 }
 

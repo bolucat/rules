@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.0.4
+// @version         3.4.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -705,9 +705,10 @@ function hideDOMElement(...elements) {
 }
 
 function header_nofix(header, msg = 'BPC > no fix') {
-  if (header) {
+  if (header && !document.querySelector('div#bpc_nofix')) {
     let nofix_div = document.createElement('div');
-    nofix_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
+    nofix_div.id = 'bpc_nofix';
+    nofix_div.style = 'margin: 20px; font-size: 20px; font-weight: bold; color: red;';
     nofix_div.innerText = msg;
     header.before(nofix_div);
   }
@@ -910,23 +911,6 @@ function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full artic
 function breakText(str) {
   str = str.replace(/(?:^|[A-Za-z\"\“\)])(\.|\?|!)(?=[A-ZÖÜ\„\d][A-Za-zÀ-ÿ\„\d]{1,})/gm, "$&\n\n");
   str = str.replace(/(([a-z]{2,}|[\"\“]))(?=[A-Z](?=[A-Za-zÀ-ÿ]+))/gm, "$&\n\n");
-  // exceptions: names with alternating lower/uppercase (no general fix)
-  let str_rep_arr = ['AstraZeneca', 'BaFin', 'BerlHG', 'BfArM', 'BilMoG', 'BioNTech', 'DiGA', 'EuGH', 'FinTechRat', 'GlaxoSmithKline', 'IfSG', 'medRxiv', 'mmHg', 'PlosOne', 'StVO'];
-  let str_rep_split,
-  str_rep_src;
-  for (let str_rep of str_rep_arr) {
-    str_rep_split = str_rep.split(/([a-z]+)(?=[A-Z](?=[A-Za-z]+))/);
-    str_rep_src = str_rep_split.reduce(function (accumulator, currentValue) {
-        return accumulator + currentValue + ((currentValue !== currentValue.toUpperCase()) ? '\n\n' : '');
-      });
-    if (str_rep_src.endsWith('\n\n'))
-      str_rep_src = str_rep_src.slice(0, -2);
-    str = str.replace(new RegExp(str_rep_src, "g"), str_rep);
-  }
-  str = str.replace(/De\n\n([A-Z])/g, "De$1");
-  str = str.replace(/La\n\n([A-Z])/g, "La$1");
-  str = str.replace(/Le\n\n([A-Z])/g, "Le$1");
-  str = str.replace(/Mc\n\n([A-Z])/g, "Mc$1");
   return str;
 }
 
