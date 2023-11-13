@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.4.1.1
+// @version         3.4.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -14,6 +14,7 @@
 // @match           *://*.bndestem.nl/*
 // @match           *://*.demorgen.be/*
 // @match           *://*.destentor.nl/*
+// @match           *://*.doorbraak.be/*
 // @match           *://*.dvhn.nl/*
 // @match           *://*.ed.nl/*
 // @match           *://*.fd.nl/*
@@ -58,7 +59,37 @@ var be_roularta_domains = ['artsenkrant.com', 'beleggersbelangen.nl', 'flair.be'
 var nl_dpg_adr_domains = ['ad.nl', 'bd.nl', 'bndestem.nl', 'destentor.nl', 'ed.nl', 'gelderlander.nl', 'pzc.nl', 'tubantia.nl'];
 var nl_dpg_media_domains = ['demorgen.be', 'flair.nl', 'humo.be', 'libelle.nl', 'margriet.nl', 'parool.nl', 'trouw.nl', 'volkskrant.nl'];
 
-if (matchDomain('fd.nl')) {
+if (matchDomain('doorbraak.be')) {
+  let paywall_sel = 'div.paywall';
+  let paywall = document.querySelector(paywall_sel);
+  if (paywall) {
+    removeDOMElement(paywall);
+    waitDOMElement(paywall_sel, 'DIV', removeDOMElement, false);
+    let json_script = document.querySelector('script#__NUXT_DATA__');
+    if (json_script) {
+      try {
+        if (!json_script.text.substr(0, 500).includes(window.location.pathname))
+          refreshCurrentTab();
+        let json = JSON.parse(json_script.text);
+        json = json.filter(x => typeof x === 'string' && x.startsWith('<p>'));
+        let json_text = json[0];
+        if (json_text) {
+          let parser = new DOMParser();
+          let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+          let content_new = doc.querySelector('div');
+          let article = document.querySelector('div > div.prose');
+          if (article) {
+            article.appendChild(content_new);
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+}
+
+else if (matchDomain('fd.nl')) {
   let url = window.location.href;
   let paywall = document.querySelectorAll('section.upsell, div.upsell-modal-background');
   if (paywall.length) {
@@ -271,8 +302,6 @@ else if (matchDomain('nrc.nl')) {
   let banners = document.querySelectorAll('div[id$="modal__overlay"], div.header__subscribe-bar, div.banner');
   removeDOMElement(...banners);
 }
-
-
 
 else if (matchDomain('telegraaf.nl')) {
   function telegraaf_main(node) {
