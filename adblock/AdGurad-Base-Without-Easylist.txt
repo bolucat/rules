@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: eZNANy0pUHI9D0M1UFg/Bg
+! Checksum: 1qkSj0NfZaq7on1scIirJQ
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.9.67
-! TimeUpdated: 2023-11-15T11:31:33+00:00
+! Version: 2.3.9.75
+! TimeUpdated: 2023-11-15T17:31:45+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -7053,7 +7053,7 @@ beaddiagrams.com##body > .big-wrapper + div[id][class*=" "]
 italiadascoprire.net##body > .search-modal-wrap + div[id][class*=" "]
 youpit.xyz,youpits.xyz,learnodo-newtonic.com##body > .site-footer ~ div[id][class*=" "]
 oracleerpappsguide.com###fb-root + div[id][class*=" "]
-felicetommasino.com,chatgptfree.ai,keroseed.net,oromedicine.com,ewybory.eu,nghetruyenma.net,south-park-tv.biz,telewizja-streamer.xyz,azrom.net,mitaku.net,siirtolayhaber.com,japannihon.com,kllproject.lv,telephone-soudan.com###page + div[id][class]
+shrinklinker.com,felicetommasino.com,chatgptfree.ai,keroseed.net,oromedicine.com,ewybory.eu,nghetruyenma.net,south-park-tv.biz,telewizja-streamer.xyz,azrom.net,mitaku.net,siirtolayhaber.com,japannihon.com,kllproject.lv,telephone-soudan.com###page + div[id][class]
 coingraph.us,rsadnetworkinfo.com,encurtareidog.top,encurtareidog2.top,gogetapast.com.br,cazztv.xyz,nopay.info,adsy.pw,rssoftwareinfo.com,casperhd.com,7hd.club,onehack.us,bitcotasks.com,finclub.in,financeyogi.net,projectlive.info,itdmusic.com,bg-gledai.*,pepperlive.info,mgnetu.com,starlive.xyz,topsporter.net##body > style + div[id][class*=" "]
 lscomic.com,ruyamanga.com,samuraiscan.org,nartag.com,mhscans.com,noblessetranslations.com,diamondfansub.com,atlantisscan.com,tecnoscann.com,mantrazscan.com,jkhentai.co,rightdark-scan.com##body > .wrap + div[id][class*=" "]
 unityassets4free.com##body > #scroll-top + div[id][class*=" "]
@@ -7365,6 +7365,9 @@ pornhub.com,pornhub.org,pornhub.net##+js(no-setTimeout-if, \x41\x64\x62\x6c\x6f\
 !
 ! NOTE: Regular rules
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/166266
+hax.co.id##+js(addEventListener-defuser, load, AdBlock)
+hax.co.id##+js(no-fetch-if, adsbygoogle)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/166193
 sexwebvideo.net##+js(no-fetch-if, pagead2.googlesyndication.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/166037
@@ -9178,9 +9181,6 @@ bestreamsports.org##+js(abort-current-script, document.createElement, adsbygoogl
 ! https://github.com/AdguardTeam/AdguardFilters/issues/128388
 opentunnel.net#@#.textad
 opentunnel.net#$#body .textad { display: block !important; }
-! https://github.com/AdguardTeam/AdguardFilters/issues/128175
-@@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js|$domain=hax.co.id
-||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xmlhttprequest,redirect=noop.js,domain=hax.co.id,important
 ! https://github.com/AdguardTeam/AdguardFilters/issues/128306
 howdy.id##+js(no-fetch-if, pagead2.googlesyndication.com)
 howdy.id#@#.ad-box:not(#ad-banner)
@@ -16982,6 +16982,8 @@ mob.hr##.side_banner
 ! NOTE: Czech and Slovakian
 !
 ! https://github.com/AdguardTeam/AdguardFilters/issues/166204
+nextech.sk##.container > a[onclick^="storeClick"]
+nextech.sk##.promo-zone
 ||nextech.sk/files/photo/*top.jpg
 ||nextech.sk/files/photo/*left.jpg
 ||nextech.sk/files/photo/*right.jpg
@@ -23181,9 +23183,11 @@ kursjs.pl##+js(no-setTimeout-if, wstretne-reklamy)
 ! se.pl - incorrect blocking
 @@||googletagmanager.com/gtm.js$domain=se.pl
 ! https://github.com/AdguardTeam/AdguardFilters/issues/165892
-lowcygier.pl##.content-wrapper > div[class] > a[class][href^="https://lowcygier.pl/r/"][rel]
-lowcygier.pl#?#.content-wrapper > div[class]:has(> a[class][href^="https://lowcygier.pl/r/"][rel])
-lowcygier.pl#$#.content-wrapper > style + div[class] { background-image: none !important; }
+lowcygier.pl###page > [data-url^="https://lowcygier.pl/r/"] > [class*="banner-"]
+lowcygier.pl##.content-wrapper > div:is([id], [class]) > a[class][href^="https://lowcygier.pl/r/"][rel]
+lowcygier.pl#?#.content-wrapper > div:is([id], [class]):has(> a[class][href^="https://lowcygier.pl/r/"][rel])
+lowcygier.pl#$#html > body .content-wrapper header.intro:not(#style_important) { margin-bottom: 0 !important; }
+lowcygier.pl#$#.content-wrapper > *:is(style, [style]) + div:is([id], [class]) { background-image: none !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/157769
 lowcygier.pl###top-banner-image
 lowcygier.pl##body .top-background
@@ -27075,6 +27079,8 @@ kat.*,kickass.*,kickass2.*,kickasstorrents.*,kat2.*,kattracker.*,thekat.*,thekic
 !
 !
 !
+! popup
+javguard.xyz##+js(window.open-defuser)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/166210
 linkvertise.com##+js(json-prune, data.getTaboolaAds.*)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/166123
@@ -31990,6 +31996,7 @@ vizer.tv,eztv.unblocked.sh,animeshow.tv,vidzi.tv##body > div[id][style*="positio
 ! https://github.com/AdguardTeam/AdguardForWindows/issues/3087
 ! https://github.com/AdguardTeam/AdguardFilters/issues/165079
 ||spclient.wg.spotify.com/ad-logic/flashpoint
+! Breaks next track button and seeking
 !
 ! Prevent of loading WS (onerror event)
 ||servicer.mgid.com^$redirect=noop.txt,third-party,important,image,media,subdocument,stylesheet,script,xmlhttprequest,other
@@ -32146,6 +32153,12 @@ $script,third-party,denyallow=fastly.net|statically.io|sharecast.ws|bunnycdn.ru|
 !
 ! NOTE: Specific rules
 !
+camwhores.video##.content > a[target="_blank"]
+||fetlife.com/ads/
+fetlife.com##div[class="lg:w-200px"] > div[class="hidden py-8 lg:block"]
+nhl.com##.nhl-l-section-bg__adv
+nhl.com##.nhl-c-editorial-list__mrec
+javguard.xyz##body > div[class]:last-child:empty
 yourstory.com#?#main > div[class^="sc-"] > div[class^="sc-"]:empty
 yourstory.com#?#main > div[class^="sc-"] > div[class^="sc-"]:has(> div[id*="-banner-"]:only-child)
 yourstory.com##div[id^="page-style-default-"] > img + div[class^="sc-"]:empty
@@ -49991,7 +50004,7 @@ $popup,third-party,domain=dood.ws,badfilter
 !
 !
 !
-!
+! https://github.com/AdguardTeam/AdguardFilters/issues/166014
 ! https://github.com/AdguardTeam/AdguardFilters/issues/165932
 @@/clickn(download|upload)\.[a-z]{3,5}/$script,xmlhttprequest,domain=clickndownload.org|clicknupload.click|clicknupload.link|clicknupload.red|clicknupload.vip|clicknupload.xyz
 ! https://github.com/AdguardTeam/AdguardFilters/issues/165770
