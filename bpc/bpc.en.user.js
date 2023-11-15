@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.1.3
+// @version         3.4.1.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -976,7 +976,7 @@ else if (matchDomain('bloomberg.com')) {
   } else
     window.localStorage.clear();
   window.setTimeout(function () {
-    let shimmering = document.querySelector('div[class^="Placeholder_placeholderParagraphWrapper-"]');
+    let shimmering = document.querySelector('article.first-story div[class^="Placeholder_placeholderParagraphWrapper-"]');
     if (shimmering) {
       header_nofix(shimmering.parentNode, 'BPC > disable Dark Reader or enable Javascript for site');
     }

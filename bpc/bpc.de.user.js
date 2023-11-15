@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.1.1
+// @version         3.4.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -184,8 +184,22 @@ else if (matchDomain('faz.net')) {
 }
 
 else if (matchDomain('freiepresse.de')) {
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div#upscore-paywall-placeholder', '', 'article');
+  if (window.location.pathname.includes('-artikel')) {
+    let url = window.location.href;
+    getGoogleWebcache(url, 'div.article-teaser', '', 'article');
+    window.setTimeout(function () {
+      let lazy_images = document.querySelectorAll('picture.lazy');
+      for (let elem of lazy_images) {
+        elem.removeAttribute('class');
+        let source = elem.querySelector('source[data-srcset]');
+        if (source) {
+          let img_new = document.createElement('img');
+          img_new.src = source.getAttribute('data-srcset').split(' ')[0];
+          source.parentNode.replaceChild(img_new, source);
+        }
+      }
+    }, 1000);
+  }
 }
 
 else if (matchDomain('jacobin.de')) {
@@ -521,6 +535,19 @@ else if (matchDomain('vol.at')) {
     hideDOMElement(...banners);
   } else
     ampToHtml();
+}
+
+else if (matchDomain('welt.de')) {
+  let url = window.location.href;
+  let paywall = document.querySelector('div.contains_walled_content');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('article');
+    if (article)
+      article.firstChild.before(archiveLink(url));
+  }
+  let ads = document.querySelectorAll('div[data-component="Outbrain"], div[data-component="OEmbedComponent"], div[class*="c-ad"]');
+  removeDOMElement(...ads);
 }
 
 else if (matchDomain('weltkunst.de')) {

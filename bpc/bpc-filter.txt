@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.4.1.5
+! Version: 3.4.1.7
 
 ! General
 
@@ -160,6 +160,7 @@ foreignaffairs.com##.paywall,.loading-indicator,.messages--container--bottom
 foreignpolicy.com##div.content-ungated
 foreignpolicy.com##+js(rc, content-gated, div.content-gated.content-gated--main-article)
 fortune.com##+js(ra, class, div.paywallActive)
+||freiepresse.de/*-artikel$inline-script
 ||ftm.eu/js/routing$script,~third-party
 ||ftm.nl/js/routing$script,~third-party
 ftm.eu,ftm.nl##div.banner-pp,a.readmore
@@ -179,8 +180,7 @@ inkl.com##div.gradient-container
 interestingengineering.com##+js(ra, class, div[class*="Product_makeBlur__"])
 interestingengineering.com##div#paywall-div
 japantimes.co.jp##+js(cookie-remover, xbc)
-journaldemontreal.com##+js(rc, composer-content, div.article-main-txt.composer-content)
-journaldequebec.com##+js(rc, composer-content, div.article-main-txt.composer-content)
+journaldemontreal.com,journaldequebec.com##+js(rc, composer-content, div.article-main-txt.composer-content)
 journaldunet.com##.reg_wall
 journaldunet.com##+js(ra, style, .entry_reg_wall)
 ||jpost.com/js/js_article.min.js$script,~third-party
@@ -200,9 +200,6 @@ lanacion.com.ar##+js(aopr, localStorage)
 ||emol.cl/assets/js/vendor/modal.js$script,domain=lasegunda.com
 digital.lasegunda.com##+js(rc, lessreadmore, article.lessreadmore, stay)
 digital.lasegunda.com##div[id*="bt_readmore_"]
-||lastampa.it/*/news/$inline-script
-lastampa.it##+js(cookie-remover, blaize_session)
-lastampa.it##aside#widgetDP,div[id^="adv"]
 ||latercera.com/arc/subs/p.min.js$script,~third-party
 ||californiatimes.com/meteringjs/$script,domain=latimes.com|sandiegouniontribune.com
 ||ev.lavanguardia.com$xmlhttprequest,~third-party
@@ -380,18 +377,20 @@ architecturaldigest.com,bonappetit.com,cntraveler.com,epicurious.com,gq.com,newy
 modernhealthcare.com##+js(rc, sponsored-article, div.sponsored-article)
 
 ! GEDI.it sites
+||lastampa.it/*/news/$inline-script
+lastampa.it##+js(cookie-remover, blaize_session)
+lastampa.it##aside#widgetDP,div[id^="adv"]
 ||scripts.repubblica.it/pw/pw.js$script,domain=italian.tech|moda.it
 italian.tech,moda.it##div#ph-paywall
 italian.tech,moda.it##+js(ra, style, div#article-body, stay)
 !#if (env_firefox)
 italian.tech,moda.it##^div#ph-paywall
 !#endif
+espresso.repubblica.it##+js(ra, amp-access-hide, [amp-access][amp-access-hide])
 
 ! Groupe SudOuest.fr
 sudouest.fr,charentelibre.fr,larepubliquedespyrenees.fr##div.article-premium-footer,div.footer-premium,div.article-body-wrapper.visible-not-premium,div.pub,div.ph-easy-subscription
-sudouest.fr##+js(rc, visible-premium, div.visible-premium)
-charentelibre.fr##+js(rc, visible-premium, div.visible-premium)
-larepubliquedespyrenees.fr##+js(rc, visible-premium, div.visible-premium)
+sudouest.fr,charentelibre.fr,larepubliquedespyrenees.fr##+js(rc, visible-premium, div.visible-premium)
 
 ! Groupe Nice-Matin
 monacomatin.mc,nicematin.com,varmatin.com##+js(ra, id, div#article-teaser)
@@ -551,7 +550,7 @@ nation.africa##div.modal
 ||newbostonpost.com/*/paywall/js/main.js$script,~third-party
 newoxfordreview.org##+js(rc, not-viewable, div.not-viewable)
 nu.nl##+js(rc, authorized-content, div.authorized-content)
-nu.nl##.login-wall
+nu.nl##article#LOGIN
 ||odt.co.nz/bwtw/scripts/tw.js$script,~third-party
 odt.co.nz##+js(ra, property, div[property="content:encoded"])
 onet.pl##+js(cookie-remover, /^xbc/)
@@ -615,7 +614,6 @@ nwzonline.de,shz.de,svz.de##+js(ra, amp-access-hide, [amp-access][amp-access-hid
 ! Italian sites
 corriere.it,ilfattoquotidiano.it,ilfoglio.it##+js(ra, subscriptions-section, [subscriptions-section="content"])
 corriere.it,ilfattoquotidiano.it,ilfoglio.it##[subscriptions-section="content-not-granted"]
-espresso.repubblica.it##+js(ra, amp-access-hide, [amp-access][amp-access-hide])
 ! Quotidiano.net (+ regional)
 ilgiorno.it,ilrestodelcarlino.it,iltelegrafolivorno.it,lanazione.it,quotidiano.net##+js(ra, amp-access-hide, [amp-access][amp-access-hide])
 

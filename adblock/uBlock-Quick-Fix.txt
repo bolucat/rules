@@ -14,12 +14,12 @@ aternos.org##.ad-dfp:style(min-height: 0.1485mm !important; height: 0.1485mm !im
 ! pixsera
 ! https://github.com/uBlockOrigin/uAssets/issues/9123
 ! https://github.com/orgs/uBlockOrigin/teams/ublock-filters-volunteers/discussions/423/comments/6
-imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs##+js(aopr, console.clear)
-imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs##+js(nano-sib, timer)
-imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs##div[id][style^="position: fixed; display: block; width: 100%;"]
-imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs##div[style="width:100%;height:110px"]
-imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs##+js(nowoif, !/prcf.fiyar|themes|pixsense|.jpg/)
-imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs##div[class][style="display: block;"]
+imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs,imgwqaf.sbs##+js(aopr, console.clear)
+imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs,imgwqaf.sbs##+js(nano-sib, timer)
+imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs,imgwqaf.sbs##div[id][style^="position: fixed; display: block; width: 100%;"]
+imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs,imgwqaf.sbs##div[style="width:100%;height:110px"]
+imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs,imgwqaf.sbs##+js(nowoif, !/prcf.fiyar|themes|pixsense|.jpg/)
+imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs,imgwqaf.sbs##div[class][style="display: block;"]
 
 ! https://github.com/uBlockOrigin/uAssets/issues/17548
 @@*$ghide,domain=dev.miuiflash.com|djxmaza.in|thecubexguide.com
@@ -49,27 +49,21 @@ djxmaza.in,miuiflash.com,thecubexguide.com###featuredimage:style(transform: tran
 
 ! https://github.com/uBlockOrigin/uAssets/issues/17711
 ! https://github.com/uBlockOrigin/uAssets/issues/19836
-||plagiarismdetector.net/pd-imgs/nimboora.png$image,1p
-||plagiarismdetector.net/pd-imgs/ajaasajan.png$image,1p
-plagiarismdetector.net##[id]:matches-attr(id="/[a-z0-9]{32}/") + [class]
-plagiarismdetector.net##[id][class] > a[rel*="nofollow"][class] > img[class][src^="https://plagiarismdetector.net"]
-plagiarismdetector.net##[id][class] > a[rel*="nofollow"][style*="cursor"] > img[class][src^="https://plagiarismdetector.net"]
-||searchenginereports.net/theAdGMC/$image,1p
-searchenginereports.net##div[class^="theBdsy"], div[id^="theBdsy_"]
+||plagiarismdetector.net/pd-imgs/sakoon.png$image,1p
+||plagiarismdetector.net/pd-imgs/glasspro.png$image,1p
 
-! https://old.reddit.com/r/uBlockOrigin/comments/16lmeri/youtube_antiadblock_and_ads_september_18_2023/k1uf2s1/ - ac9e22c0
-www.youtube.com##+js(trusted-replace-fetch-response, /(contextParams":"Q0F[A-Z]U.*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
-www.youtube.com##+js(trusted-replace-fetch-response, /((?:(?:&|%26)id(?:=|%3D)o-A[A-Z]|yt_live_broadcast).*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
+! https://old.reddit.com/r/uBlockOrigin/comments/16lmeri/youtube_antiadblock_and_ads_september_18_2023/k1uf2s1/ - 432433e9
+www.youtube.com##+js(trusted-replace-fetch-response, /(contextParams":"Q0F[A-Z]U.*?)"adPlacements.*?([^=]"\}\}|"\}\}\})\]\,/, $1, player?key=)
+www.youtube.com##+js(trusted-replace-fetch-response, /((?:(?:&|%26)id(?:=|%3D)o-A[A-Z]|yt_live_broadcast).*?)"adPlacements.*?([^=]"\}\}|"\}\}\})\]\,/, $1, player?key=)
+www.youtube.com#@#+js(trusted-replace-fetch-response, /(contextParams":"Q0F[A-Z]U.*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
+www.youtube.com#@#+js(trusted-replace-fetch-response, /((?:(?:&|%26)id(?:=|%3D)o-A[A-Z]|yt_live_broadcast).*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /(contextParams":"Q0FFU.*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /(hqdefault\.jpg\?sqp=-oaym.*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /((?:hqdefault\.jpg\?sqp=-oaym|hqdefault_live).*?)"adPlacements.*?"\}\}\}\]\,/, $1, player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?"\}\}\}\]\,(.*?hqdefault\.jpg(?:\?|%3F)sqp(?:=|%3D)-oaym)/, $1, player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?privateDoNotAccessOrElseTrustedResourceUrlWrappedValue":"https:\/\/www\.youtube\.com\/aboutthisad\?pf=web&source=youtube&reasons=A.*?"\}\}\}\]\,/, , player?key=)
-www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?privateDoNotAccessOrElseTrustedResourceUrlWrappedValue":"https:\/\/(www\.youtube\.com\/aboutthisad\?pf=web&source=youtube&reasons=A|fundingchoices).*?"\}\}\}\]\,/, , player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?("getAdBreakUrl":"https:\/\/www\.youtube\.com\/get_midroll_info\S+&token=ALHj|"(base)?[Uu]rl":"https:\/\/(secure)?pubads\.g\.doubleclick\.net).*?"\}\}\}\]\,/, , player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?"getAdBreakUrl":"https:\/\/www\.youtube\.com\/get_midroll_info\S+&token=ALHj.*?"\}\}\}\]\,/, , player?key=)
-www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?get_midroll_info\S+&token=ALHj.*?"\}\}\}\]\,/, , player?key=)
-www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?\/(aclk\?sa=L&ai=C(?!3OQpfbUyZYWKL_)[-_0-9A-Za-z]+__________[-_0-9A-Za-z]+A[A-Za-z]AA&|get_midroll_info\S+&token=ALHj).*?"\}\}\}\]\,/, , player?key=)
 ! https://www.reddit.com/r/uBlockOrigin/comments/16lmeri/youtube_antiadblock_and_ads_september_18_2023/k1wl8df/
 !#if !cap_html_filtering
 !#if env_firefox
@@ -89,22 +83,16 @@ dragontea.ink##[id$="ink_1000x100_anchor"][class="stpdr rendered"][data-google-q
 dragontea.ink###stpd_close:remove()
 dragontea.ink##ins[id^="gpt_unit_/"][style="display: block !important; width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; clear: none !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; position: fixed !important; vertical-align: baseline !important; visibility: visible !important; z-index: 2147483647 !important; background: transparent !important;"]
 
-! sankakucomplex detection
-sankakucomplex.com#@#.scad
-sankaku.app##+js(no-xhr-if, googlesyndication)
-
 ! Ad-Shield
 ! https://github.com/uBlockOrigin/uAssets/issues/12163
 ! https://github.com/uBlockOrigin/uAssets/issues/16749
-genshinlab.com,a-ha.io,cboard.net,mobilitytv.co.kr,mememedia.co.kr,newautopost.co.kr,tvreport.co.kr,tenbizt.com,jjang0u.com,joongdo.co.kr,viva100.com,hotplacehunter.co.kr,mystylezip.com,majorgeeks.com##+js(noeval-if, 07c225f3.online)
+poro.gg,maple.gg,lolchess.gg,dak.gg##+js(set-local-storage-item, adshield-analytics-uuid, $remove$)
+poro.gg,maple.gg,lolchess.gg,dak.gg##+js(noeval-if, /07c225f3\.online|content-loader\.com/)
 !#if cap_html_filtering
-genshinlab.com,fourfourtwo.co.kr,interfootball.co.kr,a-ha.io,cboard.net,mobilitytv.co.kr,mememedia.co.kr,newautopost.co.kr,tvreport.co.kr,tenbizt.com,jjang0u.com,joongdo.co.kr,viva100.com,hotplacehunter.co.kr,mystylezip.com,majorgeeks.com##^script:has-text(KCgpPT57bGV0IGU)
+poro.gg,maple.gg,lolchess.gg,dak.gg##^script:has-text(KCgpPT57bGV0IGU)
 !#else
-genshinlab.com,fourfourtwo.co.kr,interfootball.co.kr,a-ha.io,cboard.net,mobilitytv.co.kr,mememedia.co.kr,newautopost.co.kr,tvreport.co.kr,tenbizt.com,jjang0u.com,joongdo.co.kr,viva100.com,hotplacehunter.co.kr,mystylezip.com,majorgeeks.com##+js(rmnt, script, KCgpPT57bGV0IGU)
+poro.gg,maple.gg,lolchess.gg,dak.gg##+js(rmnt, script, KCgpPT57bGV0IGU)
 !#endif
-
-! https://github.com/uBlockOrigin/uAssets/issues/20359
-||amillionads.com^$media,redirect=noop-1s.mp4:10,from=open.spotify.com
 
 ! https://github.com/uBlockOrigin/uAssets/discussions/17361#discussioncomment-7439295
 @@||aiimgvlog.fun^$ghide
@@ -115,25 +103,6 @@ aiimgvlog.fun##+js(set, document.hasFocus, trueFunc)
 aiimgvlog.fun##form > div[id][style="display: none;"]:style(display: block !important;)
 aiimgvlog.fun###widescreen2
 aiimgvlog.fun##div[id][style="position:fixed;bottom: 0px;left: 0px;z-index:999999;"]
-
-! https://github.com/uBlockOrigin/uAssets/discussions/17361#discussioncomment-7433160
-mdn.lol##+js(rmnt, script, documnet.write)
-mdn.lol##+js(rpnt, script, bait.offsetWidth)
-mdn.lol##+js(rpnt, script, window.location.assign(", noop(")
-@@||static.surfe.pro/js/net.js$script,domain=mdn.lol
-||a-ads.com^$frame,redirect-rule=noop.html,domain=mdn.lol
-||mdn.lol/aryans.php
-mdn.lol##div.form-group:remove()
-
-! https://github.com/easylist/easylist/commit/336b0860948e951fa97fa258d4d9fa49f7f2dec6
-/api/ad/*$badfilter
-/ad/common/*$badfilter
-/ads/assets/*$badfilter
-/banners/ads/*$badfilter
-/components/ads/*$badfilter
-
-! https://github.com/uBlockOrigin/uAssets/issues/20410
-||quantcast.com^$badfilter
 
 ! https://github.com/uBlockOrigin/uAssets/issues/20369
 zive.cz#@#.cnc-ads
@@ -202,3 +171,6 @@ androidcentral.com,gamesradar.com,livescience.com,pcgamer.com,space.com,techrada
 
 ! https://github.com/uBlockOrigin/uAssets/commit/652254f04c
 @@||s.yimg.com^$ghide
+
+! https://github.com/easylist/easylist/commit/05cd173416e597eec35076c8690144ec5f792366
+||link.medium.com^$badfilter
