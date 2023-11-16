@@ -183,7 +183,6 @@
 - [Easylist-Privacy.txt](https://rules.neuq.de/adblock/Easylist-Privacy.txt)
 - [Fanboy-Annoyance.txt](https://rules.neuq.de/adblock/Fanboy-Annoyance.txt)
 - [Fanboy-Anti-Facebook.txt](https://rules.neuq.de/adblock/Fanboy-Anti-Facebook.txt)
-- [Fanboy-Enhanced-Tracking.txt](https://rules.neuq.de/adblock/Fanboy-Enhanced-Tracking.txt)
 - [Fanboy-Social.txt](https://rules.neuq.de/adblock/Fanboy-Social.txt)
 - [I-dont-care-about-cookies.txt](https://rules.neuq.de/adblock/I-dont-care-about-cookies.txt)
 - [List-KR.txt](https://rules.neuq.de/adblock/List-KR.txt)
