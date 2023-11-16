@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.1.4
+// @version         3.4.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1907,7 +1907,10 @@ else if (matchDomain('scmp.com')) {
     let section_hidden = document.querySelectorAll('section[data-qa="ContentBody-ContentBodyContainer"][class]');
     for (let elem of section_hidden)
       elem.removeAttribute('class');
-    let ads = document.querySelectorAll('div[data-qa*="AdSlot"]');
+    let paywalled = document.querySelector('div.paywalled-content');
+    if (paywalled)
+      paywalled.removeAttribute('class');
+    let ads = document.querySelectorAll('div[data-qa*="AdSlot"], div.adblock-message');
     hideDOMElement(...ads);
   }
 }
