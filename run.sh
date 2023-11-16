@@ -27,6 +27,7 @@
 #	   https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 #	   https://github.com/ClearURLs/Rules
 #	   https://github.com/immersive-translate/immersive-translate
+#	   https://github.com/gkd-kit/subscription
 
 OPTION=$1
 CUR=${PWD}
@@ -265,6 +266,7 @@ userscripts() {
 	mkdir -p userscripts
  	pushd userscripts || exit 1
   	wget https://github.com/immersive-translate/immersive-translate/releases/latest/download/immersive-translate.user.js -O immersive-translate.user.js
+   	wget https://raw.githubusercontent.com/gkd-kit/subscription/main/dist/gkd.json -O gkd-default-subscription.json
    	popd || exit 1
 }
 
