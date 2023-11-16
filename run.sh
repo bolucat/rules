@@ -188,7 +188,6 @@ adblock() {
 	wget https://easylist-downloads.adblockplus.org/easylistchina.txt -O Easylist-China.txt
 	wget https://easylist.to/easylist/easyprivacy.txt -O Easylist-Privacy.txt
 	wget https://easylist-downloads.adblockplus.org/antiadblockfilters.txt -O Adblock-Warning-Removal.txt
-	wget https://www.fanboy.co.nz/enhancedstats.txt -O Fanboy-Enhanced-Tracking.txt
 	wget https://secure.fanboy.co.nz/fanboy-annoyance_ubo.txt -O Fanboy-Annoyance.txt
 	wget https://easylist.to/easylist/fanboy-social.txt -O Fanboy-Social.txt
 	wget https://www.fanboy.co.nz/fanboy-antifacebook.txt -O Fanboy-Anti-Facebook.txt
