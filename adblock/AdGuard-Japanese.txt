@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: sZbIEgToIK74SkGxmRVFlg
+! Checksum: Pbh3DV6bmuZdpO+jfvt9xA
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.45.98
-! TimeUpdated: 2023-11-16T12:32:12+00:00
+! Version: 2.0.46.0
+! TimeUpdated: 2023-11-16T16:37:57+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1102,6 +1102,8 @@ avgle.com##+js(abort-current-script, __htapop)
 !-------CSS---------
 !-------------------
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/166349
+minkch.com#$#.lsidebar[style^="min-height"] { min-height: auto !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/165829
 soredoko.jp#$##srdk-index-native-pc { display: none !important; }
 soredoko.jp#$##srdk-index-native-pc ~ li.rank-7 { margin-left: 20px !important; }
@@ -1612,6 +1614,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+bm.best-hit.tv##.substitute-display-area-on
+coordisnap.com###_popIn_pc_side_rectangle_1
 minkch.com#?#.entry-content > p.bd:has(> a[href^="https://al.dmm.co.jp/"])
 ascii.jp#?#section[class^="posts--"] > .posts__row:has(script[src^="//i.socdm.com"])
 ||fx.minkabu.jp/javascripts/google/dfp.js
@@ -2445,6 +2449,7 @@ nan-net.com##a[href*="//advcnt.nan.co.jp/r_out.cgi?"]
 ||oppaimall.com/js/widget/
 5chan.jp##.matomelabel
 5chan.jp##.threadadvpc
+news.denfaminicogamer.jp##.inner-widget
 news.denfaminicogamer.jp##[id^="dfng"][id$="jack"]
 news.denfaminicogamer.jp##a[onclick^="dataLayer.push"]
 news.denfaminicogamer.jp##.rectangle-bn
@@ -3640,7 +3645,7 @@ recotripp.com##.ad-aside-small
 recotripp.com##.ad-contents
 favolog.org###ad-box3
 javmix.tv##div[style$="background: repeating-linear-gradient(45deg, #fff 0, #fff 10px, #eee 10px, #eee 20px); border: 1px solid #eee;"]
-javprime.net,popjav.in,javmix.tv##div[style^="max-width: 1000px; width: 90%; height: 400px;"]
+spankbang-dl.com,javprime.net,popjav.in,javmix.tv##div[style^="max-width: 1000px; width: 9"][style*="height: 400px;"]
 sankei.com##.main-items > div[id*="static-div-gpt-ad-"] + div[id^="fusion-static-enter"] + .custom-html-feature > hr
 dougle.one##.outlink-b
 dougle.one##.container_top_widget
@@ -9871,6 +9876,8 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_japanese
 !
 !
 !
+! Unbreak digital gift
+@@||ratel-ad.com/file/box/HuriwakeHeigu.js$domain=h1g.jp
 ! https://github.com/uBlockOrigin/uAssets/issues/20629
 @@||g.doubleclick.net/tag/js/gpt.js$domain=shindanmaker.com
 @@||g.doubleclick.net/pagead/managed/js/gpt/*/pubads_impl.js$domain=shindanmaker.com

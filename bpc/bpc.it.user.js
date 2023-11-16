@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.4.1.0
+// @version         3.4.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
@@ -55,6 +55,15 @@ else if (matchDomain('eastwest.eu')) {
     let intro = document.querySelectorAll('div#testo_articolo > p, div#testo_articolo > h3');
     let offerta = document.querySelectorAll('div.offerta_abbonamenti');
     removeDOMElement(...intro, ...offerta);
+  }
+}
+
+else if (matchDomain('editorialedomani.it')) {
+  if (window.location.search.startsWith('?amp=1'))
+    ampToHtml();
+  else {
+    let ads = document.querySelectorAll('div.ad-container');
+    hideDOMElement(...ads);
   }
 }
 
@@ -384,6 +393,7 @@ function amp_iframes_replace(weblink = false, source = '') {
       amp_iframe.parentNode.replaceChild(elem, amp_iframe);
     } else {
       par = document.createElement('p');
+      par.style = 'margin: 20px 0px;';
       elem = document.createElement('a');
       elem.innerText = 'Media-link';
       elem.setAttribute('href', amp_iframe.getAttribute('src'));
