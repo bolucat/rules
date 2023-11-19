@@ -204,14 +204,14 @@ adblock() {
 	wget https://raw.githubusercontent.com/Cats-Team/AdRules/main/adblock_plus.txt -O Cats-Team-AdRules.txt
 	wget https://raw.githubusercontent.com/uniartisan/adblock_list/master/adblock_plus.txt -O Uniartisan-Adblock-Plus.txt
 	wget https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjx-annoyance.txt -O CJX-Annoyance.txt
-	wget https://ublockorigin.github.io/uAssets/filters/filters.txt -O uBlock-Fliters.txt
-	wget https://ublockorigin.github.io/uAssets/filters/badware.txt -O uBlock-Badware.txt
-	wget https://ublockorigin.github.io/uAssets/filters/lan-block.txt -O uBlock-Lan-Block.txt
-	wget https://ublockorigin.github.io/uAssets/filters/privacy.txt -O uBlock-Privacy.txt
-	wget https://ublockorigin.github.io/uAssets/filters/quick-fixes.txt -O uBlock-Quick-Fix.txt
-	wget https://ublockorigin.github.io/uAssets/filters/resource-abuse.txt -O uBlock-Resource-Abuse.txt
-	wget https://ublockorigin.github.io/uAssets/filters/unbreak.txt -O uBlock-Unbreak.txt
-	wget https://ublockorigin.github.io/uAssets/filters/annoyances.txt -O uBlock-Annoyances.txt
+	wget https://ublockorigin.github.io/uAssetsCDN/filters/filters.min.txt -O uBlock-Fliters.txt
+	wget https://ublockorigin.github.io/uAssetsCDN/filters/badware.min.txt -O uBlock-Badware.txt
+	wget https://ublockorigin.github.io/uAssetsCDN/filters/lan-block.txt -O uBlock-Lan-Block.txt
+	wget https://ublockorigin.github.io/uAssetsCDN/filters/privacy.min.txt -O uBlock-Privacy.txt
+	wget https://ublockorigin.github.io/uAssetsCDN/filters/quick-fixes.min.txt -O uBlock-Quick-Fix.txt
+	wget https://ublockorigin.github.io/uAssetsCDN/filters/resource-abuse.txt -O uBlock-Resource-Abuse.txt
+	wget https://ublockorigin.github.io/uAssetsCDN/filters/unbreak.min.txt -O uBlock-Unbreak.txt
+	wget https://ublockorigin.github.io/uAssetsCDN/filters/annoyances.min.txt -O uBlock-Annoyances.txt
 	wget https://malware-filter.gitlab.io/malware-filter/phishing-filter-ag.txt -O Phishing-URL-Blocklist.txt
 	wget https://malware-filter.gitlab.io/malware-filter/botnet-filter-ag.txt -O Botnet-Blocklist.txt
 	wget https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-ag-online.txt -O Malicious-URL-Blocklist.txt
