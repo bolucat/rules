@@ -394,6 +394,12 @@ purge() {
       		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/openclash/${file}"
     	done
     	popd || exit 1
+     	# clash/ip-show-list
+    	pushd clash/ip-show-list || exit 1
+    	for file in $(ls); do
+      		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/ip-show-list/${file}"
+    	done
+    	popd || exit 1
 	# clash/cf-ip
     	pushd clash/cf-ip || exit 1
     	for file in $(ls); do
