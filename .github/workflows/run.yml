@@ -26,7 +26,6 @@ jobs:
           sudo apt-get install -y nodejs jsonlint
           chmod +x run.sh
           ./run.sh --all
-          ./run.sh --purge
 
       - name: Commit Changes
         run: |
@@ -41,6 +40,11 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
+
+      - name: Purge jsdelivr CDN
+        run: |
+          chmod +x run.sh
+          ./run.sh --purge
           
       - name: Publish
         run: |
