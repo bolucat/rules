@@ -1,27 +1,22 @@
-! Title: uBlock₀ filters – Quick fixes
-! Last modified: Sat, 18 Nov 2023 13:30:06 +0000
+! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Description: Immediate, temporary filters to fix websites
+! Last modified: Sat, 18 Nov 2023 13:30:06 +0000
+! Diff-Path: ../patches/2023.11.19.94.patch#ublock-quick-fixes
+! Diff-Name: ublock-quick-fixes
+! Diff-Expires: 5 hours
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
-! Homepage: https://github.com/uBlockOrigin/uAssets
-! Forums: https://github.com/uBlockOrigin/uAssets/issues
-
+! *** uAssets:filters/quick-fixes.txt ***
 ! aternos anti adb
 aternos.org##.header-center:style(margin-top:-5000px !important;)
 aternos.org##.sidebar:style(width: 1.745px !important;)
 aternos.org##.ad-dfp:style(min-height: 0.1485mm !important; height: 0.1485mm !important;)
-
 ! pixsera
-! https://github.com/uBlockOrigin/uAssets/issues/9123
-! https://github.com/orgs/uBlockOrigin/teams/ublock-filters-volunteers/discussions/423/comments/6
 imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs,imgwqaf.sbs,imgcdfd.sbs##+js(aopr, console.clear)
 imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs,imgwqaf.sbs,imgcdfd.sbs##+js(nano-sib, timer)
 imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs,imgwqaf.sbs,imgcdfd.sbs##div[id][style^="position: fixed; display: block; width: 100%;"]
 imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs,imgwqaf.sbs,imgcdfd.sbs##div[style="width:100%;height:110px"]
 imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs,imgwqaf.sbs,imgcdfd.sbs##+js(nowoif, !/prcf.fiyar|themes|pixsense|.jpg/)
 imgwelt.sbs,imgbuner.sbs,imgqasz.sbs,imgbbbx.sbs,imgwqaf.sbs,imgcdfd.sbs##div[class][style="display: block;"]
-
-! https://old.reddit.com/r/uBlockOrigin/comments/16lmeri/youtube_antiadblock_and_ads_september_18_2023/k1uf2s1/ - 96766c85
 www.youtube.com##+js(trusted-replace-xhr-response, /"adPlacements.*?([A-Z]"\}|"\}{2})\}\]\,/, , /player\?key=|watch\?v=|youtubei\/v1\/player/)
 www.youtube.com#@#+js(trusted-replace-xhr-response, /"adPlacements.*?\"\}\}\}\]\,/, , /player\?key=|watch\?v=|youtubei\/v1\/player/)
 www.youtube.com##+js(trusted-replace-fetch-response, /((?:(?:&|%26)id(?:=|%3D)o-A[A-Z]|yt_live_broadcast).*?)"adPlacements.*?([A-Z]"\}|"\}{2})\}\]\,/, $1, player?key=)
@@ -36,29 +31,21 @@ www.youtube.com#@#+js(trusted-replace-fetch-response, /((?:hqdefault\.jpg\?sqp=-
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?"\}\}\}\]\,(.*?hqdefault\.jpg(?:\?|%3F)sqp(?:=|%3D)-oaym)/, $1, player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?privateDoNotAccessOrElseTrustedResourceUrlWrappedValue":"https:\/\/www\.youtube\.com\/aboutthisad\?pf=web&source=youtube&reasons=A.*?"\}\}\}\]\,/, , player?key=)
 www.youtube.com#@#+js(trusted-replace-fetch-response, /"adPlacements.*?("getAdBreakUrl":"https:\/\/www\.youtube\.com\/get_midroll_info\S+&token=ALHj|"(base)?[Uu]rl":"https:\/\/(secure)?pubads\.g\.doubleclick\.net).*?"\}\}\}\]\,/, , player?key=)
-! https://www.reddit.com/r/uBlockOrigin/comments/16lmeri/youtube_antiadblock_and_ads_september_18_2023/k1wl8df/
 !#if !cap_html_filtering
 !#if env_firefox
 youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots legacyImportant)
 !#endif
 !#endif
 ||youtube.com/ad_companion$badfilter
-
-! https://github.com/uBlockOrigin/uAssets/issues/18476
 ! VOE sites
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=kathleenmemberhistory.com,important
 kathleenmemberhistory.com##+js(nowoif)
-
-! https://github.com/uBlockOrigin/uAssets/issues/16083
 dragontea.ink##html:not(:has(link[href="https://dragontea.ink/xmlrpc.php"], link[href="/cdn-cgi/styles/challenges.css"])) > body:not(.page-template)
 dragontea.ink##[id$="ink_1000x100_anchor_top"][class="stpdr rendered"][data-google-query-id][style]:style(position: absolute !important;)
 dragontea.ink##[id$="ink_1000x100_anchor"][class="stpdr rendered"][data-google-query-id][style]:style(position: absolute !important;)
 dragontea.ink###stpd_close:remove()
 dragontea.ink##ins[id^="gpt_unit_/"][style="display: block !important; width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; clear: none !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; position: fixed !important; vertical-align: baseline !important; visibility: visible !important; z-index: 2147483647 !important; background: transparent !important;"]
-
 ! Ad-Shield
-! https://github.com/uBlockOrigin/uAssets/issues/12163
-! https://github.com/uBlockOrigin/uAssets/issues/16749
 poro.gg,maple.gg,lolchess.gg,dak.gg##+js(set-local-storage-item, adshield-analytics-uuid, $remove$)
 poro.gg,maple.gg,lolchess.gg,dak.gg##+js(noeval-if, /07c225f3\.online|content-loader\.com/)
 !#if cap_html_filtering
@@ -66,8 +53,6 @@ poro.gg,maple.gg,lolchess.gg,dak.gg##^script:has-text(KCgpPT57bGV0IGU)
 !#else
 poro.gg,maple.gg,lolchess.gg,dak.gg##+js(rmnt, script, KCgpPT57bGV0IGU)
 !#endif
-
-! https://github.com/uBlockOrigin/uAssets/discussions/17361#discussioncomment-7439295
 @@||aiimgvlog.fun^$ghide
 aiimgvlog.fun##+js(aopw, AdbModel)
 aiimgvlog.fun##+js(aeld, , popMagic)
@@ -76,8 +61,6 @@ aiimgvlog.fun##+js(set, document.hasFocus, trueFunc)
 aiimgvlog.fun##form > div[id][style="display: none;"]:style(display: block !important;)
 aiimgvlog.fun###widescreen2
 aiimgvlog.fun##div[id][style="position:fixed;bottom: 0px;left: 0px;z-index:999999;"]
-
-! https://github.com/uBlockOrigin/uAssets/issues/20369
 zive.cz#@#.cnc-ads
 zive.cz#@##cnc_branding_creative_wrapper
 zive.cz#@#div.sky-wrapper
@@ -88,18 +71,9 @@ zive.cz##.cnc-ads--rectangle_480_1
 *$script,redirect-rule=noopjs,domain=zive.cz
 zive.cz##+js(set, cpexAddCMPCloseButton, noopFunc)
 zive.cz##+js(trusted-set, window.cpexCMPVersion, 2.0 TCF 2.2)
-
-! https://github.com/uBlockOrigin/uAssets/issues/20505 - remove after 22.11.2023
 @@||download.megaup.net^$script,1p
-
-! https://github.com/uBlockOrigin/uAssets/issues/20530
 airtel.in##+js(no-xhr-if, analytics/bulk-pixel)
-
-! https://github.com/uBlockOrigin/uAssets/issues/20570
 ||ubereats.com/_events$badfilter
-
-! https://github.com/easylist/easylistgermany/issues/216
-! https://github.com/uBlockOrigin/uAssets/issues/20710
 chip.de#@#a[href^="https://www.chip.de/downloads/"][href$=".html"] div > figure > img
 chip.de##body > ul > li > a[href^="https://www.chip.de/downloads/"]:upward(2)
 chip.de##a[href^="https://www.chip.de/downloads/"]:not(.Listing-Teaser.fb[title]):has(figure > img[src^="https://im.chip.de/"]:not([alt]))
@@ -107,24 +81,10 @@ chip.de##section[class^="fb-"] + .is-hidden-sm > ul > li > a[href^="https://www.
 chip.de##main#M1 > ul > li > a[href^="https://www.chip.de/downloads/"]:upward(2)
 chip.de##.Main__Container > ul > li > a[href^="https://www.chip.de/downloads/"]:upward(2)
 chip.de##.js_download_button > a.Download-Button--Free[href*="withinstaller"][href*="lastchanged"]:upward(1)
-
-! https://www.reddit.com/r/uBlockOrigin/comments/17sd1co/request_fix_for_spacecom/
 androidcentral.com,gamesradar.com,livescience.com,pcgamer.com,space.com,techradar.com,tomsguide.com,tomshardware.com,whathifi.com,windowscentral.com#@##article-body > ul:has(a[rel="sponsored noopener"])
-
-! https://github.com/uBlockOrigin/uAssets/issues/20608
 ||teads.tv^$3p,script,redirect-rule=noop.js,from=tf1info.fr
-
-! https://github.com/uBlockOrigin/uAssets/issues/17807
 ||edge.api.brightcove.com/playback/v1/accounts/6415718365001/$3p,xhr,removeparam=ad_config_id,domain=brightcove.net
-
-! https://github.com/uBlockOrigin/uAssets/commit/652254f04c
 @@||s.yimg.com^$ghide
-
-! https://github.com/easylist/easylist/commit/05cd173416e597eec35076c8690144ec5f792366
 ||link.medium.com^$badfilter
-
-! https://github.com/uBlockOrigin/uAssets/issues/20723
 @@||hdblog.it/new_files/ajax/bf_new.php$frame,1p
-
-! https://github.com/uBlockOrigin/uAssets/issues/20735
 ||xp.apple.com^$~ping,badfilter
