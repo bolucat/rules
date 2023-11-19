@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.2.0
+// @version         3.4.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -14,6 +14,7 @@
 // @match           *://*.handelszeitung.ch/*
 // @match           *://*.kurier.at/*
 // @match           *://*.nzz.ch/*
+// @match           *://*.profil.at/*
 // @match           *://*.schweizermonat.ch/*
 // @match           *://*.topagrar.at/*
 // @match           *://*.topagrar.com/*
@@ -405,6 +406,16 @@ else if (matchDomain('philomag.de')) {
   }
 }
 
+else if (matchDomain('profil.at')) {
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    paywall.removeAttribute('class');
+    paywall.removeAttribute('style');
+    let fade = document.querySelector('div#cfs-paywall-container');
+    hideDOMElement(fade);
+  }
+}
+
 else if (matchDomain('schwaebische.de')) {
   let url = window.location.href;
   let paywall_sel = 'div > div.sve-paywall-wrapper_overlay';
@@ -786,6 +797,7 @@ function amp_iframes_replace(weblink = false, source = '') {
       amp_iframe.parentNode.replaceChild(elem, amp_iframe);
     } else {
       par = document.createElement('p');
+      par.style = 'margin: 20px 0px;';
       elem = document.createElement('a');
       elem.innerText = 'Media-link';
       elem.setAttribute('href', amp_iframe.getAttribute('src'));

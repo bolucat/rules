@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: CMBQZOUiQMIuGYvs+aMPaA
+! Checksum: Gh5mAt7fPS+BwU6a5bT76Q
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.46.7
-! TimeUpdated: 2023-11-18T15:32:11+00:00
+! Version: 2.0.46.9
+! TimeUpdated: 2023-11-19T09:32:00+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -81,6 +81,7 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp
 !
+||afi-thor.com^$third-party
 ||afbhub.net^$third-party
 ||advortex.cloud^
 ||dlp4luwpus5kr.cloudfront.net^
@@ -1460,10 +1461,15 @@ hostlove.com#$##index_nav > h1 { padding-top: 30px!important; }
 /wp-content/themes/CashLINESystem/js/modal.$script
 !
 ! Malware/Phishing
+/?type=lp001&afl=$document
+/?wt=*&adv=$document
+/^https:\/\/\d*juniorlak[0-9a-z]+\.[a-z]{2}\.com\//$document,domain=sa.com|ru.com|za.com
+://amazon-co-jp.*.com/$document
 .com/nta/client/LOG0101001.php|$document
 ://smbc.*.cn/login|$document
 ://smfg-card.com.$document
 ://www.mynumberpoint.*.com/$document
+||z13.web.core.windows.net/mac/$all
 ||z13.web.core.windows.net/win/$all
 .xyz/*.apk|$document
 .com/chrome.apk|$document
