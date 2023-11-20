@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: EnyF6fLYQinYXykqchk1eA
+! Checksum: JQIuVcQgfvTXjQ1PmHdBsQ
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.46.11
-! TimeUpdated: 2023-11-19T14:32:05+00:00
+! Version: 2.0.46.18
+! TimeUpdated: 2023-11-20T14:32:27+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -494,6 +494,8 @@
 ! Bad: ||ad.doubleclick.net^ (should be in adservers.txt)
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/166650
+jukenbbs.com##+js(addEventListener-defuser, load, delayCheckAdBlock)
 ! https://github.com/uBlockOrigin/uAssets/issues/20629
 @@||shindanmaker.com^$generichide
 shindanmaker.com#$#div[id^="div-gpt-"] { min-height: 1px !important; }
@@ -963,6 +965,9 @@ nasubiblog.com,kyukyoku-matome.com##.widget_pc_ad
 !-------JS----------
 !-------------------
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/166651
+! https://github.com/AdguardTeam/AdguardFilters/issues/166658
+pictab.art,onagazou.info##+js(set-constant, pum_vars, undefined)
 ! https://github.com/uBlockOrigin/uAssets/issues/20629
 shindanmaker.com##+js(nano-setInterval-booster, reward_countdown)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/165446
@@ -1625,6 +1630,10 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+jukenbbs.com##.column--r > center:first-child
+jukenbbs.com##.container-fluid > center
+wpb.shueisha.co.jp#?#.block-widget-a-c__container:has(> div.mod-box > div.mod-box__container > div.js-ad-wpb_pc_house)
+majinai.art##.slide_b
 shimotsuke.co.jp##div[id^="jp_soon_"][style]
 todaishimbun.org#?#.dfad:not(:has(> a[href^="https://www.todaishimbun.org"])):not(:has(> a[href^="https://forms.gle"]))
 media.finasee.jp##div[style="width: 100%; min-height:100px; margin: 0 auto;"]

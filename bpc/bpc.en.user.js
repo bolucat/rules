@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.2.4
+// @version         3.4.2.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1361,29 +1361,15 @@ else if (matchDomain('hbr.org')) {
 
 else if (matchDomain('hilltimes.com')) {
   function hilltimes_main(node) {
-    let paywall_banner = document.querySelector('div.paywallcont2');
-    removeDOMElement(node, paywall_banner);
-    let json_script = document.querySelector('script.saswp-schema-markup-output');
-    if (json_script) {
-      try {
-        let json = JSON.parse(json_script.text);
-        let json_text = json.filter(x => x.articleBody)[0].articleBody.replace(/\s{2,}/g, '\r\n\r\n');
-        let article = document.querySelector('div#fadebg > p');
-        if (article) {
-          article.innerText = parseHtmlEntities(json_text);
-          article.parentNode.removeAttribute('id');
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    getJsonUrl('div.paywallcont', '', 'div#entry-content');
   }
   let paywall_sel = 'div.paywallcont';
   let paywall = document.querySelector(paywall_sel);
-  if (paywall) {
-    hilltimes_main(paywall);
-  } else {
-    waitDOMElement(paywall_sel, 'DIV', hilltimes_main, false);
+  if (true) {
+    if (paywall)
+      hilltimes_main(paywall);
+    else
+      waitDOMElement(paywall_sel, 'DIV', hilltimes_main, false);
   }
   window.setTimeout(function () {
     let banner = document.querySelector('section.hide_this_section');
