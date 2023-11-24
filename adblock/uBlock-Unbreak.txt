@@ -1,9 +1,9 @@
 ! Title: uBlock filters – Unbreak
 ! Expires: 5 days
-! Last modified: Fri, 17 Nov 2023 10:39:52 +0000
-! Diff-Path: ../patches/2023.11.21.1045.patch#ublock-unbreak
+! Last modified: Thu, 23 Nov 2023 01:09:34 +0000
+! Diff-Path: ../patches/2023.11.24.921.patch#ublock-unbreak
 ! Diff-Name: ublock-unbreak
-! Diff-Expires: 5 hours
+! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/unbreak.txt ***
 ||2mdn.net/instream/video/client.js$script,redirect=noopjs,domain=video.foxnews.com
@@ -2063,9 +2063,6 @@ mediaite.com##.adthrive-video-player:style(padding-bottom: 0 !important;)
 ! unbreak sagicheck.jp - checking bad url pattern triggers strict-blocking
 @@||sagicheck.jp/jp/check/$doc
 ||lightning.cnn.com/launch/$script,redirect-rule=noopjs
-@@||afreecatv.com/api/$xhr,1p
-@@||afreecatv.com^$script,1p
-@@||imasdk.googleapis.com/js/sdkloader/ima3.js$script,domain=vod.afreecatv.com
 @@||catchup.thisisdax.com/*.m4a$media,domain=globalplayer.com
 ||scandichotels.com/Static/js/tracking/tracking-data-init.js^$script,1p,important
 scandichotels.com##+js(set, datalayer, [])
@@ -2339,7 +2336,6 @@ szbz.de##+js(set, iom, {})
 /^https?:\/\/[www.0-9a-z]{7,}\.com\/.*\/invoke\.js$/$script,3p,badfilter
 api.dock.agacad.com##+js(rpnt, script, /window\.dataLayer.+?(location\.replace\(\S+?\)).*/, $1)
 ||tm.jsuol.com.br/uoltm.js$script,domain=uol.com.br,important
-uol.com.br##+js(set, YT, {})
 uol.com.br##+js(set, YT.ImaManager, noopFunc)
 uol.com.br##+js(set, UOLPD, {})
 uol.com.br##+js(set, UOLPD.dataLayer, {})

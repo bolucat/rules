@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.4.2.7
+! Version: 3.4.3.3
 
 ! General
 
@@ -54,7 +54,7 @@ alternatives-economiques.fr##+js(ra, style, div[data-ae-poool], stay)
 ambito.com##+js(cookie-remover, TDNotesRead)
 ||americanaffairsjournal.org/wp-content/mu-plugins/app/src/paywall/paywall.js$script,~third-party
 apollo-magazine.com##+js(cookie-remover, blaize_session)
-apollo-magazine.com,spectator.co.uk###subscribe-ribbon
+apollo-magazine.com,spectator.co.uk###subscribe-ribbon,div.ad-slot
 arkansasonline.com##+js(cookie-remover, blaize_session)
 artforum.com##+js(cookie-remover, /^/)
 ||artnet.com/paywall-ajax.php$xmlhttprequest,~third-party
@@ -346,6 +346,8 @@ theweek.com##+js(rc, paywall-locker, div.paywall-locker)
 theweek.com##div.kiosq-main-layer
 thewrap.com##+js(cookie-remover, blaize_session)
 ||timeshighereducation.com/sites/default/files/*/js__*.js$script,~third-party
+tt.com##+js(rc, exclusive-elem, .exclusive-elem)
+tt.com##div.adblock-warning
 ||tuttosport.com/_next/static/chunks/pages/news/%5B*.js$script,~third-party
 tuttosport.com##div[class^="AdUnit_"]
 unherd.com##+js(ra, id, div#premiumcontent)
@@ -400,6 +402,7 @@ sudouest.fr,charentelibre.fr,larepubliquedespyrenees.fr##+js(rc, visible-premium
 ! Groupe Nice-Matin
 monacomatin.mc,nicematin.com,varmatin.com##+js(ra, id, div#article-teaser)
 monacomatin.mc,nicematin.com,varmatin.com##+js(ra, amp-access-hide, [amp-access][amp-access-hide])
+monacomatin.mc,nicematin.com,varmatin.com##div[class^="ad-slot-"],div#poool-widget-content,div[class*="Rhoo"]
 
 ! Grupo El Comercio
 ||diariocorreo.pe/pf/dist/engine/react.js$script,~third-party
@@ -429,9 +432,6 @@ corriereadriatico.it,ilgazzettino.it,ilmattino.it,ilmessaggero.it,quotidianodipu
 profi.de,topagrar.at,topagrar.com,wochenblatt.com##+js(ra, class|style, div.paywall-full-content[style])
 profi.de,wochenblatt.com##div.m-paywall__textFadeOut,div[id^="paymentprocess-"]
 topagrar.at,topagrar.com##div.paywall-package
-
-! Madavor Media sites
-birdwatchingdaily.com,digitalphotopro.com,dpmag.com,jazztimes.com,outdoorphotographer.com,planeandpilotmag.com,writermag.com##+js(cookie-remover, /^article_/)
 
 ! Madsack sites
 dnn.de,gnz.de,goettinger-tageblatt.de,haz.de,kn-online.de,landeszeitung.de,ln-online.de,lvz.de,maz-online.de,neuepresse.de,op-marburg.de,ostsee-zeitung.de,paz-online.de,rnd.de,siegener-zeitung.de,sn-online.de,waz-online.de##+js(set, Fusion.globalContent.isPaid, false)
@@ -511,6 +511,7 @@ bizwest.com##div.fp-paywall
 bizwest.com##+js(ra, class, div.fp-content)
 brainly.com,brainly.com.br##+js(aopr, localStorage)
 ||account.brandonsun.com/api/v*/auth/identify$xmlhttprequest,~third-party
+brusselstimes.com##+js(ra, style, div[style*="height: 0;"], stay)
 cmcmarkets.com##+js(rc, activePaywall, .activePaywall)
 ||paywall.correiodopovo.com.br$script,~third-party
 divisare.com##div.blocker
@@ -549,6 +550,9 @@ marketnews.com##+js(ra, class, div.body-description)
 meritnation.com##.view-full-answer 
 meritnation.com##+js(rc, maxHeight75px, div.exp_content.maxHeight75px)
 ||moscout.com$inline-script
+museumsassociation.org##+js(rc, paywall, body.paywall)
+museumsassociation.org##+js(ra, style, body[style], stay)
+museumsassociation.org##div#paywall-wrapper,div.advertising
 nacion.com##+js(ra, style, div.article-body-wrapper__styled[style], stay)
 nacion.com##div.post
 nation.africa##+js(rc, nmgp, .nmgp)

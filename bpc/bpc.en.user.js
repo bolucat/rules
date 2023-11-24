@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.2.5
+// @version         3.4.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -80,6 +80,7 @@
 // @exclude         *://*.revistaoeste.com/*
 // @exclude         *://*.science-et-vie.com/*
 // @exclude         *://*.topagrar.com/*
+// @exclude         *://*.tt.com/*
 // @exclude         *://*.tuttosport.com/*
 // @exclude         *://*.wochenblatt.com/*
 // @grant           GM.xmlHttpRequest			 
@@ -133,7 +134,6 @@ var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntr
 var usa_craincomm_domains = ['360dx.com', 'adage.com', 'autonews.com', 'chicagobusiness.com', 'crainscleveland.com', 'crainsdetroit.com', 'crainsnewyork.com', 'european-rubber-journal.com', 'genomeweb.com', 'modernhealthcare.com', 'pionline.com', 'plasticsnews.com', 'precisionmedicineonline.com', 'rubbernews.com', 'sustainableplastics.com', 'tirebusiness.com', 'utech-polyurethane.com'];
 var usa_hearst_comm_domains = ['expressnews.com', 'houstonchronicle.com', 'sfchronicle.com'];
 var usa_lee_ent_domains = ['buffalonews.com', 'journalnow.com', 'journalstar.com', 'madison.com', 'nwitimes.com', 'omaha.com', 'richmond.com', 'stltoday.com', 'tucson.com', 'tulsaworld.com'];
-var usa_madavor_domains = ['birdwatchingdaily.com', 'digitalphotopro.com', 'dpmag.com', 'jazztimes.com', 'outdoorphotographer.com', 'planeandpilotmag.com', 'writermag.com'];
 var usa_mcc_domains = ['bnd.com', 'charlotteobserver.com', 'fresnobee.com', 'kansas.com', 'kansascity.com', 'kentucky.com', 'mcclatchydc.com', 'miamiherald.com', 'newsobserver.com', 'sacbee.com', 'star-telegram.com', 'thestate.com', 'tri-cityherald.com'];
 var usa_mng_domains =   ['denverpost.com', 'eastbaytimes.com', 'mercurynews.com', 'ocregister.com', 'pressenterprise.com', 'twincities.com'];
 var usa_outside_mag_domains = ["backpacker.com", "betamtb.com", "betternutrition.com", "cleaneatingmag.com", "climbing.com", "outsideonline.com", "oxygenmag.com", "skimag.com", "trailrunnermag.com", "triathlete.com", "vegetariantimes.com", "womensrunning.com", "yogajournal.com"];
@@ -628,8 +628,8 @@ else if (matchDomain('spectator.co.uk')) {
     if (article)
       article.firstChild.before(archiveLink(url));
   }
-  let banner = document.querySelector('#subscribe-ribbon');
-  removeDOMElement(banner);
+  let banners = document.querySelectorAll('#subscribe-ribbon, div.ad-slot');
+  hideDOMElement(...banners);
 }
 
 else if (matchDomain('stylist.co.uk')) {
@@ -1595,6 +1595,20 @@ else if (matchDomain('japantimes.co.jp')) {
     }, 1000);
   } else
     ampToHtml();
+}
+
+else if (matchDomain('jazziz.com')) {
+  if (true) {
+    let art_options = {};
+    if (window.location.pathname.startsWith('/jazziz-discovery-'))
+      art_options = {art_append: true, art_hold: true};
+    getJsonUrl('div.emoxie-pay-wall', '', 'div.restricted-content', art_options);
+    window.setTimeout(function () {
+      let slideshow = document.querySelector('div[data-slider-id][style]');
+      if (slideshow)
+        slideshow.removeAttribute('style');
+    }, 1000);
+  }
 }
 
 else if (matchDomain('jpost.com')) {
@@ -2731,12 +2745,6 @@ else if (matchDomain('usatoday.com')) {
       }
     }
   }
-}
-
-else if (domain = matchDomain(usa_madavor_domains)) {
-  setCookie(/^article_/, '');
-  let banner = document.querySelector('div.free-articles-remaining');
-  hideDOMElement(banner);
 }
 
 else if (matchDomain('vikatan.com')) {

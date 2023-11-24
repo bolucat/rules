@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.2.1
+// @version         3.4.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -18,6 +18,7 @@
 // @match           *://*.schweizermonat.ch/*
 // @match           *://*.topagrar.at/*
 // @match           *://*.topagrar.com/*
+// @match           *://*.tt.com/*
 // @match           *://*.vn.at/*
 // @match           *://*.vol.at/*
 // @match           *://*.wochenblatt.com/*
@@ -482,6 +483,25 @@ else if (matchDomain('sueddeutsche.de')) {
     let ads = document.querySelectorAll('div.ad-container');
     hideDOMElement(...ads);
   }
+}
+
+else if (matchDomain('tagesspiegel.de')) {
+  let url = window.location.href;
+  let paywall = document.querySelector('div#paywal, div#pw');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.article--paid, div.tslr-article > p');
+    if (article)
+      article.firstChild.before(archiveLink(url));
+  }
+}
+
+else if (matchDomain('tt.com')) {
+  let div_hidden = document.querySelectorAll('.exclusive-elem');
+  for (let elem of div_hidden)
+    elem.classList.remove('exclusive-elem');
+  let ads = document.querySelectorAll('div.ad-container, div[class*="ads-container"], div.adblock-warning');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('vn.at')) {
