@@ -20,10 +20,15 @@ jobs:
       
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Install Nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
         
       - name: Sync
         run: |
-          sudo apt-get install -y nodejs jsonlint
+          sudo apt-get install -y jsonlint
           chmod +x run.sh
           ./run.sh --all
 
