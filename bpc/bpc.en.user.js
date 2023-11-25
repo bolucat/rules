@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.3.2
+// @version         3.4.3.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -109,11 +109,6 @@ else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
   window.setTimeout(function () {
     insert_script(hindu_main);
   }, 100);
-}
-
-else if (matchDomain('thetimes.co.uk')) {
-  waitDOMAttribute('body', 'BODY', 'style', node => node.removeAttribute('style'), true);
-  waitDOMAttribute('html', 'HTML', 'style', node => node.removeAttribute('style'), true);
 }
 
 window.setTimeout(function () {
@@ -806,11 +801,18 @@ else if (matchDomain('thetimes.co.uk')) {
       let article = document.querySelector('article[class^="responsive__BodyContainer"]');
       if (article)
         article.firstChild.before(archiveLink(url));
+      for (let n = 0; n < 5; n++) {
+        window.setTimeout(function () {
+          let page_scroll = document.querySelectorAll('html, body');
+          for (let elem of page_scroll)
+            elem.style = 'overflow: auto !important; height: 100% !important;';
+        }, n * 500);
+      }
     }
     let paywall_page = document.querySelector('div#paywall-portal-page-footer');
     let block = document.querySelector('.subscription-block');
     removeDOMElement(paywall_page, block);
-    let ads = document.querySelectorAll('#ad-article-inline, #sticky-ad-header, div[class*="InlineAdWrapper"], div[class*="NativeAd"], div.gyLkkj');
+    let ads = document.querySelectorAll('#ad-article-inline, div#sticky-ad-header, div[class*="InlineAdWrapper"], div[class*="NativeAd"], div.gyLkkj');
     hideDOMElement(...ads);
   }
 }
