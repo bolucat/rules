@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.3.4
+// @version         3.4.3.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1578,23 +1578,13 @@ else if (matchDomain('japantimes.co.jp')) {
       let paywall = document.querySelector('div.blocker > div.tp-container-inner');
       if (paywall) {
         removeDOMElement(paywall.parentNode);
-        let json_script = getArticleJsonScript();
-        if (json_script) {
-          let json = JSON.parse(json_script.text);
-          if (json) {
-            let json_text = json.articleBody;
-            let article = document.querySelector('div.article-body');
-            if (json_text && article) {
-              let article_new = document.createElement('p');
-              article_new.innerText = breakText(json_text);
-              article.innerHTML = '';
-              article.appendChild(article_new);
-              article.classList.remove('blurred-text');
-            }
-          }
+        let article = document.querySelector('div.article-body');
+        if (article) {
+          let url = window.location.href;
+          article.firstChild.before(nftLink(url));
         }
       }
-    }, 1000);
+    }, 2000);
   } else
     ampToHtml();
 }

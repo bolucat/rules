@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.3.1
+// @version         3.4.3.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -201,6 +201,49 @@ else if (matchDomain('freiepresse.de')) {
         }
       }
     }, 1000);
+  }
+}
+
+else if (matchDomain('freitag.de')) {
+  let paywall = document.querySelector('div.qa-paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let related = document.querySelector('div.c-teaser-plus-related--paywall');
+    if (related)
+      related.classList.remove('c-teaser-plus-related--paywall');
+    let article = document.querySelector('div#x-article-text');
+    if (article) {
+      let json_script = getArticleJsonScript();
+      if (json_script) {
+        let json = JSON.parse(json_script.text);
+        if (json) {
+          let json_text = breakText(json.articleBody);
+          let pars = json_text.split(/\n\n/g);
+          if (json_text) {
+            let intro = article.querySelectorAll('p');
+            removeDOMElement(...intro);
+            let article_new = document.createElement('div');
+            for (let par of pars) {
+              let par_new = document.createElement('p');
+              par_new.innerText = par;
+              article_new.appendChild(par_new);
+            }
+            article.appendChild(article_new);
+          }
+        }
+      } else {
+        let hidden_article = document.querySelector('div.o-paywall');
+        if (hidden_article) {
+          article.appendChild(document.createTextNode('> > >'));
+          let pars = breakText(hidden_article.innerText).split(/\n\n/g);
+          for (let par of pars) {
+            let par_new = document.createElement('p');
+            par_new.innerText = par;
+            article.appendChild(par_new);
+          }
+        }
+      }
+    }
   }
 }
 
