@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: UF2GWsaRABKdU3agueVnhg
+! Checksum: UvW5iL78ZjST0ViQX6n5Fg
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.46.34
-! TimeUpdated: 2023-11-27T10:32:24+00:00
+! Version: 2.0.46.36
+! TimeUpdated: 2023-11-28T15:32:07+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -81,6 +81,7 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp
 !
+||compass-fit.jp^$third-party
 ||gs-ad.jp^
 ||afi-thor.com^$third-party
 ||afbhub.net^$third-party
@@ -337,11 +338,7 @@
 ||v4dwkcv.com^$third-party
 ||fam-ad.com^$third-party
 ||ap.ad-feed.com^$third-party
-||b16.nakanohito.jp^$third-party
-||bs.nakanohito.jp^$third-party
-||cs.nakanohito.jp^$third-party
-||uh.nakanohito.jp^$third-party
-||c.nakanohito.jp^$third-party
+||nakanohito.jp^$third-party
 ||blog.livelog.biz^$third-party
 ||appollo.jp^$third-party
 ||ad-tag.biz^$third-party
@@ -793,7 +790,6 @@ video.tv-tokyo.co.jp#@#.ad-placeholder
 ! https://github.com/AdguardTeam/AdguardFilters/issues/20116
 ! https://github.com/AdguardTeam/AdguardFilters/issues/7918
 avgle.com#@#img[src*=".php"]
-avgle.com#@#iframe[width="300"][height="250"]
 avgle.com#@#iframe[width="728"][height="90"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/9125
 socom.yokohama#@#.an-advert-banner
@@ -1629,6 +1625,9 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+||benricho.org/2017js/ad_*.js
+||benricho.org/2017js/mobile_ad-bottom_ad.js
+||benricho.org/2017js/sidebar_googlead.js
 ranking.goo.ne.jp#?#dd > ul > li:has(> div.NR-ad-ranking)
 9db.jp#?##main > div.frame:has(> script[src^="//go.trvdp.com/"])
 nikkei.com##.nui-ad
@@ -4549,7 +4548,7 @@ bakusai.com##.thrWholeRight
 bakusai.com###banner_top
 ||afl.rakuten.co.jp^$domain=~kakaku.com,third-party
 biteki.com##.sideblock_banner
-avtokutei.com,murakichi.net,teyvatsokuho.com,bridgebook.jp,gambatimes.com,macsoft.jp,vapejp.net,neo-blood.co.jp,nijisenmon.work##.post-widgets-top
+studentwalker.com,avtokutei.com,murakichi.net,teyvatsokuho.com,bridgebook.jp,gambatimes.com,macsoft.jp,vapejp.net,neo-blood.co.jp,nijisenmon.work##.post-widgets-top
 360life.shinyusha.co.jp##.c-bnr > img.lozad
 hikak.com,shindans.com##.a11 > div.a21
 ||img.happymail.co.jp^$image,third-party
@@ -7921,7 +7920,7 @@ diamond.jp###gpt-dol-infeed-ranking-text
 diamond.jp##.banner-sp
 nikkan-spa.jp,diamond.jp##.pickup
 diamond.jp##.ad-bannar-floating
-nurumayu.net##img[width="300"][height="250"]
+studentwalker.com,nurumayu.net##img[width="300"][height="250"]
 auctions.yahoo.co.jp##.ss
 oto-suu.seesaa.net,my0nio.seesaa.net###links
 my0nio.seesaa.net##.text > a[href^="https://amzn."]
@@ -9909,6 +9908,11 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_japanese
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/142569
+@@||cm-widget.nakanohito.jp/cm/$script,stylesheet
+@@||cm-beacon.nakanohito.jp/cm/comment_$xmlhttprequest
+! https://github.com/easylist/easylist/pull/7519
+@@||nakanohito.jp^*/bi.js$domain=kenko-tokina.co.jp
 ! Unbreak digital gift
 @@||ratel-ad.com/file/box/HuriwakeHeigu.js$domain=h1g.jp
 ! https://github.com/uBlockOrigin/uAssets/issues/20629
@@ -10201,8 +10205,6 @@ hoken-all.co.jp#@#.bottom_ad
 gameranbu.jp#@#.side_ad
 ! minpo.jp self-promo
 minpo.jp#@#.ads300
-! https://github.com/AdguardTeam/AdguardFilters/issues/79057
-tv-tokyo.co.jp#@#iframe[width="300"][height="250"]
 ! https://github.com/hirorpt/filters/commit/7368d27f494e7fd3e9c3f460d72fab7b370892fd
 maidonanews.jp#@#.module-ad
 ! https://github.com/AdguardTeam/AdguardFilters/issues/55576
