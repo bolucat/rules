@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.3.6
+// @version         3.4.3.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -127,7 +127,7 @@ var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
 var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntraveler.com', 'epicurious.com,', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.com', 'wired.com'];
 var usa_craincomm_domains = ['360dx.com', 'adage.com', 'autonews.com', 'chicagobusiness.com', 'crainscleveland.com', 'crainsdetroit.com', 'crainsnewyork.com', 'european-rubber-journal.com', 'genomeweb.com', 'modernhealthcare.com', 'pionline.com', 'plasticsnews.com', 'precisionmedicineonline.com', 'rubbernews.com', 'sustainableplastics.com', 'tirebusiness.com', 'utech-polyurethane.com'];
-var usa_hearst_comm_domains = ['expressnews.com', 'houstonchronicle.com', 'sfchronicle.com'];
+var usa_hearst_comm_domains = ['ctpost.com', 'expressnews.com', 'houstonchronicle.com', 'nhregister.com', 'sfchronicle.com', 'timesunion.com'];
 var usa_lee_ent_domains = ['buffalonews.com', 'journalnow.com', 'journalstar.com', 'madison.com', 'nwitimes.com', 'omaha.com', 'richmond.com', 'stltoday.com', 'tucson.com', 'tulsaworld.com'];
 var usa_mcc_domains = ['bnd.com', 'charlotteobserver.com', 'fresnobee.com', 'kansas.com', 'kansascity.com', 'kentucky.com', 'mcclatchydc.com', 'miamiherald.com', 'newsobserver.com', 'sacbee.com', 'star-telegram.com', 'thestate.com', 'tri-cityherald.com'];
 var usa_mng_domains =   ['denverpost.com', 'eastbaytimes.com', 'mercurynews.com', 'ocregister.com', 'pressenterprise.com', 'twincities.com'];
@@ -1743,7 +1743,7 @@ else if (matchDomain('newscientist.com')) {
       let break_post = document.querySelector('div.paywall > p');
       if (break_post) {
         let parser = new DOMParser();
-        let doc = parser.parseFromString('<p>' + break_pre.innerHTML.replace(/\s…\s?/, ' ') + break_post.innerHTML + '</p>', 'text/html');
+        let doc = parser.parseFromString('<p>' + break_pre.innerHTML.replace(/\s?…\s?/, ' ') + break_post.innerHTML + '</p>', 'text/html');
         let content_new = doc.querySelector('p');
         break_pre.parentNode.replaceChild(content_new, break_pre);
         removeDOMElement(break_post);
@@ -1751,7 +1751,7 @@ else if (matchDomain('newscientist.com')) {
     }
     let ads = document.querySelectorAll('div[class*="Advert"]');
     hideDOMElement(...ads);
-  }, 1000);
+  }, 1500);
 }
 
 else if (matchDomain('newsday.com')) {
@@ -1764,6 +1764,11 @@ else if (matchDomain('newsday.com')) {
     let ads = document.querySelectorAll('div[class^="ad_full-banner_"]');
     hideDOMElement(...ads);
   }
+}
+
+else if (matchDomain('newsweek.com')) {
+  let ads = document.querySelectorAll('div#topad, div[id^="dfp-ad-"]');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain(['nola.com', 'theadvocate.com'])) {
