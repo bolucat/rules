@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.4.3.0
+// @version         3.4.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -25,6 +25,7 @@
 // @match           *://*.elcorreo.com/*
 // @match           *://*.elespanol.com/*
 // @match           *://*.elespectador.com/*
+// @match           *://*.elmercurio.com/*
 // @match           *://*.elobservador.com.uy/*
 // @match           *://*.elpais.com/*
 // @match           *://*.elperiodico.com/*
@@ -216,7 +217,7 @@ else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
   }
 }
 
-} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['cambiocolombia.com', 'clarin.com', 'elespectador.com', 'eltiempo.com', 'eltribuno.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com'])) {//south america
+} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['cambiocolombia.com', 'clarin.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com'])) {//south america
 
 if (matchDomain('abril.com.br')) {
   if (window.location.pathname.endsWith('/amp/')) {
@@ -296,6 +297,30 @@ else if (matchDomain('elespectador.com')) {
   }
 }
 
+else if (matchDomain(['elmercurio.com', 'lasegunda.com'])) {
+  window.setTimeout(function () {
+    let elem_hidden = document.querySelectorAll('[style="visibility:hidden"]');
+    for (let elem of elem_hidden)
+      elem.removeAttribute('style');
+    let page_pdf_content = document.querySelector('div.page_pdf_content');
+    let close_html = document.querySelector('div.close_html');
+    let cont_page_full = document.querySelector('div.cont_page_full');
+    removeDOMElement(page_pdf_content, close_html, cont_page_full);
+  }, 1000);
+  window.setTimeout(function () {
+    let cont_articlelight = document.querySelector('div.cont_articlelight');
+    if (cont_articlelight)
+      cont_articlelight.setAttribute('style', 'height: 100% !important; width: 90% !important');
+  }, 3000);
+  if (window.location.pathname.startsWith('/mobile')) {
+    let lessreadmore = document.querySelectorAll('article.lessreadmore');
+    for (let article of lessreadmore)
+      article.classList.remove('lessreadmore');
+    let bt_readmore = document.querySelectorAll('div[id*="bt_readmore_"]');
+    removeDOMElement(...bt_readmore);
+  }
+}
+
 else if (matchDomain('elobservador.com.uy')) {
   if (window.location.pathname.endsWith('/amp')) {
     amp_unhide_access_hide('="observador.mostrarNota"');
@@ -368,17 +393,6 @@ else if (matchDomain('folha.uol.com.br')) {
 else if (matchDomain('latercera.com')) {
   let subscr_banner = document.querySelector('.empty');
   removeDOMElement(subscr_banner);
-}
-
-else if (matchDomain('lasegunda.com')) {
-  let url = window.location.href;
-  if (url.includes('digital.lasegunda.com/mobile')) {
-    let lessreadmore = document.querySelectorAll('article.lessreadmore');
-    for (let article of lessreadmore)
-      article.classList.remove('lessreadmore');
-    let bt_readmore = document.querySelectorAll('div[id*="bt_readmore_"]');
-    removeDOMElement(...bt_readmore);
-  }
 }
 
 else if (matchDomain('globo.com')) {

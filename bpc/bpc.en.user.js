@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.3.7
+// @version         3.4.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -49,6 +49,7 @@
 // @exclude         *://*.elcorreo.com/*
 // @exclude         *://*.elespanol.com/*
 // @exclude         *://*.elespectador.com/*
+// @exclude         *://*.elmercurio.com/*
 // @exclude         *://*.elpais.com/*
 // @exclude         *://elpais.com/*
 // @exclude         *://*.elperiodico.com/*
@@ -575,11 +576,35 @@ else if (matchDomain('citywire.com')) {
 
 else if (matchDomain('ft.com')) {
   let url = window.location.href;
-  let paywall = document.querySelectorAll('div.barrier__util-padding--single, .barrier__university, div.js-primary-offers-container');
-  if (paywall.length) {
-    removeDOMElement(...paywall);
-    let site_content = document.querySelector('div#site-content');
-    site_content.appendChild(archiveLink(url));
+  let article_new_sel = 'div.article-content';
+  getGoogleWebcache(url, 'div[data-component="unlockBanner"]', '', 'div#barrier-page', article_new_sel, true);
+  window.setTimeout(function () {
+    let article_new = document.querySelector(article_new_sel);
+    if (article_new) {
+      article_new.style = 'margin: 50px; font-size: 18px; line-height: 1.6;';
+      let pictures = document.querySelectorAll('picture > img[height][width]');
+      for (let elem of pictures) {
+        elem.removeAttribute('height');
+        elem.removeAttribute('width');
+        let source = elem.parentNode.querySelector('source');
+        removeDOMElement(source);
+      }
+      let placeholders = document.querySelectorAll('div.o-teaser__image-placeholder[style]');
+      for (let elem of placeholders)
+        elem.removeAttribute('style');
+      let banners = document.querySelectorAll('div.o-topper__tags, div.article__right-bottom');
+      hideDOMElement(...banners);
+    }
+  }, 1000);
+}
+
+else if (matchDomain('ft2.com')) {
+  let url = window.location.href;
+  let paywall = document.querySelector('div[data-component="unlockBanner"]');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let site_content = document.querySelector('div#barrier-page');
+    site_content.firstChild.before(archiveLink(url));
   }
 }
 
@@ -1117,6 +1142,34 @@ else if (matchDomain('dailywire.com')) {
 else if (matchDomain('dallasnews.com')) {
   if (window.location.search.startsWith('?outputType=amp')) {
     amp_unhide_subscr_section('amp-ad, amp-embed');
+  }
+}
+
+else if (matchDomain('defector.com')) {
+  let paywall = document.querySelector('div[class^="ContentGate_wrapper__"]');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article_sel = 'div[class^="PostContent_wrapper__"]';
+    let article = document.querySelector(article_sel);
+    if (article) {
+      window.setTimeout(function () {
+        let pars = article.querySelectorAll('p');
+        if (pars.length < 3) {
+          let url = window.location.href.split('?')[0];
+          fetch(url)
+          .then(response => {
+            if (response.ok) {
+              response.text().then(html => {
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(html, 'text/html');
+                let article_new = doc.querySelector(article_sel);
+                article.parentNode.replaceChild(article_new, article);
+              });
+            }
+          });
+        }
+      }, 1000);
+    }
   }
 }
 
@@ -3109,7 +3162,7 @@ function refreshCurrentTab() {
   window.location.reload(true);
 }
 
-function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, article_new_sel = article_sel) {
+function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, article_new_sel = article_sel, arch_link = false) {
   let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split('?')[0];
   let paywall = document.querySelectorAll(paywall_sel);
   if (paywall.length) {
@@ -3134,6 +3187,8 @@ function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, a
           let article_new = doc.querySelector(article_new_sel);
           if (article.parentNode && article_new)
             article.parentNode.replaceChild(article_new, article);
+          else if (arch_link)
+            article.firstChild.before(archiveLink(url));
         }
       });
     }

@@ -1,9 +1,9 @@
 ![Adblock Plus 2.0]
-! Checksum: ZgkaU7rjtnA/SctNtbIe/w
+! Checksum: J9+b7tT7FPu2tuXuCfScYQ
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.4.54
-! TimeUpdated: 2023-11-29T16:31:12+00:00
+! Version: 2.1.4.64
+! TimeUpdated: 2023-11-30T16:31:09+00:00
 ! Expires: 4 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -555,7 +555,7 @@ rjno1.com#@#main > div[class^="qnb"]
 rjno1.com#@#[id^="aswift_"]
 rjno1.com#$#body #aswift_1:not(#style_important) { display: block !important; }
 rjno1.com##+js(addEventListener-defuser, error, event.target.tagName)
-@@||sinaimg.cn/unipro/pub/suda_m_v630.js$domain=rjno1.com
+@@||cpro.baidustatic.com/js/prot.js$domain=rjno1.com
 ||cpro.baidu.com/cpro/ui/rt.js$script,redirect=noop.js,domain=rjno1.com
 ||googleads.g.doubleclick.net/pagead/ads$subdocument,redirect=noop.html,domain=rjno1.com,important
 !+ NOT_PLATFORM(windows, mac, android)
@@ -1245,6 +1245,8 @@ $script,third-party,denyallow=fastly.net|statically.io|sharecast.ws|bunnycdn.ru|
 !
 !
 !
+||tw.buy.yahoo.com/smartbanner/$domain=tw.news.yahoo.com
+litv.tv##.ad_impression
 ||iwarship.net/wowsdb/static/img/banner.png
 ||jdbstatic.com/ads/
 netfly.fun##.player-box-main ~ [style^="display: flex; justify-content: space-between;"]
@@ -2891,6 +2893,7 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_chinese
 ! This section contains the list of rules that fix incorrect blocking. Rules must be domain-specific.
 !
 ! Good: example.org#@#.ad
+! Bad:  @@||example.org^$stealth (should be in AdGuard Base - allowlist_stealth.txt)
 !
 !
 ! https://github.com/AdguardTeam/AdguardFilters/issues/163158
@@ -3614,6 +3617,7 @@ nfmovies.com#@?#div[id]:-abp-has(>img[onclick="openurl()"])
 /opbb/float.js
 /opbb/obpp.tpl
 /os1019.oss-cn-quanzhou.
+/os2023001.oss-$script
 /os230718.oss-
 /page/?s=$third-party
 /page/index.php?s=$third-party
@@ -4443,6 +4447,7 @@ newduba.cn###jq_youxi
 ##.partialViewSlider-outerwrapper
 ##.pasuAD
 ~dongman8.com##.pc_acmsd
+##.pccb > .ng-star-inserted
 ##.pcd_ad
 ##.pcgg
 ##.photo-two > a[onclick^="_czc."]
@@ -4520,9 +4525,11 @@ newduba.cn###jq_youxi
 ##.txp_ad[data-role="txpad-interact-pause"]
 ##.txtguanggao
 ##.uk-width-1-1.adbox
+##.vg-overlay-pause
 ##.video-holder > a[target="_blank"] > img[src*=".360buyimg.com"]
 ##.video-info-aux + div[style^="border-radius: 5px;"]
 ##.video-item-ads
+##.video-player > .gg-bg-cover
 ##.video_details > .banner
 ##.w-full > .banner.el-carousel
 ##.w100b > .m_adv
@@ -4752,9 +4759,12 @@ newduba.cn###jq_youxi
 ||88lajs4.com^
 ||88lajs6.com^
 ||8d07a.xyz^
+||8zkt7.xyz^
 ||913mj.xyz^
 ||999aa666bb.com^
 ||a4bj6.xyz^
+||aadmei.xyz^
+||aaiwuq.xyz^
 ||aaknmt.icu^
 ||actrqdr.cn^
 ||aflsj.com^
@@ -4766,6 +4776,7 @@ newduba.cn###jq_youxi
 ||aispyd.icu^
 ||aknkvallbfml.com^
 ||albsgdq.cn^
+||ameidj.xyz^
 ||anhlnnm.cn^
 ||aniede.xyz^
 ||anjneia.xyz^
@@ -4784,6 +4795,7 @@ newduba.cn###jq_youxi
 ||azdiqsb.cn^
 ||bachou.cn^
 ||bavkvoks.xyz^
+||bbccf12.xyz^
 ||bbfnrn.xyz^
 ||bcovazp.icu^
 ||bctxtl.xyz^
@@ -4888,6 +4900,7 @@ newduba.cn###jq_youxi
 ||elas666.pics^
 ||elemea.xyz^
 ||elprput.xyz^
+||emynwlz.xyz^
 ||eqcwpeo.cn^
 ||eraygc.xyz^
 ||erutxdk.cn^
@@ -4920,6 +4933,7 @@ newduba.cn###jq_youxi
 ||fortxfq.cn^
 ||fotaxf.xyz^
 ||fptdxkm.com^
+||fqtljn.xyz^
 ||fsgiosi.com^
 ||ftzzbx.xyz^
 ||fwhhcpj.xyz^
@@ -4985,9 +4999,11 @@ newduba.cn###jq_youxi
 ||gszetzdm.xyz^
 ||gth112.com^
 ||gwdobvs.cn^
+||gxx4t.online^
 ||haise3.top^
 ||haise4.top^
 ||haise5.top^
+||hanadrmc.xyz^
 ||haree.cn^
 ||haxqxd.xyz^
 ||hcgbhq.com^
@@ -5035,6 +5051,7 @@ newduba.cn###jq_youxi
 ||ionjkcj.cn^
 ||iqs871.com^
 ||irtefs.xyz^
+||isnd.top^
 ||itwzlyq.com^
 ||iujlwn.icu^
 ||iuvssgh.cn^
@@ -5081,6 +5098,7 @@ newduba.cn###jq_youxi
 ||knhmgn.com^
 ||knuaxfv.cn^
 ||koyuod.xyz^
+||kqbrgl.icu^
 ||kshrsf.icu^
 ||ksrgsc.xyz^
 ||ktvtxir.xyz^
@@ -5121,6 +5139,7 @@ newduba.cn###jq_youxi
 ||m05ib.xyz^
 ||m2k3j7x8.com^
 ||mads7.icu^
+||max211.top^
 ||mbiypew.cn^
 ||mcds7.icu^
 ||mcds9.icu^
@@ -5151,6 +5170,7 @@ newduba.cn###jq_youxi
 ||naweslt.cn^
 ||nbxymdy.cn^
 ||nbycjpo.cn^
+||ncjpbv.xyz^
 ||ndbaxn.xyz^
 ||ndvfwlv.cn^
 ||neeujqf.cn^
@@ -5181,8 +5201,10 @@ newduba.cn###jq_youxi
 ||olltcqg.xyz^
 ||omkxes.xyz^
 ||omzxutfm.com^
+||onxtxdm.xyz^
 ||ooejkd.xyz^
 ||oouiqi.xyz^
+||operqr.top^
 ||oprece.xyz^
 ||orssengseen.com^
 ||ovfvkfc.xyz^
@@ -5255,6 +5277,7 @@ newduba.cn###jq_youxi
 ||rrfccx.com^
 ||rshsk.xyz^
 ||rslkhj.xyz^
+||rt004.top^
 ||rvreuxi.cn^
 ||rvvji.online^
 ||rxrdjb.xyz^
@@ -5370,6 +5393,7 @@ newduba.cn###jq_youxi
 ||wuyaw.cn^
 ||wvtem.com^
 ||wwwww.asia^
+||wwxufo.com^
 ||wyiegt.icu^
 ||wymzwy.cn^
 ||wyoaij.icu^
@@ -5384,6 +5408,7 @@ newduba.cn###jq_youxi
 ||xixil.cn^
 ||xjxbdh.xyz^
 ||xkfigjh.cn^
+||xkjmjj.com^
 ||xlam.cn^
 ||xlca666.site^
 ||xmvmir.icu^
@@ -16465,7 +16490,6 @@ d1xz.net##.base_ad_300_250
 d1xz.net##.base_ad_640_90
 d1xz.net##.base_ad_960_90
 jnnc.com##.basehr + div
-iyf.tv##.bb > .ng-star-inserted
 qncye.com##.bbaner
 gd163.cn##.bbs_ad
 hefei.cc##.bbs_app_fk > a:first-child
@@ -19830,7 +19854,6 @@ cartoonmad.com##tr:nth-child(n+5) > td > table[width="732"]
 789ys.com,fffdm.com##ul[style]
 firefoxchina.cn##ul[track-key="adv_links"]
 v2ex.com#?#.box:-abp-has(>.inner>div>span[style]:-abp-contains(Sponsored))
-iyf.tv##vg-pause-p
 toolfk.com##wavy + div[style]
 wealth.com.tw#?#div[class]:-abp-has(>div[class]>div[class*="-ad-manager-"])
 weibo.com#?#.card-content > ul > li:-abp-has(> p > .icon-txt-recommend)
