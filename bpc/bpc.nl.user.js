@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.4.1.4
+// @version         3.4.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -321,7 +321,7 @@ else if (matchDomain('telegraaf.nl')) {
       }
       if (window_script) {
         removeDOMElement(paywall);
-        let window_text = window_script.text.split('window.telegraaf.articleBodyBlocks')[1].replace(/(^\s?=\s?"|";$|\\")/gm, '').replace(/\\\\u003c/gm, '<');
+        let window_text = window_script.text.split('window.telegraaf.articleBodyBlocks')[1].split('window.telegraaf.')[0].replace(/(^\s?=\s?"|";$|\\")/gm, '').replace(/\\\\u003c/gm, '<');
         let parser = new DOMParser();
         let doc = parser.parseFromString('<div>' + window_text + '</div>', 'text/html');
         let article_new = doc.querySelector('div');
