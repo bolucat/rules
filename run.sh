@@ -136,6 +136,8 @@ clash() {
 	tar -zxf GeoLite2-Country.tar.gz -C GeoLite2-Country/ --strip-components=1
 	mv GeoLite2-Country/GeoLite2-Country.mmdb GeoLite2-Country.mmdb
 	rm -rf GeoLite2-Country GeoLite2-Country.tar.gz
+ 	# Country.mmdb
+  	wget https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb -O Country.mmdb
 	popd || exit 1
 	pushd clash/ip-show-list || exit 1
 	git clone --depth 1 https://github.com/bolucat/domain-list domain-list
