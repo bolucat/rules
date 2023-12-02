@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.4.3.1
+// @version         3.4.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -288,12 +288,11 @@ else if (matchDomain('humanite.fr')) {
 }
 
 else if (matchDomain('journaldunet.com')) {
-  let reg_wall = document.querySelector('.reg_wall');
+  let reg_wall = document.querySelector('div.reg_wall');
   removeDOMElement(reg_wall);
-  let entry_reg_wall = document.querySelector('.entry_reg_wall');
-  if (entry_reg_wall) {
+  let entry_reg_wall = document.querySelector('div.entry_reg_wall[style]');
+  if (entry_reg_wall)
     entry_reg_wall.removeAttribute('style');
-  }
 }
 
 else if (matchDomain('la-croix.com')) {
