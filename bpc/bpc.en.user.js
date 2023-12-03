@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.4.2
+// @version         3.4.4.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -906,7 +906,7 @@ else if (matchDomain('americanbanker.com') || matchDomain(usa_arizent_custom_dom
 else if (matchDomain('arkansasonline.com')) {
   setCookie('blaize_session', '', 'arkansasonline.com', '/', 0);
   let url = window.location.href;
-  getGoogleWebcache(url, 'div.bee-page-container', '', 'div#article_body');
+  getGoogleWebcache(url, 'div.bee-page-container', '', 'div.article__body');
 }
 
 else if (matchDomain('artnet.com')) {
@@ -3134,9 +3134,10 @@ function waitDOMAttribute(selector, tagName = '', attributeName = '', callback, 
   });
 }
 
-function breakText(str) {
+function breakText(str, headers = false) {
   str = str.replace(/(?:^|[A-Za-z\"\“\)])(\.|\?|!)(?=[A-ZÖÜ\„\d][A-Za-zÀ-ÿ\„\d]{1,})/gm, "$&\n\n");
-  str = str.replace(/(([a-z]{2,}|[\"\“]))(?=[A-Z](?=[A-Za-zÀ-ÿ]+))/gm, "$&\n\n");
+  if (headers)
+    str = str.replace(/(([a-z]{2,}|[\"\“]))(?=[A-Z](?=[A-Za-zÀ-ÿ]+))/gm, "$&\n\n");
   return str;
 }
 

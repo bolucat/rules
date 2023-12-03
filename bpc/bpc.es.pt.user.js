@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.4.4.0
+// @version         3.4.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -16,6 +16,7 @@
 // @match           *://*.cartacapital.com.br/*
 // @match           *://*.clarin.com/*
 // @match           *://*.cmjornal.pt/*
+// @match           *://*.correiodopovo.com.br/*
 // @match           *://*.diaridegirona.cat/*
 // @match           *://*.diariocordoba.com/*
 // @match           *://*.diariocorreo.pe/*
@@ -38,6 +39,7 @@
 // @match           *://*.emporda.info/*
 // @match           *://*.estadao.com.br/*
 // @match           *://*.expansion.com/*
+// @match           *://*.gazetadopovo.com.br/*
 // @match           *://*.gestion.pe/*
 // @match           *://*.globo.com/*
 // @match           *://*.larioja.com/*
@@ -390,9 +392,13 @@ else if (matchDomain('folha.uol.com.br')) {
   }
 }
 
-else if (matchDomain('latercera.com')) {
-  let subscr_banner = document.querySelector('.empty');
-  removeDOMElement(subscr_banner);
+else if (matchDomain('gazetadopovo.com.br')) {
+  if (window.location.pathname.endsWith('/amp/')) {
+    amp_unhide_subscr_section('div.ads-amp, amp-embed', false);
+  } else {
+    let ads = document.querySelectorAll('div.c-ads');
+    hideDOMElement(...ads);
+  }
 }
 
 else if (matchDomain('globo.com')) {
@@ -416,6 +422,11 @@ else if (matchDomain('globo.com')) {
     let ads = document.querySelectorAll('div[id^="ad-container"], div.content-ads, div[class^="block__advertising"]');
     hideDOMElement(...ads);
   }
+}
+
+else if (matchDomain('latercera.com')) {
+  let subscr_banner = document.querySelector('.empty');
+  removeDOMElement(subscr_banner);
 }
 
 else if (matchDomain('revistaoeste.com')) {

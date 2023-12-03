@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.3.4
+// @version         3.4.3.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -155,12 +155,11 @@ else if (matchDomain('faz.net')) {
     let paywall = document.querySelector('#paywall-form-container-outer, section.atc-ContainerPaywall');
     if (paywall) {
       removeDOMElement(paywall);
-      let url = new URL(window.location.href);
-      let mUrl = new URL(url.pathname, 'https://m.faz.net/');
+      let url_mobile = 'https://m.faz.net' + window.location.pathname;
       try {
         GM.xmlHttpRequest({
           method: "GET",
-          url: mUrl,
+          url: url_mobile,
           headers: {"User-agent": "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.5790.171 Mobile Safari/537.36"},
           onload: function (response) {
             let html = response.responseText;
@@ -180,7 +179,7 @@ else if (matchDomain('faz.net')) {
               if (json_text && article_text) {
                 let pars = article_text.querySelectorAll('p.atc-TextParagraph');
                 removeDOMElement(...pars);
-                json_text = breakText_faz(json_text).split("\n\n");
+                json_text = breakText_headers(json_text).split("\n\n");
                 for (let p_text of json_text) {
                   let elem;
                   if (p_text.length < 80) {
@@ -256,15 +255,17 @@ else if (matchDomain('freitag.de')) {
       if (json_script) {
         let json = JSON.parse(json_script.text);
         if (json) {
-          let json_text = breakText(json.articleBody);
+          let json_text = breakText_headers(json.articleBody);
           let pars = json_text.split(/\n\n/g);
           if (json_text) {
             removeDOMElement(...intro);
             let article_new = document.createElement('div');
             for (let par of pars) {
-              let par_new = document.createElement('p');
-              par_new.innerText = par;
-              article_new.appendChild(par_new);
+              if (!par.startsWith('Placeholder ')) {
+                let par_new = document.createElement('p');
+                par_new.innerText = par;
+                article_new.appendChild(par_new);
+              }
             }
             article.appendChild(article_new);
           }
@@ -273,7 +274,7 @@ else if (matchDomain('freitag.de')) {
         let hidden_article = document.querySelector('div.o-paywall');
         if (hidden_article) {
           let par_first = true;
-          let pars = breakText(hidden_article.innerText).split(/\n\n/g);
+          let pars = breakText_headers(hidden_article.innerText).split(/\n\n/g);
           for (let par of pars) {
             let par_new = document.createElement('p');
             let overlap = '';
@@ -454,7 +455,7 @@ else if (matchDomain('nwzonline.de')) {
     if (json_script) {
       let json = JSON.parse(json_script.text);
       if (json) {
-        let json_text = breakText(parseHtmlEntities(json.articleBody));
+        let json_text = breakText_headers(parseHtmlEntities(json.articleBody));
         let content = document.querySelector('div.article-body');
         if (json_text && content) {
           content.innerHTML = '';
@@ -1047,16 +1048,17 @@ function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full artic
   return text_fail_div;
 }
 
-function breakText(str) {
+function breakText(str, headers = false) {
   str = str.replace(/(?:^|[A-Za-z\"\“\)])(\.|\?|!)(?=[A-ZÖÜ\„\d][A-Za-zÀ-ÿ\„\d]{1,})/gm, "$&\n\n");
-  str = str.replace(/(([a-z]{2,}|[\"\“]))(?=[A-Z](?=[A-Za-zÀ-ÿ]+))/gm, "$&\n\n");
+  if (headers)
+    str = str.replace(/(([a-z]{2,}|[\"\“]))(?=[A-Z](?=[A-Za-zÀ-ÿ]+))/gm, "$&\n\n");
   return str;
 }
 
-function breakText_faz(str) {
-  str = breakText(str);
+function breakText_headers(str) {
+  str = breakText(str, true);
   // exceptions: names with alternating lower/uppercase (no general fix)
-  let str_rep_arr = ['AstraZeneca', 'BaFin', 'BerlHG', 'BfArM', 'BilMoG', 'BioNTech', 'ChatGPT', 'DiGA', 'EuGH', 'FinTechRat', 'GlaxoSmithKline', 'IfSG', 'medRxiv', 'mmHg', 'OpenAI', 'PlosOne', 'StVO'];
+  let str_rep_arr = ['AstraZeneca', 'BaFin', 'BerlHG', 'BfArM', 'BilMoG', 'BioNTech', 'ChatGPT', 'DiGA', 'EuGH', 'FinTechRat', 'GlaxoSmithKline', 'IfSG', 'medRxiv', 'mmHg', 'OpenAI', 'PlosOne', 'StVO', 'TikTok'];
   let str_rep_split;
   let str_rep_src;
   for (let str_rep of str_rep_arr) {

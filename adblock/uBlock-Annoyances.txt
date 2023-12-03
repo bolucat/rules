@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Sat, 02 Dec 2023 12:35:03 +0000
-! Diff-Path: ../patches/2023.12.2.801.patch#ublock-annoyances
+! Last modified: Sun, 03 Dec 2023 09:54:36 +0000
+! Diff-Path: ../patches/2023.12.3.860.patch#ublock-annoyances
 ! Diff-Name: ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
@@ -43,9 +43,9 @@ www.google.*##+js(trusted-set-cookie, SOCS, CAESHAgBEhJnd3NfMjAyMzA2MTItMF9SQzIa
 consent.google.*##+js(trusted-click-element, form[action] button[jsname="tWT92d"])
 facebook.com##+js(trusted-set-cookie, datr, __GMZCgwVF5BbyvAtfJojQwg, 1year, , reload, 1)
 instagram.com##+js(trusted-set-cookie, ig_did, 0C826C21-17C3-444A-ABB7-EBABD37214D7, 1year, , reload, 1)
-! Sample page: https://www.bloomberg.com/live/europe
-bloomberg.com,bloomberg.co.jp##+js(trusted-click-element, [title="Manage Cookies"])
-bloomberg.com,bloomberg.co.jp##+js(trusted-click-element, [title="Reject All"], , 500)
+! Sample page: https://www.bloomberg.com/live/europe & https://www.bloomberg.co.jp/
+sourcepointcmp.bloomberg.com##+js(trusted-click-element, [title="Manage Cookies"])
+sourcepointcmp.bloomberg.com##+js(trusted-click-element, [title="Reject All"], , 500)
 bloomberg.com,bloomberg.co.jp##html.sp-message-open:style(width: initial !important)
 bloomberg.com,bloomberg.co.jp##html.sp-message-open > body:style(position: unset !important; overflow: unset !important; margin-top: 0 !important)
 bloomberg.com,bloomberg.co.jp##[title="SP Consent Message"]
@@ -58,9 +58,18 @@ dailymotion.com##+js(trusted-set-cookie, dm-euconsent-v2, CPt6yMAPt6yMABpAGAENDE
 ! Sample page: https://www.express.co.uk/celebrity-news/1553859/meat-loaf-how-did-he-die-covid-death-cause-age-health-bat-out-of-hell-news-latest-update
 express.co.uk##+js(set, flagTcfLoaded, true)
 express.co.uk##+js(trusted-set-local-storage-item, CMPList, $currentDate$)
-standard.co.uk##+js(trusted-set-cookie, consentUUID, 9f883906-c5ae-4d90-80a1-6623a4211ad4_21, 1year)
-independent.co.uk##+js(trusted-set-cookie, consentUUID, 629d4124-fa7b-43b4-8158-d596cef1004d_23)
-theguardian.com##+js(trusted-set-cookie, consentUUID, f0aaedd0-2a07-443a-b90f-055c553b5160_21, 1year)
+cmpv2.standard.co.uk##+js(trusted-click-element, .sp_choice_type_12[title="Options"])
+cmpv2.standard.co.uk##+js(trusted-click-element, [title="REJECT ALL"], , 500)
+standard.co.uk##html.sp-message-open:style(width: initial !important)
+standard.co.uk##html.sp-message-open > body:style(position: unset !important; overflow: unset !important)
+standard.co.uk##[id^="sp_message_container"]
+cmpv2.independent.co.uk##+js(trusted-click-element, .sp_choice_type_12[title="OPTIONS"])
+cmpv2.independent.co.uk##+js(trusted-click-element, [title="Reject All"], , 500)
+independent.co.uk##[id^="sp_message_container"]
+independent.co.uk##html.sp-message-open:style(width: initial !important)
+sourcepoint.theguardian.com##+js(trusted-click-element, .sp_choice_type_12[title="Manage or reject cookies"])
+sourcepoint.theguardian.com##+js(trusted-click-element, [title="Reject all"], , 500)
+theguardian.com##[title="SP Consent Message"]
 bbc.com##+js(trusted-set-cookie, consentUUID, 14ec7082-be8b-4b4c-a5b4-668972e0e04b_21, 1year)
 lefigaro.fr##+js(trusted-set-cookie, fig_save_consent, iTTPgpSWqAGGcd3vV88zNDbHsABxE1hB, 1year)
 filmweb.pl##+js(trusted-set-cookie, euconsent-v2, CPubvkAPubvkAAHABBENDMCgAAAAAAAAAB5YAAAAAAAA.YAAAAAAAAAAA, 1year)
@@ -85,7 +94,6 @@ x-kom.pl##+js(trusted-set-cookie, trackingPermissionConsentsValue, %7B%22cookies
 easyfind.ch##+js(set-cookie, allow-marketing, false)
 easyfind.ch##+js(set-cookie, allow-analytics, false)
 easyfind.ch##+js(trusted-set-local-storage-item, elementor, '{"__expiration":{},"pageViews":1,"popup_1276_times":1}')
-dailymail.co.uk##+js(trusted-set-local-storage-item, mol.ads.cmp.tcf.cache, '{"getTCData":{"cmpId":27,"cmpVersion":3,"gdprApplies":true,"tcfPolicyVersion":2,"tcString":"CPyz5QAPyz5QAAbADCENC6CgAAAAAAAAAAwIAAASjAJINW4gCLMscGaQEIoEAIgjCQggUAAFAILRAQAODgp2VgE6MIkAAAUARABAhwAQAQCAAASABCAAJAAwQAAAiAQAAAAQCAAAMCAILACgAAAABANAhRCgAECQAyIAIpTAgKgSCAFsKAAADJCQCAKgMAKARGgEACIIARGAAACwMAgBICFggABMQbBAAMACAESoBoCTEwBACDQFgBkADLAGzAPsA_ACAAEFAIwASYAp8BaAFpAOqAfIBDoCJgEiAKRAXIAyMBk4DlAI_gSKEQEwBkADLAGzAPsA_ACAAEYAJMAU8A6oB8gEOgJEAUiAuQBkYDJwHKAR_AkU.f_gAAagAAAAA","eventStatus":"useractioncomplete","cmpStatus":"loaded","isServiceSpecific":true,"useNonStandardStacks":false,"publisherCC":"GB","purposeOneTreatment":false,"addtlConsent":"1~","acmVersion":2,"molGvlVersion":"186.gb.web","nrvString":"1~","nrvVersion":1,"repromptVersion":5},"getStoredRepromptVersion":5,"hasUserConsentedToAll":false,"hasUserDissentedToAll":true,"getConsentDegree":"no","getValidTCData":{"cmpId":27,"cmpVersion":3,"gdprApplies":true,"tcfPolicyVersion":2,"tcString":"CPyz5QAPyz5QAAbADCENC6CgAAAAAAAAAAwIAAASjAJINW4gCLMscGaQEIoEAIgjCQggUAAFAILRAQAODgp2VgE6MIkAAAUARABAhwAQAQCAAASABCAAJAAwQAAAiAQAAAAQCAAAMCAILACgAAAABANAhRCgAECQAyIAIpTAgKgSCAFsKAAADJCQCAKgMAKARGgEACIIARGAAACwMAgBICFggABMQbBAAMACAESoBoCTEwBACDQFgBkADLAGzAPsA_ACAAEFAIwASYAp8BaAFpAOqAfIBDoCJgEiAKRAXIAyMBk4DlAI_gSKEQEwBkADLAGzAPsA_ACAAEYAJMAU8A6oB8gEOgJEAUiAuQBkYDJwHKAR_AkU.f_gAAagAAAAA","listenerId":1,"eventStatus":"useractioncomplete","cmpStatus":"loaded","isServiceSpecific":true,"useNonStandardStacks":false,"publisherCC":"GB","purposeOneTreatment":false,"addtlConsent":"1~","acmVersion":2,"molGvlVersion":"186.gb.web","nrvString":"1~","nrvVersion":1,"repromptVersion":5}}')
 tiempo.com##+js(trusted-set-cookie, euconsent-v2, CPzEX8APzEX8ADtACBESAUEgAAAAAAAAAAiQAAAAAAAA)
 tiempo.com##+js(trusted-set-cookie, euconsent-v2-addtl, %20)
 spiegel.de##+js(trusted-click-element, button[title^="Consent"])
@@ -135,10 +143,11 @@ fplstatistics.co.uk##+js(trusted-set-cookie, FCCDCF, %5Bnull%2Cnull%2Cnull%2C%5B
 kirjasto.vaasa.fi##+js(trusted-set-cookie, Arena Cookie Consent, '{"categories":["necessary"],"level":["necessary"],"revision":0,"data":null,"rfc_cookie":false,"consent_date":"1970-00-00T00:00:00.000Z","consent_uuid":"00000000-0000-0000-0000-000000000000","last_consent_update":"1970-01-01T00:00:00.000Z"}', 1year)
 ! softonic.com, endless loading for dl button - https://winning-eleven-2012-apk-download-v101.en.softonic.com/chrome/extension
 softonic.com##+js(trusted-set-cookie, euconsent-v2, CP2KIMAP2KIMAAHABBENAcEgAAAAAAAAAAiQAAAAAAEEoAMAARBqDQAYAAiDUKgAwABEGopABgACINQ6ADAAEQaiEAGAAIg1BIAMAARBqGQAYAAiDUAA.YAAAAAAAAAAA, 1year, , domain, softonic.com)
-@@||sdk.privacy-center.org^$script,domain=softonic.com
+informatech.com##+js(trusted-set-cookie, swapcard-cookie-consent, %7B%22accepted%22%3Afalse%7D)
+spv.no##+js(trusted-set-local-storage-item, acceptConsent, '{"acceptAnalysis":false,"acceptMarketing":false,"showCookie":1}')
 !! Needs additional cookies
 ! Closing Optanon Alert Box
-1001games.com,1001hry.cz,1001jeux.fr,1001jocuri.ro,1001jogos.com.br,1001jogos.pt,1001pelit.com,1001spiele.de,elkspel.nl,gamespot.com,giochixl.it,grajteraz.pl,isladejuegos.com,jatekokxl.hu,mtvuutiset.fi,paixnidiaxl.gr,pushsquare.com,spelo.se,spillespill.no,spilxl.dk,thejournal.ie,thetrainline.com,vkmag.com,zdnet.com##+js(trusted-set-cookie, OptanonAlertBoxClosed, $currentDate$, 1year)
+1001games.com,1001hry.cz,1001jeux.fr,1001jocuri.ro,1001jogos.com.br,1001jogos.pt,1001pelit.com,1001spiele.de,elkspel.nl,gamespot.com,giochixl.it,glamour.com,grajteraz.pl,isladejuegos.com,jatekokxl.hu,mtvuutiset.fi,paixnidiaxl.gr,pushsquare.com,spelo.se,spillespill.no,spilxl.dk,thejournal.ie,thetrainline.com,vkmag.com,zdnet.com##+js(trusted-set-cookie, OptanonAlertBoxClosed, $currentDate$, 1year)
 ! Mandatory + functional
 evaair.com##+js(trusted-set-cookie, _EVAcookieaccept, Y, 1year)
 evaair.com##+js(trusted-set-cookie, _EVAGDPRfunctional, Y, 1year)
@@ -147,9 +156,13 @@ vkmag.com##+js(trusted-set-cookie, OptanonConsent, groups=C0004%3A0%2CC0003%3A1%
 vkmag.com##+js(trusted-set-cookie, eupubconsent-v2, CPt6LrpPt6LrpAcABBENDKCgAAAAAAAAAAYgGBtX_T5eb2vj-3ZcN_tkaYwP55y3o2wzhhaIke8NwIeH7BoGJ2MwvBV4JiACGBAkkiKBAQVlHGBcCQAAgIgRiSKMYk2MjzNKJLJAilMbO0NYCD9mnkHT2ZCY70-uO__zvneAAAAYJABAXmKgAgLzGQAQF5joAIC8yUAEBeZSACAvMAAA.YAAAAAAAAAAA, 1year, , reload, 1)
 ! Mandatory, functional + social media (embedded content)
 mtvuutiset.fi##+js(trusted-set-cookie, OptanonConsent, groups=1%3A1%2C2%3A0%2C3%3A1%2C4%3A0%2C5%3A1%2CBG57%3A0%2CBG58%3A0%2CBG59%3A0, 1year)
-arvopaperi.fi,iltalehti.fi,kauppalehti.fi,mediuutiset.fi,mikrobitti.fi,talouselama.fi,tekniikkatalous.fi,tivi.fi,uusisuomi.fi##+js(trusted-click-element, '.almacmp-button--settings, #purposeConsents1, #purposeConsents2, #purposeConsents3, #purposeConsents4, #purposeConsents5, #purposeConsents6, #purposeConsents7, #purposeConsents8, #purposeConsents9, #purposeConsents10, #purposeConsents11, #almacmp-save-layer2')
-arvopaperi.fi,iltalehti.fi,kauppalehti.fi,mediuutiset.fi,mikrobitti.fi,talouselama.fi,tekniikkatalous.fi,tivi.fi,uusisuomi.fi##+js(trusted-set-cookie, gravitoData, '{"NonTCFVendors":[{"id":1,"name":"Facebook","consent":true},{"id":3,"name":"Google","consent":true},{"id":9,"name":"Twitter","consent":true},{"id":10,"name":"Wordpress","consent":true},{"id":15,"name":"Linkedin","consent":true},{"id":19,"name":"Vimeo","consent":true},{"id":27,"name":"Apple","consent":true}]}', 1year)
-arvopaperi.fi,iltalehti.fi,kauppalehti.fi,mediuutiset.fi,mikrobitti.fi,talouselama.fi,tekniikkatalous.fi,tivi.fi,uusisuomi.fi###almacmp-modal-layer1
+ampparit.com,arvopaperi.fi,iltalehti.fi,kauppalehti.fi,mediuutiset.fi,mikrobitti.fi,talouselama.fi,tekniikkatalous.fi,tivi.fi,uusisuomi.fi##+js(trusted-click-element, '.almacmp-button--settings, #purposeConsents1, #purposeConsents2, #purposeConsents3, #purposeConsents4, #purposeConsents5, #purposeConsents6, #purposeConsents7, #purposeConsents8, #purposeConsents9, #purposeConsents10, #purposeConsents11, #specialFeatureConsents1, #specialFeatureConsents2, #almacmp-save-layer2')
+ampparit.com,arvopaperi.fi,iltalehti.fi,kauppalehti.fi,mediuutiset.fi,mikrobitti.fi,talouselama.fi,tekniikkatalous.fi,tivi.fi,uusisuomi.fi##+js(trusted-set-cookie, gravitoData, '{"NonTCFVendors":[{"id":1,"name":"Facebook","consent":true},{"id":3,"name":"Google","consent":true},{"id":9,"name":"Twitter","consent":true},{"id":10,"name":"Wordpress","consent":true},{"id":15,"name":"Linkedin","consent":true},{"id":19,"name":"Vimeo","consent":true},{"id":27,"name":"Apple","consent":true}]}', 1year)
+ampparit.com,arvopaperi.fi,iltalehti.fi,kauppalehti.fi,mediuutiset.fi,mikrobitti.fi,talouselama.fi,tekniikkatalous.fi,tivi.fi,uusisuomi.fi###alma-cmpv2-container
+! Temp filters: https://github.com/easylist/easylist/pull/17917
+@@||googletagmanager.com/gtm.js$domain=ampparit.com
+||almamedia.fi/almacmp/$script,domain=~arvopaperi.fi|~iltalehti.fi|~mediuutiset.fi|~mikrobitti.fi|~talouselama.fi|~tekniikkatalous.fi|~tivi.fi|~www.kauppalehti.fi|~www.uusisuomi.fi,badfilter
+||almamedia.fi/almacmp/$script,domain=~arvopaperi.fi|~iltalehti.fi|~mediuutiset.fi|~mikrobitti.fi|~talouselama.fi|~tekniikkatalous.fi|~tivi.fi|~www.kauppalehti.fi|~www.uusisuomi.fi|~ampparit.com
 ! Mandatory, performance + functional
 gamespot.com##+js(trusted-set-cookie, OptanonConsent, groups=C0001%3A1%2CC0002%3A1%2CC0003%3A1%2CC0004%3A0%2CC0005%3A0, 1year)
 ! google maps embed
@@ -368,13 +381,12 @@ ab.gr##+js(trusted-set-cookie, CookieConsent, 1.0.0.0.0)
 ! Reject-all meteored sites
 tameteo.com,tempo.pt,yourweather.co.uk,meteored.cl,meteored.mx,tempo.com,ilmeteo.net,meteored.com.ar,daswetter.com##+js(trusted-set-cookie, euconsent-v2, CP2APYAP2APYADtACBDEAcEgAAAAAAAAACiQAAAAAAAA)
 tameteo.com,tempo.pt,yourweather.co.uk,meteored.cl,meteored.mx,tempo.com,ilmeteo.net,meteored.com.ar,daswetter.com##+js(set-cookie, euconsent-v2-addtl, 0)
-informatech.com##+js(trusted-set-cookie, swapcard-cookie-consent, %7B%22accepted%22%3Afalse%7D)
 ! quotidiano. net cookies + (FA / AA unbreaking videos https://www.quotidiano.net/video/parigi-arrestato-guru-di-atman-yoga-federation-e-altre-41-persone-jgbapomp)
 quotidiano.net##+js(trusted-click-element, button#pt-accept-all)
 @@||cmp-assets.pubtech.ai/*.json$xhr
 @@||cmp.pubtech.ai/*/pubtech-cmp-v2.js$script,domain=quotidiano.net
 quotidiano.net#@##pubtech-cmp
-spv.no##+js(trusted-set-local-storage-item, acceptConsent, '{"acceptAnalysis":false,"acceptMarketing":false,"showCookie":1}')
+glamour.com##+js(trusted-set-cookie, OptanonConsent, groups=C0003%3A0%2CC0002%3A0%2CC0004%3A1%2CC0001%3A1%2CC0009%3A0, 1year)
 ! *** filters/annoyances-others.txt ***
 mimaletadepeliculas.blogspot.com##+js(aopr, document.oncontextmenu)
 mimaletadepeliculas.blogspot.com##+js(acs, document.onselectstart)
@@ -3671,7 +3683,7 @@ bluemediafile.*##+js(nano-sib, i--, , 0.02)
 ilife97.com##+js(aopw, document.oncontextmenu)
 ilife97.com##+js(aopw, document.ondragstart)
 ilife97.com##:root:style(user-select: unset !important;)
-vtbe.net##+js(acs, RegExp, contextmenu)
+vtbe.to,vtube.network##+js(acs, RegExp, contextmenu)
 manhwahentai.me##+js(acs, document.oncontextmenu)
 canalnatelinhaonline.blogspot.com##^script:has-text(document.onmousedown)
 ph.ontools.net##+js(acs, document.oncontextmenu)
@@ -4018,3 +4030,5 @@ starzunion.com##+js(aeld, /^(contextmenu|mousedown|keydown)$/, preventDefault)
 ! nsfw247.biz
 nsfw247.biz###page:style(-webkit-touch-callout: default !important; -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important;)
 cheersandgears.com##+js(rmnt, script, fetch)
+! copy manipulation
+libertatea.ro##+js(aeld, copy)
