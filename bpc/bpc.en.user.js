@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.4.4
+// @version         3.4.4.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -11,6 +11,7 @@
 // @match           *://*.com/*
 // @match           *://*.co.uk/*
 // @match           *://*.com.au/*
+// @match           *://*.co/*
 // @match           *://*.io/*
 // @match           *://*.net/*
 // @match           *://*.net.au/*
@@ -27,7 +28,6 @@
 // @match           *://*.intrafish.no/*
 // @match           *://*.ipolitics.ca/*
 // @match           *://*.japantimes.co.jp/*
-// @match           *://*.jgnt.co/*
 // @match           *://*.livelaw.in/*
 // @match           *://*.nautil.us/*
 // @match           *://*.niagarafallsreview.ca/*
@@ -995,10 +995,12 @@ else if (matchDomain('billboard.com')) {
 }
 
 else if (matchDomain('bloomberg.com')) {
-  let paywall = document.querySelectorAll('div[id^="fortress-"]');
+  let paywall_sel = 'div[id^="fortress-"]';
+  let paywall = document.querySelectorAll(paywall_sel);
   let leaderboard = document.querySelector('div[id^="leaderboard"], div[class^="leaderboard"], div.canopy-container');
-  let ads = document.querySelectorAll('div[data-ad-status], div.dvz-v0-ad, div[class^="FullWidthAd_"]');
+  let ads = document.querySelectorAll('div[data-ad-status], div[data-ad-type], div[class^="FullWidthAd_"], div.adWrapper');
   hideDOMElement(...paywall, leaderboard, ...ads);
+  waitDOMElement(paywall_sel, 'DIV', removeDOMElement, true);
   waitDOMAttribute('body', 'BODY', 'data-paywall-overlay-status', node => node.removeAttribute('data-paywall-overlay-status'), true);
   if (window.location.pathname.startsWith('/live/')) {
     setInterval(function () {
