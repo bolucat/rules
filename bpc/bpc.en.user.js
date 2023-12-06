@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.4.6
+// @version         3.4.5.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -176,10 +176,9 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || (!matchDo
 else if (window.location.hostname.match(/\.(com|net)\.au$/)) {//australia
 
 if (matchDomain('crikey.com.au')) {
-  getJsonUrl('div.locked-content', '', 'div.article-body > div.paywall');
-  let fade = document.querySelector('article.article-locked');
-  if (fade)
-    fade.classList.remove('article-locked');
+  setCookie('blaize_session', '', 'crikey.com.au', '/', 0);
+  let ads = document.querySelectorAll('.advert');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('macrobusiness.com.au')) {
@@ -916,6 +915,8 @@ else if (matchDomain('artnet.com')) {
     let body_hidden = document.querySelector('.article-body');
     if (body_hidden)
       body_hidden.style = 'display:block;';
+    let banner = document.querySelector('div[id^="issuem-leaky-paywall-"]');
+    removeDOMElement(banner);
   }
 }
 
