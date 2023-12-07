@@ -12,18 +12,18 @@ ChinaTest规则由《RULE GENERATOR 规则生成器》自动生成。
 
 ## 规则统计
 
-最后更新时间：2023-12-07 02:12:49
+最后更新时间：2023-12-08 02:13:10
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
-| DOMAIN | 166  | 
+| DOMAIN | 167  | 
 | DOMAIN-KEYWORD | 9  | 
-| DOMAIN-SUFFIX | 64609  | 
+| DOMAIN-SUFFIX | 64597  | 
 | IP-CIDR | 11  | 
 | IP-CIDR6 | 4  | 
 | USER-AGENT | 31  | 
-| TOTAL | 64830  | 
+| TOTAL | 64819  | 
 
 
 ## Surge 
@@ -34,9 +34,14 @@ ChinaTest规则由《RULE GENERATOR 规则生成器》自动生成。
 - ChinaTest_Domain.list，请使用DOMAIN-SET。
 
 #### 文件区别
+- ChinaTest_All.list与ChinaTest_All_No_Resolve.list为 Surge 5.21.0(2952) 以上版本使用
 - ChinaTest_Resolve.list与ChinaTest.list的区别仅在于后者IP-CIDR(6)类型带no-resolve。
 
 #### 配置建议
+- Surge 5.21.0(2952)以上版本使用以下配置：
+- ChinaTest_All.list 单独使用。
+- ChinaTest_All_No_Resolve.list 单独使用。
+- Surge 5.21.0(2952)以下版本使用以下配置：
 - ChinaTest.list、ChinaTest_Domain.list 共同使用。
 - ChinaTest_Resolve.list、ChinaTest_Domain.list 共同使用。
 

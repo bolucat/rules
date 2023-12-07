@@ -12,20 +12,20 @@ ChinaMaxNoMedia规则由《RULE GENERATOR 规则生成器》自动生成。
 
 ## 规则统计
 
-最后更新时间：2023-12-07 02:15:03
+最后更新时间：2023-12-08 02:15:32
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
-| DOMAIN | 163  | 
+| DOMAIN | 164  | 
 | DOMAIN-KEYWORD | 11  | 
-| DOMAIN-SUFFIX | 65763  | 
-| IP-ASN | 1014  | 
+| DOMAIN-SUFFIX | 65751  | 
+| IP-ASN | 1015  | 
 | IP-CIDR | 6053  | 
 | IP-CIDR6 | 3435  | 
 | PROCESS-NAME | 11  | 
 | USER-AGENT | 69  | 
-| TOTAL | 76519  | 
+| TOTAL | 76509  | 
 
 
 ## Surge 
@@ -36,9 +36,14 @@ ChinaMaxNoMedia规则由《RULE GENERATOR 规则生成器》自动生成。
 - ChinaMaxNoMedia_Domain.list，请使用DOMAIN-SET。
 
 #### 文件区别
+- ChinaMaxNoMedia_All.list与ChinaMaxNoMedia_All_No_Resolve.list为 Surge 5.21.0(2952) 以上版本使用
 - ChinaMaxNoMedia_Resolve.list与ChinaMaxNoMedia.list的区别仅在于后者IP-CIDR(6)类型带no-resolve。
 
 #### 配置建议
+- Surge 5.21.0(2952)以上版本使用以下配置：
+- ChinaMaxNoMedia_All.list 单独使用。
+- ChinaMaxNoMedia_All_No_Resolve.list 单独使用。
+- Surge 5.21.0(2952)以下版本使用以下配置：
 - ChinaMaxNoMedia.list、ChinaMaxNoMedia_Domain.list 共同使用。
 - ChinaMaxNoMedia_Resolve.list、ChinaMaxNoMedia_Domain.list 共同使用。
 

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.5.1
+// @version         3.4.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -267,8 +267,7 @@ else if (matchDomain('faz.net')) {
 else if (matchDomain('freiepresse.de')) {
   if (window.location.pathname.includes('-artikel')) {
     let url = window.location.href;
-    getGoogleWebcache(url, 'div.article-teaser', '', 'article');
-    window.setTimeout(function () {
+    let func_post = function () {
       let lazy_images = document.querySelectorAll('picture.lazy');
       for (let elem of lazy_images) {
         elem.removeAttribute('class');
@@ -279,7 +278,8 @@ else if (matchDomain('freiepresse.de')) {
           source.parentNode.replaceChild(img_new, source);
         }
       }
-    }, 1000);
+    }
+    getGoogleWebcache(url, 'div.article-teaser', '', 'article', func_post);
   }
 }
 
@@ -557,12 +557,13 @@ else if (matchDomain('schwaebische.de')) {
   let paywall_sel = 'div > div.sve-paywall-wrapper_overlay';
   let paywall = document.querySelector(paywall_sel);
   getGoogleWebcache(url, paywall_sel, '', 'div.article_body');
-  if (paywall)
+  if (paywall) {
     removeDOMElement(paywall.parentNode);
-  let body = document.querySelector('body');
-  if (body)
-    body.removeAttribute('style');
-  waitDOMAttribute('body', 'body', 'style', node => node.removeAttribute('style'), true);
+    let body = document.querySelector('body[style]');
+    if (body)
+      body.removeAttribute('style');
+    waitDOMAttribute('body', 'body', 'style', node => node.removeAttribute('style'), true);
+  }
   window.setTimeout(function () {
     let ads = document.querySelectorAll('div.fp-ad-placeholder');
     hideDOMElement(...ads);
@@ -580,7 +581,7 @@ else if (matchDomain('spiegel.de')) {
     removeDOMElement(paywall);
     let article = document.querySelector('div[data-area="body"]');
     if (article)
-      article.insertBefore(archiveLink(url), article.firstChild);
+      article.firstChild.before(archiveLink(url));
   }
 }
 
@@ -885,6 +886,21 @@ function hideDOMElement(...elements) {
   }
 }
 
+function clearPaywall(paywall, paywall_action) {
+  if (paywall) {
+    if (!paywall_action)
+      removeDOMElement(...paywall);
+    else {
+      for (let elem of paywall) {
+        if (paywall_action.rm_class)
+          elem.classList.remove(paywall_action.rm_class);
+        else if (paywall_action.rm_attrib)
+          elem.removeAttribute(paywall_action.rm_attrib);
+      }
+    }
+  }
+}
+
 function header_nofix(header, msg = 'BPC > no fix') {
   if (header && !document.querySelector('div#bpc_nofix')) {
     let nofix_div = document.createElement('div');
@@ -977,14 +993,7 @@ function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
   if (!amphtml && amp_url)
     amphtml = {href: amp_url};
   if (paywall && amphtml) {
-    if (!paywall_action)
-      removeDOMElement(paywall);
-    else {
-      if (paywall_action.rm_class)
-        paywall.classList.remove(paywall_action.rm_class);
-      else if (paywall_action.rm_attrib)
-        paywall.removeAttribute(paywall_action.rm_attrib);
-    }
+    clearPaywall(paywall, paywall_action);
     amp_redirect_not_loop(amphtml);
   }
 }
@@ -1026,20 +1035,11 @@ function refreshCurrentTab() {
   window.location.reload(true);
 }
 
-function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, article_new_sel = article_sel) {
+function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, func_post = '', article_new_sel = article_sel, arch_link = false, arch_link_sel = article_new_sel) {
   let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split('?')[0];
   let paywall = document.querySelectorAll(paywall_sel);
   if (paywall.length) {
-    if (!paywall_action)
-      removeDOMElement(...paywall);
-    else {
-      for (let elem of paywall) {
-        if (paywall_action.rm_class)
-          elem.classList.remove(paywall_action.rm_class);
-        else if (paywall_action.rm_attrib)
-          elem.removeAttribute(paywall_action.rm_attrib);
-      }
-    }
+    clearPaywall(paywall, paywall_action);
     let article = document.querySelector(article_sel);
     if (article) {
       GM.xmlHttpRequest({
@@ -1051,8 +1051,18 @@ function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, a
           let article_new = doc.querySelector(article_new_sel);
           if (article.parentNode && article_new)
             article.parentNode.replaceChild(article_new, article);
+          else if (arch_link) {
+            let arch_dom = (article_new_sel !== arch_link_sel) ? article_new.querySelector(arch_link_sel) : article_new;
+            if (arch_dom)
+              arch_dom.firstChild.before(archiveLink_renew(window.location.href));
+          }
         }
       });
+      if (func_post) {
+        window.setTimeout(function () {
+          func_post();
+        }, 500);
+      }
     }
   }
 }
@@ -1222,21 +1232,12 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
   } else
     article.parentNode.replaceChild(article_new, article);
 }
-  
+
 function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}) {
   let paywall = document.querySelectorAll(paywall_sel);
   let article = document.querySelector(article_sel);
   if (paywall.length && article) {
-    if (!paywall_action)
-      removeDOMElement(...paywall);
-    else {
-      for (let elem of paywall) {
-        if (paywall_action.rm_class)
-          elem.classList.remove(paywall_action.rm_class);
-        else if (paywall_action.rm_attrib)
-          elem.removeAttribute(paywall_action.rm_attrib);
-      }
-    }
+    clearPaywall(paywall, paywall_action);
     getJsonUrlText(article, (json_text, article) => {
       if (json_text && article)
         getJsonUrlAdd(json_text, article, art_options);

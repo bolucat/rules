@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.5.1
+// @version         3.4.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -126,7 +126,7 @@ var uk_incisive_media_domains = ['internationalinvestment.net', 'investmentweek.
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
-var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntraveler.com', 'epicurious.com,', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.com', 'wired.com'];
+var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntraveler.com', 'epicurious.com', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.com', 'wired.com'];
 var usa_craincomm_domains = ['360dx.com', 'adage.com', 'autonews.com', 'chicagobusiness.com', 'crainscleveland.com', 'crainsdetroit.com', 'crainsnewyork.com', 'european-rubber-journal.com', 'genomeweb.com', 'modernhealthcare.com', 'pionline.com', 'plasticsnews.com', 'precisionmedicineonline.com', 'rubbernews.com', 'sustainableplastics.com', 'tirebusiness.com', 'utech-polyurethane.com'];
 var usa_hearst_comm_domains = ['ctpost.com', 'expressnews.com', 'houstonchronicle.com', 'nhregister.com', 'sfchronicle.com', 'timesunion.com'];
 var usa_lee_ent_domains = ['buffalonews.com', 'journalnow.com', 'journalstar.com', 'madison.com', 'nwitimes.com', 'omaha.com', 'richmond.com', 'stltoday.com', 'tucson.com', 'tulsaworld.com'];
@@ -579,35 +579,10 @@ else if (matchDomain('citywire.com')) {
 
 else if (matchDomain('ft.com')) {
   let url = window.location.href;
-  let article_new_sel = 'div.article-content';
-  getGoogleWebcache(url, 'div[data-component="unlockBanner"]', '', 'div#barrier-page', article_new_sel, true);
-  window.setTimeout(function () {
-    let article_new = document.querySelector(article_new_sel);
-    if (article_new) {
-      article_new.style = 'margin: 50px; font-size: 18px; line-height: 1.6;';
-      let pictures = document.querySelectorAll('picture > img[height][width]');
-      for (let elem of pictures) {
-        elem.removeAttribute('height');
-        elem.removeAttribute('width');
-        let source = elem.parentNode.querySelector('source');
-        removeDOMElement(source);
-      }
-      let placeholders = document.querySelectorAll('div.o-teaser__image-placeholder[style]');
-      for (let elem of placeholders)
-        elem.removeAttribute('style');
-      let banners = document.querySelectorAll('div.o-topper__tags, div.article__right-bottom');
-      hideDOMElement(...banners);
-    }
-  }, 1000);
-}
-
-else if (matchDomain('ft2.com')) {
-  let url = window.location.href;
   let paywall = document.querySelector('div[data-component="unlockBanner"]');
   if (paywall) {
     removeDOMElement(paywall);
-    let site_content = document.querySelector('div#barrier-page');
-    site_content.firstChild.before(archiveLink(url));
+    getArchive(url, 'div#barrier-page', 'article#site-content', true, 'article#article-body');
   }
 }
 
@@ -826,9 +801,7 @@ else if (matchDomain('thetimes.co.uk')) {
     let paywall = document.querySelector('div#paywall-portal-article-footer');
     if (paywall && !url.includes('?shareToken=')) {
       removeDOMElement(paywall);
-      let article = document.querySelector('article[class^="responsive__BodyContainer"]');
-      if (article)
-        article.firstChild.before(archiveLink(url));
+      getArchive(url, 'article#article-main');
       for (let n = 0; n < 5; n++) {
         window.setTimeout(function () {
           let page_scroll = document.querySelectorAll('html, body');
@@ -1014,7 +987,7 @@ else if (matchDomain('bloomberg.com')) {
     if (shimmering) {
       header_nofix(shimmering.parentNode, 'BPC > disable Dark Reader or enable Javascript for site');
     }
-  }, 3000);
+  }, 5000);
 }
 
 else if (matchDomain('bloombergadria.com')) {
@@ -1128,10 +1101,12 @@ else if (matchDomain('cnbc.com')) {
 else if (matchDomain('columbian.com')) {
   setCookie('blaize_session', '', 'columbian.com', '/', 0);
   let url = window.location.href;
-  getGoogleWebcache(url, 'div#inline-paywall', '', 'div[itemprop="articleBody"]');
-  let modal = document.querySelector('div.modal');
-  let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
-  removeDOMElement(modal, fade);
+  let func_post = function () {
+    let modal = document.querySelector('div.modal');
+    let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
+    removeDOMElement(modal, fade);
+  }
+  getGoogleWebcache(url, 'div#inline-paywall', '', 'div[itemprop="articleBody"]', func_post);
 }
 
 else if (matchDomain('csmonitor.com')) {
@@ -1218,7 +1193,7 @@ else if (matchDomain('economictimes.com')) {
         if (data_prime)
           data_prime.removeAttribute('data-prime');
         if (amphtml)
-          window.location.href = amphtml.href;
+          amp_redirect_not_loop(amphtml);
         else if (window.location.pathname.startsWith('/epaper/'))
           window.location.href = 'https://economictimes.indiatimes.com' + window.location.pathname;
       } else {
@@ -1536,7 +1511,7 @@ else if (matchDomain('infzm.com')) {
   }
 }
 
-if (matchDomain('inkl.com')) {
+else if (matchDomain('inkl.com')) {
   let url = window.location.href;
   if (url.includes('/signin?') && url.includes('redirect_to=')) {
     window.setTimeout(function () {
@@ -1792,8 +1767,7 @@ else if (matchDomain('newrepublic.com')) {
 
 else if (matchDomain('newscientist.com')) {
   let url = window.location.href;
-  getGoogleWebcache(url, 'section#subscription-barrier', '', 'div.article-body, article');
-  window.setTimeout(function () {
+  func_post = function () {
     let lazy_images = document.querySelectorAll('img.lazyload[data-src]:not([src])');
     for (let elem of lazy_images)
       elem.src = elem.getAttribute('data-src').split('?')[0] + '?width=800';
@@ -1809,6 +1783,9 @@ else if (matchDomain('newscientist.com')) {
         removeDOMElement(break_post);
       }
     }
+  }
+  getGoogleWebcache(url, 'section#subscription-barrier', '', 'div.article-body, article', func_post);
+  window.setTimeout(function () {
     let ads = document.querySelectorAll('div[class*="Advert"]');
     hideDOMElement(...ads);
   }, 1500);
@@ -1923,14 +1900,6 @@ else if (matchDomain('puck.news')) {
   let article_style = document.querySelector('article[style]');
   if (article_style)
     article_style.removeAttribute('style');
-}
-
-else if (matchDomain('quora.com')) {
-  let overlays = document.querySelectorAll('div[class*="_overlay"]');
-  removeDOMElement(...overlays);
-  let mask_image = document.querySelector('div.ePDXbR');
-  if (mask_image)
-    mask_image.classList.remove('ePDXbR');
 }
 
 else if (matchDomain('rugbypass.com')) {
@@ -2740,8 +2709,8 @@ else if (domain = matchDomain(usa_conde_nast_domains)) {
   if (window.location.pathname.endsWith('/amp')) {
     amp_unhide_subscr_section('amp-ad, amp-embed, .ad');
   } else {
-    let paywall_bar = document.querySelector('.paywall-bar');
-    removeDOMElement(paywall_bar);
+    let banners = document.querySelectorAll('.paywall-bar, div[class^="MessageBannerWrapper-"');
+    removeDOMElement(...banners);
   }
 }
 
@@ -3090,6 +3059,21 @@ function hideDOMElement(...elements) {
   }
 }
 
+function clearPaywall(paywall, paywall_action) {
+  if (paywall) {
+    if (!paywall_action)
+      removeDOMElement(...paywall);
+    else {
+      for (let elem of paywall) {
+        if (paywall_action.rm_class)
+          elem.classList.remove(paywall_action.rm_class);
+        else if (paywall_action.rm_attrib)
+          elem.removeAttribute(paywall_action.rm_attrib);
+      }
+    }
+  }
+}
+
 function header_nofix(header, msg = 'BPC > no fix') {
   if (header && !document.querySelector('div#bpc_nofix')) {
     let nofix_div = document.createElement('div');
@@ -3170,20 +3154,11 @@ function refreshCurrentTab() {
   window.location.reload(true);
 }
 
-function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, article_new_sel = article_sel, arch_link = false) {
+function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, func_post = '', article_new_sel = article_sel, arch_link = false, arch_link_sel = article_new_sel) {
   let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split('?')[0];
   let paywall = document.querySelectorAll(paywall_sel);
   if (paywall.length) {
-    if (!paywall_action)
-      removeDOMElement(...paywall);
-    else {
-      for (let elem of paywall) {
-        if (paywall_action.rm_class)
-          elem.classList.remove(paywall_action.rm_class);
-        else if (paywall_action.rm_attrib)
-          elem.removeAttribute(paywall_action.rm_attrib);
-      }
-    }
+    clearPaywall(paywall, paywall_action);
     let article = document.querySelector(article_sel);
     if (article) {
       GM.xmlHttpRequest({
@@ -3195,16 +3170,75 @@ function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, a
           let article_new = doc.querySelector(article_new_sel);
           if (article.parentNode && article_new)
             article.parentNode.replaceChild(article_new, article);
-          else if (arch_link)
-            article.firstChild.before(archiveLink(url));
+          else if (arch_link) {
+            let arch_dom = (article_new_sel !== arch_link_sel) ? article_new.querySelector(arch_link_sel) : article_new;
+            if (arch_dom)
+              arch_dom.firstChild.before(archiveLink_renew(window.location.href));
+          }
         }
       });
+      if (func_post) {
+        window.setTimeout(function () {
+          func_post();
+        }, 500);
+      }
     }
+  }
+}
+
+function archiveRandomDomain() {
+  let tld_array = ['fo', 'is', 'li', 'md', 'ph', 'vn'];
+  let tld = tld_array[randomInt(6)];
+  return 'archive.' + tld;
+}
+
+function getArchive(url, article_sel, article_new_sel = article_sel, arch_link = true, arch_sel = article_new_sel) {
+  let article = document.querySelector(article_sel);
+  if (article) {
+    let domain_archive = archiveRandomDomain();
+    let url_archive = 'https://' + domain_archive + '/' + url;
+    GM.xmlHttpRequest({
+      method: "GET",
+      url: url_archive,
+      onload: function (response) {
+        let parser = new DOMParser();
+        let doc = parser.parseFromString(response.responseText, 'text/html');
+        let url_arch = doc.querySelector('div.TEXT-BLOCK > a[href]');
+        if (url_arch) {
+          url_arch = url_arch.href;
+          GM.xmlHttpRequest({
+            method: "GET",
+            url: url_arch,
+            onload: function (response) {
+              let pathname = new URL(url_arch).pathname;
+              let html = response.responseText.replace(new RegExp('https:\\/\\/' + domain_archive.replace('.', '\\.') + '\\/o\\/\\w+\\/', 'g'), '').replace(new RegExp("(src=\"|background-image:url\\(')" + pathname.replace('/', '\\/'), 'g'), "$1" + 'https://' + domain_archive + pathname);
+              let parser = new DOMParser();
+              let doc = parser.parseFromString(html, 'text/html');
+              let article_new = doc.querySelector(article_new_sel);
+              if (article_new) {
+                if (arch_link) {
+                  let arch_dom = (article_new_sel !== arch_sel) ? article_new.querySelector(arch_sel) : article_new;
+                  if (arch_dom)
+                    arch_dom.firstChild.before(archiveLink_renew(window.location.href));
+                }
+                article.parentNode.replaceChild(article_new, article);
+              }
+            }
+          });
+        } else {
+          article.firstChild.before(archiveLink(url));
+        }
+      }
+    });
   }
 }
 
 function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
   return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
+}
+
+function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated (no need to report issue for external site):\r\n') {
+  return externalLink([archiveRandomDomain()], 'https://{domain}?renew=1&url={url}', url, text_fail);
 }
 
 function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
@@ -3307,14 +3341,7 @@ function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
   if (!amphtml && amp_url)
     amphtml = {href: amp_url};
   if (paywall && amphtml) {
-    if (!paywall_action)
-      removeDOMElement(paywall);
-    else {
-      if (paywall_action.rm_class)
-        paywall.classList.remove(paywall_action.rm_class);
-      else if (paywall_action.rm_attrib)
-        paywall.removeAttribute(paywall_action.rm_attrib);
-    }
+    clearPaywall(paywall, paywall_action);
     amp_redirect_not_loop(amphtml);
   }
 }
@@ -3416,16 +3443,7 @@ function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options =
   let paywall = document.querySelectorAll(paywall_sel);
   let article = document.querySelector(article_sel);
   if (paywall.length && article) {
-    if (!paywall_action)
-      removeDOMElement(...paywall);
-    else {
-      for (let elem of paywall) {
-        if (paywall_action.rm_class)
-          elem.classList.remove(paywall_action.rm_class);
-        else if (paywall_action.rm_attrib)
-          elem.removeAttribute(paywall_action.rm_attrib);
-      }
-    }
+    clearPaywall(paywall, paywall_action);
     getJsonUrlText(article, (json_text, article) => {
       if (json_text && article)
         getJsonUrlAdd(json_text, article, art_options);

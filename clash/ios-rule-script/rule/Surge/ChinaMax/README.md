@@ -21,20 +21,20 @@
 
 ## 规则统计
 
-最后更新时间：2023-12-07 02:13:56
+最后更新时间：2023-12-08 02:14:20
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
-| DOMAIN | 167  | 
+| DOMAIN | 168  | 
 | DOMAIN-KEYWORD | 13  | 
-| DOMAIN-SUFFIX | 66110  | 
-| IP-ASN | 1014  | 
+| DOMAIN-SUFFIX | 66098  | 
+| IP-ASN | 1015  | 
 | IP-CIDR | 6053  | 
 | IP-CIDR6 | 3435  | 
 | PROCESS-NAME | 11  | 
 | USER-AGENT | 69  | 
-| TOTAL | 76872  | 
+| TOTAL | 76862  | 
 
 
 ## Surge 
@@ -47,11 +47,16 @@
 - ChinaMax_Domain.list，请使用DOMAIN-SET。
 
 #### 文件区别
+- ChinaMax_All.list与ChinaMax_All_No_Resolve.list为 Surge 5.21.0(2952) 以上版本使用
 - ChinaMax_Resolve.list与ChinaMax.list的区别仅在于后者IP-CIDR(6)类型带no-resolve。
 - ChinaMax.list与ChinaMax_No_IPv6.list的区别仅在于后者不带IPv6类型的规则，适用纯IPv4网络。
 - ChinaMax_Resolve.list与ChinaMax_No_IPv6_Resolve.list的区别仅在于后者不带IPv6类型的规则，且不带no-resolve，适用纯IPv4网络。
 
 #### 配置建议
+- Surge 5.21.0(2952)以上版本使用以下配置：
+- ChinaMax_All.list 单独使用。
+- ChinaMax_All_No_Resolve.list 单独使用。
+- Surge 5.21.0(2952)以下版本使用以下配置：
 - ChinaMax.list、ChinaMax_Domain.list 共同使用。
 - ChinaMax_Resolve.list、ChinaMax_Domain.list 共同使用。
 - ChinaMax_No_IPv6.list、ChinaMax_Domain.list 纯IPv4网络，共同使用。
