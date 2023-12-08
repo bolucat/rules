@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.5.2
+// @version         3.4.5.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -122,7 +122,7 @@ var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 't
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
 var no_nhst_media_domains = ['europower.no', 'fiskeribladet.no', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
 var timesofindia_domains = ['timesofindia.com', 'timesofindia.indiatimes.com'];
-var uk_incisive_media_domains = ['internationalinvestment.net', 'investmentweek.co.uk', 'professionaladviser.com', 'professionalpensions.com'];
+var uk_incisive_media_domains = ['businessgreen.com', 'internationalinvestment.net', 'investmentweek.co.uk', 'professionaladviser.com', 'professionalpensions.com'];
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
@@ -801,7 +801,15 @@ else if (matchDomain('thetimes.co.uk')) {
     let paywall = document.querySelector('div#paywall-portal-article-footer');
     if (paywall && !url.includes('?shareToken=')) {
       removeDOMElement(paywall);
-      getArchive(url, 'article#article-main');
+      getArchive(url, 'article:not([id])');
+      window.setTimeout(function () {
+        let headings = document.querySelectorAll('div > div[role="heading"]');
+        for (let elem of headings)
+          elem.parentNode.style['margin-top'] = '50px';
+        let image_boxes = document.querySelectorAll('div[id*="."][style]');
+        for (let elem of image_boxes)
+          elem.style['margin-bottom'] = '50px';
+      }, 1500);
       for (let n = 0; n < 5; n++) {
         window.setTimeout(function () {
           let page_scroll = document.querySelectorAll('html, body');
@@ -2208,10 +2216,7 @@ else if (matchDomain('theathletic.com')) {
 
 else if (matchDomain('theatlantic.com')) {
   setCookie('articleViews', '', 'theatlantic.com', '/', 0);
-  let lazy_images = document.querySelectorAll('img[class*="Image_lazy__"]');
-  for (let elem of lazy_images)
-    removeClassesByPrefix(elem, 'Image_lazy__');
-  let banners = document.querySelectorAll('.c-nudge__container, .c-non-metered-nudge, div[class^="ArticleInjector_"]');
+  let banners = document.querySelectorAll('aside#paywall, div[class^="LostInventoryMessage_"]');
   hideDOMElement(...banners);
 }
 
@@ -3218,9 +3223,14 @@ function getArchive(url, article_sel, article_new_sel = article_sel, arch_link =
               if (article_new) {
                 if (arch_link) {
                   let arch_dom = (article_new_sel !== arch_sel) ? article_new.querySelector(arch_sel) : article_new;
-                  if (arch_dom)
+                  if (arch_dom) {
                     arch_dom.firstChild.before(archiveLink_renew(window.location.href));
+                    arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
+                  }
                 }
+                let targets = article_new.querySelectorAll('a[target="_blank"][href^="https://' + window.location.hostname + '"]');
+                for (let elem of targets)
+                  elem.removeAttribute('target');
                 article.parentNode.replaceChild(article_new, article);
               }
             }
@@ -3237,7 +3247,7 @@ function archiveLink(url, text_fail = 'BPC > Try for full article text (no need 
   return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
 }
 
-function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated (no need to report issue for external site):\r\n') {
+function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
   return externalLink([archiveRandomDomain()], 'https://{domain}?renew=1&url={url}', url, text_fail);
 }
 
