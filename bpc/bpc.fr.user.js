@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.4.3.3
+// @version         3.4.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -183,9 +183,9 @@ else if (matchDomain('elle.fr')) {
 
 else if (matchDomain(fr_be_groupe_rossel)) {
   let url = window.location.href;
-  let paywall = document.querySelector('div.qiota_reserve, r-panel.r-paywall--header, r-panel.r-panel--paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
+  let paywall = document.querySelectorAll('r-panel.r-paywall--header, r-panel.r-panel--paywall');
+  if (paywall.length) {
+    removeDOMElement(...paywall);
     let article = document.querySelector('article');
     if (article)
       article.firstChild.before(archiveLink(url));
@@ -335,9 +335,7 @@ else if (matchDomain('lefigaro.fr')) {
   let paywall = document.querySelector('div#fig-premium-paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    let article = document.querySelector('div.fig-content-body');
-    if (article)
-      article.firstChild.before(archiveLink(url));
+    getArchive(url, 'div[data-component="fig-content-body"]');
   }
 }
 
@@ -375,12 +373,10 @@ else if (matchDomain('lemonde.fr')) {
   let paywall = document.querySelector('section.paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    let article = document.querySelector('article');
-    if (article)
-      article.firstChild.before(archiveLink(url));
-    let hide = document.querySelector('section.article__content--restricted-media');
+    getArchive(url, 'article');
+    let hide = document.querySelector('section.article__wrapper--premium');
     if (hide)
-      hide.classList.remove('article__content--restricted-media');
+      removeClassesByPrefix(hide, 'article__content--restricted');
   }
 }
 
@@ -860,7 +856,7 @@ function refreshCurrentTab() {
 }
 
 function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, func_post = '', article_new_sel = article_sel, arch_link = false, arch_link_sel = article_new_sel) {
-  let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split('?')[0];
+  let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split(/[#\?]/)[0];
   let paywall = document.querySelectorAll(paywall_sel);
   if (paywall.length) {
     clearPaywall(paywall, paywall_action);
@@ -891,8 +887,68 @@ function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, f
   }
 }
 
+function randomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+function archiveRandomDomain() {
+  let tld_array = ['fo', 'is', 'li', 'md', 'ph', 'vn'];
+  let tld = tld_array[randomInt(6)];
+  return 'archive.' + tld;
+}
+
+function getArchive(url, article_sel, article_new_sel = article_sel, arch_link = true, arch_sel = article_new_sel) {
+  let article = document.querySelector(article_sel);
+  if (article) {
+    let domain_archive = archiveRandomDomain();
+    let url_archive = 'https://' + domain_archive + '/' + url.split(/[#\?]/)[0];
+    GM.xmlHttpRequest({
+      method: "GET",
+      url: url_archive,
+      onload: function (response) {
+        let parser = new DOMParser();
+        let doc = parser.parseFromString(response.responseText, 'text/html');
+        let url_arch = doc.querySelector('div.TEXT-BLOCK > a[href]');
+        if (url_arch) {
+          url_arch = url_arch.href;
+          GM.xmlHttpRequest({
+            method: "GET",
+            url: url_arch,
+            onload: function (response) {
+              let pathname = new URL(url_arch).pathname;
+              let html = response.responseText.replace(new RegExp('https:\\/\\/' + domain_archive.replace('.', '\\.') + '\\/o\\/\\w+\\/', 'g'), '').replace(new RegExp("(src=\"|background-image:url\\(')" + pathname.replace('/', '\\/'), 'g'), "$1" + 'https://' + domain_archive + pathname);
+              let parser = new DOMParser();
+              let doc = parser.parseFromString(html, 'text/html');
+              let article_new = doc.querySelector(article_new_sel);
+              if (article_new) {
+                if (arch_link) {
+                  let arch_dom = (article_new_sel !== arch_sel) ? article_new.querySelector(arch_sel) : article_new;
+                  if (arch_dom) {
+                    arch_dom.firstChild.before(archiveLink_renew(window.location.href));
+                    arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
+                  }
+                }
+                let targets = article_new.querySelectorAll('a[target="_blank"][href^="https://' + window.location.hostname + '"]');
+                for (let elem of targets)
+                  elem.removeAttribute('target');
+                article.parentNode.replaceChild(article_new, article);
+              }
+            }
+          });
+        } else {
+          article.firstChild.before(archiveLink(url));
+        }
+      }
+    });
+  }
+}
+
 function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
   return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
+}
+
+function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
+  return externalLink([archiveRandomDomain()], 'https://{domain}?renew=1&url={url}', url, text_fail);
 }
 
 function googleWebcacheLink(url, text_fail = 'BPC > Full article text:\r\n') {
@@ -922,6 +978,14 @@ function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full artic
     text_fail_div.appendChild(a_link);
   }
   return text_fail_div;
+}
+
+function removeClassesByPrefix(el, prefix) {
+  let el_classes = el.classList;
+  for (let el_class of el_classes) {
+    if (el_class.startsWith(prefix))
+      el_classes.remove(el_class);
+  }
 }
 
 function ampToHtml() {

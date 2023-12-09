@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Thu, 07 Dec 2023 15:40:06 +0000
-! Diff-Path: ../patches/2023.12.8.862.patch#ublock-badware
+! Last modified: Sat, 09 Dec 2023 10:05:56 +0000
+! Diff-Path: ../patches/2023.12.9.919.patch#ublock-badware
 ! Diff-Name: ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
@@ -653,6 +653,7 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||jasnathvibes.com^$all
 ||falltes.site^$all
 ||lewdmilfh22y.com^$all
+/mc-test/*/index.php?cid=$doc
 /^https:\/\/[0-9a-z]{3,}\.[-a-z]{10,}\.(?:li[fv]e|top|xyz)\/[a-z]{8}\/\?utm_campaign=\w{40,}/$doc,match-case,domain=life|live|top|xyz
 /^https:\/\/[a-z]{2,3}\d\.biz\/go\/[0-9a-z]{15,18}$/$doc,domain=biz
 ! e.g. https://to3s.biz/?p=gi4tgnjwgu5gi3bpgy2tmmy
@@ -2998,7 +2999,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||magiskroot.net^$all
 ||magisks.com^$all
 ||themagisk.com^$all
-||magiskzip.net^$all
+||magiskzip.*^$all
+||magiskmodule.com^$all
 ||magiskmanagerroot.com^$all
 ||magisk.download^$all
 ||magiskmanager.com^$all
@@ -3010,6 +3012,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||revanced.*^$all,from=~revanced.app,to=~revanced.app
 ||revancedapk.*^$all,domain=~revanced.app
 ||revancedapp.*^$all,domain=~revanced.app
+||ytvancedpro.com^$all,domain=~revanced.app
 ||youtubevanced.*^$all,domain=~revanced.app
 ||youtuberevanced.*^$all,domain=~revanced.app
 ||re-vanced.com^$all,domain=~revanced.app
@@ -3018,12 +3021,16 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||revancedapp.net^$all,domain=~revanced.app
 ||revancedmusic.com^$all,domain=~revanced.app
 ||revancedyoutube.org^$all,domain=~revanced.app
+||revancedextend.com^$all,domain=~revanced.app
 ||revancedextended.*^$all,domain=~revanced.app
-||ytrevanced.com^$all,domain=~revanced.app
+||revanced-extended.com^$all,domain=~revanced.app
+||extendedrevanced.com^$all,domain=~revanced.app
+||youtuberevancedextended.com^$all,domain=~revanced.app
+||ytrevanced.*^$all,domain=~revanced.app
 ||tuberevanced.com^$all,domain=~revanced.app
 ||vanced-official.com^$all,domain=~revanced.app
 ||vanced.pro^$all,domain=~revanced.app
-||vancedmanager.com^$all,domain=~revanced.app
+||vancedmanager.*^$all,domain=~revanced.app
 ! LuckyPatcher - Official site: luckypatchers.com
 ||luckypatchers.net^$all,domain=~luckypatchers.com
 ||luckypatcherwin.com^$all,domain=~luckypatchers.com
@@ -3076,3 +3083,4 @@ cambe.pr.gov.br,paranhos.ms.gov.br##^script[language][type]:has-text(window.loca
 ||cealits.com^$all
 ||mevnow.com^$all
 ||eth-mev.com^$all
+||elemateletronic.click^$all

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.5.4
+// @version         3.4.5.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -622,9 +622,7 @@ else if (matchDomain('spectator.co.uk')) {
   let paywall = document.querySelector('section.paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    let article = document.querySelector('div.entry-content__wrapper');
-    if (article)
-      article.firstChild.before(archiveLink(url));
+    getArchive(url, 'article');
   }
   let banners = document.querySelectorAll('#subscribe-ribbon, div.ad-slot');
   hideDOMElement(...banners);
@@ -1378,13 +1376,11 @@ else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
   window.setTimeout(function () {
     let url = window.location.href;
     let paywall = document.querySelector('div[data-test="paywallMidpage"]');
-	console.log(paywall);
     if (paywall) {
       removeDOMElement(paywall);
-      let article = document.querySelector('div[data-test="articleBody"]');
-      article.firstChild.before(archiveLink(url));
+      getArchive(url, 'div[data-test="articleBody"]');
     }
-  }, 1000);
+  }, 2000);
 }
 
 else if (matchDomain('harpers.org')) {
@@ -1892,9 +1888,7 @@ else if (matchDomain('project-syndicate.org')) {
   let paywall = document.querySelector('div.paywall--base');
   if (paywall) {
     removeDOMElement(paywall);
-    let article = document.querySelector('div[data-page-area="article-body"]');
-    if (article)
-      article.firstChild.before(archiveLink(url));
+    getArchive(url, 'div[data-page-area="article-body"]');
   }
 }
 
@@ -3160,7 +3154,7 @@ function refreshCurrentTab() {
 }
 
 function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, func_post = '', article_new_sel = article_sel, arch_link = false, arch_link_sel = article_new_sel) {
-  let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split('?')[0];
+  let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split(/[#\?]/)[0];
   let paywall = document.querySelectorAll(paywall_sel);
   if (paywall.length) {
     clearPaywall(paywall, paywall_action);
@@ -3201,7 +3195,7 @@ function getArchive(url, article_sel, article_new_sel = article_sel, arch_link =
   let article = document.querySelector(article_sel);
   if (article) {
     let domain_archive = archiveRandomDomain();
-    let url_archive = 'https://' + domain_archive + '/' + url;
+    let url_archive = 'https://' + domain_archive + '/' + url.split(/[#\?]/)[0];
     GM.xmlHttpRequest({
       method: "GET",
       url: url_archive,

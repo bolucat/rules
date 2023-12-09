@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.4.4.1
+// @version         3.4.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -44,6 +44,7 @@
 // @match           *://*.tubantia.nl/*
 // @match           *://*.vn.nl/*
 // @match           *://*.volkskrant.nl/*
+// @grant           GM.xmlHttpRequest
 // ==/UserScript==
 
 (function() {
@@ -94,9 +95,7 @@ else if (matchDomain('fd.nl')) {
   let paywall = document.querySelectorAll('section.upsell, div.upsell-modal-background');
   if (paywall.length) {
     removeDOMElement(...paywall);
-    let article = document.querySelector('article');
-    if (article)
-      article.firstChild.before(archiveLink(url));
+    getArchive(url, 'main');
   }
 }
 
@@ -276,9 +275,7 @@ else if (matchDomain(nl_dpg_adr_domains)) {
   let paywall = document.querySelector('div#remaining-paid-content');
   if (paywall) {
     removeDOMElement(paywall);
-    let article = document.querySelector('div.article__body');
-    if (article)
-      article.firstChild.before(archiveLink(url));
+    getArchive(url, 'div.article__body', 'div#remaining-paid-content');
     let noscroll = document.querySelectorAll('html[style], body[style]');
     for (let elem of noscroll)
       elem.removeAttribute('style');
@@ -483,8 +480,68 @@ function waitDOMAttribute(selector, tagName = '', attributeName = '', callback, 
   });
 }
 
+function randomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+function archiveRandomDomain() {
+  let tld_array = ['fo', 'is', 'li', 'md', 'ph', 'vn'];
+  let tld = tld_array[randomInt(6)];
+  return 'archive.' + tld;
+}
+
+function getArchive(url, article_sel, article_new_sel = article_sel, arch_link = true, arch_sel = article_new_sel) {
+  let article = document.querySelector(article_sel);
+  if (article) {
+    let domain_archive = archiveRandomDomain();
+    let url_archive = 'https://' + domain_archive + '/' + url.split(/[#\?]/)[0];
+    GM.xmlHttpRequest({
+      method: "GET",
+      url: url_archive,
+      onload: function (response) {
+        let parser = new DOMParser();
+        let doc = parser.parseFromString(response.responseText, 'text/html');
+        let url_arch = doc.querySelector('div.TEXT-BLOCK > a[href]');
+        if (url_arch) {
+          url_arch = url_arch.href;
+          GM.xmlHttpRequest({
+            method: "GET",
+            url: url_arch,
+            onload: function (response) {
+              let pathname = new URL(url_arch).pathname;
+              let html = response.responseText.replace(new RegExp('https:\\/\\/' + domain_archive.replace('.', '\\.') + '\\/o\\/\\w+\\/', 'g'), '').replace(new RegExp("(src=\"|background-image:url\\(')" + pathname.replace('/', '\\/'), 'g'), "$1" + 'https://' + domain_archive + pathname);
+              let parser = new DOMParser();
+              let doc = parser.parseFromString(html, 'text/html');
+              let article_new = doc.querySelector(article_new_sel);
+              if (article_new) {
+                if (arch_link) {
+                  let arch_dom = (article_new_sel !== arch_sel) ? article_new.querySelector(arch_sel) : article_new;
+                  if (arch_dom) {
+                    arch_dom.firstChild.before(archiveLink_renew(window.location.href));
+                    arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
+                  }
+                }
+                let targets = article_new.querySelectorAll('a[target="_blank"][href^="https://' + window.location.hostname + '"]');
+                for (let elem of targets)
+                  elem.removeAttribute('target');
+                article.parentNode.replaceChild(article_new, article);
+              }
+            }
+          });
+        } else {
+          article.firstChild.before(archiveLink(url));
+        }
+      }
+    });
+  }
+}
+
 function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
   return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
+}
+
+function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
+  return externalLink([archiveRandomDomain()], 'https://{domain}?renew=1&url={url}', url, text_fail);
 }
 
 function googleWebcacheLink(url, text_fail = 'BPC > Full article text:\r\n') {
