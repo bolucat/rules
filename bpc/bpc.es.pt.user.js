@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.4.4.1
+// @version         3.4.4.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -484,6 +484,21 @@ function hideDOMElement(...elements) {
   }
 }
 
+function clearPaywall(paywall, paywall_action) {
+  if (paywall) {
+    if (!paywall_action)
+      removeDOMElement(...paywall);
+    else {
+      for (let elem of paywall) {
+        if (paywall_action.rm_class)
+          elem.classList.remove(paywall_action.rm_class);
+        else if (paywall_action.rm_attrib)
+          elem.removeAttribute(paywall_action.rm_attrib);
+      }
+    }
+  }
+}
+
 function header_nofix(header, msg = 'BPC > no fix') {
   if (header && !document.querySelector('div#bpc_nofix')) {
     let nofix_div = document.createElement('div');
@@ -534,19 +549,12 @@ function amp_redirect_not_loop(amphtml) {
 }
 
 function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
-  let paywall = document.querySelector(paywall_sel);
+  let paywall = document.querySelectorAll(paywall_sel);
   let amphtml = document.querySelector('head > link[rel="amphtml"]');
   if (!amphtml && amp_url)
     amphtml = {href: amp_url};
-  if (paywall && amphtml) {
-    if (!paywall_action)
-      removeDOMElement(paywall);
-    else {
-      if (paywall_action.rm_class)
-        paywall.classList.remove(paywall_action.rm_class);
-      else if (paywall_action.rm_attrib)
-        paywall.removeAttribute(paywall_action.rm_attrib);
-    }
+  if (paywall.length && amphtml) {
+    clearPaywall(paywall, paywall_action);
     amp_redirect_not_loop(amphtml);
   }
 }

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.4.5.0
+// @version         3.4.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -451,9 +451,7 @@ else if (matchDomain('lepoint.fr')) {
     let paywall = document.querySelectorAll('div.accnt-cmp');
     if (paywall.length) {
       removeDOMElement(...paywall);
-      let article = document.querySelector('article > section');
-      if (article)
-        article.firstChild.before(archiveLink(url));
+      getArchive(url, 'article');
     }
   }
 }
@@ -759,11 +757,11 @@ function amp_redirect_not_loop(amphtml) {
 }
 
 function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
-  let paywall = document.querySelector(paywall_sel);
+  let paywall = document.querySelectorAll(paywall_sel);
   let amphtml = document.querySelector('head > link[rel="amphtml"]');
   if (!amphtml && amp_url)
     amphtml = {href: amp_url};
-  if (paywall && amphtml) {
+  if (paywall.length && amphtml) {
     clearPaywall(paywall, paywall_action);
     amp_redirect_not_loop(amphtml);
   }
