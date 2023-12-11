@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.5.8
+// @version         3.4.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -39,7 +39,6 @@
 // @match           *://*.wellandtribune.ca/*
 // @exclude         *://*.google.com/*
 // @exclude         *://*.artsenkrant.com/*
-// @exclude         *://*.bienpublic.com/*
 // @exclude         *://*.cambiocolombia.com/*
 // @exclude         *://*.clarin.com/*
 // @exclude         *://*.connaissancedesarts.com/*
@@ -67,9 +66,7 @@
 // @exclude         *://*.lasegunda.com/*
 // @exclude         *://*.latercera.com/*
 // @exclude         *://*.lavenir.net/*
-// @exclude         *://*.ledauphine.com/*
 // @exclude         *://*.ledevoir.com/*
-// @exclude         *://*.lejsl.com/*
 // @exclude         *://*.lesinrocks.com/*
 // @exclude         *://*.levante-emv.com/*
 // @exclude         *://*.loeildelaphotographie.com/*
@@ -266,21 +263,12 @@ else {
             window.location.href = url_new;
           }, 500);
         }
-      } else if (window.location.hostname.startsWith('amp.') || window.location.search.match(/(\?|&)amp/)) {
+      } else if (window.location.search.match(/[&\?]amp/)) {
+        amp_unhide_subscr_section('amp-ad, amp-embed, [id^="ad-mrec-"], [class*="ad-container"]', false);
         let figure_stretch = document.querySelectorAll('figure.stretch');
         for (let elem of figure_stretch)
           elem.classList.remove('stretch');
-        let amp_ads_sel = 'amp-ad, amp-embed, [id^="ad-mrec-"], [class*="ad-container"]';
-        let comments;
-        if (window.location.hostname.startsWith('amp.')) {
-          amp_unhide_subscr_section(amp_ads_sel, true, true, '.newscdn.com.au');
-          comments = document.querySelector('#story-comments, .comments-wrapper');
-        } else if (window.location.search.match(/(\?|&)amp/)) {
-          amp_unhide_subscr_section(amp_ads_sel, true, true, '.newscdn.com.au');
-          comments = document.querySelector('#comments-load, .comments-module');
-          let amp_iframe_sizers = document.querySelectorAll('amp-iframe > i-amphtml-sizer');
-          removeDOMElement(...amp_iframe_sizers)
-        }
+        let comments = document.querySelector('#comments-load, .comments-module');
         removeDOMElement(comments);
       } else {
         let ads = document.querySelectorAll('.header_ads-container, .ad-block, .ad-container');
@@ -1614,9 +1602,10 @@ else if (matchDomain('japantimes.co.jp')) {
   setCookie('xbc', '', 'japantimes.co.jp', '/', 0);
   if (!window.location.pathname.endsWith('/amp')) {
     window.setTimeout(function () {
-      let paywall = document.querySelector('div.blocker > div.tp-container-inner');
+      let paywall = document.querySelector('div.subscribe');
       if (paywall) {
-        removeDOMElement(paywall.parentNode);
+        let banner = document.querySelector('div.blocker > div.tp-container-inner');
+        removeDOMElement(paywall, banner);
         let article = document.querySelector('div.article-body');
         if (article) {
           let url = window.location.href;

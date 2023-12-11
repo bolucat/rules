@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.4.5.2
+// @version         3.4.5.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -10,7 +10,6 @@
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.fr/*
 // @match           *://*.arcinfo.ch/*
-// @match           *://*.bienpublic.com/*
 // @match           *://*.connaissancedesarts.com/*
 // @match           *://*.dhnet.be/*
 // @match           *://*.femmesdaujourdhui.be/*
@@ -20,10 +19,8 @@
 // @match           *://*.lacote.ch/*
 // @match           *://*.lalibre.be/*
 // @match           *://*.lavenir.net/*
-// @match           *://*.ledauphine.com/*
 // @match           *://*.ledevoir.com/*
 // @match           *://*.legrandcontinent.eu/*
-// @match           *://*.lejsl.com/*
 // @match           *://*.lenouvelliste.ch/*
 // @match           *://*.lesinrocks.com/*
 // @match           *://*.lesoir.be/*
@@ -50,7 +47,6 @@ var csDoneOnce;
 var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net'];
 var be_roularta_domains = ['femmesdaujourdhui.be', 'flair.be', 'levif.be'];
 var fr_be_groupe_rossel = ['aisnenouvelle.fr', 'courrier-picard.fr', 'lardennais.fr', 'lavoixdunord.fr', 'lesoir.be', 'lest-eclair.fr', 'liberation-champagne.fr', 'lunion.fr', 'nordlittoral.fr', 'paris-normandie.fr', 'sudinfo.be'];
-var fr_groupe_ebra_domains = ['bienpublic.com', 'dna.fr', 'estrepublicain.fr', 'lalsace.fr', 'ledauphine.com', 'lejsl.com', 'leprogres.fr', 'republicain-lorrain.fr'];
 var fr_groupe_la_depeche_domains = ['centrepresseaveyron.fr', 'ladepeche.fr', 'lindependant.fr', 'midilibre.fr', 'nrpyrenees.fr', 'petitbleu.fr', 'rugbyrama.fr'];
 var fr_groupe_nice_matin_domains = ['monacomatin.mc', 'nicematin.com', 'varmatin.com'];
 var domain;
@@ -192,16 +188,6 @@ else if (matchDomain(fr_be_groupe_rossel)) {
   }
   let ads = document.querySelectorAll('div[id^="article_"], r-pub, div#rossel-leader-top');
   hideDOMElement(...ads);
-}
-
-else if (matchDomain(fr_groupe_ebra_domains)) {
-  if (!window.location.pathname.startsWith('/amp/')) {
-    amp_redirect('div#paywall-dynamic');
-    let ads = document.querySelectorAll('div.wrapperPub');
-    hideDOMElement(...ads);
-  } else {
-    amp_unhide_access_hide('="access"', '="NOT access"', 'amp-ad, amp-embed');
-  }
 }
 
 else if (matchDomain(fr_groupe_la_depeche_domains)) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.5.4
+// @version         3.4.5.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -223,14 +223,10 @@ else if (matchDomain('faz.net')) {
                 removeDOMElement(...pars);
                 json_text = breakText_headers(json_text).split("\n\n");
                 for (let p_text of json_text) {
-                  let elem;
-                  if (p_text.length < 80) {
-                    elem = document.createElement("h2");
-                    elem.setAttribute('class', 'atc-SubHeadline');
-                  } else {
-                    elem = document.createElement("p");
-                    elem.setAttribute('class', 'atc-TextParagraph');
-                  };
+                  let elem = document.createElement("p");
+                  elem.setAttribute('class', 'atc-TextParagraph');
+                  if (p_text.length < 80)
+                    elem.style = 'font-weight: bold;';
                   elem.innerText = p_text;
                   article_text.appendChild(elem);
                 };
@@ -391,17 +387,6 @@ else if (matchDomain('jacobin.de')) {
       }
     }
   }
-}
-
-else if (matchDomain('jungefreiheit.de')) {
-  getJsonUrl('div.paywall-teaser-box', '', 'div.elementor-widget-container > p');
-  let fade = document.querySelector('div[style*="background-image: url"]');
-  removeDOMElement(fade);
-  window.setTimeout(function () {
-    let banners = document.querySelectorAll('div > small');
-    for (let elem of banners)
-      hideDOMElement(elem.parentNode);
-  }, 1000);
 }
 
 else if (matchDomain('krautreporter.de')) {
