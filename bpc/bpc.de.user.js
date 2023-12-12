@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.5.6
+// @version         3.4.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -10,6 +10,7 @@
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.de/*
 // @match           *://*.beobachter.ch/*
+// @match           *://*.diepresse.com/*
 // @match           *://*.faz.net/*
 // @match           *://*.handelszeitung.ch/*
 // @match           *://*.kurier.at/*
@@ -180,6 +181,57 @@ else if (matchDomain('cicero.de')) {
   }
   let urban_ad_sign = document.querySelectorAll('.urban-ad-sign');
   removeDOMElement(...urban_ad_sign);
+}
+
+else if (matchDomain('diepresse.com')) {
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.premium-content');
+    if (article) {
+      article.removeAttribute('class');
+      let scripts = document.querySelectorAll('script:not([src]):not([type])');
+      let json_script;
+      for (let script of scripts) {
+        if (script.text.match(/window\.contentInformation\s?=\s?/)) {
+          json_script = script;
+          break;
+        }
+      }
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text.split(/window\.contentInformation\s?=\s?/)[1].split('};')[0] + '}');
+          if (json.flexmodule_list) {
+            let pars = json.flexmodule_list;
+            let par_first = false;
+            let split = false;
+            let parser = new DOMParser();
+            for (let par of pars) {
+              if (split) {
+                if (par) {
+                  let doc = parser.parseFromString('<div>' + par + '</div>', 'text/html');
+                  let content_new = doc.querySelector('div');
+                  article.appendChild(content_new);
+                }
+              } else {
+                if (par)
+                  par_first = true;
+                else if (!par && par_first)
+                  split = true;
+              }
+              let lazy_images = article.querySelectorAll('img.lazyload[data-src]:not([src])');
+              for (let elem of lazy_images) {
+                elem.removeAttribute('class');
+                elem.src = elem.getAttribute('data-src')
+              }
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  }
 }
 
 else if (matchDomain('faz.net')) {
@@ -496,14 +548,16 @@ else if (matchDomain('nwzonline.de')) {
 }
 
 else if (matchDomain('nzz.ch')) {
-  if (!window.location.href.includes('/amp/')) {
-    amp_redirect('.dynamic-regwall');
+  window.setTimeout(function () {
+    let paywall = document.querySelector('div.dynamic-regwall');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let url = window.location.href;
+      getArchive(url, 'section[data-nzz-article]');
+    }
     let ads = document.querySelectorAll('div.resor');
     hideDOMElement(...ads);
-  } else {
-    let amp_ads = document.querySelectorAll('amp-ad');
-    hideDOMElement(...amp_ads);
-  }
+  }, 2000);
 }
 
 else if (matchDomain('philomag.de')) {
@@ -735,6 +789,11 @@ else if (matchDomain('weltkunst.de')) {
   removeDOMElement(par_initial);
 }
 
+else if (matchDomain('weser-kurier.de')) {
+  let ads = document.querySelectorAll('div.ad-wrapper, div.anyad');
+  hideDOMElement(...ads);
+}
+
 else if (matchDomain('zeit.de')) {
   let url = window.location.href.split(/[#\?]/)[0];
   let paywall = document.querySelector('aside#paywall');
@@ -762,8 +821,8 @@ else if (matchDomain(de_lv_domains)) {
       div_hidden.removeAttribute('style');
     }
   }
-  let banners = document.querySelectorAll('.adZone');
-  removeDOMElement(...banners);
+  let ads = document.querySelectorAll('div.adZone');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain(de_westfalen_medien_domains)) {

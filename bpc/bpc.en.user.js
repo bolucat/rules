@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.6.0
+// @version         3.4.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -44,6 +44,7 @@
 // @exclude         *://*.connaissancedesarts.com/*
 // @exclude         *://*.diariocordoba.com/*
 // @exclude         *://*.diariovasco.com/*
+// @exclude         *://*.diepresse.com/*
 // @exclude         *://*.elconfidencial.com/*
 // @exclude         *://*.elcorreo.com/*
 // @exclude         *://*.elespanol.com/*
@@ -594,6 +595,10 @@ else if (matchDomain('independent.co.uk')) {
         article.firstChild.before(archiveLink(url));
     }
   }
+}
+
+else if (matchDomain('literaryreview.co.uk')) {
+  getJsonUrl('p.subscribe-for-more', '', 'div#_articlereview');
 }
 
 else if (matchDomain('prospectmagazine.co.uk')) {
@@ -1818,13 +1823,8 @@ else if (matchDomain('nybooks.com')) {
   let paywall_article = document.querySelector('.paywall-article');
   if (paywall_article)
     paywall_article.classList.remove('paywall-article');
-  let banner = document.querySelector('div.toast-cta, div.inline-ad');
-  removeDOMElement(banner);
-}
-
-else if (matchDomain('nytimes.com')) {
-  let banners = document.querySelectorAll('div[data-testid="inline-message"], div[id^="ad-"], div.expanded-dock, div.pz-ad-box');
-  removeDOMElement(...banners);
+  let banners = document.querySelectorAll('div.toast-cta, div.inline-ad');
+  hideDOMElement(...banners);
 }
 
 else if (matchDomain('nzherald.co.nz')) {
