@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.4.5.0
+// @version         3.4.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -145,9 +145,7 @@ else if (matchDomain('groene.nl')) {
   let paywall = document.querySelector('div#closed-block');
   if (paywall) {
     removeDOMElement(paywall);
-    let article = document.querySelector('section.article-wrapper');
-    if (article)
-      article.firstChild.before(nftLink(url));
+    getArchive(url, 'article');
   }
 }
 

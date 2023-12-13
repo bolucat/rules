@@ -1,8 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Tue, 12 Dec 2023 10:16:37 +0000
-! Diff-Path: ../patches/2023.12.12.804.patch#ublock-annoyances
-! Diff-Name: ublock-annoyances
+! Last modified: Wed, 13 Dec 2023 10:16:52 +0000
+! Diff-Path: ../patches/2023.12.13.863.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -148,6 +147,9 @@ e-shop.leonidas.com##+js(set-cookie, cc_essential, 1)
 aonsolutions.es##+js(trusted-set-cookie, cookies-consent, agree)
 vr.fi##+js(trusted-set-local-storage-item, cookieConsent, '{"consented":true,"levels":{"level1":true,"level2":false,"level3":false,"level4":false}}')
 launer.com##+js(trusted-set-cookie, cookie_consent, 100, 1year)
+bever.nl##+js(trusted-set-cookie, consent_setting, analytics%3A0%7Cfunctional%3A1%7Cmarketing%3A0, , , reload, 1)
+sixt-neuwagen.de##+js(trusted-set-cookie, user_cookie_consent, essential)
+sixt-neuwagen.de##+js(set-cookie, user_accepted_cookies, 1)
 !! Needs additional cookies
 ! Closing Optanon Alert Box
 1001games.com,1001hry.cz,1001jeux.fr,1001jocuri.ro,1001jogos.com.br,1001jogos.pt,1001pelit.com,1001spiele.de,elkspel.nl,gamespot.com,giochixl.it,glamour.com,grajteraz.pl,isladejuegos.com,jatekokxl.hu,mtvuutiset.fi,paixnidiaxl.gr,pushsquare.com,spelo.se,spillespill.no,spilxl.dk,thejournal.ie,thetrainline.com,vkmag.com,zdnet.com##+js(trusted-set-cookie, OptanonAlertBoxClosed, $currentDate$, 1year)
@@ -408,15 +410,14 @@ myprivacy.dpgmediagroup.net##+js(set-cookie, dummy, 1, , reload, 1)
 dpgmediagroup.com##+js(trusted-click-element, '#pg-shadow-host >>> #pg-configure-btn, #pg-shadow-host >>> #purpose-row-SOCIAL_MEDIA input[type="checkbox"], #pg-shadow-host >>> button#pg-save-preferences-btn')
 dpgmediagroup.com###pg-modal
 !#endif
-@@||cmp.trouw.nl/unified/wrapperMessagingWithoutDetection.js$script,domain=trouw.nl
-! essential only
-bever.nl##+js(trusted-set-cookie, consent_setting, analytics%3A0%7Cfunctional%3A1%7Cmarketing%3A0, , , reload, 1)
-! essential cookies only
-sixt-neuwagen.de##+js(trusted-set-cookie, user_cookie_consent, essential)
-sixt-neuwagen.de##+js(set-cookie, user_accepted_cookies, 1)
 ! tomsguide.com
 privacy-mgmt.com##+js(trusted-click-element, button[title="AGREE"])
 tomsguide.com##+js(trusted-click-element, button[mode="primary"])
+! only essential cookies
+collectibles.mclaren.com##+js(trusted-set-cookie, user, '%7B%22necessary%22%3Atrue%2C%22preferences%22%3Afalse%2C%22statistics%22%3Afalse%2C%22marketing%22%3Afalse%7D')
+tobis.de##+js(trusted-set-cookie, tarteaucitron, !tarteaucitron=true!website=true!analytics=false!regex_analytic=false!regex_ads=true!googletagmanager=false!facebookpixel=false!addtoanyshare=false!youtube=true, 1year)
+! manta.net analytics disabled, functional only
+manta.net##+js(trusted-set-local-storage-item, cookie_setting, '{"analytical_cookies":false,"functional_cookies":true}')
 ! *** filters/annoyances-others.txt ***
 mimaletadepeliculas.blogspot.com##+js(aopr, document.oncontextmenu)
 mimaletadepeliculas.blogspot.com##+js(acs, document.onselectstart)
@@ -3871,6 +3872,7 @@ aniwave.to,bflix.io,flixhq.*,fmovies.*,fmoviesz.*,f2movies.ru,movies2watch.ru,pu
 aniwave.to,bflix.io,flixhq.*,fmovies.*,fmoviesz.*,f2movies.ru,movies2watch.ru,putlockernew.vc,swatchseries.ru,vidplay.site,vidstream.pro,mcloud.to##+js(aost, console.clear)
 aniwave.to,flixhq.*,vidplay.site##+js(nostif, ||null)
 aniwave.to,vidplay.*##+js(set, DisDevTool, undefined)
+fmoviesz.to##+js(nostif, null)
 161.97.70.5##+js(rmnt, script, isadb)
 zerogpt.net##+js(nostif, adsbygoogle)
 linkco.re##section.lyric_lyric:style(user-select: text !important; -webkit-user-select: text !important; -moz-user-select: text !important; -khtml-user-select: text !important; -webkit-user-drag: auto !important; -khtml-user-drag: auto !important; -webkit-touch-callout: auto !important; -moz-touch-callout: auto !important;)
@@ -4086,3 +4088,14 @@ news.17173.com##+js(aeld, copy)
 ||videos-cloudfront.jwpsrv.com^$media,domain=app.simpleclub.com
 ||cdn.jwplayer.com^$media,domain=app.simpleclub.com
 ||ip.sb/assets/js/wwads_blocked.js
+@@||arras.io^$xhr,1p
+arras.io,arras.netlify.app,arrax.io##+js(rmnt, script, onerror)
+||cdn.intergient.com^$redirect-rule=noopjs,domain=arras.*|arras.netlify.app|arrax.io
+!#if cap_html_filtering
+/container.js$script,1p,replace=/5\>Object\.keys\(/0>Object.keys(/g,domain=arras.io|arras.netlify.app|arrax.io
+!#else
+@@||cdn.intergient.com/*/ramp.js$script,domain=arras.io|arras.netlify.app|arrax.io
+!#endif
+freetvsports.xyz##+js(noeval-if, debugger)
+zippyupload.com##[class^="advt-"]
+zippyupload.com##+js(aeld, contextmenu, preventDefault)

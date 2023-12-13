@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.6.0
+// @version         3.4.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -523,27 +523,6 @@ else if (matchDomain('nw.de')) {
     amp_redirect('div[data-tracking-visible^="paywall-"]');
   } else {
     amp_unhide_access_hide('="loggedIn AND hasAbo"', '', 'amp-ad, amp-embed, . banner');
-  }
-}
-
-else if (matchDomain('nwzonline.de')) {
-  let paywall = document.querySelector('div.offerlist-wrapper');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_script = getArticleJsonScript();
-    if (json_script) {
-      let json = JSON.parse(json_script.text);
-      if (json) {
-        let json_text = breakText_headers(parseHtmlEntities(json.articleBody));
-        let content = document.querySelector('div.article-body');
-        if (json_text && content) {
-          content.innerHTML = '';
-          let article_new = document.createElement('p');
-          article_new.innerText = json_text;
-          content.appendChild(article_new);
-        }
-      }
-    }
   }
 }
 
