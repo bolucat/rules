@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.6.2
+// @version         3.4.6.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -162,7 +162,7 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || (!matchDo
   if (paywall) {
     paywall.removeAttribute('class');
     paywall.firstChild.before(freediumLink(url));
-    paywall.firstChild.before(googleWebcacheLink(url));
+    paywall.firstChild.before(googleWebcacheLink(url, 'BPC > Try for full article text (articles before 2023-12-10)'));
   }
   window.setTimeout(function () {
     let banner = pageContains('div > div > p', /author made this story available to/);
@@ -1137,17 +1137,7 @@ else if (matchDomain('defector.com')) {
         let pars = article.querySelectorAll('p');
         if (pars.length < 3) {
           let url = window.location.href.split('?')[0];
-          fetch(url)
-          .then(response => {
-            if (response.ok) {
-              response.text().then(html => {
-                let parser = new DOMParser();
-                let doc = parser.parseFromString(html, 'text/html');
-                let article_new = doc.querySelector(article_sel);
-                article.parentNode.replaceChild(article_new, article);
-              });
-            }
-          });
+          replaceDomElementExt(url, false, false, article_sel);
         }
       }, 1000);
     }
@@ -1770,7 +1760,7 @@ else if (matchDomain('newrepublic.com')) {
 
 else if (matchDomain('newscientist.com')) {
   let url = window.location.href;
-  func_post = function () {
+  let func_post = function () {
     let lazy_images = document.querySelectorAll('img.lazyload[data-src]:not([src])');
     for (let elem of lazy_images)
       elem.src = elem.getAttribute('data-src').split('?')[0] + '?width=800';
@@ -3385,6 +3375,34 @@ function insert_script(func, insertAfterDom) {
     let insertAfter = insertAfterDom ? insertAfterDom : (document.body || document.head || document.documentElement);
     insertAfter.appendChild(script);
   }
+}
+
+function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', selector_source = selector) {
+  let proxyurl = proxy ? '' : '';
+  let article = document.querySelector(selector);
+  let options = {headers: {"Content-Type": "text/plain", "X-Requested-With": "XMLHttpRequest"}};
+  fetch(proxyurl + url, options)
+  .then(response => {
+    if (response.ok) {
+      response.text().then(html => {
+        if (base64) {
+          html = decode_utf8(atob(html));
+          selector_source = 'body';
+        }
+        let parser = new DOMParser();
+        let doc = parser.parseFromString(html, 'text/html');
+        let article_new = doc.querySelector(selector_source);
+        if (article_new) {
+          if (article && article.parentNode)
+            article.parentNode.replaceChild(article_new, article);
+        }
+      });
+    } else {
+      console.log('no content/article');
+    }
+  }).catch(function (err) {
+    console.log('no content/article');
+  });
 }
 
 function getArticleJsonScript() {

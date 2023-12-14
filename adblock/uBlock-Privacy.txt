@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Privacy
 ! Expires: 7 days
-! Last modified: Tue, 12 Dec 2023 19:39:36 +0000
-! Diff-Path: ../patches/2023.12.13.863.patch#ublock-privacy
+! Last modified: Thu, 14 Dec 2023 13:12:37 +0000
+! Diff-Path: ../patches/2023.12.14.922.patch#ublock-privacy
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/privacy.txt ***
@@ -225,6 +225,7 @@ ericdraken.com##^script[async]
 !||linkedin.com/li/track$xhr,1p
 utreon.com##+js(no-xhr-if, utreon.com/pl/api/event method:POST)
 /^https:\/\/[0-9a-z]{7,25}\.com\/v2(?:\/0\/)?(?=[-_0-9a-z]{0,84}[A-Z])(?=[-_a-zA-Z]{0,84}[0-9])[-_0-9a-zA-Z]{54,85}(#\?v=[0-9a-f]{32})?$/$script,xhr,3p,match-case
+/^https:\/\/[0-9a-z]{7,25}\.com\/(?:build|bundles|chunks|dist|j|public|scripts|static)\/[0-9a-f]{6,15}\/?[0-9a-f]{21,36}(?:[-.](?:ma?in|prod|index))?(?:\.js)?$/$script,3p,match-case
 zhihu.com##+js(no-xhr-if, log-sdk.ksapisrv.com/rest/wd/common/log/collect method:POST)
 ||torimochi.line-apps.com^$image,redirect=1x1.gif
 ! bilibili.com browser fingerprint collect
@@ -531,6 +532,19 @@ pelando.com.br##+js(href-sanitizer, a[href*="https://www.pelando.com.br/api/redi
 proboards.com,winclassic.net##+js(rmnt, script, vglnk)
 proboards.com,winclassic.net##^script:has-text(vglnk)
 coomer.su,kemono.su##+js(set, plausible, noopFunc)
+! FootprintDNS
+||res.office365.com/footprint/v*/scripts/fp-min.js$script
+||res.office365.com/footprint/v*/scripts/fpconfig.json$script
+||atmrum.net/rum.js$script
+||atmrum.net/client/v*/atm/fpv*.min.js$script
+||atmrum.net/conf/v*/atm/fpconfig.min.json$script
+||config.fp.measure.office.com/conf/v*/*/fpconfig.min.json$script
+||fp.msedge.net/conf/v*/asgw/fpconfig.min.json?monitorId=asgw$script
+/apc/trans.gif
+/apc/r.gif
+||atmrum.net/report/v*/atm/r.gif
+||fp.msedge.net/r.gif
+||odinvzc.azureedge.net/apc/trans.gif
 ! Merge in resource-abuse.txt
 ! *** uAssets:filters/resource-abuse.txt ***
 /edgemesh.*.js$script,domain=~edgemesh.com|~edgeno.de

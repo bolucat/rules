@@ -21,13 +21,13 @@
 
 ## 规则统计
 
-最后更新时间：2023-12-13 14:39:13
+最后更新时间：2023-12-15 02:10:31
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
-| DOMAIN-SUFFIX | 142715  | 
-| TOTAL | 142715  | 
+| DOMAIN-SUFFIX | 142725  | 
+| TOTAL | 142725  | 
 
 
 ## AdGuard 
@@ -96,7 +96,6 @@ https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_scri
 - https://raw.githubusercontent.com/geekdada/surge-list/master/domain-set/neohosts-full.txt
 - https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/ruleset/reject.txt
 - https://raw.githubusercontent.com/787a68/Rules/master/Surge4/Ruleset/Liby.list
-- https://raw.githubusercontent.com/GeQ1an/Rules/master/QuantumultX/Filter/AdBlock.list
 - https://raw.githubusercontent.com/sve1r/Rules-For-Quantumult-X/develop/Rules/Advertising/antiAD-V4.list
 - https://raw.githubusercontent.com/sve1r/Rules-For-Quantumult-X/develop/Rules/Advertising/NormalApp/AppAdBlock.list
 - https://raw.githubusercontent.com/DivineEngine/Profiles/master/Surge/Ruleset/Guard/Hijacking.list
