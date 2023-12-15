@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.6.3
+// @version         3.4.6.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -235,13 +235,15 @@ else if (matchDomain('diepresse.com')) {
 }
 
 else if (matchDomain('faz.net')) {
-  if (matchDomain('zeitung.faz.net')) {
+  if (matchDomain('zeitung.faz.net')) {// legacy
     let paywall_z = document.querySelector('div.c-red-carpet');
     if (paywall_z) {
       removeDOMElement(paywall_z);
       let og_url = document.querySelector('head > meta[property="og:url"][content]');
       if (og_url)
         window.location.href = og_url.content;
+      else
+        header_nofix(document.querySelector('div.article__text'));
     }
     let sticky_advt = document.querySelector('div.sticky-advt');
     removeDOMElement(sticky_advt);
