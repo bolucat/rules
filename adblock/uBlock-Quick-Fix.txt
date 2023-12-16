@@ -1,24 +1,19 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Fri, 15 Dec 2023 14:24:15 +0000
-! Diff-Path: ../patches/2023.12.15.988.patch#ublock-quick-fixes
+! Last modified: Sat, 16 Dec 2023 08:27:38 +0000
+! Diff-Path: ../patches/2023.12.16.1039.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
 ! DG
-d1rp4yowwe587e.cloudfront.net^$script,domain=dropgalaxy.*,important
+||d1rp4yowwe587e.cloudfront.net^$script,domain=dropgalaxy.*,important
 @@||googlesyndication.com^$script,xhr,domain=dropgalaxy.*
 @@||doubleclick.net^$script,xhr,domain=dropgalaxy.*
 @@||rsc.cdn77.org^$script,xhr,domain=dropgalaxy.*
-@@||doubleclick.net^$script,xhr,domain=dropgalaxy.*
-@@||vlitag.com/prebid/$script,domain=dropgalaxy.*
-@@||vlitag.com/*/prebid/*/*$script,domain=dropgalaxy.*
-@@||services.vlitag.com/adv1/$script,domain=dropgalaxy.*
-@@||services.vlitag.com/cli/$xhr,domain=dropgalaxy.*
-@@||services.vlitag.com/obj/$xhr,domain=dropgalaxy.*
+@@||vlitag.com^$script,xhr,domain=dropgalaxy.com
 dropgalaxy.*##+js(rpnt, script, /charAt|constructor|_0x/)
-dropgalaxy.*##+js(rpnt, script, /.onerror|document.write|userTimezoneOffset=userDate|(error|null;|'src',|.offsetParent/, script)
 dropgalaxy.*##+js(rpnt, script, /iframe|img|image/, script)
+!dropgalaxy.*##+js(rpnt, script, /.onerror|document.write|userTimezoneOffset=userDate|(error|null;|'src',|.offsetParent/, script)
 ! aternos anti adb
 aternos.org##.header-center:style(margin-top:-5000px !important;)
 aternos.org##.sidebar:style(width: 1.745px !important;)
@@ -57,6 +52,7 @@ techcyan.com,kiktu.com,upshrink.com,trangchu.news,banaraswap.in###btx1, #btx2, #
 techcyan.com,kiktu.com,upshrink.com,trangchu.news,banaraswap.in##+js(spoof-css, #btx1\, #btx2\, #wg-genx > .mediafire, visibility, visible)
 .click/?s=$popup,domain=techcyan.com|kiktu.com|upshrink.com|trangchu.news|banaraswap.in
 *$image,domain=techcyan.com|kiktu.com|upshrink.com|trangchu.news|banaraswap.in,redirect-rule=2x2.png:5
+@@||check-host.net/js/asg_embed.js$script,1p
 ||check-host.net/*/$image,1p
 ||check-host.net/images/d--en.png$image,1p,important
 ||check-host.net/images/d2-ale-en.png$image,1p,important

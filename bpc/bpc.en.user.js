@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.6.5
+// @version         3.4.6.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1376,7 +1376,7 @@ else if (matchDomain('hbr.org')) {
   }
   let popup = document.querySelector('.persistent-banner');
   removeDOMElement(popup);
-  let paywall = document.querySelector('site-paywall');
+  let paywall = document.querySelector('div#paywall');
   if (paywall) {
     removeDOMElement(paywall);
     insert_script(hbr_main);
