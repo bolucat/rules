@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.4.5.3
+// @version         3.4.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -273,6 +273,27 @@ else if (matchDomain('la-croix.com')) {
     let paywall_block = document.querySelector('#paywall_block');
     let amp_ads = document.querySelectorAll('amp-ad, amp-embed');
     hideDOMElement(paywall_block, ...amp_ads);
+  }
+}
+
+else if (matchDomain('lamontagne.fr') || document.querySelector('head > meta[name="google-play-app"][content^="app-id=com.centrefrance"]')) {// Groupe Centre France
+  let paywall = document.querySelector('div#poool-widget');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = json.articleBody;
+        let content = document.querySelector('div.entry-content');
+        if (json_text && content) {
+          content.innerHTML = '';
+          let article_new = document.createElement('p');
+          article_new.innerText = json_text;
+          content.appendChild(article_new);
+        }
+      }
+    }
   }
 }
 
