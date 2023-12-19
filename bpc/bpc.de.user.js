@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.6.4
+// @version         3.4.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -71,6 +71,8 @@ else if (matchDomain('augsburger-allgemeine.de')) {
   } else {
     amp_unhide_subscr_section();
   }
+  let banners = document.querySelectorAll('div.piano-article');
+  hideDOMElement(...banners);
 }
 
 else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
@@ -152,6 +154,15 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
   }
   let ads = document.querySelectorAll('div.ad-wrapper');
   hideDOMElement(...ads);
+}
+
+else if (matchDomain('bild.de')) {
+  let url = window.location.href;
+  let paywall = document.querySelector('div.offer-module');
+  if (paywall) {
+    removeDOMElement(paywall);
+    getArchive(url, 'article');
+  }
 }
 
 else if (matchDomain('boersen-zeitung.de')) {
@@ -829,39 +840,7 @@ else if (matchDomain(de_madsack_domains) || document.querySelector('head > link[
 }
 
 else if (matchDomain('ruhrnachrichten.de') || document.querySelector('a.mgw-logo[href^="https://mgw.de"]')) {
-  let paywall = document.querySelector('body.is_plus_article');
-  if (paywall) {
-    paywall.classList.remove('is_plus_article');
-    let json_url;
-    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
-    if (json_url_dom) {
-      let json_url = json_url_dom.href;
-    } else {
-      let pathname = window.location.pathname;
-      let article_id;
-      if (pathname.includes('-p-'))
-        article_id = pathname.split('-p-')[1].split('/')[0];
-      if (article_id)
-        json_url = 'https://' + window.location.hostname + '/wp-json/wp/v2/posts/' + article_id;
-    }
-    if (json_url) {
-      fetch(json_url)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(json => {
-            let json_text = json.content.rendered;
-            let content = document.querySelector('article');
-            if (json_text && content) {
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-              let content_new = doc.querySelector('div');
-              content.appendChild(content_new);
-            }
-          });
-        }
-      });
-    }
-  }
+  getJsonUrl('body.is_plus_article', {rm_class: 'is_plus_article'}, 'article');
   let ads = document.querySelector('div.OUTBRAIN');
   hideDOMElement(ads);
   if (!matchDomain('ruhrnachrichten.de')) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.4.7.0
+// @version         3.4.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -388,8 +388,8 @@ else if (matchDomain('lemonde.fr')) {
 }
 
 else if (matchDomain('leparisien.fr')) {
-  let paywall = document.querySelector('div.paywall');
   if (window.location.pathname.startsWith('/amp/')) {
+    let paywall = document.querySelector('div.paywall');
     if (paywall) {
       let paywall_sticky = document.querySelector('div.paywall-sticky');
       removeDOMElement(paywall, paywall_sticky);
@@ -401,7 +401,7 @@ else if (matchDomain('leparisien.fr')) {
         mask.classList.remove('amp-premium-first-content');
     }
   } else {
-    amp_redirect('div.paywall');
+    amp_redirect('div.paywall', '', '/amp' + window.location.pathname);
   }
 }
 
