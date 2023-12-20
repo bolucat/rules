@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.4.3.2
+// @version         3.4.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
@@ -250,23 +250,6 @@ else if (matchDomain(it_gedi_domains)) {
   let ads = document.querySelectorAll('div[id^="adv"]');
   hideDOMElement(...ads);
   setCookie(/blaize_session/, '', domain, '/', 0);
-}
-
-else if (matchDomain('money.it')) {
-  if (!window.location.search.startsWith('?page=amp')) {
-    let paywall = document.querySelector('div#paywall');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let article_id_dom = document.querySelector('div[data-idarticle]');
-      if (article_id_dom) {
-        let article_id = article_id_dom.getAttribute('data-idarticle');
-        window.location.href = 'https://www.money.it/?page=amp&id_article=' + article_id;
-      }
-    }
-  } else {
-    let ads = document.querySelectorAll('amp-ad');
-    hideDOMElement(...ads);
-  }
 }
 
 else if (matchDomain('tuttosport.com')) {
