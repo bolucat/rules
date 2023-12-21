@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         3.3.9.2
+// @version         3.3.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js
@@ -20,6 +20,8 @@
 window.setTimeout(function () {
 
 var domain;
+var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
+var csDoneOnce;
 
 if (matchDomain('etc.se')) {
   let paywall = document.querySelector('div.paywalled');
@@ -36,9 +38,7 @@ if (matchDomain('etc.se')) {
   let video_iframes = document.querySelectorAll('div.embed-block > iframe[width][height]');
   for (let elem of video_iframes) {
     if (elem.width > 1000) {
-      let ratio = elem.width / 640;
-      if (window.navigator.userAgent.toLowerCase().includes('mobile'))
-        ratio = elem.width / 320;
+      let ratio = elem.width / (mobile ? 320 : 640);
       elem.width = elem.width / ratio;
       elem.height = elem.height / ratio;
     }

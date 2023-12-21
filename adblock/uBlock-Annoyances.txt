@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Wed, 20 Dec 2023 15:55:34 +0000
-! Diff-Path: ../patches/2023.12.20.985.patch#ublock-annoyances
+! Last modified: Thu, 21 Dec 2023 07:52:17 +0000
+! Diff-Path: ../patches/2023.12.21.1042.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -463,6 +463,8 @@ zoom.us##+js(trusted-set-cookie, OptanonConsent, groups=C0004%3A0%2CC0003%3A1%2C
 zoom.us##+js(trusted-set-cookie, OptanonAlertBoxClosed, $currentDate$, 1year)
 zoom.us##+js(trusted-set-cookie, OnetrustActiveGroups, C0003C0001, 1year)
 gmx.*##+js(trusted-click-element, #onetrust-accept-btn-handler)
+! reject marketing/analytics
+trezor.io##+js(trusted-set-cookie, userConsent, %7B%22essential%22%3Atrue%2C%22analytical%22%3Afalse%2C%22preferential%22%3Atrue%7D)
 ! *** filters/annoyances-others.txt ***
 mimaletadepeliculas.blogspot.com##+js(aopr, document.oncontextmenu)
 mimaletadepeliculas.blogspot.com##+js(acs, document.onselectstart)
@@ -848,6 +850,8 @@ howjsay.com##+js(nostif, (), 1500)
 vpnmentor.com##+js(nostif, bioEp.showPopup)
 ! right clik, ctrl-U https://github.com/NanoMeow/QuickReports/issues/453
 animeshouse.net##+js(aeld, /^(contextmenu|keydown)$/)
+olhonaviagem.com##+js(aeld, keydown)
+olhonaviagem.com##+js(aopw, document.oncontextmenu)
 ! select / copy informagiovani-italia . com
 informagiovani-italia.com##body:style(-webkit-touch-callout: default !important; -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important;)
 ! anti adb warning /bigleaguepolitics . com
@@ -1488,7 +1492,6 @@ ahzaa.net##.post-body:style(-webkit-user-select: text !important; -moz-user-sele
 ahzaa.net##+js(aopr, document.oncontextmenu)
 karyawanesia.com##+js(aopr, document.oncontextmenu)
 zoom.com.br###exit-modal-signup, #overlay-modal
-@@||linux.org^$ghide
 ! myschool-eng .com right click - select - copy - keys
 myschool-eng.com##+js(aeld, /contextmenu|copy|keydown/)
 myschool-eng.com##*:style(-webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important;)
@@ -1767,8 +1770,8 @@ skidrowcodex.net##+js(aeld, contextmenu)
 eoreuni.com##+js(aopw, document.oncontextmenu)
 earth.com##+js(aopr, HTMLIFrameElement)
 xxxonlinegames.com##+js(nostif, offsetHeight)
-doods.*,ds2play.com##+js(set, console.clear, undefined)
-dood.*,ds2play.com##+js(aeld, contextmenu)
+doods.*,ds2play.com,ds2video.com##+js(set, console.clear, undefined)
+dood.*,ds2play.com,ds2video.com##+js(aeld, contextmenu)
 freerapidleechlist.blogspot.com##+js(acs, document.oncontextmenu)
 duolingo.com##h2:has-text(Using an ad blocker?):upward(3)
 ! thegatewaypundit .com anti adb warning
@@ -3936,8 +3939,7 @@ sgd.de##+js(aeld, contextmenu)
 fullxh.com,hamsterix.*,megaxh.com,unlockxh4.com,xhadult2.com,xhadult3.com,xhadult4.com,xhadult5.com,xhamster.*,xhamster1.*,xhamster10.*,xhamster11.*,xhamster12.*,xhamster13.*,xhamster14.*,xhamster15.*,xhamster16.*,xhamster17.*,xhamster18.*,xhamster19.*,xhamster20.*,xhamster2.*,xhamster3.*,xhamster4.*,xhamster46.com,xhamster5.*,xhamster7.*,xhamster8.*,xhday.com,xhday1.com,xhmoon5.com,xhplanet1.com,xhplanet2.com,xhreal2.com,xhreal3.com,xhtab2.com,xhvictory.com,xhwebsite.com,xhwebsite2.com,xhwide1.com,xhwide8.com##+js(no-fetch-if, ad.php)
 *$script,1p,redirect-rule=noopjs,domain=punishworld.com
 comikey.com##+js(aeld, contextmenu, undefined)
-! Cursor manipulation
-tutanota.com##body > div > section.default:style(cursor: revert !important;)
+tuta.com##body > div > section.default:style(cursor: revert !important;)
 venturebeat.com##div.body-container:style(cursor: revert !important;)
 guildstats.eu##.gDiv
 ! admiral
@@ -4053,8 +4055,10 @@ alfred.camera##+js(nosiif, ads)
 ||devfiles.pages.dev/js/devtools.js$script
 !#if cap_html_filtering
 dev.miuiflash.com,djxmaza.in,thecubexguide.com##^script[disable-devtool-auto]
+dev.miuiflash.com,djxmaza.in,thecubexguide.com##^script:has-text(debugger)
 !#else
 dev.miuiflash.com,djxmaza.in,thecubexguide.com##+js(rmnt, script, disable-devtool)
+dev.miuiflash.com,djxmaza.in,thecubexguide.com##+js(rmnt, script, debugger)
 !#endif
 decider.com,nypost.com,pagesix.com##+js(aopr, googletag.cmd)
 habuteru.com##+js(aopw, document.oncontextmenu)
@@ -4176,3 +4180,7 @@ with.is##*:style(-webkit-touch-callout: default !important; -webkit-user-select:
 movie-web.app##+js(noeval-if, debugger)
 ! redecanais.zip anti right-click, select
 redecanais.*##+js(acs, reEnable)
+raenonx.cc##div[class^="relative w-full overflow-hidden"]:has(> .absolute > .adsbygoogle):style(max-height: 1px !important; height: 1px !important; visibility: hidden !important;)
+raenonx.cc##div[class="flex flex-col w-full info-section-opaque fixed bottom-0 z-nav"]:has(div:has-text(/^Ads$/))
+raenonx.cc##div[class*="bg-red-"]:has(> div[class="flex h-full w-full flex-col items-center justify-center text-center text-xl"] > p:has-text(/ad-blocker/i))
+raenonx.cc##div[class="flex flex-row w-full h-full"]:has(> div[class="relative w-full overflow-hidden"] > .h-full > p:has-text(/ad-blocker/i))

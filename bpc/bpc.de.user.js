@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.7.2
+// @version         3.4.7.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -108,9 +108,7 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
                 sub_elem = content_new.querySelector('div');
                 let iframe = sub_elem.querySelector('iframe[width]');
                 if (iframe) {
-                  let ratio = iframe.width / 640;
-                  if (mobile)
-                    ratio = iframe.width / 320;
+                  let ratio = iframe.width / (mobile ? 320 : 640);
                   iframe.width = iframe.width / ratio;
                   iframe.height = iframe.height / ratio;
                 }
@@ -120,9 +118,7 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
                   sub_elem.src = par_elem.origin;
                   sub_elem.alt = par_elem.alt;
                   if (par_elem.width) {
-                    let ratio = par_elem.width / 640;
-                    if (mobile)
-                      ratio = par_elem.width / 320;
+                    let ratio = par_elem.width / (mobile ? 320 : 640);
                     sub_elem.width = par_elem.width / ratio;
                     sub_elem.height = par_elem.height / ratio;
                   }
@@ -844,7 +840,7 @@ else if (matchDomain('ruhrnachrichten.de') || document.querySelector('a.mgw-logo
   let article_id;
   if (pathname.includes('-p-'))
     article_id = pathname.split('-p-')[1].split('/')[0];
-  getJsonUrl('body.is_plus_article', {rm_class: 'is_plus_article'}, 'article', {art_append: 1, art_hold: 1}, article_id);
+  getJsonUrl('body.is_plus_article', {rm_class: 'is_plus_article'}, 'article', {art_append: 1, art_hold: 1, art_class: 'article__content'}, article_id);
   let ads = document.querySelector('div.OUTBRAIN');
   hideDOMElement(ads);
   if (!matchDomain('ruhrnachrichten.de')) {

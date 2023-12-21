@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.4.7.1
+// @version         3.4.7.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -24,7 +24,6 @@
 // @match           *://*.lenouvelliste.ch/*
 // @match           *://*.lesinrocks.com/*
 // @match           *://*.lesoir.be/*
-// @match           *://*.letemps.ch/*
 // @match           *://*.levif.be/*
 // @match           *://*.loeildelaphotographie.com/*
 // @match           *://*.marianne.net/*
@@ -528,23 +527,6 @@ else if (matchDomain('letelegramme.fr')) {
   for (let elem of paywall)
     elem.classList.remove('tlg-paywalled');
   let ads = document.querySelectorAll('div[id^="pub_"]');
-  hideDOMElement(...ads);
-}
-
-else if (matchDomain('letemps.ch')) {
-  let url = window.location.href;
-  let func_post = function () {
-    let lazy_images = document.querySelectorAll('img.lazy[src="/placeholder.png"][data-src]');
-    for (let elem of lazy_images) {
-      elem.src = elem.getAttribute('data-src');
-      elem.removeAttribute('class');
-    }
-    let fade = document.querySelector('div.post__content--faded');
-    if (fade)
-      fade.classList.remove('post__content--faded');
-  }
-  getGoogleWebcache(url, 'div.post-subscribe', '', 'div.post-body-wrapper', func_post);
-  let ads = document.querySelectorAll('div.topad');
   hideDOMElement(...ads);
 }
 

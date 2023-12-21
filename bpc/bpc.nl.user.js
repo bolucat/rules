@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.4.6.0
+// @version         3.4.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -12,6 +12,7 @@
 // @match           *://*.artsenkrant.com/*
 // @match           *://*.bd.nl/*
 // @match           *://*.bndestem.nl/*
+// @match           *://*.businessam.be/*
 // @match           *://*.demorgen.be/*
 // @match           *://*.destentor.nl/*
 // @match           *://*.doorbraak.be/*
@@ -60,7 +61,36 @@ var be_roularta_domains = ['artsenkrant.com', 'beleggersbelangen.nl', 'flair.be'
 var nl_dpg_adr_domains = ['ad.nl', 'bd.nl', 'bndestem.nl', 'destentor.nl', 'ed.nl', 'gelderlander.nl', 'pzc.nl', 'tubantia.nl'];
 var nl_dpg_media_domains = ['demorgen.be', 'flair.nl', 'humo.be', 'libelle.nl', 'margriet.nl', 'parool.nl', 'trouw.nl', 'volkskrant.nl'];
 
-if (matchDomain('doorbraak.be')) {
+if (matchDomain('businessam.be')) {
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.text-gradient');
+    if (article) {
+      let scripts = document.querySelectorAll('script:not([src]):not([type])');
+      let content_script;
+      for (let script of scripts) {
+        if (script.text.match(/window\.fullcontent64\s?=\s?"/)) {
+          content_script = script;
+          break;
+        }
+      }
+      if (content_script) {
+        try {
+          let content = decode_utf8(atob(content_script.text.split(/window\.fullcontent64\s?=\s?"/)[1].split('";')[0]));
+          let parser = new DOMParser();
+          let doc = parser.parseFromString('<div>' + content + '</div>', 'text/html');
+          let content_new = doc.querySelector('div');
+          article.parentNode.replaceChild(content_new, article);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  }
+}
+
+else if (matchDomain('doorbraak.be')) {
   let paywall_sel = 'div.paywall';
   let paywall = document.querySelector(paywall_sel);
   if (paywall) {
@@ -579,22 +609,26 @@ function getArticleJsonScript() {
   return json_script;
 }
 
-function getJsonUrlText(article, callback) {
+function getJsonUrlText(article, callback, article_id = '') {
   let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
   let json_url = json_url_dom.href;
-  fetch(json_url)
-  .then(response => {
-    if (response.ok) {
-      response.json().then(json => {
-        try {
-          let json_text = parseHtmlEntities(json.content.rendered);
-          callback(json_text, article);
-        } catch (err) {
-          console.log(err);
-        }
-      });
-    }
-  });
+  if (!json_url && article_id)
+    json_url = 'https://' + window.location.hostname + '/wp-json/wp/v2/posts/' + article_id;
+  if (json_url) {
+    fetch(json_url)
+    .then(response => {
+      if (response.ok) {
+        response.json().then(json => {
+          try {
+            let json_text = parseHtmlEntities(json.content.rendered);
+            callback(json_text, article);
+          } catch (err) {
+            console.log(err);
+          }
+        });
+      }
+    });
+  }
 }
 
 function getJsonUrlAdd(json_text, article, art_options = {}) {
@@ -623,7 +657,7 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
     article.parentNode.replaceChild(article_new, article);
 }
   
-function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}) {
+function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '') {
   let paywall = document.querySelectorAll(paywall_sel);
   let article = document.querySelector(article_sel);
   if (paywall.length && article) {
@@ -631,7 +665,7 @@ function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options =
     getJsonUrlText(article, (json_text, article) => {
       if (json_text && article)
         getJsonUrlAdd(json_text, article, art_options);
-    });
+    }, article_id);
   }
 }
 
@@ -645,6 +679,14 @@ function parseHtmlEntities(encodedString) {
       let num = parseInt(numStr, 10);
       return String.fromCharCode(num);
   });
+}
+
+function encode_utf8(str) {
+  return unescape(encodeURIComponent(str));
+}
+
+function decode_utf8(str) {
+  return decodeURIComponent(escape(str));
 }
 
 })();
