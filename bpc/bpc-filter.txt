@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.4.7.2
+! Version: 3.4.7.3
 
 ! General
 
@@ -39,6 +39,7 @@ gadget.pico.tools##+js(json-prune, locked)
 ||zephr.com/zephr-browser/$third-party
 /c/assets/pigeon.js$script,~third-party
 /evolok/*/ev-widgets.min.js$script,~third-party
+/paywall/evercookie_get.js$script,~third-party
 /shared-content/art/tncms/api/access.*.js$script,~third-party
 /wp-content/*/ev-em.min.js$script,~third-party
 /zephr/feature$xmlhttprequest,~third-party
@@ -159,6 +160,8 @@ foreignaffairs.com##.paywall,.loading-indicator,.messages--container--bottom
 foreignpolicy.com##div.content-ungated
 foreignpolicy.com##+js(rc, content-gated, div.content-gated.content-gated--main-article)
 fortune.com##+js(ra, class, div.paywallActive)
+foxnews.com##+js(ra, class, div[class*="gated-overlay"])
+foxnews.com##div.article-gating-wrapper
 ||freiepresse.de/*-artikel$inline-script
 ||ftm.eu/js/routing$script,~third-party
 ||ftm.nl/js/routing$script,~third-party
@@ -537,12 +540,8 @@ divisare.com##+js(ra, style, body[style], stay)
 dominionpost.com##+js(rc, entry-content, article>div.entry-content)
 elfinancierocr.com##+js(ra, style, div.article-body-wrapper__styled[style])
 elfinancierocr.com##div.post
-||enr.com/paywall/evercookie_get.js$script,~third-party
-enr.com##+js(cookie-remover, esessionid)
 ||eviemagazine.com/api/trpc/post.paywall$xmlhttprequest,~third-party
 expressandstar.com##+js(set, window.Fusion.globalContent.paywallStatus, false)
-foxnews.com##+js(ra, class, div[class*="gated-overlay"])
-foxnews.com##div.article-gating-wrapper
 hcn.org##+js(ra, content, meta[name="UID"])
 heatmap.news##+js(cookie-remover, /^freePosts/)
 ||heraldo.es/noticias/$inline-script

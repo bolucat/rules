@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.7.0
+// @version         3.4.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1356,6 +1356,14 @@ else if (matchDomain('fortune.com')) {
   }
 }
 
+else if (matchDomain('foxnews.com')) {
+  let paywall = document.querySelector('div.article-gating-wrapper');
+  removeDOMElement(paywall);
+  let overlay = document.querySelector('div[class*="gated-overlay"]');
+  if (overlay)
+    overlay.removeAttribute('class');
+}
+
 else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
   window.setTimeout(function () {
     let url = window.location.href;
@@ -2016,7 +2024,7 @@ else if (matchDomain('startribune.com')) {
     noscroll.style = 'overflow: auto !important; position: static !important;';
   let modal = document.querySelector('div.modal-backdrop');
   removeDOMElement(modal);
-  let ads = document.querySelectorAll('div.ad-placeholder');
+  let ads = document.querySelectorAll('div[class*="ad-container"]');
   hideDOMElement(...ads);
 }
 
