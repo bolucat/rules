@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.7.4
+// @version         3.4.7.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -529,9 +529,9 @@ else if (matchDomain(['shz.de', 'svz.de'])) {
 
 else if (matchDomain('nw.de')) {
   if (!window.location.pathname.endsWith('.amp.html')) {
-    amp_redirect('div[data-tracking-visible^="paywall-"]');
+    amp_redirect('a[data-event-value="paywall-overlay-click"]');
   } else {
-    amp_unhide_access_hide('="loggedIn AND hasAbo"', '', 'amp-ad, amp-embed, . banner');
+    amp_unhide_access_hide('="loggedIn AND hasAbo"', '', 'amp-ad, amp-embed, .banner', false);
   }
 }
 
