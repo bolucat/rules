@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.7.2
+// @version         3.4.7.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -407,7 +407,7 @@ else {
         if (paywall)
           thewest_main(paywall);
         else {
-          waitDOMElement(paywall_sel, 'DIV', thewest_main, false);
+          waitDOMElement(paywall_sel, 'DIV', thewest_main, true);
         }
         let header_advert = document.querySelector('div.headerAdvertisement');
         hideDOMElement(header_advert);
