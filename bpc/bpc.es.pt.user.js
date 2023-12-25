@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.4.4.2
+// @version         3.4.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -104,9 +104,10 @@ else if (matchDomain('elconfidencial.com')) {
 
 else if (matchDomain('eldiario.es')) {
   if (window.location.pathname.endsWith('.amp.html')) {
-    amp_unhide_access_hide('^="access"');
+    amp_unhide_access_hide('^="access"', '="NOT access"');
   } else {
-    let ads = document.querySelectorAll('.edi-advertising, .header-ad');
+    amp_redirect('aside.paywall');
+    let ads = document.querySelectorAll('div.edi-advertising, div.header-ad');
     hideDOMElement(...ads);
   }
 }
