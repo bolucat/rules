@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.7.3
+// @version         3.4.7.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -21,7 +21,6 @@
 // @match           *://*.epoch.org.il/*
 // @match           *://*.europower.no/*
 // @match           *://*.fiskeribladet.no/*
-// @match           *://*.haaretz.co.il/*
 // @match           *://*.hindutamil.in/*
 // @match           *://*.independent.ie/*
 // @match           *://*.indiatoday.in/*
@@ -1348,17 +1347,6 @@ else if (matchDomain('foxnews.com')) {
   let overlay = document.querySelector('div[class*="gated-overlay"]');
   if (overlay)
     overlay.removeAttribute('class');
-}
-
-else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
-  window.setTimeout(function () {
-    let url = window.location.href;
-    let paywall = document.querySelector('div[data-test="paywallMidpage"]');
-    if (paywall) {
-      removeDOMElement(paywall);
-      getArchive(url, 'div[data-test="articleBody"]');
-    }
-  }, 2000);
 }
 
 else if (matchDomain('harpers.org')) {
