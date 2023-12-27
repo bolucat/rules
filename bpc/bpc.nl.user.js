@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.4.7.0
+// @version         3.4.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -13,6 +13,7 @@
 // @match           *://*.bd.nl/*
 // @match           *://*.bndestem.nl/*
 // @match           *://*.businessam.be/*
+// @match           *://*.businessinsider.nl/*
 // @match           *://*.demorgen.be/*
 // @match           *://*.destentor.nl/*
 // @match           *://*.doorbraak.be/*
@@ -88,6 +89,10 @@ if (matchDomain('businessam.be')) {
       }
     }
   }
+}
+
+else if (matchDomain('businessinsider.nl')) {
+  getJsonUrl('div.piano-article__paywall', '', 'div.piano-article__content');
 }
 
 else if (matchDomain('doorbraak.be')) {

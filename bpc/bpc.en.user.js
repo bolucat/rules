@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.7.4
+// @version         3.4.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -17,6 +17,7 @@
 // @match           *://*.net.au/*
 // @match           *://*.org/*
 // @match           *://*.pub/*
+// @match           *://*.businessinsider.com.pl/*
 // @match           *://*.businesspost.ie/*
 // @match           *://*.epoch.org.il/*
 // @match           *://*.europower.no/*
@@ -1052,6 +1053,12 @@ else if (matchDomain('business-standard.com')) {
     hideDOMElement(banner, ...ads);
   } else
     ampToHtml();
+}
+
+else if (matchDomain('businessinsider.com.pl')) {
+  setCookie('xbc', '', 'businessinsider.com.pl', '/', 0);
+  let paywall = document.querySelector('div#content-premium-offer');
+  removeDOMElement(paywall);
 }
 
 else if (matchDomain('businessinsider.com')) {

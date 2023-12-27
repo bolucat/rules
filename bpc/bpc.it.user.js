@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.4.7.0
+// @version         3.4.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
@@ -20,7 +20,7 @@
 
 window.setTimeout(function () {
 
-var it_gedi_domains = ['ilsecoloxix.it', 'italian.tech', 'lastampa.it', 'lescienze.it', 'moda.it', 'repubblica.it'];
+var it_gedi_domains = ['huffingtonpost.it', 'ilsecoloxix.it', 'italian.tech', 'lastampa.it', 'lescienze.it', 'moda.it', 'repubblica.it'];
 var it_ilmessaggero_domains = ['corriereadriatico.it', 'ilgazzettino.it', 'ilmattino.it', 'ilmessaggero.it', 'quotidianodipuglia.it'];
 var it_quotidiano_domains = ['ilgiorno.it', 'ilrestodelcarlino.it', 'iltelegrafolivorno.it', 'lanazione.it', 'quotidiano.net'];
 var domain;
@@ -227,7 +227,7 @@ else if (matchDomain('italiaoggi.it')) {
 }
 
 else if (matchDomain(it_gedi_domains)) {
-  if (matchDomain(['lastampa.it', 'repubblica.it'])) {
+  if (matchDomain(['huffingtonpost.it', 'lastampa.it', 'repubblica.it'])) {
     if (window.location.pathname.includes('/news/')) {
       if (!window.location.pathname.match(/\amp(\/)?$/)) {
         let paywall = document.querySelector('iframe#__limio_frame');
@@ -235,8 +235,6 @@ else if (matchDomain(it_gedi_domains)) {
           refreshCurrentTab_bg();
         let modal = document.querySelector('aside#widgetDP');
         removeDOMElement(modal);
-        let ads = document.querySelectorAll('div[id^="adv"]');
-        hideDOMElement(...ads);
       } else
         ampToHtml();
     }

@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.4.7.5
+! Version: 3.4.8.0
 
 ! General
 
@@ -26,7 +26,7 @@
 ||onecount.net^$third-party
 ||js.pelcro.com^$script,third-party
 ||piano.io/xbuilder/experience/execute$xmlhttprequest,third-party
-@@||piano.io^$domain=asia.nikkei.com|hbr.org|japantimes.co.jp|kurier.at|onet.pl
+@@||piano.io^$domain=asia.nikkei.com|businessinsider.com.pl|hbr.org|japantimes.co.jp|kurier.at|onet.pl
 ||api.pico.tools/client/query/*$xmlhttprequest,~third-party
 ||api.pico.tools/popup/null/*$xmlhttprequest,~third-party
 gadget.pico.tools##+js(json-prune, locked)
@@ -76,6 +76,8 @@ bloomberg.com##+js(set-local-storage-item, history, $remove$)
 ||bloombergadria.com/*/news/$inline-script
 bloombergadria.com##+js(ra, style, article[style])
 ||meter.bostonglobe.com/js/meter.js$script,~third-party
+businessinsider.com.pl##+js(cookie-remover, xbc)
+businessinsider.com.pl##div#content-premium-offer
 ||businesspost.ie/api/tinypass.min.js$script,~third-party
 cen.acs.org##+js(cookie-remover, cenLoginP)
 cen.acs.org##.meteredBar
@@ -224,7 +226,7 @@ loeildelaphotographie.com##+js(ra, style, img[style*="blur"])
 ||medscapestatic.com/*/medscape-library.js$script,domain=medscape.com
 medscape.com##.AdUnit,div[id^="ads-"]
 ||mexiconewsdaily.com/wp-content/plugins/leaky-paywall/js/leaky-paywall-cookie.js$script,~third-party
-mexiconewsdaily.com##+js(rc, tdb-block-inner, body.single div.td-post-content>div.tdb-block-inner)
+mexiconewsdaily.com##+js(rc, tdb-block-inner, body.single div.td-post-content > div.tdb-block-inner)
 mv-voice.com##+js(cookie-remover, /^/)
 nautil.us##+js(cookie-remover, /^(arc|sfa)$/)
 newsday.com##+js(ra, class, html[class])
@@ -292,8 +294,8 @@ staradvertiser.com##+js(ra, style, div#hsa-paywall-content[style])
 startribune.com##div.modal-backdrop
 startribune.com##body[class]:style(overflow: auto !important; position: static !important;)
 studocu.com##.page-content:style(filter: none !important; user-select: unset !important)
-studocu.com##button[data-test-selector^="preview-banner-"]:upward(#document-wrapper>div)
-studocu.com##.pf>:not(.page-content)
+studocu.com##button[data-test-selector^="preview-banner-"]:upward(#document-wrapper > div)
+studocu.com##.pf > :not(.page-content)
 ||suomensotilas.fi/wp-content/plugins/epflpw/js/pw.js$script,~third-party
 suomensotilas.fi##+js(rc, epfl-pw-obscured, div.epfl-pw-obscured)
 swarajyamag.com##+js(cookie-remover, /^/)
@@ -385,10 +387,11 @@ european-rubber-journal.com##div.article-overlay,div.gradient
 modernhealthcare.com##+js(rc, sponsored-article, div.sponsored-article)
 
 ! GEDI.it sites
+||huffingtonpost.it/*/news/$inline-script
 ||repubblica.it/*/news/$inline-script
 ||lastampa.it/*/news/$inline-script
-ilsecoloxix.it,repubblica.it,lastampa.it##+js(cookie-remover, blaize_session)
-repubblica.it,lastampa.it##aside#widgetDP,div[id^="adv"]
+huffingtonpost.it,ilsecoloxix.it,repubblica.it,lastampa.it##+js(cookie-remover, blaize_session)
+huffingtonpost.it,repubblica.it,lastampa.it##aside#widgetDP,div[id^="adv"]
 ||scripts.repubblica.it/pw/pw.js$script,domain=italian.tech|moda.it
 italian.tech,moda.it##div#ph-paywall
 italian.tech,moda.it##+js(ra, style, div#article-body, stay)
@@ -537,7 +540,7 @@ connexionfrance.com##div#subscribe-banner
 divisare.com##div.blocker
 divisare.com##+js(ra, style, body[style], stay)
 ||dominionpost.com/wp-content/plugins/leaky-paywall/js/leaky-paywall-cookie.js$script,~third-party
-dominionpost.com##+js(rc, entry-content, article>div.entry-content)
+dominionpost.com##+js(rc, entry-content, article > div.entry-content)
 elfinancierocr.com##+js(ra, style, div.article-body-wrapper__styled[style])
 elfinancierocr.com##div.post
 ||eviemagazine.com/api/trpc/post.paywall$xmlhttprequest,~third-party
