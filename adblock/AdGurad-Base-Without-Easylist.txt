@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: T3nOe+bUhEcaVooCT7GOTA
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1703781362-3600.patch
+! Checksum: wuivd9snNsrTLtnzk7fdWQ
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1703871326-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.15.75
-! TimeUpdated: 2023-12-28T16:32:25+00:00
+! Version: 2.3.15.87
+! TimeUpdated: 2023-12-29T17:32:17+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -77,6 +77,17 @@
 !
 !
 !
+||azqqloborwwba.top^$all
+||fipkcakk.com^
+||hooglidi.net^
+||ixxljgh.com^
+||anythingamg.org^
+||ignamentswit.com^
+||vohqpgsdn.xyz^
+||xfguylptuqw.com^
+||nnjisvdxaoet.com^
+||greekroo.xyz^
+||ut13r.site^
 ||someonein.org^
 ||mentswithde.com^
 ||ficvekayfkrm.com^
@@ -1425,6 +1436,8 @@
 ! Bad: ||legitwebsite.com^$third-party (should be in adservers.txt)
 !
 !
+||sponsor.imacdn.com^
+||d3qvcyf9oa6vhw.cloudfront.net^
 ||d264dxqvolp03e.cloudfront.net^
 ||d2ovgc4ipdt6us.cloudfront.net^
 ||d1zw8evbrw553l.cloudfront.net^
@@ -6831,7 +6844,7 @@ korben.info,alternativeto.net##+js(abort-current-script, atob, /googlefc|\.paren
 !
 sozcu.com.tr,heraldo.es,20minutos.es,tucson.com,gendai.media,hamakei.com,telva.com,gazettetimes.com,missoulian.com,kenoshanews.com,cumberlink.com,stltoday.com,auburnpub.com,trib.com,dailyprogress.com,journalstar.com,siouxcityjournal.com,pantagraph.com##+js(abort-on-property-read, __tnt.adBlockEnabled)
 !
-||fundingchoicesmessages.google.com^$domain=video.repubblica.it|br0wsers.com|mathsspot.com|now.gg|aranzulla.it
+||fundingchoicesmessages.google.com^$domain=video.repubblica.it|br0wsers.com|mathsspot.com|now.gg|aranzulla.it|3bmeteo.com
 ! 'adblockdetector.front.abagent.agent'
 /javascript_adblockdetector/front_front_abagent.js
 !
@@ -6950,6 +6963,7 @@ coastcams.com,teluguflix.lol,financeyogi.net,androidadult.com,audiotools.in,aout
 chpadblock.com##+js(noeval-if, chp_adblock)
 starwarsaddicted.it,wuyong.fun,26g.me,myqqjd.com,poapan.xyz,javboys.com,idevicecentral.com,fcportables.com,codehelppro.com##+js(abort-on-property-read, reqServers)
 ! chp_ads_blocker popups, that can be hidden
+promisingapps.com##body > div#global-wrapper + div[id][class*=" "]
 lgcnews.com##body > div[data-elementor-type="footer"] ~ div[id][class*=" "]
 daybuy.tw##body > :is(.penci-go-to-top-floating, .penci-rlt-popup) + div[id][class*=" "]
 webcamfuengirola.com,newzjunky.com,teluguflix.biz##body > div[class][style="display:none;"] + div[id][class*=" "]
@@ -7137,13 +7151,16 @@ pornhub.com,pornhub.org,pornhub.net##+js(no-setTimeout-if, \x41\x64\x62\x6c\x6f\
 ! NOTE: Regular rules
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/169271
+@@||nytimes.com/ads/$domain=panel.freemcserver.net
+@@||panel.freemcserver.net/adblock-detect/
 ! https://github.com/AdguardTeam/AdguardFilters/issues/169130
 ! 'Adblock Detected, please disable and Refresh page when done to watch.'
 freetvsports.xyz,poscishd.online##+js(no-fetch-if, pagead2.googlesyndication.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/169101
 xszav1.com##+js(remove-node-text, script, ad blocker)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/169386
-elektrotanya.com##+js(remove-node-text, script, canRunAds)
+elektrotanya.com##+js(set-constant, canRunAds, true)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/169282
 chickenkarts.io##+js(set-constant, blockedAds, false)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/169297
@@ -7160,6 +7177,7 @@ datasciencelearner.com#$#.site-access-popup { display: none !important; }
 alltechnerd.com##+js(set-constant, nitroAds.abp, true)
 ||s.nitropay.com/2.gif?$image,redirect-rule=1x1.gif,domain=alltechnerd.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/168921
+@@||ytlarge.com/youtube/css/adscroll.js
 ytlarge.com##+js(no-fetch-if, /doubleclick\.(net|com)/)
 ytlarge.com#@#.ad-box:not(#ad-banner)
 ytlarge.com#@#.ad-wrapper
@@ -32303,8 +32321,8 @@ vizer.tv,eztv.unblocked.sh,animeshow.tv,vidzi.tv##body > div[id][style*="positio
 ! Example for rule below - https://np.yarndispost.com/rIikUX4kCyD2CNK/rOWeM
 /^https:\/\/[a-z]{2,5}\.[a-z]{10,14}\.com\/[a-zA-Z0-9]{10,16}\/[a-zA-Z]{5,6}$/$script,third-party,match-case,domain=lookmovie.foundation
 ! common TXXX network scripts
-/\/[a-z]{4,}\/(?!holly7)(?!siksik7)[0-9a-z]{3,}\d\.\d{1,2}\.\d{1,2}\.[0-9a-f]{32}\.js$/$script,domain=555.porn|hclips.com|hdzog.com|hotmovs.com|imzog.com|inporn.com|javdaddy.com|porn555.com|pornforrelax.com|porngo.tube|pornj.com|pornl.com|pornq.com|porntop.com|privatehomeclips.com|puporn.com|see.xxx|shemalez.com|sss.xxx|thegay.*|tubepornclassic.com|tuberel.com|txxx.*|txxxporn.tube|upornia.*|vjav.*|voyeurhit.com|vxxx.com|bigdick.tube|voyeurhit.tube|hotmovs.tube|in-porn.com|manysex.com|pornclassic.tube|manysex.tube
-/\.[a-z]{3,5}\/[0-9a-z]{8,12}\/[0-9a-z]{8,12}\.js$/$script,domain=555.porn|hclips.com|hdzog.com|hotmovs.com|imzog.com|inporn.com|javdaddy.com|porn555.com|pornforrelax.com|porngo.tube|pornj.com|pornl.com|pornq.com|porntop.com|pornzog.com|privatehomeclips.com|puporn.com|see.xxx|senzuri.tube|shemalez.com|sss.xxx|thegay.*|tubepornclassic.com|tuberel.com|txxx.*|txxxporn.tube|upornia.*|vjav.*|voyeurhit.com|vxxx.com|bdsmx.tube|blackporn.tube|mrgay.tube|bigdick.tube|xmilf.com|voyeurhit.tube|hdzog.tube|teenorgy.video|hotmovs.tube|asiantv.fun|pornclassic.tube|pornhits.com|sextu.com|in-porn.com|manysex.com|onlyporn.tube|manysex.tube
+/\/[a-z]{4,}\/(?!holly7)(?!siksik7)[0-9a-z]{3,}\d\.\d{1,2}\.\d{1,2}\.[0-9a-f]{32}\.js$/$script,domain=555.porn|hclips.com|hdzog.com|hotmovs.com|imzog.com|inporn.com|javdaddy.com|porn555.com|pornforrelax.com|porngo.tube|pornj.com|pornl.com|pornq.com|porntop.com|privatehomeclips.com|puporn.com|see.xxx|shemalez.com|sss.xxx|thegay.*|tubepornclassic.com|tuberel.com|txxx.*|txxxporn.tube|upornia.*|vjav.*|voyeurhit.com|vxxx.com|bigdick.tube|voyeurhit.tube|hotmovs.tube|in-porn.com|manysex.com|pornclassic.tube|manysex.tube|aniporn.com
+/\.[a-z]{3,5}\/[0-9a-z]{8,12}\/[0-9a-z]{8,12}\.js$/$script,domain=555.porn|hclips.com|hdzog.com|hotmovs.com|imzog.com|inporn.com|javdaddy.com|porn555.com|pornforrelax.com|porngo.tube|pornj.com|pornl.com|pornq.com|porntop.com|pornzog.com|privatehomeclips.com|puporn.com|see.xxx|senzuri.tube|shemalez.com|sss.xxx|thegay.*|tubepornclassic.com|tuberel.com|txxx.*|txxxporn.tube|upornia.*|vjav.*|voyeurhit.com|vxxx.com|bdsmx.tube|blackporn.tube|mrgay.tube|bigdick.tube|xmilf.com|voyeurhit.tube|hdzog.tube|teenorgy.video|hotmovs.tube|asiantv.fun|pornclassic.tube|pornhits.com|sextu.com|in-porn.com|manysex.com|onlyporn.tube|manysex.tube|aniporn.com
 ! same for iOS(no full regexp support)
 !
 ! dancers `Popping Tool` (domain.com/t28193693144.js) / TotemTools
@@ -32452,6 +32470,14 @@ $script,third-party,denyallow=linkvertise.com|fastly.net|statically.io|sharecast
 !
 ! NOTE: Specific rules
 !
+baynews9.com##.google-dfp-ads
+fool.com##.sticky.top-152
+fool.com##.show-ad-label
+elektrotanya.com##.rside_ad
+elektrotanya.com##div[id^="ad"]
+jdpower.com##.jdpAd-placeholder
+easyupload.io##.mb-0.pb-0
+easyupload.io##div[class^="reklam"]
 veporn.com##.sidebar > div.widget_text
 veporn.com##div[style="position: relative;width: 100%;background:transparent;"]
 epllive.net##.vpn-wrapper
@@ -37835,7 +37861,8 @@ scratch247.info,azsoft.*,downfile.site##div.display ~ h2.text-center
 scratch247.info,azsoft.*,downfile.site##div.display ~ p
 scratch247.info,azsoft.*,downfile.site###adb_detected ~ div.text-content
 dallasnews.com##div[class*="app_arc-ad_ad"]
-xxxfiles.tv,bigwank.tv,asianpornfilms.com,veryfreeporn.com,xxxfiles.com,titshub.com,bigwank.com,fapguru.com,pornpapa.com##.underplayer_banner
+porngo.com,xxxfiles.tv,bigwank.tv,asianpornfilms.com,veryfreeporn.com,xxxfiles.com,titshub.com,bigwank.com,fapguru.com,pornpapa.com##.underplayer_banner
+porngo.com##.spot_footer
 theclassroom.com##.adsense-main-ad
 xgroovy.com,xxxshake.com,jizzberry.com##.in.is_desktop
 ||jizzberry.com/static/js/initsite.min.js
@@ -40430,7 +40457,7 @@ imore.com##p > a[href^="/e?link="][href*="offer"][target="_blank"].norewrite + s
 thepostmillennial.com##.commercial
 darkleia.com,getcomics.info##.advanced_floating_content
 danishfamilysearch.com##div[id^="ContentPlaceHolder1_div_annonce"]
-18pussy.porn,tabooporn.tv,camwhoresbay.*,femdomtb.com,zeenite.com,wankyjob.com,amateurporn.me,anon-v.com,javwhores.com,javbangers.com,porntrex.com,pornfapr.com,freepornvideo.sex##.opt
+goodporn.to,cccccccccccccccccccccccccccccccccc18pussy.porn,tabooporn.tv,camwhoresbay.*,femdomtb.com,zeenite.com,wankyjob.com,amateurporn.me,anon-v.com,javwhores.com,javbangers.com,porntrex.com,pornfapr.com,freepornvideo.sex##.opt
 simpleflying.com##div[class*="-display-ad-"]
 sciotocountydailynews.com##.content-inner > p > a[href][target="_blank"] > img
 cyprusjobcentre.com##div[style="margin-top:30px;min-height:500px;"]
@@ -49141,8 +49168,8 @@ outlook.live.com#?#.customScrollBar[data-is-scrollable] > div[class] > div[class
 !
 ! check-host.net
 check-host.net##.mt-3\.5 > div > div[id*="t"][id*="a"][class] img.gofull
-check-host.net#?#a[href]:contains(/[pP]rotection|[сcЗ]айт|[𝅺]/)
-check-host.net#?#div + *[class*=" "]:last-child:contains(/^.*[x×✕✖X☓χx⨯✗\+\＋\﹢хХΧẊẋ].*$/):upward(1)
+check-host.net#?#a[href]:contains(/[pP]rote|[сcЗ]айт|[𝅺]/)
+check-host.net#?#div + *[class*="_"]:last-child:contains(/^.*[x×✕✖X☓χx⨯✗\+\＋\﹢хХΧẊẋ].*$/):upward(1)
 !
 ! quora.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/149846
@@ -49616,6 +49643,10 @@ adultlingeriepics.com,adultlingeriepics.com,adultspankingtgp.com,allfeetporn.com
 /(?:com|net)\/[0-9a-f]{12}\.js$/$script,~third-party,domain=imgadult.com|imgdrive.net|imgtaxi.com|imgwallet.com
 !
 !
+!+ NOT_OPTIMIZED
+whoreshub.com##[class^="pop-"]
+!+ NOT_OPTIMIZED
+porntube.com##.webcam-shelve
 !+ NOT_OPTIMIZED
 technologyreview.com##div[class^="headerTemplate__leaderboardRow-"]
 !+ NOT_OPTIMIZED
@@ -50515,7 +50546,8 @@ $popup,third-party,domain=dood.ws,badfilter
 !
 !
 !
-! ! https://github.com/AdguardTeam/AdguardFilters/issues/169101
+! https://github.com/AdguardTeam/AdguardFilters/issues/169331
+! https://github.com/AdguardTeam/AdguardFilters/issues/169101
 @@||vcdn.xszcdn.com/hls/$domain=xszav1.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/169274
 wordparts.ru#@#.ad336
@@ -54646,9 +54678,10 @@ implbits.com#@#.banner_container
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/169441 [Stealth Mode - Referrer]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/168999 [Stealth Mode - IP hiding]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/168619 [Stealth Mode - Block third-party Authorization header]
-! https://github.com/AdguardTeam/AdguardFilters/issues/169148 [ Stealth Mode - Referrer]
+! https://github.com/AdguardTeam/AdguardFilters/issues/169148 [Stealth Mode - Referrer]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/168945 [Stealth Mode - IP hiding]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/168846
 ! https://github.com/AdguardTeam/AdguardFilters/issues/168667 [ Stealth Mode - Referrer]

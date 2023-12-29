@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.7.5
+// @version         3.4.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -632,18 +632,24 @@ else if (matchDomain('springermedizin.de')) {
 
 else if (matchDomain('sueddeutsche.de')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div#sz-paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.article-content, div.text');
-    if (article)
-      article.firstChild.before(archiveLink(url), article.firstChild);
-    let reduced = document.querySelector('p.sz-article-body__paragraph--reduced');
-    if (reduced)
-      reduced.classList.remove('sz-article-body__paragraph--reduced');
-    let ads = document.querySelectorAll('div.ad-container');
-    hideDOMElement(...ads);
+  let paywall;
+  if (window.location.pathname.startsWith('/projekte/artikel/')) {
+    paywall = document.querySelector('div.offer-page');
+    if (paywall) {
+      removeDOMElement(paywall);
+      getArchive(url, 'main');
+    }
+  } else {
+    paywall = document.querySelector('p.sz-article-body__paragraph--reduced');
+    if (paywall) {
+      paywall.removeAttribute('class');
+      getArchive(url, 'div[itemprop="articleBody"]');
+    }
   }
+  window.setTimeout(function () {
+    let ads = document.querySelectorAll('div.ad-container, er-ad-slot');
+    hideDOMElement(...ads);
+  }, 1500);
 }
 
 else if (matchDomain('tagesspiegel.de')) {

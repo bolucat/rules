@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.8.1
+// @version         3.4.8.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -588,12 +588,9 @@ else if (matchDomain('independent.co.uk')) {
   } else {
     let paywall = document.querySelector('div.article-premium');
     let related = document.querySelector('div.related');
-    let msg = document.querySelector('div#bpc_archive');
-    if (paywall && !related && !msg) {
+    if (paywall && !related) {
       paywall.classList.remove('article-premium');
-      let article = document.querySelector('div#main');
-      if (article)
-        article.firstChild.before(archiveLink(url));
+      getArchive(url, 'div#main');
     }
   }
 }
@@ -2306,22 +2303,28 @@ else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
 }
 
 else if (matchDomain(['thejuggernaut.com', 'jgnt.co'])) {
-  let paywall = pageContains('div.font-mono', /\Read this article and many more by subscribing today/);
+  let paywall = pageContains('div.font-mono', /(Read this article and many more by subscribing today|Join today to read the full story)/);
   if (paywall.length) {
     removeDOMElement(paywall[0].parentNode);
     let json_script = document.querySelector('script#__NEXT_DATA__');
     if (json_script) {
       try {
-        let json = JSON.parse(json_script.innerText);
+        let json = JSON.parse(json_script.text);
         if (json && json.props.pageProps.post) {
           let url_next = json.query.slug;
           if (url_next && !window.location.pathname.includes(url_next))
             refreshCurrentTab();
           let pars = json.props.pageProps.post.fields.textEssay.fields.body.content;
-          let article = document.querySelector('div.opacity-50');
+          window.setTimeout(function () {
+          let article = document.querySelector('div[class*="opacity-"]');
           if (article) {
             article.innerHTML = '';
             article.removeAttribute('class');
+            let fade = document.querySelectorAll('div.bg-gradient-to-b');
+            for (let elem of fade)
+              elem.removeAttribute('class');
+            let modal = document.querySelector('div#headlessui-portal-root');
+            removeDOMElement(modal);
             let par_first = true;
             function attach_text(sub_item, elem) {
               if (sub_item.value) {
@@ -2369,7 +2372,7 @@ else if (matchDomain(['thejuggernaut.com', 'jgnt.co'])) {
             }
             for (let par of pars) {
               let elem = document.createElement('p');
-              if (['paragraph', 'heading-1'].includes(par.nodeType)) {
+              if (par.nodeType.match(/^(paragraph|heading-\d)$/)) {
                 attach_paragraph(par, elem);
               } else if (['blockquote'].includes(par.nodeType)) {
                 if (par.content && par.content.length) {
@@ -2429,6 +2432,7 @@ else if (matchDomain(['thejuggernaut.com', 'jgnt.co'])) {
               }
             }
           }
+          }, 1000);
         } else
           refreshCurrentTab();
       } catch (err) {

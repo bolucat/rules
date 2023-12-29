@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: JMI1to/2EGuJNbf6U/CLjA
-! Diff-Path: ../patches/7/7-s-1703763352-3600.patch
+! Checksum: 7uiPd86pFPQl0vvEhJo/Dw
+! Diff-Path: ../patches/7/7-s-1703853407-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.47.7
-! TimeUpdated: 2023-12-28T11:33:02+00:00
+! Version: 2.0.47.10
+! TimeUpdated: 2023-12-29T12:33:28+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -490,7 +490,7 @@
 !
 !
 ! https://github.com/AdguardTeam/AdguardFilters/issues/159931
-iwb.jp##+js(abort-on-stack-trace, onload, getComputedStyle)
+iwb.jp##+js(no-setTimeout-if, location.href)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167887
 ||nazology.net/*/adb/adb.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167723
@@ -1115,6 +1115,8 @@ avgle.com##+js(abort-current-script, __htapop)
 !-------CSS---------
 !-------------------
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/169518
+ge-soku.com#$##custom_html-48 { margin-top: 0px !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/168163
 hitoikigame.com#$#.plugin-freearea td[bgcolor] > div[style] { width: 100% !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167699
@@ -1486,7 +1488,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 .xyz/win/^$document
 ://smbc-$document,domain=fit|shop
 .xyz/funccode.php|$document
-.cloud/_/*/WHkFeaR2U/*$document
+.cloud/*/WHkFeaR2U/$document
 /mos/?t=$document
 /wos/?t=$document
 /?type=lp001&afl=$document
@@ -1647,6 +1649,12 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+ge-soku.com###diver_widget_pcsp-5
+ge-soku.com###diver_widget_pcsp-16
+ge-soku.com###diver_widget_pcsp-14
+ge-soku.com###custom_html-108
+pks.raenonx.cc##.w-full.info-section-opaque.fixed.bottom-0.z-nav
+pks.raenonx.cc#?#.h-full:has(> div > div.absolute > ins.adsbygoogle)
 automaton-media.com##.td-ss-main-sidebar > aside.widget:has(> div.block-title > span)
 nbblog.jp##div[class^="napbiz_ad"]
 news.sukupara.jp#?#.adv2:has(div[id^="div-gpt-"])

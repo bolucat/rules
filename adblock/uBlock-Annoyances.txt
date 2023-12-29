@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Thu, 28 Dec 2023 12:54:02 +0000
-! Diff-Path: ../patches/2023.12.28.861.patch#ublock-annoyances
+! Last modified: Fri, 29 Dec 2023 12:20:40 +0000
+! Diff-Path: ../patches/2023.12.29.920.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -465,6 +465,23 @@ rb.cz##+js(trusted-set-cookie, rwc, %7B%22data%22%3A%5B%7B%22code%22%3A%22analyt
 ! Necessary + Marketing (to fix embedded content): https://mesta.net/selviytyjat-suomi-ohjelmasta-tutun-ramin-postaus-reissun-rankasta-luonteesta-nain-paljon-paino-putosi-vetaa-lahelle-painiuran-kovimpia-painonpudotuksia/
 mesta.net##+js(trusted-set-cookie, OptanonConsent, groups=C0001%3A1%2CC0005%3A1%2CC0002%3A0%2CC0004%3A0%2CC0003%3A0, 1year, , reload, 1, domain, mesta.net)
 mesta.net##+js(trusted-set-cookie, OptanonAlertBoxClosed, $currentDate$, 1year)
+! essential only
+mafu.de##+js(trusted-set-cookie, wmm-visitor_token, 4cb8860d-4194-4ab5-be04-10f9a26afaa8)
+! essential only
+paf.com##+js(trusted-set-cookie, cookieConsent, {%22essential%22:true%2C%22tracking%22:false%2C%22marketing%22:false})
+! Continue without agreeing, hide consent flash
+frandroid.com###didomi-host
+frandroid.com##+js(trusted-click-element, .didomi-continue-without-agreeing)
+! functional only, ad/analytics denied
+flip.gr##+js(trusted-set-cookie, consts, '{%22ad_storage%22:%22denied%22%2C%22analytics_storage%22:%22denied%22%2C%22functionality_storage%22:%22granted%22}')
+! necessarry
+andersiahotel.pl##+js(trusted-set-cookie, _CookiesPolicyAccepted, [%22necessary%22])
+! functional only (hide consent flash)
+nutri-plus.de##.acris-cookie-consent
+nutri-plus.de##.modal-backdrop
+nutri-plus.de##+js(trusted-click-element, #ccAcceptOnlyFunctional, , 4000)
+! necessary
+tether.to##+js(trusted-set-cookie, user_preferences, '{"necessary":"on","marketing":"off","analytics":"off","preferences":"off","unclassified":"off"}')
 ! *** filters/annoyances-others.txt ***
 mimaletadepeliculas.blogspot.com##+js(aopr, document.oncontextmenu)
 mimaletadepeliculas.blogspot.com##+js(acs, document.onselectstart)
@@ -1050,7 +1067,6 @@ kpopjjang.com##+js(aopw, stopPrntScr)
 kpopjjang.com##*::selection:style(background-color:#338FFF !important;)
 fantricks.com##+js(acs, jQuery, contextmenu)
 fantricks.com##body:style(-webkit-touch-callout: default !important;-webkit-user-select: text !important;-moz-user-select: text !important;-ms-user-select: text !important;user-select: text !important;)
-stocktwits.com##+js(aopr, Date.prototype.toUTCString)
 steelersdepot.com##.modal, .modal-backdrop
 musicbusinessworldwide.com##.mb-interstitial
 listatv.pl##+js(ra, oncontextmenu)
@@ -1770,8 +1786,8 @@ skidrowcodex.net##+js(aeld, contextmenu)
 eoreuni.com##+js(aopw, document.oncontextmenu)
 earth.com##+js(aopr, HTMLIFrameElement)
 xxxonlinegames.com##+js(nostif, offsetHeight)
-doods.*,ds2play.com,ds2video.com##+js(set, console.clear, undefined)
-dood.*,ds2play.com,ds2video.com##+js(aeld, contextmenu)
+doods.*,ds2play.com,ds2video.com,d0o0d.com##+js(set, console.clear, undefined)
+dood.*,ds2play.com,ds2video.com,d0o0d.com##+js(aeld, contextmenu)
 freerapidleechlist.blogspot.com##+js(acs, document.oncontextmenu)
 duolingo.com##h2:has-text(Using an ad blocker?):upward(3)
 ! thegatewaypundit .com anti adb warning
@@ -4194,3 +4210,5 @@ theasianparent.com##+js(acs, document.onselectstart, disableselect)
 ||solarmovie.vip/js/$script,1p,replace=/\(\{checkers\:.*?\]\}\)/({checkers:[]})/g
 !#endif
 solarmovie.*##+js(nostif, _detectLoop)
+chowhound.com,explore.com,foodie.com,foodrepublic.com,glam.com,grunge.com,healthdigest.com,housedigest.com,looper.com,mashed.com,moneydigest.com,nickiswift.com,outdoorguide.com,slashfilm.com,slashgear.com,tastingtable.com,thedailymeal.com,thelist.com,women.com,wrestlinginc.com##+js(aeld, copy)
+pks.raenonx.cc##.bg-red-500\/50
