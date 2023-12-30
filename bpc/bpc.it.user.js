@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.4.8.0
+// @version         3.4.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
@@ -159,7 +159,7 @@ else if (matchDomain('ilmanifesto.it')) {
   }, 2000);
 }
 
-else if (matchDomain(['iltirreno.it', 'lanuovasardegna.it']) || matchDomain(['gazzettadimodena.it', 'gazzettadireggio.it', 'lanuovaferrara.it'])) {
+else if (domain = matchDomain(['iltirreno.it', 'lanuovasardegna.it']) || matchDomain(['gazzettadimodena.it', 'gazzettadireggio.it', 'lanuovaferrara.it'])) {
   if (window.location.pathname.includes('/news/')) {
     let paywall = document.querySelector('span > img[alt*="Paywall"]');
     if (paywall) {
@@ -226,13 +226,15 @@ else if (matchDomain('italiaoggi.it')) {
   }
 }
 
-else if (matchDomain(it_gedi_domains)) {
+else if (domain = matchDomain(it_gedi_domains)) {
   if (matchDomain(['huffingtonpost.it', 'lastampa.it', 'repubblica.it'])) {
     if (window.location.pathname.includes('/news/')) {
       if (!window.location.pathname.match(/\amp(\/)?$/)) {
         let paywall = document.querySelector('iframe#__limio_frame');
-        if (paywall)
-          refreshCurrentTab_bg();
+        if (paywall) {
+          setCookie(/blaize_session/, '', domain, '/', 0);
+          refreshCurrentTab();
+        }
         let modal = document.querySelector('aside#widgetDP');
         removeDOMElement(modal);
       } else
@@ -242,12 +244,12 @@ else if (matchDomain(it_gedi_domains)) {
     if (!window.location.pathname.match(/\amp(\/)?$/)) {
       let paywall = document.querySelector('div#ph-paywall');
       removeDOMElement(paywall);
+      setCookie(/blaize_session/, '', domain, '/', 0);
     } else
       ampToHtml();
   }
   let ads = document.querySelectorAll('div[id^="adv"]');
   hideDOMElement(...ads);
-  setCookie(/blaize_session/, '', domain, '/', 0);
 }
 
 else if (matchDomain('tuttosport.com')) {

@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Fri, 29 Dec 2023 12:20:40 +0000
-! Diff-Path: ../patches/2023.12.29.920.patch#ublock-annoyances
+! Last modified: Sat, 30 Dec 2023 16:25:45 +0000
+! Diff-Path: ../patches/2023.12.30.986.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -482,6 +482,8 @@ nutri-plus.de##.modal-backdrop
 nutri-plus.de##+js(trusted-click-element, #ccAcceptOnlyFunctional, , 4000)
 ! necessary
 tether.to##+js(trusted-set-cookie, user_preferences, '{"necessary":"on","marketing":"off","analytics":"off","preferences":"off","unclassified":"off"}')
+! All cookies, can't type login credentials if cookies not accepted. Sample link: https://myapps.paychex.com/landing_remote/login.do?lang=en
+login.flex.paychex.com##+js(trusted-set-local-storage-item, cookieNotification, '{"value":"1"}')
 ! *** filters/annoyances-others.txt ***
 mimaletadepeliculas.blogspot.com##+js(aopr, document.oncontextmenu)
 mimaletadepeliculas.blogspot.com##+js(acs, document.onselectstart)
@@ -1278,7 +1280,6 @@ felico.pl##+js(acs, document.oncontextmenu)
 practicetestgeeks.com##+js(acs, document.oncontextmenu)
 practicetestgeeks.com##+js(acs, document.onselectstart)
 practicetestgeeks.com##body:style(-webkit-touch-callout: default !important; -webkit-user-select: text !important;-moz-user-select: text !important;-ms-user-select: text !important;user-select: text !important;)
-lazyadmin.nl##+js(aopw, adsBlocked)
 chowhound.com##.fb_lightbox-overlay
 chowhound.com##.preloaded_lightbox
 chowhound.com##.fb_lightbox-lock:style(overflow-x: hidden !important; overflow-y: scroll !important;)
@@ -3576,7 +3577,7 @@ paidiatreio.gr##+js(acs, document.oncontextmenu)
 paidiatreio.gr##+js(acs, document.addEventListener, copy)
 ! gmx.co.uk "Are you sure you want to leave?" overlay
 gmx.co.uk,gmx.com##+js(aeld, mouseout, openLayer)
-textcleaner.net##^script:has-text(adp_underlay)
+textcleaner.net##+js(no-fetch-if, googlesyndication)
 ! sneakernews.com anti-adb
 sneakernews.com##+js(aopr, sneakerGoogleTag)
 socialcounts.org##+js(no-fetch-if, googlesyndication)
@@ -3961,6 +3962,7 @@ aboutchromebooks.com,ancient.eu,comingsoon.net,daysoftheyear.com,edn.com,gearjun
 boston.com,britannica.com,cattime.com,dogtime.com,download.mokeedev.com,freep.com,ijr.com,inquirer.net,knowyourmeme.com,nationalreview.com,nofilmschool.com,order-order.com,savvytime.com,techlicious.com,technicpack.net,thedraftnetwork.com,wrestlezone.com,xda-developers.com##+js(acs, document.createElement, admiral)
 majorgeeks.com##+js(acs, document.getElementById, undefined)
 legacy.com##+js(acs, document.getElementsByTagName, admiral)
+lazyadmin.nl##+js(set, admiral, noopFunc)
 saikaiscans.net##+js(aeld, contextmenu, [native code])
 gdrivedescarga.com##^script[id="jquery-core-js-after"]:has-text(e.preventDefault();)
 !#if !cap_html_filtering
@@ -4058,8 +4060,8 @@ web.telegram.org##div.Message.is-protected:style(-webkit-touch-callout: default 
 galinos.gr##+js(nostif, pleaseSupportUs)
 bluesnews.com##+js(nostif, nn_mpu1, 5000)
 broncoshq.com##+js(rmnt, script, XF)
-androidpolice.com,makeuseof.com,movieweb.com,xda-developers.com,thegamer.com,cbr.com,gamerant.com##+js(remove-cookie, articlesRead, when, scroll keydown)
-androidpolice.com,makeuseof.com,movieweb.com,xda-developers.com,thegamer.com,cbr.com,gamerant.com##+js(set, maxUnauthenicatedArticleViews, null)
+androidpolice.com,makeuseof.com,movieweb.com,xda-developers.com,thegamer.com,cbr.com,gamerant.com,screenrant.com,howtogeek.com##+js(remove-cookie, articlesRead, when, scroll keydown)
+androidpolice.com,makeuseof.com,movieweb.com,xda-developers.com,thegamer.com,cbr.com,gamerant.com,screenrant.com,howtogeek.com##+js(set, maxUnauthenicatedArticleViews, null)
 groundies.com##.cms-popup
 groundies.com##.modal-backdrop
 groundies.com##.modal-open:style(overflow:unset!important)

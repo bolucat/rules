@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.8.3
+// @version         3.4.8.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -22,6 +22,7 @@
 // @match           *://*.epoch.org.il/*
 // @match           *://*.europower.no/*
 // @match           *://*.fiskeribladet.no/*
+// @match           *://*.haaretz.co.il/*
 // @match           *://*.hindutamil.in/*
 // @match           *://*.independent.ie/*
 // @match           *://*.indiatoday.in/*
@@ -572,7 +573,7 @@ else if (matchDomain('ft.com')) {
   let paywall = document.querySelector('div[data-component="unlockBanner"]');
   if (paywall) {
     removeDOMElement(paywall);
-    getArchive(url, 'div#barrier-page', 'article#site-content', true, 'article#article-body');
+    getArchive(url, 'div#barrier-page', '', 'article#site-content', true, 'article#article-body');
   }
 }
 
@@ -1351,6 +1352,34 @@ else if (matchDomain('foxnews.com')) {
   let overlay = document.querySelector('div[class*="gated-overlay"]');
   if (overlay)
     overlay.removeAttribute('class');
+}
+
+else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
+  window.setTimeout(function () {
+  let paywall_sel = 'div[data-test="paywallMidpage"]';
+  let paywall = document.querySelector(paywall_sel);
+  if (paywall) {
+    removeDOMElement(paywall);
+    let url = window.location.href;
+    let article_link_sel = 'article header';
+    let article = document.querySelector(article_link_sel);
+    if (article) {
+      if (matchDomain('haaretz.co.il'))
+        article.firstChild.before(googleSearchToolLink(url));
+      else {
+        let article_sel = 'div[data-test="articleBody"]';
+        getArchive(url, article_sel, '', article_sel, true, article_link_sel);
+        window.setTimeout(function () {
+          let paywall = document.querySelector(paywall_sel);
+          if (paywall) {
+            removeDOMElement(paywall);
+            article.firstChild.before(googleSearchToolLink(url));
+          }
+        }, 2000);
+      }
+    }
+  }
+  }, 2000);
 }
 
 else if (matchDomain('harpers.org')) {
@@ -3196,7 +3225,7 @@ function archiveRandomDomain() {
   return 'archive.' + tld;
 }
 
-function getArchive(url, article_sel, article_new_sel = article_sel, arch_link = true, arch_sel = article_new_sel) {
+function getArchive(url, article_sel, text_fail = '', article_new_sel = article_sel, arch_link = true, arch_sel = article_new_sel) {
   let article = document.querySelector(article_sel);
   if (article) {
     let domain_archive = archiveRandomDomain();
@@ -3221,7 +3250,7 @@ function getArchive(url, article_sel, article_new_sel = article_sel, arch_link =
               let article_new = doc.querySelector(article_new_sel);
               if (article_new) {
                 if (arch_link) {
-                  let arch_dom = (article_new_sel !== arch_sel) ? article_new.querySelector(arch_sel) : article_new;
+                  let arch_dom = (article_new_sel !== arch_sel) ? document.querySelector(arch_sel) : article_new;
                   if (arch_dom) {
                     arch_dom.firstChild.before(archiveLink_renew(window.location.href));
                     arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
