@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.8.4
+// @version         3.4.8.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1367,8 +1367,7 @@ else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
       if (matchDomain('haaretz.co.il'))
         article.firstChild.before(googleSearchToolLink(url));
       else {
-        let article_sel = 'div[data-test="articleBody"]';
-        getArchive(url, article_sel, '', article_sel, true, article_link_sel);
+        getArchive(url, 'div[data-test="articleBody"]');
         window.setTimeout(function () {
           let paywall = document.querySelector(paywall_sel);
           if (paywall) {
@@ -3187,6 +3186,12 @@ function refreshCurrentTab() {
   window.location.reload(true);
 }
 
+function getSelectorLevel(selector) {
+  if (selector.replace(/,\s+/g, ',').match(/[>\s]+/))
+    selector = selector.replace(/,\s+/g, ',').split(',').map(x => x.match(/[>\s]+/) ? x + ', ' + x.split(/[>\s]+/).pop() : x).join(', ');
+  return selector;
+}
+
 function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, func_post = '', article_new_sel = article_sel, arch_link = false, arch_link_sel = article_new_sel) {
   let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split(/[#\?]/)[0];
   let paywall = document.querySelectorAll(paywall_sel);
@@ -3200,7 +3205,7 @@ function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, f
         onload: function (response) {
           let parser = new DOMParser();
           let doc = parser.parseFromString(response.responseText, 'text/html');
-          let article_new = doc.querySelector(article_new_sel);
+          let article_new = doc.querySelector(getSelectorLevel(article_new_sel));
           if (article.parentNode && article_new)
             article.parentNode.replaceChild(article_new, article);
           else if (arch_link) {
@@ -3247,10 +3252,10 @@ function getArchive(url, article_sel, text_fail = '', article_new_sel = article_
               let html = response.responseText.replace(new RegExp('https:\\/\\/' + domain_archive.replace('.', '\\.') + '\\/o\\/\\w+\\/', 'g'), '').replace(new RegExp("(src=\"|background-image:url\\(')" + pathname.replace('/', '\\/'), 'g'), "$1" + 'https://' + domain_archive + pathname);
               let parser = new DOMParser();
               let doc = parser.parseFromString(html, 'text/html');
-              let article_new = doc.querySelector(article_new_sel);
+              let article_new = doc.querySelector(getSelectorLevel(article_new_sel));
               if (article_new) {
                 if (arch_link) {
-                  let arch_dom = (article_new_sel !== arch_sel) ? document.querySelector(arch_sel) : article_new;
+                  let arch_dom = (article_new_sel !== arch_sel) ? article_new.querySelector(arch_sel) : article_new;
                   if (arch_dom) {
                     arch_dom.firstChild.before(archiveLink_renew(window.location.href));
                     arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
@@ -3259,6 +3264,8 @@ function getArchive(url, article_sel, text_fail = '', article_new_sel = article_
                 let targets = article_new.querySelectorAll('a[target="_blank"][href^="https://' + window.location.hostname + '"]');
                 for (let elem of targets)
                   elem.removeAttribute('target');
+                let invalid_links = article_new.querySelectorAll('link[rel="preload"]:not([href]');
+                removeDOMElement(...invalid_links);
                 article.parentNode.replaceChild(article_new, article);
               }
             }
