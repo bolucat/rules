@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: EN++nZYP4Z9ET9Hh67RYqA
-! Diff-Path: ../patches/7/7-s-1704040536-3600.patch
+! Checksum: Yj+Zv2tSEFfKDL7xTySMJA
+! Diff-Path: ../patches/7/7-s-1704116131-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.47.12
-! TimeUpdated: 2023-12-31T16:33:03+00:00
+! Version: 2.0.47.17
+! TimeUpdated: 2024-01-01T13:33:01+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -489,7 +489,7 @@
 !
 !
 ! https://github.com/AdguardTeam/AdguardFilters/issues/159931
-iwb.jp##+js(no-setTimeout-if, location.href)
+iwb.jp##+js(no-setTimeout-if, getComputedStyle)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167887
 ||nazology.net/*/adb/adb.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167723
@@ -783,7 +783,6 @@ applion.jp#$##adcheck.ads-ad { display: block!important; }
 gigaho.com#$##unblk { display: none!important; }
 gigaho.com#$#.entry-content { display: block!important; }
 gigaho.com#$#.pub_300x250.pub_300x250m.pub_728x90.text-ad.textAd.text_ad.text_ads.text-ads.text-ad-links { display:block!important; }
-! https://github.com/AdguardTeam/AdguardFilters/issues/35930
 ! https://github.com/AdguardTeam/AdguardFilters/issues/35721
 ! https://github.com/AdguardTeam/AdguardFilters/issues/28910
 ! https://github.com/AdguardTeam/AdguardFilters/issues/22654
@@ -1137,6 +1136,7 @@ telling.asahi.com#$#.u-mb64 .p-new__row { margin-top: 100px !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/164490
 ryukyushimpo.jp#$?#main > .homepage:not(:matches-css(max-width: 1150px)) { margin-top: 0px !important; }
 ! placeholder
+map.yahoo.co.jp#$#.App__contentsMap { height: 100% !important; }
 profile.ameba.jp#$#.big-footer-article__container { width: 656px !important; }
 umaroidblog.com#$##sidebar[style^="height:"] { height: auto !important; }
 maonline.jp#$#.media_article .articlegroups .d-block:not(:first-of-type) { border-top: none !important; padding-top: 0 !important; }
@@ -1477,6 +1477,10 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/themes/CashLINESystem/js/modal.$script
 !
 ! Malware/Phishing
+||amplifyapp.com/*=(0101)-$document
+.xyz/loginone.php?do?$document
+://smbe-card.*.cn/$document
+://smba.co.jp.*.cn/$document
 .cfd/*?_t=$document
 &p=*&_mi|$document,domain=top
 .com/ibg/client/*.php|$document
@@ -1495,8 +1499,6 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /?wt=*&adv=$document
 /^https:\/\/\d*juniorlak[0-9a-z]+\.[a-z]{2}\.com\//$document,domain=sa.com|ru.com|za.com
 ://amazon-co-jp.*.com/$document
-.com/nta/client/LOG0101001.php|$document
-://smbc.*.cn/login|$document
 ://smfg-card.com.$document
 ://www.mynumberpoint.*.com/$document
 ||z13.web.core.windows.net/mac/$all
@@ -1505,7 +1507,6 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 .com/chrome.apk|$document
 /signin/index.php?*&openid_return_to=https%3A%2F%2Fwww.amazon.co.jp$document,domain=top|xyz
 /signim/index.php?*&openid_return_to=https%3A%2F%2Fwww.amazon.co.jp$document,domain=com|top|xyz
-://acconut.smba.*.cn/$document
 ://www.smfg-card.$document
 n.lat/login|$document
 .cn/auth/login.php?/realms/msweb/protocol/openid-connect/auth?client_id=moneySiteWeb&redirect_uri=https://www.aeon.co.jp/$document
@@ -1520,7 +1521,6 @@ n.lat/login|$document
 .co.jp.*.com/login|$document
 .co.jp.*.top/ai/index.php$document
 ://direct.smbe.co.jp.*.com/$document
-/\.com\/index\.php\?t=[0-9a-f]{64}$/$document,match-case,domain=com
 /index.php?signin=openid.pape.max_auth_age0&openid.return_to=https%3A%2F%2Fwww.offfffff.co.jp%2F$document
 /amaterasu/2_ja/*$document
 ://www.eki.*.*.com/$document
@@ -1649,6 +1649,7 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+map.yahoo.co.jp##.App__contentsAd
 ge-soku.com###diver_widget_pcsp-5
 ge-soku.com###diver_widget_pcsp-16
 ge-soku.com###diver_widget_pcsp-14
@@ -3262,6 +3263,7 @@ genxy-net.com,naga-ken.info##.bnr01
 naga-ken.info##.card02
 naga-ken.info##.no-icon[rel="nofollow"]
 wazap.com##.bodyFootBanner
+||nieru.net/*/ad$subdocument,~third-party
 ||nieru.net/view/data/ad/
 mudainodocument.com,nieru.net###float-bnr2
 oyako-kufu.com##.footer-google-ads
@@ -8109,7 +8111,8 @@ firestorage.jp###mains > .minispace2
 hatenablog.com##.serviceTop-recommend-ad
 homes.co.jp##.adPremium
 infoseek.co.jp###bannerblock
-lifehacker.jp##.bodyAd_BillboardAd__3s47H
+lifehacker.jp##div[class^="cxenseAd_"]
+lifehacker.jp##div[class*="bodyAd_BillboardAd"]
 lifehacker.jp##a[class^="articles_pArticles_HeroLink"]:not([href])
 lifehacker.jp##div[class^=articles_pArticles_List_] > a:not([href])
 lifehacker.jp##div[class^="bodyAd_"]

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         3.3.9.3
+// @version         3.3.9.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js
@@ -212,7 +212,9 @@ function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full artic
   text_fail_div.id = 'bpc_archive';
   text_fail_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
   let parser = new DOMParser();
-  text_fail = text_fail.replace(/\[([^\]]+)\]/g, "<a href='$1' target='_blank' style='color: red'>$1</a>");
+  text_fail = text_fail.replace(/\[(?<url>[^\]]+)\]/g, function (match, url) {
+    return "<a href='" + url + "' target='_blank' style='color: red'>" + new URL(url).hostname + "</a>";
+  });
   let doc = parser.parseFromString('<span>' + text_fail + '</span>', 'text/html');
   let elem = doc.querySelector('span');
   text_fail_div.appendChild(elem);

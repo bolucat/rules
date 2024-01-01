@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.4.8.1
+// @version         3.4.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
@@ -326,7 +326,7 @@ function removeDOMElement(...elements) {
 function hideDOMElement(...elements) {
   for (let element of elements) {
     if (element)
-      element.style = 'display:none;';
+      element.style = 'display:none !important;';
   }
 }
 

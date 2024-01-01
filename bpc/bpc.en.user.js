@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.8.5
+// @version         3.4.8.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -791,7 +791,7 @@ else if (matchDomain('thetimes.co.uk')) {
     let paywall = document.querySelector('div#paywall-portal-article-footer');
     if (paywall && !url.includes('?shareToken=')) {
       removeDOMElement(paywall);
-      getArchive(url, 'article:not([id])');
+      getArchive(url, 'article#article-main');
       window.setTimeout(function () {
         let headings = document.querySelectorAll('div > div[role="heading"]');
         for (let elem of headings)
@@ -1251,22 +1251,7 @@ else if (matchDomain('espn.com')) {
   let paywall = document.querySelector('aside.espn-plus-container-wrapper');
   if (paywall) {
     removeDOMElement(paywall);
-    let article_sel = 'div.article-body';
-    let article = document.querySelector(article_sel);
-    if (article) {
-      GM.xmlHttpRequest({
-        method: "GET",
-        url: url,
-        headers: {'X-Forwarded-For': randomIP(185, 185)},
-        onload: function (response) {
-          let parser = new DOMParser();
-          let doc = parser.parseFromString(response.responseText, 'text/html');
-          let article_new = doc.querySelector(article_sel);
-          if (article.parentNode && article_new)
-            article.parentNode.replaceChild(article_new, article);
-        }
-      });
-    }
+    replaceDomElementExt(url, false, false, 'div.article-body');
   }
 }
 
@@ -3087,7 +3072,7 @@ function removeDOMElement(...elements) {
 function hideDOMElement(...elements) {
   for (let element of elements) {
     if (element)
-      element.style = 'display:none;';
+      element.style = 'display:none !important;';
   }
 }
 
@@ -3153,75 +3138,163 @@ function waitDOMAttribute(selector, tagName = '', attributeName = '', callback, 
   });
 }
 
-function breakText(str, headers = false) {
-  str = str.replace(/(?:^|[A-Za-z\"\“\)])(\.|\?|!)(?=[A-ZÖÜ\„\d][A-Za-zÀ-ÿ\„\d]{1,})/gm, "$&\n\n");
-  if (headers)
-    str = str.replace(/(([a-z]{2,}|[\"\“]))(?=[A-Z](?=[A-Za-zÀ-ÿ]+))/gm, "$&\n\n");
-  return str;
-}
-
-function parseHtmlEntities(encodedString) {
-  let parser = new DOMParser();
-  let doc = parser.parseFromString('<textarea>' + encodedString + '</textarea>', 'text/html');
-  let dom = doc.querySelector('textarea');
-  return dom.value;
-}
-
-function encode_utf8(str) {
-  return unescape(encodeURIComponent(str));
-}
-
-function decode_utf8(str) {
-  return decodeURIComponent(escape(str));
-}
-
-function ampToHtml() {
-  window.setTimeout(function () {
-    let canonical = document.querySelector('head > link[rel="canonical"]');
-    window.location.href = canonical.href;
-  }, 1000);
-}
-
-function refreshCurrentTab() {
-  window.location.reload(true);
-}
-
 function getSelectorLevel(selector) {
   if (selector.replace(/,\s+/g, ',').match(/[>\s]+/))
     selector = selector.replace(/,\s+/g, ',').split(',').map(x => x.match(/[>\s]+/) ? x + ', ' + x.split(/[>\s]+/).pop() : x).join(', ');
   return selector;
 }
 
-function getGoogleWebcache(url, paywall_sel, paywall_action = '', article_sel, func_post = '', article_new_sel = article_sel, arch_link = false, arch_link_sel = article_new_sel) {
+function getArticleSrc(url, url_src, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
+  let url_fetch = url_src || url;
+  GM.xmlHttpRequest({
+    method: "GET",
+    url: url_fetch,
+    onload: function (response) {
+      let html = response.responseText;
+      if (proxy && base64) {
+        html = decode_utf8(atob(html));
+        selector_source = 'body';
+      }
+      let recursive;
+      if (url.startsWith('https://archive.')) {
+        if (url_fetch.includes('/https')) {
+          if (html.includes('<div class="TEXT-BLOCK"')) {
+            url_src = html.split('<div class="TEXT-BLOCK"')[1].split('</div>')[0].split('href="')[1].split('"')[0];
+            getArticleSrc(url, url_src, proxy, base64, selector, text_fail, selector_source, selector_archive);
+            recursive = true;
+          } else
+            html = '';
+        }
+      }
+      if (!recursive)
+        replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail, selector_source, selector_archive);
+    }
+  });
+}
+
+function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
+  let article = document.querySelector(selector);
+  if (!article)
+    return;
+  if (proxy) {
+    if (!text_fail) {
+      if (url.startsWith('https://webcache.googleusercontent.com'))
+        text_fail = 'BPC > failed to load from Google webcache:\r\n';
+      else if (url.startsWith('https://archive.'))
+        text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n';
+    }
+    getArticleSrc(url, '', proxy, base64, selector, text_fail, selector_source, selector_archive);
+  } else {
+    let options = {};
+    if (matchUrlDomain('espn.com', url))
+      options.headers = {
+        'X-Forwarded-For': randomIP(185, 185)
+      };
+    fetch(url, options)
+    .then(response => {
+      let article = document.querySelector(selector);
+      if (response.ok) {
+        response.text().then(html => {
+          replaceDomElementExtSrc(url, '', html, false, base64, selector, text_fail, selector_source);
+        });
+      } else {
+        replaceTextFail(url, article, proxy, text_fail);
+      }
+    }).catch(function (err) {
+      false;
+    });
+  }
+}
+
+function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
+  let article = document.querySelector(selector);
+  if (html) {
+    if (!proxy && base64) {
+      html = decode_utf8(atob(html));
+      selector_source = 'body';
+    }
+    let parser = new DOMParser();
+    window.setTimeout(function () {
+      if (url.startsWith('https://archive.') && url_src) {
+        let domain_archive = url.match(/^https:\/\/(archive\.\w{2})/)[1];
+        let pathname = new URL(url_src).pathname;
+        html = html.replace(new RegExp('https:\\/\\/' + domain_archive.replace('.', '\\.') + '\\/o\\/\\w+\\/', 'g'), '').replace(new RegExp("(src=\"|background-image:url\\(')" + pathname.replace('/', '\\/'), 'g'), "$1" + 'https://' + domain_archive + pathname);
+      }
+      let doc = parser.parseFromString(html, 'text/html');
+      let article_new = doc.querySelector(getSelectorLevel(selector_source));
+      if (article_new) {
+        if (article && article.parentNode) {
+          if (url.startsWith('https://archive.')) {
+            let arch_dom = (selector_archive !== selector) ? article_new.querySelector(selector_archive) : article_new;
+            if (arch_dom) {
+              arch_dom.firstChild.before(archiveLink_renew(window.location.href));
+              arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
+            }
+            let targets = article_new.querySelectorAll('a[target="_blank"][href^="https://' + window.location.hostname + '"]');
+            for (let elem of targets)
+              elem.removeAttribute('target');
+            let invalid_links = article_new.querySelectorAll('link[rel="preload"]:not([href]');
+            removeDOMElement(...invalid_links);
+          }
+          window.setTimeout(function () {
+            article.parentNode.replaceChild(article_new, article);
+          }, 200);
+        }
+      } else
+        replaceTextFail(url, article, proxy, text_fail);
+    }, 200);
+  } else {
+    replaceTextFail(url, article, proxy, text_fail);
+  }
+}
+
+function replaceTextFail(url, article, proxy, text_fail) {
+  if (text_fail && article) {
+    let text_fail_div = document.createElement('div');
+    text_fail_div.setAttribute('style', 'margin: 0px 50px; font-weight: bold; color: red;');
+    text_fail_div.appendChild(document.createTextNode(text_fail));
+    if (proxy) {
+      if (url.startsWith('https://archive.')) {
+        text_fail_div = archiveLink(url.replace(/^https:\/\/archive\.\w{2}\//, ''));
+      } else {
+        let a_link = document.createElement('a');
+        a_link.innerText = url;
+        a_link.href = url;
+        a_link.target = '_blank';
+        text_fail_div.appendChild(a_link);
+      }
+    }
+    article.firstChild.before(text_fail_div);
+  }
+}
+
+function getGoogleWebcache(url, paywall_sel, paywall_action = '', selector, func_post = '', selector_source = selector) {
   let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split(/[#\?]/)[0];
   let paywall = document.querySelectorAll(paywall_sel);
   if (paywall.length) {
     clearPaywall(paywall, paywall_action);
-    let article = document.querySelector(article_sel);
-    if (article) {
-      GM.xmlHttpRequest({
-        method: "GET",
-        url: url_cache,
-        onload: function (response) {
-          let parser = new DOMParser();
-          let doc = parser.parseFromString(response.responseText, 'text/html');
-          let article_new = doc.querySelector(getSelectorLevel(article_new_sel));
-          if (article.parentNode && article_new)
-            article.parentNode.replaceChild(article_new, article);
-          else if (arch_link) {
-            let arch_dom = (article_new_sel !== arch_link_sel) ? article_new.querySelector(arch_link_sel) : article_new;
-            if (arch_dom)
-              arch_dom.firstChild.before(archiveLink_renew(window.location.href));
-          }
-        }
-      });
-      if (func_post) {
-        window.setTimeout(function () {
-          func_post();
-        }, 500);
-      }
+    replaceDomElementExt(url_cache, true, false, selector, '', selector_source);
+    if (func_post) {
+      window.setTimeout(function () {
+        func_post();
+      }, 1500);
     }
   }
+}
+
+function randomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+function randomIP(range_low = 0, range_high = 223) {
+  let rndmIP = [];
+  for (let n = 0; n < 4; n++) {
+    if (n === 0)
+      rndmIP.push(range_low + randomInt(range_high - range_low + 1));
+    else
+      rndmIP.push(randomInt(255) + 1);
+  }
+  return rndmIP.join('.');
 }
 
 function archiveRandomDomain() {
@@ -3230,56 +3303,13 @@ function archiveRandomDomain() {
   return 'archive.' + tld;
 }
 
-function getArchive(url, article_sel, text_fail = '', article_new_sel = article_sel, arch_link = true, arch_sel = article_new_sel) {
-  let article = document.querySelector(article_sel);
-  if (article) {
-    let domain_archive = archiveRandomDomain();
-    let url_archive = 'https://' + domain_archive + '/' + url.split(/[#\?]/)[0];
-    GM.xmlHttpRequest({
-      method: "GET",
-      url: url_archive,
-      onload: function (response) {
-        let parser = new DOMParser();
-        let doc = parser.parseFromString(response.responseText, 'text/html');
-        let url_arch = doc.querySelector('div.TEXT-BLOCK > a[href]');
-        if (url_arch) {
-          url_arch = url_arch.href;
-          GM.xmlHttpRequest({
-            method: "GET",
-            url: url_arch,
-            onload: function (response) {
-              let pathname = new URL(url_arch).pathname;
-              let html = response.responseText.replace(new RegExp('https:\\/\\/' + domain_archive.replace('.', '\\.') + '\\/o\\/\\w+\\/', 'g'), '').replace(new RegExp("(src=\"|background-image:url\\(')" + pathname.replace('/', '\\/'), 'g'), "$1" + 'https://' + domain_archive + pathname);
-              let parser = new DOMParser();
-              let doc = parser.parseFromString(html, 'text/html');
-              let article_new = doc.querySelector(getSelectorLevel(article_new_sel));
-              if (article_new) {
-                if (arch_link) {
-                  let arch_dom = (article_new_sel !== arch_sel) ? article_new.querySelector(arch_sel) : article_new;
-                  if (arch_dom) {
-                    arch_dom.firstChild.before(archiveLink_renew(window.location.href));
-                    arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
-                  }
-                }
-                let targets = article_new.querySelectorAll('a[target="_blank"][href^="https://' + window.location.hostname + '"]');
-                for (let elem of targets)
-                  elem.removeAttribute('target');
-                let invalid_links = article_new.querySelectorAll('link[rel="preload"]:not([href]');
-                removeDOMElement(...invalid_links);
-                article.parentNode.replaceChild(article_new, article);
-              }
-            }
-          });
-        } else {
-          article.firstChild.before(archiveLink(url));
-        }
-      }
-    });
-  }
+function getArchive(url, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
+  let url_archive = 'https://' + archiveRandomDomain() + '/' + url.split(/[#\?]/)[0];
+  replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
 }
 
 function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
-  return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
+  return externalLink(['archive.today', archiveRandomDomain()], 'https://{domain}?run=1&url={url}', url, text_fail);
 }
 
 function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
@@ -3309,7 +3339,9 @@ function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full artic
   text_fail_div.id = 'bpc_archive';
   text_fail_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
   let parser = new DOMParser();
-  text_fail = text_fail.replace(/\[([^\]]+)\]/g, "<a href='$1' target='_blank' style='color: red'>$1</a>");
+  text_fail = text_fail.replace(/\[(?<url>[^\]]+)\]/g, function (match, url) {
+    return "<a href='" + url + "' target='_blank' style='color: red'>" + new URL(url).hostname + "</a>";
+  });
   let doc = parser.parseFromString('<span>' + text_fail + '</span>', 'text/html');
   let elem = doc.querySelector('span');
   text_fail_div.appendChild(elem);
@@ -3417,6 +3449,38 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
     amp_iframes_replace(amp_iframe_link, source);
 }
 
+function breakText(str, headers = false) {
+  str = str.replace(/(?:^|[A-Za-z\"\“\)])(\.|\?|!)(?=[A-ZÖÜ\„\d][A-Za-zÀ-ÿ\„\d]{1,})/gm, "$&\n\n");
+  if (headers)
+    str = str.replace(/(([a-z]{2,}|[\"\“]))(?=[A-Z](?=[A-Za-zÀ-ÿ]+))/gm, "$&\n\n");
+  return str;
+}										  
+function parseHtmlEntities(encodedString) {
+  let parser = new DOMParser();
+  let doc = parser.parseFromString('<textarea>' + encodedString + '</textarea>', 'text/html');
+  let dom = doc.querySelector('textarea');
+  return dom.value;
+}
+
+function encode_utf8(str) {
+  return unescape(encodeURIComponent(str));
+}
+
+function decode_utf8(str) {
+  return decodeURIComponent(escape(str));
+}
+
+function ampToHtml() {
+  window.setTimeout(function () {
+    let canonical = document.querySelector('head > link[rel="canonical"]');
+    window.location.href = canonical.href;
+  }, 1000);
+}
+
+function refreshCurrentTab() {
+  window.location.reload(true);
+}
+
 function insert_script(func, insertAfterDom) {
   let bpc_script = document.querySelector('script#bpc_script');
   if (!bpc_script) {
@@ -3426,34 +3490,6 @@ function insert_script(func, insertAfterDom) {
     let insertAfter = insertAfterDom ? insertAfterDom : (document.body || document.head || document.documentElement);
     insertAfter.appendChild(script);
   }
-}
-
-function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', selector_source = selector) {
-  let proxyurl = proxy ? '' : '';
-  let article = document.querySelector(selector);
-  let options = {headers: {"Content-Type": "text/plain", "X-Requested-With": "XMLHttpRequest"}};
-  fetch(proxyurl + url, options)
-  .then(response => {
-    if (response.ok) {
-      response.text().then(html => {
-        if (base64) {
-          html = decode_utf8(atob(html));
-          selector_source = 'body';
-        }
-        let parser = new DOMParser();
-        let doc = parser.parseFromString(html, 'text/html');
-        let article_new = doc.querySelector(selector_source);
-        if (article_new) {
-          if (article && article.parentNode)
-            article.parentNode.replaceChild(article_new, article);
-        }
-      });
-    } else {
-      console.log('no content/article');
-    }
-  }).catch(function (err) {
-    console.log('no content/article');
-  });
 }
 
 function getArticleJsonScript() {
@@ -3526,21 +3562,6 @@ function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options =
         getJsonUrlAdd(json_text, article, art_options);
     }, article_id);
   }
-}
-
-function randomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
-function randomIP(range_low = 0, range_high = 223) {
-  let rndmIP = [];
-  for (let n = 0; n < 4; n++) {
-    if (n === 0)
-      rndmIP.push(range_low + randomInt(range_high - range_low + 1));
-    else
-      rndmIP.push(randomInt(255) + 1);
-  }
-  return rndmIP.join('.');
 }
 
 function pageContains(selector, text) {
