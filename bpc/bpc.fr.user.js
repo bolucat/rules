@@ -885,7 +885,7 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
               arch_dom.firstChild.before(archiveLink_renew(window.location.href));
               arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
             }
-            let targets = article_new.querySelectorAll('a[target="_blank"][href^="https://' + window.location.hostname + '"]');
+            let targets = article_new.querySelectorAll('a[target="_blank"][href^="' + window.location.origin + '"]');
             for (let elem of targets)
               elem.removeAttribute('target');
             let invalid_links = article_new.querySelectorAll('link[rel="preload"]:not([href]');

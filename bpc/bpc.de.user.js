@@ -1046,7 +1046,7 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
               arch_dom.firstChild.before(archiveLink_renew(window.location.href));
               arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
             }
-            let targets = article_new.querySelectorAll('a[target="_blank"][href^="https://' + window.location.hostname + '"]');
+            let targets = article_new.querySelectorAll('a[target="_blank"][href^="' + window.location.origin + '"]');
             for (let elem of targets)
               elem.removeAttribute('target');
             let invalid_links = article_new.querySelectorAll('link[rel="preload"]:not([href]');
@@ -1299,7 +1299,7 @@ function getJsonUrlText(article, callback, article_id = '') {
   let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
   let json_url = json_url_dom.href;
   if (!json_url && article_id)
-    json_url = 'https://' + window.location.hostname + '/wp-json/wp/v2/posts/' + article_id;
+    json_url = window.location.origin + '/wp-json/wp/v2/posts/' + article_id;
   if (json_url) {
     fetch(json_url)
     .then(response => {
