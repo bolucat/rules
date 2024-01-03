@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.4.8.3
+// @version         3.4.8.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -46,6 +46,14 @@
 // @match           *://*.tubantia.nl/*
 // @match           *://*.vn.nl/*
 // @match           *://*.volkskrant.nl/*
+// @connect         archive.fo
+// @connect         archive.is
+// @connect         archive.li
+// @connect         archive.md
+// @connect         archive.ph
+// @connect         archive.vn
+// @connect         archive.fo
+// @connect         webcache.googleusercontent.com
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
 

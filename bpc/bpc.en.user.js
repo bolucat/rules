@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.8.7
+// @version         3.4.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -39,6 +39,14 @@
 // @match           *://*.stcatharinesstandard.ca/*
 // @match           *://*.uxdesign.cc/*
 // @match           *://*.wellandtribune.ca/*
+// @connect         archive.fo
+// @connect         archive.is
+// @connect         archive.li
+// @connect         archive.md
+// @connect         archive.ph
+// @connect         archive.vn
+// @connect         archive.fo
+// @connect         webcache.googleusercontent.com
 // @exclude         *://*.google.com/*
 // @exclude         *://*.artsenkrant.com/*
 // @exclude         *://*.cambiocolombia.com/*
@@ -121,7 +129,7 @@ var csDoneOnce;
 var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 'thepeterboroughexaminer.com', 'therecord.com', 'thespec.com', 'thestar.com', 'wellandtribune.ca'];
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
 var no_nhst_media_domains = ['europower.no', 'fiskeribladet.no', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
-var timesofindia_domains = ['timesofindia.com', 'timesofindia.indiatimes.com'];
+var timesofindia_domains = ['epaper.indiatimes.com', 'timesofindia.com', 'timesofindia.indiatimes.com'];
 var uk_incisive_media_domains = ['businessgreen.com', 'internationalinvestment.net', 'investmentweek.co.uk', 'professionaladviser.com', 'professionalpensions.com'];
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
@@ -2620,46 +2628,75 @@ else if (matchDomain('timeshighereducation.com')) {
 }
 
 else if (matchDomain(timesofindia_domains)) {
-  let url = window.location.href;
-  let region_block = document.querySelector('div.plan-popup.active');
-  if (region_block) {
-    removeDOMElement(region_block);
-    let overflow = document.querySelector('html[style]');
-    if (overflow)
-      overflow.removeAttribute('style');
-  }
-  if (!window.location.pathname.includes('/amp_')) {
-    let paywall = document.querySelector('div[id^="story-blocker"]');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let json_script = getArticleJsonScript();
-      if (json_script) {
-        let json = JSON.parse(json_script.text);
-        if (json) {
-          let json_text = json.articleBody;
-          let content = document.querySelector('div.paywall');
-          if (json_text && content) {
-            content.innerHTML = '';
-            content.removeAttribute('class');
-            content.style = 'font-size: 16px; font-height: 28px;';
-            let article_new = document.createElement('div');
-            article_new.innerText = json_text;
-            content.appendChild(article_new);
+  if (matchDomain('epaper.indiatimes.com')) {
+    let blocker = document.querySelector('section.epaper-blocker');
+    removeDOMElement(blocker);
+    if (window.location.pathname.startsWith('/english-news-paper-today-toi-print-edition/')) {
+      let paywall = document.querySelector('section#blocker');
+      if (paywall) {
+        let fq = document.querySelector('section#fq');
+        removeDOMElement(paywall, fq);
+        let json_script = getArticleJsonScript();
+        if (json_script) {
+          let json = JSON.parse(json_script.text);
+          if (json) {
+            let json_text = json.articleBody;
+            let content = document.querySelector('section[type="synopsis"]');
+            if (json_text && content) {
+              let article_new = document.createElement('p');
+              article_new.innerText = breakText(json_text);
+              content.innerHTML = '';
+              let sheet = document.createElement('style');
+              sheet.innerHTML = '[type="synopsis"]::after {background: none !important;}';
+              document.body.appendChild(sheet);
+              content.appendChild(article_new);
+            }
           }
         }
       }
     }
   } else {
-    let amp_images = document.querySelectorAll('div.inline-image > div.inline-imgecontent > amp-img[src]');
-    for (let amp_image of amp_images) {
-      amp_image.parentNode.removeAttribute('class');
-      amp_image.parentNode.parentNode.removeAttribute('class');
-      let elem = document.createElement('img');
-      Object.assign(elem, {
-        src: amp_image.getAttribute('src'),
-        alt: amp_image.getAttribute('alt')
-      });
-      amp_image.parentNode.replaceChild(elem, amp_image);
+    let url = window.location.href;
+    let region_block = document.querySelector('div.plan-popup.active');
+    if (region_block) {
+      removeDOMElement(region_block);
+      let overflow = document.querySelector('html[style]');
+      if (overflow)
+        overflow.removeAttribute('style');
+    }
+    if (!window.location.pathname.includes('/amp_')) {
+      let paywall = document.querySelector('div[id^="story-blocker"]');
+      if (paywall) {
+        removeDOMElement(paywall);
+        let json_script = getArticleJsonScript();
+        if (json_script) {
+          let json = JSON.parse(json_script.text);
+          if (json) {
+            let json_text = json.articleBody;
+            let content = document.querySelector('div.paywall');
+            if (json_text && content) {
+              content.innerHTML = '';
+              content.removeAttribute('class');
+              content.style = 'font-size: 16px; font-height: 28px;';
+              let article_new = document.createElement('div');
+              article_new.innerText = json_text;
+              content.appendChild(article_new);
+            }
+          }
+        }
+      }
+    } else {
+      let amp_images = document.querySelectorAll('div.inline-image > div.inline-imgecontent > amp-img[src]');
+      for (let amp_image of amp_images) {
+        amp_image.parentNode.removeAttribute('class');
+        amp_image.parentNode.parentNode.removeAttribute('class');
+        let elem = document.createElement('img');
+        Object.assign(elem, {
+          src: amp_image.getAttribute('src'),
+          alt: amp_image.getAttribute('alt')
+        });
+        amp_image.parentNode.replaceChild(elem, amp_image);
+      }
     }
   }
 }

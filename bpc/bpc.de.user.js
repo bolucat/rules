@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.8.4
+// @version         3.4.8.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -23,6 +23,14 @@
 // @match           *://*.vn.at/*
 // @match           *://*.vol.at/*
 // @match           *://*.wochenblatt.com/*
+// @connect         archive.fo
+// @connect         archive.is
+// @connect         archive.li
+// @connect         archive.md
+// @connect         archive.ph
+// @connect         archive.vn
+// @connect         archive.fo
+// @connect         webcache.googleusercontent.com
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
 
