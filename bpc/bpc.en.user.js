@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.9.1
+// @version         3.4.9.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -172,7 +172,7 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || (!matchDo
   if (paywall) {
     paywall.removeAttribute('class');
     paywall.firstChild.before(freediumLink(url));
-    paywall.firstChild.before(googleWebcacheLink(url, 'BPC > Try for full article text (articles before 2023-12-10)'));
+    paywall.firstChild.before(googleWebcacheLink(url));
   }
   window.setTimeout(function () {
     let banner = pageContains('div > div > p', /author made this story available to/);
@@ -2647,7 +2647,7 @@ else if (matchDomain(timesofindia_domains)) {
               article_new.innerText = breakText(json_text);
               content.innerHTML = '';
               let sheet = document.createElement('style');
-              sheet.innerHTML = '[type="synopsis"]::after {background: none !important;}';
+              sheet.innerText = '[type="synopsis"]::after {background: none !important;}';
               document.body.appendChild(sheet);
               content.appendChild(article_new);
             }

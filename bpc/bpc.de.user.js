@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.8.5
+// @version         3.4.9.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -46,7 +46,6 @@ var csDoneOnce;
 var de_funke_medien_domains = ['abendblatt.de', 'ikz-online.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
 var de_lv_domains = ['profi.de', 'topagrar.at', 'topagrar.com', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de'];
-var de_westfalen_medien_domains = ['muensterschezeitung.de', 'westfalen-blatt.de', 'wn.de'];
 
 if (matchDomain('aerztezeitung.de')) {
   let paywall = document.querySelector('div.AZLoginModule');
@@ -825,15 +824,6 @@ else if (matchDomain(de_lv_domains)) {
   }
   let ads = document.querySelectorAll('div.adZone');
   hideDOMElement(...ads);
-}
-
-else if (matchDomain(de_westfalen_medien_domains)) {
-  let url = window.location.href;
-  if (url.includes('/amp/')) {
-    amp_unhide_subscr_section('amp-ad, amp-embed, section[class^="fp-ad"]');
-  } else {
-    amp_redirect('section.fp-article-paywall');
-  }
 }
 
 else if (matchDomain(de_funke_medien_domains)) {

@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.4.8.3
+! Version: 3.4.8.4
 
 ! General
 
@@ -68,6 +68,7 @@ magazine.atavist.com##+js(aopr, localStorage)
 axios.com##[data-vars-experiment="pro-paywall"],[class^="Modal_paywallContainer"],.apexAd
 axios.com##+js(ra, style, html[style], stay)
 ||cdn.cxense.com/cx.js$script,domain=bizjournals.com,important
+! bloomberg.com: disable Dark Reader extension
 ||cm.bloomberg.com^$xmlhttprequest,~third-party
 ||assets.bwbx.io/s3/javelin/public/javelin/js/foundation/transporter/foundation_transporter-*.js$script,domain=bloomberg.com
 bloomberg.com##+js(ra, data-paywall-overlay-status, body[data-paywall-overlay-status], stay)
@@ -590,6 +591,7 @@ onet.pl##+js(cookie-remover, /^xbc/)
 popbitch.com##+js(ra, class, div[class*="-premium"])
 ||corprensa.com/la-prensa/evolok/$script,domain=prensa.com
 psypost.org##+js(cookie-remover, issuem_lp)
+||rdhmag.com$inline-script
 ||schwaebische-post.de/sub/js/pc-offer-west.js$script,~third-party
 ||shrm.org/*/js/paywall*.js$script,~third-party
 shropshirestar.com##+js(set, window.Fusion.globalContent.paywallStatus, false)
