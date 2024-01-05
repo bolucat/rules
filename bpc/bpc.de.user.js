@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.9.0
+// @version         3.4.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -517,6 +517,11 @@ else if (matchDomain('kurier.at')) {
   }
   let banners = document.querySelectorAll('div#view-offer, app-paywall, adfullbanner, outbrain');
   removeDOMElement(...banners);
+}
+
+else if (matchDomain('motorradonline.de')) {
+  if (window.location.pathname.endsWith('/amp/'))
+    ampToHtml();
 }
 
 else if (matchDomain(['mz.de', 'volksstimme.de'])) {

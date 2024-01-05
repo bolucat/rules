@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.4.7.4
+// @version         3.4.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -10,6 +10,7 @@
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.fr/*
 // @match           *://*.arcinfo.ch/*
+// @match           *://*.businessam.be/*
 // @match           *://*.connaissancedesarts.com/*
 // @match           *://*.dhnet.be/*
 // @match           *://*.femmesdaujourdhui.be/*
@@ -54,7 +55,7 @@ var csDoneOnce;
 var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net'];
 var be_roularta_domains = ['femmesdaujourdhui.be', 'flair.be', 'levif.be'];
 var fr_be_groupe_rossel = ['aisnenouvelle.fr', 'courrier-picard.fr', 'lardennais.fr', 'lavoixdunord.fr', 'lesoir.be', 'lest-eclair.fr', 'liberation-champagne.fr', 'lunion.fr', 'nordlittoral.fr', 'paris-normandie.fr', 'sudinfo.be'];
-var fr_groupe_la_depeche_domains = ['centrepresseaveyron.fr', 'ladepeche.fr', 'lindependant.fr', 'midilibre.fr', 'nrpyrenees.fr', 'petitbleu.fr', 'rugbyrama.fr'];
+var fr_groupe_la_depeche_domains = ['centrepresseaveyron.fr', 'journaldemillau.fr', 'ladepeche.fr', 'lindependant.fr', 'midilibre.fr', 'nrpyrenees.fr', 'petitbleu.fr', 'rugbyrama.fr'];
 var fr_groupe_nice_matin_domains = ['monacomatin.mc', 'nicematin.com', 'varmatin.com'];
 var domain;
 
@@ -132,6 +133,35 @@ else if (matchDomain(be_groupe_ipm_domains)) {
   }
   let ads = document.querySelectorAll('div.ap-AdContainer, div.ap-Outbrain');
   hideDOMElement(...ads);
+}
+
+else if (matchDomain('businessam.be')) {
+  let paywall = document.querySelector('div.paywall');
+  if (paywall && dompurify_loaded) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.text-gradient');
+    if (article) {
+      let scripts = document.querySelectorAll('script:not([src]):not([type])');
+      let content_script;
+      for (let script of scripts) {
+        if (script.text.match(/window\.fullcontent64\s?=\s?"/)) {
+          content_script = script;
+          break;
+        }
+      }
+      if (content_script) {
+        try {
+          let content = decode_utf8(atob(content_script.text.split(/window\.fullcontent64\s?=\s?"/)[1].split('";')[0]));
+          let parser = new DOMParser();
+          let doc = parser.parseFromString('<div>' + DOMPurify.sanitize(content, dompurify_options) + '</div>', 'text/html');
+          let content_new = doc.querySelector('div');
+          article.parentNode.replaceChild(content_new, article);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  }
 }
 
 else if (matchDomain(['challenges.fr', 'sciencesetavenir.fr'])) {
