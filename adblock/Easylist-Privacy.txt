@@ -1,7 +1,7 @@
 [Adblock Plus 1.1]
-! Version: 202401051755
+! Version: 202401061601
 ! Title: EasyPrivacy
-! Last modified: 05 Jan 2024 17:55 UTC
+! Last modified: 06 Jan 2024 16:01 UTC
 ! Expires: 4 days (update frequency)
 ! *** easylist:template_header.txt ***
 ! 
@@ -10269,6 +10269,7 @@ $third-party,xmlhttprequest,domain=opensubtitles.org
 ||jotform.io/getReferrer/$third-party
 ||jscache.com/static/page_moniker/
 ||jsdelivr.net/gh/sensitiveio/sbtracker@master/
+||jsdelivr.net/npm/navigator.sendbeacon
 ||jsdelivr.net^*/fp.min.js
 ||jsrdn.com/s/1.js
 ||jtracking-gate.lulusoft.com^
@@ -11887,6 +11888,7 @@ $third-party,xmlhttprequest,domain=opensubtitles.org
 ||data.econa.com^
 ||data.kameleoon.io^
 ||datacomm.ch^*/count.cgi?
+||djuf7jb483wz1.cloudfront.net/p/l.jpg
 ||et.twyn.com^
 ||events.onet.pl^
 ||export.newscube.de^$~subdocument
@@ -12092,6 +12094,7 @@ $third-party,xmlhttprequest,domain=opensubtitles.org
 ||tracking.lqm.io^
 ||tracking.netvigie.com^
 ||trjs.mediafin.be/loader/trmfn-loader.js
+||trk.a-dsp.com^
 ||trk.adbutter.net^
 ||tsphone.biz/pixelvoleur.jpg?
 ||veoxa.com/get_trackingcode.
@@ -14570,12 +14573,19 @@ $csp=child-src 'none'; frame-src *; worker-src 'none',domain=thepiratebay.org|vi
 ||tealiumiq.com^$domain=autobild.de
 ||visualrevenue.com^$domain=autobild.de|spiegel.de
 ||xplosion.de^$domain=spiegel.de
+! 
+! https://github.com/easylist/easylist/issues/18198
+@@||bam.nr-data.net^$xmlhttprequest,domain=abema.tv
+@@||js-agent.newrelic.com^$script,domain=abema.tv
 ! #endif
 ! *** easylist:easyprivacy/easyprivacy_specific_uBO.txt ***
 ! easyprivacy_specific_uBO.txt
 ! #if ext_ublock
-
-
+! #if cap_html_filtering
+abema.tv##^script:has-text(NREUM)
+! #else
+abema.tv##+js(rmnt, script, NREUM)
+! #endif
 ! #endif
 ! -----------------Individual cname tracking systems-----------------!
 ! *** easylist:easyprivacy/easyprivacy_specific_cname_dataunlocker.txt ***
@@ -41897,6 +41907,7 @@ $csp=child-src 'none'; frame-src *; worker-src 'none',domain=thepiratebay.org|vi
 ||as.mirapodo.de^
 ||as.mytoys.de^
 ||as.yomonda.de^
+||autoscout24.de^$ping
 ||basicthinking.de/stats/
 ||behave.sn.at^
 ||berliner-stadtplan.com/t.gif
@@ -41913,7 +41924,7 @@ $csp=child-src 'none'; frame-src *; worker-src 'none',domain=thepiratebay.org|vi
 ||cnt.wetteronline.de^
 ||comparis.ch/comparis/Tracking/
 ||computerbase.de/api2/$ping,xmlhttprequest
-||computerbase.de/nlytcz
+||computerbase.de/nlytev
 ||cp.finanzfrage.net/stats
 ||cpx.golem.de^
 ||cpxl.golem.de^
@@ -43476,9 +43487,9 @@ $csp=child-src 'none'; frame-src *; worker-src 'none',domain=thepiratebay.org|vi
 ! ! cxense.com/public/widget/
 @@||cxense.com/public/widget/$domain=bizjournals.com|businessinsider.de|computerbild.de|cxpublic.com|cyclestyle.net|friday.gold|friday.kodansha.co.jp|handelsblatt.com|ksml.fi|mainichi.jp|marketwatch.com|nippon.com|savonsanomat.fi|shueisha.co.jp|tn.com.ar|wsj.com
 ! ! cxense.com/cx.cce.js
-@@||cxense.com/cx.cce.js$domain=13.cl|bizjournals.com|businessinsider.de|cxpublic.com|handelsblatt.com|mainichi.jp|marketwatch.com|tarzanweb.jp|tn.com.ar|wpb.shueisha.co.jp|wsj.com
+@@||cxense.com/cx.cce.js$domain=bizjournals.com|businessinsider.de|cxpublic.com|handelsblatt.com|mainichi.jp|marketwatch.com|tarzanweb.jp|tn.com.ar|wpb.shueisha.co.jp|wsj.com
 ! ! cxense.com/cx.js
-@@||cxense.com/cx.js$domain=bizjournals.com|businessinsider.de|computerbild.de|cyclestyle.net|handelsblatt.com|ksml.fi|mainichi.jp|marketwatch.com|nippon.com|savonsanomat.fi|shueisha.co.jp|tarzanweb.jp|tn.com.ar|tv-tokyo.co.jp|wsj.com
+@@||cxense.com/cx.js$domain=13.cl|bizjournals.com|businessinsider.de|computerbild.de|cyclestyle.net|handelsblatt.com|ksml.fi|mainichi.jp|marketwatch.com|nippon.com|savonsanomat.fi|shueisha.co.jp|tarzanweb.jp|tn.com.ar|tv-tokyo.co.jp|wsj.com
 ! ! collector.appconsent.io
 @@||collector.appconsent.io/hello$domain=lachainemeteo.com|lefigaro.fr
 ! ! imrworldwide.com/*ggc
