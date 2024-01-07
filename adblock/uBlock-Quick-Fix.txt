@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sat, 06 Jan 2024 09:42:10 +0000
-! Diff-Path: ../patches/2024.1.6.802.patch#ublock-quick-fixes
+! Last modified: Sun, 07 Jan 2024 14:17:59 +0000
+! Diff-Path: ../patches/2024.1.7.860.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -25,12 +25,12 @@ aternos.org##.header-center:style(margin-top:-5000px !important;)
 aternos.org##.sidebar:style(width: 1.745px !important;)
 aternos.org##.ad-dfp:style(min-height: 0.1485mm !important; height: 0.1485mm !important;)
 ! pixsera
-imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,imgcsxx.shop,imgcssd.shop,imguwjsd.sbs,pictbbf.shop##+js(aopr, console.clear)
-imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,imgcsxx.shop,imgcssd.shop,imguwjsd.sbs,pictbbf.shop##+js(nano-sib, timer)
-imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,imgcsxx.shop,imgcssd.shop,imguwjsd.sbs,pictbbf.shop##div[id][style^="position: fixed; display: block; width: 100%;"]
-imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,imgcsxx.shop,imgcssd.shop,imguwjsd.sbs,pictbbf.shop##div[style="width:100%;height:110px"]
-imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,imgcsxx.shop,imgcssd.shop,imguwjsd.sbs,pictbbf.shop##+js(nowoif, !/prcf.fiyar|themes|pixsense|.jpg/)
-imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,imgcsxx.shop,imgcssd.shop,imguwjsd.sbs,pictbbf.shop##div[class][style="display: block;"]
+imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,imgcsxx.shop,imgcssd.shop,imguwjsd.sbs,pictbbf.shop,pixbryexa.sbs##+js(aopr, console.clear)
+imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,imgcsxx.shop,imgcssd.shop,imguwjsd.sbs,pictbbf.shop,pixbryexa.sbs##+js(nano-sib, timer)
+imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,imgcsxx.shop,imgcssd.shop,imguwjsd.sbs,pictbbf.shop,pixbryexa.sbs##div[id][style^="position: fixed; display: block; width: 100%;"]
+imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,imgcsxx.shop,imgcssd.shop,imguwjsd.sbs,pictbbf.shop,pixbryexa.sbs##div[style="width:100%;height:110px"]
+imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,imgcsxx.shop,imgcssd.shop,imguwjsd.sbs,pictbbf.shop,pixbryexa.sbs##+js(nowoif, !/prcf.fiyar|themes|pixsense|.jpg/)
+imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,imgcsxx.shop,imgcssd.shop,imguwjsd.sbs,pictbbf.shop,pixbryexa.sbs##div[class][style="display: block;"]
 !#if !cap_html_filtering
 !#if env_firefox
 youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots legacyImportant)
@@ -87,6 +87,8 @@ infinityscans.xyz,infinityscans.net##+js(no-fetch-if, /googlesyndication|bidgear
 infinityscans.xyz,infinityscans.net##+js(rmnt, script, $fetch())
 infinityscans.xyz##+js(rpnt, script, https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js, https://infinityscans.xyz/ajax/images)
 infinityscans.net##+js(rpnt, script, https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js, https://infinityscans.net/ajax/images)
+infinityscans.xyz##+js(rpnt, script, aHR0cHM6Ly9wYWdlYWQyLmdvb2dsZXN5bmRpY2F0aW9uLmNvbS9wYWdlYWQvanMvYWRzYnlnb29nbGUuanM=, aHR0cHM6Ly9pbmZpbml0eXNjYW5zLnh5ei9hamF4L2ltYWdlcw==)
+infinityscans.net##+js(rpnt, script, aHR0cHM6Ly9wYWdlYWQyLmdvb2dsZXN5bmRpY2F0aW9uLmNvbS9wYWdlYWQvanMvYWRzYnlnb29nbGUuanM=, aHR0cHM6Ly9pbmZpbml0eXNjYW5zLm5ldC9hamF4L2ltYWdlcw==)
 !#endif
 infinityscans.xyz,infinityscans.net##+js(nowoif)
 *$script,redirect-rule=noopjs,domain=infinityscans.xyz|infinityscans.net
@@ -108,40 +110,27 @@ www.chip.de##body.l-DownloadListing .wrapper-safe.mt-sm > .fb > section:not(.Lis
 www.chip.de###CR.Downloads-Detail main#M1 > .wrapper-safe > .fb > [class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > *:not([class="mt-md"]):has(ul a[href^="https://www.chip.de/downloads/"] img[src^="https://im.chip.de/"])
 www.chip.de##body[class="l-DownloadListing is-sticky"] > [class="Main Main--Skyscraper"] > .Main__Container > main[class="Downloads DownloadListing bg-white mt-xs"] > [class="mt-sm wrapper-bleed bg-blue"] + [class="wrapper-safe"]:has(a img[src^="https://im.chip.de/ii/"])
 ! Ad-Shield
+tweaksforgeeks.com##+js(noeval-if, /07c225f3\.online|content-loader\.com|css-load\.com|html-load\.com/)
 !#if cap_html_filtering
-||07c225f3.online^$domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com
-||content-loader.com^$domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com
-||css-load.com^$domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com
-||html-load.com^$domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com
-@@||07c225f3.online/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com
-@@||content-loader.com/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com
-@@||css-load.com/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com
-@@||html-load.com/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com
-||07c225f3.online/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com,replace=/\{\}return!1\}function [A-Za-z]{2}\([A-Za-z]{2}\)/{}return!1}function neutralized()/g
-||content-loader.com/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com,replace=/\{\}return!1\}function [A-Za-z]{2}\([A-Za-z]{2}\)/{}return!1}function neutralized()/g
-||css-load.com/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com,replace=/\{\}return!1\}function [A-Za-z]{2}\([A-Za-z]{2}\)/{}return!1}function neutralized()/g
-||html-load.com/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com,replace=/\{\}return!1\}function [A-Za-z]{2}\([A-Za-z]{2}\)/{}return!1}function neutralized()/g
+tweaksforgeeks.com##^script:has-text(KCgpPT57bGV0IGU)
+issuya.com##^script:has-text(error-report.com)
 !#else
-@@||securepubads.g.doubleclick.net/tag/js/gpt.js$script,domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com
-!#if !ext_devbuild
-@@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xhr,domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com
-@@||static.criteo.net/js/ld/publishertag.prebid.js$xhr,domain=loawa.com|ygosu.com|sportalkorea.com|algumon.com|hancinema.net|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|kagit.kr|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com
-!#else
-loawa.com,ygosu.com,sportalkorea.com,algumon.com,hancinema.net,enetnews.co.kr,edaily.co.kr,economist.co.kr,etoday.co.kr,hankyung.com,isplus.com,hometownstation.com,kagit.kr,inven.co.kr,honkailab.com,warcraftrumbledeck.com,genshinlab.com,thestockmarketwatch.com,thephoblographer.com##+js(no-fetch-if, /static\.criteo\.net|adsbygoogle/)
-!#endif
+tweaksforgeeks.com##+js(rmnt, script, KCgpPT57bGV0IGU)
+issuya.com##+js(rmnt, script, error-report.com)
 !#endif
 iwb.jp##+js(nostif, getComputedStyle)
 gamedrive.org##+js(aost, document.querySelector, /showModal|chooseAction|doAction|callbackAdsBlocked/)
 gamedrive.org##+js(acs, eval, replace)
 ||foxsports.com/static/orion/js/segment-analytics.js$badfilter
 @@||assets.msn.com/bundles/v1/homepage/latest/libs_ad-service_dist_index_js$script,1p
-bitcotasks.com##+js(rpnt, script, window_paused = false;, window_paused = false; window.setTimeout(function(){$("#status").fadeOut(1e3\,function(){$("#progress").progressTimer({timeLimit:duration\,onFinish:function(){$("#progress").fadeOut(1e3\,function(){$("#status").html('<div class="alert alert-warning" role="alert"><i class="fa fa-exclamation-circle fa-fw"></i> '+captchaMsg+"</div>").fadeIn("fast")\,showCaptcha()})}})});}\, 2000))
+bitcotasks.com##+js(rpnt, script, window.setTimeout(function() {, window.setTimeout(function() { window.setTimeout(function(){!function a(){$("#validateVisit").modal({backdrop:"static"\,keyboard:!1})\,$(".captcha-holder").CBCaptcha({clickDelay:500\,invalidResetDelay:2500\,requestIconsDelay:1500\,loadingAnimationDelay:1500\,hoverDetection:!0\,enableLoadingAnimation:!0\,validationPath:"system/libraries/captcha/request.php"}).bind("success.CBCaptcha"\,function(t\,e){var i\,s;i=$('input[name="captcha-idhf"]').val()\,s=$('input[name="captcha-hf"]').val()\,$("#status").html('<div class="alert alert-info" role="alert"><i class="fa fa-cog fa-spin fa-fw"></i> '+waitMsg+"</div>").fadeIn("fast")\,$.post("system/ajax.php"\,{hash:hash\,sub_id:sub_id\,key:key\,token:token\,"captcha-idhf":i\,"captcha-hf":s\,action:"proccessLead"}\,function(t){"600"==t.status?(a()\,$("#status").html(t.message).fadeIn("slow")):($("#status").html(t.message).fadeIn("slow")\,window.setTimeout(function(){$("#validateVisit").modal("hide")}\,500)\,"200"==t.status&&window.setTimeout(function(){window.location.replace(t.redirect)}\,1200))}\,"json")})}()}\,2e3);)
 @@||ourtecads.com^$frame,domain=bitcotasks.com
 *$frame,redirect=noopframe,domain=ourtecads.com
 @@||cleaningmaturegallop.com/*/invoke.js$script,domain=ourtecads.com
 @@||code.jquery.com^$domain=ourtecads.com
 @@||ourtecads.com^$frame,domain=ourtecads.com
 @@||ourtecads.com^$script,1p
+@@||cdn.bmcdn6.com/js/*.js?v=$script,domain=bitcotasks.com
 ourtecads.com##+js(no-fetch-if, cleaningmaturegallop)
 ourtecads.com##+js(no-xhr-if, /^/)
 *$domain=ourtecads.com
@@ -154,10 +143,12 @@ bitcotasks.com##+js(rmnt, script, AdblockRegixFinder)
 paste.fo##+js(rpnt, style, display: flex, display: none)
 paste.fo##+js(rpnt, style, /display:\s*var\(--.*?\);/, visibility: hidden !important; max-height: 0px !important;)
 paste.fo##a:has-text(Free:)
-paste.fo##a[href^="https://anonsmm.com/?utm_source"], a[href="https://cryptochanger.to/"]
+paste.fo##a[href^="https://anonsmm.com/?utm_source"], a[href="https://cryptochanger.to/"], a[href="https://sellsn.io/"]
 paste.fo##a *:matches-css-after(content:/Free:/)
-/paste\.fo\/[A-Z0-9]{70,100}\.gif$/$image,1p,domain=paste.fo
+paste.fo##a *:matches-css-before(content:/Free:/)
+/paste\.fo\/[A-Z0-9]{70,100}\.(gif|jpeg)$/$image,1p,domain=paste.fo
 ||paste.fo/clk.php?as=$xhr
+paste.fo##a[href] img:not([src$=".php"])
 blog.cryptowidgets.net,blog.insurancegold.in,blog.wiki-topia.com##+js(set, isRequestPresent, true)
 blog.cryptowidgets.net,blog.insurancegold.in,blog.wiki-topia.com##+js(rpnt, script, = false;, = true;, condition, innerHTML)
 carsmania.net,carstopia.net,coinsvalue.net,cookinguide.net,freeoseocheck.com,makeupguide.net##+js(set, isRequestPresent, true)
@@ -170,3 +161,4 @@ abema.tv##^script:has-text(NREUM)
 !#else
 abema.tv##+js(rmnt, script, NREUM)
 !#endif
+perchance.org##+js(nostif, /ads/i)
