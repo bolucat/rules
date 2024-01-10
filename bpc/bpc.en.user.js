@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.9.3
+// @version         3.4.9.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -2193,6 +2193,11 @@ else if (matchDomain('theamericanconservative.com')) {
     noscroll.classList.remove('modal-open');
 }
 
+else if (matchDomain('theartnewspaper.com')) {
+  let ads = document.querySelectorAll('div.ad-container');
+  hideDOMElement(...ads);
+}
+
 else if (matchDomain('theathletic.com')) {
   if (!(window.location.search.match(/(\?|&)amp/) && !document.querySelector('head > link[rel="amphtml"]'))) {
     function theathletic_func(node) {
@@ -3009,9 +3014,9 @@ else if (domain = matchDomain(usa_mcc_domains) || document.querySelector('head >
   hideDOMElement(...ads);
 }
 
-else if (matchDomain(usa_mng_domains) || (window.location.href.match(/\.com\/(\d){4}\/(\d){2}\/(\d){2}\/.+\/amp\//) && document.querySelector('amp-img#paywall[src*=".com/wp-content/plugins/dfm-amp-mods/"]'))) {
+else if (matchDomain(usa_mng_domains) || (window.location.href.match(/\.com\/(\d){4}\/(\d){2}\/(\d){2}\/.+\/amp\//) && document.querySelector('footer li > a[href^="https://www.medianewsgroup.com"]'))) {
   if (window.location.pathname.endsWith('/amp/')) {
-    amp_unhide_subscr_section('amp-ad, amp-embed, div.ampWrapperInside');
+    amp_unhide_subscr_section('amp-ad, amp-embed, div.ampWrapperInside, div#paywall');
   }
 }
 
