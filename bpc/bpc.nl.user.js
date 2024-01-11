@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.4.9.1
+// @version         3.5.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -19,6 +19,7 @@
 // @match           *://*.doorbraak.be/*
 // @match           *://*.dvhn.nl/*
 // @match           *://*.ed.nl/*
+// @match           *://*.ewmagazine.nl/*
 // @match           *://*.fd.nl/*
 // @match           *://*.flair.be/nl/*
 // @match           *://*.flair.nl/*
@@ -130,6 +131,15 @@ else if (matchDomain('doorbraak.be')) {
         console.log(err);
       }
     }
+  }
+}
+
+else if (matchDomain('ewmagazine.nl')) {
+  let url = window.location.href;
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    getArchive(url, 'article[id]');
   }
 }
 
