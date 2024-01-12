@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Thu, 11 Jan 2024 12:07:49 +0000
-! Diff-Path: ../patches/2024.1.11.804.patch#ublock-quick-fixes
+! Last modified: Fri, 12 Jan 2024 11:26:21 +0000
+! Diff-Path: ../patches/2024.1.12.863.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -39,7 +39,8 @@ imgqklw.shop,pixqkhgrt.shop,pixqbngg.shop,pixqwet.shop,pixmos.shop,imgtgd.shop,i
 youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots legacyImportant)
 !#endif
 !#endif
-||youtube.com/s/desktop/*/jsbin/desktop_polymer.vflset/desktop_polymer.js$uritransform=/desktop\/\w+\/jsbin/desktop\/81df6011\/jsbin/,domain=www.youtube.com
+||youtube.com/s/desktop/*/jsbin/desktop_polymer.vflset/desktop_polymer.js$uritransform=/desktop\/\w+\/jsbin/desktop\/46aa9c33\/jsbin/,domain=www.youtube.com
+youtube.com#@##scroll-container > #items.ytd-merch-shelf-renderer
 ! VOE sites
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=bradleyviewdoctor.com
 bradleyviewdoctor.com##+js(nowoif)
@@ -71,8 +72,18 @@ infinityscans.xyz,infinityscans.net##^script:has-text(;break;case $.)
 !#else
 infinityscans.xyz,infinityscans.net##+js(rmnt, script, ;break;case $.)
 !#endif
-www.chip.de##+js(rpnt, style, a {padding-top:0;padding-bottom:0;}, {display: none !important;}, condition, /aspect-ratio:\s?auto/)
-www.chip.de##+js(rpnt, script, !=typeof global?global:this);, !=typeof global?global:this); window.addEventListener("DOMContentLoaded"\,function(){if("undefined"!=typeof publisherAdsRp){let e=Object.getOwnPropertyNames(publisherAdsRp);for(let t=0;t<e.length;t++){let n=document.getElementsByClassName(e[t]);n.length>0&&n[0].remove()}}});)
+www.chip.de##+js(rpnt, style, /a > div \{ width:auto;\s?padding-right:0;\s?padding-left:0; \}/, {display: none !important;}, condition, /aspect-ratio:\s?auto/)
+www.chip.de##body.l-DownloadListing > div:has(> div > ul a[href^="https://www.chip.de/downloads/"] img[src^="https://im.chip.de/"])
+www.chip.de##body.l-DownloadListing .wrapper-safe.mt-sm > .fb > section:not(.Listing) ul:has(> li a[href^="https://www.chip.de/downloads/"] img[src^="https://im.chip.de/"])
+www.chip.de###CR.Downloads-Detail > #G32 > #M1 > [class="wrapper-safe"] > [class="fb mt-lg"] > [class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > *:has(a img[src^="https://im.chip.de/ii/"])
+www.chip.de###CR.Downloads-Detail > #G32 > #M1 > [class]:matches-attr(class="/.*[A-Z]/"):has(a img[src^="https://im.chip.de/ii/"])
+www.chip.de###CR.Downloads-Detail > #G32 > #M1 > [class]:has(> main > ul[class="List is-separated"] a img[src^="https://im.chip.de/ii/"])
+www.chip.de##body[class="l-DownloadListing is-sticky"] > [class="Main Main--Skyscraper"] > .Main__Container > main[class="Downloads DownloadListing bg-white mt-xs"] > [class="mt-sm wrapper-bleed bg-blue"] + [class="wrapper-safe"]:has(a img[src^="https://im.chip.de/ii/"])
+www.chip.de##body[class="l-DownloadListing is-sticky"] > [class="Main Main--Skyscraper"] > .Main__Container > main:not(.DownloadListing) > *:only-child > *:only-child:has(a img[src^="https://im.chip.de/ii/"])
+www.chip.de##body[class="l-DownloadListing is-sticky"] > [class]:has(> main > ul[class="List is-separated"] a img[src^="https://im.chip.de/ii/"])
+www.chip.de###CR:is(.Downloads-Select, .Downloads-Getfile) > #G32 > #M1 > [class="wrapper-safe"] > [class^="fb mt-"] > div[class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > div[class]:has(a img[src^="https://im.chip.de/ii/"])
+www.chip.de###CR:is(.Downloads-Select, .Downloads-Getfile) > #G32 > #M1 > [class="wrapper-safe"] > [class^="fb mt-"] > section > [class]:has(ul[class="List is-separated"] a img[src^="https://im.chip.de/ii/"])
+www.chip.de###CR:is(.Downloads-Select, .Downloads-Getfile) > #G32 > #M1 > [class]:has(> * > ul[class="List is-separated"])
 ! Ad-Shield
 tweaksforgeeks.com##+js(noeval-if, /07c225f3\.online|content-loader\.com|css-load\.com|html-load\.com/)
 !#if cap_html_filtering
@@ -91,6 +102,7 @@ gamedrive.org##+js(acs, eval, replace)
 @@||cdn.bmcdn6.com/js/*.js?v=$script,domain=bitcotasks.com
 @@||cdn.bmcdn6.com/p/$frame,domain=bitcotasks.com
 @@||ourtecads.com^$frame,domain=bitcotasks.com
+@@||bmcdn6.com^$xhr,domain=bitcotasks.com
 bitcotasks.com#@#[class^="floating-banner"]
 bitcotasks.com##[class^="floating-banner"]:style(visibility: hidden !important; pointer-events: none !important;)
 !#if cap_html_filtering
@@ -122,4 +134,5 @@ abema.tv##^script:has-text(NREUM)
 abema.tv##+js(rmnt, script, NREUM)
 !#endif
 perchance.org##+js(rpnt, script, false, true, condition, '/s[\s\$\{\"\}\+\(\)]{0,}n[\s\$\{\"\}\+\(\)]{0,}i[\s\$\{\"\}\+\(\)]{0,}g[\s\$\{\"\}\+\(\)]{0,}e[\s\$\{\"\}\+\(\)]{0,}l|snigel|u0069|u006E|\"\"\+\"\"|body\[/')
-||dropbox.com/2/ml_platform/log_predictions_events$badfilter
+perchance.org##+js(aopr, alert)
+perchance.org##+js(rmnt, script, '"reload"')

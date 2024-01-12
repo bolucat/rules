@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.4.9.1
+// @version         3.5.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -43,7 +43,7 @@ var domain;
 var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce;
 
-var de_funke_medien_domains = ['abendblatt.de', 'ikz-online.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
+var de_funke_medien_domains = ['abendblatt.de', 'ikz-online.de', 'nrz.de', 'waz.de', 'wp.de', 'wr.de'];
 var de_lv_domains = ['profi.de', 'topagrar.at', 'topagrar.com', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de'];
 
