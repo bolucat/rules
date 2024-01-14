@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.4.9.3
+// @version         3.5.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -218,15 +218,29 @@ else if (matchDomain('elle.fr')) {
 
 else if (matchDomain(fr_be_groupe_rossel)) {
   let url = window.location.href;
-  let paywall = document.querySelectorAll('r-panel.r-paywall--header, r-panel.r-panel--paywall');
-  if (paywall.length) {
-    removeDOMElement(...paywall);
-    let article = document.querySelector('article');
-    if (article)
-      article.firstChild.before(archiveLink(url));
+  let clear_ads = function () {
+    let ads = document.querySelectorAll('div[id^="article_"], r-pub, div#rossel-leader-top');
+    hideDOMElement(...ads);
   }
-  let ads = document.querySelectorAll('div[id^="article_"], r-pub, div#rossel-leader-top');
-  hideDOMElement(...ads);
+  let func_post = function () {
+    let videos = document.querySelectorAll('r-embed');
+    for (let video of videos) {
+      let source = video.querySelector('div[data-src]');
+      if (source) {
+        let iframe = document.createElement('iframe');
+        iframe.src = source.getAttribute('data-src');
+        iframe.height = '400px';
+        iframe.width = '100%';
+        let header = document.querySelector('article > header[style]');
+        if (header)
+          iframe.style = header.getAttribute('style');
+        video.parentNode.replaceChild(iframe, video);
+      }
+    }
+    clear_ads();
+  }
+  getArchive(url, 'r-panel.r-paywall--header, r-panel.r-panel--paywall', '', 'article, r-main', func_post);
+  clear_ads();
 }
 
 else if (matchDomain(fr_groupe_la_depeche_domains)) {
@@ -378,11 +392,7 @@ else if (matchDomain('ledevoir.com')) {
 
 else if (matchDomain('lefigaro.fr')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div#fig-premium-paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    getArchive(url, 'div[data-component="fig-content-body"]');
-  }
+  getArchive(url, 'div#fig-premium-paywall', '', 'div[data-component="fig-content-body"]');
 }
 
 else if (matchDomain('legrandcontinent.eu')) {
@@ -411,24 +421,6 @@ else if (matchDomain('lemagit.fr')) {
     paywall.classList.remove('paywall');
     let banners = document.querySelectorAll('p#firstP, div#inlineRegistrationWrapper');
     removeDOMElement(...banners);
-  }
-}
-
-else if (matchDomain('leparisien.fr')) {
-  if (window.location.pathname.startsWith('/amp/')) {
-    let paywall = document.querySelector('div.paywall');
-    if (paywall) {
-      let paywall_sticky = document.querySelector('div.paywall-sticky');
-      removeDOMElement(paywall, paywall_sticky);
-      let section_hidden = document.querySelectorAll('section[hidden]');
-      for (let elem of section_hidden)
-        elem.removeAttribute('hidden');
-      let mask = document.querySelector('.amp-premium-first-content');
-      if (mask)
-        mask.classList.remove('amp-premium-first-content');
-    }
-  } else {
-    amp_redirect('div.paywall', '', '/amp' + window.location.pathname);
   }
 }
 
@@ -482,11 +474,7 @@ else if (matchDomain('lepoint.fr')) {
     }, 1000);
   } else {
     let url = window.location.href;
-    let paywall = document.querySelectorAll('div.accnt-cmp');
-    if (paywall.length) {
-      removeDOMElement(...paywall);
-      getArchive(url, 'article');
-    }
+    getArchive(url, 'div.accnt-cmp', '', 'article');
   }
 }
 
@@ -982,9 +970,18 @@ function archiveRandomDomain() {
   return 'archive.' + tld;
 }
 
-function getArchive(url, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
+function getArchive(url, paywall_sel, paywall_action = '', selector, func_post = '', text_fail = '', selector_source = selector, selector_archive = selector) {
   let url_archive = 'https://' + archiveRandomDomain() + '/' + url.split(/[#\?]/)[0];
-  replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
+  let paywall = document.querySelectorAll(paywall_sel);
+  if (paywall.length) {
+    clearPaywall(paywall, paywall_action);
+    replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
+    if (func_post) {
+      window.setTimeout(function () {
+        func_post();
+      }, 3000);
+    }
+  }
 }
 
 function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {

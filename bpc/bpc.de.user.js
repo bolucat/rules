@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.0.0
+// @version         3.5.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -161,11 +161,7 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
 
 else if (matchDomain('bild.de')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div.offer-module');
-  if (paywall) {
-    removeDOMElement(paywall);
-    getArchive(url, 'article');
-  }
+  getArchive(url, 'div.offer-module', '', 'article');
 }
 
 else if (matchDomain('boersen-zeitung.de')) {
@@ -549,12 +545,8 @@ else if (matchDomain('nw.de')) {
 
 else if (matchDomain('nzz.ch')) {
   window.setTimeout(function () {
-    let paywall = document.querySelector('div.dynamic-regwall');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let url = window.location.href;
-      getArchive(url, 'section[data-nzz-article]');
-    }
+    let url = window.location.href;
+    getArchive(url, 'div.dynamic-regwall', '', 'section[data-nzz-article]');
     let ads = document.querySelectorAll('div.resor');
     hideDOMElement(...ads);
   }, 2000);
@@ -615,11 +607,7 @@ else if (matchDomain('schweizermonat.ch')) {
 
 else if (matchDomain('spiegel.de')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div[data-area="paywall"]');
-  if (paywall) {
-    removeDOMElement(paywall);
-    getArchive(url, 'div[data-area="body"]');
-  }
+  getArchive(url, 'div[data-area="paywall"]', '', 'div[data-area="body"]');
 }
 
 else if (matchDomain('springermedizin.de')) {
@@ -646,33 +634,24 @@ else if (matchDomain('sueddeutsche.de')) {
   let url = window.location.href;
   let paywall;
   if (window.location.pathname.startsWith('/projekte/artikel/')) {
-    paywall = document.querySelector('div.offer-page');
-    if (paywall) {
-      removeDOMElement(paywall);
-      getArchive(url, 'main');
-    }
+    getArchive(url, 'div.offer-page', '', 'main');
   } else {
-    paywall = document.querySelector('p.sz-article-body__paragraph--reduced');
-    if (paywall) {
-      paywall.removeAttribute('class');
-      getArchive(url, 'div[itemprop="articleBody"]');
-    }
+    getArchive(url, 'p.sz-article-body__paragraph--reduced', {rm_attrib: 'class'}, 'div[itemprop="articleBody"]');
   }
   window.setTimeout(function () {
     let ads = document.querySelectorAll('div.ad-container, er-ad-slot');
     hideDOMElement(...ads);
-  }, 1500);
+  }, 3000);
 }
 
 else if (matchDomain('tagesspiegel.de')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div#paywal, div#pw');
-  if (paywall) {
-    removeDOMElement(paywall);
-    if (matchDomain('www.tagesspiegel.de')) {
-      let url_archive = 'https://' + archiveRandomDomain() + '/' + url;
-      getArchive(url, 'div#story-elements');
-    } else if (matchDomain('interaktiv.tagesspiegel.de')) {
+  if (matchDomain('www.tagesspiegel.de')) {
+    getArchive(url, 'div#paywal', '', 'div#story-elements');
+  } else if (matchDomain('interaktiv.tagesspiegel.de')) {
+    let paywall = document.querySelector('div#pw');
+    if (paywall) {
+      removeDOMElement(paywall);
       let article = document.querySelector('div.tslr-article > p');
       if (article)
         article.firstChild.before(archiveLink(url));
@@ -754,11 +733,7 @@ else if (matchDomain('vol.at')) {
 
 else if (matchDomain('welt.de')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div.contains_walled_content');
-  if (paywall) {
-    removeDOMElement(paywall);
-    getArchive(url, 'article');
-  }
+  getArchive(url, 'div.contains_walled_content', '', 'article');
   let ads = document.querySelectorAll('div[data-component="Outbrain"], div[data-component="OEmbedComponent"], div[class*="c-ad"]');
   hideDOMElement(...ads);
 }
@@ -802,12 +777,10 @@ else if (matchDomain('weser-kurier.de')) {
 
 else if (matchDomain('zeit.de')) {
   let url = window.location.href.split(/[#\?]/)[0];
-  let paywall = document.querySelector('aside#paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
+  if (url.match(/\.de\/\d{4}\//)) {
     if (document.querySelector('head > link[rel="next"]'))
       url += '/komplettansicht';
-    getArchive(url, 'article');
+    getArchive(url, 'aside#paywall', '', 'article');
   }
 }
 
@@ -1111,9 +1084,18 @@ function archiveRandomDomain() {
   return 'archive.' + tld;
 }
 
-function getArchive(url, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
+function getArchive(url, paywall_sel, paywall_action = '', selector, func_post = '', text_fail = '', selector_source = selector, selector_archive = selector) {
   let url_archive = 'https://' + archiveRandomDomain() + '/' + url.split(/[#\?]/)[0];
-  replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
+  let paywall = document.querySelectorAll(paywall_sel);
+  if (paywall.length) {
+    clearPaywall(paywall, paywall_action);
+    replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
+    if (func_post) {
+      window.setTimeout(function () {
+        func_post();
+      }, 3000);
+    }
+  }
 }
 
 function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {

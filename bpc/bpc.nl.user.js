@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.5.0.0
+// @version         3.5.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -136,20 +136,12 @@ else if (matchDomain('doorbraak.be')) {
 
 else if (matchDomain('ewmagazine.nl')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div.paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    getArchive(url, 'article[id]');
-  }
+  getArchive(url, 'div.paywall', '', 'article[id]');
 }
 
 else if (matchDomain('fd.nl')) {
   let url = window.location.href;
-  let paywall = document.querySelectorAll('section.upsell, div.upsell-modal-background');
-  if (paywall.length) {
-    removeDOMElement(...paywall);
-    getArchive(url, 'main');
-  }
+  getArchive(url, 'section.upsell, div.upsell-modal-background', '', 'main');
 }
 
 else if (matchDomain(be_roularta_domains)) {
@@ -195,11 +187,7 @@ else if (matchDomain(be_roularta_domains)) {
 
 else if (matchDomain('groene.nl')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div#closed-block');
-  if (paywall) {
-    removeDOMElement(paywall);
-    getArchive(url, 'article');
-  }
+  getArchive(url, 'div#closed-block', '', 'article');
 }
 
 else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > link[href*=".ndcmediagroep.nl/"]')) {
@@ -208,15 +196,13 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
 }
 
 else if (matchDomain(nl_dpg_adr_domains)) {
-  let url = window.location.href;
-  let paywall = document.querySelector('div#remaining-paid-content[data-reduced="true"]');
-  if (paywall) {
-    removeDOMElement(paywall);
-    getArchive(url, 'div.article__body', '', 'div#remaining-paid-content');
+  let func_post = function () {
     let noscroll = document.querySelectorAll('html[style], body[style]');
     for (let elem of noscroll)
       elem.removeAttribute('style');
   }
+  let url = window.location.href;
+  getArchive(url, 'div#remaining-paid-content[data-reduced="true"]', '', 'div.article__body', func_post, '', 'div#remaining-paid-content');
 }
 
 else if (matchDomain(nl_dpg_media_domains)) {
@@ -571,9 +557,18 @@ function archiveRandomDomain() {
   return 'archive.' + tld;
 }
 
-function getArchive(url, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
+function getArchive(url, paywall_sel, paywall_action = '', selector, func_post = '', text_fail = '', selector_source = selector, selector_archive = selector) {
   let url_archive = 'https://' + archiveRandomDomain() + '/' + url.split(/[#\?]/)[0];
-  replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
+  let paywall = document.querySelectorAll(paywall_sel);
+  if (paywall.length) {
+    clearPaywall(paywall, paywall_action);
+    replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
+    if (func_post) {
+      window.setTimeout(function () {
+        func_post();
+      }, 3000);
+    }
+  }
 }
 
 function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {

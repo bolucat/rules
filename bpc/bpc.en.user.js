@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.4.9.6
+// @version         3.5.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -578,11 +578,7 @@ else if (matchDomain('citywire.com')) {
 
 else if (matchDomain('ft.com')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div[data-component="unlockBanner"]');
-  if (paywall) {
-    removeDOMElement(paywall);
-    getArchive(url, 'div#barrier-page', '', 'article#site-content', true, 'article#article-body');
-  }
+  getArchive(url, 'div[data-component="unlockBanner"], img[src*="icons/padlock_icon.svg"]', '', 'div#barrier-page', '', '', 'article#site-content', 'article#article-body');
 }
 
 else if (matchDomain('granta.com')) {
@@ -595,11 +591,9 @@ else if (matchDomain('independent.co.uk')) {
     let ads = document.querySelectorAll('amp-ad, amp-embed, [id^="ad-"]');
     hideDOMElement(...ads);
   } else {
-    let paywall = document.querySelector('div.article-premium');
     let related = document.querySelector('div.related');
-    if (paywall && !related) {
-      paywall.classList.remove('article-premium');
-      getArchive(url, 'div#main');
+    if (!related) {
+      getArchive(url, 'div.article-premium', {rm_class: 'article-premium'}, 'div#main');
     }
   }
 }
@@ -619,11 +613,7 @@ else if (matchDomain('prospectmagazine.co.uk')) {
 
 else if (matchDomain('spectator.co.uk')) {
   let url = window.location.href;
-  let paywall = document.querySelector('section.paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    getArchive(url, 'article');
-  }
+  getArchive(url, 'section.paywall', '', 'article');
   let banners = document.querySelectorAll('#subscribe-ribbon, div.ad-slot');
   hideDOMElement(...banners);
 }
@@ -796,10 +786,7 @@ else if (matchDomain('theneweuropean.co.uk')) {
 else if (matchDomain('thetimes.co.uk')) {
   let url = window.location.href;
   if (window.location.hostname !== 'epaper.thetimes.co.uk') {
-    let paywall = document.querySelector('div#paywall-portal-article-footer');
-    if (paywall && !url.includes('?shareToken=')) {
-      removeDOMElement(paywall);
-      getArchive(url, 'article#article-main');
+    let func_post = function () {
       window.setTimeout(function () {
         let headings = document.querySelectorAll('div > div[role="heading"]');
         for (let elem of headings)
@@ -815,6 +802,9 @@ else if (matchDomain('thetimes.co.uk')) {
             elem.style = 'overflow: auto !important; height: 100% !important;';
         }, n * 500);
       }
+    }
+    if (!url.includes('?shareToken=')) {
+      getArchive(url, 'div#paywall-portal-article-footer', '', 'article#article-main', func_post);
     }
     let paywall_page = document.querySelector('div#paywall-portal-page-footer');
     let block = document.querySelector('.subscription-block');
@@ -1350,26 +1340,21 @@ else if (matchDomain('foxnews.com')) {
 else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
   window.setTimeout(function () {
   if (window.location.pathname.includes('/.')) {
-    let paywall_sel = 'div[data-test="paywallMidpage"]';
-    let paywall = document.querySelector(paywall_sel);
-    if (paywall) {
-      removeDOMElement(paywall);
-      let url = window.location.href;
-      let article_link_sel = 'article header';
-      let article_link = document.querySelector(article_link_sel);
+    let func_post = function () {
+      let article_link = document.querySelector('article header');
       if (article_link) {
-        let article_sel = 'div[data-test="articleBody"]';
-        getArchive(url, article_sel);
-        window.setTimeout(function () {
-          let article_new = document.querySelector(article_sel);
-          paywall = article_new.querySelector(paywall_sel);
-          if (paywall) {
-            removeDOMElement(paywall);
-            article_link.firstChild.before(googleSearchToolLink(url));
-          }
-        }, 2000);
+        let article_new = document.querySelector(article_sel);
+        let paywall = article_new.querySelector(paywall_sel);
+        if (paywall) {
+          removeDOMElement(paywall);
+          article_link.firstChild.before(googleSearchToolLink(url));
+        }
       }
     }
+    let url = window.location.href;
+    let paywall_sel = 'div[data-test="paywallMidpage"]';
+    let article_sel = 'div[data-test="articleBody"]';
+    getArchive(url, paywall_sel, '', article_sel, func_post);
   }
   }, 2000);
 }
@@ -1886,11 +1871,7 @@ else if (matchDomain('outlookindia.com')) {
 
 else if (matchDomain('project-syndicate.org')) {
   let url = window.location.href;
-  let paywall = document.querySelector('div.paywall--base');
-  if (paywall) {
-    removeDOMElement(paywall);
-    getArchive(url, 'div[data-page-area="article-body"]');
-  }
+  getArchive(url, 'div.paywall--base', '', 'div[data-page-area="article-body"]');
 }
 
 else if (matchDomain('puck.news')) {
@@ -3346,9 +3327,18 @@ function archiveRandomDomain() {
   return 'archive.' + tld;
 }
 
-function getArchive(url, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
+function getArchive(url, paywall_sel, paywall_action = '', selector, func_post = '', text_fail = '', selector_source = selector, selector_archive = selector) {
   let url_archive = 'https://' + archiveRandomDomain() + '/' + url.split(/[#\?]/)[0];
-  replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
+  let paywall = document.querySelectorAll(paywall_sel);
+  if (paywall.length) {
+    clearPaywall(paywall, paywall_action);
+    replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
+    if (func_post) {
+      window.setTimeout(function () {
+        func_post();
+      }, 3000);
+    }
+  }
 }
 
 function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
