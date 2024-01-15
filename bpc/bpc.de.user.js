@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.0.1
+// @version         3.5.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -40,6 +40,7 @@
 window.setTimeout(function () {
 
 var domain;
+var func_post;
 var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce;
 
@@ -327,7 +328,7 @@ else if (matchDomain('faz.net')) {
 else if (matchDomain('freiepresse.de')) {
   if (window.location.pathname.includes('-artikel')) {
     let url = window.location.href;
-    let func_post = function () {
+    func_post = function () {
       let lazy_images = document.querySelectorAll('picture.lazy');
       for (let elem of lazy_images) {
         elem.removeAttribute('class');
@@ -339,7 +340,7 @@ else if (matchDomain('freiepresse.de')) {
         }
       }
     }
-    getGoogleWebcache(url, 'div.article-teaser', '', 'article', func_post);
+    getGoogleWebcache(url, 'div.article-teaser', '', 'article');
   }
 }
 
@@ -631,17 +632,18 @@ else if (matchDomain('springermedizin.de')) {
 }
 
 else if (matchDomain('sueddeutsche.de')) {
+  let clear_ads = function () {
+    let ads = document.querySelectorAll('div.ad-container, er-ad-slot');
+    hideDOMElement(...ads);
+  }
+  func_post = clear_ads;
   let url = window.location.href;
-  let paywall;
   if (window.location.pathname.startsWith('/projekte/artikel/')) {
     getArchive(url, 'div.offer-page', '', 'main');
   } else {
     getArchive(url, 'p.sz-article-body__paragraph--reduced', {rm_attrib: 'class'}, 'div[itemprop="articleBody"]');
   }
-  window.setTimeout(function () {
-    let ads = document.querySelectorAll('div.ad-container, er-ad-slot');
-    hideDOMElement(...ads);
-  }, 3000);
+  clear_ads();
 }
 
 else if (matchDomain('tagesspiegel.de')) {
@@ -1029,7 +1031,11 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
             removeDOMElement(...invalid_links);
           }
           window.setTimeout(function () {
-            article.parentNode.replaceChild(article_new, article);
+            if (article.parentNode) {
+              article.parentNode.replaceChild(article_new, article);
+              if (func_post)
+                func_post();
+            }
           }, 200);
         }
       } else
@@ -1060,17 +1066,12 @@ function replaceTextFail(url, article, proxy, text_fail) {
   }
 }
 
-function getGoogleWebcache(url, paywall_sel, paywall_action = '', selector, func_post = '', selector_source = selector) {
+function getGoogleWebcache(url, paywall_sel, paywall_action = '', selector, selector_source = selector) {
   let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split(/[#\?]/)[0];
   let paywall = document.querySelectorAll(paywall_sel);
   if (paywall.length) {
     clearPaywall(paywall, paywall_action);
     replaceDomElementExt(url_cache, true, false, selector, '', selector_source);
-    if (func_post) {
-      window.setTimeout(function () {
-        func_post();
-      }, 1500);
-    }
   }
 }
 
@@ -1084,17 +1085,12 @@ function archiveRandomDomain() {
   return 'archive.' + tld;
 }
 
-function getArchive(url, paywall_sel, paywall_action = '', selector, func_post = '', text_fail = '', selector_source = selector, selector_archive = selector) {
+function getArchive(url, paywall_sel, paywall_action = '', selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let url_archive = 'https://' + archiveRandomDomain() + '/' + url.split(/[#\?]/)[0];
   let paywall = document.querySelectorAll(paywall_sel);
   if (paywall.length) {
     clearPaywall(paywall, paywall_action);
     replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
-    if (func_post) {
-      window.setTimeout(function () {
-        func_post();
-      }, 3000);
-    }
   }
 }
 

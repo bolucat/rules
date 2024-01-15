@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.5.0.1
+// @version         3.5.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -64,6 +64,7 @@
 window.setTimeout(function () {
 
 var domain;
+var func_post;
 var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce = true;
 
@@ -196,13 +197,13 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
 }
 
 else if (matchDomain(nl_dpg_adr_domains)) {
-  let func_post = function () {
+  func_post = function () {
     let noscroll = document.querySelectorAll('html[style], body[style]');
     for (let elem of noscroll)
       elem.removeAttribute('style');
   }
   let url = window.location.href;
-  getArchive(url, 'div#remaining-paid-content[data-reduced="true"]', '', 'div.article__body', func_post, '', 'div#remaining-paid-content');
+  getArchive(url, 'div#remaining-paid-content[data-reduced="true"]', '', 'div.article__body', '', 'div#remaining-paid-content');
 }
 
 else if (matchDomain(nl_dpg_media_domains)) {
@@ -502,7 +503,11 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
             removeDOMElement(...invalid_links);
           }
           window.setTimeout(function () {
-            article.parentNode.replaceChild(article_new, article);
+            if (article.parentNode) {
+              article.parentNode.replaceChild(article_new, article);
+              if (func_post)
+                func_post();
+            }
           }, 200);
         }
       } else
@@ -533,17 +538,12 @@ function replaceTextFail(url, article, proxy, text_fail) {
   }
 }
 
-function getGoogleWebcache(url, paywall_sel, paywall_action = '', selector, func_post = '', selector_source = selector) {
+function getGoogleWebcache(url, paywall_sel, paywall_action = '', selector, selector_source = selector) {
   let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split(/[#\?]/)[0];
   let paywall = document.querySelectorAll(paywall_sel);
   if (paywall.length) {
     clearPaywall(paywall, paywall_action);
     replaceDomElementExt(url_cache, true, false, selector, '', selector_source);
-    if (func_post) {
-      window.setTimeout(function () {
-        func_post();
-      }, 1500);
-    }
   }
 }
 
@@ -557,17 +557,12 @@ function archiveRandomDomain() {
   return 'archive.' + tld;
 }
 
-function getArchive(url, paywall_sel, paywall_action = '', selector, func_post = '', text_fail = '', selector_source = selector, selector_archive = selector) {
+function getArchive(url, paywall_sel, paywall_action = '', selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let url_archive = 'https://' + archiveRandomDomain() + '/' + url.split(/[#\?]/)[0];
   let paywall = document.querySelectorAll(paywall_sel);
   if (paywall.length) {
     clearPaywall(paywall, paywall_action);
     replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
-    if (func_post) {
-      window.setTimeout(function () {
-        func_post();
-      }, 3000);
-    }
   }
 }
 
