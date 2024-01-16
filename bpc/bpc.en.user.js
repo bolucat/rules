@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.0.2
+// @version         3.5.0.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -590,8 +590,8 @@ else if (matchDomain('independent.co.uk')) {
   func_post = function () {
     let lazy_images = document.querySelectorAll('img[loading="lazy"][width]');
     for (let elem of lazy_images) {
-      elem.removeAttribute('style');
       elem.removeAttribute('width');
+      elem.style = 'width: 100%;';
     }
   }
   let url = window.location.href;

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.0.2
+// @version         3.5.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -777,13 +777,16 @@ else if (matchDomain('weser-kurier.de')) {
   hideDOMElement(...ads);
 }
 
+else if (matchDomain('wiwo.de')) {
+  let url = window.location.href;
+  getArchive(url, 'div.o-paywall', '', 'article');
+}
+
 else if (matchDomain('zeit.de')) {
   let url = window.location.href.split(/[#\?]/)[0];
-  if (url.match(/\.de\/\d{4}\//)) {
-    if (document.querySelector('head > link[rel="next"]'))
-      url += '/komplettansicht';
-    getArchive(url, 'aside#paywall', '', 'article');
-  }
+  if (document.querySelector('head > link[rel="next"]'))
+    url += '/komplettansicht';
+  getArchive(url, 'aside#paywall', '', 'article');
 }
 
 else if (matchDomain(de_lv_domains)) {
