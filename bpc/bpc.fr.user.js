@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.5.0.1
+// @version         3.5.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -407,7 +407,7 @@ else if (matchDomain('legrandcontinent.eu')) {
 else if (matchDomain(['lejdd.fr', 'parismatch.com', 'public.fr'])) {
   let poool_banners = document.querySelectorAll('#poool-container, #poool-widget-content, #poool-widget');
   let forbidden = document.querySelector('.forbidden');
-  let ads = document.querySelectorAll('div[class^="lmn-"]');
+  let ads = document.querySelectorAll('div[class^="lmn-"], div.premium-hidden, div.p-aside--placeholder');
   hideDOMElement(...poool_banners, forbidden, ...ads);
   let bottom_hide = document.querySelector('.cnt[data-poool-mode="hide"]');
   if (bottom_hide) {
@@ -422,6 +422,15 @@ else if (matchDomain('lemagit.fr')) {
     paywall.classList.remove('paywall');
     let banners = document.querySelectorAll('p#firstP, div#inlineRegistrationWrapper');
     removeDOMElement(...banners);
+  }
+}
+
+else if (matchDomain('leparisien.fr')) {
+  if (window.location.pathname.startsWith('/amp/'))
+    ampToHtml();
+  else {
+    let url = window.location.href;
+    getArchive(url, 'div.paywall', '', 'article');
   }
 }
 
@@ -904,7 +913,7 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
       if (article_new) {
         if (article && article.parentNode) {
           if (url.startsWith('https://archive.')) {
-            let arch_dom = (selector_archive !== selector) ? article_new.querySelector(selector_archive) : article_new;
+            let arch_dom = (selector_archive !== selector) ? (article_new.querySelector(selector_archive) || document.querySelector(selector_archive)) : article_new;
             if (arch_dom) {
               arch_dom.firstChild.before(archiveLink_renew(window.location.href));
               arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));

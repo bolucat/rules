@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: bKzwQbjfGWZHXYuI8AyRqA
-! Diff-Path: ../patches/224/224-s-1705423010-3600.patch
+! Checksum: pEm3Eu+GCIGfHmLtdZb8WA
+! Diff-Path: ../patches/224/224-s-1705487806-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.8.54
-! TimeUpdated: 2024-01-16T16:32:34+00:00
+! Version: 2.1.8.60
+! TimeUpdated: 2024-01-17T10:32:26+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -475,10 +475,13 @@
 ! Bad: ||ad.doubleclick.net^ (should be in adservers.txt)
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/170879
+noy1.top##+js(no-xhr-if, /api/ads)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/170075
 caq98i.top##+js(abort-on-property-read, alertadmodal)
+! https://github.com/AdguardTeam/AdguardFilters/issues/170882
 ! https://github.com/AdguardTeam/AdguardFilters/issues/169925
-playwright.nodejs.cn##+js(set-constant, _AdBlockInit, noopFunc)
+nodejs.cn##+js(set-constant, _AdBlockInit, noopFunc)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/169356
 docsmall.com#@##google-ads
 ! https://github.com/AdguardTeam/AdguardFilters/issues/168132
@@ -1251,7 +1254,7 @@ _click*(com?
 ! This section contains the list of domain-specific rules that block ads.
 !
 ! Good: example.org###rek; ||example.com/ads/
-! Bad: example.org#$##rek { display: none !important; } (for instance, should be in general_extensions.txt)
+! Bad: example.org#@##banner_ad (for instance, should be in allowlist.txt or in antiadblock.txt)
 !
 ! https://github.com/AdguardTeam/AdguardFilters/issues/158406
 ||creative.141live.com/widgets/Spot/
@@ -1291,7 +1294,7 @@ hk01.com###debug-0-ad-outer-container
 hk01.com##div[class^="Box-v"] > .enterviewport__wrapper:has(> div[data-id="lazyload-placeholder"]:only-child)
 hk01.com##.article-grid__desktop-rhs-section > .items-center:has(> div[class^="sc-"] > div[data-id="lazyload-placeholder"])
 ipcelou.com##.MODBanana
-playwright.nodejs.cn###pagead
+nodejs.cn###pagead
 3dmgame.com##.addownbox_gaosu
 3dmgame.com#?#.Gmaeinfobtn_tab > a.patchshow[style]:has(> span:contains(/^广告$/))
 gvm.com.tw##.promotion_ad
@@ -6278,6 +6281,18 @@ newduba.cn###jq_youxi
 ||zzbmxl.xyz^
 ||zzyy17.top^
 ||zzyy18.top^
+||zmklhev.cn^
+||hqjstd.xyz^
+||hltkl.fun^
+||oyotqp.icu^
+||vrwdsvr.icu^
+||dnfnpff.xyz^
+||ajghca.xyz^
+||4wfe3.icu^
+||mec9k.com^
+||wfpjeul.cn^
+||yxptcrss.xyz^
+||qsfbmol.cn^
 ||zzyy19.top^
 ||zzyy20.top^
 ##[style*="sotv.me"]
