@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.5.1.0
+// @version         3.5.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -28,6 +28,8 @@
 // @match           *://*.gooieneemlander.nl/*
 // @match           *://*.groene.nl/*
 // @match           *://*.haarlemsdagblad.nl/*
+// @match           *://*.hbvl.be/*
+// @match           *://*.hln.be/*
 // @match           *://*.hoogeveenschecourant.nl/*
 // @match           *://*.humo.be/*
 // @match           *://*.ijmuidercourant.nl/*
@@ -37,14 +39,17 @@
 // @match           *://*.leidschdagblad.nl/*
 // @match           *://*.libelle.be/*
 // @match           *://*.libelle.nl/*
+// @match           *://*.limburger.nl/*
 // @match           *://*.margriet.nl/*
 // @match           *://*.meppelercourant.nl/*
 // @match           *://*.nieuweooststellingwerver.nl/*
+// @match           *://*.nieuwsblad.be/*
 // @match           *://*.nieuwsbladnof.nl/*
 // @match           *://*.noordhollandsdagblad.nl/*
 // @match           *://*.nrc.nl/*
 // @match           *://*.parool.nl/*
 // @match           *://*.pzc.nl/*
+// @match           *://*.standaard.be/*
 // @match           *://*.steenwijkercourant.nl/*
 // @match           *://*.stellingwerf.nl/*
 // @match           *://*.telegraaf.nl/*
@@ -73,12 +78,37 @@ var func_post;
 var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce = true;
 
+var be_mediahuis_domains = ['hbvl.be', 'nieuwsblad.be', 'standaard.be'];
 var be_roularta_domains = ['artsenkrant.com', 'beleggersbelangen.nl', 'flair.be', 'knack.be', 'kw.be', 'libelle.be'];
 var nl_dpg_adr_domains = ['ad.nl', 'bd.nl', 'bndestem.nl', 'destentor.nl', 'ed.nl', 'gelderlander.nl', 'pzc.nl', 'tubantia.nl'];
 var nl_dpg_media_domains = ['demorgen.be', 'flair.nl', 'humo.be', 'libelle.nl', 'margriet.nl', 'parool.nl', 'trouw.nl', 'volkskrant.nl'];
 var nl_mediahuis_region_domains = ['gooieneemlander.nl', 'haarlemsdagblad.nl', 'ijmuidercourant.nl', 'leidschdagblad.nl', 'noordhollandsdagblad.nl'];
 
-if (matchDomain('businessam.be')) {
+if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
+  window.setTimeout(function () {
+    let article_sel = 'div[data-fragment-name="articleDetail"]';
+    let article = document.querySelector(article_sel);
+    if (article) {
+      let article_new = document.createElement('div');
+      article_new.id = 'fetch';
+      article.appendChild(article_new);
+      let url = window.location.href;
+      getArchive(url, 'div[data-cj-root="subscription-wall"]', '', 'div#fetch', '', 'div[data-auth-premium-content]', article_sel);
+    }
+    let button_close = document.querySelector('span[data-testid="button-close"]');
+    if (button_close)
+      button_close.click();
+    let banners = document.querySelectorAll('div.paywall--titel');
+    hideDOMElement(...banners);
+  }, 1500);
+  window.setTimeout(function () {
+    let overlay = document.querySelector('body.didomi-popup-open');
+    if (overlay)
+      overlay.classList.remove('didomi-popup-open');
+  }, 3000);
+}
+
+else if (matchDomain('businessam.be')) {
   let paywall = document.querySelector('div.paywall');
   if (paywall) {
     removeDOMElement(paywall);
@@ -202,7 +232,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
   hideDOMElement(...ads);
 }
 
-else if (matchDomain(nl_dpg_adr_domains)) {
+else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
   func_post = function () {
     let noscroll = document.querySelectorAll('html[style], body[style]');
     for (let elem of noscroll)
@@ -555,7 +585,10 @@ function replaceTextFail(url, article, proxy, text_fail) {
         text_fail_div.appendChild(a_link);
       }
     }
-    article.firstChild.before(text_fail_div);
+    if (article.firstChild)
+      article.firstChild.before(text_fail_div);
+    else
+      article.appendChild(text_fail_div);
   }
 }
 
