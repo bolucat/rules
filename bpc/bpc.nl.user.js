@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.5.1.1
+// @version         3.5.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -86,14 +86,18 @@ var nl_mediahuis_region_domains = ['gooieneemlander.nl', 'haarlemsdagblad.nl', '
 
 if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
   window.setTimeout(function () {
-    let article_sel = 'div[data-fragment-name="articleDetail"]';
-    let article = document.querySelector(article_sel);
-    if (article) {
-      let article_new = document.createElement('div');
-      article_new.id = 'fetch';
-      article.appendChild(article_new);
-      let url = window.location.href;
-      getArchive(url, 'div[data-cj-root="subscription-wall"]', '', 'div#fetch', '', 'div[data-auth-premium-content]', article_sel);
+    let paywall_sel = 'div[data-cj-root="subscription-wall"]';
+    let paywall = document.querySelector(paywall_sel);
+    if (paywall) {
+      let article_sel = 'div[data-fragment-name="articleDetail"]';
+      let article = document.querySelector(article_sel);
+      if (article) {
+        let article_new = document.createElement('div');
+        article_new.id = 'bpc_fetch';
+        article.appendChild(article_new);
+        let url = window.location.href;
+        getArchive(url, paywall_sel, '', 'div#bpc_fetch', '', 'div[data-auth-premium-content]', article_sel);
+      }
     }
     let button_close = document.querySelector('span[data-testid="button-close"]');
     if (button_close)
