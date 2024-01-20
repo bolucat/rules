@@ -956,7 +956,10 @@ function replaceTextFail(url, article, proxy, text_fail) {
         text_fail_div.appendChild(a_link);
       }
     }
-    article.firstChild.before(text_fail_div);
+    if (article.firstChild)
+      article.firstChild.before(text_fail_div);
+    else
+      article.appendChild(text_fail_div);
   }
 }
 

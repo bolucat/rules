@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.1.0
+// @version         3.5.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -582,6 +582,8 @@ else if (matchDomain('profil.at')) {
     let fade = document.querySelector('div#cfs-paywall-container');
     hideDOMElement(fade);
   }
+  let overlay = document.querySelector('div.consentOverlay');
+  hideDOMElement(overlay);
 }
 
 else if (matchDomain('schwaebische.de')) {
@@ -1022,7 +1024,7 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
       if (article_new) {
         if (article && article.parentNode) {
           if (url.startsWith('https://archive.')) {
-            let arch_dom = (selector_archive !== selector) ? article_new.querySelector(selector_archive) : article_new;
+            let arch_dom = (selector_archive !== selector) ? (article_new.querySelector(selector_archive) || document.querySelector(selector_archive)) : article_new;
             if (arch_dom) {
               arch_dom.firstChild.before(archiveLink_renew(window.location.href));
               arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
@@ -1065,7 +1067,10 @@ function replaceTextFail(url, article, proxy, text_fail) {
         text_fail_div.appendChild(a_link);
       }
     }
-    article.firstChild.before(text_fail_div);
+    if (article.firstChild)
+      article.firstChild.before(text_fail_div);
+    else
+      article.appendChild(text_fail_div);
   }
 }
 
