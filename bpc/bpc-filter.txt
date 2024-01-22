@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.5.1.3
+! Version: 3.5.1.5
 
 ! General
 
@@ -45,7 +45,8 @@ gadget.pico.tools##+js(json-prune, locked)
 /wp-content/plugins/leaky-paywall/js/leaky-paywall-cookie.js$script,~third-party
 /zephr/feature$xmlhttprequest,~third-party
 
-abril.com.br##+js(set, wp_paywall_vars, undefined)
+||abril.com.br/*/*-*-*-*$inline-script
+abril.com.br##+js(ra, class|srcset, img.jetpack-lazy-image[srcset])
 adweek.com##+js(cookie-remover, blaize_session)
 ||ajc.com/prod/ajc/loader.min.js$script,~third-party
 ! Cox First Media
@@ -144,7 +145,7 @@ etc.se##+js(ra, class, div.paywalled, stay)
 etc.se##+js(ra, class, div.bg-gradient-white, stay)
 etc.se##div[class$="-ad"]
 euobserver.com##+js(rc, show, div.membership-upsell.show)
-||exame.com/*/js/pywll-dyn.js$script,~third-party
+exame.com##+js(set-local-storage-item, pywllcount, $remove$)
 fieldandstream.com##div[class^="mailmunch-"]
 fieldandstream.com##+js(ra, class, html[class])
 ||financialexpress.com/*/min/premiumStoryContent.js$script,~third-party
@@ -519,6 +520,7 @@ theguardian.com##[name="SlotBodyEnd"],div[data-cy="contributions-liveblog-epic"]
 @@||nationalreview.com^
 @@||sdk.privacy-center.org^$script,third-party
 ##div#didomi-host
+##+js(rc, didomi-popup-open, body.didomi-popup-open)
 
 ! custom sites
 .com/webfiles/*/js/metering.js$script,third-party,domain=hbook.com|libraryjournal.com|slj.com

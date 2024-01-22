@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.5.1.0
+// @version         3.5.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -138,7 +138,7 @@ else if (matchDomain(be_groupe_ipm_domains)) {
 
 else if (matchDomain('businessam.be')) {
   let paywall = document.querySelector('div.paywall');
-  if (paywall && dompurify_loaded) {
+  if (paywall) {
     removeDOMElement(paywall);
     let article = document.querySelector('div.text-gradient');
     if (article) {
@@ -154,7 +154,7 @@ else if (matchDomain('businessam.be')) {
         try {
           let content = decode_utf8(atob(content_script.text.split(/window\.fullcontent64\s?=\s?"/)[1].split('";')[0]));
           let parser = new DOMParser();
-          let doc = parser.parseFromString('<div>' + DOMPurify.sanitize(content, dompurify_options) + '</div>', 'text/html');
+          let doc = parser.parseFromString('<div>' + content + '</div>', 'text/html');
           let content_new = doc.querySelector('div');
           article.parentNode.replaceChild(content_new, article);
         } catch (err) {
@@ -493,47 +493,51 @@ else if (matchDomain('lesechos.fr')) {
     ampToHtml();
   } else {
     window.setTimeout(function () {
-      let abo_banner = document.querySelector('div[class*="pgxf3b-2"]');
-      let ad_blocks = document.querySelectorAll('[class*="jzxvkd"]');
-      hideDOMElement(...ad_blocks);
-      if (abo_banner) {
-        removeDOMElement(abo_banner);
-        let url = window.location.href;
-        let html = document.documentElement.outerHTML;
-        try {
-          let split1 = html.split(/window\.__REACT_QUERY_STATE__\s?=/)[1];
-          let state = split1.split('</script>')[0].trim().replace(/;$/, '');
-          let data = JSON.parse(state);
-          let data_article = data.queries[1].state;
-          let url_loaded = data_article.data.path;
-          if (url_loaded && (!url_loaded.slice(-7).match(/\d+/) || !url.includes(url_loaded.slice(-7))))
-            refreshCurrentTab();
-          else {
-            let article = data_article.data.stripes[0].mainContent[0].data.description.replace(/allowfullscreen='(true)?'/g, '');
-            let paywallNode = document.querySelector('.post-paywall');
-            if (paywallNode) {
-              let contentNode = document.createElement('div');
-              let parser = new DOMParser();
-              let article_html = parser.parseFromString('<div>' + article + '</div>', 'text/html');
-              let article_par = article_html.querySelector('div');
-              if (article_par) {
-                contentNode.appendChild(article_par);
-                contentNode.className = paywallNode.className;
-                paywallNode.before(contentNode);
-                removeDOMElement(paywallNode);
-                let paywallLastChildNode = document.querySelector('.post-paywall  > :last-child');
-                if (paywallLastChildNode) {
-                  paywallLastChildNode.setAttribute('style', 'height: auto !important; overflow: hidden !important; max-height: none !important;');
+      let paywall = document.querySelector('div#paywall');
+      if (paywall) {
+        removeDOMElement(paywall);
+        let scripts = document.querySelectorAll('script:not([src]):not([type])');
+        let json_script;
+        for (let script of scripts) {
+          if (script.text.match(/window\.__REACT_QUERY_STATE__\s?=\s?/)) {
+            json_script = script;
+            break;
+          }
+        }
+        if (json_script) {
+          try {
+            let json = JSON.parse(json_script.text.split(/window\.__REACT_QUERY_STATE__\s?=\s?/)[1].split('};')[0] + '}');
+            let data_article = json.queries[1].state;
+            let url = window.location.href;
+            let url_loaded = data_article.data.path;
+            if (url_loaded && (!url_loaded.slice(-7).match(/\d+/) || !url.includes(url_loaded.slice(-7))))
+              refreshCurrentTab();
+            else {
+              let json_text = data_article.data.stripes[0].mainContent[0].data.description.replace(/allowfullscreen='(true)?'/g, '');
+              let article = document.querySelector('div.post-paywall');
+              if (article) {
+                let contentNode = document.createElement('div');
+                let parser = new DOMParser();
+                let doc = parser.parseFromString('<div class="' + article.className + '">' + json_text + '</div>', 'text/html');
+                let article_new = doc.querySelector('div');
+                if (article.parentNode && article_new) {
+                  article.parentNode.replaceChild(article_new, article);
+                  let article_lastnode = document.querySelector('.post-paywall  > :last-child');
+                  if (article_lastnode) {
+                    article_lastnode.setAttribute('style', 'height: auto !important; overflow: hidden !important; max-height: none !important;');
+                  }
                 }
               }
+              let styleElem = document.head.appendChild(document.createElement('style'));
+              styleElem.innerText = ".post-paywall::after {height: auto !important;}";
             }
-            let styleElem = document.head.appendChild(document.createElement('style'));
-            styleElem.innerHTML = ".post-paywall::after {height: auto !important;}";
+          } catch (err) {
+            console.log(err);
           }
-        } catch (err) {
-          console.log(err);
         }
       }
+      let ads = document.querySelectorAll('[class*="jzxvkd"]');
+      hideDOMElement(...ads);
     }, 500);
   }
 }

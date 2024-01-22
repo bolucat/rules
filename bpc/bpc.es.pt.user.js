@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.4.8.1
+// @version         3.5.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -38,6 +38,7 @@
 // @match           *://*.em.com.br/*
 // @match           *://*.emporda.info/*
 // @match           *://*.estadao.com.br/*
+// @match           *://*.exame.com/*
 // @match           *://*.expansion.com/*
 // @match           *://*.gazetadopovo.com.br/*
 // @match           *://*.gestion.pe/*
@@ -220,7 +221,7 @@ else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
   }
 }
 
-} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['cambiocolombia.com', 'clarin.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com'])) {//south america
+} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['cambiocolombia.com', 'clarin.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'exame.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com'])) {//south america
 
 if (matchDomain('abril.com.br')) {
   if (window.location.pathname.endsWith('/amp/')) {
@@ -229,6 +230,11 @@ if (matchDomain('abril.com.br')) {
     let amp_ads = document.querySelectorAll('amp-ad, amp-embed');
     hideDOMElement(...amp_ads);
   } else {
+    let hidden_images = document.querySelectorAll('img.jetpack-lazy-image[srcset]');
+    for (let elem of hidden_images) {
+      elem.removeAttribute('class');
+      elem.removeAttribute('srcset');
+    }
     let ads = document.querySelectorAll('div.ads, div[class^="ads-"]');
     hideDOMElement(...ads);
   }
@@ -382,6 +388,12 @@ else if (matchDomain('estadao.com.br')) {
     let ads = document.querySelectorAll('div[class^="styles__Container-sc-"]');
     hideDOMElement(...ads);
   }
+}
+
+else if (matchDomain('exame.com')) {
+  window.localStorage.removeItem('pywllcount');
+  let ads = document.querySelectorAll('div[id^="ads_"]');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('folha.uol.com.br')) {
