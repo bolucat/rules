@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.5.1.5
+! Version: 3.5.1.6
 
 ! General
 
@@ -45,8 +45,7 @@ gadget.pico.tools##+js(json-prune, locked)
 /wp-content/plugins/leaky-paywall/js/leaky-paywall-cookie.js$script,~third-party
 /zephr/feature$xmlhttprequest,~third-party
 
-||abril.com.br/*/*-*-*-*$inline-script
-abril.com.br##+js(ra, class|srcset, img.jetpack-lazy-image[srcset])
+||abril.com.br/*/abril-paywall/$script,~third-party
 adweek.com##+js(cookie-remover, blaize_session)
 ||ajc.com/prod/ajc/loader.min.js$script,~third-party
 ! Cox First Media
@@ -152,7 +151,7 @@ fieldandstream.com##+js(ra, class, html[class])
 financialexpress.com##+js(rc, paywall, .paywall)
 financialexpress.com##div.pcl-wrap
 ||folha.uol.com.br/paywall/js/$script,~third-party
-||paywall.folha.uol.com.br^$script,~third-party
+||paywall.folha.uol.com.br^$script,xmlhttprequest,~third-party
 forbes.com##+js(ra, class, body[class], stay)
 ||foreignaffairs.com/modules/custom/fa_paywall_js/js/paywall.js$script,~third-party
 foreignaffairs.com##.article-dropcap:style(height: auto !important;)
@@ -561,6 +560,7 @@ inman.com##.ism-article-block
 ipsoa.it##+js(ra, style, div.paywall)
 ||irishnews.com/*/js/bundle.js$script,~third-party
 ||irishnews.com/*/js/mpppaywall.js$script,~third-party
+||jornaldocomercio.com/*/json/paywall.json$xmlhttprequest,~third-party
 jornaljoca.com.br##+js(acis, $, paywall)
 kunststoffe.de,qz-online.de##+js(ra, style, div[style^="filter: blur"], stay)
 kunststoffe.de,qz-online.de##dialog#paywall-dialog
@@ -593,6 +593,7 @@ nu.nl##article#LOGIN
 ||odt.co.nz/bwtw/scripts/tw.js$script,~third-party
 odt.co.nz##+js(ra, property, div[property="content:encoded"])
 onet.pl##+js(cookie-remover, /^xbc/)
+||opovo.com.br/*/js/auth/auth_new_menu.min.js$script,~third-party
 ||pebmed.com.br/wp-content/*/paywall/dist/js/app.js$script,~third-party
 popbitch.com##+js(ra, class, div[class*="-premium"])
 ||corprensa.com/la-prensa/evolok/$script,domain=prensa.com

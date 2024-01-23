@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.5.1.1
+// @version         3.5.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -230,12 +230,7 @@ if (matchDomain('abril.com.br')) {
     let amp_ads = document.querySelectorAll('amp-ad, amp-embed');
     hideDOMElement(...amp_ads);
   } else {
-    let hidden_images = document.querySelectorAll('img.jetpack-lazy-image[srcset]');
-    for (let elem of hidden_images) {
-      elem.removeAttribute('class');
-      elem.removeAttribute('srcset');
-    }
-    let ads = document.querySelectorAll('div.ads, div[class^="ads-"]');
+    let ads = document.querySelectorAll('div.ads, div[class^="ads-"], div.MGID');
     hideDOMElement(...ads);
   }
 }
