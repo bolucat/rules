@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: KP53Y3YgjwUgtjyqvLTxXQ
-! Diff-Path: ../patches/7/7-s-1706020602-3600.patch
+! Checksum: deM3uTdovE73tfhTY1hmgQ
+! Diff-Path: ../patches/7/7-s-1706106993-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.47.85
-! TimeUpdated: 2024-01-23T14:33:19+00:00
+! Version: 2.0.47.89
+! TimeUpdated: 2024-01-24T14:33:13+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1492,7 +1492,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/themes/CashLINESystem/js/modal.$script
 !
 ! Malware/Phishing
-://jp-hotlineinfoget-$document
+://jp-*-*.s3.ap-*.amazonaws.com/*-*-*-*-*-*-*/index.html$document
 /?start=(0101)-$document
 ://pub-*.r2.dev/$document
 ://amzone.co.jp.$document
@@ -1677,6 +1677,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+matomelotte.com##.plugin-memo:has(> div.side > div > a[href^="https://amzn.to"][target="_blank"])
+nijie.info##a[ad_id]
 shinmai.co.jp#?#.items-center > .flex-col.pb-8:has(> h3:contains(あわせて読みたい))
 shinmai.co.jp##.items-center > .flex-col.pb-8:has(> h3 + .min-h-\[250px\] > div:only-child > div[id^="logly-lift-"])
 popnroll.tv###uzou-chat-ad + div[class^="sc-"]
@@ -10253,7 +10255,6 @@ app-story.net#@##AdBlock
 @@||g.doubleclick.net/gampad/ads?$xmlhttprequest,domain=pointmall.rakuten.co.jp
 @@||pointmall.rakuten.co.jp/public/special/img/banners/*-300x250-$image,domain=pointmall.rakuten.co.jp
 @@||pointmall.rakuten.co.jp/public/special/img/banners/*_300x250.png$image,domain=pointmall.rakuten.co.jp
-pointmall.rakuten.co.jp#@#[id^="google_ads_iframe"]
 pointmall.rakuten.co.jp#@#.ad-space
 pointmall.rakuten.co.jp#@#.ad-unit
 pointmall.rakuten.co.jp#@#.ad-zone
@@ -10271,7 +10272,6 @@ asahi-net.jp,au.com,eowebmail.eonet.jp,hwm.hi-ho.ne.jp,icloud.com,mail.google.co
 @@||googlesyndication.com/safeframe/$domain=buhitter.com
 @@||googletagservices.com/tag/js/gpt.js$domain=buhitter.com
 @@||gsspcln.jp/w/ad_format/reward/gnsrwdmod.js$domain=buhitter.com
-buhitter.com#@#[id^="google_ads_iframe"]
 ! unhide popular articles (2nd rule: mobile)
 nijisenmon.work#@#.ad.widget
 nijisenmon.work#@#.st-h-ad
@@ -10285,7 +10285,6 @@ nijisenmon.work#@#.st-h-ad
 @@||googlesyndication.com/pagead/managed/js/adsense/*/show_ads_impl_$script,domain=nehannn.com|bihann.com
 @@||googlesyndication.com/safeframe/$subdocument,domain=nehannn.com|bihann.com
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$domain=nehannn.com|bihann.com
-bihann.com,nehannn.com#@#[id^="google_ads_iframe"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/134769
 @@||eisys-bcs.jp/data.json$domain=dlsite.com
 ! fix https://nanpre.adg5.com/reword_get.php?view=ok
@@ -10293,7 +10292,6 @@ bihann.com,nehannn.com#@#[id^="google_ads_iframe"]
 @@||g.doubleclick.net/gpt/pubads_impl_$script,domain=nanpre.adg5.com
 @@||g.doubleclick.net/gampad/ads?$xmlhttprequest,domain=nanpre.adg5.com
 @@||safeframe.googlesyndication.com/safeframe/$subdocument,domain=nanpre.adg5.com
-nanpre.adg5.com#@#[id^="google_ads_iframe"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/133206
 crefan.jp#@#.adspace
 ! https://github.com/AdguardTeam/AdguardFilters/issues/132324

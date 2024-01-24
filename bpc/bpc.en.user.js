@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.1.2
+// @version         3.5.1.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -32,6 +32,7 @@
 // @match           *://*.livelaw.in/*
 // @match           *://*.nautil.us/*
 // @match           *://*.niagarafallsreview.ca/*
+// @match           *://*.newsweek.pl/*
 // @match           *://*.nzherald.co.nz/*
 // @match           *://*.puck.news/*
 // @match           *://*.rp.pl/*
@@ -93,6 +94,7 @@
 // @exclude         *://*.tt.com/*
 // @exclude         *://*.tuttosport.com/*
 // @exclude         *://*.wochenblatt.com/*
+// @exclude         *://*.youtube.com/*
 // @grant           GM.xmlHttpRequest			 
 // ==/UserScript==
 
@@ -1815,6 +1817,21 @@ else if (matchDomain('newsday.com')) {
 else if (matchDomain('newsweek.com')) {
   let ads = document.querySelectorAll('div#topad, div[id^="dfp-ad-"]');
   hideDOMElement(...ads);
+}
+
+else if (matchDomain('newsweek.pl')) {
+  let clear_ads = function () {
+    window.setTimeout(function () {
+      let ads = document.querySelectorAll('[class^="pwAds"], .hide-for-paying, div#contentPremiumPlaceholder > span, div.onet-ad');
+      hideDOMElement(...ads);
+    }, 2000);
+  }
+  func_post = function () {
+    clear_ads();
+  }
+  let url = window.location.href;
+  getArchive(url, 'div#contentPremiumPlaceholder', '', 'div#article-content-body');
+  clear_ads();
 }
 
 else if (matchDomain(['nola.com', 'theadvocate.com'])) {
