@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.5.1.7
+! Version: 3.5.1.8
 
 ! General
 
@@ -109,7 +109,6 @@ citywire.com##registration-widget,div.alert--locked
 connaissancedesarts.com##div.ad-container
 ||paywall.correiodopovo.com.br$script,~third-party
 ||corriereobjects.it/*/js/_paywall.sjs$script,domain=corriere.it
-corrieredellosport.it##+js(cookie-remover, /paywall_articles/)
 crikey.com.au##+js(cookie-remover, blaize_session)
 ||cdn.wyleex.com/elcronista/pw.min.js$script,domain=cronista.com
 ||crusoe.com.br/assets/js/swg-wallcontent-crusoe.js$script,~third-party
@@ -446,9 +445,10 @@ corriereadriatico.it,ilgazzettino.it,ilmattino.it,ilmessaggero.it,quotidianodipu
 corriereadriatico.it,ilgazzettino.it,ilmattino.it,ilmessaggero.it,quotidianodipuglia.it##[subscriptions-section="content-not-granted"]
 
 ! Landwirtschaftsverlag
-profi.de,topagrar.at,topagrar.com,wochenblatt.com##+js(ra, class|style, div.paywall-full-content[style])
+profi.de,topagrar.com,wochenblatt.com##+js(ra, class|style, div.paywall-full-content[style])
 profi.de,wochenblatt.com##div.m-paywall__textFadeOut,div[id^="paymentprocess-"]
-topagrar.at,topagrar.com##div.paywall-package
+||topagrar.com/*/news/$inline-script
+topagrar.com##div.paywall-package
 
 ! Madsack sites
 dieharke.de,dnn.de,gnz.de,goettinger-tageblatt.de,haz.de,kn-online.de,landeszeitung.de,ln-online.de,lvz.de,maz-online.de,neuepresse.de,op-marburg.de,ostsee-zeitung.de,paz-online.de,rnd.de,siegener-zeitung.de,sn-online.de,tah.de,torgauerzeitung.de,waz-online.de##+js(set, Fusion.globalContent.isPaid, false)

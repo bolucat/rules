@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.1.4
+// @version         3.5.1.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1320,9 +1320,14 @@ else if (matchDomain('foreignpolicy.com')) {
     let content_gated = document.querySelector('div.content-gated');
     if (content_gated) {
       let insider = document.querySelector('body.is-fp-insider');
-      if (insider)
+      if (insider) {
         getJsonUrl('div.content-gated', {rm_class: 'content-gated'}, 'div.content-gated');
-      else
+        window.setTimeout(function () {
+          let lazy_images = document.querySelectorAll('img[loading="lazy"]');
+          for (let elem of lazy_images)
+            elem.removeAttribute('loading');
+        }, 1000);
+      } else
         content_gated.classList.remove('content-gated');
     }
   }
@@ -1648,7 +1653,7 @@ else if (matchDomain('jpost.com')) {
 }
 
 else if (matchDomain(['latimes.com', 'sandiegouniontribune.com'])) {
-  let ads = document.querySelectorAll('div.enhancement, div.google-dfp-ad-wrapper');
+  let ads = document.querySelectorAll('div.enhancement, div.google-dfp-ad-wrapper, div.revcontent');
   hideDOMElement(...ads);
 }
 

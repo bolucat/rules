@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.1.2
+// @version         3.5.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -17,8 +17,6 @@
 // @match           *://*.nzz.ch/*
 // @match           *://*.profil.at/*
 // @match           *://*.schweizermonat.ch/*
-// @match           *://*.topagrar.at/*
-// @match           *://*.topagrar.com/*
 // @match           *://*.tt.com/*
 // @match           *://*.vn.at/*
 // @match           *://*.vol.at/*
@@ -45,7 +43,7 @@ var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce;
 
 var de_funke_medien_domains = ['ikz-online.de', 'nrz.de', 'waz.de', 'wp.de', 'wr.de'];
-var de_lv_domains = ['profi.de', 'topagrar.at', 'topagrar.com', 'wochenblatt.com'];
+var de_lv_domains = ['profi.de', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de'];
 
 if (matchDomain('aerztezeitung.de')) {
@@ -792,15 +790,10 @@ else if (matchDomain('zeit.de')) {
 }
 
 else if (matchDomain(de_lv_domains)) {
-  let paywall_topagrar = document.querySelector('div > div.paywall-package');
-  let paywall_other = document.querySelector('div[id^="paymentprocess-"]');
-  if (paywall_topagrar || paywall_other) {
-    if (paywall_topagrar)
-      removeDOMElement(paywall_topagrar.parentNode);
-    else {
-      let intro = document.querySelector('div.m-paywall__textFadeOut');
-      removeDOMElement(paywall_other, intro);
-    }
+  let paywall = document.querySelector('div[id^="paymentprocess-"]');
+  if (paywall) {
+    let intro = document.querySelector('div.m-paywall__textFadeOut');
+    removeDOMElement(paywall, intro);
     let div_hidden = document.querySelector('div.paywall-full-content[style]');
     if (div_hidden) {
       div_hidden.removeAttribute('class');
