@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.1.3
+// @version         3.5.1.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -41,6 +41,10 @@ var domain;
 var func_post;
 var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce;
+
+var overlay = document.querySelector('body.didomi-popup-open');
+if (overlay)
+  overlay.classList.remove('didomi-popup-open');
 
 var de_funke_medien_domains = ['ikz-online.de', 'nrz.de', 'waz.de', 'wp.de', 'wr.de'];
 var de_lv_domains = ['profi.de', 'wochenblatt.com'];
@@ -1140,12 +1144,8 @@ function amp_iframes_replace(weblink = false, source = '') {
   for (let amp_iframe of amp_iframes) {
     if (!weblink) {
       elem = document.createElement('iframe');
-      Object.assign(elem, {
-        src: amp_iframe.getAttribute('src'),
-        height: amp_iframe.getAttribute('height'),
-        width: 'auto',
-        style: 'border: 0px;'
-      });
+      elem.src = amp_iframe.getAttribute('src'),
+      elem.style = 'height: 100%; width: 100%; border: 0px;';
       if (amp_iframe.getAttribute('sandbox'))
         elem.sandbox = amp_iframe.getAttribute('sandbox');
       amp_iframe.parentNode.replaceChild(elem, amp_iframe);
@@ -1256,8 +1256,9 @@ function decode_utf8(str) {
 
 function ampToHtml() {
   window.setTimeout(function () {
-    let canonical = document.querySelector('head > link[rel="canonical"]');
-    window.location.href = canonical.href;
+    let canonical = document.querySelector('head > link[rel="canonical"][href]');
+    if (canonical)
+      window.location.href = canonical.href;
   }, 1000);
 }
 

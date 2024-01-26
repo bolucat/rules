@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.4.8.2
+// @version         3.4.8.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
@@ -20,12 +20,17 @@
 
 window.setTimeout(function () {
 
-var it_gedi_domains = ['huffingtonpost.it', 'ilsecoloxix.it', 'italian.tech', 'lastampa.it', 'lescienze.it', 'moda.it', 'repubblica.it'];
-var it_ilmessaggero_domains = ['corriereadriatico.it', 'ilgazzettino.it', 'ilmattino.it', 'ilmessaggero.it', 'quotidianodipuglia.it'];
-var it_quotidiano_domains = ['ilgiorno.it', 'ilrestodelcarlino.it', 'iltelegrafolivorno.it', 'lanazione.it', 'quotidiano.net'];
 var domain;
 var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce;
+
+var overlay = document.querySelector('body.didomi-popup-open');
+if (overlay)
+  overlay.classList.remove('didomi-popup-open');
+
+var it_gedi_domains = ['huffingtonpost.it', 'ilsecoloxix.it', 'italian.tech', 'lastampa.it', 'lescienze.it', 'moda.it', 'repubblica.it'];
+var it_ilmessaggero_domains = ['corriereadriatico.it', 'ilgazzettino.it', 'ilmattino.it', 'ilmessaggero.it', 'quotidianodipuglia.it'];
+var it_quotidiano_domains = ['ilgiorno.it', 'ilrestodelcarlino.it', 'iltelegrafolivorno.it', 'lanazione.it', 'quotidiano.net'];
 
 if (matchDomain('corriere.it')) {
   if (window.location.pathname.endsWith('_amp.html')) {
@@ -361,12 +366,8 @@ function amp_iframes_replace(weblink = false, source = '') {
   for (let amp_iframe of amp_iframes) {
     if (!weblink) {
       elem = document.createElement('iframe');
-      Object.assign(elem, {
-        src: amp_iframe.getAttribute('src'),
-        height: amp_iframe.getAttribute('height'),
-        width: 'auto',
-        style: 'border: 0px;'
-      });
+      elem.src = amp_iframe.getAttribute('src'),
+      elem.style = 'height: 100%; width: 100%; border: 0px;';
       if (amp_iframe.getAttribute('sandbox'))
         elem.sandbox = amp_iframe.getAttribute('sandbox');
       amp_iframe.parentNode.replaceChild(elem, amp_iframe);
@@ -433,9 +434,10 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
 
 function ampToHtml() {
   window.setTimeout(function () {
-    let canonical = document.querySelector('head > link[rel="canonical"]');
-    window.location.href = canonical.href;
-  }, 500);
+    let canonical = document.querySelector('head > link[rel="canonical"][href]');
+    if (canonical)
+      window.location.href = canonical.href;
+  }, 1000);
 }
 
 function refreshCurrentTab() {

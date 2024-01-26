@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.5.1.2
+// @version         3.5.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -52,6 +52,10 @@ var domain;
 var func_post;
 var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce;
+
+var overlay = document.querySelector('body.didomi-popup-open');
+if (overlay)
+  overlay.classList.remove('didomi-popup-open');
 
 var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net'];
 var be_roularta_domains = ['femmesdaujourdhui.be', 'flair.be', 'levif.be'];
@@ -821,8 +825,9 @@ function decode_utf8(str) {
 
 function ampToHtml() {
   window.setTimeout(function () {
-    let canonical = document.querySelector('head > link[rel="canonical"]');
-    window.location.href = canonical.href;
+    let canonical = document.querySelector('head > link[rel="canonical"][href]');
+    if (canonical)
+      window.location.href = canonical.href;
   }, 1000);
 }
 
@@ -1048,12 +1053,8 @@ function amp_iframes_replace(weblink = false, source = '') {
   for (let amp_iframe of amp_iframes) {
     if (!weblink) {
       elem = document.createElement('iframe');
-      Object.assign(elem, {
-        src: amp_iframe.getAttribute('src'),
-        height: amp_iframe.getAttribute('height'),
-        width: 'auto',
-        style: 'border: 0px;'
-      });
+      elem.src = amp_iframe.getAttribute('src'),
+      elem.style = 'height: 100%; width: 100%; border: 0px;';
       if (amp_iframe.getAttribute('sandbox'))
         elem.sandbox = amp_iframe.getAttribute('sandbox');
       amp_iframe.parentNode.replaceChild(elem, amp_iframe);
