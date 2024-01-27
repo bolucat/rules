@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.2.0
+// @version         3.5.2.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -2087,6 +2087,11 @@ else if (matchDomain('stocknews.com')) {
     blurmes[i].setAttribute('id', 'blurmenot' + i);
 }
 
+else if (matchDomain('stratfor.com')) {
+  let url = window.location.href;
+  getArchive(url, 'div#paywallCTAContainer', '', 'main', '', 'main', 'h1');
+}
+
 else if (matchDomain('studocu.com')) {
   window.setTimeout(function () {
     let paywall = document.querySelector('button[data-test-selector^="preview-banner-"]');
@@ -3292,8 +3297,10 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
           if (url.startsWith('https://archive.')) {
             let arch_dom = (selector_archive !== selector) ? (article_new.querySelector(selector_archive) || document.querySelector(selector_archive)) : article_new;
             if (arch_dom) {
-              arch_dom.firstChild.before(archiveLink_renew(window.location.href));
-              arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
+              if (arch_dom.firstChild)
+                arch_dom = arch_dom.firstChild;
+              arch_dom.before(archiveLink_renew(window.location.href));
+              arch_dom.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
             }
             let targets = article_new.querySelectorAll('a[target="_blank"][href^="' + window.location.origin + '"]');
             for (let elem of targets)
