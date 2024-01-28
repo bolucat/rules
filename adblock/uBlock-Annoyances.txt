@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Sat, 27 Jan 2024 13:34:42 +0000
-! Diff-Path: ../patches/2024.1.27.859.patch#ublock-annoyances
+! Last modified: Sun, 28 Jan 2024 08:00:23 +0000
+! Diff-Path: ../patches/2024.1.28.917.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -563,6 +563,7 @@ praxis.nl,brico.be##+js(trusted-set-cookie, CookieConsentLevel, functional_analy
 praxis.nl,brico.be##+js(set-cookie, CookieNotificationSeen, 1, , reload, 1)
 ! technical only
 correos.es##+js(trusted-set-cookie, correosCookies, '{"tecnicas":"true","analiticas":"false","publicidad":"false"}')
+bankinter.com##+js(trusted-set-cookie, bkpolicy, aceptacion=selectiva//tecnicas=si//personalizacion=si//analiticas=no//publicitarias=no//version=0, , , domain, bankinter.com)
 ! *** filters/annoyances-others.txt ***
 mimaletadepeliculas.blogspot.com##+js(aopr, document.oncontextmenu)
 mimaletadepeliculas.blogspot.com##+js(acs, document.onselectstart)
@@ -4333,3 +4334,6 @@ mkv-pastes.com##+js(aopw, document.onselectstart)
 ||unic.com.vn/js/disable-copy.js$script
 ||unic.com.vn/css/chongcopy.css$css
 unic.com.vn##body:style(user-select: text !important; -ms-user-select: text !important; -moz-user-select: text !important; -khtml-user-select: text !important; -webkit-user-select: text !important; -webkit-touch-callout: default !important;)
+goodreads.com#@?#.Overlay--floating:has(> div.Overlay__window > div.Overlay__content > div.LoginInterstitial)
+! shaalaa .com anti select
+shaalaa.com##*:style(cursor: revert !important; -webkit-touch-callout: default !important; -webkit-user-select: text !important; -khtml-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important;)

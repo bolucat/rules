@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.2.2
+// @version         3.5.2.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -123,10 +123,11 @@ else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
   }, 100);
 }
 
+var func_post;
+
 window.setTimeout(function () {
 
 var domain;
-var func_post;
 var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce;
 
@@ -2112,6 +2113,18 @@ else if (matchDomain('studocu.com')) {
   }, 1000);
 }
 
+else if (matchDomain('study.com')) {
+  let faded_content = document.querySelector('div.faded-content');
+  if (faded_content)
+    faded_content.removeAttribute('class');
+  let div_hidden = document.querySelector('div.hidden[ng-non-bindable]');
+  if (div_hidden)
+    div_hidden.removeAttribute('class');
+  let banners = document.querySelectorAll('div.article-cutoff-div');
+  removeDOMElement(...banners);
+}
+
+
 else if (matchDomain('swarajyamag.com')) {
   let paywall = document.querySelector('div#story-notification');
   if (paywall) {
@@ -2901,30 +2914,28 @@ else if (matchDomain('wsj.com')) {
         if (masthead_link)
           masthead_link.href = 'https://www.wsj.com';
       } else {
-        let snippet = document.querySelector('.snippet-promotion, div#cx-snippet-overlay');
-        if (snippet) {
-          removeDOMElement(snippet);
+        let paywall_sel = '.snippet-promotion, div#cx-snippet-overlay';
+        let paywall = document.querySelector(paywall_sel);
+        if (paywall) {
           if (!matchDomain('www.wsj.com')) {
+            removeDOMElement(paywall);
             if (url_article)
               window.location.href = window.location.href.replace('wsj.com', 'wsj.com/amp');
             else
               window.location.href = '/amp/articles/' + path_article[0];
-          } else {
-            let wsj_pro = snippet.querySelector('a[href^="https://wsjpro.com/"]');
-            let article = document.querySelector('article');
-            if (article) {
-              if (wsj_pro) {
-                article.firstChild.before(googleSearchToolLink(window.location.href));
-                article.firstChild.before(archiveLink(window.location.href, 'BPC > Try for full article text (articles before 2023-10-28)'));
-              } else
-                article.firstChild.before(archiveLink(window.location.href));
-            }
+          } else if (true) {
+            let url = window.location.href;
+            let article_sel = 'article section';
+            let wsj_pro = paywall.querySelector('a[href^="https://wsjpro.com/"]');
+            if (wsj_pro)
+              article_sel = 'article';
+            getArchive(url, paywall_sel, '', article_sel);
           }
         }
       }
     }
   }
-  let ads = document.querySelectorAll('div.wsj-ad, div.adWrapper, div.uds-ad-container');
+  let ads = document.querySelectorAll('div.wsj-ad, div.adWrapper, div.uds-ad-container, div.css-xgokil-Box');
   hideDOMElement(...ads);
 }
 

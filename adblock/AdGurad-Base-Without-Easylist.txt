@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: d9nL0j9UAbUXK+PNU3MncQ
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1706373374-3600.patch
+! Checksum: DbbCDM8VEfhbWm2ZTU2hyg
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1706459773-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.19.67
-! TimeUpdated: 2024-01-27T16:32:46+00:00
+! Version: 2.3.19.73
+! TimeUpdated: 2024-01-28T16:32:45+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -7235,6 +7235,8 @@ pornhub.com,pornhub.org,pornhub.net##+js(no-setTimeout-if, \x41\x64\x62\x6c\x6f\
 !
 ! NOTE: Regular rules
 !
+! qwant.com
+qwant.com#@#div[class="_2NDle"]:has(div[data-testid="advertiserAdsDisplayUrl"])
 ! https://github.com/AdguardTeam/AdguardFilters/issues/171447
 limpaso.com##.popSc
 limpaso.com##+js(abort-on-property-write, checkAdsStatus)
@@ -32689,6 +32691,7 @@ $script,third-party,denyallow=linkvertise.com|fastly.net|statically.io|sharecast
 !
 ! NOTE: Specific rules
 !
+qwant.com#$#.is-sidebar:has(div[data-testid="advertiserAdsDisplayUrl"]) { position: absolute !important; left: -3000px !important; }
 ||123movies.ba/vpnads$image
 dwell.com#?#figure + div[class]:has(> div[class] > div[id^="div-gpt-ad-"])
 terabox.com##.pause-patch-ad
@@ -55145,6 +55148,7 @@ implbits.com#@#.banner_container
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardBrowserExtension/issues/2648#issuecomment-1913597147
 ! https://github.com/AdguardTeam/AdguardFilters/issues/171428 [Stealth Mode - IP hiding]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/171107
 ! a problem only with non empty referrer value

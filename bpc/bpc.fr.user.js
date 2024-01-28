@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.5.1.3
+// @version         3.5.1.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -46,10 +46,11 @@
 (function() {
   'use strict';
 
+var func_post;
+
 window.setTimeout(function () {
 
 var domain;
-var func_post;
 var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce;
 
@@ -924,8 +925,10 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
           if (url.startsWith('https://archive.')) {
             let arch_dom = (selector_archive !== selector) ? (article_new.querySelector(selector_archive) || document.querySelector(selector_archive)) : article_new;
             if (arch_dom) {
-              arch_dom.firstChild.before(archiveLink_renew(window.location.href));
-              arch_dom.firstChild.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
+              if (arch_dom.firstChild)
+                arch_dom = arch_dom.firstChild;
+              arch_dom.before(archiveLink_renew(window.location.href));
+              arch_dom.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
             }
             let targets = article_new.querySelectorAll('a[target="_blank"][href^="' + window.location.origin + '"]');
             for (let elem of targets)
