@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.4.8.3
+// @version         3.4.8.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
@@ -361,16 +361,18 @@ function header_nofix(header, msg = 'BPC > no fix') {
 }
 
 function amp_iframes_replace(weblink = false, source = '') {
-  let amp_iframes = document.querySelectorAll('amp-iframe' + (source ? '[src*="'+ source + '"]' : ''));
+  let amp_iframes = document.querySelectorAll('amp-iframe' + (source ? '[src*="' + source + '"]' : ''));
   let par, elem;
   for (let amp_iframe of amp_iframes) {
     if (!weblink) {
-      elem = document.createElement('iframe');
-      elem.src = amp_iframe.getAttribute('src'),
-      elem.style = 'height: 100%; width: 100%; border: 0px;';
-      if (amp_iframe.getAttribute('sandbox'))
-        elem.sandbox = amp_iframe.getAttribute('sandbox');
-      amp_iframe.parentNode.replaceChild(elem, amp_iframe);
+      if (amp_iframe.offsetHeight > 10) {
+        elem = document.createElement('iframe');
+        elem.src = amp_iframe.getAttribute('src'),
+        elem.style = 'height: ' + amp_iframe.offsetHeight + 'px; width: 100%; border: 0px;';
+        if (amp_iframe.getAttribute('sandbox'))
+          elem.sandbox = amp_iframe.getAttribute('sandbox');
+        amp_iframe.parentNode.replaceChild(elem, amp_iframe);
+      }
     } else {
       par = document.createElement('p');
       par.style = 'margin: 20px 0px;';

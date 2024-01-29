@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.1.7
+// @version         3.5.1.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -82,7 +82,7 @@ else if (matchDomain('augsburger-allgemeine.de')) {
   } else {
     amp_unhide_subscr_section();
   }
-  let banners = document.querySelectorAll('div.piano-article');
+  let banners = document.querySelectorAll('div.piano-article, div.p-ad');
   hideDOMElement(...banners);
 }
 
@@ -1144,16 +1144,18 @@ function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full artic
 }
 
 function amp_iframes_replace(weblink = false, source = '') {
-  let amp_iframes = document.querySelectorAll('amp-iframe' + (source ? '[src*="'+ source + '"]' : ''));
+  let amp_iframes = document.querySelectorAll('amp-iframe' + (source ? '[src*="' + source + '"]' : ''));
   let par, elem;
   for (let amp_iframe of amp_iframes) {
     if (!weblink) {
-      elem = document.createElement('iframe');
-      elem.src = amp_iframe.getAttribute('src'),
-      elem.style = 'height: 100%; width: 100%; border: 0px;';
-      if (amp_iframe.getAttribute('sandbox'))
-        elem.sandbox = amp_iframe.getAttribute('sandbox');
-      amp_iframe.parentNode.replaceChild(elem, amp_iframe);
+      if (amp_iframe.offsetHeight > 10) {
+        elem = document.createElement('iframe');
+        elem.src = amp_iframe.getAttribute('src'),
+        elem.style = 'height: ' + amp_iframe.offsetHeight + 'px; width: 100%; border: 0px;';
+        if (amp_iframe.getAttribute('sandbox'))
+          elem.sandbox = amp_iframe.getAttribute('sandbox');
+        amp_iframe.parentNode.replaceChild(elem, amp_iframe);
+      }
     } else {
       par = document.createElement('p');
       par.style = 'margin: 20px 0px;';
