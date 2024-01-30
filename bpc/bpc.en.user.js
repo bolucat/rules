@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.2.5
+// @version         3.5.2.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -95,7 +95,7 @@
 // @exclude         *://*.tuttosport.com/*
 // @exclude         *://*.wochenblatt.com/*
 // @exclude         *://*.youtube.com/*
-// @grant           GM.xmlHttpRequest			 
+// @grant           GM.xmlHttpRequest
 // ==/UserScript==
 
 (function() {
@@ -951,8 +951,7 @@ else if (matchDomain('barandbench.com')) {
 }
 
 else if (matchDomain('barrons.com')) {
-  let url = window.location.href;
-  if (!url.includes('barrons.com/amp/')) {
+  if (!window.location.pathname.startsWith('/amp/')) {
     amp_redirect('div#cx-interstitial-snippet', '', '/amp' + window.location.pathname);
     let continue_buttons = document.querySelectorAll('button.snippet__buttons--continue');
     for (let elem of continue_buttons)
@@ -963,7 +962,7 @@ else if (matchDomain('barrons.com')) {
     amp_unhide_subscr_section('.wsj-ad, amp-ad');
     let login = document.querySelector('div.login-section-container');
     removeDOMElement(login);
-    let amp_images = document.querySelectorAll('amp-img');
+    let amp_images = document.querySelectorAll('div.article__body amp-img');
     for (let amp_img of amp_images) {
       let img_new = document.createElement('img');
       img_new.src = amp_img.getAttribute('src');
@@ -1778,7 +1777,7 @@ else if (matchDomain('newrepublic.com')) {
 else if (matchDomain('newscientist.com')) {
   let clear_ads = function() {
     let ads = document.querySelectorAll('div[class*="Advert"]');
-    hideDOMElement(...ads);	  
+    hideDOMElement(...ads);
   }
   let url = window.location.href;
   func_post = function () {
@@ -2022,7 +2021,7 @@ else if (matchDomain('spglobal.com')) {
 
 else if (matchDomain('sportico.com')) {
   if (window.location.pathname.endsWith('/amp/'))
-    amp_unhide_subscr_section('amp-ad, amp-embed', false);
+    amp_unhide_subscr_section('amp-ad, amp-embed');
 }
 
 else if (matchDomain('staradvertiser.com')) {
@@ -3541,7 +3540,8 @@ function breakText(str, headers = false) {
   if (headers)
     str = str.replace(/(([a-z]{2,}|[\"\“]))(?=[A-Z](?=[A-Za-zÀ-ÿ]+))/gm, "$&\n\n");
   return str;
-}										  
+}
+
 function parseHtmlEntities(encodedString) {
   let parser = new DOMParser();
   let doc = parser.parseFromString('<textarea>' + encodedString + '</textarea>', 'text/html');

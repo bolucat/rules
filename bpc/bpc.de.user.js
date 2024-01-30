@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.1.8
+// @version         3.5.1.9
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -316,7 +316,7 @@ else if (matchDomain('faz.net')) {
                 }
               }
             }
-		  }
+          }
         })
       } catch (err) {
         console.log(err);
@@ -543,7 +543,7 @@ else if (matchDomain('nw.de')) {
   if (!window.location.pathname.endsWith('.amp.html')) {
     amp_redirect('a[data-event-value="paywall-overlay-click"]');
   } else {
-    amp_unhide_access_hide('="loggedIn AND hasAbo"', '', 'amp-ad, amp-embed, .banner', false);
+    amp_unhide_access_hide('="loggedIn AND hasAbo"', '', 'amp-ad, amp-embed, .banner');
   }
 }
 

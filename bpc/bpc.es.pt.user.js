@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.5.1.5
+// @version         3.5.1.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -406,7 +406,7 @@ else if (matchDomain('folha.uol.com.br')) {
 
 else if (matchDomain('gazetadopovo.com.br')) {
   if (window.location.pathname.endsWith('/amp/')) {
-    amp_unhide_subscr_section('div.ads-amp, amp-embed', false);
+    amp_unhide_subscr_section('div.ads-amp, amp-embed, div.tpl-wrapper', false);
   } else {
     let ads = document.querySelectorAll('div.c-ads');
     hideDOMElement(...ads);
