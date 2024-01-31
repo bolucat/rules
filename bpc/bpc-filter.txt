@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.5.2.5
+! Version: 3.5.2.6
 
 ! General
 
@@ -13,6 +13,7 @@
 ||loader-cdn.azureedge.net^$third-party
 ||blueconic.net^$third-party
 /[a-z]{1}\d{2,3}\.\w+\.(co(m|\.uk)|net|org)\/script\.js/$script,~third-party
+@@||nationalreview.com$script,xmlhttprequest,~third-party
 ||cdn.cxense.com^$script,third-party
 @@cdn.cxense.com^$script,domain=bizjournals.com|journaldemontreal.com|journaldequebec.com
 ||ensighten.com/*/Bootstrap.js$script,third-party
@@ -514,9 +515,9 @@ computerweekly.com,lemagit.fr,techtarget.com##p#firstP,div#inlineRegistrationWra
 ||memberstack.com/scripts/v*/memberstack.js$script,third-party
 ||assets.guim.co.uk/assets/SignInGate*.js$script,domain=theguardian.com
 theguardian.com##[name="SlotBodyEnd"],div[data-cy="contributions-liveblog-epic"]
-@@||nationalreview.com^
+
 @@||sdk.privacy-center.org^$script,third-party
-##div#didomi-host
+!##div#didomi-host
 ##+js(rc, didomi-popup-open, body.didomi-popup-open)
 
 ! custom sites
