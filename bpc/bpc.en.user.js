@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.2.6
+// @version         3.5.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -19,6 +19,7 @@
 // @match           *://*.pub/*
 // @match           *://*.businessinsider.com.pl/*
 // @match           *://*.businesspost.ie/*
+// @match           *://*.businesstimes.com.sg/*
 // @match           *://*.epoch.org.il/*
 // @match           *://*.europower.no/*
 // @match           *://*.fiskeribladet.no/*
@@ -1082,6 +1083,13 @@ else if (matchDomain('businessoffashion.com')) {
     let ads = document.querySelectorAll('div[class^="default__AdsBlockWrapper"]');
     hideDOMElement(...ads);
   }
+}
+
+else if (matchDomain(['businesstimes.com.sg', 'straitstimes.com'])) {
+  let url = window.location.href;
+  getArchive(url, 'div[class*=eas-paywall], div#nocx_paywall_area', '', 'main#content');
+  let ads = document.querySelectorAll('div.ads, div[id^="dfp-ad-"], div.cx_paywall_placeholder');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain(['chronicle.com', 'philanthropy.com'])) {
@@ -2495,6 +2503,22 @@ else if (matchDomain(['thejuggernaut.com', 'jgnt.co'])) {
         console.log(err);
       }
     }
+  }
+}
+
+else if (matchDomain('thelampmagazine.com')) {
+  let paywall = document.querySelector('div.paywall-gradient');
+  if (paywall) {
+    paywall.removeAttribute('class');
+    let banner = document.querySelector('section.p-8');
+    removeDOMElement(banner);
+  }
+  let login = document.querySelectorAll('a.js-login-modal-trigger');
+  for (let elem of login) {
+    elem.removeAttribute('class');
+    let url_search = '/search?q=' + elem.innerText.replace(/\s/g, '+');
+    elem.href = url_search;
+    elem.onclick = x => window.location.href = url_search;
   }
 }
 

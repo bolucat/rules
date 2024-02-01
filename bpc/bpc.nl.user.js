@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.5.1.6
+// @version         3.5.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -72,6 +72,80 @@
   'use strict';
 
 var func_post;
+
+if (matchDomain('telegraaf.nl')) {
+  function telegraaf_main(node) {
+    let article_body = document.querySelector('section.TextArticlePage__imageWrapper, section > div.DetailArticleImage');
+    if (node && article_body) {
+      let div_main = document.createElement('div');
+      div_main.style = 'margin: 20px 0px;';
+      let div_elem = document.createElement('div');
+      let par_style = 'font-weight: normal; font-size: 16px; line-height: 1.5;';
+      let scripts = document.querySelectorAll('script:not([src]):not([type])');
+      let window_script = document.querySelector('script#scr-tlg-body');
+      if (window_script && window_script.text.includes('window.telegraaf.articleBodyBlocks')) {
+        removeDOMElement(paywall);
+        let window_text = window_script.text.split('window.telegraaf.articleBodyBlocks')[1].split('window.telegraaf.')[0].replace(/(^\s?=\s?"|";$|\\")/gm, '').replace(/\\\\u003c/gm, '<');
+        let parser = new DOMParser();
+        let doc = parser.parseFromString('<div>' + window_text + '</div>', 'text/html');
+        let article_new = doc.querySelector('div');
+        let pars = article_new.querySelectorAll('p');
+        for (let par of pars)
+          par.style = 'margin: 10px 0px;';
+        let placeholders = article_new.querySelectorAll('div.TeaserImage__placeholder');
+        for (let elem of placeholders)
+          elem.removeAttribute('class');
+        let media = article_new.querySelectorAll('div.NewsletterForm, div.DetailArticleVideo');
+        removeDOMElement(...media);
+        div_main.appendChild(article_new);
+      } else {
+        let json_script = getArticleJsonScript();
+        if (json_script) {
+          removeDOMElement(node);
+          try {
+            let json = JSON.parse(json_script.text);
+            if (json) {
+              let json_text = json.articleBody;
+              if (json_text) {
+                let intro = document.querySelector('span[id^="articleIntro"], p.Article__intro > span:not([class])');
+                if (intro)
+                  json_text = json_text.replace(intro.innerText + '\n\n', '');
+                let text_array = json_text.split('\\n');
+                for (let p_text of text_array) {
+                  let p_div = document.createElement('p');
+                  p_div.innerText = p_text;
+                  p_div.style = par_style;
+                  div_elem.appendChild(p_div);
+                };
+                div_main.appendChild(div_elem);
+              }
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+      article_body.after(div_main);
+    }
+  }
+  setCookie('page_count', '', '', '/', 0);
+  if (window.location.href.startsWith('https://www.telegraaf.nl/error?ref=/')) {
+    window.setTimeout(function () {
+      window.location.href = window.location.href.split('&')[0].replace('error?ref=/', '');
+    }, 500);
+  }
+  let refresh = document.querySelector('div[id="content"] > meta[http-equiv="refresh"]');
+  if (refresh) {
+    refreshCurrentTab();
+  }
+  let paywall = document.querySelector('div.MeteringNotification__backdrop, data-hydrate[data-name="PaywallHandler"]');
+  if (paywall)
+    telegraaf_main(paywall);
+  else
+    waitDOMElement('div.MeteringNotification__backdrop', 'DIV', telegraaf_main, true);
+  let banners = document.querySelectorAll('.ArticleBodyBlocks__inlineArticleSpotXBanner, .WebpushOptin');
+  removeDOMElement(...banners);
+}
 
 window.setTimeout(function () {
 
@@ -276,86 +350,6 @@ else if (matchDomain(nl_mediahuis_region_domains)) {
 else if (matchDomain('nrc.nl')) {
   setCookie('counter', '', '', '/', 0, true);
   let banners = document.querySelectorAll('div[id$="modal__overlay"], div.header__subscribe-bar, div.banner');
-  removeDOMElement(...banners);
-}
-
-else if (matchDomain('telegraaf.nl')) {
-  function telegraaf_main(node) {
-    let article_body = document.querySelector('section.TextArticlePage__imageWrapper, section > div.DetailArticleImage');
-    if (node && article_body) {
-      let div_main = document.createElement('div');
-      div_main.style = 'margin: 20px 0px;';
-      let div_elem = document.createElement('div');
-      let par_style = 'font-weight: normal; font-size: 16px; line-height: 1.5;';
-      let scripts = document.querySelectorAll('script:not([src]):not([type])');
-      let window_script;
-      for (let script of scripts) {
-        if (script.text.length > 2500 && script.text.includes('window.telegraaf.articleBodyBlocks')) {
-          window_script = script;
-          break;
-        }
-      }
-      if (window_script) {
-        removeDOMElement(paywall);
-        let window_text = window_script.text.split('window.telegraaf.articleBodyBlocks')[1].split('window.telegraaf.')[0].replace(/(^\s?=\s?"|";$|\\")/gm, '').replace(/\\\\u003c/gm, '<');
-        let parser = new DOMParser();
-        let doc = parser.parseFromString('<div>' + window_text + '</div>', 'text/html');
-        let article_new = doc.querySelector('div');
-        let pars = article_new.querySelectorAll('p');
-        for (let par of pars)
-          par.style = 'margin: 10px 0px;';
-        let placeholders = article_new.querySelectorAll('div.TeaserImage__placeholder');
-        for (let elem of placeholders)
-          elem.removeAttribute('class');
-        let media = article_new.querySelectorAll('div.NewsletterForm, div.DetailArticleVideo');
-        removeDOMElement(...media);
-        div_main.appendChild(article_new);
-      } else {
-        let json_script = getArticleJsonScript();
-        if (json_script) {
-          removeDOMElement(node);
-          try {
-            let json = JSON.parse(json_script.text);
-            if (json) {
-              let json_text = json.articleBody;
-              if (json_text) {
-                let intro = document.querySelector('span[id^="articleIntro"], p.Article__intro > span:not([class])');
-                if (intro)
-                  json_text = json_text.replace(intro.innerText + '\n\n', '');
-                let text_array = json_text.split('\\n');
-                for (let p_text of text_array) {
-                  let p_div = document.createElement('p');
-                  p_div.innerText = p_text;
-                  p_div.style = par_style;
-                  div_elem.appendChild(p_div);
-                };
-                div_main.appendChild(div_elem);
-              }
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
-      article_body.after(div_main);
-    }
-  }
-  setCookie('page_count', '', '', '/', 0);
-  if (window.location.href.startsWith('https://www.telegraaf.nl/error?ref=/')) {
-    window.setTimeout(function () {
-      window.location.href = window.location.href.split('&')[0].replace('error?ref=/', '');
-    }, 500);
-  }
-  let refresh = document.querySelector('div[id="content"] > meta[http-equiv="refresh"]');
-  if (refresh) {
-    refreshCurrentTab();
-  }
-  let paywall = document.querySelector('div.MeteringNotification__backdrop, data-hydrate[data-name="PaywallHandler"]');
-  if (paywall)
-    telegraaf_main(paywall);
-  else
-    waitDOMElement('div.MeteringNotification__backdrop', 'DIV', telegraaf_main, true);
-  let banners = document.querySelectorAll('.ArticleBodyBlocks__inlineArticleSpotXBanner, .WebpushOptin');
   removeDOMElement(...banners);
 }
 
