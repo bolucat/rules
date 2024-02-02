@@ -12,14 +12,14 @@
 
 ## 规则统计
 
-最后更新时间：2024-01-13 03:02:28
+最后更新时间：2024-02-03 01:47:09
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
-| DOMAIN-SUFFIX | 33  | 
+| DOMAIN-SUFFIX | 31  | 
 | PROCESS-NAME | 2  | 
-| TOTAL | 35  | 
+| TOTAL | 33  | 
 
 
 ## Clash 
@@ -68,7 +68,6 @@ https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_scri
 
 - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Xunlei.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Special/XunLei.list
-- https://rules.kr328.app/xunlei.yaml
 - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/Ruleset/Xunlei.yaml
 
 

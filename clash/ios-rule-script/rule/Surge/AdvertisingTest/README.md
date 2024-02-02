@@ -21,18 +21,18 @@
 
 ## 规则统计
 
-最后更新时间：2024-02-01 03:02:38
+最后更新时间：2024-02-03 01:43:05
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
 | AND | 7  | 
-| DOMAIN | 12603  | 
-| DOMAIN-KEYWORD | 304  | 
-| DOMAIN-SUFFIX | 325587  | 
-| IP-CIDR | 452  | 
-| URL-REGEX | 307  | 
-| TOTAL | 339260  | 
+| DOMAIN | 12434  | 
+| DOMAIN-KEYWORD | 122  | 
+| DOMAIN-SUFFIX | 142006  | 
+| IP-CIDR | 451  | 
+| URL-REGEX | 34  | 
+| TOTAL | 155054  | 
 
 
 ## Surge 
@@ -137,6 +137,8 @@ https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_scri
 - https://raw.githubusercontent.com/dler-io/Rules/main/Clash/Provider/Reject.yaml
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Adblock/Adblock.list
 - https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/QuantumultX/rules/AdBlock.list
+- https://ruleset.isagood.day/reject.conf
+- https://ruleset.isagood.day/reject_drop.conf
 
 
 感谢以上规则作者的辛勤付出（排名不分先后）。

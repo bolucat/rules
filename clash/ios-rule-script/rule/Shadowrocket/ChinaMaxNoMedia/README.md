@@ -12,18 +12,18 @@ ChinaMaxNoMedia规则由《RULE GENERATOR 规则生成器》自动生成。
 
 ## 规则统计
 
-最后更新时间：2024-02-01 03:12:46
+最后更新时间：2024-02-03 02:13:42
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
-| DOMAIN | 540  | 
+| DOMAIN | 533  | 
 | DOMAIN-KEYWORD | 12  | 
-| DOMAIN-SUFFIX | 66817  | 
+| DOMAIN-SUFFIX | 66781  | 
 | IP-ASN | 1005  | 
-| IP-CIDR | 10719  | 
-| USER-AGENT | 69  | 
-| TOTAL | 79162  | 
+| IP-CIDR | 10715  | 
+| USER-AGENT | 65  | 
+| TOTAL | 79111  | 
 
 
 ## Shadowrocket 
@@ -80,47 +80,47 @@ https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_scri
 | Baidu | BaoFengYingYin | BeStore | BesTV | BianFeng  | 
 | BiliBili | Bootcss | ByteDance | CAS | CCB  | 
 | CCTV | CEB | CETV | CGB | CIBN  | 
-| CITIC | CKJR | CMB | CNKI | CNNIC  | 
-| CSDN | CaiNiao | CaiXinChuanMei | Camera360 | ChengTongWangPan  | 
-| China | ChinaASN | ChinaIPs | ChinaIPsBGP | ChinaIPsTest  | 
-| ChinaMax | ChinaMedia | ChinaMobile | ChinaNews | ChinaNoMedia  | 
-| ChinaTelecom | ChinaTest | ChinaUnicom | ChuangKeTie | ChunYou  | 
-| Coolapk | DaMai | DanDanZan | Dandanplay | DangDang  | 
-| Dedao | Deepin | DiDi | DiLianWangLuo | DiSiFanShi  | 
-| DianCeWangKe | DingTalk | DingXiangYuan | Domob | DouBan  | 
-| DouYin | Douyu | DuoWan | EastMoney | Eleme  | 
-| FanFou | FangZhengDianZi | FeiZhu | FengHuangWang | FengXiaWangLuo  | 
-| Fiio | Funshion | GaoDe | Geely | Gitee  | 
-| GovCN | GuiGuDongLi | HaiNanHangKong | HanYi | HeMa  | 
-| HibyMusic | Himalaya | Hpplay | HuYa | HuaShuTV  | 
-| HuanJu | Huawei | HunanTV | Hupu | ICBC  | 
-| IPTVMainland | JiGuangTuiSong | JianGuoYun | JianShu | JinJiangWenXue  | 
-| JingDong | JueJin | Keep | KingSmith | Kingsoft  | 
-| KouDaiShiShang | Ku6 | KuKeMusic | KuaiDi100 | KuaiShou  | 
-| KuangShi | KugouKuwo | LanZouYun | LeJu | LeTV  | 
-| Lenovo | LianMeng | LuDaShi | LvMiLianChuang | MOOMusic  | 
-| Maocloud | Marketing | MeiTu | MeiTuan | MeiZu  | 
-| MiWu | Migu | MingLueZhaoHui | Mogujie | Mojitianqi  | 
-| NGA | NGAA | NetEase | NetEaseMusic | OPPO  | 
-| OnePlus | OuPeng | PPTV | PSBC | Picacg  | 
-| Pinduoduo | PingAn | QiNiuYun | QingCloud | Qyyjt  | 
-| RuanMei | SFExpress | SMG | SMZDM | ShangHaiJuXiao  | 
-| Shanling | ShenMa | ShiJiChaoXing | ShiNongZhiKe | Sina  | 
-| Sohu | SouFang | Stripe | SuNing | SuiShiChuanMei  | 
-| TCL | TaiKang | TaiheMusic | TapTap | Teambition  | 
-| Tencent | TencentVideo | TianTianKanKan | TianWeiChengXin | TianYaForum  | 
-| TigerFintech | TongCheng | U17 | UC | UCloud  | 
-| UPYun | UnionPay | Vancl | VipShop | Vivo  | 
-| W3schools | WanKaHuanJu | WanMeiShiJie | Wanfang | WangSuKeJi  | 
-| WangXinKeJi | WeChat | WeType | WeiZhiYunDong | Weibo  | 
-| WenJuanXing | WiFiMaster | WoLai | Wteam | XiamiMusic  | 
-| XianYu | XiaoGouKeJi | XiaoMi | XiaoYuanKeJi | XieCheng  | 
-| XingKongWuXian | XueErSi | XueQiu | Xunlei | YYeTs  | 
-| YiChe | YiXiaKeJi | YiZhiBo | YouMengChuangXiang | YouZan  | 
-| Youku | YuanFuDao | YunFanJiaSu | ZDNS | ZhangYue  | 
-| ZhiYinManKe | ZhiYunZhong | Zhihu | ZhongGuoShiHua | ZhongWeiShiJi  | 
-| ZhongXingTongXun | ZhongYuanYiShang | ZhuanZhuan | aiXcoder | iFlytek  | 
-| iQIYI | ifanr | zhanqi  |  |  | 
+| CKJR | CMB | CNKI | CNNIC | CSDN  | 
+| CaiNiao | CaiXinChuanMei | Camera360 | ChengTongWangPan | China  | 
+| ChinaASN | ChinaIPs | ChinaIPsBGP | ChinaIPsTest | ChinaMax  | 
+| ChinaMedia | ChinaMobile | ChinaNews | ChinaNoMedia | ChinaTelecom  | 
+| ChinaTest | ChinaUnicom | ChuangKeTie | ChunYou | Coolapk  | 
+| DaMai | DanDanZan | Dandanplay | DangDang | Dedao  | 
+| Deepin | DiDi | DiLianWangLuo | DiSiFanShi | DianCeWangKe  | 
+| DingTalk | DingXiangYuan | Domob | DouBan | DouYin  | 
+| Douyu | DuoWan | EastMoney | Eleme | FanFou  | 
+| FangZhengDianZi | FeiZhu | FengHuangWang | FengXiaWangLuo | Fiio  | 
+| Funshion | GaoDe | Geely | Gitee | GovCN  | 
+| GuiGuDongLi | HaiNanHangKong | HanYi | HeMa | HibyMusic  | 
+| Himalaya | Hpplay | HuYa | HuaShuTV | HuanJu  | 
+| Huawei | HunanTV | Hupu | ICBC | IPTVMainland  | 
+| JiGuangTuiSong | JianGuoYun | JianShu | JinJiangWenXue | JingDong  | 
+| JueJin | Keep | KingSmith | Kingsoft | KouDaiShiShang  | 
+| Ku6 | KuKeMusic | KuaiDi100 | KuaiShou | KuangShi  | 
+| KugouKuwo | LanZouYun | LeJu | LeTV | Lenovo  | 
+| LianMeng | LuDaShi | LvMiLianChuang | MOOMusic | Maocloud  | 
+| Marketing | MeiTu | MeiTuan | MeiZu | MiWu  | 
+| Migu | MingLueZhaoHui | Mogujie | Mojitianqi | NGA  | 
+| NGAA | NetEase | NetEaseMusic | OPPO | OnePlus  | 
+| OuPeng | PPTV | PSBC | Picacg | Pinduoduo  | 
+| PingAn | QiNiuYun | QingCloud | Qyyjt | RuanMei  | 
+| SFExpress | SMG | SMZDM | ShangHaiJuXiao | Shanling  | 
+| ShenMa | ShiJiChaoXing | ShiNongZhiKe | Sina | Sohu  | 
+| SouFang | Stripe | SuNing | SuiShiChuanMei | TCL  | 
+| TaiKang | TaiheMusic | TapTap | Teambition | Tencent  | 
+| TencentVideo | TianTianKanKan | TianWeiChengXin | TianYaForum | TigerFintech  | 
+| TongCheng | U17 | UC | UCloud | UPYun  | 
+| UnionPay | Vancl | VipShop | Vivo | W3schools  | 
+| WanKaHuanJu | WanMeiShiJie | Wanfang | WangSuKeJi | WangXinKeJi  | 
+| WeChat | WeType | WeiZhiYunDong | Weibo | WenJuanXing  | 
+| WiFiMaster | WoLai | Wteam | XiamiMusic | XianYu  | 
+| XiaoGouKeJi | XiaoMi | XiaoYuanKeJi | XieCheng | XingKongWuXian  | 
+| XueErSi | XueQiu | Xunlei | YYeTs | YiChe  | 
+| YiXiaKeJi | YiZhiBo | YouMengChuangXiang | YouZan | Youku  | 
+| YuanFuDao | YunFanJiaSu | ZDNS | ZhangYue | ZhiYinManKe  | 
+| ZhiYunZhong | Zhihu | ZhongGuoShiHua | ZhongWeiShiJi | ZhongXingTongXun  | 
+| ZhongYuanYiShang | ZhuanZhuan | aiXcoder | iFlytek | iQIYI  | 
+| ifanr | zhanqi  |  |  |  | 
 
 
 当前分流规则，已排除以下规则：
@@ -212,7 +212,6 @@ https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_scri
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/CEB.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/CGB.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/CIBN.list
-- https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/CITIC.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/CKJR.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/CNKI.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/CNNIC.list
@@ -414,150 +413,9 @@ https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_scri
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/ZhongXingTongXun.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/Geely.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/FangZhengDianZi.list
-- https://rules.kr328.app/geolocation-cn.yaml
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/BeStore.list
 - https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/QuantumultX/rules/CMedia.list
 - https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/QuantumultX/rules/Mainland.list
-- https://raw.githubusercontent.com/youshandefeiyang/IPTV/main/main/bestv.m3u
-- https://rules.kr328.app/taikang.yaml
-- https://rules.kr328.app/acfun-ads.yaml
-- https://rules.kr328.app/yunfanjiasu.yaml
-- https://rules.kr328.app/sina.yaml
-- https://rules.kr328.app/acfun-ads@ads.yaml
-- https://rules.kr328.app/xiaomi.yaml
-- https://rules.kr328.app/coolapk.yaml
-- https://rules.kr328.app/w3schools.yaml
-- https://rules.kr328.app/hanyi.yaml
-- https://rules.kr328.app/ali213.yaml
-- https://rules.kr328.app/boc.yaml
-- https://rules.kr328.app/picacg.yaml
-- https://rules.kr328.app/tencent.yaml
-- https://rules.kr328.app/mogujie.yaml
-- https://rules.kr328.app/36kr.yaml
-- https://rules.kr328.app/baidu-ads@ads.yaml
-- https://rules.kr328.app/iqiyi-ads@ads.yaml
-- https://rules.kr328.app/zhihu.yaml
-- https://rules.kr328.app/zdns.yaml
-- https://rules.kr328.app/gitee.yaml
-- https://rules.kr328.app/bytedance-ads@ads.yaml
-- https://rules.kr328.app/4paradigm.yaml
-- https://rules.kr328.app/qyyjt.yaml
-- https://rules.kr328.app/deepin.yaml
-- https://rules.kr328.app/meitu.yaml
-- https://rules.kr328.app/yuanfudao.yaml
-- https://rules.kr328.app/3dm.yaml
-- https://rules.kr328.app/bytedance.yaml
-- https://rules.kr328.app/4399.yaml
-- https://rules.kr328.app/antutu.yaml
-- https://rules.kr328.app/aixcoder.yaml
-- https://rules.kr328.app/ccb.yaml
-- https://rules.kr328.app/letv-ads@ads.yaml
-- https://rules.kr328.app/jd-ads.yaml
-- https://rules.kr328.app/xueqiu.yaml
-- https://rules.kr328.app/kuaishou-ads@ads.yaml
-- https://rules.kr328.app/kingsoft.yaml
-- https://rules.kr328.app/wanfang.yaml
-- https://rules.kr328.app/kuaishou-ads.yaml
-- https://rules.kr328.app/keep.yaml
-- https://rules.kr328.app/u17.yaml
-- https://rules.kr328.app/sohu-ads@ads.yaml
-- https://rules.kr328.app/huya.yaml
-- https://rules.kr328.app/hunantv-ads@ads.yaml
-- https://rules.kr328.app/bootcss.yaml
-- https://rules.kr328.app/eleme.yaml
-- https://rules.kr328.app/wolai.yaml
-- https://rules.kr328.app/sohu.yaml
-- https://rules.kr328.app/douyu.yaml
-- https://rules.kr328.app/baidu@ads.yaml
-- https://rules.kr328.app/cmb.yaml
-- https://rules.kr328.app/sina-ads@ads.yaml
-- https://rules.kr328.app/kuaishou@ads.yaml
-- https://rules.kr328.app/hunantv-ads.yaml
-- https://rules.kr328.app/citic.yaml
-- https://rules.kr328.app/netease.yaml
-- https://rules.kr328.app/ruanmei.yaml
-- https://rules.kr328.app/dandanzan.yaml
-- https://rules.kr328.app/airchina.yaml
-- https://rules.kr328.app/netease-ads.yaml
-- https://rules.kr328.app/agora.yaml
-- https://rules.kr328.app/bytedance-ads.yaml
-- https://rules.kr328.app/youku-ads.yaml
-- https://rules.kr328.app/huawei@cn.yaml
-- https://rules.kr328.app/dingtalk.yaml
-- https://rules.kr328.app/youku.yaml
-- https://rules.kr328.app/51job.yaml
-- https://rules.kr328.app/sina-ads.yaml
-- https://rules.kr328.app/baidu.yaml
-- https://rules.kr328.app/jd.yaml
-- https://rules.kr328.app/115.yaml
-- https://rules.kr328.app/xunlei.yaml
-- https://rules.kr328.app/douban.yaml
-- https://rules.kr328.app/cctv.yaml
-- https://rules.kr328.app/alibaba-ads@ads.yaml
-- https://rules.kr328.app/suning.yaml
-- https://rules.kr328.app/ku6.yaml
-- https://rules.kr328.app/kuaishou.yaml
-- https://rules.kr328.app/netease-ads@ads.yaml
-- https://rules.kr328.app/chinamobile.yaml
-- https://rules.kr328.app/oppo.yaml
-- https://rules.kr328.app/dedao.yaml
-- https://rules.kr328.app/aiqicha.yaml
-- https://rules.kr328.app/bilibili.yaml
-- https://rules.kr328.app/meizu.yaml
-- https://rules.kr328.app/8btc.yaml
-- https://rules.kr328.app/zhanqi.yaml
-- https://rules.kr328.app/acfun.yaml
-- https://rules.kr328.app/wteam-ads.yaml
-- https://rules.kr328.app/chinaunicom.yaml
-- https://rules.kr328.app/letv-ads.yaml
-- https://rules.kr328.app/duowan.yaml
-- https://rules.kr328.app/acfun@ads.yaml
-- https://rules.kr328.app/teambition.yaml
-- https://rules.kr328.app/netease@ads.yaml
-- https://rules.kr328.app/tencent-ads.yaml
-- https://rules.kr328.app/tencent-ads@ads.yaml
-- https://rules.kr328.app/iflytek.yaml
-- https://rules.kr328.app/vancl.yaml
-- https://rules.kr328.app/unionpay.yaml
-- https://rules.kr328.app/eastmoney.yaml
-- https://rules.kr328.app/chinanews.yaml
-- https://rules.kr328.app/nga.yaml
-- https://rules.kr328.app/youku-ads@ads.yaml
-- https://rules.kr328.app/huawei.yaml
-- https://rules.kr328.app/meituan.yaml
-- https://rules.kr328.app/chinatelecom.yaml
-- https://rules.kr328.app/17zuoye.yaml
-- https://rules.kr328.app/xueersi.yaml
-- https://rules.kr328.app/iqiyi-ads.yaml
-- https://rules.kr328.app/oneplus.yaml
-- https://rules.kr328.app/youzan.yaml
-- https://rules.kr328.app/iqiyi@ads.yaml
-- https://rules.kr328.app/smzdm.yaml
-- https://rules.kr328.app/tencent@cn.yaml
-- https://rules.kr328.app/jianshu.yaml
-- https://rules.kr328.app/dangdang.yaml
-- https://rules.kr328.app/hupu.yaml
-- https://rules.kr328.app/xingkongwuxianmedia.yaml
-- https://rules.kr328.app/didi.yaml
-- https://rules.kr328.app/51nod.yaml
-- https://rules.kr328.app/pingan.yaml
-- https://rules.kr328.app/baidu-ads.yaml
-- https://rules.kr328.app/jd@ads.yaml
-- https://rules.kr328.app/bestore.yaml
-- https://rules.kr328.app/pinduoduo.yaml
-- https://rules.kr328.app/uc.yaml
-- https://rules.kr328.app/qingcloud.yaml
-- https://rules.kr328.app/tongcheng.yaml
-- https://rules.kr328.app/sf-express.yaml
-- https://rules.kr328.app/juejin.yaml
-- https://rules.kr328.app/ucloud.yaml
-- https://rules.kr328.app/maocloud.yaml
-- https://rules.kr328.app/alibaba@ads.yaml
-- https://rules.kr328.app/alibaba.yaml
-- https://rules.kr328.app/iqiyi.yaml
-- https://rules.kr328.app/pptv.yaml
-- https://rules.kr328.app/cnki.yaml
-- https://rules.kr328.app/tencent@ads.yaml
 - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/Ruleset/Alibaba.yaml
 - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/Ruleset/ByteDance.yaml
 - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Providers/Ruleset/Douyu.yaml
@@ -582,7 +440,6 @@ https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_scri
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/BesTV.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/CETV.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/SMG.list
-- https://rules.kr328.app/apifox.yaml
 - https://ruleset.isagood.day/alibaba.conf
 - https://ruleset.isagood.day/alibaba_domain.conf
 - https://ruleset.isagood.day/bilibili.conf
@@ -591,7 +448,6 @@ https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_scri
 - https://ruleset.isagood.day/stream_cn.conf
 - https://ruleset.isagood.day/wechat.conf
 - https://raw.githubusercontent.com/missuo/ASN-China/main/IP.China.list
-- https://whois.ipip.net/iso/CN
 
 
 感谢以上规则作者的辛勤付出（排名不分先后）。

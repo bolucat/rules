@@ -12,14 +12,14 @@ Instagram规则由《RULE GENERATOR 规则生成器》自动生成。
 
 ## 规则统计
 
-最后更新时间：2024-01-08 15:59:58
+最后更新时间：2024-02-03 01:46:24
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
 | DOMAIN-KEYWORD | 1  | 
-| DOMAIN-SUFFIX | 73  | 
-| TOTAL | 74  | 
+| DOMAIN-SUFFIX | 3  | 
+| TOTAL | 4  | 
 
 
 ## Surge 

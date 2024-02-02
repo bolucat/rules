@@ -12,7 +12,7 @@
 
 ## 规则统计
 
-最后更新时间：2024-01-13 03:01:46
+最后更新时间：2024-02-03 01:46:30
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
@@ -72,9 +72,6 @@ https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_scri
 - https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Sina.list
 - https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/source/rule/Weibo/Weibo.list
 - https://raw.githubusercontent.com/LM-Firefly/Rules/master/Domestic-Services/Sina.list
-- https://rules.kr328.app/sina.yaml
-- https://rules.kr328.app/sina-ads@ads.yaml
-- https://rules.kr328.app/sina-ads.yaml
 - https://ruleset.isagood.day/sina.conf
 
 
