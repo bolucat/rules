@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.3.1
+// @version         3.5.3.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -430,6 +430,19 @@ else {
         }
         let header_advert = document.querySelector('div.headerAdvertisement');
         hideDOMElement(header_advert);
+      } else if (document.querySelector('head > link[rel="dns-prefetch"][href="//static.ew.mmg.navigacloud.com"]')) { // McPherson Media Group
+        let paywall = document.querySelector('div#content-Load-message');
+        if (paywall) {
+          removeDOMElement(paywall);
+          let lockable = document.querySelectorAll('div[id^="lockable-"]');
+          for (let elem of lockable) {
+            elem.removeAttribute('style');
+            elem.removeAttribute('id');
+          }
+          let gradient = document.querySelector('div.gradienttext');
+          if (gradient)
+            gradient.removeAttribute('class');
+        }
       }
     }
   }
