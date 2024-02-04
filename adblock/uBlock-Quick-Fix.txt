@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sat, 03 Feb 2024 16:18:59 +0000
-! Diff-Path: ../patches/2024.2.3.984.patch#ublock-quick-fixes
+! Last modified: Sun, 04 Feb 2024 16:15:03 +0000
+! Diff-Path: ../patches/2024.2.4.1040.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -30,12 +30,12 @@ aternos.org##.header-center:style(margin-top:-5000px !important;)
 aternos.org##.sidebar:style(width: 1.745px !important;)
 aternos.org##.ad-dfp:style(min-height: 0.1485mm !important; height: 0.1485mm !important;)
 ! pixsera
-imgbncvnv.sbs,pixtryab.shop,imggune.shop,pictryhab.shop,pixbnab.shop,imgbnwe.shop##+js(aopr, console.clear)
-imgbncvnv.sbs,pixtryab.shop,imggune.shop,pictryhab.shop,pixbnab.shop,imgbnwe.shop##+js(nano-sib, timer)
-imgbncvnv.sbs,pixtryab.shop,imggune.shop,pictryhab.shop,pixbnab.shop,imgbnwe.shop##div[id][style^="position: fixed; display: block; width: 100%;"]
-imgbncvnv.sbs,pixtryab.shop,imggune.shop,pictryhab.shop,pixbnab.shop,imgbnwe.shop##div[style="width:100%;height:110px"]
-imgbncvnv.sbs,pixtryab.shop,imggune.shop,pictryhab.shop,pixbnab.shop,imgbnwe.shop##+js(nowoif, !/prcf.fiyar|themes|pixsense|.jpg/)
-imgbncvnv.sbs,pixtryab.shop,imggune.shop,pictryhab.shop,pixbnab.shop,imgbnwe.shop##div[class][style="display: block;"]
+imgbncvnv.sbs,pixtryab.shop,imggune.shop,pictryhab.shop,pixbnab.shop,imgbnwe.shop,imgbbnhi.shop##+js(aopr, console.clear)
+imgbncvnv.sbs,pixtryab.shop,imggune.shop,pictryhab.shop,pixbnab.shop,imgbnwe.shop,imgbbnhi.shop##+js(nano-sib, timer)
+imgbncvnv.sbs,pixtryab.shop,imggune.shop,pictryhab.shop,pixbnab.shop,imgbnwe.shop,imgbbnhi.shop##div[id][style^="position: fixed; display: block; width: 100%;"]
+imgbncvnv.sbs,pixtryab.shop,imggune.shop,pictryhab.shop,pixbnab.shop,imgbnwe.shop,imgbbnhi.shop##div[style="width:100%;height:110px"]
+imgbncvnv.sbs,pixtryab.shop,imggune.shop,pictryhab.shop,pixbnab.shop,imgbnwe.shop,imgbbnhi.shop##+js(nowoif, !/prcf.fiyar|themes|pixsense|.jpg/)
+imgbncvnv.sbs,pixtryab.shop,imggune.shop,pictryhab.shop,pixbnab.shop,imgbnwe.shop,imgbbnhi.shop##div[class][style="display: block;"]
 !#if !cap_html_filtering
 !#if env_firefox
 youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots legacyImportant)
@@ -113,7 +113,7 @@ perchance.org##+js(rmnt, script, '/(?<=if\((\s){0,}!window\.(\s){0,}[shouldExist
 perchance.org##+js(rmnt, script, '/document\[`(.+?)`\]\.innerHTML = window\..*;/gms')
 perchance.org##+js(rmnt, script, '/document.*.innerHTML =window\..*;/gms')
 perchance.org##+js(rmnt, script, '/document\["body"\]\.innerHTML\s*=\s*([^;]+);/g')
-perchance.org##+js(rmnt, script, '/"body"|"bo"\+"dy"|"bod"\+"y"|"b"\+"od"\+"y"|"b"\+"od"\+"y"|"b"[\s\S]{0,}\+[\s\S]{0,}"od"[\s\S]{0,}\+[\s\S]{0,}"y"/g')
+perchance.org##+js(rmnt, script, '/"body"|"bo"\+"dy"|"bod"\+"y"|"b"\+"od"\+"y"|"b"\+"od"\+"y"|"b"[\s\S]{0,}\+[\s\S]{0,}"od"[\s\S]{0,}\+[\s\S]{0,}"y"|"b"[\s\S]{0,}"o"[\s\S]{0,}"d"[\s\S]{0,}"y"[\s\S]{0,}/g')
 ! ytlarge detection
 @@||ytlarge.com^$ghide
 @@||pagead2.googlesyndication.com^$script,domain=ytlarge.com
@@ -149,8 +149,9 @@ free-mp3-download.net##ins.adsbygoogle:style(max-height: 1px !important; visibil
 !#endif
 apkmirror.com#@#^script:has-text(/style:last-of-type|:empty|APKM\..+?\.innerHTML/)
 apkmirror.com#@#+js(rmnt, script, /style:last-of-type|:empty|APKM\..+?\.innerHTML/)
-@@||cxense.com/document/search?
-infinityscans.xyz,infinityscans.net##+js(rmnt, script, throw Error, condition, /^\s*\(?function/)
+infinityscans.xyz,infinityscans.net##+js(rmnt, script, throw Error, condition, /^\s*?\(function\(/)
+infinityscans.xyz,infinityscans.net##+js(rpnt, script, /function _0x.*\);\}\}\(\)\)\);/)
 ! next-episode .net
 next-episode.net##+js(rmnt, script, '/String\.fromCharCode/g')
-next-episode.net##+js(aopw, displayNotice)
+next-episode.net##+js(rmnt, script, ...)
+next-episode.net##+js(rmnt, script, location)
