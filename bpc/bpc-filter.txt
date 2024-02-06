@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.5.3.1
+! Version: 3.5.3.4
 
 ! General
 
@@ -158,6 +158,8 @@ foreignaffairs.com##.paywall,.loading-indicator,.messages--container--bottom
 !#if (adguard_app_ios)
 ||foreignaffairs.com/sites/default/files/assets/css/css_4fX*.css$stylesheet,~third-party
 !#endif
+foreignpolicy.com##body:not(.is-fp-insider) div.content-ungated
+foreignpolicy.com##+js(rc, content-gated, body:not(.is-fp-insider) div.content-gated.content-gated--main-article)
 fortune.com##+js(ra, class, div.paywallActive)
 foxnews.com##+js(ra, class, div[class*="gated-overlay"])
 foxnews.com##div.article-gating-wrapper
@@ -227,6 +229,7 @@ loeildelaphotographie.com##+js(ra, style, img[style*="blur"])
 medscape.com##.AdUnit,div[id^="ads-"]
 mexiconewsdaily.com##+js(rc, tdb-block-inner, body.single div.td-post-content > div.tdb-block-inner)
 mv-voice.com##+js(cookie-remover, /^/)
+||cdn.registerdisney.go.com$script,domain=nationalgeographic.com
 nautil.us##+js(cookie-remover, /^(arc|sfa)$/)
 newsday.com##+js(ra, class, html[class])
 newrepublic.com##div.article-scheduled-modal
@@ -426,6 +429,9 @@ elmercurio.com,lasegunda.com##div[id*="bt_readmore_"]
 ||australvaldivia.cl/impresa/*/assets/vendor.js$script,~third-party
 ||mercuriovalpo.cl/impresa/*/assets/vendor.js$script,~third-party
 ||pasedigital.cl/API/User/Status$script,domain=australvaldivia.cl|mercuriovalpo.cl
+
+! Grupo Prensa Ibérica
+diaridegirona.cat,diariocordoba.com,diariodeibiza.es,diariodemallorca.es,elcorreogallego.es,eldia.es,elperiodico.com,elperiodicodearagon.com,elperiodicoextremadura.com,elperiodicomediterraneo.com,epe.es,farodevigo.es,informacion.es,laopinioncoruna.es,laopiniondemalaga.es,laopiniondemurcia.es,laopiniondezamora.es,laprovincia.es,levante-emv.com,lne.es,mallorcazeitung.es,regio7.cat,superdeporte.es##+js(ra, class, div.ft-helper-closenews)
 
 ! Gruppo SAE
 gazzettadimodena.it,gazzettadireggio.it,iltirreno.it,lanuovaferrara.it,lanuovasardegna.it##+js(cookie-remover, /__mtr$/)
@@ -684,11 +690,11 @@ amp.brisbanetimes.com.au,amp.smh.com.au,amp.theage.com.au,amp.watoday.com.au##[s
 ! Spanish/Portugese/Brazilian/Colombian sites
 amp.elmundo.es,amp.expansion.com,amp.marca.com,elespanol.com,cambiocolombia.com,elespectador.com,em.com.br,folha.uol.com.br,gazetadopovo.com.br##+js(ra, subscriptions-section, [subscriptions-section="content"])
 amp.elmundo.es,amp.expansion.com,amp.marca.com,elespanol.com,cambiocolombia.com,elespectador.com,em.com.br,folha.uol.com.br,gazetadopovo.com.br##[subscriptions-section="content-not-granted"]
-abc.es,amp.elperiodico.com,cmjornal.pt,eldiario.es,elpais.com,estadao.com.br,record.pt,sabado.pt##+js(ra, amp-access-hide, [amp-access][amp-access-hide])
+abc.es,cmjornal.pt,eldiario.es,elpais.com,estadao.com.br,record.pt,sabado.pt##+js(ra, amp-access-hide, [amp-access][amp-access-hide])
 abc##div.ev-em-modal,span.mega-superior
 abc.es##+js(ra, id, body#top)
 ! Grupo Prensa Ibérica
-amp.epe.es,diaridegirona.cat,diariocordoba.com,diariodeibiza.es,diariodemallorca.es,eldia.es,elperiodicodearagon.com,elperiodicoextremadura.com,elperiodicomediterraneo.com,farodevigo.es,informacion.es,laopinioncoruna.es,laopiniondemalaga.es,laopiniondemurcia.es,laopiniondezamora.es,laprovincia.es,levante-emv.com,lne.es,mallorcazeitung.es,regio7.cat##+js(ra, amp-access-hide, [amp-access][amp-access-hide])
-diaridegirona.cat,diariocordoba.com,diariodeibiza.es,diariodemallorca.es,eldia.es,elperiodicodearagon.com,elperiodicoextremadura.com,elperiodicomediterraneo.com,farodevigo.es,informacion.es,laopinioncoruna.es,laopiniondemalaga.es,laopiniondemurcia.es,laopiniondezamora.es,laprovincia.es,levante-emv.com,lne.es,mallorcazeitung.es,regio7.cat##+js(rc, article-body--truncated, div.article-body--truncated)
+amp.elperiodico.com,amp.epe.es,diaridegirona.cat,diariocordoba.com,diariodeibiza.es,diariodemallorca.es,elcorreogallego.es,eldia.es,elperiodicodearagon.com,elperiodicoextremadura.com,elperiodicomediterraneo.com,farodevigo.es,informacion.es,laopinioncoruna.es,laopiniondemalaga.es,laopiniondemurcia.es,laopiniondezamora.es,laprovincia.es,levante-emv.com,lne.es,mallorcazeitung.es,regio7.cat,superdeporte.es##+js(ra, amp-access-hide, [amp-access][amp-access-hide])
+diaridegirona.cat,diariocordoba.com,diariodeibiza.es,diariodemallorca.es,elcorreogallego.es,eldia.es,elperiodicodearagon.com,elperiodicoextremadura.com,elperiodicomediterraneo.com,farodevigo.es,informacion.es,laopinioncoruna.es,laopiniondemalaga.es,laopiniondemurcia.es,laopiniondezamora.es,laprovincia.es,levante-emv.com,lne.es,mallorcazeitung.es,regio7.cat,superdeporte.es##+js(rc, article-body--truncated, div.article-body--truncated)
 ! Grupo Vocento
 diariosur.es,diariovasco.com,elcomercio.es,elcorreo.com,eldiariomontanes.es,elnortedecastilla.es,hoy.es,ideal.es,larioja.com,lasprovincias.es,laverdad.es,lavozdigital.es##+js(ra, amp-access-hide, [amp-access][amp-access-hide])

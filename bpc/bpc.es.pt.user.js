@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.5.3.0
+// @version         3.5.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -73,8 +73,8 @@ if (overlay)
   overlay.classList.remove('didomi-popup-open');
 
 var ar_grupo_clarin_domains =['clarin.com', 'lavoz.com.ar', 'losandes.com.ar'];
-var es_epiberica_domains = ['diariodemallorca.es', 'eldia.es', 'elperiodico.com', 'epe.es', 'farodevigo.es', 'informacion.es', 'laprovincia.es', 'levante-emv.com', 'lne.es', 'mallorcazeitung.es'];
-var es_epiberica_custom_domains = ['diaridegirona.cat', 'diariocordoba.com', 'diariodeibiza.es', 'elperiodicodearagon.com', 'elperiodicoextremadura.com', 'elperiodicomediterraneo.com', 'emporda.info', 'laopinioncoruna.es', 'laopiniondemalaga.es', 'laopiniondemurcia.es', 'laopiniondezamora.es', 'regio7.cat'];
+var es_epiberica_domains = ['diariodemallorca.es', 'eldia.es', 'elperiodico.com', 'epe.es', 'farodevigo.es', 'informacion.es', 'laprovincia.es', 'levante-emv.com', 'lne.es', 'mallorcazeitung.es', 'superdeporte.es'];
+var es_epiberica_custom_domains = ['diaridegirona.cat', 'diariocordoba.com', 'diariodeibiza.es', 'elcorreogallego.es', 'elperiodicodearagon.com', 'elperiodicoextremadura.com', 'elperiodicomediterraneo.com', 'emporda.info', 'laopinioncoruna.es', 'laopiniondemalaga.es', 'laopiniondemurcia.es', 'laopiniondezamora.es', 'regio7.cat'];
 var es_grupo_vocento_domains = ['abc.es', 'diariosur.es', 'diariovasco.com', 'elcomercio.es', 'elcorreo.com', 'eldiariomontanes.es', 'elnortedecastilla.es', 'hoy.es', 'ideal.es', 'larioja.com', 'lasprovincias.es', 'laverdad.es', 'lavozdigital.es'];
 var es_unidad_domains = ['elmundo.es', 'expansion.com', 'marca.com'];
 var pe_grupo_elcomercio_domains = ['diariocorreo.pe', 'elcomercio.pe', 'gestion.pe'];
@@ -177,7 +177,7 @@ else if (matchDomain(es_epiberica_domains) || matchDomain(es_epiberica_custom_do
     let truncated = document.querySelector('div.article-body--truncated');
     if (truncated)
       truncated.classList.remove('article-body--truncated');
-    amp_unhide_access_hide('="NOT access"], [amp-access="FALSE"', '="access"');
+    amp_unhide_access_hide('="NOT access"], [amp-access="FALSE"', '="access"', 'amp-ad, amp-embed, span.ad-signature');
   } else if (['amp.elperiodico.com', 'amp.epe.es'].includes(window.location.hostname)) {
     amp_unhide_access_hide('="loggedIn"', '="NOT loggedIn"', 'amp-ad, amp-embed, amp-next-page');
     let amp_images = document.querySelectorAll('div > amp-img[src]');
@@ -188,7 +188,10 @@ else if (matchDomain(es_epiberica_domains) || matchDomain(es_epiberica_custom_do
       amp_image.parentNode.replaceChild(elem, amp_image);
     }
   } else {
-    let ads = document.querySelectorAll('div.commercial-up-full__wrapper, div.sidebar--sticky__space, div[data-bbnx-id*="cxense"], div.container-ad');
+    let paywall = document.querySelector('div.ft-helper-closenews');
+    if (paywall)
+      paywall.removeAttribute('class');
+    let ads = document.querySelectorAll('div.commercial-up-full__wrapper, aside.ft-ad, div[class^="_mo_recs"]');
     hideDOMElement(...ads);
   }
 }
