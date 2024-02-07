@@ -1,5 +1,5 @@
 #!/bin/bash
-# 2021-2023 @bolucat 
+# 2021-2024 @bolucat 
 # Credits: https://github.com/Loyalsoldier/clash-rules
 # 	   https://github.com/DivineEngine/Profiles
 #	   https://github.com/cobaltdisco/Google-Chinese-Results-Blocklist
@@ -28,6 +28,7 @@
 #	   https://github.com/ClearURLs/Rules
 #	   https://github.com/immersive-translate/immersive-translate
 #	   https://github.com/gkd-kit/subscription
+#	   https://github.com/MetaCubeX/meta-rules-dat
 
 OPTION=$1
 CUR=${PWD}
@@ -37,12 +38,13 @@ clean() {
 	clash/DivineEngine clash/ip-show-list \
 	clash/anti-ad clash/openclash \
 	clash/fei-rules clash/ios-rule-script \
-	clash/cf-ip clash/my/my-reject-*.yaml
+	clash/cf-ip clash/my/my-reject-*.yaml \
+ 	clash/meta-rules-dat
 	rm -rf seo adblock iptv bpc clearurls userscripts
 }
 
 clash() {
-	mkdir -p clash/Loyalsoldier clash/DivineEngine clash/anti-ad clash/openclash clash/ip-show-list clash/cf-ip
+	mkdir -p clash/Loyalsoldier clash/DivineEngine clash/anti-ad clash/openclash clash/ip-show-list clash/cf-ip clash/meta-rules-dat
 	# Loyalsoldier
 	pushd clash/Loyalsoldier || exit 1
     	export LOY=$(wget -qO- https://api.github.com/repos/Loyalsoldier/clash-rules/tags | grep 'name' | cut -d\" -f4 | head -1)
@@ -54,6 +56,10 @@ clash() {
     	mv Profiles/Clash/* . && rm -rf Profiles
 	sed $'/DOMAIN-SUFFIX,cn/d' -i RuleSet/China.yaml
     	popd || exit 1
+     	# meta-rules-dat
+      	pushd clash/meta-rules-dat || exit 1
+       	wget -qO- "https://api.github.com/repos/MetaCubeX/meta-rules-dat/contents/?ref=release" | jq ".[] | {download_url}" -c | jq .download_url -r | grep -v ".sha256sum" | wget -c -i -
+	popd || exit 1
 	# my
 	pushd clash/my || exit 1
 	touch my-reject-domain.yaml my-reject-ip.yaml
