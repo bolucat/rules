@@ -292,6 +292,13 @@ list() {
       		echo "- [${file}](https://rules.neuq.de/clash/DivineEngine/RuleSet/${file})" >> ${CUR}/README.md
     	done
     	popd || exit 1
+     	# clash/meta-rules-dat
+	pushd clash/meta-rules-dat || exit 1
+	echo "# clash/meta-rules-dat" >> ${CUR}/README.md
+    	for file in $(ls); do
+      		echo "- [${file}](https://rules.neuq.de/clash/meta-rules-dat/${file})" >> ${CUR}/README.md
+    	done
+    	popd || exit 1
 	# clash/my
 	pushd clash/my || exit 1
 	echo "# clash/my" >> ${CUR}/README.md
@@ -382,6 +389,12 @@ purge() {
     	pushd clash/DivineEngine/RuleSet || exit 1
     	for file in $(tree -f -J | grep "yaml" | cut -d\" -f8 | sed $'s/^.\///g' | sort | xargs); do
       		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/DivineEngine/RuleSet/${file}"
+    	done
+    	popd || exit 1
+     	# clash/meta-rules-dat
+	pushd clash/meta-rules-dat || exit 1
+    	for file in $(ls); do
+      		curl -i  "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/meta-rules-dat/${file}"
     	done
     	popd || exit 1
 	# clash/my
