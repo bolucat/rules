@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.3.3
+// @version         3.5.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -2911,6 +2911,28 @@ else if (matchDomain('vikatan.com')) {
     if (story_hidden)
       story_hidden.removeAttribute('class');
   }, 500);
+}
+
+else if (domain = matchDomain('voguebusiness.com')) {
+  setCookie('userId', '', domain, '/', 0);
+  let article = document.querySelector('div.body__inner-container');
+  if (article) {
+    let pars = article.querySelectorAll('p');
+    if (pars.length < 5) {
+      let json_script = getArticleJsonScript();
+      if (json_script) {
+        let json = JSON.parse(json_script.text);
+        if (json) {
+          let json_text = json.articleBody.replace(/\n/g, '\n\n');
+          if (json_text) {
+            article.innerText = json_text;
+            let url = window.location.href;
+            article.firstChild.before(archiveLink(url));
+          }
+        }
+      }
+    }
+  }
 }
 
 else if (matchDomain('washingtonpost.com')) {
