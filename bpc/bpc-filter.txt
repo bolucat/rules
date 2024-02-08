@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.5.4.1
+! Version: 3.5.4.2
 
 ! General
 
@@ -18,7 +18,7 @@
 @@cdn.cxense.com^$script,domain=bizjournals.com|journaldemontreal.com|journaldequebec.com
 ||ensighten.com/*/Bootstrap.js$script,third-party
 ||evolok.net^$third-party
-||paywall.fewcents.co/static/js/paywall.js
+||fewcents.co/*/paywall*.js$script,third-party
 ||hadrianpaywall.com^$third-party
 ||ippen.space^$third-party
 /sub/js/pc-offer-west.js$script,~third-party
@@ -117,6 +117,7 @@ csmonitor.com##.paywall
 dagsavisen.no##+js(set, window.Fusion.globalContent.content_restrictions.content_code, 0)
 dailywire.com###post-body-text > div > div:style(height: auto !important;)
 ||dn.se/check-paywall-v2.js,~third-party
+||dwell.com/article/*?rel=plus$inline-script
 eastwest.eu##+js(ra, style, .paywall)
 eastwest.eu##+js(rc, paywall, .paywall)
 eastwest.eu###testo_articolo > p, #testo_articolo > h3
@@ -323,7 +324,7 @@ theatlantic.com##aside#paywall,div[class^="LostInventoryMessage_"]
 thediplomat.com##+js(rc, dpl-preview, article.dpl-preview, stay)
 theglobeandmail.com##+js(set, Fusion.globalContent._id, '')
 !#if (adguard_app_ios)
-||theglobeandmail.com/pf/dist/engine/react.js$script,~third-party
+||theglobeandmail.com/*/article-*?rel=premium$inline-script
 !#endif
 ||smartwall.theglobeandmail.com^$xmlhttprequest,~third-party
 theglobeandmail.com##+js(ra, class, .c-article-body--subscribed)
@@ -634,6 +635,8 @@ realmoney.thestreet.com##+js(cookie-remover, /^PWT/)
 solarserver.de##+js(ra, style, div.paywall)
 solarserver.de##+js(ra, class, div.paywall-blurred)
 solarserver.de##div.paywall-box
+stockunlock.com##div[class*="-root"][class*="css-"]:style(filter: none !important; pointer-events: auto !important)
+stockunlock.com##div.css-coxdc8
 ||thenationalpulse.com/wp-content/*/assets/js/national-pulse.js$script,~third-party
 trailsoffroad.com##.paywall
 ||zeitzeichen.net/sites/default/files/js/js_*.js$script,~third-party
