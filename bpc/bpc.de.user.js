@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.1.9
+// @version         3.5.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -195,6 +195,11 @@ else if (matchDomain('cicero.de')) {
   }
   let urban_ad_sign = document.querySelectorAll('.urban-ad-sign');
   removeDOMElement(...urban_ad_sign);
+}
+
+else if (matchDomain('deraktionaer.de')) {
+  let url = window.location.href;
+  getArchive(url, 'div#paywall-container', '', 'div#article-body');
 }
 
 else if (matchDomain('diepresse.com')) {

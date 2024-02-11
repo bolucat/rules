@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.4.3
+// @version         3.5.4.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -2080,7 +2080,16 @@ else if (matchDomain('slideshare.net')) {
 
 else if (matchDomain('sloanreview.mit.edu')) {
   let url = window.location.href;
-  getGoogleWebcache(url, 'body.is-paywall', {rm_class: 'is-paywall'}, 'div#article-content');
+  let article_sel = 'div.article-content';
+  func_post = function () {
+    let pars = document.querySelectorAll(article_sel + ' > p');
+    if (pars.length < 5) {
+      let article = document.querySelector(article_sel);
+      if (article)
+        article.firstChild.before(archiveLink(url));
+    }
+  }
+  getGoogleWebcache(url, 'body.is-paywall', {rm_class: 'is-paywall'}, article_sel);
 }
 
 else if (matchDomain('sofrep.com')) {
@@ -2208,17 +2217,15 @@ else if (matchDomain('study.com')) {
   removeDOMElement(...banners);
 }
 
-
 else if (matchDomain('swarajyamag.com')) {
-  let paywall = document.querySelector('div#story-notification');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let non_subscriber_text = document.querySelector('div#non-subscriber-text');
-    if (non_subscriber_text)
-      non_subscriber_text.removeAttribute('id');
-    let subscriber_text = document.querySelectorAll('div.subscriber-text');
-    for (let elem of subscriber_text)
-      elem.removeAttribute('class');
+  if (!window.location.pathname.startsWith('/amp/')) {
+    let paywall = pageContains('h2', /Please Sign In To Continue Reading/);
+    let amphtml = document.querySelector('head > link[rel="amphtml"]');
+    if (paywall.length) {
+      removeDOMElement(...paywall);
+      if (amphtml)
+        amp_redirect_not_loop(amphtml);
+    }
   }
 }
 
