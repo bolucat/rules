@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.5.1.6
+// @version         3.5.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -107,6 +107,16 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {// Group
         content = content.replace(/\\u003C/g, '<').replace(/\\u003E/g, '>').replace(/\\u002F/g, '/').replace(/\\"/g, '"').replace(/\\r\\n/g, '');
         let parser = new DOMParser();
         let content_new = parser.parseFromString('<div class="html-content">' + content + '</div>', 'text/html');
+        let iframely = content_new.querySelectorAll('div > div.fr-iframely');
+        for (let elem of iframely) {
+          let url_dom = elem.querySelector('[data-iframely-url]');
+          if (url_dom) {
+            let iframe = document.createElement('iframe');
+            iframe.src = url_dom.getAttribute('data-iframely-url');
+            iframe.style = 'width: 100%; height: 400px;';
+            elem.parentNode.replaceChild(iframe, elem);
+          }
+        }
         let article_top;
         if (!no_intro) {
           article_top = article.parentNode.parentNode;
@@ -119,6 +129,8 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {// Group
       }
     }
   }
+  let ads = document.querySelectorAll('div[class*="ads_type_"]');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('atlantico.fr')) {

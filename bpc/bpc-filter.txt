@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.5.4.4
+! Version: 3.5.4.5
 
 ! General
 
@@ -28,7 +28,7 @@
 ||onecount.net^$third-party
 ||js.pelcro.com^$script,third-party
 ||piano.io/xbuilder/experience/execute$xmlhttprequest,third-party
-@@||piano.io^$domain=asia.nikkei.com|businessinsider.com.pl|hbr.org|japantimes.co.jp|kurier.at|onet.pl
+@@||piano.io^$domain=asia.nikkei.com|businessinsider.com.pl|hbr.org|japantimes.co.jp|onet.pl
 ||api.pico.tools/client/query/*$xmlhttprequest,~third-party
 ||api.pico.tools/popup/null/*$xmlhttprequest,~third-party
 gadget.pico.tools##+js(json-prune, locked)
@@ -195,9 +195,9 @@ krautreporter.de##.js-article-paywall,.js-paywall-divider,#steady-checkout
 krautreporter.de##+js(rc, blurred, .blurred)
 krautreporter.de##+js(rc, json-ld-paywall-marker, .json-ld-paywall-marker, stay)
 ||zephr.com/zephr/decide$xmlhttprequest,domain=ksta.de|rundschau-online.de
-kurier.at##+js(rc, plusContent, div.plusContent, stay)
-kurier.at##+js(ra, style, .ng-star-inserted[style="display: none;"], stay)
-kurier.at##div#view-offer,app-paywall,adfullbanner,outbrain
+||cdn.tinypass.com/api/tinypass.min.js$script,domain=kurier.at
+kurier.at##+js(ra, class|style, div.paywall)
+kurier.at##div#cfs-paywall-container
 ||la-croix.com/build/*/paywall*.js$script,~third-party
 ||glanacion.com/*/metering/*.js$script,domain=lanacion.com.ar
 lanacion.com.ar##+js(cookie-remover, /^metering_arc/)

@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Mon, 12 Feb 2024 14:18:51 +0000
-! Diff-Path: ../patches/2024.2.12.920.patch#ublock-annoyances
+! Last modified: Tue, 13 Feb 2024 15:54:47 +0000
+! Diff-Path: ../patches/2024.2.13.985.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -333,7 +333,10 @@ saniweb.nl##+js(trusted-set-cookie, cookiepreferences, necessary#true|marketing#
 uswitch.com##+js(trusted-set-cookie, cookie-preferences, '{"performance":false,"marketing":false,"functionality":true,"social":true,"essential":true}')
 ! Necessary + social
 ferienpiraten.ch,holidaypirates.com,piratinviaggio.it,travelpirates.com,urlaubspiraten.at,urlaubspiraten.de,vakantiepiraten.nl,viajerospiratas.es,voyagespirates.fr,wakacyjnipiraci.pl##+js(trusted-set-cookie, hp__gdpr_consent, !demographics=false!googletagmanager=false!facebook=true!twitter=true!instagram=true!youtube=true!optimize=false!helphero=false!fbpixel=false!iterable=false!kayakWidget=false!vimeo=true!lastminute=false!apple=true!google=true!hotjar=false!getYourGuide=false!gad=false, 1year)
-formula1.com##+js(trusted-set-cookie, consentUUID, b2d83b78-26f0-4f90-b370-0380404c660a_24_27)
+! hide popup
+formula1.com##[id^="sp_message_container_"]
+! reject consent
+formula1.com##+js(trusted-click-element, [aria-label="REJECT ALL"], , 500)
 ! Necessary + Marketing - for maps, sample page: rhein-ruhr.stadtmobil.de
 stadtmobil.de##+js(trusted-set-cookie, CookieConsent, {stamp:%27Uv9YOAVP5djCBw71lxhE4rNAfTObaGck2Sn3rKWf9dPCYpqcWvAlpA==%27%2Cnecessary:true%2Cpreferences:false%2Cstatistics:false%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1}, 1year)
 coinbase.com##+js(trusted-set-cookie, cm_default_preferences, {%22consent%22:[%22necessary%22%2C%22functional%22]%2C%22region%22:%22DEFAULT%22})
@@ -4056,7 +4059,7 @@ tuta.com##body > div > section.default:style(cursor: revert !important;)
 venturebeat.com##div.body-container:style(cursor: revert !important;)
 guildstats.eu##.gDiv
 ! admiral
-aboutchromebooks.com,ancient.eu,comingsoon.net,daysoftheyear.com,edn.com,gearjunkie.com,harvardmagazine.com,lgbtqnation.com,majorgeeks.com,mangainn.net,medievalists.net,sherdog.com,sidereel.com,statesman.com,tvguide.com,winhelponline.com##+js(aopr, googletag)
+aboutchromebooks.com,ancient.eu,comingsoon.net,daysoftheyear.com,edn.com,gearjunkie.com,harvardmagazine.com,lgbtqnation.com,majorgeeks.com,mangainn.net,medievalists.net,sherdog.com,sidereel.com,statesman.com,winhelponline.com##+js(aopr, googletag)
 boston.com,britannica.com,cattime.com,dogtime.com,download.mokeedev.com,freep.com,ijr.com,inquirer.net,knowyourmeme.com,nationalreview.com,nofilmschool.com,order-order.com,savvytime.com,techlicious.com,technicpack.net,thedraftnetwork.com,wrestlezone.com,xda-developers.com##+js(acs, document.createElement, admiral)
 majorgeeks.com##+js(acs, document.getElementById, undefined)
 legacy.com##+js(acs, document.getElementsByTagName, admiral)
@@ -4405,3 +4408,9 @@ bharatavani.in##+js(aeld, /cut|copy|paste|contextmenu/)
 delfi.lt##+js(aeld, copy)
 ! esaral .com anti copy, select, context menu
 esaral.com##+js(aopw, document.oncontextmenu)
+! classnotes .org .in anti select, context menu, f-keys
+classnotes.org.in##*:style(user-select: text !important; -ms-user-select: text !important; -moz-user-select: text !important; -khtml-user-select: text !important; -webkit-user-select: text !important; -webkit-touch-callout: default !important;)
+classnotes.org.in##+js(aopw, document.oncontextmenu)
+! pendulumedu .com anti copy
+pendulumedu.com##+js(aeld, copy)
+pendulumedu.com##body:remove-attr(/oncopy|oncut|onpaste/)

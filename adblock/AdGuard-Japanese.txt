@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: i+ssrhDelULv9rYywYPA7g
-! Diff-Path: ../patches/7/7-s-1707759387-3600.patch
+! Checksum: ziJbOFpzm4aHy8wt5Ac9dQ
+! Diff-Path: ../patches/7/7-s-1707842181-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.48.47
-! TimeUpdated: 2024-02-12T17:33:19+00:00
+! Version: 2.0.48.54
+! TimeUpdated: 2024-02-13T16:33:24+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -482,6 +482,8 @@
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/159931
+iwb.jp##+js(abort-on-property-read, onload)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/171258
 jprime.jp#$?#.js-reward-modal  { remove: true; }
 jprime.jp#$?#.js-reward-gallery-modal  { remove: true; }
@@ -1469,6 +1471,9 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/themes/CashLINESystem/js/modal.$script
 !
 ! Malware/Phishing
+/mart/*.html?zenid=$document,domain=cfd|top
+/?bcda=*)-$document
+||azurestaticapps.net/*=(0101)-$document
 /Softbank2024.apk$document
 .tk/windows~activation-error/$document
 .top/YWJjZDAwMDU3P$document
@@ -1651,6 +1656,9 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+wear.jp##div:not([class]) [class*="bg-gray-"][class$="xl:hidden"]:has(> .ad-container)
+erodaizensyu.com##.widget-banner
+eroita.net##div[style*="height:260px;"]
 yakuyoke-yakubarai-jinja.com###contents-colum-resp-ad
 yakuyoke-yakubarai-jinja.com##.box-pr
 yakuyoke-yakubarai-jinja.com##.box-pr + h2
@@ -1667,7 +1675,6 @@ freekontaktina.com###HTML12
 freekontaktina.com###HTML15
 freekontaktina.com###HTML26
 jiei.com###article-ad-1
-okbizcs.okwave.jp##.oem_link_under_question_detail
 mysterynavi.com###main-content > nav#breadcrumbFt + aside:not([class])
 mysterynavi.com###navi-r > p.semihide[style="margin-left:15px;text-align:left;"]
 mysterynavi.com##.admsg
