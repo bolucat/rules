@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Wed, 14 Feb 2024 16:07:28 +0000
-! Diff-Path: ../patches/2024.2.14.1040.patch#ublock-quick-fixes
+! Last modified: Thu, 15 Feb 2024 11:41:59 +0000
+! Diff-Path: ../patches/2024.2.15.800.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -30,24 +30,25 @@ aternos.org##.header-center:style(margin-top:-5000px !important;)
 aternos.org##.sidebar:style(width: 1.745px !important;)
 aternos.org##.ad-dfp:style(min-height: 0.1485mm !important; height: 0.1485mm !important;)
 ! pixsera
-pixnbrqw.sbs##+js(aopr, console.clear)
-pixnbrqw.sbs##+js(nano-sib, timer)
-pixnbrqw.sbs##div[id][style^="position: fixed; display: block; width: 100%;"]
-pixnbrqw.sbs##div[style="width:100%;height:110px"]
-pixnbrqw.sbs##+js(nowoif, !/prcf.fiyar|themes|pixsense|.jpg/)
-pixnbrqw.sbs##div[class][style="display: block;"]
+pixnbrqw.sbs,picmsh.sbs##+js(aopr, console.clear)
+pixnbrqw.sbs,picmsh.sbs##+js(nano-sib, timer)
+pixnbrqw.sbs,picmsh.sbs##div[id][style^="position: fixed; display: block; width: 100%;"]
+pixnbrqw.sbs,picmsh.sbs##div[style="width:100%;height:110px"]
+pixnbrqw.sbs,picmsh.sbs##+js(nowoif, !/prcf.fiyar|themes|pixsense|.jpg/)
+pixnbrqw.sbs,picmsh.sbs##div[class][style="display: block;"]
 !#if !cap_html_filtering
 !#if env_firefox
 youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots legacyImportant)
 !#endif
 !#endif
-||youtube.com/s/desktop/*/cssbin/$css,xhr,uritransform=/desktop\/[0-9a-f]{8}\/cssbin/desktop\/2144b1c0\/cssbin/,domain=www.youtube.com
-||youtube.com/s/desktop/*/jsbin/$script,xhr,uritransform=/desktop\/[0-9a-f]{8}\/jsbin/desktop\/2144b1c0\/jsbin/,domain=www.youtube.com
-@@||youtube.com/s/desktop/*/jsbin/serviceworker-kevlar-appshell.vflset/$script,xhr,uritransform=/desktop\/[0-9a-f]{8}\/jsbin/desktop\/2144b1c0\/jsbin/,domain=www.youtube.com
 !#if ext_devbuild
-www.youtube.com##+js(remove-cache-storage-item, yt-appshell-assets, /\/jsbin\/desktop_polymer\.vflset\/desktop_polymer\.js$/)
+||youtube.com/s/desktop/*/cssbin/$css,xhr,uritransform=/desktop\/[0-9a-f]{8}\/cssbin/desktop\/691ad9c2\/cssbin/,domain=www.youtube.com
+||youtube.com/s/desktop/*/jsbin/$script,xhr,uritransform=/desktop\/[0-9a-f]{8}\/jsbin/desktop\/691ad9c2\/jsbin/,domain=www.youtube.com
+@@||youtube.com/s/desktop/*/jsbin/serviceworker-kevlar-appshell.vflset/$script,xhr,uritransform=/desktop\/[0-9a-f]{8}\/jsbin/desktop\/691ad9c2\/jsbin/,domain=www.youtube.com
+www.youtube.com##+js(remove-cache-storage-item, yt-appshell-assets, /\/s\/desktop\/[0-9a-f]{8}\/(?:cs|j)sbin\//)
 !#else
-www.youtube.com##+js(trusted-rpnt, script, /^(\(function serverContract\(\))/s, "caches.open('yt-appshell-assets').then(a=>['d133835b','a4aa4e18','2144b1c0'].forEach(i=>a.delete(`/s/desktop/${i}/jsbin/desktop_polymer.vflset/desktop_polymer.js`)));$1")
+||youtube.com/s/desktop/*/jsbin/desktop_polymer.vflset/desktop_polymer.js$script,xhr,uritransform=/desktop\/[0-9a-f]{8}\/jsbin/desktop\/691ad9c2\/jsbin/,domain=www.youtube.com
+www.youtube.com##+js(trusted-rpnt, script, /^(\(function serverContract\(\))/s, "caches.open('yt-appshell-assets').then(a=>['a4aa4e18','2144b1c0','691ad9c2'].forEach(i=>a.delete(`/s/desktop/${i}/jsbin/desktop_polymer.vflset/desktop_polymer.js`)));$1")
 !#endif
 ! VOE sites
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=markstyleall.com
@@ -58,38 +59,11 @@ dragontea.ink##[id$="ink_1000x100_anchor_top"][class="stpdr rendered"][data-goog
 dragontea.ink##[id$="ink_1000x100_anchor"][class="stpdr rendered"][data-google-query-id][style]:style(position: absolute !important;)
 dragontea.ink###stpd_close:remove()
 dragontea.ink##ins[id^="gpt_unit_/"][style="display: block !important; width: 100vw !important; height: 100vh !important; inset: 0px auto auto 0px !important; clear: none !important; float: none !important; margin: 0px !important; max-height: none !important; max-width: none !important; opacity: 1 !important; overflow: visible !important; padding: 0px !important; position: fixed !important; vertical-align: baseline !important; visibility: visible !important; z-index: 2147483647 !important; background: transparent !important;"]
-www.chip.de##+js(rpnt, style, { display: block ; }, {display: none !important;}, condition, /aspect-ratio:\s?auto/)
-www.chip.de##+js(rpnt, style, ::after{content:" ";display:table;box-sizing:border-box}, {display: none !important;}, condition, text-decoration:none;vertical-align:middle)
-www.chip.de##body.l-DownloadListing > div:has(> div > ul a[href^="https://www.chip.de/downloads/"] img[src^="https://im.chip.de/"])
-www.chip.de##body.l-DownloadListing .wrapper-safe.mt-sm > .fb > section:not(.Listing) ul:has(> li a[href^="https://www.chip.de/downloads/"] img[src^="https://im.chip.de/"])
-www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > [class="wrapper-safe"] > [class="fb mt-lg"] > [class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > *:has(a img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > [class="wrapper-safe"] ul.List.is-separated:has(a img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > .wrapper-safe > div:has(> div > div > section > ul.List.is-separated a img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > [class]:not([class="wrapper-safe"], [class="fb mt-lg"]) ul.List.is-separated:has(a img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > [class]:not([class="wrapper-safe"], [class="fb mt-lg"]):has(> div > section:only-child > ul.List.is-separated a img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR:is(.Downloads-Select, .Downloads-Getfile) > #G32 > #M1 > [class="wrapper-safe"] > [class^="fb mt-"] > div[class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > div[class]:has(a img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR:is(.Downloads-Select, .Downloads-Getfile) > #G32 > #M1 > [class="wrapper-safe"] > [class^="fb mt-"] > section > [class]:has(ul a img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR:is(.Downloads-Select, .Downloads-Getfile) > #G32 > #M1 > [class]:not([class="wrapper-safe"]) ul.List.is-separated:has(a img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR:is(.Downloads-Select, .Downloads-Getfile) > #G32 > #M1 > [class]:not([class="wrapper-safe"]):has(> div > section > ul.List.is-separated a img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR:is(.Downloads-Select, .Downloads-Getfile) > #G32 > #M1 > .wrapper-safe > *:not([class^="fb mt-"]) ul.List.is-separated:has(a img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR:is(.Downloads-Select, .Downloads-Getfile) > #G32 > #M1 > [class$="wrapper-safe"] > *:not([class^="fb mt-"]):has(> div > div > section > ul.List.is-separated a img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR.Downloads-Select > #G32 > #M1 > [class="wrapper-safe"] > [class^="fb mt-"] > section[class="fb-col-12 fb-col-lg-8"] > [class]:not(.ButtonAuswahl):has(> a[href^="https://www.chip.de/downloads/"])
-www.chip.de##body[class="l-DownloadListing is-sticky"] > [class="Main Main--Skyscraper"] > .Main__Container > main[class="Downloads DownloadListing bg-white mt-xs"] > [class="mt-sm wrapper-bleed bg-blue"] + [class="wrapper-safe"]:has(a img[src*="https://im.chip.de/ii/"])
-www.chip.de##body[class="l-DownloadListing is-sticky"] > [class="Main Main--Skyscraper"] > .Main__Container > [class]:not([class^="Downloads DownloadListing"]) > div > ul.List.is-separated:has(a img[src*="https://im.chip.de/ii/"])
-www.chip.de##body[class="l-DownloadListing is-sticky"] > [class]:has(> div > section:only-child > ul.List.is-separated a img[src*="https://im.chip.de/ii/"])
-! restore speed (the anti adblock script causing lag spikes)
-!#if cap_html_filtering
-www.chip.de##^script:has-text(.slice(0, -1); })
-www.chip.de##^script:has-text((Math.PI).toFixed(10).slice(0, -1);)
-!#else
-www.chip.de##+js(rmnt, script, .slice(0\, -1); })
-www.chip.de##+js(rmnt, script, (Math.PI).toFixed(10).slice(0\, -1);)
-!#endif
 gamedrive.org##+js(aost, document.querySelector, /showModal|chooseAction|doAction|callbackAdsBlocked/)
 gamedrive.org##+js(acs, eval, replace)
 ! perchance - broken by its dev
 perchance.org##+js(rpnt, script, '/if(\s){0,}\(..*\[\`.*\`\]\("."\)\) \{([\s\S]*?\}){2,}/gm', 'if (location.href.indexOf("ai-") !== -1) {String.prototype.includes=function (){return true};};riot.mount(\'app\', {generator: window.generatorData,dependencies: window.generatorDependenciesData,});window.successfulPageLoad = true;')
-perchance.org##+js(rmnt, script, '/"body"|"bo"\+"dy"|"bod"\+"y"|"b"\+"od"\+"y"|"b"\+"od"\+"y"|"b"[\s\S]{0,}\+[\s\S]{0,}"od"[\s\S]{0,}\+[\s\S]{0,}"y"|"b"[\s\S]{0,}"o"[\s\S]{0,}"d"[\s\S]{0,}"y"[\s\S]{0,}|`b[\s\S]{0,}`o[\s\S]{0,}`d[\s\S]{0,}`y[\s\S]{0,}|b\$|u006f|document\.body;|\["document"\]|\[[\s\S]{0,}"document"|`\$\{\s*"|mddd4ff4ded34344|"riot"|"setTimeout"|"setT"\+"imeout"|"r"\+"iot"|"docu"\+"ment"|window\s*\.\s*riot|\!window\.a_z3q3sZ1|`\+`|`rep|\[`re|re`|\}r\$/g')
+perchance.org##+js(rmnt, script, '/"body"|"bo"\+"dy"|"bod"\+"y"|"b"\+"od"\+"y"|"b"\+"od"\+"y"|"b"[\s\S]{0,}\+[\s\S]{0,}"od"[\s\S]{0,}\+[\s\S]{0,}"y"|"b"[\s\S]{0,}"o"[\s\S]{0,}"d"[\s\S]{0,}"y"[\s\S]{0,}|`b[\s\S]{0,}`o[\s\S]{0,}`d[\s\S]{0,}`y[\s\S]{0,}|b\$|u006f|document\.body;|\["document"\]|\[[\s\S]{0,}"document"|`\$\{\s*"|Please disable|mddd4sff4ded34344|"riot"|"setTimeout"|replaceAll\("|"ri ot"|"setTimeo ut"|window\s*\.\s*riot|\!window\.da_z3q3sZ1|`\+`|`rep|\[`re|re`|\}r\$/g')
 ! ytlarge detection
 @@||ytlarge.com^$ghide
 @@||googlesyndication.com^$script,xhr,domain=ytlarge.com
@@ -152,5 +126,9 @@ iwb.jp##body:style(display: block !important;)
 iwb.jp###main:style(display: block !important;)
 *$document,csp=default-src 'self' 'unsafe-inline' data: *.bootstrapcdn.com *.cloudflare.com *.google.com *.googleapis.com *.gstatic.com *.hcaptcha.com *.jquery.com .jwpcdn.com *.recaptcha.net *.video-delivery.net *.youtube.com *.zencdn.net i.doodcdn.co img.doodcdn.co,domain=d0000d.com|do0od.com|dood.la|dood.pm|dood.re|dood.sh|dood.so|dood.to|dood.watch|dood.wf|dood.ws|dood.yt|doods.pro|doodstream.co|doodstream.com|doodstream.me|dooood.com,badfilter
 *$subdocument,csp=default-src 'self' 'unsafe-inline' data: *.bootstrapcdn.com *.cloudflare.com *.google.com *.googleapis.com *.gstatic.com *.hcaptcha.com *.jquery.com .jwpcdn.com *.recaptcha.net *.video-delivery.net *.youtube.com *.zencdn.net i.doodcdn.co img.doodcdn.co,domain=d0000d.com|do0od.com|dood.la|dood.pm|dood.re|dood.sh|dood.so|dood.to|dood.watch|dood.wf|dood.ws|dood.yt|doods.pro|doodstream.co|doodstream.com|doodstream.me|dooood.com,badfilter
-igg-games.com##aside > div > a[href] > img
-igg-games.com##article div[style][class] > a[href] > img
+igg-games.com##aside a[href] img[width="300"][height="250"]
+igg-games.com##.uk-margin-medium-top > div a[href] img[width="660"][height="82"]
+||igg-games.com/wp-content/uploads/2024/02/hh3.png$image,1p
+||igg-games.com/wp-content/uploads/2023/12/na1.jpg$image,1p
+||igg-games.com/wp-content/uploads/2023/12/na2.jpg$image,1p
+bild.de##+js(rpnt, script, "adBlockWallEnabled":true, "adBlockWallEnabled":false)
