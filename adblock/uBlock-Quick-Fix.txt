@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Thu, 15 Feb 2024 11:41:59 +0000
-! Diff-Path: ../patches/2024.2.15.800.patch#ublock-quick-fixes
+! Last modified: Fri, 16 Feb 2024 11:20:56 +0000
+! Diff-Path: ../patches/2024.2.16.861.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -42,13 +42,13 @@ youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAd
 !#endif
 !#endif
 !#if ext_devbuild
-||youtube.com/s/desktop/*/cssbin/$css,xhr,uritransform=/desktop\/[0-9a-f]{8}\/cssbin/desktop\/691ad9c2\/cssbin/,domain=www.youtube.com
-||youtube.com/s/desktop/*/jsbin/$script,xhr,uritransform=/desktop\/[0-9a-f]{8}\/jsbin/desktop\/691ad9c2\/jsbin/,domain=www.youtube.com
-@@||youtube.com/s/desktop/*/jsbin/serviceworker-kevlar-appshell.vflset/$script,xhr,uritransform=/desktop\/[0-9a-f]{8}\/jsbin/desktop\/691ad9c2\/jsbin/,domain=www.youtube.com
+||youtube.com/s/desktop/*/cssbin/$css,xhr,uritransform=/desktop\/[0-9a-f]{8}\/cssbin/desktop\/bdb59273\/cssbin/,domain=www.youtube.com
+||youtube.com/s/desktop/*/jsbin/$script,xhr,uritransform=/desktop\/[0-9a-f]{8}\/jsbin/desktop\/bdb59273\/jsbin/,domain=www.youtube.com
+@@||youtube.com/s/desktop/*/jsbin/serviceworker-kevlar-appshell.vflset/$script,xhr,uritransform=/desktop\/[0-9a-f]{8}\/jsbin/desktop\/bdb59273\/jsbin/,domain=www.youtube.com
 www.youtube.com##+js(remove-cache-storage-item, yt-appshell-assets, /\/s\/desktop\/[0-9a-f]{8}\/(?:cs|j)sbin\//)
 !#else
-||youtube.com/s/desktop/*/jsbin/desktop_polymer.vflset/desktop_polymer.js$script,xhr,uritransform=/desktop\/[0-9a-f]{8}\/jsbin/desktop\/691ad9c2\/jsbin/,domain=www.youtube.com
-www.youtube.com##+js(trusted-rpnt, script, /^(\(function serverContract\(\))/s, "caches.open('yt-appshell-assets').then(a=>['a4aa4e18','2144b1c0','691ad9c2'].forEach(i=>a.delete(`/s/desktop/${i}/jsbin/desktop_polymer.vflset/desktop_polymer.js`)));$1")
+||youtube.com/s/desktop/*/jsbin/desktop_polymer.vflset/desktop_polymer.js$script,xhr,uritransform=/desktop\/[0-9a-f]{8}\/jsbin/desktop\/bdb59273\/jsbin/,domain=www.youtube.com
+www.youtube.com##+js(trusted-rpnt, script, /^(\(function serverContract\(\))/s, "caches.open('yt-appshell-assets').then(a=>['2144b1c0','691ad9c2','bdb59273'].forEach(i=>a.delete(`/s/desktop/${i}/jsbin/desktop_polymer.vflset/desktop_polymer.js`)));$1")
 !#endif
 ! VOE sites
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=markstyleall.com
@@ -63,11 +63,13 @@ gamedrive.org##+js(aost, document.querySelector, /showModal|chooseAction|doActio
 gamedrive.org##+js(acs, eval, replace)
 ! perchance - broken by its dev
 perchance.org##+js(rpnt, script, '/if(\s){0,}\(..*\[\`.*\`\]\("."\)\) \{([\s\S]*?\}){2,}/gm', 'if (location.href.indexOf("ai-") !== -1) {String.prototype.includes=function (){return true};};riot.mount(\'app\', {generator: window.generatorData,dependencies: window.generatorDependenciesData,});window.successfulPageLoad = true;')
-perchance.org##+js(rmnt, script, '/"body"|"bo"\+"dy"|"bod"\+"y"|"b"\+"od"\+"y"|"b"\+"od"\+"y"|"b"[\s\S]{0,}\+[\s\S]{0,}"od"[\s\S]{0,}\+[\s\S]{0,}"y"|"b"[\s\S]{0,}"o"[\s\S]{0,}"d"[\s\S]{0,}"y"[\s\S]{0,}|`b[\s\S]{0,}`o[\s\S]{0,}`d[\s\S]{0,}`y[\s\S]{0,}|b\$|u006f|document\.body;|\["document"\]|\[[\s\S]{0,}"document"|`\$\{\s*"|Please disable|mddd4sff4ded34344|"riot"|"setTimeout"|replaceAll\("|"ri ot"|"setTimeo ut"|window\s*\.\s*riot|\!window\.da_z3q3sZ1|`\+`|`rep|\[`re|re`|\}r\$/g')
+perchance.org##+js(rmnt, script, /Pl_ease disable|mddd4sff4dese1d34344|"riot"|"ri o  t"|"setTimeout"|"setTim eo  ut"|window\.da_Zz3qe3EsZ1|`successfulPageLoad`/)
+perchance.org##+js(rmnt, script, /replaceAll\s*\(\s*("|'|`)/)
+perchance.org##+js(rmnt, script, /[^.]replaceAll/)
 ! ytlarge detection
 @@||ytlarge.com^$ghide
 @@||googlesyndication.com^$script,xhr,domain=ytlarge.com
-@@||fundingchoicesmessages.google.com^$script,domain=ytlarge.com
+@@||fundingchoicesmessages.google.com^$script,xhr,domain=ytlarge.com
 @@||g.doubleclick.net/pagead/ads?$frame,domain=ytlarge.com
 ||googleads.g.doubleclick.net/pagead/ads$frame,removeparam=/^(?:correlator|f[cr-w]|p[e-sv]|u_|ga_|url|dt|adk)/,domain=ytlarge.com
 ytlarge.com##.adsbygoogle
@@ -88,7 +90,7 @@ free-mp3-download.net##ins.adsbygoogle:style(max-height: 1px !important; visibil
 !#endif
 infinityscans.xyz,infinityscans.net##+js(rmnt, script, throw Error, condition, /^\s*\(?function.*\);\}\}\(\)\)\);/)
 infinityscans.xyz,infinityscans.net##+js(rpnt, script, /function .*\)\)\);/, , condition, push)
-infinityscans.xyz,infinityscans.net##+js(rpnt, script, /function .*\(\);\}/, , condition, x72)
+infinityscans.xyz,infinityscans.net##+js(rpnt, script, /function .*\(\);\}/, , condition, x72\x3a)
 infinityscans.xyz,infinityscans.net##+js(rpnt, script, /\(function\(.*\(\);\}/, , condition, throw Error)
 ! next-episode .net
 !next-episode.net##+js(rmnt, script, '/[\s\S]{0,}head[\s\S]{1900,}/')
@@ -126,9 +128,11 @@ iwb.jp##body:style(display: block !important;)
 iwb.jp###main:style(display: block !important;)
 *$document,csp=default-src 'self' 'unsafe-inline' data: *.bootstrapcdn.com *.cloudflare.com *.google.com *.googleapis.com *.gstatic.com *.hcaptcha.com *.jquery.com .jwpcdn.com *.recaptcha.net *.video-delivery.net *.youtube.com *.zencdn.net i.doodcdn.co img.doodcdn.co,domain=d0000d.com|do0od.com|dood.la|dood.pm|dood.re|dood.sh|dood.so|dood.to|dood.watch|dood.wf|dood.ws|dood.yt|doods.pro|doodstream.co|doodstream.com|doodstream.me|dooood.com,badfilter
 *$subdocument,csp=default-src 'self' 'unsafe-inline' data: *.bootstrapcdn.com *.cloudflare.com *.google.com *.googleapis.com *.gstatic.com *.hcaptcha.com *.jquery.com .jwpcdn.com *.recaptcha.net *.video-delivery.net *.youtube.com *.zencdn.net i.doodcdn.co img.doodcdn.co,domain=d0000d.com|do0od.com|dood.la|dood.pm|dood.re|dood.sh|dood.so|dood.to|dood.watch|dood.wf|dood.ws|dood.yt|doods.pro|doodstream.co|doodstream.com|doodstream.me|dooood.com,badfilter
-igg-games.com##aside a[href] img[width="300"][height="250"]
-igg-games.com##.uk-margin-medium-top > div a[href] img[width="660"][height="82"]
-||igg-games.com/wp-content/uploads/2024/02/hh3.png$image,1p
-||igg-games.com/wp-content/uploads/2023/12/na1.jpg$image,1p
-||igg-games.com/wp-content/uploads/2023/12/na2.jpg$image,1p
+igg-games.com##aside > :not(:first-child) a[href] img
+igg-games.com##.uk-margin-medium-top > div a[href] img
+igg-games.com##a[href^="https://igg-games.com/flix"]
+igg-games.com##a[href$=".php"]
+||igg-games.com/wp-content/uploads/2024/02/hhh3.png$image,1p
+||igg-games.com/wp-content/uploads/2024/02/naa1.jpg$image,1p
+||igg-games.com/wp-content/uploads/2024/02/naa2.jpg$image,1p
 bild.de##+js(rpnt, script, "adBlockWallEnabled":true, "adBlockWallEnabled":false)
