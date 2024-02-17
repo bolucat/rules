@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.5.1
+// @version         3.5.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -3253,6 +3253,11 @@ else if (document.querySelector('script[src*=".axate.io/"]')) {
   let premium = document.querySelector('.premium, div[class*="-premium"]');
   if (premium)
     premium.removeAttribute('class');
+}
+
+else if (document.querySelector('head > meta[property][content^="https://cdn.forumcomm.com/"]')) {
+  let ads = document.querySelectorAll('div.GoogleDfpAd-Content');
+  hideDOMElement(...ads);
 }
 
 else if (document.querySelector('head > link[href*="/leaky-paywall"], script[src*="/leaky-paywall"], div[id^="issuem-leaky-paywall-"]')) {

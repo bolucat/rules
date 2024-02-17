@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.5.5.0
+// @version         3.5.5.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -44,6 +44,7 @@
 // @match           *://*.gazetadopovo.com.br/*
 // @match           *://*.gestion.pe/*
 // @match           *://*.globo.com/*
+// @match           *://*.lanacion.com.ar/*
 // @match           *://*.larioja.com/*
 // @match           *://*.lasegunda.com/*
 // @match           *://*.latercera.com/*
@@ -364,28 +365,40 @@ else if (matchDomain('cambiocolombia.com')) {
 }
 
 else if (matchDomain('cartacapital.com.br')) {
-  let paywall = document.querySelector('aside.paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_script = getArticleJsonScript();
-    if (json_script) {
-      try {
-        let json = JSON.parse(json_script.text);
-        if (json) {
-          let json_text = json[1].articleBody.replace(/\s{2,}/g, '\r\n\r\n');
-          let content = document.querySelector('section.s-content__text');
-          if (json_text && content) {
-            content.innerHTML = '';
-            let article_new = document.createElement('p');
-            article_new.innerText = json_text;
-            content.appendChild(article_new);
+  if (!window.location.pathname.endsWith('/amp/')) {
+    let paywall = document.querySelector('aside.paywall');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let json_script = getArticleJsonScript();
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text);
+          if (json) {
+            let json_text = json[1].articleBody.replace(/\s{2,}/g, '\r\n\r\n');
+            let content = document.querySelector('section.s-content__text');
+            if (json_text && content) {
+              content.innerHTML = '';
+              let article_new = document.createElement('p');
+              article_new.innerText = json_text;
+              content.appendChild(article_new);
+            }
           }
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
+      }
+    } else {
+      let content_soft = document.querySelector('div.contentSoft');
+      if (content_soft) {
+        content_soft.removeAttribute('class');
+        let freemium = document.querySelectorAll('div[class^="s-freemium"], div.maggazine-add');
+        removeDOMElement(...freemium);
       }
     }
-  }
+    let ads = document.querySelectorAll('div.div_ros_topo');
+    hideDOMElement(...ads);
+  } else
+    ampToHtml();
 }
 
 else if (matchDomain(pe_grupo_elcomercio_domains)) {
@@ -538,6 +551,11 @@ else if (matchDomain('globo.com')) {
     let ads = document.querySelectorAll('div[id^="ad-container"], div.content-ads, div[class^="block__advertising"], div#pub-in-text-wrapper, div[id^="taboola-"]');
     hideDOMElement(...ads);
   }
+}
+
+else if (matchDomain('lanacion.com.ar')) {
+  let ads = document.querySelectorAll('div.mod-banner');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('latercera.com')) {
