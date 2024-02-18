@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Fri, 16 Feb 2024 18:14:49 +0000
-! Diff-Path: ../patches/2024.2.17.918.patch#ublock-annoyances
+! Last modified: Sun, 18 Feb 2024 12:10:36 +0000
+! Diff-Path: ../patches/2024.2.18.984.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -176,9 +176,9 @@ ladbible.com,unilad.com,gamingbible.com,sportbible.com,tyla.com,ladbiblegroup.co
 sportbible.com#@#+js(remove-class, sp-message-open, html, stay)
 sportbible.com#@#div[id^="sp_message_container_"]
 @@||consent.sportbible.com^$domain=sportbible.com
-m2o.it,deejay.it,capital.it,ilmattino.it,leggo.it,libero.it##+js(trusted-click-element, 'button.iubenda-cs-customize-btn, button.iub-cmp-reject-btn, button#iubFooterBtn')
-m2o.it,deejay.it,capital.it,ilmattino.it,leggo.it,libero.it##html[style="overflow: hidden;"]:style(overflow: auto !important)
-m2o.it,deejay.it,capital.it,ilmattino.it,leggo.it,libero.it##[id|="iubenda"]
+m2o.it,deejay.it,capital.it,ilmattino.it,leggo.it,libero.it,tiscali.it##+js(trusted-click-element, 'button.iubenda-cs-customize-btn, button.iub-cmp-reject-btn, button#iubFooterBtn')
+m2o.it,deejay.it,capital.it,ilmattino.it,leggo.it,libero.it,tiscali.it##html[style="overflow: hidden;"]:style(overflow: auto !important)
+m2o.it,deejay.it,capital.it,ilmattino.it,leggo.it,libero.it,tiscali.it##[id^="iubenda"]
 ilmattino.it,leggo.it##.banner:has([href="javascript:acceptAllCookies();void(0);"])
 lastmile.lt##+js(set-cookie, __consent, %5B%22required%22%5D)
 ! ft.com
@@ -1285,10 +1285,11 @@ medicalnewstoday.com##.sticky_ad_container
 !#if env_firefox
 youtube.com##.no-scroll #page-manager:style(margin-top: 0px !important)
 !#endif
-youtube.com##ytd-popup-container > .ytd-popup-container > #contentWrapper > .ytd-popup-container[position-type="OPEN_POPUP_POSITION_BOTTOMLEFT"]
+m.youtube.com,music.youtube.com,tv.youtube.com,www.youtube.com,youtubekids.com##ytd-popup-container > .ytd-popup-container > #contentWrapper > .ytd-popup-container[position-type="OPEN_POPUP_POSITION_BOTTOMLEFT"]
 m.youtube.com###mealbar\:3 > ytm-mealbar.mealbar-promo-renderer
-youtube.com##+js(set, ytInitialPlayerResponse.auxiliaryUi.messageRenderers.upsellDialogRenderer, undefined)
-youtube.com##+js(json-prune, auxiliaryUi.messageRenderers.upsellDialogRenderer)
+m.youtube.com,music.youtube.com,tv.youtube.com,www.youtube.com,youtubekids.com##+js(set, ytInitialPlayerResponse.auxiliaryUi.messageRenderers.upsellDialogRenderer, undefined)
+m.youtube.com,music.youtube.com,tv.youtube.com,www.youtube.com,youtubekids.com##+js(json-prune, auxiliaryUi.messageRenderers.upsellDialogRenderer)
+m.youtube.com,music.youtube.com,tv.youtube.com,www.youtube.com,youtubekids.com,youtube-nocookie.com##+js(href-sanitizer, a[href^="https://www.youtube.com/redirect?event=video_description"][href*="&q=http"], ?q)
 buienradar.nl##+js(set, hideBannerBlockedMessage, true)
 buienradar.nl###adholderContainerHeader
 ||lightboxcdn.com^$domain=foreignpolicy.com
@@ -4440,3 +4441,6 @@ inattvcom117.xyz##^script:has-text(detectDevTool)
 !#else
 inattvcom117.xyz##+js(rmnt, script, detectDevTool)
 !#endif
+! studyadda .com anti context menu
+studyadda.com##+js(set, document.onmousedown, null)
+studyadda.com##+js(set, document.oncontextmenu, null)
