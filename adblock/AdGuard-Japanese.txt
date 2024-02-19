@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: xwJgiI3nXYs/FVmIZWS0JA
-! Diff-Path: ../patches/7/7-s-1708176969-3600.patch
+! Checksum: X08rX3Zhj5o4y0gz2b8KXw
+! Diff-Path: ../patches/7/7-s-1708357117-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.48.71
-! TimeUpdated: 2024-02-17T13:33:12+00:00
+! Version: 2.0.48.78
+! TimeUpdated: 2024-02-19T15:34:16+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -82,6 +82,8 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp
 !
+||ad1.girls-affiliate.com^$document
+||manga.boy.jp^$third-party
 ||af.atsoho.com^$third-party
 ||flux-cdn.com^$third-party
 ||js.mediams.mb.softbank.jp^
@@ -1006,6 +1008,7 @@ jav380.com##+js(set-constant, document.write, noopFunc)
 anacap.doorblog.jp##+js(addEventListener-defuser, scroll, b.type)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/144212
 anianierosuki.work##+js(addEventListener-defuser, click, event)
+! https://github.com/AdguardTeam/AdguardFilters/issues/142720
 ! popup
 oppaideippai.net##+js(window.open-defuser)
 ! ads
@@ -1472,6 +1475,8 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/themes/CashLINESystem/js/modal.$script
 !
 ! Malware/Phishing
+.com/resona/client/index.php$document
+.top/nc/bbs22.php$document
 /mart/*.html?zenid=$document,domain=cfd|top
 /?bcda=*)-$document
 ||azurestaticapps.net/*=(0101)-$document
@@ -1657,6 +1662,12 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+gametohkenranbu.sakuraweb.com###content div[align="center"]:has(> ins.adsbygoogle)
+rakumachi.jp###js-ad_news_relational_post_top
+rakumachi.jp##.AdSide
+rakumachi.jp##.adSide__top
+joker004.blog.fc2.com##div[class^="ad_entry_"]
+video.fc2.com##.pr-ads
 nyahentai.re###main > .home-h:has(> a[href^="https://go.xlrdr.com"])
 kurashiru.com##div[class^="article-items_ads_"]
 kurashiru.com##div[class^="article-items_ads_"] + div[aria-hidden="true"]:empty
@@ -9263,7 +9274,7 @@ dokuha.jp#?#.owl-item > div.ad-wrapper:upward(1)
 ||fgamers.saikyou.biz/image/a/
 ||frontier-direct.jp/top/img/$domain=fgamers.saikyou.biz
 fgamers.saikyou.biz##.leftbar hr
-fgamers.saikyou.biz##a[href*="amazon.co.jp/"]
+fgamers.saikyou.biz##a[href*="amazon.co.jp/"][target="_blank"]
 kininaru-geinou-m.blog.jp#?#.main-container > div:contains(/^【スポンサードリンク】$/)
 solodc2017.com#?#p > ins.adsbygoogle:upward(1)
 splatoon-torikara.com#?#.side-section > div[data-as-slot-id]:upward(1)
