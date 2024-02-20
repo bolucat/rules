@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.5.3
+// @version         3.5.5.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -198,6 +198,14 @@ if (matchDomain('crikey.com.au')) {
   setCookie('blaize_session', '', 'crikey.com.au', '/', 0);
   let ads = document.querySelectorAll('.advert');
   hideDOMElement(...ads);
+}
+
+else if (matchDomain('forbes.com.au')) {
+  setCookie('blaize_session', '', 'forbes.com.au', '/', 0);
+  if (true)
+    getJsonUrl('div[class*="_gate"]', '', 'div.article-page__content-body');
+  let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
+  removeDOMElement(fade);
 }
 
 else if (matchDomain('macrobusiness.com.au')) {
