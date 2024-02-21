@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.5.4
+// @version         3.5.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -966,12 +966,6 @@ else if (matchDomain('americanbanker.com') || matchDomain(usa_arizent_custom_dom
   }
 }
 
-else if (matchDomain('arkansasonline.com')) {
-  setCookie('blaize_session', '', 'arkansasonline.com', '/', 0);
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div.bee-page-container', '', 'div.article__body');
-}
-
 else if (matchDomain('artnet.com')) {
   if (window.location.pathname.endsWith('/amp-page')) {
     amp_unhide_subscr_section();
@@ -1416,7 +1410,7 @@ else if (matchDomain('enotes.com')) {
 }
 
 else if (matchDomain('epoch.org.il')) {
-  getJsonUrl('div.register-login-box', '', 'div.m-article > div.paywall');
+  getJsonUrl('div.register-login-box', '', 'div.paywall');
 }
 
 else if (matchDomain('espn.com')) {
@@ -2721,16 +2715,31 @@ else if (matchDomain('thepointmag.com')) {
 }
 
 else if (matchDomain('thequint.com')) {
-  let paywall = document.querySelector('div.zsqcu');
+  let paywall = document.querySelector('div#paywall-widget');
   if (paywall) {
     removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = breakText(parseHtmlEntities(json.articleBody));
+        let article = document.querySelector('div.story-element');
+        if (json_text && article) {
+          let article_new = document.createElement('p');
+          article_new.innerText = json_text;
+          article.innerHTML = '';
+          article.appendChild(article_new);
+        }
+      }
+    } else
+      refreshCurrentTab();
     let body_hidden = document.querySelector('div#story-body-wrapper');
     if (body_hidden)
       body_hidden.removeAttribute('class');
     function thequint_unhide(node) {
-      node.removeAttribute('class');
+      node.removeAttribute('style');
     }
-    waitDOMAttribute('div#story-body-wrapper', 'DIV', 'class', thequint_unhide, true);
+    waitDOMAttribute('div#story-body-wrapper', 'DIV', 'style', thequint_unhide, true);
   }
 }
 
