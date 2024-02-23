@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.5.5.1
+// @version         3.5.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -76,7 +76,7 @@ if (overlay)
 var ar_grupo_clarin_domains =['clarin.com', 'lavoz.com.ar', 'losandes.com.ar'];
 var es_epiberica_domains = ['diariodemallorca.es', 'eldia.es', 'elperiodico.com', 'epe.es', 'farodevigo.es', 'informacion.es', 'laprovincia.es', 'levante-emv.com', 'lne.es', 'mallorcazeitung.es', 'superdeporte.es'];
 var es_epiberica_custom_domains = ['diaridegirona.cat', 'diariocordoba.com', 'diariodeibiza.es', 'elcorreogallego.es', 'elperiodicodearagon.com', 'elperiodicoextremadura.com', 'elperiodicomediterraneo.com', 'emporda.info', 'laopinioncoruna.es', 'laopiniondemalaga.es', 'laopiniondemurcia.es', 'laopiniondezamora.es', 'regio7.cat'];
-var es_grupo_vocento_domains = ['abc.es', 'diariosur.es', 'diariovasco.com', 'elcomercio.es', 'elcorreo.com', 'eldiariomontanes.es', 'elnortedecastilla.es', 'hoy.es', 'ideal.es', 'larioja.com', 'lasprovincias.es', 'laverdad.es', 'lavozdigital.es'];
+var es_grupo_vocento_domains = ['abc.es', 'canarias7.es', 'diariosur.es', 'diariovasco.com', 'elcomercio.es', 'elcorreo.com', 'eldiariomontanes.es', 'elnortedecastilla.es', 'hoy.es', 'ideal.es', 'larioja.com', 'lasprovincias.es', 'laverdad.es', 'lavozdigital.es'];
 var es_unidad_domains = ['elmundo.es', 'expansion.com', 'marca.com'];
 var pe_grupo_elcomercio_domains = ['diariocorreo.pe', 'elcomercio.pe', 'gestion.pe'];
 
@@ -190,7 +190,7 @@ else if (matchDomain(es_epiberica_domains) || matchDomain(es_epiberica_custom_do
     for (let amp_image of amp_images) {
       let elem = document.createElement('img');
       elem.src = amp_image.getAttribute('src');
-      elem.style = 'margin: 0px 50px;';
+      elem.style = 'width: 75%; margin: 0px 50px;';
       amp_image.parentNode.replaceChild(elem, amp_image);
     }
   } else {
@@ -536,14 +536,7 @@ else if (matchDomain('globo.com')) {
       amp_redirect('div.paywall');
     } else {
       amp_unhide_subscr_section('amp-ad, amp-embed');
-      let amp_images = document.querySelectorAll('figure > amp-img[src^="https://"]');
-      for (let amp_image of amp_images) {
-        let elem = document.createElement('img');
-        elem.src = amp_image.getAttribute('src');
-        elem.alt = amp_image.getAttribute('alt');
-        elem.style = mobile ? 'width: 320px;' : 'margin: 0px 250px; display:block;';
-        amp_image.parentNode.replaceChild(elem, amp_image);
-      }
+      amp_images_replace();
     }
   } else if (window.location.pathname.includes('/amp/'))
     ampToHtml();
@@ -641,6 +634,19 @@ function header_nofix(header, msg = 'BPC > no fix') {
     nofix_div.innerText = msg;
     header.before(nofix_div);
   }
+}
+
+function amp_images_replace() {
+  window.setTimeout(function () {
+    let amp_images = document.querySelectorAll('figure amp-img[src^="http"]');
+    for (let amp_image of amp_images) {
+      let elem = document.createElement('img');
+      elem.src = amp_image.getAttribute('src');
+      elem.alt = amp_image.getAttribute('alt');
+      elem.style = 'width: 100%;';
+      amp_image.parentNode.replaceChild(elem, amp_image);
+    }
+  }, 1000);
 }
 
 function amp_iframes_replace(weblink = false, source = '') {
