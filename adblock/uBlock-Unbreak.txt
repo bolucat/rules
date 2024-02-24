@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Unbreak
 ! Expires: 5 days
-! Last modified: Fri, 23 Feb 2024 15:57:19 +0000
-! Diff-Path: ../patches/2024.2.23.984.patch#ublock-unbreak
+! Last modified: Sat, 24 Feb 2024 01:13:45 +0000
+! Diff-Path: ../patches/2024.2.24.1042.patch#ublock-unbreak
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/unbreak.txt ***
@@ -2487,8 +2487,10 @@ mobile.de##+js(set, optimizelyDatafile.featureFlags, [])
 @@||securepubads.g.doubleclick.net/tag/js/gpt.js$script,3p,domain=purepeople.com
 @@||securepubads.g.doubleclick.net/pagead/managed/js/gpt/*/pubads_impl$script,3p,domain=purepeople.com
 @@||securepubads.g.doubleclick.net/gampad/ads$xhr,3p,domain=purepeople.com
-purepeople.com##+js(nano-stb, logEvent, *, 0.01)
+purepeople.com##+js(nano-stb, logEvent, *, 0.001)
 @@||web-assets.tapfiliate.com^$domain=affiliates.groovehq.com
 @@||groove.tapfiliate.com^$1p
 @@||web-assets.tapfiliate.com^$1p
 ||googletagmanager.com^$script,redirect-rule=googletagmanager_gtm.js,domain=economictimes.com|eisamay.com|iamgujarat.com|indiatimes.com|samayam.com|vijaykarnataka.com
+ioe.vn##+js(set, fingerprint, {})
+ioe.vn##+js(set, fingerprint.getCookie, noopFunc)

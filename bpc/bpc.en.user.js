@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.6.1
+// @version         3.5.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1035,14 +1035,9 @@ else if (matchDomain('barrons.com')) {
     hideDOMElement(...ads);
   } else {
     amp_unhide_subscr_section('.wsj-ad, amp-ad');
+    amp_images_replace();
     let login = document.querySelector('div.login-section-container');
     removeDOMElement(login);
-    let amp_images = document.querySelectorAll('div.article__body amp-img');
-    for (let amp_img of amp_images) {
-      let img_new = document.createElement('img');
-      img_new.src = amp_img.getAttribute('src');
-      amp_img.parentNode.replaceChild(img_new, amp_img);
-    }
   }
 }
 
@@ -2883,7 +2878,7 @@ else if (matchDomain(timesofindia_domains)) {
               content.innerHTML = '';
               let sheet = document.createElement('style');
               sheet.innerText = '[type="synopsis"]::after {background: none !important;}';
-              document.body.appendChild(sheet);
+              document.head.appendChild(sheet);
               content.appendChild(article_new);
             }
           }
@@ -2905,33 +2900,25 @@ else if (matchDomain(timesofindia_domains)) {
         removeDOMElement(paywall);
         let json_script = getArticleJsonScript();
         if (json_script) {
-          let json = JSON.parse(json_script.text);
-          if (json) {
-            let json_text = json.articleBody;
-            let content = document.querySelector('div.paywall');
-            if (json_text && content) {
-              content.innerHTML = '';
-              content.removeAttribute('class');
-              content.style = 'font-size: 16px; font-height: 28px;';
-              let article_new = document.createElement('div');
-              article_new.innerText = json_text;
-              content.appendChild(article_new);
+          try {
+            let json = JSON.parse(json_script.text);
+            if (json) {
+              let json_text = json.articleBody;
+              let article = document.querySelector('div.paywall');
+              if (json_text && article) {
+                article.innerText = breakText(json_text);
+                let sheet = document.createElement('style');
+                sheet.innerText = 'div.paywall::after {background-image: none !important;}';
+                document.head.appendChild(sheet);
+              }
             }
+          } catch (err) {
+            console.log(err);
           }
         }
       }
     } else {
-      let amp_images = document.querySelectorAll('div.inline-image > div.inline-imgecontent > amp-img[src]');
-      for (let amp_image of amp_images) {
-        amp_image.parentNode.removeAttribute('class');
-        amp_image.parentNode.parentNode.removeAttribute('class');
-        let elem = document.createElement('img');
-        Object.assign(elem, {
-          src: amp_image.getAttribute('src'),
-          alt: amp_image.getAttribute('alt')
-        });
-        amp_image.parentNode.replaceChild(elem, amp_image);
-      }
+      ampToHtml();
     }
   }
 }
@@ -3669,6 +3656,19 @@ function removeClassesList(list) {
     for (let elem of elems)
       elem.classList.remove(class_item);
   }
+}
+
+function amp_images_replace() {
+  window.setTimeout(function () {
+    let amp_images = document.querySelectorAll('figure amp-img[src^="http"]');
+    for (let amp_image of amp_images) {
+      let elem = document.createElement('img');
+      elem.src = amp_image.getAttribute('src');
+      elem.alt = amp_image.getAttribute('alt');
+      elem.style = 'width: 100%;';
+      amp_image.parentNode.replaceChild(elem, amp_image);
+    }
+  }, 1000);
 }
 
 function amp_iframes_replace(weblink = false, source = '') {
