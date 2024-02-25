@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.4.2
+// @version         3.5.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -47,7 +47,6 @@ var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
 
-var de_funke_medien_domains = ['ikz-online.de', 'nrz.de', 'waz.de', 'wp.de', 'wr.de'];
 var de_lv_domains = ['profi.de', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de'];
 
@@ -811,12 +810,6 @@ else if (matchDomain(de_lv_domains)) {
     }
   }
   let ads = document.querySelectorAll('div.adZone');
-  hideDOMElement(...ads);
-}
-
-else if (matchDomain(de_funke_medien_domains)) {
-  sessionStorage.setItem('deobfuscate', 'true');
-  let ads = document.querySelectorAll('div.ad');
   hideDOMElement(...ads);
 }
 
