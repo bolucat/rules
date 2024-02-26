@@ -1,16 +1,16 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Sun, 25 Feb 2024 12:42:48 +0000
-! Diff-Path: ../patches/2024.2.25.800.patch#ublock-filters
+! Last modified: Mon, 26 Feb 2024 13:37:20 +0000
+! Diff-Path: ../patches/2024.2.26.862.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
 *_ad_$media,domain=youtube.com,3p
 ! @@||youtube.com/get_video_info?*timedtext_editor$xhr,1p
+tv.youtube.com##+js(trusted-replace-xhr-response, '"adPlacements"', '"no_ads"', /playlist\?list=|player\?|watch\?v=|youtubei\/v1\/player/)
 !#if !cap_html_filtering
 www.youtube.com##+js(trusted-replace-xhr-response, /"adPlacements.*?([A-Z]"\}|"\}{2})\}\]\,/, , /playlist\?list=|player\?|watch\?v=|youtubei\/v1\/player/)
 www.youtube.com##+js(trusted-replace-xhr-response, /"adPlacements.*?("adSlots"|"adBreakHeartbeatParams")/gms, $1, youtubei/v1/player)
-tv.youtube.com##+js(trusted-replace-xhr-response, '"adPlacements"', '"no_ads"', /playlist\?list=|player\?|watch\?v=|youtubei\/v1\/player/)
 www.youtube.com##+js(trusted-replace-fetch-response, /"adPlacements.*?([A-Z]"\}|"\}{2})\}\]\,/, , player?)
 www.youtube.com##+js(trusted-replace-fetch-response, /\"adSlots.*?\}\]\}\}\]\,/, , player?)
 !#else
@@ -9729,6 +9729,7 @@ skyve.io##button[class^="buttonPress"]
 skyve.io##.wrapper:style(min-height:inherit! important;)
 skyve.io##[onclick*="location.href"]
 ||pubfuture-ad.com^$script,3p,redirect-rule=noopjs,domain=faqwiki.us
+faqwiki.us##+js(nostif, EzoIvent)
 fdownloader.net##+js(rmnt, script, showAd)
 ||fussballtransfers.com^$script,1p,redirect-rule=noopjs
 anime7.download##+js(aopw, app_advert)
@@ -9773,18 +9774,21 @@ zoro.*##+js(nowoif)
 ! tvlive.fctvhd.com antiadb
 *$image,redirect-rule=2x2.png,domain=tvlive.fctvhd.com
 cheater.ninja##+js(nostif, _0x)
+@@||forum.iptvkalite.com^$ghide
+@@||forum.iptvkalite.com^$script,1p
+forum.iptvkalite.com##ins.adsbygoogle
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
-*$frame,redirect-rule=noopframe,domain=gplinks.co|theringtonesworld.in|jobkijankari.in|newsloti.com|newzwala.co.in|iplquotes.com|kaisekareblog.com|w3hindi.in|jobwaala.in|nhmgujarat.in|minijankari.com|news36tech.com
-@@||gplinks.in/track/$script,xhr,domain=gplinks.co|theringtonesworld.in|jobkijankari.in|newsloti.com|newzwala.co.in|iplquotes.com|kaisekareblog.com|w3hindi.in|jobwaala.in|nhmgujarat.in|minijankari.com|news36tech.com
-@@||doubleclick.net^$script,xhr,domain=theringtonesworld.in|jobkijankari.in|newsloti.com|newzwala.co.in|iplquotes.com|kaisekareblog.com|w3hindi.in|jobwaala.in|nhmgujarat.in|minijankari.com|news36tech.com
-@@*$ghide,domain=gplinks.co|theringtonesworld.in|jobkijankari.in|newsloti.com|newzwala.co.in|iplquotes.com|kaisekareblog.com|w3hindi.in|jobwaala.in|nhmgujarat.in|minijankari.com|news36tech.com
-theringtonesworld.in,jobkijankari.in,newsloti.com,newzwala.co.in,iplquotes.com,kaisekareblog.com,w3hindi.in,jobwaala.in,nhmgujarat.in,minijankari.com,news36tech.com##center:others()
-theringtonesworld.in,jobkijankari.in,newsloti.com,newzwala.co.in,iplquotes.com,kaisekareblog.com,w3hindi.in,jobwaala.in,nhmgujarat.in,minijankari.com,news36tech.com###SmileyBanner:remove()
-theringtonesworld.in,jobkijankari.in,newsloti.com,newzwala.co.in,iplquotes.com,kaisekareblog.com,w3hindi.in,jobwaala.in,nhmgujarat.in,minijankari.com,news36tech.com##+js(aopw, AdBDetected)
-theringtonesworld.in,jobkijankari.in,newsloti.com,newzwala.co.in,iplquotes.com,kaisekareblog.com,w3hindi.in,jobwaala.in,nhmgujarat.in,minijankari.com,news36tech.com##+js(set, count, 0)
-theringtonesworld.in,jobkijankari.in,newsloti.com,newzwala.co.in,iplquotes.com,kaisekareblog.com,w3hindi.in,jobwaala.in,nhmgujarat.in,minijankari.com,news36tech.com##[id*="iframe"], [id*="gpt_unit"], [id*="div-gpt-"]:style(height:0.0001px !important;)
+*$frame,redirect-rule=noopframe,domain=gplinks.co|theringtonesworld.in|jobkijankari.in|newsloti.com|newzwala.co.in|iplquotes.com|kaisekareblog.com|w3hindi.in|jobwaala.in|nhmgujarat.in|minijankari.com|news36tech.com|gptproguide.com|odiamusicsong.com
+@@||gplinks.in/track/$script,xhr,domain=gplinks.co|theringtonesworld.in|jobkijankari.in|newsloti.com|newzwala.co.in|iplquotes.com|kaisekareblog.com|w3hindi.in|jobwaala.in|nhmgujarat.in|minijankari.com|news36tech.com|gptproguide.com|odiamusicsong.com
+@@||doubleclick.net^$script,xhr,domain=theringtonesworld.in|jobkijankari.in|newsloti.com|newzwala.co.in|iplquotes.com|kaisekareblog.com|w3hindi.in|jobwaala.in|nhmgujarat.in|minijankari.com|news36tech.com|gptproguide.com|odiamusicsong.com
+@@*$ghide,domain=gplinks.co|theringtonesworld.in|jobkijankari.in|newsloti.com|newzwala.co.in|iplquotes.com|kaisekareblog.com|w3hindi.in|jobwaala.in|nhmgujarat.in|minijankari.com|news36tech.com|gptproguide.com|odiamusicsong.com
+theringtonesworld.in,jobkijankari.in,newsloti.com,newzwala.co.in,iplquotes.com,kaisekareblog.com,w3hindi.in,jobwaala.in,nhmgujarat.in,minijankari.com,news36tech.com,gptproguide.com,odiamusicsong.com##center:others()
+theringtonesworld.in,jobkijankari.in,newsloti.com,newzwala.co.in,iplquotes.com,kaisekareblog.com,w3hindi.in,jobwaala.in,nhmgujarat.in,minijankari.com,news36tech.com,gptproguide.com,odiamusicsong.com###SmileyBanner:remove()
+theringtonesworld.in,jobkijankari.in,newsloti.com,newzwala.co.in,iplquotes.com,kaisekareblog.com,w3hindi.in,jobwaala.in,nhmgujarat.in,minijankari.com,news36tech.com,gptproguide.com,odiamusicsong.com##+js(aopw, AdBDetected)
+theringtonesworld.in,jobkijankari.in,newsloti.com,newzwala.co.in,iplquotes.com,kaisekareblog.com,w3hindi.in,jobwaala.in,nhmgujarat.in,minijankari.com,news36tech.com,gptproguide.com,odiamusicsong.com##+js(set, count, 0)
+theringtonesworld.in,jobkijankari.in,newsloti.com,newzwala.co.in,iplquotes.com,kaisekareblog.com,w3hindi.in,jobwaala.in,nhmgujarat.in,minijankari.com,news36tech.com,gptproguide.com,odiamusicsong.com##[id*="iframe"], [id*="gpt_unit"], [id*="div-gpt-"]:style(height:0.0001px !important;)
 gplinks.co##.bg-soft-primary, a.exclude-pop.smartlink, .exclude-pop.quiz-container, #PlayQuiz, #quiz-frame, .exclude-popad
 ||gamezop.com^$domain=gplinks.*
 gplinks.co##+js(set, blurred, false)

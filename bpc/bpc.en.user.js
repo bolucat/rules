@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.6.2
+// @version         3.5.6.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -19,7 +19,6 @@
 // @match           *://*.pub/*
 // @match           *://*.businessinsider.com.pl/*
 // @match           *://*.businesspost.ie/*
-// @match           *://*.businesstimes.com.sg/*
 // @match           *://*.epoch.org.il/*
 // @match           *://*.europower.no/*
 // @match           *://*.fiskeribladet.no/*
@@ -139,6 +138,7 @@ if (overlay)
 var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 'thepeterboroughexaminer.com', 'therecord.com', 'thespec.com', 'thestar.com', 'wellandtribune.ca'];
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
 var no_nhst_media_domains = ['europower.no', 'fiskeribladet.no', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
+var sg_sph_media_domains = ['straitstimes.com'];
 var timesofindia_domains = ['epaper.indiatimes.com', 'timesofindia.com', 'timesofindia.indiatimes.com'];
 var uk_incisive_media_domains = ['businessgreen.com', 'internationalinvestment.net', 'investmentweek.co.uk', 'professionaladviser.com', 'professionalpensions.com'];
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
@@ -1154,13 +1154,6 @@ else if (matchDomain('businessoffashion.com')) {
   }
 }
 
-else if (matchDomain(['businesstimes.com.sg', 'straitstimes.com'])) {
-  let url = window.location.href;
-  getArchive(url, 'div[class*=eas-paywall], div#nocx_paywall_area', '', 'main#content');
-  let ads = document.querySelectorAll('div.ads, div[id^="dfp-ad-"], div.cx_paywall_placeholder');
-  hideDOMElement(...ads);
-}
-
 else if (matchDomain(['chronicle.com', 'philanthropy.com'])) {
   let preview = document.querySelector('div[data-content-summary]');
   removeDOMElement(preview);
@@ -2119,6 +2112,13 @@ else if (matchDomain('seekingalpha.com')) {
     let paywall = document.querySelector('[class*="paywall-container"]');
     removeDOMElement(paywall);
   }
+}
+
+else if (matchDomain(sg_sph_media_domains)) {
+  let url = window.location.href;
+  getArchive(url, 'div#nocx_paywall_area', '', 'main#content');
+  let ads = document.querySelectorAll('div.ads, div[id^="dfp-ad-"], div.cx_paywall_placeholder');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('slate.com')) {
