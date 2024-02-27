@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.5.6.0
+// @version         3.5.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -131,16 +131,14 @@ else if (matchDomain('elespanol.com')) {
 }
 
 else if (matchDomain(es_unidad_domains)) {
-  let premium = document.querySelector('.ue-c-article__premium');
-  let url = window.location.href;
   if (!window.location.hostname.match(/^amp(-[a-z]{2})?\./)) {
-    if (premium) {
-      removeDOMElement(premium);
-      window.location.href = url.replace('/www.', '/amp.');
-    }
+    let url = window.location.href;
+    amp_redirect('div.ue-c-article__premium', '', url.replace('/www.', '/amp.'));
+    let ads = document.querySelectorAll('div[id^="taboola-"]');
+    hideDOMElement(...ads);
   } else {
     amp_unhide_access_hide('="authorized=true"', '="authorized!=true"');
-    amp_unhide_subscr_section('.advertising, amp-embed, amp-ad');
+    amp_unhide_subscr_section('amp-ad, amp-embed, div.advertising, div.ue-c-ad');
   }
 }
 

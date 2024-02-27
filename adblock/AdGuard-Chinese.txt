@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: Y0N01DGBDeAScIap0txfwQ
-! Diff-Path: ../patches/224/224-s-1708965402-3600.patch
+! Checksum: PcfVB/AhMTUKVyYU/tTFwA
+! Diff-Path: ../patches/224/224-s-1709051804-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.11.46
-! TimeUpdated: 2024-02-26T16:32:40+00:00
+! Version: 2.1.11.55
+! TimeUpdated: 2024-02-27T16:32:34+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -234,7 +234,6 @@
 ||power.adhacker.online^$third-party
 ||a.tyncar.com^
 ||og.zyzjpx.cn^$third-party
-||kolur.top^$third-party
 ||x.dmouy.cn^$third-party
 ||haoxxwang.com^$third-party
 ||a32a.com.cn^$third-party
@@ -770,12 +769,10 @@ x99av.com##+js(set-constant, ADSOBJET, {})
 ! https://github.com/AdguardTeam/AdguardFilters/issues/160509
 embedrise.com##+js(window.open-defuser)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/158639
-aiyifan.tv,iyf.tv##+js(abort-on-stack-trace, Object.prototype.ppmm, invokeInterstitial)
-aiyifan.tv,iyf.tv#$#.bg-overlayer { pointer-events: unset !important; }
-aiyifan.tv,iyf.tv##+js(remove-class, publicplay, #main-player)
-aiyifan.tv,iyf.tv##+js(abort-on-property-read, Object.prototype.ShouldLoadAds)
-! https://github.com/uBlockOrigin/uAssets/issues/19027
-datapps.org##+js(remove-attr, onclick, a[href][onclick^="setpos"])
+yfsp.tv,aiyifan.tv,iyf.tv##+js(abort-on-stack-trace, Object.prototype.pgmp, invokeInterstitial)
+yfsp.tv,aiyifan.tv,iyf.tv#$#.bg-overlayer { pointer-events: unset !important; }
+yfsp.tv,aiyifan.tv,iyf.tv##+js(remove-class, publicplay, #main-player)
+yfsp.tv,aiyifan.tv,iyf.tv##+js(abort-on-property-read, Object.prototype.ShouldLoadAds)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/154174
 9xav.cc##+js(remove-class, q-body--prevent-scroll, body)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/150757
@@ -1126,7 +1123,6 @@ nodejs.cn###pagead
 3dmgame.com#?#.Gmaeinfobtn_tab > a.patchshow[style]:has(> span:contains(/^广告$/))
 gvm.com.tw##.promotion_ad
 gvm.com.tw##.promotion > .sp-txt
-aiyifan.tv,iyf.tv##.video-player > .cc > .ng-star-inserted[style="position: relative;"]
 huya.com##.room-sidebar #public-screen-ab
 vidhub.me,vidhub.tv##.promolnk
 vidhub.me,vidhub.tv##.promote-link
@@ -1181,7 +1177,8 @@ sohu.com#?#.news-wrapper > .news-box:has(> div[id^="taboola-below-article-widget
 ||user.042.cn/adver/adver.js
 ||cloud.tencent.com/developer/api/common/getAds
 ||cloud.tencent.com/developer/api/common/getOneAds
-aiyifan.tv,iyf.tv#?#.video-player + div.ps > div:has(> div.bb)
+yfsp.tv,aiyifan.tv,iyf.tv##.video-player > .dabc > .ng-star-inserted[style="position: relative;"]
+yfsp.tv,aiyifan.tv,iyf.tv##.video-player + div.ps > div:has(> div.bb)
 ||head4.net/ad_
 yiyouliao.com#?#.yyl-weiruan-ads-list-item:has(> div#small1)
 yiyouliao.com#?#.yyl-weiruan-video-list-item:has(> div#small2)
@@ -1434,7 +1431,6 @@ pc.yiyouliao.com##.yyl-weiruan-ads-swiper
 ||9129666tp.com^$domain=9xav.cc
 ||5598tp.com^$domain=9xav.cc
 ||aliyuncs.com^$domain=9xav.cc
-||xyplxx.2gks.com^$domain=9xav.cc
 sina.com.cn##.article-botton-slide
 military.china.com##.item_list > .medialist
 military.china.com##.slide_doubleimg > .baiBox
@@ -1497,7 +1493,6 @@ cupfox.app##.t-img-box > a[target="_blank"] > img
 olevod.com##div[class^="ad"][style="margin-top: 0.05rem;"]
 olevod.com##div[style*="%;float: left;"] > a[target="_blank"]
 zhuanlan.zhihu.com##.RichText-MCNLinkCardContainer > a.GoodsRecommendCard
-||lib.djn882.com/static/lazyload.js
 jiuse710.com###main > div[class]:not([class*="block"]):not([class*="container"])
 jandan.net###sidebar > div#box
 news.pchome.com.tw##div[class^="adnewlist"]
@@ -1683,7 +1678,6 @@ i8k.cc##.module-adslist
 haiwai.com##.container + .fixed-bottom[style^="box-shadow:"]
 ||waipian*.com/statics/recommend/
 ||baiyangzuo.xkyn.com/imgs/js/al.js
-||dm.verywind.com^$domain=baiyangzuo.xkyn.com
 pornlulu.com##.row.links
 oh100.com##.mySwiperBox
 ||cpt.9136.com/img/b_special/
@@ -2248,8 +2242,6 @@ edc1014001.pixnet.net##a[onmouseover]
 ||18av.mm-cg.com/*/7mmtv.gif
 .gif$third-party,domain=avbebe.com
 sex8.cc##.banners12
-||nyaa.fun/static/js/*_costcheck_a.js
-nyaa.fun##div[class^="servers-cost-money"]
 supportdap.online##.td-post-content > a[rel="nofollow"] > img
 sex8.cc##.a_oscar1
 sex8.cc##.fnwehjnc12
@@ -2323,9 +2315,6 @@ hk.on.cc##div[id^="google_div_"]
 sigure.tw##.Ads-Sidebar
 ||77xsw.la/novel/js/pagetop.js
 ||77xsw.la/novel/js/pagebottom.js
-||ssl.css.cdn120.com/js/gcxsbdads*.js
-||ssl.css.cdn120.com/js/gcxsfeeds.js
-||ssl.css.cdn120.com/js/application.js
 ||sjks88.com/templets/default/js/mydata4.js
 ssr.tools##.asb > div[style] > a[target="_blank"] > img
 ssr.tools##.sidebar > div.widget > div.item > a[target="_blank"] > img
@@ -2500,7 +2489,6 @@ bimiacg.net##.tuiguang
 ||m.feisucn.com/assets/js/m.js
 douyu.com##.BargainingKit
 douyu.com##a[href^="http://tracking.ad-survey.com/"]
-tv.ci##a[target="_blank"] > img[src^="https://cdn.jsdelivr.net/gh/dsx0095/img/"]
 wuyong.fun##.riplus_ads_wrap
 eyny.com##span[id^="ads_ads_"]
 ||eyny.com/data/cache/js_show_ads.js
@@ -4526,6 +4514,7 @@ newduba.cn###jq_youxi
 ##img[src*=".sinaimg."][style="width:150px;height:300px"]
 ##script + #coupletBox
 ##script + #rbbox
+##script + .header_rmb
 ##script + a[href] > img[src*="lbsugc.cdn.bcebos.com"]
 ##script + a[target="_bank"] > img[src*=".c-ctrip.com"][style="width:100%;height:auto;"]
 ##script + div[id^="a-loading-"]
@@ -4555,6 +4544,7 @@ newduba.cn###jq_youxi
 ||0j775d.cn^
 ||1ny3r.icu^
 ||2jse6.icu^
+||3bxe2.cyou^
 ||51hir.cyou^
 ||88lm05.com^
 ||8xtm6i.cn^
@@ -4584,6 +4574,8 @@ newduba.cn###jq_youxi
 ||chayassa.com^
 ||cliffnsc.xyz^
 ||clywws.xyz^
+||cqisam.xyz^
+||ctlrarz.xyz^
 ||cvbjctqs.xyz^
 ||cvgrszkg.xyz^
 ||cvnxetmq.xyz^
@@ -4597,6 +4589,7 @@ newduba.cn###jq_youxi
 ||ebgwdon.cn^
 ||efmtsw.xyz^
 ||ejdhmed.xyz^
+||ferriesendless.com^
 ||fmfnrf.xyz^
 ||fwcnex.icu^
 ||ghgasdb365.shop^
@@ -4606,10 +4599,12 @@ newduba.cn###jq_youxi
 ||hbjolp.xyz^
 ||heapz.cyou^
 ||hexcvb.xyz^
+||hgthpj.xyz^
 ||hhffks967.shop^
 ||hhffnu135.shop^
 ||hmrwkcx.cn^
 ||hozatr.xyz^
+||ijvla.cn^
 ||jgmywh.icu^
 ||jqpejp.xyz^
 ||js131.cn^
@@ -4622,6 +4617,8 @@ newduba.cn###jq_youxi
 ||lvdedf.xyz^
 ||misjgy.xyz^
 ||nddld.cn^
+||ndthdte125.shop^
+||ndthdtr586.shop^
 ||ngnxyub.cn^
 ||nkbkor.icu^
 ||nplahh.xyz^
@@ -4648,12 +4645,14 @@ newduba.cn###jq_youxi
 ||rktddv.xyz^
 ||ruqwgb.icu^
 ||rydyvv.xyz^
+||rzfdbsn.cn^
 ||s8.pw^$third-party
 ||shuocyw.cn^
 ||sjaaquj.cn^
 ||soffersk.com^
 ||spsfupq.cn^
 ||srzpsbf.xyz^
+||svncowt.cn^
 ||szbhb.cn^
 ||szmnd.cn^
 ||szmnf.cn^
@@ -4662,11 +4661,13 @@ newduba.cn###jq_youxi
 ||szpwh.cn^
 ||tahznx.xyz^
 ||tchdxl.xyz^
+||tgccct.icu^
 ||tmjetb.xyz^
 ||tu2024020388.com^
 ||tyodot.icu^
 ||u7u9.com^$third-party
 ||uctutu3789.xyz^
+||usltmus.cn^
 ||uu22662.com^
 ||uxrdg.cn^
 ||veaiyl.icu^
@@ -11801,6 +11802,7 @@ hxsame.hexun.com$domain=~quote.hexun.com
 ||inte.sogou.com^
 ||iocoder.cn/alert/js/alert.js
 ||ip.sb/assets/images/*_ads.
+||ip138.com/banana/
 ||ip138.com/banner/
 ||ip138.com/idc/
 ||ipeen.com.tw/js/frame/ad-actions.js

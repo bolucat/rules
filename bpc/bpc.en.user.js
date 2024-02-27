@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.6.3
+// @version         3.5.6.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1501,9 +1501,14 @@ else if (matchDomain('foxnews.com')) {
 
 else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
   window.setTimeout(function () {
+  let url = window.location.href;
+  let body_wrapper_sel = 'section[data-testid="article-body-wrapper"]';
+  let paywall_sel = 'div[data-test="paywallMidpage"], ' + body_wrapper_sel + ' a[href^="https://promotion."]';
+  let article_sel = 'div[data-test="articleBody"], ' + body_wrapper_sel;
+  let article_link_sel = 'article header, main.article-page p, ' + article_sel;
   if (window.location.pathname.includes('/.')) {
     func_post = function () {
-      let article_link = document.querySelector('article header');
+      let article_link = document.querySelector(article_link_sel);
       if (article_link) {
         let article_new = document.querySelector(article_sel);
         let paywall = article_new.querySelector(paywall_sel);
@@ -1513,10 +1518,24 @@ else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
         }
       }
     }
-    let url = window.location.href;
-    let paywall_sel = 'div[data-test="paywallMidpage"]';
-    let article_sel = 'div[data-test="articleBody"]';
-    getArchive(url, paywall_sel, '', article_sel);
+    getArchive(url, paywall_sel, '', article_sel, '', article_sel, article_link_sel);
+  } else if (window.location.pathname.includes('/ty-article-live/')) {
+    let paywall = document.querySelector(paywall_sel);
+    if (paywall) {
+      removeDOMElement(paywall);
+      let article = document.querySelector(article_sel);
+      if (article) {
+        article.before(archiveLink_renew(url));
+        article.before(archiveLink(url));
+      }
+    }
+  } else if (window.location.pathname === '/') {
+    let overlays = document.querySelectorAll('div > div > svg[data-test="IconAlefLogoTransparent"]');
+    for (let elem of overlays)
+      removeDOMElement(elem.parentNode.parentNode);
+    let inert_links = document.querySelectorAll('article[inert]');
+    for (let elem of inert_links)
+      elem.removeAttribute('inert');
   }
   }, 2000);
 }
@@ -3506,8 +3525,11 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
             if (arch_dom) {
               if (arch_dom.firstChild)
                 arch_dom = arch_dom.firstChild;
-              arch_dom.before(archiveLink_renew(window.location.href));
-              arch_dom.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
+              let arch_div = document.createElement('div');
+              arch_div.appendChild(archiveLink_renew(window.location.href));
+              arch_div.appendChild(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
+              arch_div.style = 'margin: 0px 0px 50px;';
+              arch_dom.before(arch_div);
             }
             let targets = article_new.querySelectorAll('a[target="_blank"][href^="' + window.location.origin + '"]');
             for (let elem of targets)
