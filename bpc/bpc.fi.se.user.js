@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         3.5.3.1
+// @version         3.5.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js
@@ -8,7 +8,6 @@
 // @homepageURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
-// @match           *://*.dn.se/*
 // @match           *://*.etc.se/*
 // @match           *://*.nyteknik.se/*
 // @match           *://*.suomensotilas.fi/*
@@ -27,21 +26,7 @@ var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
 
-if (matchDomain('dn.se')) {
-  let url = window.location.href;
-  let paywall = document.querySelector('div.esi-paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.article__content');
-    if (article)
-      article.appendChild(archiveLink(url));
-    let locked = document.querySelector('div.article__content--locked');
-    if (locked)
-      locked.classList.remove('article__content--locked');
-  }
-}
-
-else if (matchDomain('etc.se')) {
+if (matchDomain('etc.se')) {
   let paywall = document.querySelector('div.paywalled');
   if (paywall) {
     paywall.removeAttribute('class');

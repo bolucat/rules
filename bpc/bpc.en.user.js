@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.6.4
+// @version         3.5.6.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -2055,7 +2055,20 @@ else if (matchDomain('outlookindia.com')) {
 
 else if (matchDomain('project-syndicate.org')) {
   let url = window.location.href;
-  getArchive(url, 'div.paywall--base', '', 'div[data-page-area="article-body"]');
+  let paywall_sel = 'div.paywall--base';
+  let paywall = document.querySelector(paywall_sel);
+  if (paywall) {
+    let article_sel = 'div[data-page-area="article-body"]';
+    let article = document.querySelector(article_sel);
+    if (article)
+      getArchive(url, paywall_sel, '', article_sel);
+    else {
+      removeDOMElement(paywall);
+      let split_top = document.querySelector('div.split-top');
+      if (split_top)
+        split_top.after(archiveLink(url));
+    }
+  }
 }
 
 else if (matchDomain('puck.news')) {
@@ -2878,7 +2891,7 @@ else if (matchDomain('timeshighereducation.com')) {
 
 else if (matchDomain(timesofindia_domains)) {
   if (matchDomain('epaper.indiatimes.com')) {
-    let blocker = document.querySelector('section.epaper-blocker');
+    let blocker = document.querySelector('div.epaperBlockerWrap');
     removeDOMElement(blocker);
     if (window.location.pathname.startsWith('/english-news-paper-today-toi-print-edition/')) {
       let paywall = document.querySelector('section#blocker');
