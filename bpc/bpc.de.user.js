@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.6.0
+// @version         3.5.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -349,6 +349,8 @@ else if (matchDomain('freiepresse.de')) {
     }
     getGoogleWebcache(url, 'div.article-teaser', '', 'article');
   }
+  let ads = document.querySelectorAll('div.rgt-content');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('freitag.de')) {
@@ -1026,8 +1028,11 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
             if (arch_dom) {
               if (arch_dom.firstChild)
                 arch_dom = arch_dom.firstChild;
-              arch_dom.before(archiveLink_renew(window.location.href));
-              arch_dom.before(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
+              let arch_div = document.createElement('div');
+              arch_div.appendChild(archiveLink_renew(window.location.href));
+              arch_div.appendChild(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
+              arch_div.style = 'margin: 0px 0px 50px;';
+              arch_dom.before(arch_div);
             }
             let targets = article_new.querySelectorAll('a[target="_blank"][href^="' + window.location.origin + '"]');
             for (let elem of targets)

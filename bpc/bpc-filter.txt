@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.5.6.3
+! Version: 3.5.7.0
 
 ! General
 
@@ -132,9 +132,8 @@ elconfidencial.com##+js(rc, newsType__content--closed, div.newsType__content--cl
 ||elobservador.com.uy/shares$xmlhttprequest,~third-party
 ||elpais.com.uy/user/authStatus$script,~third-party
 ||elpais.com/arc/subs/p.min.js$script,~third-party
-!#if (env_firefox)
-elpais.com##^div#ctn_freemium_article,div#ctn_premium_article
-!#endif
+elpais.com##div#ctn_freemium_article:remove()
+elpais.com##div#ctn_premium_article:remove()
 eltiempo.com##+js(rc, modulos, div.modulos)
 ||eltribuno.com/scripts/Bellhop/dist/bellhop.min.js$script,~third-party
 em.com.br##+js(rc, compress-text, .div.compress-text)
@@ -228,6 +227,7 @@ loeildelaphotographie.com##.premium-pic-box,.membership-promo-container,.login_f
 loeildelaphotographie.com##+js(ra, style, img[style*="blur"])
 ||lrb.co.uk$inline-script
 ||medscapestatic.com/*/medscape-library.js$script,domain=medscape.com
+||wbmdstatic.com/*/chunk-vendors.*.js$script,domain=medscape.com
 medscape.com##.AdUnit,div[id^="ads-"]
 mexiconewsdaily.com##+js(rc, tdb-block-inner, body.single div.td-post-content > div.tdb-block-inner)
 mv-voice.com##+js(cookie-remover, /^/)
@@ -387,11 +387,8 @@ modernhealthcare.com##+js(rc, sponsored-article, div.sponsored-article)
 huffingtonpost.it,ilsecoloxix.it,lastampa.it,repubblica.it##+js(cookie-remover, blaize_session)
 huffingtonpost.it,lastampa.it,repubblica.it##aside#widgetDP,div[id^="adv"]
 ||scripts.repubblica.it/pw/pw.js$script,domain=italian.tech|moda.it
-italian.tech,moda.it##div#ph-paywall
+italian.tech,moda.it##div#ph-paywall:remove()
 italian.tech,moda.it##+js(ra, style, div#article-body, stay)
-!#if (env_firefox)
-italian.tech,moda.it##^div#ph-paywall
-!#endif
 
 ! Groupe SudOuest.fr
 sudouest.fr,charentelibre.fr,larepubliquedespyrenees.fr##div.article-premium-footer,div.footer-premium,div.article-body-wrapper.visible-not-premium,div.pub,div.ph-easy-subscription
