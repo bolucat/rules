@@ -132,7 +132,7 @@ if (matchDomain('telegraaf.nl')) {
       })
     }
     article.after(div_main);
-    }
+  }
   let banners = document.querySelectorAll('.ArticleBodyBlocks__inlineArticleSpotXBanner, .WebpushOptin');
   removeDOMElement(...banners);
 }
