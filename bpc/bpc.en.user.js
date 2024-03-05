@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.7.3
+// @version         3.5.7.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -34,7 +34,6 @@
 // @match           *://*.niagarafallsreview.ca/*
 // @match           *://*.newsweek.pl/*
 // @match           *://*.nzherald.co.nz/*
-// @match           *://*.puck.news/*
 // @match           *://*.rp.pl/*
 // @match           *://*.sloanreview.mit.edu/*
 // @match           *://*.stcatharinesstandard.ca/*
@@ -2075,18 +2074,6 @@ else if (matchDomain('project-syndicate.org')) {
   }
 }
 
-else if (matchDomain('puck.news')) {
-  getJsonUrl('div[class*="paywall"]', '', 'div.entry-content', {art_append: true});
-  let modal = document.querySelector('div#paywall-modal');
-  removeDOMElement(modal);
-  let overlay = document.querySelector('body.paywall-active');
-  if (overlay)
-    overlay.classList.remove('paywall-active');
-  let article_style = document.querySelector('article[style]');
-  if (article_style)
-    article_style.removeAttribute('style');
-}
-
 else if (matchDomain('rp.pl')) {
   setCookie('blaize_session', '', 'rp.pl', '/', 0);
   let url = window.location.href;
@@ -3719,7 +3706,7 @@ function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r
   return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
 }
 
-function googleSearchToolLink(url, text_fail = 'BPC > Full article text (test url & copy html (tab) code to [https://codebeautify.org/htmlviewer]:\r\n') {
+function googleSearchToolLink(url, text_fail = 'BPC > Full article text (test url & copy html (tab) code to [https://codebeautify.org/htmlviewer]):\r\n') {
   return externalLink(['search.google.com'], 'https://search.google.com/test/rich-results?url={url}', encodeURIComponent(url), text_fail);
 }
 

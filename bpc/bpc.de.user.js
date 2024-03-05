@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.6.2
+// @version         3.5.6.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -169,10 +169,10 @@ else if (matchDomain('bild.de')) {
 
 else if (matchDomain('boersen-zeitung.de')) {
   window.setTimeout(function () {
-    let url = window.location.href;
-    let paywall = document.querySelector('storefront-element[child-id="paywall"]');
+    let paywall = document.querySelector('storefront-section#paywall');
     if (paywall) {
       removeDOMElement(paywall);
+      let url = window.location.href;
       replaceDomElementExt(url, false, false, 'article');
     }
   }, 2000);
