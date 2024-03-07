@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.6.3
+// @version         3.5.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -47,6 +47,7 @@ var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
 
+var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'morgenpost.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
 var de_lv_domains = ['profi.de', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de'];
 
@@ -798,6 +799,13 @@ else if (matchDomain('zeit.de')) {
   if (document.querySelector('head > link[rel="next"]'))
     url += '/komplettansicht';
   getArchive(url, 'aside#paywall', '', 'article');
+}
+
+else if (matchDomain(de_funke_medien_domains)) {
+  let url = window.location.href;
+  getArchive(url, 'div#paywall-container', '', 'article');
+  let ads = document.querySelectorAll('aside.ad-slot-wrapper');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain(de_lv_domains)) {
