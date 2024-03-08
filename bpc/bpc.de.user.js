@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.8.0
+// @version         3.5.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -50,6 +50,7 @@ if (overlay)
 var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'morgenpost.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
 var de_lv_domains = ['profi.de', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de'];
+var de_motor_presse_domains = ['aerokurier.de', 'auto-motor-und-sport.de', 'flugrevue.de', 'motorradonline.de', 'womenshealth.de'];
 
 if (matchDomain('aerztezeitung.de')) {
   let paywall = document.querySelector('div.AZLoginModule');
@@ -830,6 +831,11 @@ else if (matchDomain(de_madsack_domains) || document.querySelector('head > link[
   } else {
     ampToHtml();
   }
+}
+
+else if (matchDomain(de_motor_presse_domains)) {
+  let ads = document.querySelectorAll('div#ads-container, div.va-sponsored');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('ruhrnachrichten.de') || document.querySelector('a.mgw-logo[href^="https://mgw.de"]')) {

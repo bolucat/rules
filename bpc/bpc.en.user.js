@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.7.4
+// @version         3.5.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1611,12 +1611,6 @@ else if (matchDomain('historyextra.com')) {
   removeDOMElement(ad_banner);
 }
 
-else if (matchDomain(usa_hearst_comm_domains)) {
-  let wrapper = document.querySelector('.belowMastheadWrapper');
-  let ads = document.querySelectorAll('div.adModule');
-  hideDOMElement(wrapper, ...ads);
-}
-
 else if (matchDomain('inc42.com')) {
   if (window.location.pathname.endsWith('/amp/')) {
     amp_unhide_access_hide('="status"', '="NOT status"', 'amp-ad, amp-embed, div.wru-widget');
@@ -2752,8 +2746,10 @@ else if (matchDomain('thequint.com')) {
     } else
       refreshCurrentTab();
     let body_hidden = document.querySelector('div#story-body-wrapper');
-    if (body_hidden)
+    if (body_hidden) {
       body_hidden.removeAttribute('class');
+      body_hidden.removeAttribute('style');
+    }
     function thequint_unhide(node) {
       node.removeAttribute('style');
     }
@@ -3251,6 +3247,35 @@ else if (matchDomain('zerohedge.com')) {
   }
 }
 
+else if ((domain = matchDomain(usa_gannett_domains)) || document.querySelector('head > link[href*=".gannettdigital.com/"], head > link[href*=".gannett-cdn.com/"]')) {
+  if (!domain)
+    domain = window.location.hostname.replace(/^(www|amp|eu)\./, '');
+  setCookie('firefly_akamai_meter', '', domain, '/', 0);
+  if (window.location.pathname.endsWith('/restricted/') && window.location.search.startsWith('?return=')) {
+    let url = decodeURIComponent(window.location.href.split('?return=')[1]);
+    let paywall = pageContains('div.message', 'This content is only available to subscribers.');
+    if (paywall.length) {
+      removeDOMElement(...paywall);
+      let article = document.querySelector('article');
+      if (article)
+        article.firstChild.before(archiveLink(url));
+    }
+  }
+}
+
+else if (matchDomain(usa_hearst_comm_domains) || document.querySelector('script[src*="/treg.hearstnp.com/"]')) {
+  let overlay = document.querySelector('div > div#modalOuter');
+  if (overlay) {
+    hideDOMElement(overlay.parentNode);
+    let noscroll = document.querySelector('body[style]');
+    if (noscroll)
+      noscroll.removeAttribute('style');
+  }
+  let ads = pageContains('div > div > p', 'Article continues below this ad');
+  for (let elem of ads)
+    hideDOMElement(elem.parentNode.parentNode);
+}
+
 else if ((domain = matchDomain(usa_lee_ent_domains)) || matchDomain(ca_torstar_domains.concat(['abqjournal.com'])) || document.querySelector('script[src*=".townnews.com/"][src*="/tncms/"]')) {
   if (window.location.pathname.endsWith('.amp.html')) {
     amp_unhide_access_hide('="hasAccess"', '="NOT hasAccess"', 'amp-ad, amp-embed, .amp-ads-container');
@@ -3363,22 +3388,6 @@ else if (document.querySelector('head > link[href*="/leaky-paywall"], script[src
       let post = document.querySelector(post_sel);
       if (post)
         post.removeAttribute('class');
-    }
-  }
-}
-
-else if ((domain = matchDomain(usa_gannett_domains)) || document.querySelector('head > link[href*=".gannettdigital.com/"], head > link[href*=".gannett-cdn.com/"]')) {
-  if (!domain)
-    domain = window.location.hostname.replace(/^(www|amp|eu)\./, '');
-  setCookie('firefly_akamai_meter', '', domain, '/', 0);
-  if (window.location.pathname.endsWith('/restricted/') && window.location.search.startsWith('?return=')) {
-    let url = decodeURIComponent(window.location.href.split('?return=')[1]);
-    let paywall = pageContains('div.message', 'This content is only available to subscribers.');
-    if (paywall.length) {
-      removeDOMElement(...paywall);
-      let article = document.querySelector('article');
-      if (article)
-        article.firstChild.before(archiveLink(url));
     }
   }
 }
