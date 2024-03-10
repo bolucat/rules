@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.8.1
+// @version         3.5.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -749,7 +749,7 @@ else if (matchDomain('vol.at')) {
 else if (matchDomain('welt.de')) {
   let url = window.location.href;
   getArchive(url, 'div.contains_walled_content', '', 'article');
-  let ads = document.querySelectorAll('div[data-component="Outbrain"], div[data-component="OEmbedComponent"], div[class*="c-ad"]');
+  let ads = document.querySelectorAll('div[data-component="Outbrain"], div[class*="c-ad"]');
   hideDOMElement(...ads);
 }
 
@@ -834,7 +834,7 @@ else if (matchDomain(de_madsack_domains) || document.querySelector('head > link[
 }
 
 else if (matchDomain(de_motor_presse_domains)) {
-  let ads = document.querySelectorAll('div#ads-container, div.va-sponsored');
+  let ads = document.querySelectorAll('div#ads-container, div.va-sponsored, div.mps_markAd');
   hideDOMElement(...ads);
 }
 
