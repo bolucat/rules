@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.8.2
+// @version         3.5.8.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -657,6 +657,11 @@ else if (matchDomain('sueddeutsche.de')) {
     getArchive(url, 'p.sz-article-body__paragraph--reduced', {rm_attrib: 'class'}, 'div[itemprop="articleBody"]');
   }
   clear_ads();
+}
+
+else if (matchDomain('suedkurier.de')) {
+  let url = window.location.href;
+  getArchive(url, 'aside.article-paywall', '', 'main > article');
 }
 
 else if (matchDomain('tagesspiegel.de')) {
