@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.5.8.2
+! Version: 3.5.8.3
 
 ! General
 
@@ -250,6 +250,7 @@ nytimes.com##div[data-testid="inline-message"],div[id^="ad-"],div#dock-container
 ||cooking.nytimes.com/api/*/access$xmlhttprequest,~third-party
 ||nzherald.co.nz/sales/public/v*/entitlements$xmlhttprequest,~third-party
 nzherald.co.nz##+js(set, Fusion.globalContent.isPremium, false)
+/\/observador\.pt\/(\d{4}|especiais|opiniao)\//$inline-script
 paloaltoonline.com##+js(cookie-remover, /^/)
 philosophynow.org##+js(cookie-remover, /^/)
 profil.at##+js(ra, class|style, div.paywall)
@@ -570,13 +571,13 @@ legalbites.in##div#subscription_paid_message,div.restricted_message > div.story
 lepetitjournal.net##.message-restricted-woocommerce
 lepetitjournal.net##+js(rc, excerpt, div.excerpt)
 lydogbillede.dk,lydogbilde.no##+js(rc, thecontent, div.thecontent)
-lydogbillede.dk,lydogbilde.no##div.paywallbox
+lydogbillede.dk,lydogbilde.no##+js(ra, style, div#MoreLink_content-container[style])
+lydogbillede.dk,lydogbilde.no##div.paywallbox,div#MoreLink_fade-out-div
 marketnews.com##+js(ra, class, div.body-description)
 ||cloudfront.net/js/prometeo-media/$script,domain=menorca.info|ultimahora.es
 meritnation.com##.view-full-answer 
 meritnation.com##+js(rc, maxHeight75px, div.exp_content.maxHeight75px)
 ||moscout.com$inline-script
-muensterschezeitung.de,westfalen-blatt.de,wn.de##main.fp-article-paywall-dialog
 museumsassociation.org##+js(rc, paywall, body.paywall)
 museumsassociation.org##+js(ra, style, body[style], stay)
 museumsassociation.org##div#paywall-wrapper,div.advertising

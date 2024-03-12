@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.8.3
+// @version         3.5.8.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -46,6 +46,8 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
+var ads = document.querySelectorAll('div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ads, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]');
+hideDOMElement(...ads);
 
 var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'morgenpost.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
 var de_lv_domains = ['profi.de', 'wochenblatt.com'];
@@ -509,7 +511,7 @@ else if (matchDomain(['ksta.de', 'rundschau-online.de'])) {
       }
     }
   }, 1000);
-  let banners = document.querySelectorAll('div.dm-slot, div[id^="taboola-feed"]');
+  let banners = document.querySelectorAll('div.dm-slot');
   hideDOMElement(...banners);
 }
 
@@ -523,7 +525,7 @@ else if (matchDomain('kurier.at')) {
       div_hidden.removeAttribute('style');
     }
   }
-  let banners = document.querySelectorAll('div[data-outbrain], div.OUTBRAIN');
+  let banners = document.querySelectorAll('div[data-outbrain]');
   hideDOMElement(...banners);
 }
 
@@ -646,7 +648,7 @@ else if (matchDomain('springermedizin.de')) {
 
 else if (matchDomain('sueddeutsche.de')) {
   let clear_ads = function () {
-    let ads = document.querySelectorAll('div.ad-container, er-ad-slot');
+    let ads = document.querySelectorAll('er-ad-slot');
     hideDOMElement(...ads);
   }
   func_post = clear_ads;
@@ -683,7 +685,7 @@ else if (matchDomain('tt.com')) {
   let div_hidden = document.querySelectorAll('.exclusive-elem');
   for (let elem of div_hidden)
     elem.classList.remove('exclusive-elem');
-  let ads = document.querySelectorAll('div.ad-container, div[class*="ads-container"], div.adblock-warning');
+  let ads = document.querySelectorAll('div[class*="ads-container"], div.adblock-warning');
   hideDOMElement(...ads);
 }
 
@@ -849,8 +851,6 @@ else if (matchDomain('ruhrnachrichten.de') || document.querySelector('a.mgw-logo
   if (pathname.includes('-p-'))
     article_id = pathname.split('-p-')[1].split('/')[0];
   getJsonUrl('body.is_plus_article', {rm_class: 'is_plus_article'}, 'article', {art_append: 1, art_hold: 1, art_class: 'article__content'}, article_id);
-  let ads = document.querySelector('div.OUTBRAIN');
-  hideDOMElement(ads);
   if (!matchDomain('ruhrnachrichten.de')) {
     window.setTimeout(function () {
       let push = document.querySelector('div.cleverpush-bell');
@@ -1213,7 +1213,7 @@ function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
   }
 }
 
-function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad, .ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
   let preview = document.querySelectorAll('[subscriptions-section="content-not-granted"]');
   removeDOMElement(...preview);
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
@@ -1225,7 +1225,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad, .ad', replace_iframes 
     amp_iframes_replace(amp_iframe_link, source);
 }
 
-function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = 'amp-ad, .ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
   let access_hide = document.querySelectorAll('[amp-access' + amp_access + '][amp-access-hide]:not([amp-access="error"], [amp-access^="message"], .piano)');
   for (let elem of access_hide)
     elem.removeAttribute('amp-access-hide');
