@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: XHSaps6x78xZi9At+6jhcA
-! Diff-Path: ../patches/7/7-s-1710264996-3600.patch
+! Checksum: H3YM7nlgQEJOgPwtzCdw1w
+! Diff-Path: ../patches/7/7-s-1710336996-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.49.31
-! TimeUpdated: 2024-03-12T17:33:21+00:00
+! Version: 2.0.49.36
+! TimeUpdated: 2024-03-13T13:33:38+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1672,6 +1672,11 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+pref.ehime.jp##.top_banner_7
+erogazo-ngo.com###content_top_ad
+search.yahoo.co.jp##+js(json-prune, props.initialProps.pageProps.pageData.brandingAds)
+search.yahoo.co.jp##.AdBannerCarousel
+milk-key.com##.item-list > li.item:has(> div[class^="iads_"])
 numa2.jp##.partner_button
 purple-novel.com##div[class^="iads_"]
 mangaraw.onl##.w-full.text-center.h-auto > p.p-2.text-sm.text-gray-500
@@ -5912,6 +5917,8 @@ h1g.jp##.mainbody-ad-top
 mindhack-media.jp##.articleRankingBlock__link[href^="https://k.zucks.net/"]
 ||toycod.com/cdn/shop/$domain=leaked.jp
 leaked.jp##.age
+leaked.jp#?#.kanren > dl.clearfix:contains(【PR】)
+leaked.jp##.kanren > dl.clearfix:has(a[href^="https://leaked.jp/k"])
 leaked.jp##.kanren > dl.clearfix:has(a[href^="https://leaked.jp/1"])
 leaked.jp##.kanren > dl.clearfix:has(a[href^="https://leaked.jp/d"])
 leaked.jp##.kanren > dl.clearfix:has(a[href^="https://leaked.jp/f"])
@@ -6683,8 +6690,8 @@ morekorea.net##.contents_ad_wrap_center
 craftbeer-tokyo.info###execphp-39
 craftbeer-tokyo.info###execphp-40
 pixiv.kurocore.com,wws-channel.com,craftbeer-tokyo.info###top-banner
-waifu2x.udp.jp##.all-page > div[style="min-height: 270px; margin: 1em"]
-waifu2x.udp.jp##.dmm-games
+waifu2x.net,waifu2x.udp.jp##.all-page > div[style="min-height: 270px; margin: 1em"]
+waifu2x.net,waifu2x.udp.jp##.dmm-games
 h-ken.net##.mainColumn > div > .sidebarList
 h-ken.net##.mainColumn > div > p.midashiPink
 rakko.tools##.pr_link
@@ -6709,6 +6716,7 @@ kissfx.com##.c-sponsor-bnr
 fxshihyo.com##.notice_waku
 ||honyakunoizumi.info/js/ads2.js
 doorblog.jp,dupcar-event.com###adsense-kijishita
+sukupara.jp###contents > center:has(> div[id^="div-gpt-"])
 sukupara.jp###foot-bnr
 sukupara.jp###webmag > .nodisplay
 mirrorz.jp###_popIn_recommend + #related2

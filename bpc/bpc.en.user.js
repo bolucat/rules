@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.8.3
+// @version         3.5.9.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1904,9 +1904,9 @@ else if (matchDomain('mexiconewsdaily.com')) {
 
 else if (matchDomain('mid-day.com')) {
   if (window.location.pathname.startsWith('/amp/')) {
-    amp_unhide_access_hide('="granted"', '="NOT granted"', 'amp-ad, amp-embed, [class*="BannerAd"]');
+    amp_unhide_access_hide('="granted"', '="NOT granted"', 'amp-ad, amp-embed, [class*="BannerAd"], div.midday-wrapper');
   } else {
-    amp_redirect('div#widget-_csc');
+    amp_redirect('div.modal.fade');
     let read_more = document.querySelector('#read-more-my');
     if (read_more)
       read_more.click();
