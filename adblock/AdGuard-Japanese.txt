@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: F864zmw5yGdl0iNNKxUZCg
-! Diff-Path: ../patches/7/7-s-1710437852-3600.patch
+! Checksum: N8BvhuMqe6iKmLSBCSjdcg
+! Diff-Path: ../patches/7/7-s-1710524258-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.49.42
-! TimeUpdated: 2024-03-14T17:33:41+00:00
+! Version: 2.0.49.45
+! TimeUpdated: 2024-03-15T17:33:58+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1115,6 +1115,9 @@ avgle.com##+js(abort-current-script, __htapop)
 !-------CSS---------
 !-------------------
 !
+! https://www.reddit.com/r/uBlockOrigin/comments/1ben1b9/la_pagina_javascript/
+lapagina.com.sv#$#.pum-overlay[data-popmake*="custom_width\":\"640px"] { display: none !important; }
+lapagina.com.sv#$#.pum-open-overlay { overflow: auto !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/174081
 telling.asahi.com#$#.p-header-billboard { min-height: 0 !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/171466
@@ -1672,7 +1675,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
-city.takasaki.gunma.jp##.content5
+yamakei-online.com##div[class^="ad-pop-"]
+city.takasaki.gunma.jp##.content5:has(#top_banner_7_list)
 shakinghip.com##.underad
 eromon.net##aside > div.swiper
 eromon.net##a[href^="https://www.sokmil.com/"]
@@ -6296,6 +6300,7 @@ majikichi.com##.comment_rank_widget_root + div.main
 erogamemod.com##.custom-box3
 erogamemod.com##.eroga-widget
 silhouette-ac.com##.ac-mt-3.bg-light
+photo-ac.com##.ac-p-2.bg-light.ac-mb-3.ac-d-lg-block
 ac-illust.com,photo-ac.com##div[id^="search-result-"] div.bg-light.ac-p-2
 ac-illust.com,photo-ac.com###voting-taboola-wrapper
 ac-illust.com,photo-ac.com##.ac-p-2.bg-light.ac-mt-3
@@ -8463,7 +8468,7 @@ punisoku.blogo.jp##.main-column-inner > a[href^="https://www.dlsite"]
 webcartop.jp###under-title-ads
 webcartop.jp###category-tms2019-ad-hide
 webcartop.jp###jp_wct_pc_article_undernextpage
-webcartop.jp##div[style="min-height: 90px;"]
+photo-ac.com,webcartop.jp##div[style="min-height: 90px;"]
 webcreatorbox.com,mainichikirei.jp,macaro-ni.jp##[class^="ad-"]
 webcartop.jp###widget_code_php_in_widget-23 > h3.widget-title
 punisoku.blogo.jp##.main-column-inner > div[style] > div[align="center"] > a[target="_blank"]

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.4.8.4
+// @version         3.4.8.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
@@ -27,6 +27,8 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
+var ads = document.querySelectorAll('div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ads, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]');
+hideDOMElement(...ads);
 
 var it_gedi_domains = ['huffingtonpost.it', 'ilsecoloxix.it', 'italian.tech', 'lastampa.it', 'lescienze.it', 'moda.it', 'repubblica.it'];
 var it_ilmessaggero_domains = ['corriereadriatico.it', 'ilgazzettino.it', 'ilmattino.it', 'ilmessaggero.it', 'quotidianodipuglia.it'];
@@ -69,10 +71,6 @@ else if (matchDomain('eastwest.eu')) {
 else if (matchDomain('editorialedomani.it')) {
   if (window.location.search.startsWith('?amp=1'))
     ampToHtml();
-  else {
-    let ads = document.querySelectorAll('div.ad-container');
-    hideDOMElement(...ads);
-  }
 }
 
 else if (matchDomain('gazzetta.it')) {
@@ -408,7 +406,7 @@ function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
   }
 }
 
-function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad, .ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
   let preview = document.querySelectorAll('[subscriptions-section="content-not-granted"]');
   removeDOMElement(...preview);
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
@@ -420,7 +418,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad, .ad', replace_iframes 
     amp_iframes_replace(amp_iframe_link, source);
 }
 
-function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = 'amp-ad, .ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
   let access_hide = document.querySelectorAll('[amp-access' + amp_access + '][amp-access-hide]:not([amp-access="error"], [amp-access^="message"], .piano)');
   for (elem of access_hide)
     elem.removeAttribute('amp-access-hide');

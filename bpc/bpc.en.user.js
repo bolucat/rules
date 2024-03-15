@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.9.1
+// @version         3.5.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -48,6 +48,7 @@
 // @connect         archive.fo
 // @connect         webcache.googleusercontent.com
 // @exclude         *://*.google.com/*
+// @exclude         *://*.argusdelassurance.com/*
 // @exclude         *://*.artsenkrant.com/*
 // @exclude         *://*.cambiocolombia.com/*
 // @exclude         *://*.clarin.com/*
@@ -86,12 +87,14 @@
 // @exclude         *://*.marianne.net/*
 // @exclude         *://*.parismatch.com/*
 // @exclude         *://*.politicaexterior.com/*
+// @exclude         *://*.pourleco.com/*
 // @exclude         *://*.quotidiano.net/*
 // @exclude         *://*.revistaoeste.com/*
 // @exclude         *://*.science-et-vie.com/*
 // @exclude         *://*.topagrar.com/*
 // @exclude         *://*.tt.com/*
 // @exclude         *://*.tuttosport.com/*
+// @exclude         *://*.usinenouvelle.com/*
 // @exclude         *://*.wochenblatt.com/*
 // @exclude         *://*.youtube.com/*
 // @grant           GM.xmlHttpRequest

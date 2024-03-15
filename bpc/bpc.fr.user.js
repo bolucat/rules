@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.5.7.0
+// @version         3.5.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -10,6 +10,7 @@
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 // @match           *://*.fr/*
 // @match           *://*.arcinfo.ch/*
+// @match           *://*.argusdelassurance.com/*
 // @match           *://*.businessam.be/*
 // @match           *://*.connaissancedesarts.com/*
 // @match           *://*.dhnet.be/*
@@ -29,7 +30,9 @@
 // @match           *://*.marianne.net/*
 // @match           *://*.monacomatin.mc/*
 // @match           *://*.parismatch.com/*
+// @match           *://*.pourleco.com/*
 // @match           *://*.science-et-vie.com/*
+// @match           *://*.usinenouvelle.com/*
 // @connect         archive.fo
 // @connect         archive.is
 // @connect         archive.li
@@ -55,12 +58,14 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
+var ads = document.querySelectorAll('div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ads, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]');
+hideDOMElement(...ads);
 
 var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net'];
 var be_roularta_domains = ['femmesdaujourdhui.be', 'flair.be', 'levif.be'];
+var fr_groupe_infopro_domains = ['argusdelassurance.com', 'cahiers-techniques-batiment.fr', 'lemoniteur.fr', 'lsa-conso.fr', 'usinenouvelle.com'];
 var fr_groupe_la_depeche_domains = ['centrepresseaveyron.fr', 'journaldemillau.fr', 'ladepeche.fr', 'lindependant.fr', 'midilibre.fr', 'nrpyrenees.fr', 'petitbleu.fr', 'rugbyrama.fr'];
 var fr_groupe_nice_matin_domains = ['monacomatin.mc', 'nicematin.com', 'varmatin.com'];
-var domain;
 
 if (matchDomain('alternatives-economiques.fr')) {
   window.setTimeout(function () {
@@ -212,11 +217,6 @@ else if (matchDomain('cieletespace.fr')) {
   getGoogleWebcache(url, 'div.article-content__subscribe', '', 'div.article-content');
 }
 
-else if (matchDomain('connaissancedesarts.com')) {
-  let ads = document.querySelectorAll('div.ad-container');
-  hideDOMElement(...ads);
-}
-
 else if (matchDomain('elle.fr')) {
   if (window.location.hostname.startsWith('amp.')) {
     amp_unhide_access_hide('="poool.access OR cmi_premium.access"');
@@ -228,6 +228,23 @@ else if (matchDomain('elle.fr')) {
     removeDOMElement(subscription_bar);
   }
   let ads = document.querySelectorAll('div[class*="--placeholder"]');
+  hideDOMElement(...ads);
+}
+
+else if (matchDomain(fr_groupe_infopro_domains)) {
+  let paywall_sel = 'div.blocPasEncoreAbonne';
+  let url = window.location.href;
+  if (!matchDomain('cahiers-techniques-batiment.fr'))
+    getGoogleWebcache(url, paywall_sel, '', 'div.articleContent');
+  else {
+    func_post = function () {
+      let lazy_images = document.querySelectorAll('img[src^="data:image/"][data-original]');
+      for (let elem of lazy_images)
+        elem.src = elem.getAttribute('data-original');
+    }
+    getGoogleWebcache(url, paywall_sel, '', 'div[itemprop="articleBody"]');
+  }
+  let ads = document.querySelectorAll('div[data-ad-id], div.ad2hsBox');
   hideDOMElement(...ads);
 }
 
@@ -621,6 +638,17 @@ else if (matchDomain('marianne.net')) {
   }
   let ads = document.querySelectorAll('div[class*="--placeholder"]');
   hideDOMElement(...ads);
+}
+
+else if (matchDomain('pourleco.com')) {
+  let paywall = document.querySelector('div[data-pleco-poool^="paywall"]');
+  if (paywall) {
+    let intro = document.querySelector('div[data-pleco-transition="fade"]');
+    removeDOMElement(paywall, intro);
+    let article = document.querySelector('div[class*="article-"][style]');
+    if (article)
+      article.removeAttribute('style');
+  }
 }
 
 else if (matchDomain('science-et-vie.com')) {
@@ -1089,7 +1117,7 @@ function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
   }
 }
 
-function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad, .ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
   let preview = document.querySelectorAll('[subscriptions-section="content-not-granted"]');
   removeDOMElement(...preview);
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
@@ -1101,7 +1129,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad, .ad', replace_iframes 
     amp_iframes_replace(amp_iframe_link, source);
 }
 
-function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = 'amp-ad, .ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
   let access_hide = document.querySelectorAll('[amp-access' + amp_access + '][amp-access-hide]:not([amp-access="error"], [amp-access^="message"], .piano)');
   for (let elem of access_hide)
     elem.removeAttribute('amp-access-hide');

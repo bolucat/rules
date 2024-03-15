@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.5.6.5
+// @version         3.5.9.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -79,7 +79,7 @@ if (matchDomain('telegraaf.nl')) {
   }
   let premium = document.querySelector('div[class^="Article__premium"] > p');
   let paywall = document.querySelector('data-hydrate[data-name="PaywallHandler"]');
-  let article = document.querySelector('section > div.DetailArticleImage');
+  let article = document.querySelector('section > div.DetailArticleImage') || document.querySelector('section > p.Article__intro');
   if (paywall && window.location.pathname.startsWith('/video/'))
     removeDOMElement(paywall);
   if (premium && paywall && article) {
@@ -146,6 +146,8 @@ var csDoneOnce = true;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
+var ads = document.querySelectorAll('div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ads, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]');
+hideDOMElement(...ads);
 
 var be_mediahuis_domains = ['hbvl.be', 'nieuwsblad.be', 'standaard.be'];
 var be_roularta_domains = ['artsenkrant.com', 'beleggersbelangen.nl', 'flair.be', 'knack.be', 'kw.be', 'libelle.be'];

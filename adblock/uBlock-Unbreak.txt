@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Unbreak
 ! Expires: 5 days
-! Last modified: Thu, 14 Mar 2024 00:39:03 +0000
-! Diff-Path: ../patches/2024.3.14.985.patch#ublock-unbreak
+! Last modified: Fri, 15 Mar 2024 16:36:12 +0000
+! Diff-Path: ../patches/2024.3.15.1040.patch#ublock-unbreak
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/unbreak.txt ***
@@ -1953,7 +1953,8 @@ riteaid.com##^html > body:not(.catalogsearch-result-index):upward(1) > head > sc
 ! unbreak sign up on NSFW sites
 @@/signup.php?mode=async&action=show_security_code$image,1p
 @@/akam/13/*$script,xhr,1p,domain=easyjet.com|ing.nl
-@@||collector-*.px-client.net/b/g$xhr,domain=www.crunchbase.com
+@@/init.js|$script,xhr,1p,domain=www.crunchbase.com
+@@||collector-*.px-cloud.net/b/$xhr,domain=www.crunchbase.com
 @@||googletagmanager.com/gtm.js$script,domain=www.radiox.co.uk
 radiox.co.uk##^body:not(:has(#remixd-audio-player)) > script:has-text(googletagmanager)
 ! Home page live video breakage
@@ -2519,3 +2520,9 @@ realmadryt.pl#@#fieldset
 realmadryt.pl##.rmpl-adsense-desktop
 @@||qds.it/wp-content/plugins/digistream/digiplayer/js/videojs.ga.js$script,first-party
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect-rule=google-ima.js,domain=qds.it,important
+||ccstatic.toggo.de/cc-static-files/bumper-video/$rewrite=abp-resource:blank-mp4,domain=toggo.de,badfilter
+||flashtalking.com^*.mp4$rewrite=abp-resource:blank-mp4,domain=toggo.de,badfilter
+||ccstatic.toggo.de/cc-static-files/bumper-video/$media,redirect-rule=noop-0.1s.mp3,domain=toggo.de
+||flashtalking.com^*.mp4$media,redirect-rule=noop-0.1s.mp3,domain=toggo.de
+*$image,domain=gouachebags.com,redirect-rule=1x1.gif
+@@||imasdk.googleapis.com/js/sdkloader/ima3_dai.js$script,domain=globoplay.globo.com
