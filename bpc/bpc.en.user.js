@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.9.3
+// @version         3.5.9.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -88,7 +88,11 @@
 // @exclude         *://*.parismatch.com/*
 // @exclude         *://*.politicaexterior.com/*
 // @exclude         *://*.pourleco.com/*
+// @exclude         *://*.projectcargojournal.com/*
 // @exclude         *://*.quotidiano.net/*
+// @exclude         *://*.railfreight.cn/*
+// @exclude         *://*.railfreight.com/*
+// @exclude         *://*.railtech.com/*
 // @exclude         *://*.revistaoeste.com/*
 // @exclude         *://*.science-et-vie.com/*
 // @exclude         *://*.topagrar.com/*
@@ -181,7 +185,7 @@ if (matchDomain('gitlab.com') && window.location.pathname.startsWith('/magnolia1
   }
 }
 
-if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || (!matchDomain('webcache.googleusercontent.com') && document.querySelector('script[src*=".medium.com/"]'))) {
+if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || (!matchDomain('webcache.googleusercontent.com') && document.querySelector('head > link[href*=".medium.com/"]'))) {
   let url = window.location.href;
   let paywall = document.querySelector('article.meteredContent');
   if (paywall) {
@@ -310,7 +314,7 @@ else {
       }
     } else {
       // Australian Seven West Media
-      if (matchDomain('thewest.com.au') || document.querySelector('li > a[href*=".sevenwestmedia.com.au"]')) {
+      if (matchDomain('thewest.com.au') || document.querySelector('head > link[href="https://images.thewest.com.au"]')) {
         function thewest_main(node) {
           let scripts = document.querySelectorAll('script:not([src]):not([type])');
           let json_script;
@@ -3247,7 +3251,7 @@ else if ((domain = matchDomain(usa_gannett_domains)) || document.querySelector('
   }
 }
 
-else if (matchDomain(usa_hearst_comm_domains) || document.querySelector('script[src*="/treg.hearstnp.com/"]')) {
+else if (matchDomain(usa_hearst_comm_domains) || document.querySelector('head > script[src*="/treg.hearstnp.com/"]')) {
   let overlay = document.querySelector('div > div#modalOuter');
   if (overlay) {
     hideDOMElement(overlay.parentNode);
@@ -3260,7 +3264,7 @@ else if (matchDomain(usa_hearst_comm_domains) || document.querySelector('script[
     hideDOMElement(elem.parentNode.parentNode);
 }
 
-else if ((domain = matchDomain(usa_lee_ent_domains)) || matchDomain(ca_torstar_domains.concat(['abqjournal.com'])) || document.querySelector('script[src*=".townnews.com/"][src*="/tncms/"]')) {
+else if ((domain = matchDomain(usa_lee_ent_domains)) || matchDomain(ca_torstar_domains.concat(['abqjournal.com'])) || document.querySelector('head > meta[name="tncms-access-version"]')) {
   if (window.location.pathname.endsWith('.amp.html')) {
     amp_unhide_access_hide('="hasAccess"', '="NOT hasAccess"', 'amp-ad, amp-embed, .amp-ads-container');
     let elem_hidden = document.querySelectorAll('html[class], body[class]');

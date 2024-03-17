@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.5.9.0
+// @version         3.5.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -8,49 +8,25 @@
 // @homepageURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
-// @match           *://*.ad.nl/*
+// @match           *://*.nl/*
 // @match           *://*.artsenkrant.com/*
-// @match           *://*.bd.nl/*
-// @match           *://*.bndestem.nl/*
 // @match           *://*.businessam.be/*
-// @match           *://*.businessinsider.nl/*
 // @match           *://*.demorgen.be/*
-// @match           *://*.destentor.nl/*
 // @match           *://*.doorbraak.be/*
-// @match           *://*.dvhn.nl/*
-// @match           *://*.ed.nl/*
-// @match           *://*.fd.nl/*
-// @match           *://*.flair.be/nl/*
-// @match           *://*.flair.nl/*
-// @match           *://*.frieschdagblad.nl/*
-// @match           *://*.gelderlander.nl/*
-// @match           *://*.groene.nl/*
 // @match           *://*.hbvl.be/*
 // @match           *://*.hln.be/*
-// @match           *://*.hoogeveenschecourant.nl/*
 // @match           *://*.humo.be/*
 // @match           *://*.knack.be/*
 // @match           *://*.kw.be/*
-// @match           *://*.lc.nl/*
 // @match           *://*.libelle.be/*
-// @match           *://*.libelle.nl/*
-// @match           *://*.limburger.nl/*
-// @match           *://*.margriet.nl/*
-// @match           *://*.meppelercourant.nl/*
-// @match           *://*.nieuweooststellingwerver.nl/*
 // @match           *://*.nieuwsblad.be/*
-// @match           *://*.nieuwsbladnof.nl/*
-// @match           *://*.nrc.nl/*
-// @match           *://*.parool.nl/*
-// @match           *://*.pzc.nl/*
+// @match           *://*.projectcargojournal.com/*
+// @match           *://*.railfreight.cn/*
+// @match           *://*.railfreight.com/*
+// @match           *://*.railtech.be/*
+// @match           *://*.railtech.com/*
 // @match           *://*.standaard.be/*
-// @match           *://*.steenwijkercourant.nl/*
-// @match           *://*.stellingwerf.nl/*
-// @match           *://*.telegraaf.nl/*
-// @match           *://*.trouw.nl/*
-// @match           *://*.tubantia.nl/*
-// @match           *://*.vn.nl/*
-// @match           *://*.volkskrant.nl/*
+// @match           *://*.taxipro.be/*
 // @connect         archive.fo
 // @connect         archive.is
 // @connect         archive.li
@@ -338,6 +314,16 @@ else if (matchDomain('vn.nl')) {
     if (body)
       body.style = 'height:auto !important;';
   }
+}
+
+else if (document.querySelector('head > link[href="//ppt.promedia.nl"]') || document.querySelector('head > script[src*="/pmgnews/scripts/promedia.js"]')) {
+  let paywall_sel = 'div.pmgsub';
+  func_post = function () {
+    let paywall = document.querySelector(paywall_sel);
+    removeDOMElement(paywall);
+  }
+  let url = window.location.href;
+  getGoogleWebcache(url, paywall_sel, '', 'div.post-body, div.text');
 }
 
 }, 1000);
