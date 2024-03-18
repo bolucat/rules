@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Sun, 17 Mar 2024 13:46:13 +0000
-! Diff-Path: ../patches/2024.3.17.859.patch#ublock-annoyances
+! Last modified: Mon, 18 Mar 2024 08:15:17 +0000
+! Diff-Path: ../patches/2024.3.18.920.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -418,6 +418,7 @@ makemytrip.com##+js(trusted-set-session-storage-item, opd, '"1"')
 ! privacy-cp-wall sites - Accept
 sosfanta.com##+js(trusted-click-element, #privacy-cp-wall-accept)
 alan.com##+js(trusted-set-local-storage-item, acceptedCookiesAt, $now$)
+chrono24.*##+js(trusted-click-element, button.js-cookie-accept-all, , 2000)
 chrono24.*##+js(trusted-click-element, button[data-label="accept-button"], , 1000)
 chrono24.*##dialog.gdpr-layer
 wetter.com##+js(trusted-click-element, #cmp-btn-accept, !cookie:/^gpt_ppid[^=]+=/, 5000)
@@ -684,6 +685,8 @@ extrudr.com##+js(trusted-set-cookie, cc_cookie,'{"categories":["necessary"],"lev
 vilagitasok.hu##+js(trusted-set-cookie, UN_cookie_consent_v2,'{"marketing":0,"statistics":0,"personalization":0,"time":1}', , , reload, 1)
 ! refuse cookies
 eneco.nl##+js(trusted-click-element, button[data-label="Weigeren"], , 500)
+! necessary
+yazio.com##+js(trusted-set-cookie, cc_cookie, '{"level":["necessary"],"revision":0,"data":null,"rfc_cookie":false}')
 ! *** filters/annoyances-others.txt ***
 mimaletadepeliculas.blogspot.com##+js(aopr, document.oncontextmenu)
 mimaletadepeliculas.blogspot.com##+js(acs, document.onselectstart)
@@ -848,7 +851,7 @@ jusbrasil.com.br##+js(aeld, /^(?:contextmenu|copy)$/, preventDefault)
 descarga-animex.*##+js(aeld, /^(?:contextmenu|keydown)$/)
 deezer.com##+js(aopr, onbeforeunload)
 deezer.com###modal_login:upward(2)
-deezer.com##.chakra-portal:has(> .chakra-modal__overlay)
+deezer.com##.chakra-portal:has(> [data-focus-lock-disabled] > .chakra-modal__content-container a.chakra-button[href^="https://www.deezer.com/payment/go.php?origin=paywall_pressure"])
 deezer.com##body.force-scrollbar:style(overflow-y: scroll !important;)
 tvtropes.org##+js(set, valid_user, true)
 ||global.proper.io/tvtropes.min.js$script,redirect=noopjs,domain=tvtropes.org
@@ -4017,7 +4020,7 @@ vgembed.com##+js(nosiif, detect)
 vgembed.com##+js(set, console.clear, noopFunc)
 vgembed.com##+js(set, DD, trueFunc)
 ||static.wikia.nocookie.net/silversurfer/prod/latest/ageGateUnit-pathfinder.js^$script,3p
-personality-database.com##.rc-dialog-root
+! personality-database.com##.rc-dialog-root
 personality-database.com##body:style(overflow: auto !important;)
 colors.sonicthehedgehog.com##+js(set, document.oncontextmenu, null, 3)
 colors.sonicthehedgehog.com##+js(set, document.body.oncontextmenu, null, 3)
@@ -4564,3 +4567,5 @@ bongdaplus.vn##+js(aeld, mousedown, undefined, elements, body)
 bongdaplus.vn##+js(set, document.oncontextmenu, trueFunc)
 vipstreams.in##+js(set, devtoolsDetector.launch, noopFunc)
 vipstreams.in##+js(nosiif, _0x)
+3xyaoi.com##+js(acs, document.oncontextmenu)
+3xyaoi.com##+js(aeld, contextmenu, preventDefault)
