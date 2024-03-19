@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.5.9.1
+// @version         3.5.9.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -233,11 +233,14 @@ else if (matchDomain('expresso.pt')) {
                 try {
                   article.innerHTML = '';
                   let json = JSON.parse(html.split(/window\.__INITIAL_DATA__\s?=\s?/)[1].split(';window.')[0].replace(/":undefined([,}])/g, "\":\"undefined\"$1")).nodes;
-                  let pars;
+                  let pars = [];
                   for (let elem in json) {
                     let item = json[elem];
-                    if (item.type === 'Layout' && item.nodes[0].type === 'MainBody') {
-                      pars = item.nodes[0].nodes[0].data.content.contents;
+                    if (item.type === 'Layout') {
+                      for (let elem of item.nodes) {
+                        if (elem.type === 'MainBody')
+                          pars = elem.nodes[0].data.content.contents;
+                      }
                       break;
                     }
                   }

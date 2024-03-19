@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.9.5
+// @version         3.5.9.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -48,6 +48,8 @@
 // @connect         archive.fo
 // @connect         webcache.googleusercontent.com
 // @exclude         *://*.google.com/*
+// @exclude         *://*.mediafire.com/*
+// @exclude         *://*.youtube.com/*
 // @exclude         *://*.argusdelassurance.com/*
 // @exclude         *://*.artsenkrant.com/*
 // @exclude         *://*.cambiocolombia.com/*
@@ -100,7 +102,6 @@
 // @exclude         *://*.tuttosport.com/*
 // @exclude         *://*.usinenouvelle.com/*
 // @exclude         *://*.wochenblatt.com/*
-// @exclude         *://*.youtube.com/*
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
 
@@ -1197,6 +1198,14 @@ else if (matchDomain('cnbc.com')) {
       elem.removeAttribute('class');
     }
   }
+}
+
+else if (matchDomain('cnn.com')) {
+  for (let item in window.localStorage)
+    if (item.match(/reg_?wall/i))
+      window.localStorage.removeItem(item);
+  let ads = document.querySelectorAll('div[class^="ad-slot-"], div.container__ads');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('columbian.com')) {
@@ -2405,6 +2414,7 @@ else if (matchDomain('theathletic.com')) {
       if (body) {
         body.style.overflow = 'visible';
         body.style.position = 'relative';
+        window.scrollTo(0, 1000);
       }
     }
     waitDOMElement('div[id^="slideup-"]', 'DIV', theathletic_func);

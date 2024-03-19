@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: Z5P2izDXOG1dFcWEmX1SzQ
-! Diff-Path: ../patches/7/7-s-1710780000-3600.patch
+! Checksum: NTztt1TeW1O87sDMlEygmw
+! Diff-Path: ../patches/7/7-s-1710869834-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.49.52
-! TimeUpdated: 2024-03-18T16:35:01+00:00
+! Version: 2.0.49.60
+! TimeUpdated: 2024-03-19T17:33:40+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1598,8 +1598,8 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 .com/regist.php?*/1|$document
 /ap/signin/openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.co.jp$document,domain=cn|top|xyz
 /index.php?route=product/product&product_id=$document,domain=cyou|life|live|shop|xyz|~ocam.live
-/index.php?main_page=product_info*&cPath=$document,domain=asia|bar|beauty|best|bond|buzz|cam|cfd|cloud|cyou|fit|fun|homes|icu|ink|life|live|ltd|monster|online|pics|sa.com|sbs|shop|site|space|store|tokyo|top|website|work|xyz|za.com
-/index.php?main_page=product_info&products_id=$document,domain=asia|bar|beauty|best|bond|buzz|cam|cfd|cloud|cyou|fit|fun|homes|icu|ink|life|live|ltd|monster|online|pics|sa.com|sbs|shop|site|space|store|tokyo|top|website|work|xyz|za.com
+/index.php?main_page=product_info*&cPath=$document,domain=asia|bar|beauty|best|bond|buzz|cam|cfd|cloud|cyou|fit|fun|homes|icu|ink|life|live|ltd|monster|online|pics|quest|sa.com|sbs|shop|site|space|store|tokyo|top|website|work|xyz|za.com
+/index.php?main_page=product_info&products_id=$document,domain=asia|bar|beauty|best|bond|buzz|cam|cfd|cloud|cyou|fit|fun|homes|icu|ink|life|live|ltd|monster|online|pics|quest|sa.com|sbs|shop|site|space|store|tokyo|top|website|work|xyz|za.com
 ://eki*.*.com/Personal/member/Login/index.php?oneTimeAccessID=$document
 /\.(?:cn|icu|top|pro)\/Personal\/member\/Login\/index\.php\?oneTimeAccessID=/$document
 !
@@ -1670,8 +1670,13 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+famitsu.com##.article-body__contents > div.article-body__contents-notes ~ a[href][target="_blank"][class="btn btn-deep-orange"]
+ac-illust.com##.container figure ~ div[class^="col-"]:has(> .bg-light [id^="div-gpt-ad"])
+ac-illust.com##.flux-all-footer.ac-z-index-999.position-fixed.bg-light.w-100[style]
+freebie-ac.jp##div[class^="col-"][style^="margin-bottom:60px;"]
+freebie-ac.jp##.w-AdSense[style^="max-width: 860px;"]
+photo-ac.com##.w-100.my-3.bg-light[style="min-height: 306px;"]
 photo-ac.com##.bg-light.ac-p-2.overflow-hidden[style="min-height: 120px;"]
-etude000.com##div[class^="extendedwopts-"]
 city.tsuyama.lg.jp###sponsor_banner
 peacedoorball.blog##.sidebar__right a[target="_blank"] > img
 buywrite.jp##.c-infoBar
@@ -3783,7 +3788,7 @@ okinny.heypo.net###images > div[style="text-align:center;margin-bottom:50px;"]
 okinny.heypo.net##div[style$="overflow:hidden;"] > table[width="1050"][bgcolor="#000000"]
 sportiva.shueisha.co.jp###Sportiva_pc_article_UnderTitle
 mamastar.jp##.adarea01
-city.funabashi.lg.jp##.p-topAd
+city.saitama.lg.jp,city.funabashi.lg.jp##.p-topAd
 refind2ch.org##.flux_ad_overlay
 takenokosokuhou.com##.module--rss_affiliate
 vague.style##.side-column > .add-container
@@ -8191,6 +8196,7 @@ sp.nicovideo.jp##.siteWide-BannerAd
 dic.nicovideo.jp###right-column > div[style*="height:250px; width:300px;"]
 dic.nicovideo.jp##.ad-bannar-maincolumn-top
 dic.nicovideo.jp##.adsense-728
+live.nicovideo.jp##a[href="https://www.eldoahfree.com/"][target="_blank"] > img
 live.nicovideo.jp###side-banner-north
 live.nicovideo.jp###side-banner-south
 live.nicovideo.jp##aside[class^="___program-information-ad-area_"]
