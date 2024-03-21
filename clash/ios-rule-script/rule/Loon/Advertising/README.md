@@ -15,17 +15,18 @@
 
 ## 规则统计
 
-最后更新时间：2024-03-20 02:07:33
+最后更新时间：2024-03-21 15:45:31
 
 各类型规则统计：
 | 类型 | 数量(条)  | 
 | ---- | ----  |
-| DOMAIN | 16272  | 
-| DOMAIN-KEYWORD | 117  | 
-| DOMAIN-SUFFIX | 119994  | 
-| IP-CIDR | 428  | 
+| DOMAIN | 16339  | 
+| DOMAIN-KEYWORD | 278  | 
+| DOMAIN-SUFFIX | 120019  | 
+| IP-CIDR | 440  | 
+| IP-CIDR6 | 1  | 
 | URL-REGEX | 34  | 
-| TOTAL | 136845  | 
+| TOTAL | 137111  | 
 
 
 ## Loon 
@@ -109,6 +110,7 @@ https://ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_scri
 - https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/QuantumultX/rules/AdBlock.list
 - https://ruleset.isagood.day/reject.conf
 - https://ruleset.isagood.day/reject_drop.conf
+- https://raw.githubusercontent.com/fmz200/wool_scripts/main/QuantumultX/filter/fenliu.list
 
 
 感谢以上规则作者的辛勤付出（排名不分先后）。

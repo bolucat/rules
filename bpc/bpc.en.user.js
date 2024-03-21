@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.9.8
+// @version         3.5.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -310,6 +310,8 @@ else {
         let comments = document.querySelector('#comments-load, .comments-module');
         removeDOMElement(comments);
       } else {
+        if (window.location.pathname.includes('/video/') && document.querySelector('div.vms-premium-video'))
+          header_nofix(document.querySelector('div.video-hub'));
         let ads = document.querySelectorAll('.header_ads-container, .ad-block');
         hideDOMElement(...ads);
       }
@@ -2023,18 +2025,17 @@ else if (matchDomain('newsweek.com')) {
 }
 
 else if (matchDomain('newsweek.pl')) {
-  let clear_ads = function () {
-    window.setTimeout(function () {
-      let ads = document.querySelectorAll('[class^="pwAds"], .hide-for-paying, div#contentPremiumPlaceholder > span, div.onet-ad');
-      hideDOMElement(...ads);
-    }, 2000);
+  let premium = document.querySelector('div.contentPremium[style]');
+  if (premium) {
+    premium.removeAttribute('class');
+    premium.removeAttribute('style');
   }
-  func_post = function () {
-    clear_ads();
-  }
-  let url = window.location.href;
-  getArchive(url, 'div#contentPremiumPlaceholder', '', 'div#article-content-body');
-  clear_ads();
+  let placeholder = document.querySelector('div#contentPremiumPlaceholder[class]');
+  if (placeholder)
+    placeholder.removeAttribute('class');
+  let ads = document.querySelectorAll('[class^="pwAds"], .hide-for-paying, div.onet-ad, div.bottomBar');
+  console.log(ads);
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain(['nola.com', 'theadvocate.com'])) {
@@ -2056,8 +2057,7 @@ else if (matchDomain('nybooks.com')) {
 else if (matchDomain('nzherald.co.nz')) {
   // use bpc adblocker filter
   let premium_toaster = document.querySelector('#premium-toaster');
-  let ads = document.querySelectorAll('.ad');
-  hideDOMElement(premium_toaster, ...ads);
+  hideDOMElement(premium_toaster);
 }
 
 else if (matchDomain('outlookbusiness.com')) {

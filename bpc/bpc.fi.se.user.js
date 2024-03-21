@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         3.5.7.1
+// @version         3.5.7.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js
@@ -35,7 +35,7 @@ if (matchDomain('etc.se')) {
     let gradient = document.querySelector('div.bg-gradient-white');
     if (gradient)
       gradient.removeAttribute('class');
-    let footer = document.querySelector('footer');
+    let footer = document.querySelector('section > footer');
     removeDOMElement(footer.parentNode);
   }
   let ads = document.querySelectorAll('div[class$="-ad"]');

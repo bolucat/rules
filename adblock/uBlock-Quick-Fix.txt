@@ -1,30 +1,30 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Wed, 20 Mar 2024 17:10:58 +0000
-! Diff-Path: ../patches/2024.3.20.1040.patch#ublock-quick-fixes
+! Last modified: Thu, 21 Mar 2024 10:35:52 +0000
+! Diff-Path: ../patches/2024.3.21.803.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
-*$script,redirect-rule=noopjs,domain=dropgalaxy.*
-*$xhr,redirect-rule=nooptext,domain=dropgalaxy.*
-*$frame,redirect-rule=noopframe,domain=dropgalaxy.*
-*$image,redirect-rule=32x32.png,domain=dropgalaxy.*
-@@||dropgalaxy.*^$ghide
-||d1rp4yowwe587e.cloudfront.net^$script,domain=dropgalaxy.*,important
-||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect-rule=google-ima.js,domain=dropgalaxy.*
-||pocpoc.io^$domain=dropgalaxy.*
-||mobileoffers-ep-download.com^$domain=dropgalaxy.*
-@@||histats.com/js.js$script,domain=dropgalaxy.*
-@@||popads.net/js/adblock.js$script,domain=dropgalaxy.*
-@@||cdn.jsdelivr.net/gh/prebid/*$script,domain=dropgalaxy.*
-@@||fundingchoicesmessages.google.com^$script,domain=dropgalaxy.*
-@@*$script,xhr,from=dropgalaxy.*,to=googlesyndication.com|doubleclick.net|rsc.cdn77.org|vlitag.com|adoto.net|a2zapk.com|login.popmonetizer.com
-dropgalaxy.*##+js(nowoif)
-dropgalaxy.*##+js(trusted-set, document.visibilityState, visible)
-dropgalaxy.com#@#+js(abort-current-script, document.onkeydown)
-dropgalaxy.*##+js(set, supportedBrowsers, )
-dropgalaxy.*##html.i-amphtml-inabox
-dropgalaxy.*##[id^="TR-"][tr-id][style*="z-index: 9999"]
+*$script,redirect-rule=noopjs,domain=dropgalaxy.*|financemonk.net
+*$xhr,redirect-rule=nooptext,domain=dropgalaxy.*|financemonk.net
+*$frame,redirect-rule=noopframe,domain=dropgalaxy.*|financemonk.net
+*$image,redirect-rule=32x32.png,domain=dropgalaxy.*|financemonk.net
+@@*$ghide,domain=dropgalaxy.*|financemonk.net
+||d1rp4yowwe587e.cloudfront.net^$script,domain=dropgalaxy.*|financemonk.net,important
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect-rule=google-ima.js,domain=dropgalaxy.*|financemonk.net
+||pocpoc.io^$domain=dropgalaxy.*|financemonk.net
+||mobileoffers-ep-download.com^$domain=dropgalaxy.*|financemonk.net
+@@||histats.com/js.js$script,domain=dropgalaxy.*|financemonk.net
+@@||popads.net/js/adblock.js$script,domain=dropgalaxy.*|financemonk.net
+@@||cdn.jsdelivr.net/gh/prebid/*$script,domain=dropgalaxy.*|financemonk.net
+@@||fundingchoicesmessages.google.com^$script,domain=dropgalaxy.*|financemonk.net
+@@*$script,xhr,from=dropgalaxy.*|financemonk.net,to=googlesyndication.com|doubleclick.net|rsc.cdn77.org|vlitag.com|adoto.net|a2zapk.com|login.popmonetizer.com
+financemonk.net,dropgalaxy.*##+js(nowoif)
+financemonk.net,dropgalaxy.*##+js(trusted-set, document.visibilityState, visible)
+financemonk.net,dropgalaxy.com#@#+js(abort-current-script, document.onkeydown)
+financemonk.net,dropgalaxy.*##+js(set, supportedBrowsers, )
+financemonk.net,dropgalaxy.*##html.i-amphtml-inabox
+financemonk.net,dropgalaxy.*##[id^="TR-"][tr-id][style*="z-index: 9999"]
 ! aternos anti adb
 aternos.org##.header-center:style(margin-top:-5000px !important;)
 aternos.org##.sidebar:style(width: 1.745px !important;)
@@ -71,10 +71,11 @@ vincentincludesuccessful.com##+js(set, console.clear, undefined)
 ||eu-1-id5-sync.com^
 ||perchance.org/api/count?key=abp$xhr,1p
 ||perchance.org/api/count?key=abt$xhr,1p
-perchance.org##+js(rpnt, script, /api/count?key=${  ""}abpr` +"");, /api/count?key=${ ""}abpr` +""); return;)
-perchance.org##+js(rpnt, script, ("/api/count?key=abt");, ("/api/count?key=abt"); return;)
-perchance.org##+js(rpnt, script, scri5pts && ifra2mes && coo1kies, true)
-perchance.org##+js(rpnt, script, /\]\s*&&.*?JSON/, ] || true || true && JSON)
+perchance.org##+js(rpnt, script, /api/count?key=${    "" }abpr` +"");, /api/count?key=${ ""}abpr` +""); return;)
+perchance.org##+js(rpnt, script, ( "/api/count?key=abpr2" );, ("/api/count?key=abt"); return;)
+perchance.org##+js(rpnt, script, scri7pts && ifra2mes && coo1kies, true)
+perchance.org##+js(rpnt, script, scri8pts && ifra2mes && coo1kies, true)
+perchance.org##+js(rpnt, script, /sessionToken\s*\)/, sessionToken || true))
 perchance.org##div[style*="var"][style*="min-height"]:has([data-freestar-ad])
 ! ytlarge detection
 @@||ytlarge.com^$ghide
@@ -131,3 +132,12 @@ youtube.com##body > ytd-app > #content.ytd-app.style-scope > ytd-page-manager#pa
 moovitapp.com#@#.ads-banner
 deezer.com#@#.chakra-portal:has(> .chakra-modal__overlay)
 @@||rackcdn.com/stf.js$script,domain=20min.ch
+vtmgo.be##+js(no-fetch-if, doubleclick)
+/\/common\/images\/[a-z0-9]+\-[a-z0-9]+\.png$/$image,1p,domain=torrentgalaxy.to|tgx.rs
+torrentgalaxy.to,tgx.rs##a[href^="/hx?r0ff3r="][href$="&tfh"], #stopad, .kdguszftmyrvenilh, a[onmouseout="#"][href], img[src^="/common/images/"][alt="wide"][data-src="bin"]
+torrentgalaxy.to,tgx.rs##body > [id] > div:first-child > div:first-child > div:first-child > div:first-child:has(a img[src^="/common/"])
+torrentgalaxy.to,tgx.rs##.panel.txlight.panel-primary.outer > [class*="slidingDivb-"] > *:not([class="panel panel-primary txlight"]):has(a img)
+torrentgalaxy.to,tgx.rs##.panel.txlight.panel-primary.outer > [class*="slidingDivf-"] > [position="relative"][align="center"][style*="margin"]:has(a img)
+torrentgalaxy.to,tgx.rs##.panel.txlight.panel-primary.outer > [class*="slidingDivf-"] > div[style="margin-bottom:10px;"]:has(a img)
+torrentgalaxy.to,tgx.rs##.confluids[style*="overflow"] > [class] > div:last-child > div[style*="padding"]:has(a img)
+torrentgalaxy.to,tgx.rs##legend.txlight[style*="margin"] + center > div[style*="margin"]:has(a img)

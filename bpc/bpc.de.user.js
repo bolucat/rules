@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.8.5
+// @version         3.5.8.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -162,7 +162,7 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
       }
     }
   }
-  let ads = document.querySelectorAll('div.ad-wrapper');
+  let ads = document.querySelectorAll('div.ad-wrapper, div[id^="apn-ad-slot-"]');
   hideDOMElement(...ads);
 }
 
