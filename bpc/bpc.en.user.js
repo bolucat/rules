@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.6.0
+// @version         3.5.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1023,23 +1023,15 @@ else if (matchDomain('balkaninsight.com')) {
   getJsonUrl('div.subscribeWrapper', '', 'div.post_teaser', {art_append: true, art_hold: true});
 }
 
-else if (matchDomain('barandbench.com')) {
-  let paywall = document.querySelector('div#paywall-banner');
+else if (matchDomain(['barandbench.com', 'thenewsminute.com'])) {
+  let paywall = document.querySelector('div[id*="paywall-banner"]');
   if (paywall) {
     removeDOMElement(paywall);
-    let fade = document.querySelector('div[class^="paywall-story-styles-"]');
-    if (fade)
-      fade.removeAttribute('class');
-    let json_script = getArticleJsonScript();
-    if (json_script) {
-      let json = JSON.parse(json_script.text);
-      if (json) {
-        let json_text = json.articleBody;
-        let content = document.querySelector('div.arr--story-page-card-wrapper');
-        if (json_text && content) {
-          content.innerText = breakText(parseHtmlEntities(json_text));
-        }
-      }
+    let article = document.querySelector('div[class^="paywall-story-"]');
+    if (article) {
+      let article_new = getArticleQuintype();
+      if (article_new && article.parentNode)
+        article.parentNode.replaceChild(article_new, article);
     }
   }
 }
@@ -3190,9 +3182,6 @@ else if (matchDomain('wsj.com')) {
     if (url_article || path_article) {
       if (window.location.pathname.startsWith('/amp/')) {
         amp_unhide_subscr_section();
-        let masthead_link = document.querySelector('div.masthead > a[href*="-"]');
-        if (masthead_link)
-          masthead_link.href = 'https://www.wsj.com';
       } else {
         let paywall_sel = '.snippet-promotion, div#cx-snippet-overlay';
         let paywall = document.querySelector(paywall_sel);
@@ -3209,6 +3198,26 @@ else if (matchDomain('wsj.com')) {
             let wsj_pro = paywall.querySelector('a[href^="https://wsjpro.com/"]');
             if (wsj_pro)
               article_sel = 'article';
+            func_post = function () {
+              if (mobile) {
+                let inline_images = document.querySelectorAll('div[style] > figure > picture > img');
+                for (let elem of inline_images) {
+                  elem.style = 'width: 100%;';
+                  elem.removeAttribute('height');
+                  elem.removeAttribute('width');
+                  elem.parentNode.removeAttribute('style');
+                  elem.parentNode.parentNode.parentNode.removeAttribute('style');
+                }
+                let inline_data = document.querySelectorAll('div[data-layout="inline"][style]');
+                for (let elem of inline_data)
+                  elem.removeAttribute('style');
+              }
+              let read_next = document.querySelector('div#cx-what-to-read-next');
+              removeDOMElement(read_next);
+              let inline_wrappers = document.querySelectorAll('div[style*="background-position"] > div[id^="wrapper-INLINEIMM_"]');
+              for (let elem of inline_wrappers)
+                removeDOMElement(elem.parentNode);
+            }
             getArchive(url, paywall_sel, '', article_sel);
           }
         }
@@ -3852,7 +3861,7 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
 }
 
 function breakText(str, headers = false) {
-  str = str.replace(/(?:^|[A-Za-z\"\“\)])(\.|\?|!)(?=[A-ZÖÜ\„\d][A-Za-zÀ-ÿ\„\d]{1,})/gm, "$&\n\n");
+  str = str.replace(/(?:^|[A-Za-z\"\“\)])(\.+|\?|!)(?=[A-ZÖÜ\„\d][A-Za-zÀ-ÿ\„\d]{1,})/gm, "$&\n\n");
   if (headers)
     str = str.replace(/(([a-z]{2,}|[\"\“]))(?=[A-Z](?=[A-Za-zÀ-ÿ]+))/gm, "$&\n\n");
   return str;
@@ -3906,6 +3915,64 @@ function getArticleJsonScript() {
     }
   }
   return json_script;
+}
+
+function getArticleQuintype() {
+  let article_new;
+  let json_script = document.querySelector('script#static-page');
+  if (json_script) {
+    try {
+      article_new = document.createElement('div');
+      let parser = new DOMParser();
+      let json = JSON.parse(json_script.text);
+      let pars = json.qt.data.story.cards;
+      for (let par of pars) {
+        let story_elements = par['story-elements'];
+        for (let elem of story_elements) {
+          let par_elem;
+          if (elem.type === 'text' && elem.text) {
+            let doc = parser.parseFromString('<div style="margin: 25px 0px">' + elem.text + '</div>', 'text/html');
+            par_elem = doc.querySelector('div');
+          } else if (elem.type === 'image') {
+            if (elem['image-s3-key']) {
+              par_elem = document.createElement('figure');
+              let img = document.createElement('img');
+              img.src = 'https://media.assettype.com/' + elem['image-s3-key'];
+              par_elem.appendChild(img);
+              if (elem.title) {
+                let caption = document.createElement('figcaption');
+                caption.innerText = elem.title;
+                par_elem.appendChild(caption);
+              }
+            }
+          } else if (elem.type === 'jsembed') {
+            if (elem.subtype === 'tweet') {
+              if (elem.metadata && elem.metadata['tweet-url']) {
+                par_elem = document.createElement('a');
+                par_elem.href = par_elem.innerText = elem.metadata['tweet-url'];
+                par_elem.target = '_blank';
+              } else
+                console.log(elem);
+            }
+          } else if (elem.type === 'youtube-video') {
+            if (elem['embed-url']) {
+              par_elem = document.createElement('iframe');
+              par_elem.src = elem['embed-url'];
+              par_elem.style = 'width: 100%; height: 400px;';
+            }
+          } else if (!['widget'].includes(elem.type))
+            console.log(elem);
+          if (par_elem)
+            article_new.appendChild(par_elem);
+        }
+      }
+      if (!article_new.hasChildNodes())
+        article_new = '';
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  return article_new;
 }
 
 function getJsonUrlText(article, callback, article_id = '') {
