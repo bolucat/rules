@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.5.8.6
+// @version         3.6.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -164,11 +164,6 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
   }
   let ads = document.querySelectorAll('div.ad-wrapper, div[id^="apn-ad-slot-"]');
   hideDOMElement(...ads);
-}
-
-else if (matchDomain('bild.de')) {
-  let url = window.location.href;
-  getArchive(url, 'div.offer-module', '', 'article');
 }
 
 else if (matchDomain('boersen-zeitung.de')) {
@@ -1240,7 +1235,7 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
 }
 
 function breakText(str, headers = false) {
-  str = str.replace(/(?:^|[A-Za-z\"\“\)])(\.|\?|!)(?=[A-ZÖÜ\„\d][A-Za-zÀ-ÿ\„\d]{1,})/gm, "$&\n\n");
+  str = str.replace(/(?:^|[A-Za-z\"\“\)])(\.+|\?|!)(?=[A-ZÖÜ\„\d][A-Za-zÀ-ÿ\„\d]{1,})/gm, "$&\n\n");
   if (headers)
     str = str.replace(/(([a-z]{2,}|[\"\“]))(?=[A-Z](?=[A-Za-zÀ-ÿ]+))/gm, "$&\n\n");
   return str;

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.6.2
+// @version         3.5.6.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1499,6 +1499,8 @@ else if (matchDomain('forbes.com')) {
       header_nofix(header);
     }
   }
+  let ads = document.querySelectorAll('fbs-ad');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('foreignaffairs.com')) {
@@ -2008,6 +2010,29 @@ else if (matchDomain('newsday.com')) {
       nd_lock.removeAttribute('class');
     let ads = document.querySelectorAll('div[class^="ad_full-banner_"]');
     hideDOMElement(...ads);
+  }
+}
+
+else if (matchDomain('newslaundry.com')) {
+  let paywall = document.querySelector('div > div > img[alt^="paywall"]');
+  if (paywall) {
+    let banner = document.querySelector('div.FrsvM');
+    removeDOMElement(paywall.parentNode.parentNode, banner);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = parseHtmlEntities(json.articleBody);
+        let article = document.querySelector('div.story-element-text');
+        if (json_text && article) {
+          let parser = new DOMParser();
+          let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+          let article_new = doc.querySelector('div');
+          article.innerHTML = '';
+          article.appendChild(article_new);
+        }
+      }
+    }
   }
 }
 
@@ -2717,29 +2742,26 @@ else if (matchDomain('thepointmag.com')) {
 }
 
 else if (matchDomain('thequint.com')) {
-  let paywall = document.querySelector('div#paywall-widget');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_script = getArticleJsonScript();
-    if (json_script) {
-      let json = JSON.parse(json_script.text);
-      if (json) {
-        let json_text = breakText(parseHtmlEntities(json.articleBody));
+  let lock = document.querySelector('div > img[alt^="lock"]');
+  if (lock) {
+    lock.removeAttribute('alt');
+    window.setTimeout(function () {
+      let paywall = document.querySelector('div#paywall-widget');
+      if (paywall) {
+        removeDOMElement(paywall);
         let article = document.querySelector('div.story-element');
-        if (json_text && article) {
-          let article_new = document.createElement('p');
-          article_new.innerText = json_text;
-          article.innerHTML = '';
-          article.appendChild(article_new);
+        if (article) {
+          let article_new = getArticleQuintype();
+          if (article_new && article.parentNode)
+            article.parentNode.replaceChild(article_new, article);
         }
       }
-    } else
-      refreshCurrentTab();
-    let body_hidden = document.querySelector('div#story-body-wrapper');
-    if (body_hidden) {
-      body_hidden.removeAttribute('class');
-      body_hidden.removeAttribute('style');
-    }
+      let body_hidden = document.querySelector('div#story-body-wrapper');
+      if (body_hidden) {
+        body_hidden.removeAttribute('class');
+        body_hidden.removeAttribute('style');
+      }
+    }, 4000);
     function thequint_unhide(node) {
       node.removeAttribute('style');
     }
@@ -3930,7 +3952,7 @@ function getArticleQuintype() {
         let story_elements = par['story-elements'];
         for (let elem of story_elements) {
           let par_elem;
-          if (elem.type === 'text' && elem.text) {
+          if (['text', 'title'].includes(elem.type) && elem.text) {
             let doc = parser.parseFromString('<div style="margin: 25px 0px">' + elem.text + '</div>', 'text/html');
             par_elem = doc.querySelector('div');
           } else if (elem.type === 'image') {
@@ -3941,6 +3963,11 @@ function getArticleQuintype() {
               par_elem.appendChild(img);
               if (elem.title) {
                 let caption = document.createElement('figcaption');
+                if (elem.title.includes('</')) {
+                  let doc = parser.parseFromString('<div>' + elem.title + '</div>', 'text/html');
+                  caption.appendChild(doc.querySelector('div'));
+                } else
+                  caption.innerText = elem.title;
                 caption.innerText = elem.title;
                 par_elem.appendChild(caption);
               }

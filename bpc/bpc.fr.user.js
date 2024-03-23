@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.5.9.1
+// @version         3.6.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -432,6 +432,18 @@ else if (matchDomain('lemagit.fr')) {
     paywall.classList.remove('paywall');
     let banners = document.querySelectorAll('p#firstP, div#inlineRegistrationWrapper');
     removeDOMElement(...banners);
+  }
+}
+
+else if (matchDomain('lemonde.fr')) {
+  let url = window.location.href;
+  let paywall = document.querySelector('section.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    getArchive(url, 'article');
+    let hide = document.querySelector('section.article__wrapper--premium');
+    if (hide)
+      removeClassesByPrefix(hide, 'article__content--restricted');
   }
 }
 
