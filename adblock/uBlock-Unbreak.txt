@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Unbreak
 ! Expires: 5 days
-! Last modified: Sat, 23 Mar 2024 10:53:07 +0000
-! Diff-Path: ../patches/2024.3.23.920.patch#ublock-unbreak
+! Last modified: Sun, 24 Mar 2024 09:54:13 +0000
+! Diff-Path: ../patches/2024.3.24.983.patch#ublock-unbreak
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/unbreak.txt ***
@@ -58,6 +58,7 @@
 @@||sumome.com^$domain=shopify.com
 ||bbci.co.uk^*/analytics.js$script,redirect=noopjs,domain=bbc.co.uk
 ||static.bbc.co.uk/bbcdotcom/*/adverts.js$script,1p,important,redirect=noopjs
+/ga_setup.js$badfilter
 ||lexus.com/lexus-share/js/tracking_omn/s_code.js$script,important,1p,redirect=noopjs
 pythonjobshq.com##+js(aopr, Keen)
 ! http://forums.mozillazine.org/viewtopic.php?f=38&t=3032369
@@ -102,7 +103,6 @@ energy.de#@##ad_home
 @@||rtl.be/videos/player/vp4_webanalytics.js$script,1p
 reyada.com#@#.ads_area
 @@||ads.adaptv.advertising.com/*einthusan.tv*$xhr,domain=imasdk.googleapis.com
-@@||js.center.io^$domain=randpac.com
 ||googletagservices.com/tag/js/gpt.js$script,redirect=noopjs,domain=radio-canada.ca|tvguide.com
 ||iworkfor.nsw.gov.au/Scripts/ga.js$script,1p,redirect=noopjs
 ||agkn.com/*/tag.js$script,redirect=noopjs,domain=netd.com
@@ -2519,3 +2519,4 @@ realmadryt.pl##.rmpl-adsense-desktop
 *$image,domain=gouachebags.com,redirect-rule=1x1.gif
 @@||imasdk.googleapis.com/js/sdkloader/ima3_dai.js$script,domain=globoplay.globo.com
 @@||ws.mmstat.com/ws|$websocket,domain=youku.tv
+@@||imasdk.googleapis.com/js/sdkloader/ima3.js$xhr,script,domain=nhl.com

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.5.6.3
+// @version         3.6.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -291,7 +291,7 @@ else {
     hideDOMElement(story_generic_iframe, blocker, ...overlays, ...ads);
   } else if (window.location.hostname.endsWith('.com.au')) {
     // Australia News Corp
-    let au_news_corp_domains = ['adelaidenow.com.au', 'cairnspost.com.au', 'couriermail.com.au', 'dailytelegraph.com.au', 'geelongadvertiser.com.au', 'goldcoastbulletin.com.au', 'heraldsun.com.au', 'ntnews.com.au', 'theaustralian.com.au', 'thechronicle.com.au', 'themercury.com.au', 'townsvillebulletin.com.au', 'weeklytimesnow.com.au'];
+    let au_news_corp_domains = ['adelaidenow.com.au', 'cairnspost.com.au', 'codesports.com.au', 'couriermail.com.au', 'dailytelegraph.com.au', 'geelongadvertiser.com.au', 'goldcoastbulletin.com.au', 'heraldsun.com.au', 'ntnews.com.au', 'theaustralian.com.au', 'thechronicle.com.au', 'themercury.com.au', 'townsvillebulletin.com.au', 'weeklytimesnow.com.au'];
     let au_news_corp_no_amp_fix = ['ntnews.com.au'];
     if (matchDomain(au_news_corp_domains)) {
       let url = window.location.href;
@@ -1252,6 +1252,16 @@ else if (matchDomain('defector.com')) {
 else if (matchDomain(['digiday.com', 'glossy.co', 'modernretail.co'])) {
   let ads = document.querySelectorAll('div[class^="ad_"]');
   hideDOMElement(...ads);
+}
+
+else if (matchDomain('discovermagazine.com')) {
+  window.setTimeout(function () {
+    let body = document.querySelector('body');
+    if (body)
+      body.style = 'overflow: auto !important;';
+    let banners = document.querySelectorAll('div.fIkXwQ, div[style*="fadeIn"], div[role="button"][aria-label="Dismiss Dialog"]');
+    hideDOMElement(...banners);
+  }, 1000);
 }
 
 else if (matchDomain('dwell.com')) {
