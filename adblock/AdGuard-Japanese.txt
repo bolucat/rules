@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: pOKBLzPNrY6Ur6z5e5tlPw
-! Diff-Path: ../patches/7/7-s-1711294635-3600.patch
+! Checksum: S/645ylTlCZrcaHL1Jxo7w
+! Diff-Path: ../patches/7/7-s-1711377557-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.49.78
-! TimeUpdated: 2024-03-24T15:33:38+00:00
+! Version: 2.0.49.83
+! TimeUpdated: 2024-03-25T14:35:09+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -82,6 +82,7 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp
 !
+||lmadps.jp^$third-party
 ||bibincom.com^$third-party
 ||smart-below.com^
 ||ad1.girls-affiliate.com^$document
@@ -1631,7 +1632,7 @@ e-mansion.co.jp,baby-calendar.jp,npn.co.jp,afpbb.com,hamakei.com,keizai.biz,mink
 ! ###ad
 virgintriumph.com,h2ch.com,pref.hokkaido.lg.jp,booksprivilege.com,repsoku.net,atrain3d.com,dq5clear.com,wpclear.com,city.shinagawa.tokyo.jp,html-css-javascript.com,pref.nagasaki.jp,okinawaokuyami.com,illust-ai.com,ntv.co.jp,my-terrace.com,travel.rakuten.co.jp,conciergedesk.jp,anal-love.net###ad
 ! ###ads
-city.imizu.toyama.jp,research-er.jp,city.kakegawa.shizuoka.jp,yuuu-nii.com,kachimai.jp,atwiki.jp###ads
+kanjitisiki.com,city.imizu.toyama.jp,research-er.jp,city.kakegawa.shizuoka.jp,yuuu-nii.com,kachimai.jp,atwiki.jp###ads
 ! ##.rectangle
 news.nifty.com,topics.or.jp,japandesign.ne.jp,wazap.com,beasoku.com,twi55.com,dark-soku.blog.jp,relazo.net,ramenhuhu.com,travel.aumo.jp,tv-tokyo.co.jp,erodouga-s.com,gourmet.aumo.jp,eromovie-s.com,shimotsuke.co.jp,purple-novel.com,milk-key.com,misty-novel.com,caramel-sp.com,melty-novel.com,mimitub.com,bazurecipe.com,climbing-net.com,report-newage.com,umamusumelabo.com,cyzo.com##.rectangle
 ! ##.sponsored
@@ -1672,6 +1673,11 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+funny-ai.com##.main-header-ads
+funny-ai.com##.main-frp-ads
+||korewaeroi.com/i2i.html
+korewaeroi.com##.l-sidebar > aside.widget_custom_html
+moeasia.net###pickup > a ~ .bam-card:has(a[href*=".amazon.co.jp/dp/"])
 nekochan.jp##.detail_header_ad
 wanchan.jp##.detail_header__ad
 wanchan.jp##.detail_footer__ad
@@ -10237,6 +10243,11 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_japanese
 !
 !
 !
+! Unbreak ranking
+@@||serving.stat-rock.com/v1/placements/$xmlhttprequest,domain=funny-ai.com
+||stream.playerserve.com/stream/server/$media,redirect=noop-1s.mp4,domain=funny-ai.com
+funny-ai.com#@#.button_ads
+funny-ai.com#$#.orp-player-rewarded { display: none !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/142569
 @@||cm-widget.nakanohito.jp/cm/$script,stylesheet
 @@||cm-beacon.nakanohito.jp/cm/comment_$xmlhttprequest
