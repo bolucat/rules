@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: JchHxT2JQGVy0KJDxuqN6w
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1711384639-3600.patch
+! Checksum: Rktl9xB+A6KOFgGW15MZQw
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1711466318-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.28.28
-! TimeUpdated: 2024-03-25T16:33:07+00:00
+! Version: 2.3.28.42
+! TimeUpdated: 2024-03-26T15:09:32+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -6689,8 +6689,8 @@ competentedigitale.ro,onehack.us##+js(abort-on-property-write, adregain_wall)
 ! IMPORTANT: Add generichide exception for content blockers to `content-blocker.txt` in the same section
 #$#div[class*=" "][style^="width: 1px; height: 1px; position: absolute; left: -10000px; top: -"] { display: block !important; }
 !
-thetvdb.com,aranzulla.it,drikpanchang.com,ettoday.net,smstome.com,tvp.info,medevel.com,abczdrowie.pl,tvn24.pl,nikkei225jp.com,apuntesdeingles.com,cnbeta.com.tw,lidovky.cz,gazeta.pl,animefillerlist.com,i.pl,interia.pl,japan.techinsight.jp,f1-gate.com,dailymail.co.uk#$#body { overflow: visible !important; }
-thetvdb.com,aranzulla.it,drikpanchang.com,ettoday.net,smstome.com,tvp.info,medevel.com,abczdrowie.pl,tvn24.pl,nikkei225jp.com,apuntesdeingles.com,cnbeta.com.tw,lidovky.cz,gazeta.pl,animefillerlist.com,i.pl,interia.pl,japan.techinsight.jp,f1-gate.com,dailymail.co.uk#$#body div.fc-ab-root:not(#style_important) { display: none !important; }
+learn-japanese-adventure.com,thetvdb.com,aranzulla.it,drikpanchang.com,ettoday.net,smstome.com,tvp.info,medevel.com,abczdrowie.pl,tvn24.pl,nikkei225jp.com,apuntesdeingles.com,cnbeta.com.tw,lidovky.cz,gazeta.pl,animefillerlist.com,i.pl,interia.pl,japan.techinsight.jp,f1-gate.com,dailymail.co.uk#$#body { overflow: visible !important; }
+learn-japanese-adventure.com,thetvdb.com,aranzulla.it,drikpanchang.com,ettoday.net,smstome.com,tvp.info,medevel.com,abczdrowie.pl,tvn24.pl,nikkei225jp.com,apuntesdeingles.com,cnbeta.com.tw,lidovky.cz,gazeta.pl,animefillerlist.com,i.pl,interia.pl,japan.techinsight.jp,f1-gate.com,dailymail.co.uk#$#body div.fc-ab-root:not(#style_important) { display: none !important; }
 !
 korben.info,alternativeto.net##+js(abort-current-script, atob, /googlefc|\.parentNode\.removeChild\(f\)/)
 !
@@ -7053,8 +7053,10 @@ pornhub.com,pornhub.org,pornhub.net##+js(no-setTimeout-if, \x41\x64\x62\x6c\x6f\
 ! NOTE: Regular rules
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/175668
+exuce.com##+js(no-fetch-if, pagead2.googlesyndication.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/175665
-prajwaldesai.com##+js(no-setTimeout-if, placebo)
+route-one.net,prajwaldesai.com##+js(no-setTimeout-if, placebo)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/175504
 gearingcommander.com##+js(no-setTimeout-if, fnMaskAdBlock)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/175439
@@ -9558,7 +9560,7 @@ strtapeadblocker.art#@#.skyscraper.ad
 ! https://github.com/AdguardTeam/AdguardFilters/issues/123610
 ! https://github.com/AdguardTeam/AdguardFilters/issues/151992
 @@||work.ink^$generichide
-work.ink##+js(no-fetch-if, /quantserve\.com|adligature\.com/)
+work.ink##+js(no-fetch-if, /quantserve\.com|adligature\.com|srvtrck\.com/)
 @@||adligature.com^|$xmlhttprequest,domain=work.ink
 ! https://github.com/AdguardTeam/AdguardFilters/issues/123122
 blog.textpage.xyz##+js(abort-on-property-read, eazy_ad_unblocker)
@@ -14636,6 +14638,7 @@ youtubemultidownloader.com#$##ablockercheck { display: block!important; }
 leechpremium.net##+js(no-setInterval-if, iframe)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/78207
 ! https://gist.github.com/AdamWr/d9d16be46fcad6df18306e19637ed6aa#file-myuploadedpremium-js
+myuploadedpremium.de##+js(remove-attr, height, body > iframe[height][width][style])
 myuploadedpremium.de##+js(abort-current-script, $, /setInterval[\s\S]*?_0x[\s\S]*?</)
 ||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$redirect=googlesyndication.com/adsbygoogle.js,domain=myuploadedpremium.de,xmlhttprequest,script
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$domain=myuploadedpremium.de
@@ -17724,6 +17727,8 @@ junat.net###junatnet-campaign-ad
 ! https://github.com/AdguardTeam/AdguardFilters/issues/157387
 telsu.fi##+js(no-fetch-if, googlesyndication.com)
 ! https://github.com/uBlockOrigin/uAssets/issues/14204
+||es.ylilauta.org^
+ylilauta.org##.card.a
 ! ruutu.fi - video ads
 ||nelonenmedia-pmd-ads-*.nm-stream.nelonenmedia.fi/*.mp4$media,redirect=noop-1s.mp4,domain=ruutu.fi
 ! https://github.com/AdguardTeam/AdguardFilters/issues/78743
@@ -27097,6 +27102,8 @@ kat.*,kickass.*,kickass2.*,kickasstorrents.*,kat2.*,kattracker.*,thekat.*,thekic
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/175668
+adpaylink.com##+js(remove-attr, href, .box-main > a[href][target="_blank"])
 ! https://github.com/AdguardTeam/AdguardFilters/issues/175076
 lostshorts.com##+js(window.open-defuser)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/175422
@@ -30160,6 +30167,8 @@ spectrum.ieee.org##+js(set-constant, splashpage, undefined)
 !-------CSS---------
 !-------------------
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/175743
+thesprucepets.com#$?#.mm-ads-leaderboard-spacer { remove: true; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/175615
 formu1a.uno#$#.et_pb_row_1_tb_body { min-height: auto !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/174650
@@ -32074,7 +32083,7 @@ terabox.*,fedscoop.com,statescoop.com,edscoop.com,defensescoop.com,cyberscoop.co
 ! ##.ads
 eshop-prices.com,quena.id,sexu.*,gameme.eu,pornwatch.ws,mollygram.com,onlinewebfonts.com,androjungle.com,filerice.com,10001.games,hoes.tube,i24news.tv,rpp.pe,4pig.com,love4porn.com,gametop.com,bluedollar.net,outlookindia.com,blabbermouth.net,ghettotube.com,mangoporn.net,javplay.me,jagranjosh.com,4kporn.xxx,bangkokpost.com,up-load.io,liveindex.org,freeshib.biz,apkmb.com,upload.ac,westkentuckystar.com,namekun.com,piliapp.com,photofunny.net,grazia.co.in,flightpedia.org,thelingerieaddict.com,banglanews24.com,swisscows.com,jagran.com,autocarindia.com,userupload.net,javbraze.com,laptrinhx.com,youtube-video.download,pinkvilla.com,youramateurporn.com,dausel.co,yesnetwork.com,indiatoday.in,vidcloud.icu,appvn.com,h2mp3.com,tapas.io,freefrontend.com,ally.sh,myplaycity.com,mercadojobs.com,thepiratebay.org,sgxnifty.org,cyberscoop.com,filmcomment.com,youngpornvideos.com,eventcinemas.com.au,findyourlucky.com,linuxmint.com,mobafire.com,themepack.me##.ads
 ! ##.banner-inner
-shortyget.com,clk.wiki,tinys.click,adpayl.ink,baicho.xyz,clk.asia,namaidani.com,short2fly.xyz,bestcash2020.com,du-link.in,shrink.*,4cash.me,shorthero.site,cookdov.com,myshrinker.com,linkjust.com,adlinkweb.com,vklinks.com,seulink.online,gtlink.co,coinadfly.com,popimed.com,hoastie.com,forex-trnd.com,earnwithshortlink.com,adfloz.co,tui.click,link.ltc24.com,linkebr.com,pnd.*,clik.pw,cutlink.link,zagl.info,lite-link.xyz,pureshort.link,lite-link.com,techupme.com,fir3.net,softairbay.com,todaynewspk.win,fx4vip.com,tii.ai,srt.leechpremium.link,link1s.*,arabplus2.co,stfly.me,profitlink.info,jwearn.com,shorthitz.com,adsy.pw,intothelink.com,linkviet.xyz,adslinkfly.online,lkop.me,shlinko.com,oncehelp.com,shorterall.com,s-url.xyz,encurta.eu,stfly.io,shrtfly.net,vivads.net,fc.lc,icutlink.com,urlcloud.us,suqdz.com,cutlinks.pro,shortzon.com,kutz.io,coinb.ink,bit-url.com,tmearn.com,linkkawy.com##.banner-inner
+adpaylink.com,shortyget.com,clk.wiki,tinys.click,adpayl.ink,baicho.xyz,clk.asia,namaidani.com,short2fly.xyz,bestcash2020.com,du-link.in,shrink.*,4cash.me,shorthero.site,cookdov.com,myshrinker.com,linkjust.com,adlinkweb.com,vklinks.com,seulink.online,gtlink.co,coinadfly.com,popimed.com,hoastie.com,forex-trnd.com,earnwithshortlink.com,adfloz.co,tui.click,link.ltc24.com,linkebr.com,pnd.*,clik.pw,cutlink.link,zagl.info,lite-link.xyz,pureshort.link,lite-link.com,techupme.com,fir3.net,softairbay.com,todaynewspk.win,fx4vip.com,tii.ai,srt.leechpremium.link,link1s.*,arabplus2.co,stfly.me,profitlink.info,jwearn.com,shorthitz.com,adsy.pw,intothelink.com,linkviet.xyz,adslinkfly.online,lkop.me,shlinko.com,oncehelp.com,shorterall.com,s-url.xyz,encurta.eu,stfly.io,shrtfly.net,vivads.net,fc.lc,icutlink.com,urlcloud.us,suqdz.com,cutlinks.pro,shortzon.com,kutz.io,coinb.ink,bit-url.com,tmearn.com,linkkawy.com##.banner-inner
 ! ###ad
 cimanowtv.com,weakstreams.online,online-stopwatch.com,formula1streams.club,hockeynews.club,livesportstream.club,footballroma.com,web.yokugames.com,cimavids.live,cimanow.*,2shrt.com,cnvids.com,iogames.army,classic-retro-games.com,ytmp3.cc,fxsolves.com,kodi-addons.club,lastpass.com,jsoneditoronline.org,animeseed.com,robinwidget.com,ascoltareradio.com,bg-radio.org,ceskaradiaonline.cz,ecouterradioenligne.com,emisora.cl,emisora.org.es,emisoras.com.gt,emisoras.com.mx,emisoras.com.py,nederlandseradio.nl,nettiradiot.org,nettradionorge.com,onlineradio.pl,radio.cd,radio.co.ci,radio.co.cm,radio.co.dk,radio.co.ma,radio.co.si,radio.ht,radio.mg,radio.org.ro,radio.org.se,radio.pp.ru,radio.sn,radioalgerie.eu,radioarg.com,radiohallgatas.hu,radioonline.com.pt,radios.co.at,radios.co.cr,radios.co.ni,radios.co.ve,radios.com.bo,radios.com.co,radios.com.do,radios.com.ec,radios.com.pa,radios.com.pe,radios.com.sv,radios.com.uy,radios.hn,radios.hr,radios.org.il,radiosaovivo.net,radiosdecuba.com,radiosdepuertorico.com,radiosonline.be,radiosonline.ch,radiotunisienne.org,radioua.net,radyodinle.fm,surinaamseradio.com###ad
 ! ##.advert
@@ -32128,10 +32137,17 @@ $xmlhttprequest,third-party,denyallow=linkvertise.com|fastly.net|statically.io|s
 !
 ! NOTE: Specific rules
 !
+||modsfire.com/img/ookfmx.png
+songbpm.com##div > div:has(> section > ins.adsbygoogle)
+bing.com##.b_ans:has([class^="xm_"][class*="_ansCont"])
+lnk.to##div[data-advertiser="amazon-music"]
+economist.com##div[class^="adComponent_advert"]
+exuce.com##button > a[target="_blank"]
+uxwing.com##.adspc01
+uxwing.com##.flaxmain > div.tagmainblock:has(> div[id^="bsa-zone_"])
 ||vipbox.lc/partytown/
 fontesk.com##.postlist > .postlist-col:has(> aside > .textwidget > .feed-ads)
 tanoshiijapanese.com###cnbody #cnfooter:has(> #affiliate)
-bing.com##.b_algo_feedback ~ li.b_ans.b_mop.b_mopb
 yummly.com##.external-promo-root
 boardgameoracle.com#?#div[class^="jss"]:has(> span.MuiTypography-displayBlock:contains(Advertisement))
 open.spotify.com##div[aria-label="Advertisement"]
@@ -34675,7 +34691,7 @@ meracalculator.com##.mt-md-3  >.col-12
 meracalculator.com##.col-sm-12 > div[style^="min-height:"]
 ||timesnownews.com/dfpamzn.js
 timesnownews.com##._1ML8q
-video.hizliresim.com##.vr-adv-unit
+fastupload.io,video.hizliresim.com##.vr-adv-unit
 ||kisscartoon.*/api/pop*.php
 businessgreen.com##.notice-slot-full-below-header
 alternativeto.net##div[style^="min-height:114px;background-color:"]
@@ -37076,7 +37092,7 @@ issuu.com##section[aria-label="Advert"]
 issuu.com###ad-primis-wide
 emporis.com###partner
 raabta.net###text-html-widget-3
-fontesk.com,iplocation.net,pureinfotech.com,insurance-space.xyz##div[id^="bsa-zone_"]
+uxwing.com,fontesk.com,iplocation.net,pureinfotech.com,insurance-space.xyz##div[id^="bsa-zone_"]
 calculator.net##div[style^="padding-top:10px"][style*="min-height:280px"]
 aroged.com##div[itemprop="articleBody"] > div.quads-location ~ center
 aviability.com##.a180
@@ -50379,6 +50395,7 @@ $popup,third-party,domain=dood.ws,badfilter
 !
 !
 !
+! Fixing sites with AdShied (ygosu.com, etc.)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/175422
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,domain=syok.my
 ! https://github.com/AdguardTeam/AdguardFilters/issues/174470
@@ -50432,6 +50449,8 @@ sanemoku.com#@##horizontal-ad
 ! https://github.com/AdguardTeam/AdguardFilters/issues/171372
 @@||imasdk.googleapis.com/js/sdkloader/ima3.js$domain=liner.hu
 ! https://github.com/AdguardTeam/AdguardFilters/issues/171285
+! https://github.com/AdguardTeam/AdguardFilters/issues/175708
+@@||google.com/pagead/landing$domain=godaddy.com
 @@||googletagmanager.com/gtag/js$domain=godaddy.com
 @@||googletagmanager.com/gtm.js$domain=godaddy.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/171345
@@ -54455,6 +54474,7 @@ implbits.com#@#.banner_container
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/175596#issuecomment-2016696488
 ! https://github.com/AdguardTeam/AdguardFilters/issues/175376
 ! https://github.com/AdguardTeam/AdguardFilters/issues/175300
 ! https://github.com/AdguardTeam/AdguardFilters/issues/175302

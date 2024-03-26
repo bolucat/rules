@@ -4,7 +4,7 @@
 ! Homepage: https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.5.6.3
+! Version: 3.6.0.1
 
 ! General
 
@@ -28,7 +28,7 @@
 ||onecount.net^$third-party
 ||js.pelcro.com^$script,third-party
 ||piano.io/xbuilder/experience/execute$xmlhttprequest,third-party
-@@||piano.io^$domain=asia.nikkei.com|businessinsider.com.pl|hbr.org|japantimes.co.jp|newsweek.pl|onet.pl
+@@||piano.io^$domain=asia.nikkei.com|auto-swiat.pl|businessinsider.com.pl|forbes.pl|hbr.org|japantimes.co.jp|komputerswiat.pl|newsweek.pl|onet.pl
 ||api.pico.tools/client/query/*$xmlhttprequest,~third-party
 ||api.pico.tools/popup/null/*$xmlhttprequest,~third-party
 gadget.pico.tools##+js(json-prune, locked)
@@ -74,8 +74,6 @@ bloomberg.com##+js(set-local-storage-item, history, $remove$)
 ||bloombergadria.com/*/news/$inline-script
 bloombergadria.com##+js(ra, style, article[style])
 ||meter.bostonglobe.com/js/meter.js$script,~third-party
-businessinsider.com.pl##+js(cookie-remover, xbc)
-businessinsider.com.pl##div#content-premium-offer
 ||businesspost.ie/api/tinypass.min.js$script,~third-party
 cartacapital.com.br##+js(rc, contentSoft, div.contentSoft)
 cartacapital.com.br##div[class^="s-freemium"],div.maggazine-add
@@ -484,6 +482,11 @@ curbed.com,grubstreet.com,nymag.com,thecut.com,vulture.com##div.m-ad
 
 ! DPG ADR (no scroll)
 ||temptation.*/temptation.js$script,~third-party,domain=ad.nl|bd.nl|bndestem.nl|destentor.nl|ed.nl|gelderlander.nl|pzc.nl|tubantia.nl
+
+! Ringier Axel Springer Polska
+businessinsider.com.pl##+js(cookie-remover, xbc)
+businessinsider.com.pl##div#content-premium-offer
+onet.pl##+js(cookie-remover, xbc)
 
 ! Roularta Media Groep
 ||artsenkrant.com/js/responsive/rmgModal.js$script,~third-party
