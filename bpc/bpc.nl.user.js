@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.5.9.2
+// @version         3.6.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -13,7 +13,6 @@
 // @match           *://*.businessam.be/*
 // @match           *://*.demorgen.be/*
 // @match           *://*.doorbraak.be/*
-// @match           *://*.hbvl.be/*
 // @match           *://*.humo.be/*
 // @match           *://*.knack.be/*
 // @match           *://*.kw.be/*
@@ -124,7 +123,7 @@ if (overlay)
 var ads = document.querySelectorAll('div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ads, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]');
 hideDOMElement(...ads);
 
-var be_mediahuis_domains = ['hbvl.be', 'nieuwsblad.be', 'standaard.be'];
+var be_mediahuis_domains = ['nieuwsblad.be', 'standaard.be'];
 var be_roularta_domains = ['artsenkrant.com', 'beleggersbelangen.nl', 'flair.be', 'knack.be', 'kw.be', 'libelle.be'];
 var nl_dpg_adr_domains = ['ad.nl', 'bd.nl', 'bndestem.nl', 'destentor.nl', 'ed.nl', 'gelderlander.nl', 'pzc.nl', 'tubantia.nl'];
 var nl_dpg_media_domains = ['demorgen.be', 'flair.nl', 'humo.be', 'libelle.nl', 'margriet.nl', 'parool.nl', 'trouw.nl', 'volkskrant.nl'];
@@ -482,6 +481,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
 
 function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let article = document.querySelector(selector);
+  let no_content_msg = '&nbsp;| no article content found! | :';
   if (html) {
     if (!proxy && base64) {
       html = decode_utf8(atob(html));
@@ -524,10 +524,10 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
           }, 200);
         }
       } else
-        replaceTextFail(url, article, proxy, text_fail);
+        replaceTextFail(url, article, proxy, text_fail.replace(':', no_content_msg));
     }, 200);
   } else {
-    replaceTextFail(url, article, proxy, text_fail);
+    replaceTextFail(url, article, proxy, url_src ? text_fail.replace(':', no_content_msg) : text_fail);
   }
 }
 
@@ -538,7 +538,7 @@ function replaceTextFail(url, article, proxy, text_fail) {
     text_fail_div.appendChild(document.createTextNode(text_fail));
     if (proxy) {
       if (url.startsWith('https://archive.')) {
-        text_fail_div = archiveLink(url.replace(/^https:\/\/archive\.\w{2}\//, ''));
+        text_fail_div = archiveLink(url.replace(/^https:\/\/archive\.\w{2}\//, ''), text_fail);
       } else {
         let a_link = document.createElement('a');
         a_link.innerText = url;

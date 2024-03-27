@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.6.0.0
+// @version         3.6.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -436,11 +436,21 @@ else if (matchDomain('lemagit.fr')) {
 }
 
 else if (matchDomain('lemonde.fr')) {
-  let url = window.location.href;
-  let paywall = document.querySelector('section.paywall');
+  let paywall_sel = 'section.paywall';
+  let paywall = document.querySelector(paywall_sel);
   if (paywall) {
-    removeDOMElement(paywall);
-    getArchive(url, 'article');
+    let article_sel = 'article';
+    let figure = document.querySelector('figure.article__media');
+    if (figure) {
+      func_post = function () {
+        let figure_new = document.querySelector('article > figure');
+        let article = document.querySelector(article_sel);
+        if (!figure_new && article)
+          article.firstChild.before(figure);
+      }
+    }
+    let url = window.location.href;
+    getArchive(url, paywall_sel, '', article_sel);
     let hide = document.querySelector('section.article__wrapper--premium');
     if (hide)
       removeClassesByPrefix(hide, 'article__content--restricted');
@@ -934,6 +944,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
 
 function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let article = document.querySelector(selector);
+  let no_content_msg = '&nbsp;| no article content found! | :';
   if (html) {
     if (!proxy && base64) {
       html = decode_utf8(atob(html));
@@ -976,10 +987,10 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
           }, 200);
         }
       } else
-        replaceTextFail(url, article, proxy, text_fail);
+        replaceTextFail(url, article, proxy, text_fail.replace(':', no_content_msg));
     }, 200);
   } else {
-    replaceTextFail(url, article, proxy, text_fail);
+    replaceTextFail(url, article, proxy, url_src ? text_fail.replace(':', no_content_msg) : text_fail);
   }
 }
 
@@ -990,7 +1001,7 @@ function replaceTextFail(url, article, proxy, text_fail) {
     text_fail_div.appendChild(document.createTextNode(text_fail));
     if (proxy) {
       if (url.startsWith('https://archive.')) {
-        text_fail_div = archiveLink(url.replace(/^https:\/\/archive\.\w{2}\//, ''));
+        text_fail_div = archiveLink(url.replace(/^https:\/\/archive\.\w{2}\//, ''), text_fail);
       } else {
         let a_link = document.createElement('a');
         a_link.innerText = url;
