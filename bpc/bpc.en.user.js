@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.0.3
+// @version         3.6.0.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -2639,7 +2639,7 @@ else if (matchDomain('theglobeandmail.com')) {
 else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
   if (!window.location.pathname.endsWith('/amp/')) {
     let counter = document.querySelector('#test');
-    let ads = document.querySelectorAll('div.article-ad, div.dfp-ad, div#paywallbox');
+    let ads = document.querySelectorAll('div.article-ad, div.dfp-ad, div#paywallbox, div[id^="piano-art-"]');
     hideDOMElement(counter, ...ads);
   } else {
     let ads = document.querySelectorAll('amp-ad, amp-embed, [class^="height"], [class^="advt"], [id^="piano"]');
@@ -3318,7 +3318,14 @@ else if (matchDomain('wsj.com')) {
             let wsj_pro = paywall.querySelector('a[href^="https://wsjpro.com/"]');
             if (wsj_pro)
               article_sel = 'article';
+            let video_sel = 'div[data-type="video"]';
+            let video = document.querySelector(video_sel);
             func_post = function () {
+              if (video) {
+                let video_new = document.querySelector(video_sel);
+                if (video_new && video_new.parentNode)
+                  video_new.parentNode.replaceChild(video, video_new);
+              }
               if (mobile) {
                 let inline_images = document.querySelectorAll('div[style] > figure > picture > img');
                 for (let elem of inline_images) {
