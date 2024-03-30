@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.6.0.1
+// @version         3.6.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -285,7 +285,7 @@ else if (matchDomain(nl_dpg_adr_domains)) {
 
 else if (matchDomain(nl_dpg_media_domains)) {
   setCookie('TID_ID', '', '', '/', 0);
-  let banners = document.querySelectorAll('div[data-temptation-position^="PAGE_"], div[class^="ad--"], div[class^="_3iyhos"]');
+  let banners = document.querySelectorAll('div[data-temptation-position^="PAGE_"], div[class^="ad--"], div[id^="article_paragraph_"]');
   let paywall = document.querySelectorAll('aside[data-temptation-position^="ARTICLE_"]');
   removeDOMElement(...banners, ...paywall);
   window.setTimeout(function () {
