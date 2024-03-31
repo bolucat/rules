@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.6.0.0
+// @version         3.6.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -795,6 +795,8 @@ else if (matchDomain('weser-kurier.de')) {
 else if (matchDomain('wiwo.de')) {
   let url = window.location.href;
   getArchive(url, 'div.o-paywall', '', 'article');
+  let banner = document.querySelector('div.c-overscroller');
+  hideDOMElement(banner);
 }
 
 else if (matchDomain('zeit.de')) {
@@ -1021,6 +1023,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
 
 function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let article = document.querySelector(selector);
+  let no_content_msg = '&nbsp;| no article content found! | :';
   if (html) {
     if (!proxy && base64) {
       html = decode_utf8(atob(html));
@@ -1063,10 +1066,10 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
           }, 200);
         }
       } else
-        replaceTextFail(url, article, proxy, text_fail);
+        replaceTextFail(url, article, proxy, text_fail.replace(':', no_content_msg));
     }, 200);
   } else {
-    replaceTextFail(url, article, proxy, text_fail);
+    replaceTextFail(url, article, proxy, url_src ? text_fail.replace(':', no_content_msg) : text_fail);
   }
 }
 
@@ -1077,7 +1080,7 @@ function replaceTextFail(url, article, proxy, text_fail) {
     text_fail_div.appendChild(document.createTextNode(text_fail));
     if (proxy) {
       if (url.startsWith('https://archive.')) {
-        text_fail_div = archiveLink(url.replace(/^https:\/\/archive\.\w{2}\//, ''));
+        text_fail_div = archiveLink(url.replace(/^https:\/\/archive\.\w{2}\//, ''), text_fail);
       } else {
         let a_link = document.createElement('a');
         a_link.innerText = url;

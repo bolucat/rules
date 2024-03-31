@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: y9Tka+lhr+5pITtXFoctKQ
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1711820207-3600.patch
+! Checksum: +oS3pbWoIDCrHXoVs2dVAw
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1711885009-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.29.3
-! TimeUpdated: 2024-03-30T17:33:01+00:00
+! Version: 2.3.29.10
+! TimeUpdated: 2024-03-31T11:33:02+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -32039,8 +32039,6 @@ gazettetimes.com,missoulian.com,kenoshanews.com,cumberlink.com,trib.com,dailypro
 ! START: Youtube whitescreen fix
 !
 ! This one might be needed when the page is loaded for the first time
-youtubekids.com,youtube-nocookie.com,youtube.com##+js(set-constant, ytInitialPlayerResponse.playerConfig.ssapConfig.ssapPrerollEnabled, false)
-youtubekids.com,youtube-nocookie.com,youtube.com##+js(set-constant, ytInitialPlayerResponse.streamingData.serverAbrStreamingUrl, undefined)
 youtubekids.com,youtube-nocookie.com,youtube.com##+js(set-constant, ytInitialPlayerResponse.adPlacements, undefined)
 youtubekids.com,youtube-nocookie.com,youtube.com##+js(set-constant, ytInitialPlayerResponse.adSlots, undefined)
 youtubekids.com,youtube-nocookie.com,youtube.com##+js(set-constant, ytInitialPlayerResponse.playerAds, undefined)
@@ -32056,7 +32054,6 @@ youtubekids.com,youtube-nocookie.com,youtube.com##+js(set-constant, playerRespon
 ! so requests from tv.youtube.com are excluded from this rule (the url part - '^(?!.*(\/\/tv\.youtube\.com)).*(player\?key=|watch\?v=)') and instead simple workaround is used
 !
 ! Multiple trusted-replace-xhr-response causes breakage on music.youtube.com when logged in
-youtube.com##+js(json-prune, playerResponse.streamingData.serverAbrStreamingUrl streamingData.serverAbrStreamingUrl)
 ! TODO: replace with json-prune-fetch-response when it will be available in extensions
 m.youtube.com,music.youtube.com,youtubekids.com,youtube-nocookie.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/172033#issuecomment-1925290685

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.0.4
+// @version         3.6.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1146,12 +1146,6 @@ else if (matchDomain('business-standard.com')) {
     ampToHtml();
 }
 
-else if (matchDomain('businessinsider.com.pl')) {
-  setCookie('xbc', '', 'businessinsider.com.pl', '/', 0);
-  let paywall = document.querySelector('div#content-premium-offer');
-  removeDOMElement(paywall);
-}
-
 else if (matchDomain('businessinsider.com')) {
   let ads = document.querySelectorAll('div.l-ad, div.in-post-sticky, aside.has-video-ad');
   hideDOMElement(...ads);
@@ -2052,19 +2046,6 @@ else if (matchDomain('newsweek.com')) {
   hideDOMElement(...ads);
 }
 
-else if (matchDomain('newsweek.pl')) {
-  let premium = document.querySelector('div.contentPremium[style]');
-  if (premium) {
-    premium.removeAttribute('class');
-    premium.removeAttribute('style');
-  }
-  let placeholder = document.querySelector('div#contentPremiumPlaceholder[class]');
-  if (placeholder)
-    placeholder.removeAttribute('class');
-  let ads = document.querySelectorAll('[class^="pwAds"], .hide-for-paying, div.onet-ad, div.bottomBar');
-  hideDOMElement(...ads);
-}
-
 else if (matchDomain(['nola.com', 'theadvocate.com'])) {
   if (window.location.pathname.endsWith('.amp.html')) {
     let body_hidden = document.querySelector('.site-container');
@@ -2132,6 +2113,7 @@ else if (matchDomain('outlookindia.com')) {
 
 else if (matchDomain(pl_ringier_domains)) {
   if (matchDomain('businessinsider.com.pl')) {
+    setCookie('xbc', '', 'businessinsider.com.pl', '/', 0);
     let paywall = document.querySelector('div#content-premium-offer');
     removeDOMElement(paywall);
   } else if (matchDomain('newsweek.pl')) {
@@ -2139,6 +2121,11 @@ else if (matchDomain(pl_ringier_domains)) {
     if (premium) {
       premium.removeAttribute('class');
       premium.removeAttribute('style');
+    }
+    let premium_videos = document.querySelectorAll('div.videoPremiumWrapper > div.embed__mainVideoWrapper');
+    for (let video of premium_videos) {
+      video.removeAttribute('class');
+      video.parentNode.removeAttribute('class');
     }
     let placeholder = document.querySelector('div#contentPremiumPlaceholder[class]');
     if (placeholder)
