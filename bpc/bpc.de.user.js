@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.6.1.0
+// @version         3.6.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -17,6 +17,7 @@
 // @match           *://*.nzz.ch/*
 // @match           *://*.profil.at/*
 // @match           *://*.schweizermonat.ch/*
+// @match           *://*.themarket.ch/*
 // @match           *://*.tt.com/*
 // @match           *://*.vn.at/*
 // @match           *://*.vol.at/*
@@ -552,13 +553,12 @@ else if (matchDomain('nw.de')) {
   }
 }
 
-else if (matchDomain('nzz.ch')) {
-  window.setTimeout(function () {
-    let url = window.location.href;
-    getArchive(url, 'div.dynamic-regwall', '', 'section[data-nzz-article]');
-    let ads = document.querySelectorAll('div.resor');
-    hideDOMElement(...ads);
-  }, 2000);
+else if (matchDomain(['nzz.ch', 'themarket.ch'])) {
+  let fade = document.querySelectorAll('.nzzinteraction');
+  for (let elem of fade)
+    elem.classList.remove('nzzinteraction');
+  let ads = document.querySelectorAll('div.resor');
+  hideDOMElement(...ads);
 }
 
 else if (matchDomain('philomag.de')) {

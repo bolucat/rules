@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.1.0
+// @version         3.6.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -47,6 +47,7 @@
 // @connect         archive.vn
 // @connect         archive.fo
 // @connect         webcache.googleusercontent.com
+// @exclude         *://*.dwcdn.net/*
 // @exclude         *://*.google.com/*
 // @exclude         *://*.mediafire.com/*
 // @exclude         *://*.youtube.com/*
