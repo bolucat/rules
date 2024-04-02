@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.5.9.2
+// @version         3.5.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -72,8 +72,8 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = document.querySelectorAll('div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ads, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]');
-hideDOMElement(...ads);
+var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]';
+hideDOMStyle(ads, 10);
 
 var ar_grupo_clarin_domains =['clarin.com', 'lavoz.com.ar', 'losandes.com.ar'];
 var es_epiberica_domains = ['diariodemallorca.es', 'eldia.es', 'elperiodico.com', 'epe.es', 'farodevigo.es', 'informacion.es', 'laprovincia.es', 'levante-emv.com', 'lne.es', 'mallorcazeitung.es', 'superdeporte.es'];
@@ -361,7 +361,7 @@ if (matchDomain('abril.com.br')) {
     let amp_ads = document.querySelectorAll('amp-ad, amp-embed');
     hideDOMElement(...amp_ads);
   } else {
-    let ads = document.querySelectorAll('div[class^="ads-"], div.MGID');
+    let ads = document.querySelectorAll('div.ads, div[class^="ads-"], div.MGID');
     hideDOMElement(...ads);
   }
 }
@@ -507,7 +507,7 @@ else if (matchDomain('eltribuno.com')) {
 else if (matchDomain('em.com.br')) {
   if (!window.location.pathname.endsWith('/amp.html')) {
     amp_redirect('.news-blocked-content');
-    let ads = document.querySelectorAll('.containerads');
+    let ads = document.querySelectorAll('div.ads, div.containerads');
     hideDOMElement(...ads);
   } else {
     amp_unhide_subscr_section('amp-ad, amp-embed, amp-fx-flying-carpet');
@@ -630,6 +630,16 @@ function hideDOMElement(...elements) {
   for (let element of elements) {
     if (element)
       element.style = 'display:none !important;';
+  }
+}
+
+function hideDOMStyle(selector, id = 1) {
+  let style = document.querySelector('head > style#ext'+ id);
+  if (!style && document.head) {
+    let sheet = document.createElement('style');
+    sheet.id = 'ext' + id;
+    sheet.innerText = selector + ' {display: none !important;}';
+    document.head.appendChild(sheet);
   }
 }
 

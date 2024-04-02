@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.1.1
+// @version         3.6.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -142,8 +142,8 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = document.querySelectorAll('div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ads, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]');
-hideDOMElement(...ads);
+var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]';
+hideDOMStyle(ads, 10);
 
 var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 'thepeterboroughexaminer.com', 'therecord.com', 'thespec.com', 'thestar.com', 'wellandtribune.ca'];
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
@@ -1980,10 +1980,6 @@ else if (matchDomain('newrepublic.com')) {
 }
 
 else if (matchDomain('newscientist.com')) {
-  let clear_ads = function() {
-    let ads = document.querySelectorAll('div[class*="Advert"]');
-    hideDOMElement(...ads);
-  }
   let url = window.location.href;
   func_post = function () {
     let lazy_images = document.querySelectorAll('img.lazyload[data-src]:not([src])');
@@ -2001,10 +1997,10 @@ else if (matchDomain('newscientist.com')) {
         removeDOMElement(break_post);
       }
     }
-    clear_ads();
   }
   getGoogleWebcache(url, 'section#subscription-barrier', '', 'div.article-body, article');
-  clear_ads();
+  let ads = 'div[class*="Advert"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('newsday.com')) {
@@ -2191,19 +2187,13 @@ else if (matchDomain(pl_ringier_domains)) {
       else if (matchDomain('komputerswiat.pl'))
         article_sel = 'div[data-run-module="local/main.adult"] > div:nth-last-of-type(1) article';
       let url = window.location.href;
-      func_post = function () {
-        clear_ads();
-      }
       let url_archive = 'https://' + archiveRandomDomain() + '/' + url.split(/[#\?]/)[0];
       replaceDomElementExt(url_archive, true, false, article_sel);
     }
     waitDOMElement('div.contentPremium div.tp-container-inner', 'DIV', archive_main);
   }
-  function clear_ads() {
-    let ads = document.querySelectorAll('div[class^="AdPlaceholder_"], div[data-placeholder-caption], div[data-run-module$=".floatingAd"], aside[data-ad-container], [class^="pwAds"], .hide-for-paying, div.onet-ad, div.bottomBar');
-    hideDOMElement(...ads);
-  }
-  clear_ads();
+  let ads = 'div[class^="AdPlaceholder_"], div[data-placeholder-caption], div[data-run-module$=".floatingAd"], aside[data-ad-container], [class^="pwAds"], .hide-for-paying, div.onet-ad, div.bottomBar';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('project-syndicate.org')) {
@@ -2290,7 +2280,7 @@ else if (matchDomain('seekingalpha.com')) {
 else if (matchDomain(sg_sph_media_domains)) {
   let url = window.location.href;
   getArchive(url, 'div#nocx_paywall_area', '', 'main#content');
-  let ads = document.querySelectorAll('div[id^="dfp-ad-"], div.cx_paywall_placeholder');
+  let ads = document.querySelectorAll('div.ads, div[id^="dfp-ad-"], div.cx_paywall_placeholder');
   hideDOMElement(...ads);
 }
 
@@ -3485,10 +3475,11 @@ else if ((domain = matchDomain(usa_mcc_domains)) ||
   hideDOMElement(...ads);
 }
 
-else if (matchDomain(usa_mng_domains) || (window.location.href.match(/\.com\/(\d){4}\/(\d){2}\/(\d){2}\/.+\/amp\//) && document.querySelector('footer li > a[href^="https://www.medianewsgroup.com"]'))) {
-  if (window.location.pathname.endsWith('/amp/')) {
+else if (matchDomain(usa_mng_domains) || document.querySelector('head > link[rel="stylesheet"][id^="dfm-accuweather-"], footer li > a[href^="https://www.medianewsgroup.com"]')) {
+  if (window.location.pathname.endsWith('/amp/'))
     amp_unhide_subscr_section('amp-ad, amp-embed, div.ampWrapperInside, div#paywall');
-  }
+  else if (true)
+    getJsonUrl('#server-paywall', '', 'div.body-copy', {art_append: 1});
 }
 
 else if (document.querySelector('script[src*=".axate.io/"]')) {
@@ -3577,6 +3568,16 @@ function hideDOMElement(...elements) {
   for (let element of elements) {
     if (element)
       element.style = 'display:none !important;';
+  }
+}
+
+function hideDOMStyle(selector, id = 1) {
+  let style = document.querySelector('head > style#ext'+ id);
+  if (!style && document.head) {
+    let sheet = document.createElement('style');
+    sheet.id = 'ext' + id;
+    sheet.innerText = selector + ' {display: none !important;}';
+    document.head.appendChild(sheet);
   }
 }
 

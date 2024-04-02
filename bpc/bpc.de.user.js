@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.6.1.1
+// @version         3.6.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -47,8 +47,8 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = document.querySelectorAll('div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ads, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]');
-hideDOMElement(...ads);
+var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]';
+hideDOMStyle(ads, 10);
 
 var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'morgenpost.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
 var de_lv_domains = ['profi.de', 'wochenblatt.com'];
@@ -165,6 +165,11 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
   }
   let ads = document.querySelectorAll('div.ad-wrapper, div[id^="apn-ad-slot-"]');
   hideDOMElement(...ads);
+}
+
+else if (matchDomain('bild.de')) {
+  let url = window.location.href;
+  getArchive(url, 'div.offer-module', '', 'article');
 }
 
 else if (matchDomain('boersen-zeitung.de')) {
@@ -642,18 +647,14 @@ else if (matchDomain('springermedizin.de')) {
 }
 
 else if (matchDomain('sueddeutsche.de')) {
-  let clear_ads = function () {
-    let ads = document.querySelectorAll('er-ad-slot');
-    hideDOMElement(...ads);
-  }
-  func_post = clear_ads;
   let url = window.location.href;
   if (window.location.pathname.startsWith('/projekte/artikel/')) {
     getArchive(url, 'div.offer-page', '', 'main');
   } else {
     getArchive(url, 'p.sz-article-body__paragraph--reduced', {rm_attrib: 'class'}, 'div[itemprop="articleBody"]');
   }
-  clear_ads();
+  let ads = 'er-ad-slot';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('suedkurier.de')) {
@@ -888,6 +889,16 @@ function hideDOMElement(...elements) {
   for (let element of elements) {
     if (element)
       element.style = 'display:none !important;';
+  }
+}
+
+function hideDOMStyle(selector, id = 1) {
+  let style = document.querySelector('head > style#ext'+ id);
+  if (!style && document.head) {
+    let sheet = document.createElement('style');
+    sheet.id = 'ext' + id;
+    sheet.innerText = selector + ' {display: none !important;}';
+    document.head.appendChild(sheet);
   }
 }
 
