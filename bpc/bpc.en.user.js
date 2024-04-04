@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.2.3
+// @version         3.6.2.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -2275,9 +2275,6 @@ else if (matchDomain('seekingalpha.com')) {
     let read_more = document.querySelector('button[id^="continueReadingButton"]');
     if (read_more)
       read_more.click();
-    let lock = document.querySelector('div[data-test-id="after-layout-content-slot"] > div');
-    if (lock)
-      refreshCurrentTab();
   } else {
     amp_unhide_access_hide('*="premium_access OR"', '', '.ad-wrap');
     let paywall = document.querySelector('[class*="paywall-container"]');
@@ -2604,6 +2601,8 @@ else if (matchDomain('thedailybeast.com')) {
       }
     }
   }
+  let ads = 'aside.AdSlot, div.FooterAd';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('thediplomat.com')) {

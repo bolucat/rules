@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.6.1.2
+// @version         3.6.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -619,6 +619,12 @@ else if (matchDomain('schwaebische.de')) {
 
 else if (matchDomain('schweizermonat.ch')) {
   getJsonUrl('div.entry-paywall-login', '', 'div.entry-main > div.entry__post-content');
+}
+
+else if (matchDomain('spektrum.de')) {
+  let paywall = document.querySelector('article.pw-premium');
+  if (paywall)
+    paywall.classList.remove('pw-premium');
 }
 
 else if (matchDomain('spiegel.de')) {
