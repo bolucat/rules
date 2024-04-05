@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.2.4
+// @version         3.6.2.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1583,7 +1583,7 @@ else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
       removeDOMElement(paywall);
       let article = document.querySelector(article_sel);
       if (article) {
-        article.before(archiveLink_renew(url));
+        //article.before(archiveLink_renew(url));
         article.before(archiveLink(url));
       }
     }
@@ -3743,8 +3743,8 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
               if (arch_dom.firstChild)
                 arch_dom = arch_dom.firstChild;
               let arch_div = document.createElement('div');
-              arch_div.appendChild(archiveLink_renew(window.location.href));
-              arch_div.appendChild(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
+              //arch_div.appendChild(archiveLink_renew(window.location.href));
+              arch_div.appendChild(archiveLink(window.location.href, 'BPC > Full article text fetched from (no need to report issue for external site):\r\n'));
               arch_div.style = 'margin: 0px 0px 50px;';
               arch_dom.before(arch_div);
             }

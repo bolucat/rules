@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.6.0.2
+// @version         3.6.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -13,6 +13,7 @@
 // @match           *://*.businessam.be/*
 // @match           *://*.demorgen.be/*
 // @match           *://*.doorbraak.be/*
+// @match           *://*.hln.be/*
 // @match           *://*.humo.be/*
 // @match           *://*.knack.be/*
 // @match           *://*.kw.be/*
@@ -120,8 +121,8 @@ var csDoneOnce = true;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = document.querySelectorAll('div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ads, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]');
-hideDOMElement(...ads);
+var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]';
+hideDOMStyle(ads, 10);
 
 var be_mediahuis_domains = ['nieuwsblad.be', 'standaard.be'];
 var be_roularta_domains = ['artsenkrant.com', 'beleggersbelangen.nl', 'flair.be', 'knack.be', 'kw.be', 'libelle.be'];
@@ -270,7 +271,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
   hideDOMElement(...ads);
 }
 
-else if (matchDomain(nl_dpg_adr_domains)) {
+else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
   func_post = function () {
     let noscroll = document.querySelectorAll('html[style], body[style]');
     for (let elem of noscroll)
@@ -356,6 +357,16 @@ function hideDOMElement(...elements) {
   for (let element of elements) {
     if (element)
       element.style = 'display:none !important;';
+  }
+}
+
+function hideDOMStyle(selector, id = 1) {
+  let style = document.querySelector('head > style#ext'+ id);
+  if (!style && document.head) {
+    let sheet = document.createElement('style');
+    sheet.id = 'ext' + id;
+    sheet.innerText = selector + ' {display: none !important;}';
+    document.head.appendChild(sheet);
   }
 }
 
@@ -504,8 +515,8 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
               if (arch_dom.firstChild)
                 arch_dom = arch_dom.firstChild;
               let arch_div = document.createElement('div');
-              arch_div.appendChild(archiveLink_renew(window.location.href));
-              arch_div.appendChild(archiveLink(window.location.href, 'BPC > Try when layout issues (no need to report issue for external site):\r\n'));
+              //arch_div.appendChild(archiveLink_renew(window.location.href));
+              arch_div.appendChild(archiveLink(window.location.href, 'BPC > Full article text fetched from (no need to report issue for external site):\r\n'));
               arch_div.style = 'margin: 0px 0px 50px;';
               arch_dom.before(arch_div);
             }
