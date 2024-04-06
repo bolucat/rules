@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.2.5
+// @version         3.6.2.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -1853,8 +1853,11 @@ else if (matchDomain('jpost.com')) {
 }
 
 else if (matchDomain(['latimes.com', 'sandiegouniontribune.com'])) {
-  let ads = document.querySelectorAll('div.google-dfp-ad-wrapper, div.revcontent');
-  hideDOMElement(...ads);
+  let subscribers = pageContains('div.infobox > p.infobox-title', /subscribers/i);
+  if (subscribers.length)
+    removeDOMElement(subscribers[0].parentNode);
+  let ads = 'div.google-dfp-ad-wrapper, div.revcontent';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('livelaw.in')) {

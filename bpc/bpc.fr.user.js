@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.6.2.1
+// @version         3.6.2.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -185,6 +185,20 @@ else if (matchDomain('businessam.be')) {
 }
 
 else if (matchDomain('capital.fr')) {
+  let videos = document.querySelectorAll('div > div#prisma-player-leader[data-ads-core*="Dailymotion"]');
+  for (let video of videos) {
+    try {
+      let json = JSON.parse(video.getAttribute('data-ads-core'));
+      if (json && json.playerVideoId) {
+        let iframe = document.createElement('iframe');
+        iframe.src = 'https://www.dailymotion.com/embed/video/' + json.playerVideoId;
+        iframe.style = 'height: ' + video.offsetHeight + 'px; width: ' + video.offsetWidth + 'px;';
+        video.parentNode.replaceChild(iframe, video);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   let ads = 'div.containerAds, div.ads-introText, div.outbrain-ads';
   hideDOMStyle(ads);
 }
