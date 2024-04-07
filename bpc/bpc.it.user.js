@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.4.8.5
+// @version         3.4.8.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js
@@ -27,8 +27,8 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = document.querySelectorAll('div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ads, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]');
-hideDOMElement(...ads);
+var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"]';
+hideDOMStyle(ads, 10);
 
 var it_gedi_domains = ['huffingtonpost.it', 'ilsecoloxix.it', 'italian.tech', 'lastampa.it', 'lescienze.it', 'moda.it', 'repubblica.it'];
 var it_ilmessaggero_domains = ['corriereadriatico.it', 'ilgazzettino.it', 'ilmattino.it', 'ilmessaggero.it', 'quotidianodipuglia.it'];
@@ -49,11 +49,11 @@ if (matchDomain('corriere.it')) {
 else if (matchDomain('corrieredellosport.it')) {
   if (!window.location.pathname.startsWith('/amp/')) {
     amp_redirect('div[class^="MainTextTruncated_paragraph__"]');
-    let ads = document.querySelectorAll('div[class^="AdUnit_placeholder"]');
-    hideDOMElement(...ads);
+    let ads = 'div[class^="AdUnit_placeholder"]';
+    hideDOMStyle(ads);
   } else {
-    let ads = document.querySelectorAll('amp-ad, amp-embed');
-    hideDOMElement(...ads);
+    let ads = 'amp-ad, amp-embed';
+    hideDOMStyle(ads);
   }
 }
 
@@ -126,8 +126,8 @@ else if (matchDomain('ilfoglio.it')) {
     amp_unhide_subscr_section('amp-ad, [class^="adv-"], div#gmpVideoContainer');
   } else {
     amp_redirect('div.paywall');
-    let ads = document.querySelectorAll('.advertisement');
-    hideDOMElement(...ads);
+    let ads = '.advertisement';
+    hideDOMStyle(ads);
   }
 }
 
@@ -185,8 +185,8 @@ else if (matchDomain(it_ilmessaggero_domains)) {
     let noscroll = document.querySelector('html[style]');
     if (noscroll)
       noscroll.removeAttribute('style');
-    let ads = document.querySelectorAll('div.adv_banner, div.inread_adv, div#outbrain');
-    hideDOMElement(...ads);
+    let ads = 'div.adv_banner, div.inread_adv, div#outbrain';
+    hideDOMStyle(ads);
   }
 }
 
@@ -195,8 +195,8 @@ else if (matchDomain(it_quotidiano_domains)) {
     amp_unhide_access_hide('="c.customGranted"', '="NOT c.customGranted"', 'amp-ad, amp-embed, amp-fx-flying-carpet, .watermark-adv, .amp__watermark');
   } else {
     amp_redirect('div[data-testid="paywall-container"], div[class^="Paywall_paywall_"]', '', window.location.pathname + '/amp');
-    let ads = document.querySelectorAll('div[id^="div-gpt-ad"]');
-    hideDOMElement(...ads);
+    let ads = 'div[id^="div-gpt-ad"]';
+    hideDOMStyle(ads);
   }
 }
 
@@ -251,8 +251,8 @@ else if (domain = matchDomain(it_gedi_domains)) {
     } else
       ampToHtml();
   }
-  let ads = document.querySelectorAll('div[id^="adv"]');
-  hideDOMElement(...ads);
+  let ads = 'div[id^="adv"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('tuttosport.com')) {
@@ -280,11 +280,11 @@ else if (matchDomain('tuttosport.com')) {
         }
       }
     }
-    let ads = document.querySelectorAll('div[class^="AdUnit_"]');
-    hideDOMElement(...ads);
+    let ads = 'div[class^="AdUnit_"]';
+    hideDOMStyle(ads);
   } else {
-    let ads = document.querySelectorAll('amp-ad, amp-embed');
-    hideDOMElement(...ads);
+    let ads = 'amp-ad, amp-embed';
+    hideDOMStyle(ads);
   }
 }
 
@@ -330,6 +330,16 @@ function hideDOMElement(...elements) {
   for (let element of elements) {
     if (element)
       element.style = 'display:none !important;';
+  }
+}
+
+function hideDOMStyle(selector, id = 1) {
+  let style = document.querySelector('head > style#ext'+ id);
+  if (!style && document.head) {
+    let sheet = document.createElement('style');
+    sheet.id = 'ext' + id;
+    sheet.innerText = selector + ' {display: none !important;}';
+    document.head.appendChild(sheet);
   }
 }
 
@@ -412,8 +422,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = tru
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
   for (let elem of subscr_section)
     elem.removeAttribute('subscriptions-section');
-  let amp_ads = document.querySelectorAll(amp_ads_sel);
-  hideDOMElement(...amp_ads);
+  hideDOMStyle(amp_ads_sel, 5);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
@@ -426,8 +435,7 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
     let amp_access_not_dom = document.querySelectorAll('[amp-access' + amp_access_not + ']');
     removeDOMElement(...amp_access_not_dom);
   }
-  let amp_ads = document.querySelectorAll(amp_ads_sel);
-  hideDOMElement(...amp_ads);
+  hideDOMStyle(amp_ads_sel, 6;
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }

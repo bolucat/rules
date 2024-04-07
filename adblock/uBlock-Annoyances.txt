@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Fri, 05 Apr 2024 19:21:59 +0000
-! Diff-Path: ../patches/2024.4.6.859.patch#ublock-annoyances
+! Last modified: Sun, 07 Apr 2024 15:19:38 +0000
+! Diff-Path: ../patches/2024.4.7.920.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -550,6 +550,7 @@ sap.com##+js(trusted-set-cookie, cmapi_cookie_privacy, 'permit 1,2,3')
 movieplayer.it##+js(trusted-click-element, button.iubenda-cs-accept-btn)
 @@||iubenda.com^$3p,domain=movieplayer.it
 huffingtonpost.it,lastampa.it##+js(trusted-click-element, .iubenda-cs-visible .iubenda-cs-accept-btn)
+huffingtonpost.fr##+js(trusted-click-element, button[data-gdpr-expression="acceptAll"])
 ilsecoloxix.it##+js(trusted-click-element, .iubenda-cs-visible .iubenda-cs-accept-btn)
 cdn.privacy-mgmt.com##+js(trusted-click-element, button[title="Accept all"i])
 ! refuse cookies
@@ -4276,7 +4277,7 @@ getemoji.com##+js(set-session-storage-item, fs.adb.dis, 1)
 marinetraffic.com##+js(set, mtGlobal.disabledAds, true)
 marinetraffic.com##.under-map-wrapper:upward(1)
 sportando.basketball##.select-none:style(-webkit-touch-callout: default !important; -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important;)
-ymovies.vip,aniwatch.to,megacloud.tv,hianime.to,rapid-cloud.co,rabbitstream.net,pupupul.site##+js(set, devtoolsDetector.launch, noopFunc)
+ymovies.vip,aniwatch.to,megacloud.tv,hianime.*,rapid-cloud.co,rabbitstream.net,pupupul.site##+js(set, devtoolsDetector.launch, noopFunc)
 ||9animetv.to/js/safe.ob.min.js$script
 myflixerz.to##+js(nostif, 0x)
 movie4kto.net##+js(nosiif, /DevTools|_0x/)
@@ -4608,3 +4609,4 @@ bbc.com##+js(trusted-click-element, [data-testid="consentBanner"] > button[data-
 bbc.com##+js(trusted-click-element, [data-testid="consentBanner"] > button[data-testid="banner-button"], , 1200)
 bbc.com##+js(trusted-click-element, [data-testid="consentBanner"] > button[data-testid="banner-button"], , 1300)
 bbc.com##+js(nano-stb, viewClickAttributeId)
+bilibili.com##+js(aeld, copy)

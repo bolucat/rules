@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.6.2.1
+// @version         3.6.2.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -86,8 +86,8 @@ else if (matchDomain('augsburger-allgemeine.de')) {
   } else {
     amp_unhide_subscr_section();
   }
-  let banners = document.querySelectorAll('div.piano-article, div.p-ad');
-  hideDOMElement(...banners);
+  let ads = 'div.piano-article, div.p-ad';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
@@ -163,8 +163,8 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
       }
     }
   }
-  let ads = document.querySelectorAll('div.ad-wrapper, div[id^="apn-ad-slot-"]');
-  hideDOMElement(...ads);
+  let ads = 'div.ad-wrapper, div[id^="apn-ad-slot-"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('bild.de')) {
@@ -194,8 +194,8 @@ else if (matchDomain('cicero.de')) {
     let teasered_content_fader = document.querySelector('.teasered-content-fader');
     let btn_read_more = document.querySelector('.btn--read-more');
     removeDOMElement(teasered_content_fader, btn_read_more);
-    let amp_ads = document.querySelectorAll('amp-ad');
-    hideDOMElement(...amp_ads);
+    let ads = 'amp-ad';
+    hideDOMStyle(ads);
   }
   let urban_ad_sign = document.querySelectorAll('.urban-ad-sign');
   removeDOMElement(...urban_ad_sign);
@@ -331,9 +331,8 @@ else if (matchDomain('faz.net')) {
         console.log(err);
       }
     }
-    let lay_paysocial = document.querySelector('div.lay-PaySocial');
-    let ads = document.querySelectorAll('div.iqadtile_wrapper');
-    hideDOMElement(lay_paysocial, ...ads);
+    let ads = 'div.lay-PaySocial, div.iqadtile_wrapper';
+    hideDOMStyle(ads);
   }
 }
 
@@ -354,8 +353,8 @@ else if (matchDomain('freiepresse.de')) {
     }
     getGoogleWebcache(url, 'div.article-teaser', '', 'article');
   }
-  let ads = document.querySelectorAll('div.rgt-content');
-  hideDOMElement(...ads);
+  let ads = 'div.rgt-content';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('freitag.de')) {
@@ -512,8 +511,8 @@ else if (matchDomain(['ksta.de', 'rundschau-online.de'])) {
       }
     }
   }, 1000);
-  let banners = document.querySelectorAll('div.dm-slot');
-  hideDOMElement(...banners);
+  let banners = 'div.dm-slot';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain('kurier.at')) {
@@ -526,8 +525,8 @@ else if (matchDomain('kurier.at')) {
       div_hidden.removeAttribute('style');
     }
   }
-  let banners = document.querySelectorAll('div[data-outbrain]');
-  hideDOMElement(...banners);
+  let ads = 'div[data-outbrain]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('motorradonline.de')) {
@@ -545,8 +544,8 @@ else if (matchDomain(['shz.de', 'svz.de'])) {
     amp_unhide_access_hide('="NOT data.reduced"', '="data.reduced"', 'amp-ad, amp-embed, .ads-wrapper, #flying-carpet-wrapper');
   } else {
     amp_redirect('.paywall');
-    let ads = document.querySelectorAll('div.nozmhn_ad');
-    hideDOMElement(...ads);
+    let ads = 'div.nozmhn_ad';
+    hideDOMStyle(ads);
   }
 }
 
@@ -558,12 +557,17 @@ else if (matchDomain('nw.de')) {
   }
 }
 
+else if (matchDomain('nwzonline.de')) {
+  let ads = 'div.adslot';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain(['nzz.ch', 'themarket.ch'])) {
   let fade = document.querySelectorAll('.nzzinteraction');
   for (let elem of fade)
     elem.classList.remove('nzzinteraction');
-  let ads = document.querySelectorAll('div.resor');
-  hideDOMElement(...ads);
+  let ads = 'div.resor';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('philomag.de')) {
@@ -592,11 +596,11 @@ else if (matchDomain('profil.at')) {
   if (paywall) {
     paywall.removeAttribute('class');
     paywall.removeAttribute('style');
-    let fade = document.querySelector('div#cfs-paywall-container');
-    hideDOMElement(fade);
+    let fade = 'div#cfs-paywall-container';
+    hideDOMStyle(fade);
   }
-  let overlay = document.querySelector('div.consentOverlay');
-  hideDOMElement(overlay);
+  let overlay = 'div.consentOverlay';
+  hideDOMStyle(overlay, 2);
 }
 
 else if (matchDomain('schwaebische.de')) {
@@ -611,10 +615,8 @@ else if (matchDomain('schwaebische.de')) {
       body.removeAttribute('style');
     waitDOMAttribute('body', 'body', 'style', node => node.removeAttribute('style'), true);
   }
-  window.setTimeout(function () {
-    let ads = document.querySelectorAll('div.fp-ad-placeholder');
-    hideDOMElement(...ads);
-  }, 1000);
+  let ads = 'div.fp-ad-placeholder';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('schweizermonat.ch')) {
@@ -684,11 +686,47 @@ else if (matchDomain('tagesspiegel.de')) {
 }
 
 else if (matchDomain('tt.com')) {
-  let div_hidden = document.querySelectorAll('.exclusive-elem');
-  for (let elem of div_hidden)
-    elem.classList.remove('exclusive-elem');
-  let ads = document.querySelectorAll('div[class*="ads-container"], div.adblock-warning');
-  hideDOMElement(...ads);
+  let paywall = document.querySelector('div#piano-logwall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div[data-io-article-url]');
+    if (article) {
+      let json_script = document.querySelector('script#tt-com-www-state');
+      if (json_script) {
+        try {
+          let json_articles = JSON.parse(json_script.text).TT_COM_WWW_GLOBAL_STATE.articles;
+          let json_article_id = json_articles.ids[0];
+          if (json_article_id && !window.location.pathname.includes(json_article_id))
+            refreshCurrentTab();
+          let parser = new DOMParser();
+          let pars = json_articles.entities[json_article_id].articleData.article.elements;
+          for (let par of pars) {
+            let elem;
+            if (['body', 'subheadline1'].includes(par.type)) {
+              if (par.content) {
+                let doc = parser.parseFromString('<p>' + par.content + '</p>', 'text/html');
+                elem = doc.querySelector('p');
+                if (par.type === 'subheadline1')
+                  elem.style = 'font-weight: bold;';
+              }
+            } else if (par.type.match(/^x-im\//)) {
+              if (par.url) {
+                elem = document.createElement('a');
+                elem.href = elem.innerText = par.url;
+                elem.target = '_blank';
+              }
+            }
+            if (elem)
+              article.appendChild(elem);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  }
+  let ads = 'div[class*="ads-container"], div.adblock-warning';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('vn.at')) {
@@ -749,8 +787,8 @@ else if (matchDomain('vol.at')) {
         }
       }
     }, 500);
-    let banners = document.querySelectorAll('div[id^="rm-adslot-"], div[id^="piano_rec"]');
-    hideDOMElement(...banners);
+    let ads = 'div[id^="rm-adslot-"], div[id^="piano_rec"]';
+    hideDOMStyle(ads);
   } else
     ampToHtml();
 }
@@ -758,8 +796,8 @@ else if (matchDomain('vol.at')) {
 else if (matchDomain('welt.de')) {
   let url = window.location.href;
   getArchive(url, 'div.contains_walled_content', '', 'article');
-  let ads = document.querySelectorAll('div[data-component="Outbrain"], div[class*="c-ad"]');
-  hideDOMElement(...ads);
+  let ads = 'div[data-component="Outbrain"], div[class*="c-ad"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('weltkunst.de')) {
@@ -795,15 +833,15 @@ else if (matchDomain('weltkunst.de')) {
 }
 
 else if (matchDomain('weser-kurier.de')) {
-  let ads = document.querySelectorAll('div.ad-wrapper, div.anyad');
-  hideDOMElement(...ads);
+  let ads = 'div.ad-wrapper, div.anyad';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('wiwo.de')) {
   let url = window.location.href;
   getArchive(url, 'div.o-paywall', '', 'article');
-  let banner = document.querySelector('div.c-overscroller');
-  hideDOMElement(banner);
+  let banner = 'div.c-overscroller';
+  hideDOMStyle(banner);
 }
 
 else if (matchDomain('zeit.de')) {
@@ -816,8 +854,8 @@ else if (matchDomain('zeit.de')) {
 else if (matchDomain(de_funke_medien_domains)) {
   let url = window.location.href;
   getArchive(url, 'div#paywall-container', '', 'article');
-  let ads = document.querySelectorAll('aside.ad-slot-wrapper');
-  hideDOMElement(...ads);
+  let ads = 'aside.ad-slot-wrapper';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(de_lv_domains)) {
@@ -831,22 +869,22 @@ else if (matchDomain(de_lv_domains)) {
       div_hidden.removeAttribute('style');
     }
   }
-  let ads = document.querySelectorAll('div.adZone');
-  hideDOMElement(...ads);
+  let ads = 'div.adZone';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(de_madsack_domains) || document.querySelector('head > link[href*=".rndtech.de/"]')) {
   if (!window.location.search.startsWith('?outputType=valid_amp')) {
-    let ads = document.querySelectorAll('div[class^="Adstyled__AdWrapper"]');
-    hideDOMElement(...ads);
+    let ads = 'div[class^="Adstyled__AdWrapper"]';
+    hideDOMStyle(ads);
   } else {
     ampToHtml();
   }
 }
 
 else if (matchDomain(de_motor_presse_domains)) {
-  let ads = document.querySelectorAll('div#ads-container, div.va-sponsored, div.mps_markAd');
-  hideDOMElement(...ads);
+  let ads = 'div#ads-container, div.va-sponsored, div.mps_markAd';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('ruhrnachrichten.de') || document.querySelector('a.mgw-logo[href^="https://mgw.de"]')) {
@@ -1234,8 +1272,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = tru
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
   for (let elem of subscr_section)
     elem.removeAttribute('subscriptions-section');
-  let amp_ads = document.querySelectorAll(amp_ads_sel);
-  hideDOMElement(...amp_ads);
+  hideDOMStyle(amp_ads_sel, 5);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
@@ -1248,8 +1285,7 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
     let amp_access_not_dom = document.querySelectorAll('[amp-access' + amp_access_not + ']');
     removeDOMElement(...amp_access_not_dom);
   }
-  let amp_ads = document.querySelectorAll(amp_ads_sel);
-  hideDOMElement(...amp_ads);
+  hideDOMStyle(amp_ads_sel, 6);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }

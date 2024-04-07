@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.6.2.0
+// @version         3.6.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js
@@ -147,8 +147,8 @@ if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
     let button_close = document.querySelector('span[data-testid="button-close"]');
     if (button_close)
       button_close.click();
-    let banners = document.querySelectorAll('div.paywall--titel');
-    hideDOMElement(...banners);
+    let banners = 'div.paywall--titel';
+    hideDOMStyle(banners);
   }, 1500);
 }
 
@@ -257,8 +257,8 @@ else if (matchDomain(be_roularta_domains)) {
       }
     }
   }
-  let ads = document.querySelectorAll('div.rmgAd, div.c-header__ad');
-  hideDOMElement(...ads);
+  let ads = 'div.rmgAd, div.c-header__ad';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('groene.nl')) {
@@ -267,8 +267,8 @@ else if (matchDomain('groene.nl')) {
 }
 
 else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > link[href*=".ndcmediagroep.nl/"]')) {
-  let ads = document.querySelectorAll('div.top__ad, div.marketingblock-article');
-  hideDOMElement(...ads);
+  let ads = 'div.top__ad, div.marketingblock-article';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
@@ -286,9 +286,8 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
 
 else if (matchDomain(nl_dpg_media_domains)) {
   setCookie('TID_ID', '', '', '/', 0);
-  let banners = document.querySelectorAll('div[data-temptation-position^="PAGE_"], div[class^="ad--"], div[id^="article_paragraph_"]');
-  let paywall = document.querySelectorAll('aside[data-temptation-position^="ARTICLE_"]');
-  removeDOMElement(...banners, ...paywall);
+  let banners = 'aside[data-temptation-position^="ARTICLE_"], div[data-temptation-position^="PAGE_"], div[class^="ad--"], div[id^="article_paragraph_"]';
+  hideDOMStyle(banners);
   window.setTimeout(function () {
     let elem_hidden = document.querySelectorAll('[class^="artstyle__"][style="display: none;"]');
     for (let elem of elem_hidden)
