@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.6.2.2
+// @version         3.6.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -711,9 +711,17 @@ else if (matchDomain('tt.com')) {
               }
             } else if (par.type.match(/^x-im\//)) {
               if (par.url) {
-                elem = document.createElement('a');
-                elem.href = elem.innerText = par.url;
-                elem.target = '_blank';
+                if (par.url.startsWith('https://twitter.com/')) {
+                  elem = document.createElement('p');
+                  let sub_elem = document.createElement('a');
+                  sub_elem.href = elem.innerText = par.url;
+                  sub_elem.target = '_blank';
+                  elem.appendChild(sub_elem);
+                } else {
+                  elem = document.createElement('iframe');
+                  elem.src = par.url;
+                  elem.style = 'height: ' + article.offsetWidth + 'px; width: ' + article.offsetWidth + 'px;';
+                }
               }
             }
             if (elem)
