@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.6.2.3
+// @version         3.6.2.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js
@@ -442,7 +442,7 @@ else if (matchDomain('lemonde.fr')) {
     let figure = document.querySelector('figure.article__media');
     func_post = function () {
       if (figure) {
-        let figure_new = document.querySelector('article > figure');
+        let figure_new = document.querySelector('article figure');
         let article = document.querySelector(article_sel);
         if (!figure_new && article)
           article.firstChild.before(figure);

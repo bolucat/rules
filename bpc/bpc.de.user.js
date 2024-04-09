@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.6.2.3
+// @version         3.6.2.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js
@@ -696,7 +696,7 @@ else if (matchDomain('tt.com')) {
         try {
           let json_articles = JSON.parse(json_script.text).TT_COM_WWW_GLOBAL_STATE.articles;
           let json_article_id = json_articles.ids[0];
-          if (json_article_id && !window.location.pathname.includes(json_article_id))
+          if (!json_article_id || (json_article_id && !window.location.pathname.includes(json_article_id)))
             refreshCurrentTab();
           let parser = new DOMParser();
           let pars = json_articles.entities[json_article_id].articleData.article.elements;
@@ -708,6 +708,17 @@ else if (matchDomain('tt.com')) {
                 elem = doc.querySelector('p');
                 if (par.type === 'subheadline1')
                   elem.style = 'font-weight: bold;';
+              }
+            } else if (par.type = 'x-im/content-part') {
+              if (par.elements) {
+                elem = document.createElement('p');
+                for (let item of par.elements) {
+                  if (item.content) {
+                    let sub_elem = document.createElement('p');
+                    sub_elem.innerText = parseHtmlEntities(item.content);
+                    elem.appendChild(sub_elem);
+                  }
+                }
               }
             } else if (par.type.match(/^x-im\//)) {
               if (par.url) {
@@ -892,6 +903,11 @@ else if (matchDomain(de_madsack_domains) || document.querySelector('head > link[
 
 else if (matchDomain(de_motor_presse_domains)) {
   let ads = 'div#ads-container, div.va-sponsored, div.mps_markAd';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('ovb-online.de') || matchDomain(['bgland24.de', 'chiemgau24.de', 'innsalzach24.de', 'mangfall24.de', 'rosenheim24.de', 'wasserburg24.de'])) {
+  let ads = 'div.id-TBeepSlot, div[data-id-advertdfpconf]';
   hideDOMStyle(ads);
 }
 

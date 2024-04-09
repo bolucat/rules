@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.2.8
+// @version         3.6.2.9
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js
@@ -921,7 +921,7 @@ else if (matchDomain(uk_nat_world_domains) || document.querySelector('footer > d
 if (matchDomain(usa_adv_local_domains)) {
   if (window.location.search.startsWith('?outputType=amp')) {
     let ads = 'amp-embed';
-    hideDOMStyel(ads);
+    hideDOMStyle(ads);
   } else {
     let paywall_sel = 'div.paywall';
     let paywall = document.querySelector(paywall_sel);
