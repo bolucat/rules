@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: RXgzkhkIN1MJ/KpfS0ROWg
-! Diff-Path: ../patches/7/7-s-1712669833-3600.patch
+! Checksum: DrJ+pqL89kSCjj6Mv3KUuA
+! Diff-Path: ../patches/7/7-s-1712759875-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.50.30
-! TimeUpdated: 2024-04-09T13:32:50+00:00
+! Version: 2.0.50.33
+! TimeUpdated: 2024-04-10T14:32:43+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1672,6 +1672,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+city.nagaoka.niigata.jp##.koukokuWrap
+toririnon.com##.box2:has(> p > a[href^="https://hb.afl.rakuten.co.jp/"])
 photo-ac.com##body > .flux-all-footer:has(> div[style] > div[id*="_overlay"] > iframe[id^="google_ads_iframe_"])
 ichi-oshi.jp##.adsence_sp
 maikuranikki.jp##.more-ad-title
@@ -1757,13 +1759,13 @@ eromon.net##a[href^="https://www.sokmil.com/"]
 ||newmatosoku.com^$csp=script-src-attr 'none'
 ||amazon.co.jp^$popup,domain=newmatosoku.com
 ||amzn.to^$popup,domain=newmatosoku.com
+newmatosoku.com##.topmain + div > div:has(a[href*="amazon.co.jp"])
+newmatosoku.com##li:has(a[href*="amzn.to"])
 newmatosoku.com##[onclick]
 newmatosoku.com##[onmousedown]
 newmatosoku.com##a[href*="amazon.co.jp"]
 newmatosoku.com##a[href*="amzn.to"]
-newmatosoku.com##.sideh2c
-newmatosoku.com##.sideh2c + p
-newmatosoku.com##.waku-zenta3
+newmatosoku.com##li[class*="waku-zentai"]:not([class="waku-zentai "])
 newmatosoku.com#?#.topmain ~ div[class] > .sideh2:contains(広告)
 newmatosoku.com##.topmain ~ div[class] > .kouko3:has(div[id^="div-gpt-ad-"])
 nishi2.jp##.nishi-target:not(#block-3 > .nishi-target)
@@ -5008,7 +5010,7 @@ crea.bunshun.jp##div[style="margin-bottom:20px; width:728px;"]
 navitime.co.jp###page_footer_adunit
 hessionchiro.com##.mh-sidebar > .widget_custom_html
 hessionchiro.com##.sng-box.mbt2
-toririnon.com,taisy0.com##.sng-box
+taisy0.com##.sng-box
 yomiuri.co.jp##.dazn_banner
 golfsapuri.com##.sideBanner2:first-child
 golfsapuri.com##div[style^="width: 100%; text-align: center"][style$="height:250px;"]

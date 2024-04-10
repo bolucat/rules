@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Tue, 09 Apr 2024 15:58:08 +0000
-! Diff-Path: ../patches/2024.4.9.1041.patch#ublock-annoyances
+! Last modified: Wed, 10 Apr 2024 09:10:49 +0000
+! Diff-Path: ../patches/2024.4.10.802.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -115,7 +115,9 @@ archive.nytimes.com##body > div[style*="z-index: 2147483647"]:has(a[href="https:
 schauspiel.koeln##+js(trusted-set-cookie, SK.Website.ConsentManager, W1siYmFzZSIsdHJ1ZV0sWyJnb29nbGVhbmFseXRpY3MiLGZhbHNlXSxbIm1ldGFwaXhlbCIsZmFsc2VdXQ==)
 onlinestempel.ch##+js(trusted-set-cookie, consent, %7B%22level%22%3A%5B%22necessary%22%5D%2C%22revision%22%3A0%2C%22data%22%3A%7B%22id%22%3A%22DarYF7gx7v%22%7D%2C%22rfc_cookie%22%3Atrue%7D)
 chase.co.uk##+js(trusted-set-cookie, CookieConsents, '{"StrictlyNecessary":true,"Analytical":false,"Performance":false,"AdvertisingAndTargeting":false,"timestamp":""}')
+!#if ext_devbuild
 svt.se##+js(trusted-set-cookie, cookie-consent-1, '{"optedIn":true,"functionality":false,"statistics":false}')
+!#endif
 komoot.com,komoot.de##+js(trusted-set-cookie, kmt_rd, no-consent, , , reload, 1)
 komoot.com,komoot.de##+js(trusted-set-local-storage-item, kmt_config_web, '{"created_at":"$currentDate$","anonymous":"","gdpr_ga":false,"gdpr_exp":false}')
 chatreplay.stream##+js(trusted-set-cookie, cr_consent, '2|tracking=false+analytics=false+marketing=false', , , reload, 1)
@@ -4594,9 +4596,9 @@ teller.jp##+js(trusted-click-element, .z_share_popover div.gap_2 > button.mt_24p
 ||content-settings.com^$3p
 raenonx.cc##div[class^="flex flex-row w-full h-full"]:has(.adsbygoogle)
 raenonx.cc##body > div[class] > [class="flex flex-col w-full"]:has(> button.button-clickable-bg-opaque > div > svg)
-raenonx.cc##div[id][data-floating-ui-portal]:has(> .z-popup-ultimate.fixed[style$="transition-duration: 300ms;"])
-@@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xhr,domain=raenonx.cc
-@@||www3.doubleclick.net^$xhr,domain=raenonx.cc
+raenonx.cc##body > div[id]:has(> [data-floating-ui-portal] .fixed[style$="transition-duration: 300ms;"])
+raenonx.cc##.bg-yellow-700:has(a[href$="/ads-and-credits"])
+@@*$xhr,3p,method=head,domain=raenonx.cc
 ! gdplayertv.top group anti-devtools, context menu
 freewatchtv.top,gdplayertv.top,mixstreams.top,tvfreemium.top##+js(set, devtoolsDetector.launch, noopFunc)
 freewatchtv.top,gdplayertv.top,mixstreams.top,tvfreemium.top##+js(aeld, contextmenu)
