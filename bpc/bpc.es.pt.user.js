@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.5.9.4
+// @version         3.6.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js
@@ -571,6 +571,7 @@ else if (matchDomain('globo.com')) {
 }
 
 else if (matchDomain('lanacion.com.ar')) {
+  setCookie(/^metering_arc/, '', 'lanacion.com.ar', '/', 0);
   let ads = 'div.mod-banner';
   hideDOMStyle(ads);
 }
@@ -611,10 +612,21 @@ function matchDomain(domains, hostname) {
   return matched_domain;
 }
 
-function setCookie(name, value, domain, path, days) {
-  window.localStorage.clear();
+function matchCookies(name) {
+  return document.cookie.split(';').filter(x => x.trim().match(name)).map(y => y.split('=')[0].trim())
+}
+
+function setCookie(names, value, domain = '', path = '/', days = 0) {
   var max_age = days * 24 * 60 * 60;
-  document.cookie = name + "=" + (value || "") + "; domain=" + domain + "; path=" + path + "; max-age=" + max_age;
+  let ck_names = Array.isArray(names) ? names : [];
+  if (names instanceof RegExp)
+    ck_names = matchCookies(names);
+  else if (typeof names === 'string')
+    ck_names = [names];
+  for (let ck_name of ck_names) {
+    document.cookie = ck_name + "=" + (value || "") + (domain ? "; domain=" + domain : '') + (path ? "; path=" + path : '') + "; max-age=" + max_age;
+  }
+  window.localStorage.clear();
 }
 
 function cookieExists(name) {
