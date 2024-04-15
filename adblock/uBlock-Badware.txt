@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Sun, 14 Apr 2024 21:38:06 +0000
-! Diff-Path: ../patches/2024.4.14.1332.patch#ublock-badware
+! Last modified: Mon, 15 Apr 2024 09:51:52 +0000
+! Diff-Path: ../patches/2024.4.15.801.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -726,6 +726,7 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||messagesafe.net^$all
 ||msgsafe.net^$all
 ||best4fuck.com^$all
+||aeeonmaill.com^$all
 ||bamboairways.com.vn^$all,to=~bambooairways.com
 ||kuaizip.com^$all
 ! ||zhuangjizhuli.com^$all
@@ -2889,35 +2890,34 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||libretube.*^$all,domain=~libretube.dev,to=~libretube.dev
 ||libretubeapk.com^$all,domain=~libretube.dev
 ! ReVanced - Official site: revanced.app
-||revanced.*^$all,from=~revanced.app,to=~revanced.app
-||revancedapk.*^$all,domain=~revanced.app
-||revancedapp.*^$all,domain=~revanced.app
+||revanced.$all,from=~revanced.app,to=~revanced.app
+||revancedapk.$all,domain=~revanced.app
+||revancedapp.$all,domain=~revanced.app
 ||ytvancedpro.com^$all,domain=~revanced.app
-||youtubevanced.*^$all,domain=~revanced.app
+||youtubevanced.$all,domain=~revanced.app
 ||youtuberevanced.*^$all,domain=~revanced.app
 ||re-vanced.com^$all,domain=~revanced.app
 ||revanceddl.com^$all,domain=~revanced.app
-||revancedapp.net^$all,domain=~revanced.app
 ||revancedmusic.com^$all,domain=~revanced.app
 ||revancedyoutube.org^$all,domain=~revanced.app
 ||revancedextend.com^$all,domain=~revanced.app
-||revancedextended.*^$all,domain=~revanced.app
+||revancedextended.$all,domain=~revanced.app
 ||revanced-extended.com^$all,domain=~revanced.app
 ||extendedrevanced.com^$all,domain=~revanced.app
 ||youtuberevancedextended.com^$all,domain=~revanced.app
-||ytrevanced.*^$all,domain=~revanced.app
+||ytrevanced.$all,domain=~revanced.app
 ||tuberevanced.com^$all,domain=~revanced.app
 ||vanced-official.com^$all,domain=~revanced.app
 ||vanced.pro^$all,domain=~revanced.app
-||vancedmanager.*^$all,domain=~revanced.app
-||revancedapps.*^$all,domain=~revanced.app
+||vancedmanager.$all,domain=~revanced.app
+||revancedapps.$all,domain=~revanced.app
 ! LuckyPatcher - Official site: luckypatchers.com
 ||luckypatchers.net^$all,domain=~luckypatchers.com
 ||luckypatcherwin.com^$all,domain=~luckypatchers.com
 ! Balena Etcher - Official site: etcher.balena.io
 ||etcher.net^$all,domain=~etcher.balena.io
 ||etcher.download^$all,domain=~etcher.balena.io
-||balenaetcher.*^$all,domain=~etcher.balena.io
+||balenaetcher.$all,domain=~etcher.balena.io
 ||balena-etcher.com^$all,domain=~etcher.balena.io
 ! Vencord - Official site: vencord.dev
 ||vencord.app^$all,domain=~vencord.dev
@@ -3090,7 +3090,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||digitalxnetwork.com^$all
 ||vnote-*.myqcloud.com^$all
 ! phishing
-*$doc,domain=tikimall.*|~tiki.vn
+/^https:\/\/hdsaison-?[a-z]{2,}\.(?:cc|com|vip)\//$doc,domain=cc|com|vip|~hdsaison.com.vn
 /^https:\/\/dhl\.\d+\.potabox\.com\//$doc,domain=~dhl.com
 ||dhl.0394.potabox.com^$all
 ||sp.aircsgo.com^$all
@@ -3120,6 +3120,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||superficial-deserted-territory.glitch.me^$all
 ||s33788.com^$all,to=~shopee.vn
 ||taikhoanvps.com.vn^$doc,domain=~vps.com.vn
+||request--to--fix--63.glitch.me^$all
 ||diwapa3051.wixsite.com/my-site$all
 ||pub-1eaf8d9fdf504256ad21005c83cb81f5.r2.dev/1.html$all
 ||proceedings.aios.org/all-protect47610/$all
@@ -3128,6 +3129,10 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||acir.postofficeweb.com/grupoacir/$all
 ||base-swap-frontend-*.vercel.app^$doc
 ||interface-git-parallel-cypress-uniswap.vercel.app^$doc,domain=~uniswap.org
+||dichvucong.$doc,domain=~gov.vn
+! tiki
+*$doc,domain=tikimall.*|~tiki.vn
+||tikib.vip^$doc,domain=~tiki.vn
 ! steam
 /^https:\/\/steamproxy\.[a-z]+\//$all,domain=cc|co|net|vip
 ||steamcommumnuty.com^$all
@@ -3146,8 +3151,14 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||usps.postiw.com^$all
 ||usps.mytrackingie.top^$all
 ||uaxaqr.com^$all
+! weebly/square phishing
+/^https:\/\/[-a-z]{2,}-10\d{4}\.weeblysite\.com\//$doc
+/^https:\/\/[-a-z]{2,}-10\d{4}\.square\.site\//$doc
 ! spotify
-||codeanyapp.com/*/spotii/tifooy/$doc
+/^https:\/\/[^.]+\.codeanyapp\.com\/wp-content\/.+\/spo[a-z]{2}i\//$doc
+||codeanyapp.com/*/spotii/$all
+||codeanyapp.com/*/spoofi/$all
+||mybluehost.me/*/MitID/$doc
 ||airpos.co.kr/.well-known/pki-validation/*/MitID/$doc
 ! swisspass
 ||mybluehost.me/--/SBBCFF$doc
@@ -3219,4 +3230,3 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||trumbem.com^$all
 /^https:\/\/[a-z]+bem\.com\/auth\/login/$doc
 ||lynstore.net^$all,to=~lynvn.com
-||dichvucong.$doc,domain=~gov.vn
