@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Sat, 20 Apr 2024 10:39:21 +0000
-! Diff-Path: ../patches/2024.4.20.801.patch#ublock-filters
+! Last modified: Sun, 21 Apr 2024 10:00:51 +0000
+! Diff-Path: ../patches/2024.4.21.860.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -16,8 +16,8 @@ www.youtube.com##+js(trusted-replace-fetch-response, /\"adSlots.*?\}\]\}\}\]\,/,
 !#else
 ||www.youtube.com/playlist?list=$xhr,1p,replace=/"adPlacements.*?([A-Z]"\}|"\}{2\,4})\}\]\,//
 ||www.youtube.com/playlist?list=$xhr,1p,replace=/"adSlots.*?\}\]\}\}\]\,//
-||www.youtube.com/watch?v=$doc,xhr,1p,replace=/"adPlacements.*?([A-Z]"\}|"\}{2\,4})\}\]\,//
-||www.youtube.com/watch?v=$doc,xhr,1p,replace=/"adSlots.*?\}\]\}\}\]\,//
+||www.youtube.com/watch?v=$xhr,1p,replace=/"adPlacements.*?([A-Z]"\}|"\}{2\,4})\}\]\,//
+||www.youtube.com/watch?v=$xhr,1p,replace=/"adSlots.*?\}\]\}\}\]\,//
 ||www.youtube.com/youtubei/v1/player?$xhr,1p,replace=/"adPlacements.*?([A-Z]"\}|"\}{2\,4})\}\]\,//
 ||www.youtube.com/youtubei/v1/player?$xhr,1p,replace=/"adSlots.*?\}\]\}\}\]\,//
 !#endif
@@ -6423,7 +6423,7 @@ washingtonpost.com##div.grey-bg
 washingtonpost.com##section > div:has-text(/^AD$/)
 washingtonpost.com##:xpath('//*[(text()="AD")]/..')
 washingtonpost.com##.w-100:has-text(Advertisement)
-washingtonpost.com##[data-testid="article-body-card"]:has-text(Advertisement)
+washingtonpost.com##[data-testid="article-body-card"]:has(> [data-qa="article-body-ad"])
 !#if env_mobile
 washingtonpost.com##div.mb-lg.mt-lg.pb-lg.pt-lg.bc-gray-lighter.bh.b.justify-center.items-center.flex.dn-hp-sm-to-mx
 washingtonpost.com###mobile-footer-ad-wrapper
@@ -9889,6 +9889,7 @@ salidzini.lv##+js(nostif, media_place_list)
 salidzini.lv##div[id][style^="width"]:has([id^="media_place_"])
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$script,domain=mrnussbaum.com
 matrixserver.in##+js(acs, $, samNotice)
+vinstartheme.com##+js(no-fetch-if, googlesyndication)
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -10646,6 +10647,17 @@ urls.cx##.footer-section
 lootdest.com##+js(nowoif, , 5)
 @@||0.entlysearchin.info^$ping,domain=lootdest.com
 investcrust.com##+js(no-fetch-if, googlesyndication)
+@@*$ghide,domain=bluemediadownload.*|bluemediafile.*|bluemedialink.*|bluemediastorage.*|bluemediaurls.*|urlbluemedia.*
+.gif$image,domain=bluemediadownload.*|bluemediafile.*|bluemedialink.*|bluemediastorage.*|bluemediaurls.*|urlbluemedia.*
+bluemediadownload.*,bluemediafile.*,bluemedialink.*,bluemediastorage.*,bluemediaurls.*,urlbluemedia.*##+js(aopr, decodeURI)
+bluemediadownload.*,bluemediafile.*,bluemedialink.*,bluemediastorage.*,bluemediaurls.*,urlbluemedia.*##+js(aopr, open)
+bluemediadownload.*,bluemediafile.*,bluemedialink.*,bluemediastorage.*,bluemediaurls.*,urlbluemedia.*###ads-centter
+/fhbdhf.jpg$image,1p,domain=bluemediadownload.*|bluemediafile.*|bluemedialink.*|bluemediastorage.*|bluemediaurls.*|urlbluemedia.*
+!#if cap_html_filtering
+bluemediadownload.*,bluemediafile.*,bluemedialink.*,bluemediastorage.*,bluemediaurls.*,urlbluemedia.*##^script:has-text(FingerprintJS)
+!#else
+bluemediadownload.*,bluemediafile.*,bluemedialink.*,bluemediastorage.*,bluemediaurls.*,urlbluemedia.*##+js(rmnt, script, FingerprintJS)
+!#endif
 !#if env_mobile
 ! *** filters/filters-mobile.txt ***
 !----- 2020 -----
@@ -16952,7 +16964,7 @@ chillx.top##[style][href][target="_blank"]
 chillx.top##+js(no-fetch-if, googlesyndication)
 adinsurance.xyz,insurglobal.xyz##+js(set, blurred, false)
 adinsurance.xyz,insurglobal.xyz##div[id^="bsa-zone_"]
-banned.video,conspiracyfact.info,freeworldnews.tv,madmaxworld.tv##+js(set, Object.prototype.nopreroll_, true)
+banned.video,madmaxworld.tv##+js(set, Object.prototype.ads.nopreroll_, true)
 faselhd.*##.alert-danger.alert
 faselhd.*###popup
 @@||mittelhessen.de^$ghide
@@ -21019,7 +21031,6 @@ mgnetu.com##+js(noeval-if, fairAdblock)
 bondagevalley.cc##+js(rmnt, script, innerHTML)
 ||bondagevalley.cc/upload/photos/kcs.webp
 ||aucdn.net/library/*.mp4|$media,domain=clgt.one
-in-jpn.com,oninet.ne.jp,xth.jp##+js(aopr, Element.prototype.insertAdjacentHTML)
 ||in-jpn.com^$script,redirect=noop.js
 ||xth.jp^$script,redirect=noop.js
 ||oninet.ne.jp^$script,redirect=noop.js
@@ -22827,12 +22838,6 @@ bettycrocker.com##.adhesiveAdSpacing
 dizipal730.com##+js(rpnt, script, video_urls.length != activeItem+1, video_urls.length === activeItem+1)
 player.bestrapeporn.com##+js(nowoif)
 zealtyro.com##+js(aost, document.getElementsByTagName, adsBlocked)
-@@*$ghide,domain=bluemediadownload.*|bluemediafile.*|bluemedialink.*|bluemediastorage.*|bluemediaurls.*
-.gif$image,domain=bluemediadownload.*|bluemediafile.*|bluemedialink.*|bluemediastorage.*|bluemediaurls.*
-bluemediadownload.*,bluemediafile.*,bluemedialink.*,bluemediastorage.*,bluemediaurls.*##+js(aopr, decodeURI)
-bluemediadownload.*,bluemediafile.*,bluemedialink.*,bluemediastorage.*,bluemediaurls.*##+js(aopr, open)
-bluemediadownload.*,bluemediafile.*,bluemedialink.*,bluemediastorage.*,bluemediaurls.*###ads-centter
-||bluemediadownload.lat/fhbdhf.jpg$image
 ! tinyzonetv .se popups
 tinyzonetv.se##+js(nowoif)
 moviesjoyhd.to##+js(aeld, mousedown, shown_at)
