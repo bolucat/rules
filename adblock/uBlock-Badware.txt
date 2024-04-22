@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Sun, 21 Apr 2024 03:58:07 +0000
-! Diff-Path: ../patches/2024.4.21.860.patch#ublock-badware
+! Last modified: Mon, 22 Apr 2024 12:38:29 +0000
+! Diff-Path: ../patches/2024.4.22.921.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -614,6 +614,10 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||hornysmart.link^$all
 ||bd4jn7dk9u.com^$all
 ||throb.fun^$all
+||imp2.com^$all
+||love-places.ru^$all
+/click.php?key=*&price=$doc
+?click_id=*&tds_cid=$doc
 /^https:\/\/[0-9a-z]{3,}\.[-a-z]{10,}\.(?:li[fv]e|top|xyz)\/[a-z]{8}\/(?:article\d{4}\.doc)?\?utm_campaign=\w{40,}/$doc,match-case,domain=life|live|top|xyz
 /^https:\/\/[a-z]{2,3}\d\.biz\/go\/[0-9a-z]{15,18}$/$doc,domain=biz
 ! fake dating/prize/video sites
@@ -2956,6 +2960,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||officefonts-clo.com^$all
 ||lazycaht.pro^$all
 ||bxtongji.cc^$all
+||04tips.com^$all
 ||dhotelzao.com^$all
 ||tamilislamgate.com^$all
 ||adblock1.com^$all
@@ -3116,11 +3121,12 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||mobilelegendsmycode.com^$all
 ||affixresolve.web.app^$all
 ||superficial-deserted-territory.glitch.me^$all
-||s33788.com^$all,to=~shopee.vn
 ||taikhoanvps.com.vn^$doc,domain=~vps.com.vn
 ||request--to--fix--63.glitch.me^$all
 ||mbfic-plus.com^$all,to=~mbbank.com.vn
 ||quaysomediamart2024.vip^$doc,domain=~mediamart.vn
+||linktaccountcontant.com^$all,to=~linkt.com.au
+||mayxanhsupport.com^$all,to=~dienmayxanh.com
 ||diwapa3051.wixsite.com/my-site$all
 ||pub-1eaf8d9fdf504256ad21005c83cb81f5.r2.dev/1.html$all
 ||proceedings.aios.org/all-protect47610/$all
@@ -3138,12 +3144,18 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ! facebook
 ||business-facebook-*.pages.dev^$all
 ||support-security-information-accounti.pages.dev^$all
-! tiki
+! shopee + tiki
+||s33788.com^$all,to=~shopee.vn
+||sp77888.com^$all,to=~shopee.vn
 *$doc,domain=tikimall.*|~tiki.vn
 ||tikib.vip^$all,to=~tiki.vn
 ||tah0a.com^$all,to=~tiki.vn
-||fdsd22.com^$all,to=~tiki.vn
-||skhf11.com^$all,to=~tiki.vn
+||tdkd00.com^$all,to=~tiki.vn
+||nhanvientiki.info^$all,to=~tiki.vn
+||tuyendungtiki2024.vn^$all,to=~tiki.vn
+/^https:\/\/tdkd0[0-9]\.com\//$document,domain=~tiki.vn
+/^https:\/\/[st][a-z0-9]{2,4}[0-9][a-z0-9]\.com\/api\/user\/do_login$/$xhr,1p,strict1p,method=post,from=com,to=com,header=access-control-allow-headers:/authorization\,content-type\,if-match\,if-modified-since\,if-none-match\,if-unmodified-since\,x-requested-with/i
+/^https:\/\/[st][a-z0-9]{2,4}[0-9][a-z0-9]\.com\/api\/user\/do_login$/$xhr,1p,strict1p,method=post,from=com,to=com,header=Access-Control-Allow-Headers:/authorization\,content-type\,if-match\,if-modified-since\,if-none-match\,if-unmodified-since\,x-requested-with/i
 ! steam
 /^https:\/\/steamproxy\.[a-z]+\//$all,domain=cc|co|net|vip
 ||steamcommumnuty.com^$all
@@ -3192,6 +3204,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ! opensea
 ||openseaverification.pages.dev^$all,to=~opensea.io
 ||opensea-nft.web.app^$all,to=~opensea.io
+||web3-opensea-multichain.codeanyapp.com^$all,to=~opensea.io
 ! pancakeswap
 ||pancakeswap.icu^$all,to=~pancakeswap.finance
 ||pancake.run^$all,to=~pancakeswap.finance

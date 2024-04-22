@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: Ab0Np63AzFGcqlenbL7zEA
-! Diff-Path: ../patches/7/7-s-1713692020-3600.patch
+! Checksum: 8bNkVvYm8wZ7Uhj47iexbw
+! Diff-Path: ../patches/7/7-s-1713800059-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.50.74
-! TimeUpdated: 2024-04-21T09:31:30+00:00
+! Version: 2.0.50.80
+! TimeUpdated: 2024-04-22T15:31:35+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -547,6 +547,7 @@ egotter.com#@#ins.adsbygoogle[data-ad-slot]
 puzzle-ch.com#@##adframe:not(frameset)
 puzzle-ch.com##+js(no-setTimeout-if, getComputedStyle)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/151651
+blog.housinkai.com,kakenhi.net,seesaa.net##+js(addEventListener-defuser, DOMContentLoaded, interstitialAd)
 ||blog.seesaa.jp/visual/*/common/js/footer.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/149137
 eromanga-numa.com#@#.ad_widget
@@ -743,7 +744,7 @@ realtime-chart.info#$?#td[style^="vertical-align: top"] [onclick*="()"][target="
 realtime-chart.info#$?#td[style^="vertical-align"] [onclick]:has(> img[src*="/clip_"] + b):not(:has(b td > a[href])) { pointer-events: none !important; }
 @@||realtime-chart.info^$generichide
 @@||sekai-kabuka.com^$generichide
-||googleads.g.doubleclick.net/pagead/ads?$subdocument,redirect=noop.html,domain=realtime-chart.info|sekai-kabuka.com
+@@||googleads.g.doubleclick.net/pagead/ads?$subdocument,domain=realtime-chart.info|sekai-kabuka.com
 @@||pagead2.googlesyndication.com/pagead/managed/js/adsense/$script,domain=realtime-chart.info|sekai-kabuka.com
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$script,domain=realtime-chart.info|sekai-kabuka.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/83022
@@ -1689,6 +1690,9 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+the-miyanichi.co.jp##div[class$="_billboard"]
+rankingoo.net##.side_top_banner
+rankingoo.net##.content_banner
 fanblogs.jp###agoda
 fanblogs.jp###agoda_ads > div[id^="adgshp"]
 fanblogs.jp###sideBoxRight table[cellpadding="0"][cellspacing="0"][border="0"][style=" border:1px solid #ccc; width:300px;"]:not([class])
@@ -1696,6 +1700,8 @@ fanblogs.jp###sideBoxRight table[style*="border"][style*=" width:"] a[href*="://
 fanblogs.jp##.sidetitle:has(+ .side > div[style] > ins.adsbygoogle)
 fanblogs.jp##.sidetitle:has(+ .side > ins.adsbygoogle)
 fanblogs.jp##div[class$="ody"] > div.text table[cellpadding="0"][cellspacing="0"][border="0"][style=" border:1px solid #ccc; width:300px;"]:not([class])
+famitsu.com##aside[class^="SponsorLink_sponsorLinkContainer_"]
+famitsu.com##div[class^="ArticleDetail_leftColumn"] > section:has(> div > div.swiper div[class^="AmazonCard_card_"])
 famitsu.com##.banner-center
 famitsu.com##div[class^="ArticleDetailBanner_container_"]
 famitsu.com##div[class^="HalfPageBottomOrLargeRectangle_container_"]
@@ -2925,7 +2931,7 @@ paso-kake.com##.st-eyecatch
 ||mora.jp/*/img/jack/
 mora.jp##.jack
 mora.jp##.top_ad
-moeyo.com##.header_banner
+rankingoo.net,moeyo.com##.header_banner
 moeyo.com##.pc-top-banner
 h-taikendan.net##.side_box_ad
 studio-webli.com###sub1
