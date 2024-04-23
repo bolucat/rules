@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 8bNkVvYm8wZ7Uhj47iexbw
-! Diff-Path: ../patches/7/7-s-1713800059-3600.patch
+! Checksum: XFPpxcXjgxeUcHp03kJNxQ
+! Diff-Path: ../patches/7/7-s-1713882871-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.50.80
-! TimeUpdated: 2024-04-22T15:31:35+00:00
+! Version: 2.0.50.84
+! TimeUpdated: 2024-04-23T14:31:39+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -744,7 +744,7 @@ realtime-chart.info#$?#td[style^="vertical-align: top"] [onclick*="()"][target="
 realtime-chart.info#$?#td[style^="vertical-align"] [onclick]:has(> img[src*="/clip_"] + b):not(:has(b td > a[href])) { pointer-events: none !important; }
 @@||realtime-chart.info^$generichide
 @@||sekai-kabuka.com^$generichide
-@@||googleads.g.doubleclick.net/pagead/ads?$subdocument,domain=realtime-chart.info|sekai-kabuka.com
+||googleads.g.doubleclick.net/pagead/ads?$subdocument,redirect=noop.html,domain=realtime-chart.info|sekai-kabuka.com
 @@||pagead2.googlesyndication.com/pagead/managed/js/adsense/$script,domain=realtime-chart.info|sekai-kabuka.com
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$script,domain=realtime-chart.info|sekai-kabuka.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/83022
@@ -1690,6 +1690,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+minpo.jp##.thumbnail-list > li:is(:has(> div[id^="div-gpt-ad-"]), :has(> .ads))
+the-miyanichi.co.jp##div[id] > div > div[style^="display:block;margin"]:has(> p[style="margin-bottom:.5em;border:none;font-size:.9em;"] > a[target="_blank"] > span[style$="text-align:center;"])
 the-miyanichi.co.jp##div[class$="_billboard"]
 rankingoo.net##.side_top_banner
 rankingoo.net##.content_banner
@@ -3987,7 +3989,6 @@ ufret.jp###showAdPosition
 otona-life.com##.ad_minh_sp
 gameden.jp###sidebar-right
 gameden.jp###block-16
-mangacross.jp###top-component > div[style^="background"][style*="height: 115px;"]
 response.jp###ad10
 sponichi.co.jp##.contents-pr
 kyobun.co.jp##.kyobu-widget
@@ -4000,7 +4001,6 @@ blogterest.net##a[href^="https://adult-sale.com/lp/"]
 /asmr18.js$domain=shikotch.net|doujinantena.top|nyahentai.re|momon-ga.com
 shikotch.net,doujinantena.top,nyahentai.re,momon-ga.com##.tablink
 shikotch.net,doujinantena.top,nyahentai.re,momon-ga.com##.asmr18
-mangacross.jp##.fixed_ad_box_sp
 mainichigahakken.net##div[class^="wrap-recommend"]
 loljp-wiki.jp###bodyFrame > span[style="font-size:small;color:#939393;"]
 goal.com##:matches-path(/jp/)div[class^="fc-player_fc"]
@@ -4529,7 +4529,6 @@ fc1adult.com##.top-embed-ad
 kurashinista.jp##.meta_candy_description p[style="text-align: center;"] > strong
 vk.sportsbull.jp##.sec-bannerArea
 shufoo.net,vk.sportsbull.jp##.bnr-area
-mangacross.jp##.ad-box--end-page-latest
 town.hokkaido-mori.lg.jp,city.ohtawara.tochigi.jp,city.takasaki.gunma.jp,city.aizuwakamatsu.fukushima.jp###footerAdBanner
 city.abiko.chiba.jp##.t_koukoku
 studio-radish.com##.netspeedRightAd
@@ -8874,7 +8873,7 @@ hlsloader.com#?#section > center > span[style="opacity:0.7;font-size:xx-small"]:
 valorantchannel.livedoor.blog#?#div[class*="column-inner"] > div.plugin-memo:has(> div.sidetitlebody > div.sidetitle:contains(スポンサードリンク))
 nlab.itmedia.co.jp#?##cmsBody > div.inner > p:last-of-type:has(> * > a[href^="https://twitter.com/"][target="_blank"]):contains(作品提供) ~ div.cmsAmazonWrap
 mainichi.jp#?#.featurelist > li > div[id^="ad-"]:upward(1)
-mtgoversears.com,kdrm4.com,yagan.hatenablog.com,gigafile.ltd,taisy0.com,furugi1717.net,nilcollection.net,souda-kansai.com#?#.entry-content > p > ins.adsbygoogle:upward(1)
+rojiuragame.com,mtgoversears.com,kdrm4.com,yagan.hatenablog.com,gigafile.ltd,taisy0.com,furugi1717.net,nilcollection.net,souda-kansai.com##.entry-content > p:has(> ins.adsbygoogle)
 xn--mck5e585m.com,fnjpnews.com#?#.post-box > div.post-box-contents > ins.adsbygoogle:upward(2)
 sekisei.click#?#.module--free ins.adsbygoogle:upward(.module--free)
 goo.ne.jp#?##NR-sub-in > aside > div.module-frame > div.areamatch:upward(1)
