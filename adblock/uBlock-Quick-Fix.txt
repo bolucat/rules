@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Wed, 24 Apr 2024 14:42:30 +0000
-! Diff-Path: ../patches/2024.4.24.1042.patch#ublock-quick-fixes
+! Last modified: Thu, 25 Apr 2024 09:57:25 +0000
+! Diff-Path: ../patches/2024.4.25.798.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -106,7 +106,6 @@ download.megaup.net##+js(rpnt, script, &&, && false &&, condition, attribute)
 @@/^https:\/\/[a-z]\.pussyspace\.(?:com|net)\/sb\/t\/\d{6,8}\/\d\/\d\/w:300\/t\d{1,2}-enh\/(?:[0-9a-z]+-)*[0-9a-z]+\.jpg$/$image,1p,domain=pussyspace.*
 *$image,3p,denyallow=cdn77.org|fpbns.net|others-cdn.com|rncdn7.com|sb-cd.com|stream.highwebmedia.com|upsiloncdn.net|xvideos-cdn.com|youjizz.com|ypncdn.com,from=pussyspace.com|pussyspace.net,badfilter
 *$image,3p,denyallow=cdn77.org|fpbns.net|globalcdn.co|others-cdn.com|rncdn7.com|sb-cd.com|stream.highwebmedia.com|upsiloncdn.net|xvideos-cdn.com|youjizz.com|ypncdn.com,from=pussyspace.com|pussyspace.net
-lastmile.lt#@#+js(set-cookie, __consent, %5B%22required%22%5D)
 raenonx.cc##body > div[class] > style:first-child + .w-full:has(> .button-clickable-bg-opaque > .transform-smooth > svg)
 raenonx.cc##.w-full:has(> style + div > style + div .adsbygoogle)
 raenonx.cc##.w-full > style + div[tabindex]:has(> style + div > style + div > p:has-text(advertisements))
@@ -134,11 +133,13 @@ in-jpn.com,oninet.ne.jp,xth.jp##body div:matches-css(position: fixed):matches-cs
 in-jpn.com##+js(trusted-replace-xhr-response, /.*/, , pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?)
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xhr,domain=in-jpn.com
 xth.jp##body:style(background: none !important;)
+xth.jp##+js(acs, document.head.insertAdjacentHTML)
 !#if cap_html_filtering
 ||in-jpn.com^$script,replace=/var w_status[\s\S\n]+?doSakigake\(\);[\s\S\n]+?\}//
 in-jpn.com##+js(no-xhr-if, adsbygoogle)
 !#endif
 @@||oninet.ne.jp/sakigakesoft/s/holmes-geojson.js$1p,strict1p
+@@||oninet.ne.jp/sakigakesoft/s/leaf_main.js$script,1p,strict1p
 @@||impact-ad.jp/fh/showad_$script,domain=famitsu.com
 ||yimg.com/aaq/benji/$badfilter
 @@||googletagmanager.com/gtm.js$domain=online-shop.mb.softbank.jp

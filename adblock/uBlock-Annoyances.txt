@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Wed, 24 Apr 2024 13:59:16 +0000
-! Diff-Path: ../patches/2024.4.24.1042.patch#ublock-annoyances
+! Last modified: Thu, 25 Apr 2024 09:20:28 +0000
+! Diff-Path: ../patches/2024.4.25.798.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -218,8 +218,8 @@ govirtuo.com##+js(trusted-set-cookie, cookieConsent, technical=true&analytics=fa
 govirtuo.com##+js(trusted-set-cookie, acceptTracking, '{"technical":true,"analytics":false,"advertising":false}')
 deal.by##+js(trusted-set-cookie, gdprConsent, %7B%22adv%22%3Afalse%2C%22func%22%3Afalse%2C%22tech%22%3Afalse%7D, , , domain, deal.by)
 zwenkwielen.net##+js(trusted-set-cookie, cookie_preference, functional, , , domain, zwenkwielen.net)
-lastmile.lt#@#+js(set-cookie, __consent, %5B%22required%22%5D)
 lastmile.lt##+js(trusted-set-cookie, __consent, %5B%22required%22%5D)
+biomedcentral.com##+js(trusted-set-cookie, sncc, P%3D15%3AV%3D33.0.0%26C%3DC01%26D%3Dtrue, , , domain, biomedcentral.com)
 !! Needs additional cookies
 ! Closing Optanon Alert Box
 1001games.com,1001hry.cz,1001jeux.fr,1001jocuri.ro,1001jogos.com.br,1001jogos.pt,1001pelit.com,1001spiele.de,elkspel.nl,gamespot.com,giochixl.it,glamour.com,grajteraz.pl,isladejuegos.com,jatekokxl.hu,mtvuutiset.fi,paixnidiaxl.gr,pushsquare.com,spelo.se,spillespill.no,spilxl.dk,thejournal.ie,thetrainline.com,vkmag.com,zdnet.com##+js(trusted-set-cookie, OptanonAlertBoxClosed, $currentDate$, 1year)
@@ -738,6 +738,8 @@ canatura.com##+js(trusted-set-cookie, cookiesRules, '{"analytics":false,"persona
 ! Fix embed video https://www.elmundo.es/espana/2024/04/18/6621445c21efa0137e8b4588.html
 elmundo.es##+js(trusted-click-element, button[id="ue-accept-notice-button"], , 2000)
 eurobaustoff.com##+js(trusted-set-local-storage-item, ccm_consent, '{"/":{"gen":2,"ucid":"1","consent":true,"embeddings":["1e76acf","8ed8d9a","b429e86","f22e6ed","0b25af3","6079a42"],"created":"$currentDate$","updated":"$currentDate$","clickedButton":"acceptAll","iframeConsentDomains":[],"tcf":{"p":[],"lip":[],"sf":[],"v":[],"liv":[],"gad":[]},"lang":"de_DE"}}' )
+! deny, video playback/embedded tweeks = ok (EU IP)
+euronews.com##+js(trusted-set-local-storage-item, euconsent-v2, CP9oCIAP9oCIAAHABBENAwEgAAAAAAAAAAAAAAAAAAAA.YAAAAAAAAAAA)
 ! *** filters/annoyances-others.txt ***
 mimaletadepeliculas.blogspot.com##+js(aopr, document.oncontextmenu)
 mimaletadepeliculas.blogspot.com##+js(acs, document.onselectstart)
@@ -4637,3 +4639,4 @@ xanimu.com,cosxplay.com##+js(rmnt, script, adblock)
 solarmagazine.nl##+js(no-xhr-if, ads)
 noicetranslations.blogspot.com##+js(rmnt, script, disableselect)
 ||ren.tv/video/embed/*#autoplay=$subdocument,uritransform=/#autoplay=.*//
+bloomberglinea.com,bloomberglinea.com.br##+js(aeld, copy)
