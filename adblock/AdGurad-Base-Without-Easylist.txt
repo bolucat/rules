@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: h+5BYzx3C9T7Xyo6AW+HDA
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1714239220-3600.patch
+! Checksum: LND27TD6MVVIB3wJXkg4fQ
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1714325641-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.33.3
-! TimeUpdated: 2024-04-27T17:31:15+00:00
+! Version: 2.3.33.18
+! TimeUpdated: 2024-04-28T17:31:18+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -78,6 +78,27 @@
 !
 !
 !
+||makeupenumerate.com^
+||hagnutrient.com^
+||naiantcapling.com^
+||nadjyiyolmxfea.com^
+||builtinintriguingchained.com^
+||nrecitnr.com^
+||jerimpob.net^
+||fohikrs.com^
+||xktxemf.com^
+||ejuiashsateam.info^
+||elewasgiwiththi.info^
+||deeppinche.top^
+||prqbdfmzjs.com^
+||aqaggxmhabf.com^
+||dmabpmokxcgm.com^
+||khrrnhjuhdjvx.com^
+||gfwvrltf.xyz^
+||kovhhlbbgs.com^
+||sodytykcbgpkw.com^
+||agehaeamilhfv.com^
+||thecoreadv.com^
 ||ibetadvdqrn.com^
 ||meseyktphwwxq.com^
 ||go.syndcloud.com^
@@ -1042,6 +1063,7 @@
 ! Bad: ||legitwebsite.com^$third-party (should be in adservers.txt)
 !
 !
+||d2g6dhcga4weul.cloudfront.net^
 ||d2ier523in7agz.cloudfront.net^
 ||d2bs5vtcw2lxsv.cloudfront.net^
 ||d2jsvulelid3e4.cloudfront.net^
@@ -7287,11 +7309,13 @@ pornhub.com,pornhub.org,pornhub.net##+js(no-setTimeout-if, \x41\x64\x62\x6c\x6f\
 !
 ! NOTE: Regular rules
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/178111
+pesmodding.com#@#.button-ad
 ! https://github.com/AdguardTeam/AdguardFilters/issues/177996
 shortearn.net##+js(no-fetch-if, pagead2.googlesyndication.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/178020
-||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$script,xmlhttprequest,redirect=googlesyndication.com/adsbygoogle.js,domain=texteditor.nsspot.net,important
-@@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$domain=texteditor.nsspot.net
+texteditor.nsspot.net##+js(set-constant, gadb, false)
+||pagead2.googlesyndication.com/pagead/show_ads.js$script,redirect=noop.js,domain=texteditor.nsspot.net
 ! https://github.com/AdguardTeam/AdguardFilters/issues/177441
 @@||celebfapper.com/js/adManager.js
 celebfapper.com##+js(no-setTimeout-if, adblocktag)
@@ -7492,6 +7516,7 @@ gpfans.org##.adblock-wrapper
 gpfans.org##+js(no-fetch-if, pagead2.googlesyndication.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/173251
 ||sportshub.to/fox/plugins/block/js/*-LBA-.js?
+||footy.to^
 ! https://github.com/AdguardTeam/AdguardFilters/issues/172971
 dgb.lol##+js(set-constant, findCMP, noopFunc)
 ||tagan.adlightning.com/setupad-hai/op.js$script,redirect=noop.js,domain=dgb.lol
@@ -19855,6 +19880,10 @@ mako.co.il##+js(set-constant, isBs, false)
 treccani.it##.gmp
 forum.fibra.click##.FibraClickAds-fake-poststream-item
 open.online##a[rel="sponsored"]
+! https://github.com/AdguardTeam/AdguardFilters/issues/178055
+ricettasprint.it##.code-block
+ricettasprint.it###tca-sticky
+ricettasprint.it#$#body { margin-top: 0 !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/178012
 spaziogames.it##.mx-auto > div.text-center:has(> div.flex > div.not-prose > a[href^="https://www.amazon.it/"])
 ! https://github.com/AdguardTeam/AdguardFilters/issues/176117
@@ -32462,18 +32491,8 @@ youtubekids.com,youtube-nocookie.com,youtube.com##+js(set-constant, playerRespon
 !!#endif
 ! Modify YT xhr responses
 ! $replace rules for Firefox
-! Disabled for https://github.com/AdguardTeam/AdguardFilters/issues/176113#issuecomment-2033847966
-! https://github.com/AdguardTeam/AdguardFilters/pull/170936
-! https://github.com/AdguardTeam/AdguardFilters/issues/167440
-! The rule trusted-replace-xhr-response with '\"adPlacements.*?([A-Z]"\}|"\}{2})\}\]\,' causes breakage on tv.youtube.com
-! The problem is that rules with '~' do not work correctly in Safari, the same might be for exceptions,
-! so requests from tv.youtube.com are excluded from this rule (the url part - '^(?!.*(\/\/tv\.youtube\.com)).*(player\?key=|watch\?v=)') and instead simple workaround is used
-!
-! Multiple trusted-replace-xhr-response causes breakage on music.youtube.com when logged in
-youtube.com##+js(json-prune, playerResponse.playerConfig.ssapConfig playerResponse.streamingData.serverAbrStreamingUrl playerConfig.ssapConfig streamingData.serverAbrStreamingUrl)
-youtube.com##+js(json-prune-xhr-response, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots, , /playlist\?list=|player\?|watch\?v=/)
-youtube.com##+js(json-prune-fetch-response, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots, , /playlist\?list=|player\?|watch\?v=/)
 m.youtube.com,music.youtube.com,youtubekids.com,youtube-nocookie.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots)
+! TODO: remove trusted-replace-xhr-response/trusted-replace-fetch-response rules below when json-prune-fetch-response/json-prune-xhr-response will be supported by Safari extension
 ! https://github.com/AdguardTeam/AdguardFilters/issues/172033#issuecomment-1925290685
 ||googlevideo.com/initplayback?source=youtube&*&c=TVHTML5&oad=$xmlhttprequest,domain=youtube.com
 ! Fix ads on https://www.youtube.com/shorts/
@@ -32701,7 +32720,6 @@ genius.com##div[class^="StubhubLink"]
 howtoinstall.co##div[id^="ads-wrapper-"]
 olx.in##div[class]:has(> div[id^="baxter-ads"])
 okmilfporn.com##div.text-center[style*="height: 250px;"]
-imgur.com##div[id*="/InContent/"][style*="min-height: 250px;"]
 amateurpornvidz.com##div[style="height:280px;"]
 luxuretv.com##iframe[data-src^="https://rokymedia.com/"]
 luxuretv.com###vz_im_ad
