@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Mon, 29 Apr 2024 16:57:23 +0000
-! Diff-Path: ../patches/2024.4.29.1040.patch#ublock-filters
+! Last modified: Tue, 30 Apr 2024 12:55:04 +0000
+! Diff-Path: ../patches/2024.4.30.800.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -9374,10 +9374,10 @@ dx-tv.com##+js(rmnt, script, deblocker)
 ! postermockup .com anti-adb
 postermockup.com##+js(aost, setTimeout, adsBlocked)
 @@||sidearm-syndication.s3.amazonaws.com/prod/web-push.bundle.js$script,domain=hokiesports.com
-||check-host.net/images/ondguard$image,1p
+||check-host.net/images/ondguarf$image,1p
 ||check-host.net/images/alexqhost.png$image,1p
 ||check-host.net/images/aezaqlogo.$image,1p
-check-host.net###hostazq, .specgo, #sntkwptchamsaeza-permnnt, a[href^="https://go.aeza.net/checkhost_"], #sntkwptchamspp-juiaryt, #sntkwptchamspp-juiaryt2, #sntkwptchamsalexhost
+check-host.net###hostazq, .specgo, #sntkeptchamsaeza-permnnt, #sntkeptchamspp-juiaryt, #sntkeptchamspp-juiaryt2, .ra-elative, [href*="?utm_"]
 ! conceptartworld. com antiadb
 @@||conceptartworld.com^$ghide
 pomofocus.io##+js(no-xhr-if, adsbygoogle, length:10)
@@ -9891,7 +9891,10 @@ buffsports.me##^script:has-text(FingerprintJS)
 buffsports.me##.position-absolute
 kimdesene.org##+js(nowoif)
 ! pp server
-/^https?:\/\/[a-z]{8,15}\.xyz\/$/$xhr,3p,method=head,header=x-trace-id
+/^https?:\/\/[a-z]{8,15}\.xyz\/$/$xhr,3p,to=xyz,method=head,header=x-trace-id
+!#if ext_devbuild
+/^https?:\/\/[a-z]{8,15}\.com\/$/$xhr,3p,to=com,method=head,header=x-trace-id
+!#endif
 ! kumapoi. info detection
 kumapoi.info##+js(noeval-if, ads)
 iggtech.com##+js(acs, document.readyState, mdpDeblocker)
@@ -9951,6 +9954,14 @@ decrypt.day##+js(no-fetch-if, adsbygoogle)
 @@||pagead2.googlesyndication.com/pagead/$xhr,domain=decrypt.day
 *$frame,redirect-rule=noopframe,domain=decrypt.day
 blogcreativos.com##+js(noeval-if, ads)
+lol-foot.ru##+js(acs, document.documentElement, break;case $.)
+choosingnothing.com##+js(nostif, cvad)
+choosingnothing.com###cvad
+choosingnothing.com###cvadclo
+choosingnothing.com##div[data-player] > a[href][style*="z-index"]
+##a[href][style="cursor:pointer;width:100%;height:100%;z-index:10000000000000000;position:absolute;top:0;left:0;"]
+||excitingstory.click^
+||shoopsee.net^
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -10405,20 +10416,13 @@ mphealth.online###yuidea-btn-after, #yuidea-btmbtn:style(display: block !importa
 mphealth.online###yuidea-btn-after, #yuidea-btmbtn:remove-attr(disabled)
 mphealth.online###yuidea-btn-after, #yuidea-btmbtn:others()
 mphealth.online###content:style(font-size: 0px !important;)
-sinonimos.de,tiktokcounter.net,tiktokrealtime.com##+js(rc, is-hidden)
-sinonimos.de##+js(set, isAdClickDone, true)
-@@||sinonimos.de^$script,1p
-@@||profitsfly.com^$script,domain=sinonimos.de
-*$script,3p,redirect-rule=noopjs,domain=sinonimos.de
-@@||antonimos.de^$script,1p
-@@||profitsfly.com^$script,domain=quesignifi.ca
-antonimos.de,tiktokcounter.net,tiktokrealtime.com,tpayr.xyz,quesignifi.ca##+js(set, isAdClickDone, true)
-@@||profitsfly.com^$script,domain=tiktokcounter.net|tpayr.xyz
-@@/adpartner.min.js$script,domain=tiktokcounter.net|tpayr.xyz
-@@*$script,1p,domain=tiktokcounter.net|tpayr.xyz
-tiktokcounter.net,tpayr.xyz##+js(no-fetch-if, googlesyndication)
-||play.google.com^$xhr,redirect-rule=nooptext,domain=tpayr.xyz
-antonimos.de,quesignifi.ca###checkclick:style(display: block !important;)
+*$script,xhr,redirect-rule=noopjs,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz
+@@*$ghide,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz
+@@*$script,1p,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz
+@@||profitsfly.com^$script,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz
+@@/adpartner.min.js$script,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz
+ashrfd.xyz,poqzn.xyz,tpayr.xyz,tiktokcounter.net,sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com##+js(no-fetch-if, /doubleclick|googlesyndication|google/)
+ashrfd.xyz,poqzn.xyz,tpayr.xyz,tiktokcounter.net,sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com##+js(set, assholeWhoReadsThis, true)
 easycut.io##+js(set, blurred, false)
 ||i.gyazo.com^$domain=insurancexblog.blogspot.com
 sahlmarketing.net###link:remove-attr(disabled)
@@ -20791,7 +20795,7 @@ ubugedeco.com,uciteljica.net,udemyking.com,uiuxsource.com,ukigmoch.com,umabomber
 vamsivfx.com,vanderheide.online,vedetta.org,veganab.co,venus-and-mars.com,vibezhub.com.ng,viciante.com.br,villettt.kitchen,violablu.net,virabux.com,virtual-youtuber.jp,visortecno.com,vitadacelebrita.com,vivrebordeaux.fr,vmorecloud.com,voiceloves.com,voidtruth.com,voiranime1.fr,vstplugin.net##+js(noeval-if, /chp_?ad/)
 warungkomik.com,webacademix.com,webcamfuengirola.com,webcras.com,webhostingoffer.org,websiteglowgh.com,welcometojapan.jp,whats-new.cyou,wheelofgold.com,wholenotism.com,windbreaker.me,wirtualnelegionowo.pl,wirtualnynowydwor.pl,workxvacation.jp,worldgyan18.com,worldtop2.com,worldwidestandard.net,wp.solar,writeprofit.org##+js(noeval-if, /chp_?ad/)
 xiaomitools.com,xmoviepro.xyz,xn--kckzb2722b.com,xn--n8jwbyc5ezgnfpeyd3i0a3ow693bw65a.com,xn--nbkw38mlu2a.com,xprime4u.*##+js(noeval-if, /chp_?ad/)
-yakisurume.com,yakyufan-asobiba.com,yaspage.com,yawm.online,ycongnghe.com,yestech.xyz,ynk-blog.com,youlife24.com,youpit.xyz,your-local-pest-control.com,yourdesignmagazine.com,yuatools.com,yuki0918kw.com,yumekomik.com,yurudori.com##+js(noeval-if, /chp_?ad/)
+yakisurume.com,yakyufan-asobiba.com,yaspage.com,yawm.online,ycongnghe.com,yestech.xyz,ynk-blog.com,youlife24.com,youpit.xyz,your-local-pest-control.com,yourdesignmagazine.com,yuatools.com,yuki0918kw.com,yumekomik.com,yuramanga.my.id,yurudori.com##+js(noeval-if, /chp_?ad/)
 zerogptai.org,zien.pl,ziminvestors.com,zippyshare.cloud,zippysharecue.com,znanemediablog.com##+js(noeval-if, /chp_?ad/)
 ||cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css$css,domain=nishankhatri.*
 emperorscan.com,makotoichikawa.net,telephone-soudan.com##+js(aost, document.querySelectorAll, /(?=^(?!.*(https|injectedScript)))/)
@@ -21114,14 +21118,17 @@ bondagevalley.cc##+js(rmnt, script, innerHTML)
 @@||xth.jp^$ghide
 in-jpn.com,oninet.ne.jp,xth.jp##body:style(color: #000 !important;)
 in-jpn.com,oninet.ne.jp,xth.jp##body div:matches-css(position: fixed):matches-css(background-color: /rgb/):matches-css(z-index: /\d+/)
+in-jpn.com,oninet.ne.jp##img:style(visibility: visible !important;)
 oninet.ne.jp##a[href^="https://hb.afl.rakuten.co.jp/hsc/"]
 oninet.ne.jp##a[href^="https://hb.afl.rakuten.co.jp/hsc/"] ~ img[src="qr-rakuten-travel-logo.png"]
 oninet.ne.jp##a[href^="https://www.amazon.co.jp/dp/"]
 oninet.ne.jp##a[href^="https://www.amazon.co.jp/dp/"] ~ img[src="qr-amazon-logo.png"]
 xth.jp##body:style(background: none !important;)
-xth.jp###ggH1:style(height: 50px !important; position: absolute !important; left:-4000px !important;)
 in-jpn.com##+js(trusted-replace-xhr-response, /.*/, , pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?)
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xhr,domain=in-jpn.com
+!#if cap_html_filtering
+xth.jp##^script:has-text(ブロックをオフにして下さい)
+!#endif
 azaleasdolls.com##td[height="279"]
 azaleasdolls.com##td[width^="34"][height^="29"]
 azaleasdolls.com##td[width="164"][bgcolor="#FCDCE4"]
@@ -22939,7 +22946,7 @@ everand.com##+js(no-fetch-if, /api/v1/events)
 ! zona11 .com anti-adb
 zona11.com##+js(nostif, keepChecking)
 kemiox.com##+js(rmnt, script, deblocker)
-||baeldung.com/*/ad-recovery.min.js^$script,1p
+||baeldung.com/*/*recovery.min.js^$script,1p
 ||cdn.mxpnl.com/libs/mixpanel-2-latest.min.js$script,domain=obefitness.com,redirect=noopjs
 infinite-streaming.live##+js(acs, addEventListener, blocker)
 ! checkersmenu .us anti-adb

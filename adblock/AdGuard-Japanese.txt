@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: QPDqqwrMVHu7CFx8q6hv3g
-! Diff-Path: ../patches/7/7-s-1714412023-3600.patch
+! Checksum: PMfv+0qCHV/wT/rQ8lhgeA
+! Diff-Path: ../patches/7/7-s-1714476853-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.51.17
-! TimeUpdated: 2024-04-29T17:31:32+00:00
+! Version: 2.0.51.19
+! TimeUpdated: 2024-04-30T11:31:37+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -778,11 +778,7 @@ h-ken.net##+js(set-constant, adBlockDetected, noopFunc)
 coron.tech##+js(remove-attr, class, [id][role] > [id] > [class] > section)
 connect.coron.tech##+js(abort-current-script, jQuery, decodeURIComponent)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/52566
-ad-contents.jp##+js(addEventListener-defuser, load, ad blocker)
-!+ NOT_PLATFORM(ext_safari)
-ad-contents.jp#$#.ui-wrapper { display: block !important; }
-!+ NOT_PLATFORM(ext_safari)
-ad-contents.jp#$#.mid-rectangle { display: none !important; }
+@@||ad-contents.jp^$generichide
 ! https://github.com/AdguardTeam/AdguardFilters/issues/51076
 ||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$script,redirect=googlesyndication.com/adsbygoogle.js,domain=ap-siken.com|db-siken.com|fe-siken.com|itpassportsiken.com|nw-siken.com|pm-siken.com|sc-siken.com|sg-siken.com|fp1-siken.com|fp2-siken.com|fp3-siken.com
 fp1-siken.com,fp2-siken.com,fp3-siken.com,ap-siken.com,db-siken.com,fe-siken.com,itpassportsiken.com,nw-siken.com,pm-siken.com,sc-siken.com,sg-siken.com##+js(no-setTimeout-if, _0x)
@@ -5146,7 +5142,7 @@ huffingtonpost.jp##.leaderboard-flex-placeholder
 macaro-ni.jp##.articleShow__nativeAd
 macaro-ni.jp##.yadsOverlay
 ac-illust.com,photo-ac.com,mitok.info,entamega.com,getnews.jp,webcartop.jp##div[style="min-height: 250px;"]
-response.jp,getnews.jp,withonline.jp,jprime.jp##div[style="min-height:250px;"]
+juken.oricon.co.jp,response.jp,getnews.jp,withonline.jp,jprime.jp##div[style="min-height:250px;"]
 otajo.jp##iframe[src^="https://rcm-jp.amazon.co.jp/e/cm?"]
 2chmatome2.jp###gn_overlay_wrapper
 2ch.logpo.jp##.AdsWidth
@@ -8553,7 +8549,7 @@ weblio.jp##.rectangle-ads-frame-www
 weblio.jp##.adBannerHdWrp
 weblio.jp##.adSmpBnrFtBtSp
 weblio.jp##.adBkOverlayClr
-ad-contents.jp##.large-banner
+ad-contents.jp##.ui-main-body > div.large-banner
 ad-contents.jp##.regular-banner
 ad-contents.jp##.overlay-item
 ad-contents.jp##.overlay-mask

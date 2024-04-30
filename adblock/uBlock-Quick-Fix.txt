@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sun, 28 Apr 2024 15:56:43 +0000
-! Diff-Path: ../patches/2024.4.29.1040.patch#ublock-quick-fixes
+! Last modified: Tue, 30 Apr 2024 10:49:51 +0000
+! Diff-Path: ../patches/2024.4.30.800.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -48,11 +48,11 @@ youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAd
 !#endif
 !#endif
 ||googlevideo.com/videoplayback*&ctier=L&*%2Cctier%2C$xhr,3p,domain=m.youtube.com|music.youtube.com|www.youtube.com
-m.youtube.com,music.youtube.com,www.youtube.com##+js(trusted-rpnt, script, /^(\(function serverContract\(\))/s, '/*start*/(function(){const wrapper=(target,thisArg,args)=>{let content=Reflect.apply(target,thisArg,args);if(content.includes("ssapPrerollEnabled")){const modifiedContent=content.replace(/\n.\n.playerConfig\.ssapConfig\.ssapPrerollEnabled.{2}(?:tru|fals)e/,"");return modifiedContent;}return content;};const handler={apply:wrapper};window.atob=new Proxy(window.atob,handler);document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g,"");}());/*end*/$1')
+!m.youtube.com,music.youtube.com,www.youtube.com##+js(trusted-rpnt, script, /^(\(function serverContract\(\))/s, '/*start*/(function(){const wrapper=(target,thisArg,args)=>{let content=Reflect.apply(target,thisArg,args);if(content.includes("ssapPrerollEnabled")){const modifiedContent=content.replace(/\n.\n.playerConfig\.ssapConfig\.ssapPrerollEnabled.{2}(?:tru|fals)e/,"");return modifiedContent;}return content;};const handler={apply:wrapper};window.atob=new Proxy(window.atob,handler);document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g,"");}());/*end*/$1')
 m.youtube.com,music.youtube.com,www.youtube.com##+js(set, ytInitialPlayerResponse.playerConfig.ssapConfig, undefined)
 m.youtube.com,music.youtube.com,www.youtube.com##+js(set, ytInitialPlayerResponse.streamingData.serverAbrStreamingUrl, undefined)
 m.youtube.com,music.youtube.com,www.youtube.com##+js(json-prune, playerResponse.playerConfig.ssapConfig playerResponse.streamingData.serverAbrStreamingUrl playerConfig.ssapConfig streamingData.serverAbrStreamingUrl)
-m.youtube.com,music.youtube.com,www.youtube.com##+js(set, yt.config_.EXPERIMENT_FLAGS.ab_sig_bit_dea, undefined)
+m.youtube.com,music.youtube.com,www.youtube.com##+js(trusted-rpnt, script, /^(\(function serverContract\(\))/s, /*start*/(function(){const wrapper=(target\,argumentsList\,newTarget)=>{const result=Reflect.construct(target\,argumentsList\,newTarget);try{const decoded=(new TextDecoder).decode(result);if(decoded.includes("ssapPrerollEnabled")){const modifiedContent=decoded.replace(/\n.\n.playerConfig\.ssapConfig\.ssapPrerollEnabled.{2}(?:tru|fals)e/\,"");const modifiedUint8Array=(new TextEncoder).encode(modifiedContent);return modifiedUint8Array}}catch(e){}return result};const handler={construct:wrapper};window.Uint8Array=new Proxy(Uint8Array\,handler);document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g\,"")})();/*end*/$1)
 ! VOE sites
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=shannonpersonalcost.com,important
 shannonpersonalcost.com##+js(nowoif)
@@ -116,24 +116,22 @@ puzzle-loop.com,puzzle-words.com,puzzle-chess.com,puzzle-thermometers.com,puzzle
 ||statics.1mv.xyz/statics/*.js|$script,3p,replace=/;return _0x[a-z0-9]+\['[_a-z]+'\]\['s'\]/;return false/
 ||statics.1mv.xyz/statics/*.js|$script,3p,replace=/;if\(null!==\(_0x[a-z0-9]+=this\['[_a-z]+'\]\)[^)]+\)return;/;if(true)return;/
 ! in-jpn.com anti-adb
-in-jpn.com,oninet.ne.jp,xth.jp##body:style(color: #000 !important;)
-in-jpn.com#@#[style]:empty
-in-jpn.com,oninet.ne.jp,xth.jp##body div:matches-css(position: fixed):matches-css(background-color: /rgb/):matches-css(z-index: /\d+/)
 in-jpn.com##+js(trusted-replace-xhr-response, /.*/, , pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?)
 in-jpn.com##+js(aost, HTMLElement.prototype.remove, HTMLBodyElement.get injectedScript)
 in-jpn.com,oninet.ne.jp##img:style(visibility: visible !important;)
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xhr,domain=in-jpn.com
 xth.jp##body:style(background: none !important;)
-xth.jp###ggH1:style(height: 50px !important; position: absolute !important; left: -4000px !important;)
+xth.jp#@##ggH1:style(height: 50px !important; position: absolute !important; left:-4000px !important;)
+xth.jp##[id]:has(> ins.adsbygoogle):style(height: 100px !important; position: absolute !important; left: -4000px !important;)
 !#if cap_html_filtering
 ||in-jpn.com^$script,replace=/var w_status[\s\S\n]+?doSakigake\(\);[\s\S\n]+?\}//,badfilter
-||in-jpn.com^$script,replace=/var w_\w+[\s\S\n]+?doSakigake\(\);[\s\S\n]+?\}//
+||in-jpn.com^$script,replace=/var w_\w+[\s\S\n]+?_ubuser\.css[\s\S\n]+?\}[\s\S\n]+?\}//
 xth.jp##^script:has-text(ブロックをオフにして下さい)
 !#endif
-@@||oninet.ne.jp/sakigakesoft/s/holmes-geojson.js$1p,strict1p
 @@||oninet.ne.jp/sakigakesoft/s/leaf_main.js$script,1p,strict1p
-||yimg.com/aaq/benji/$badfilter
 @@||googletagmanager.com/gtm.js$domain=online-shop.mb.softbank.jp
 /stats/events$badfilter
 /stats/events$xmlhttprequest
 @@||googletagmanager.com/gtag/js$domain=showroom-live.com
+ad-contents.jp#@#.large-banner
+ad-contents.jp##.ui-main-body > div.large-banner
