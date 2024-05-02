@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Tue, 30 Apr 2024 17:18:46 +0000
-! Diff-Path: ../patches/2024.5.1.863.patch#ublock-annoyances
+! Last modified: Thu, 02 May 2024 10:58:58 +0000
+! Diff-Path: ../patches/2024.5.2.922.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -743,7 +743,7 @@ eurobaustoff.com##+js(trusted-set-local-storage-item, ccm_consent, '{"/":{"gen":
 euronews.com##+js(trusted-set-local-storage-item, euconsent-v2, CP9oCIAP9oCIAAHABBENAwEgAAAAAAAAAAAAAAAAAAAA.YAAAAAAAAAAA)
 dr-beckmann.com##+js(trusted-click-element, #usercentrics-root >>> button[data-testid="uc-deny-all-button"])
 @@||usercentrics.eu^$domain=dr-beckmann.com
-@@||cookiebot.com^$domain=fastnedcharging.com
+@@||cookiebot.com^$~image,3p,domain=fastnedcharging.com
 fastnedcharging.com##+js(trusted-set-cookie, CookieConsent, {necessary:true%2Cpreferences:false%2Cstatistics:false%2Cmarketing:true})
 ! *** filters/annoyances-others.txt ***
 mimaletadepeliculas.blogspot.com##+js(aopr, document.oncontextmenu)
@@ -1376,6 +1376,7 @@ fmovies.*#@#.fa-rss
 software-on.com##*::selection:style(background-color:#338FFF!important)
 software-on.com##*:style(-webkit-touch-callout: default !important; -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important;)
 linkedin.com##.global-alert--yield.global-alert, #global-alert-queue
+linkedin.com##+js(trusted-set-local-storage-item, contextual-sign-in-modal-cool-off-hidden, $now$)
 ke-1.com##+js(ra, oncontextmenu|onkeydown|onmousedown)
 l2gamers.cl##+js(aopw, document.oncontextmenu)
 l2gamers.cl##+js(aopw, document.onkeydown)
@@ -4649,3 +4650,5 @@ bloomberglinea.com,bloomberglinea.com.br##+js(aeld, copy)
 timeanddate.com##+js(aeld, load, ad-wrap)
 wear.jp##+js(trusted-set-session-storage-item, status_of_app_redirect_half_modal_on_coordinate_list, {"displayed":true})
 choosingnothing.com##+js(nosiif, devtoolsDetector)
+xossipy.com##+js(ra, oncopy|oncut)
+xossipy.com##style:has-text(user-select):remove()

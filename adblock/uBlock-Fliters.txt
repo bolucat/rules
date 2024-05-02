@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Wed, 01 May 2024 13:28:40 +0000
-! Diff-Path: ../patches/2024.5.1.863.patch#ublock-filters
+! Last modified: Thu, 02 May 2024 14:07:36 +0000
+! Diff-Path: ../patches/2024.5.2.922.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -3200,9 +3200,9 @@ igg-games.com##a[href$=".php"]
 ||igg-games.com/wp-content/uploads/2024/02/aaa.jpg$image
 ||igg-games.com/wp-content/uploads/2024/02/sss.jpg$image
 pcgamestorrents.com##[href*="banner"]
+pcgamestorrents.org##[href*="/gameadult/"][href$=".php"]
 ||pcgamestorrents.com/*.gif$image
-pcgamestorrents.com##a[href^="https://pcgamestorrents.com/cuskilo2"]
-pcgamestorrents.org##a[href^="https://pcgamestorrents.org/cuskilo2"]
+pcgamestorrents.com,pcgamestorrents.org##a[href^="https://pcgamestorrents."][href*="/cuskilo"]
 pcgamestorrents.com,pcgamestorrents.org##a[href][aria-label="awed"]
 pornrabbit.com##+js(nowoif)
 ||pornrabbit.com/sw.js$script,1p
@@ -9522,6 +9522,7 @@ infinityscans.xyz,infinityscans.net##+js(rpnt, script, /function .*\(\);\}/, , c
 infinityscans.xyz,infinityscans.net##+js(rpnt, script, /\(function\(.*\(\);\}/, , condition, throw Error)
 infinityscans.xyz,infinityscans.net##+js(rpnt, script, '||!, '||)
 infinityscans.xyz,infinityscans.net##+js(rpnt, script, )||!, )||)
+infinityscans.xyz,infinityscans.net##+js(rmnt, script, /catch[\s\S]*?;/)
 *$script,redirect-rule=noopjs,domain=infinityscans.xyz|infinityscans.net
 *$xhr,domain=infinityscans.xyz|infinityscans.net,redirect-rule=nooptext
 *$frame,redirect-rule=noopframe,domain=infinityscans.xyz|infinityscans.net
@@ -9660,6 +9661,9 @@ spontacts.com##+js(nostif, detectAdBlocker)
 tutorialspoint.com##^#east[data-options*="Advertisement"]
 thehackernews.com##a[href^="https://thehackernews.uk/"]:matches-attr(href=/https:\/\/thehackernews\.uk\/[a-zA-Z0-9]{4,}/):not([href*="-"]):not([class*="button"]):not([class*="latest"])
 thehackernews.com##body:has(article) .cf > a[href^="https://thehackernews.uk/"][target="_blank"]
+thehackernews.com##[href="https://thehackernews.uk/wiz-kubernetes-security"]
+thehackernews.com##.akku
+thehackernews.com##section.cf.rocking
 !#if cap_html_filtering
 thehackernews.com##^script:has-text(imgSrc)
 !#else
@@ -9968,8 +9972,15 @@ cryptorank.io##div[tabindex] > button:has-text(Buy $)
 skidrowcodex.net##+js(aeld, DOMContentLoaded, canRedirect)
 skidrowcodex.net##.blog-content.wcontainer:has(> .premium)
 skidrowcodex.net##.widget_text:has-text(Advertisement)
+skidrowcodex.net##.widget_text:has(script[src$="/invoke.js"])
 erothots.co##+js(nowoif)
 ||blackandwhite-temporary.com^
+mygaytube.com##+js(acs, document.querySelectorAll, popMagic)
+18kalebettv.xyz,19kalebettv.xyz##+js(ra, oncontextmenu, body)
+18kalebettv.xyz,19kalebettv.xyz##+js(set-attr, .video-skip[data-time], data-time, 0)
+18kalebettv.xyz,19kalebettv.xyz##body > a[target="_blank"][rel="noopener"]
+18kalebettv.xyz,19kalebettv.xyz##a[target="_blank"]:has(> img:only-child[src^="/assets/"])
+takimag.com##+js(aeld, DOMContentLoaded, adb)
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -10424,13 +10435,14 @@ mphealth.online###yuidea-btn-after, #yuidea-btmbtn:style(display: block !importa
 mphealth.online###yuidea-btn-after, #yuidea-btmbtn:remove-attr(disabled)
 mphealth.online###yuidea-btn-after, #yuidea-btmbtn:others()
 mphealth.online###content:style(font-size: 0px !important;)
-*$script,xhr,redirect-rule=noopjs,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz
-@@*$ghide,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz
-@@*$script,1p,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz
-@@||profitsfly.com^$script,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz
-@@/adpartner.min.js$script,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz
-ashrfd.xyz,poqzn.xyz,tpayr.xyz,tiktokcounter.net,sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com##+js(no-fetch-if, /doubleclick|googlesyndication|google/)
-ashrfd.xyz,poqzn.xyz,tpayr.xyz,tiktokcounter.net,sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com##+js(set, assholeWhoReadThis, true)
+*$script,xhr,redirect-rule=noopjs,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz
+@@*$ghide,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz
+@@*$script,1p,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz
+@@||profitsfly.com^$script,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz
+@@/adpartner.min.js$script,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz
+rezsx.xyz,ashrfd.xyz,poqzn.xyz,tpayr.xyz,tiktokcounter.net,sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com##+js(no-fetch-if, /doubleclick|googlesyndication|google/)
+rezsx.xyz,ashrfd.xyz,poqzn.xyz,tpayr.xyz,tiktokcounter.net,sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com##+js(set, assHoleWhoReadThis, true)
+rezsx.xyz,ashrfd.xyz,poqzn.xyz,tpayr.xyz,tiktokcounter.net,sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com##+js(rpnt, script, /^(\s*[^([{]+;)/, $1(function() {document.addEventListener('DOMContentLoaded'\, ()=> {const i = document.createElement('iframe');i.style = 'height:0;width:0;border:0;';i.id = 'a';document.body.appendChild(i);i.focus();})}());, sedCount, 1)
 easycut.io##+js(set, blurred, false)
 ||i.gyazo.com^$domain=insurancexblog.blogspot.com
 sahlmarketing.net###link:remove-attr(disabled)
@@ -18682,25 +18694,25 @@ canale.live##+js(nosiif, href)
 *$popunder,domain=canale.live
 ! Ad-Shield
 !#if cap_html_filtering
-||07c225f3.online^$~css,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site
-||content-loader.com^$~css,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site
-||css-load.com^$~css,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site
-||html-load.com^$~css,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site
-@@/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site|etnewskorea.com
-/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site,replace=/\)\{var [a-z]{1,2},[a-z]{1,2},[a-z]{1,2},[a-z]{1,2}\=[a-z]{2};return [a-z]\(\)/){return;/g
-/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site,replace=/\)\{var [a-z]{1,2},[a-z]{1,2},[a-z]{1,2};.*?return [a-z]\(\)/){return; return c()/g
-/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org,replace=/\.mark\(\(function [a-z0-9]{1,2}\([a-z0-9]{1,2},[a-z0-9]{1,2}\){var.*\]\]\)\}\)\)\),/.mark((function neutralized(a,b){var none = false;}))),/g
+||07c225f3.online^$~css,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site|thestar.co.uk
+||content-loader.com^$~css,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site|thestar.co.uk
+||css-load.com^$~css,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site|thestar.co.uk
+||html-load.com^$~css,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site|thestar.co.uk
+@@/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site|etnewskorea.com|thestar.co.uk
+/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site|thestar.co.uk,replace=/\)\{var [a-z]{1,2},[a-z]{1,2},[a-z]{1,2},[a-z]{1,2}\=[a-z]{2};return [a-z]\(\)/){return;/g
+/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|bamgosu.site|thestar.co.uk,replace=/\)\{var [a-z]{1,2},[a-z]{1,2},[a-z]{1,2};.*?return [a-z]\(\)/){return; return c()/g
+/loader.min.js$xhr,script,domain=loawa.com|ygosu.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|dogdrip.net|worldhistory.org|thestar.co.uk,replace=/\.mark\(\(function [a-z0-9]{1,2}\([a-z0-9]{1,2},[a-z0-9]{1,2}\){var.*\]\]\)\}\)\)\),/.mark((function neutralized(a,b){var none = false;}))),/g
 !#else
 *$csp=script-src-attr 'none',domain=lamire.jp|picrew.me
 ||html-load.com/loader.min.js$domain=lamire.jp|picrew.me
-loawa.com,ygosu.com,sportalkorea.com,enetnews.co.kr,edaily.co.kr,economist.co.kr,etoday.co.kr,hankyung.com,isplus.com,hometownstation.com,inven.co.kr,honkailab.com,warcraftrumbledeck.com,genshinlab.com,thestockmarketwatch.com,thephoblographer.com,issuya.com,meeco.kr,etnews.com,iusm.co.kr,dogdrip.net,worldhistory.org,uttranews.com,text-compare.com,vipotv.com,bamgosu.site,etnewskorea.com,automobile-catalog.com,maketecheasier.com,thesaurus.net,gadgets360.com##+js(no-fetch-if, /static\.criteo\.net|adsbygoogle/, length:150000-150200)
-loawa.com,ygosu.com,sportalkorea.com,enetnews.co.kr,edaily.co.kr,economist.co.kr,etoday.co.kr,hankyung.com,isplus.com,hometownstation.com,inven.co.kr,honkailab.com,warcraftrumbledeck.com,genshinlab.com,thestockmarketwatch.com,thephoblographer.com,issuya.com,meeco.kr,etnews.com,iusm.co.kr,dogdrip.net,worldhistory.org,uttranews.com,text-compare.com,vipotv.com,bamgosu.site,etnewskorea.com,automobile-catalog.com,maketecheasier.com,thesaurus.net,gadgets360.com##+js(set, window.googletag.apiReady, false)
-*$frame,redirect-rule=noopframe,domain=ygosu.com|loawa.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|meeco.kr|etnews.com|iusm.co.kr|dogdrip.net|worldhistory.org|uttranews.com|text-compare.com|vipotv.com|bamgosu.site|etnewskorea.com|automobile-catalog.com|maketecheasier.com|thesaurus.net|gadgets360.com
-*$script,xhr,redirect-rule=noopjs,domain=ygosu.com|loawa.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|meeco.kr|etnews.com|iusm.co.kr|dogdrip.net|worldhistory.org|uttranews.com|text-compare.com|vipotv.com|bamgosu.site|etnewskorea.com|maketecheasier.com|thesaurus.net|gadgets360.com
-*$image,redirect-rule=1x1.gif,domain=ygosu.com|loawa.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|meeco.kr|etnews.com|iusm.co.kr|dogdrip.net|worldhistory.org|uttranews.com|vipotv.com|bamgosu.site|etnewskorea.com|automobile-catalog.com|maketecheasier.com|thesaurus.net|gadgets360.com
-@@*$ghide,domain=ygosu.com|loawa.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|meeco.kr|etnews.com|iusm.co.kr|dogdrip.net|worldhistory.org|uttranews.com|text-compare.com|vipotv.com|bamgosu.site|etnewskorea.com|automobile-catalog.com|maketecheasier.com|thesaurus.net|gadgets360.com
+loawa.com,ygosu.com,sportalkorea.com,enetnews.co.kr,edaily.co.kr,economist.co.kr,etoday.co.kr,hankyung.com,isplus.com,hometownstation.com,inven.co.kr,honkailab.com,warcraftrumbledeck.com,genshinlab.com,thestockmarketwatch.com,thephoblographer.com,issuya.com,meeco.kr,etnews.com,iusm.co.kr,dogdrip.net,worldhistory.org,uttranews.com,text-compare.com,vipotv.com,bamgosu.site,etnewskorea.com,automobile-catalog.com,maketecheasier.com,thesaurus.net,gadgets360.com,thestar.co.uk##+js(no-fetch-if, /static\.criteo\.net|adsbygoogle/, length:150000-150200)
+loawa.com,ygosu.com,sportalkorea.com,enetnews.co.kr,edaily.co.kr,economist.co.kr,etoday.co.kr,hankyung.com,isplus.com,hometownstation.com,inven.co.kr,honkailab.com,warcraftrumbledeck.com,genshinlab.com,thestockmarketwatch.com,thephoblographer.com,issuya.com,meeco.kr,etnews.com,iusm.co.kr,dogdrip.net,worldhistory.org,uttranews.com,text-compare.com,vipotv.com,bamgosu.site,etnewskorea.com,automobile-catalog.com,maketecheasier.com,thesaurus.net,gadgets360.com,thestar.co.uk##+js(set, window.googletag.apiReady, false)
+*$frame,redirect-rule=noopframe,domain=ygosu.com|loawa.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|meeco.kr|etnews.com|iusm.co.kr|dogdrip.net|worldhistory.org|uttranews.com|text-compare.com|vipotv.com|bamgosu.site|etnewskorea.com|automobile-catalog.com|maketecheasier.com|thesaurus.net|gadgets360.com|thestar.co.uk
+*$script,xhr,redirect-rule=noopjs,domain=ygosu.com|loawa.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|meeco.kr|etnews.com|iusm.co.kr|dogdrip.net|worldhistory.org|uttranews.com|text-compare.com|vipotv.com|bamgosu.site|etnewskorea.com|maketecheasier.com|thesaurus.net|gadgets360.com|thestar.co.uk
+*$image,redirect-rule=1x1.gif,domain=ygosu.com|loawa.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|meeco.kr|etnews.com|iusm.co.kr|dogdrip.net|worldhistory.org|uttranews.com|vipotv.com|bamgosu.site|etnewskorea.com|automobile-catalog.com|maketecheasier.com|thesaurus.net|gadgets360.com|thestar.co.uk
+@@*$ghide,domain=ygosu.com|loawa.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|meeco.kr|etnews.com|iusm.co.kr|dogdrip.net|worldhistory.org|uttranews.com|text-compare.com|vipotv.com|bamgosu.site|etnewskorea.com|automobile-catalog.com|maketecheasier.com|thesaurus.net|gadgets360.com|thestar.co.uk
 *$script,xhr,3p,redirect-rule=noopjs,domain=inven.co.kr
-thestockmarketwatch.com,issuya.com,meeco.kr,dogdrip.net,vipotv.com,automobile-catalog.com,maketecheasier.com,thesaurus.net,gadgets360.com##ins.adsbygoogle:style(height: 1px !important; visibility: hidden !important;)
+thestockmarketwatch.com,issuya.com,meeco.kr,dogdrip.net,vipotv.com,automobile-catalog.com,maketecheasier.com,thesaurus.net,gadgets360.com,thestar.co.uk##ins.adsbygoogle:style(height: 1px !important; visibility: hidden !important;)
 thestockmarketwatch.com#@#.adSpotPad
 thestockmarketwatch.com##.adSpotPad:style(height: 1px !important; min-height: 1px !important; visibility: hidden !important;)
 loawa.com##a[href^="https://mini.m-able.app/@mini/loawa?tracking_template"]:remove()
@@ -18737,7 +18749,7 @@ loawa.com,ygosu.com,sportalkorea.com,enetnews.co.kr,edaily.co.kr,economist.co.kr
 ||html-load.cc^$font,ping,doc,popup
 ||html-load.cc/report?$xhr
 *$popup,domain=html-load.cc|07c225f3.online|content-loader.com|css-load.com|html-load.com|html-load.cc
-/\.(xyz|online|site)\/[a-z0-9]{7}\/[a-z0-9]{50,}$/$match-case,popup,domain=ygosu.com|loawa.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|meeco.kr|etnews.com|iusm.co.kr|dogdrip.net|worldhistory.org|uttranews.com|text-compare.com|vipotv.com|bamgosu.site|etnewskorea.com|automobile-catalog.com|maketecheasier.com|thesaurus.net|gadgets360.com
+/\.(xyz|online|site)\/[a-z0-9]{7}\/[a-z0-9]{50,}$/$match-case,popup,domain=ygosu.com|loawa.com|sportalkorea.com|enetnews.co.kr|edaily.co.kr|economist.co.kr|etoday.co.kr|hankyung.com|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|warcraftrumbledeck.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|meeco.kr|etnews.com|iusm.co.kr|dogdrip.net|worldhistory.org|uttranews.com|text-compare.com|vipotv.com|bamgosu.site|etnewskorea.com|automobile-catalog.com|maketecheasier.com|thesaurus.net|gadgets360.com|thestar.co.uk
 genshinlab.com,a-ha.io,cboard.net,jjang0u.com,joongdo.co.kr,viva100.com,thephoblographer.com,newdaily.co.kr,gamingdeputy.com,thesaurus.net,tweaksforgeeks.com,alle-tests.nl,maketecheasier.com,automobile-catalog.com,motorbikecatalog.com##+js(noeval-if, /07c225f3\.online|content-loader\.com|css-load\.com|html-load\.com/)
 !#if cap_html_filtering
 genshinlab.com,fourfourtwo.co.kr,interfootball.co.kr,a-ha.io,cboard.net,jjang0u.com,joongdo.co.kr,viva100.com,thephoblographer.com,newdaily.co.kr,gamingdeputy.com,thesaurus.net,tweaksforgeeks.com,alle-tests.nl,maketecheasier.com,automobile-catalog.com,allthekingz.com,motorbikecatalog.com##^script:has-text(KCgpPT57bGV0IGU)
@@ -19611,7 +19623,7 @@ hqporner.com##.uvb_wrapper
 javchill.com##+js(ra, href, [onclick^="pop"])
 javchill.com##.thumb:style(cursor:pointer !important)
 ! FingerprintJS popups
-arcjav.com,bluemedialink.online,buffstreams.*,game3rb.com,igg-games.com,manhwalist.com,mc-hacks.net,miraculous.*,mycivillinks.com,nflstreams.me,s2dfree.to,secretlink.xyz,soap2day.*,tennisstreams.*,tv247.us,vidsrc.*,vipboxtv.*,woiden.com,wonderapk.com,worldcupstream.pm##+js(acs, navigator, FingerprintJS)
+arcjav.com,bluemedialink.online,buffstreams.*,game3rb.com,igg-games.com,manhwalist.com,mc-hacks.net,miraculous.*,mycivillinks.com,nflstreams.me,s2dfree.to,secretlink.xyz,soap2day.*,tennisstreams.*,tv247.us,vidsrc.*,vipbox.*,vipboxtv.*,woiden.com,wonderapk.com,worldcupstream.pm##+js(acs, navigator, FingerprintJS)
 manhwalist.com##+js(aost, btoa, /https|stackDepth:3/)
 mc-hacks.net##+js(aopw, ai_front)
 !#if cap_html_filtering
