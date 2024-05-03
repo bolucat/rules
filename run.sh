@@ -24,7 +24,7 @@
 #	   https://gitlab.com/malware-filter/phishing-filter
 #	   https://github.com/uBlockOrigin/uAssets
 #	   https://easylist.to
-#	   https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters
+#	   https://github.com/bpc-clone/bpc_updates
 #	   https://github.com/ClearURLs/Rules
 #	   https://github.com/immersive-translate/immersive-translate
 #	   https://github.com/gkd-kit/subscription
@@ -244,14 +244,9 @@ iptv() {
 bpc() {
 	mkdir -p bpc
 	pushd bpc || exit 1
-	wget https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/bpc-paywall-filter.txt -O bpc-filter.txt
-	wget https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.en.user.js -O bpc.en.user.js
-	wget https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.nl.user.js -O bpc.nl.user.js
-	wget https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fi.se.user.js -O bpc.fi.se.user.js
-	wget https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.fr.user.js -O bpc.fr.user.js
-	wget https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.de.user.js -O bpc.de.user.js
-	wget https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.it.user.js -O bpc.it.user.js
-	wget https://gitlab.com/magnolia1234/bypass-paywalls-clean-filters/-/raw/main/userscript/bpc.es.pt.user.js -O bpc.es.pt.user.js
+ 	wget -qO- "https://api.github.com/repos/bpc-clone/bypass-paywalls-clean-filters/contents/userscript" | jq ".[] | {download_url}" -c | jq .download_url -r | wget -c -i -
+	wget https://raw.githubusercontent.com/bpc-clone/bypass-paywalls-clean-filters/main/bpc-paywall-filter.txt -O bpc-paywall-filter.txt
+ 	wget -qO- https://api.github.com/repos/bpc-clone/bpc_updates/releases/latest | jq ".assets[] | {browser_download_url}" -c | jq .browser_download_url -r | wget -c -i -
 	popd || exit 1
 }
 
