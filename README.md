@@ -218,7 +218,7 @@
 # iptv
 - [china-aptv-iptv.m3u](https://rules.neuq.de/iptv/china-aptv-iptv.m3u)
 # bypass-wall-clean
-- [bpc-filter.txt](https://rules.neuq.de/bpc/bpc-filter.txt)
+- [bpc-paywall-filter.txt](https://rules.neuq.de/bpc/bpc-paywall-filter.txt)
 - [bpc.de.user.js](https://rules.neuq.de/bpc/bpc.de.user.js)
 - [bpc.en.user.js](https://rules.neuq.de/bpc/bpc.en.user.js)
 - [bpc.es.pt.user.js](https://rules.neuq.de/bpc/bpc.es.pt.user.js)
@@ -226,6 +226,15 @@
 - [bpc.fr.user.js](https://rules.neuq.de/bpc/bpc.fr.user.js)
 - [bpc.it.user.js](https://rules.neuq.de/bpc/bpc.it.user.js)
 - [bpc.nl.user.js](https://rules.neuq.de/bpc/bpc.nl.user.js)
+- [bypass-paywalls-chrome-clean-3.6.5.0-kiwi-custom.crx](https://rules.neuq.de/bpc/bypass-paywalls-chrome-clean-3.6.5.0-kiwi-custom.crx)
+- [bypass-paywalls-chrome-clean-3.6.6.0.crx](https://rules.neuq.de/bpc/bypass-paywalls-chrome-clean-3.6.6.0.crx)
+- [bypass-paywalls-chrome-clean-master.zip](https://rules.neuq.de/bpc/bypass-paywalls-chrome-clean-master.zip)
+- [bypass-paywalls-firefox-clean-master.zip](https://rules.neuq.de/bpc/bypass-paywalls-firefox-clean-master.zip)
+- [bypass_paywalls_clean-3.6.5.0.xpi](https://rules.neuq.de/bpc/bypass_paywalls_clean-3.6.5.0.xpi)
+- [bypass_paywalls_clean-3.6.5.1-custom.xpi](https://rules.neuq.de/bpc/bypass_paywalls_clean-3.6.5.1-custom.xpi)
+- [bypass_paywalls_clean-3.6.6.0-custom.xpi](https://rules.neuq.de/bpc/bypass_paywalls_clean-3.6.6.0-custom.xpi)
+- [bypass_paywalls_clean-3.6.6.0.xpi](https://rules.neuq.de/bpc/bypass_paywalls_clean-3.6.6.0.xpi)
+- [bypass_paywalls_clean-latest.xpi](https://rules.neuq.de/bpc/bypass_paywalls_clean-latest.xpi)
 # clearurls
 - [data.min.json](https://rules.neuq.de/clearurls/data.min.json)
 - [data.minify.json](https://rules.neuq.de/clearurls/data.minify.json)
