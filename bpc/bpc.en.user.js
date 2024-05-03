@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.6.2
+// @version         3.6.6.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -211,77 +211,81 @@ if (matchDomain('afr.com')) {
   let article_sel = 'div#endOfArticle';
   let article = document.querySelector(article_sel);
   if (article) {
-    let pars = article.querySelectorAll('p, figure');
-    if (pars.length < 5) {
-      removeDOMElement(...pars);
-      let scripts = document.querySelectorAll('script:not([src]):not([type])');
-      let json_script;
-      for (let script of scripts) {
-        if (script.text.includes('__REDUX_STATE__=')) {
-          json_script = script;
-          break;
-        }
-      }
-      if (json_script) {
-        try {
-          let json = JSON.parse(json_script.text.split('__REDUX_STATE__=')[1].split('};')[0].replace(/:undefined([,}])/g, ':"undefined"$1') + '}');
-          if (json) {
-            let json_text = json.page.content.asset.body;
-            if (json_text) {
-              let placeholders = json.page.content.asset.bodyPlaceholders;
-              if (placeholders) {
-                function find_item(match, p1, offset, string) {
-                  let placeholder_id = p1;
-                  let result = '';
-                  if (placeholder_id && placeholders[placeholder_id]) {
-                    let item = placeholders[placeholder_id];
-                    if (item.data) {
-                      if (['linkArticle', 'linkExternal'].includes(item.type)) {
-                        if (item.data.text) {
-                          if (item.data.url)
-                            result = '<a href="' + item.data.url + '"' + (item.newTab ? 'target="_blank"' : '') + '>' + item.data.text + '</a>';
-                          else
-                            result = item.data.text;
+    window.setTimeout(function () {
+      let pars = article.querySelectorAll('p, figure');
+      if (pars.length < 5) {
+        removeDOMElement(...pars);
+        let url = window.location.href.split(/[#\?]/)[0];
+        fetch(url)
+        .then(response => {
+          if (response.ok) {
+            response.text().then(html => {
+              if (html.includes('__REDUX_STATE__=')) {
+                try {
+                  let json = JSON.parse(html.split('__REDUX_STATE__=')[1].split('};')[0].replace(/:undefined([,}])/g, ':"undefined"$1') + '}');
+                  if (json) {
+                    let json_text = json.page.content.asset.body;
+                    if (json_text) {
+                      let placeholders = json.page.content.asset.bodyPlaceholders;
+                      if (placeholders) {
+                        function find_item(match, p1, offset, string) {
+                          let placeholder_id = p1;
+                          let result = '';
+                          if (placeholder_id && placeholders[placeholder_id]) {
+                            let item = placeholders[placeholder_id];
+                            if (item.data) {
+                              if (['linkArticle', 'linkExternal'].includes(item.type)) {
+                                if (item.data.text) {
+                                  if (item.data.url)
+                                    result = '<a href="' + item.data.url + '"' + (item.newTab ? 'target="_blank"' : '') + '>' + item.data.text + '</a>';
+                                  else
+                                    result = item.data.text;
+                                }
+                              } else if (item.type === 'image') {
+                                if (item.data.fileName)
+                                  result = '<figure><img src="https://static.ffx.io/images/w_960/' + item.data.fileName + '" style="width: 100%;"><figcaption>' + (item.data.caption ? item.data.caption : '') + (item.data.source ? '<span style="font-weight: bold;">&nbsp;' + item.data.source + '</span>' : '') + '</figcaption></figure>';
+                              } else if (item.type === 'youtube') {
+                                if (item.data.url) {
+                                  if (item.data.url.includes('watch?v='))
+                                    result = '<iframe src="' + item.data.url.replace('watch?v=', 'embed/') + '" style="width: 100%; height: 400px;"></iframe>';
+                                  else
+                                    result = '<a href="' + item.data.url + '" target="_blank">' + item.data.url + '</a>';
+                                }
+                              } else if (item.type === 'twitter') {
+                                if (item.data.url)
+                                  result = '<a href="' + item.data.url + '" target="_blank">' + item.data.url + '</a>';
+                              } else if (item.type === 'iframe') {
+                                if (item.data.url)
+                                  result = '<iframe src="' + item.data.url + '" style="width: 100%; height: 200px; border: none;"></iframe>';
+                              } else if (!['callout', 'quote', 'relatedStory', 'video'].includes(item.type)) {
+                                console.log(item);
+                              }
+                            }
+                          }
+                          return result;
                         }
-                      } else if (item.type === 'image') {
-                        if (item.data.fileName)
-                          result = '<figure><img src="https://static.ffx.io/images/w_960/' + item.data.fileName + '" style="width: 100%;"><figcaption>' + (item.data.caption ? item.data.caption : '') + (item.data.source ? '<span style="font-weight: bold;">&nbsp;' + item.data.source + '</span>' : '') + '</figcaption></figure>';
-                      } else if (item.type === 'youtube') {
-                        if (item.data.url) {
-                          if (item.data.url.includes('watch?v='))
-                            result = '<iframe src="' + item.data.url.replace('watch?v=', 'embed/') + '" style="width: 100%; height: 400px;"></iframe>';
-                          else
-                            result = '<a href="' + item.data.url + '" target="_blank">' + item.data.url + '</a>';
-                        }
-                      } else if (item.type === 'twitter') {
-                        if (item.data.url)
-                          result = '<a href="' + item.data.url + '" target="_blank">' + item.data.url + '</a>';
-                      } else if (item.type === 'iframe') {
-                        if (item.data.url)
-                          result = '<iframe src="' + item.data.url + '" style="width: 100%; height: 200px; border: none;"></iframe>';
-                      } else if (!['callout', 'quote', 'relatedStory', 'video'].includes(item.type)) {
-                        console.log(item);
+                        json_text = json_text.replace(/<x-placeholder id="(\w+)"><\/x-placeholder>/g, find_item);
                       }
+                      let parser = new DOMParser();
+                      let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+                      let content_new = doc.querySelector('div');
+                      article.appendChild(content_new);
+                      let sheet = document.createElement('style');
+                      sheet.innerText = article_sel + ' p {margin: 20px 0px;}}';
+                      document.head.appendChild(sheet);
                     }
                   }
-                  return result;
+                } catch (err) {
+                  console.log(err);
                 }
-                json_text = json_text.replace(/<x-placeholder id="(\w+)"><\/x-placeholder>/g, find_item);
               }
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-              let content_new = doc.querySelector('div');
-              article.appendChild(content_new);
-              let sheet = document.createElement('style');
-              sheet.innerText = article_sel + ' p {margin: 20px 0px;}}';
-              document.head.appendChild(sheet);
-            }
+            });
           }
-        } catch (err) {
-          console.log(err);
-        }
+        }).catch(function (err) {
+          false;
+        });
       }
-    }
+    }, 1000);
   }
 }
 
@@ -1521,6 +1525,17 @@ else if (matchDomain('economictimes.indiatimes.com')) {
     if (article_wrap)
       article_wrap.removeAttribute('style');
   }
+  if (mobile) {
+    let pageholder = document.querySelector('main.pageHolder');
+    if (pageholder) {
+      pageholder.classList.remove('pageHolder');
+      let header = document.querySelector('header');
+      if (header)
+        header.style = 'width: 100% !important;';
+      let f_col = document.querySelector('div.f_col');
+      removeDOMElement(f_col);
+    }
+  }
 }
 
 else if (matchDomain('economist.com')) {
@@ -2480,6 +2495,7 @@ else if (matchDomain('seekingalpha.com')) {
         sa_noscroll(body);
       waitDOMAttribute('body', 'BODY', 'style', sa_noscroll, true);
       waitDOMAttribute('body', 'BODY', 'class', sa_noscroll, true);
+      waitDOMAttribute('main', 'MAIN', 'inert', node => node.removeAttribute('inert'), true);
     }
   }
 }
