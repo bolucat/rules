@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.6.5.1
+// @version         3.6.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.es.pt.user.js
@@ -580,7 +580,7 @@ else if (matchDomain('globo.com')) {
   } else if (window.location.pathname.includes('/amp/'))
     ampToHtml();
   if (!window.location.pathname.includes('/amp/')) {
-    let ads = 'div[id^="ad-container"], div.content-ads, div[class^="block__advertising"], div#pub-in-text-wrapper';
+    let ads = 'div[id^="ad-container"], div.content-ads, div[class^="block__advertising"], div#pub-in-text-wrapper, div.area_publicidade_container';
     hideDOMStyle(ads);
   }
 }

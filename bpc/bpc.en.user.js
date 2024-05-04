@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.6.4
+// @version         3.6.6.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -213,7 +213,7 @@ if (matchDomain('afr.com')) {
   if (article) {
     window.setTimeout(function () {
       let pars = article.querySelectorAll('p, figure');
-      if (pars.length < 5) {
+      if (pars.length && pars.length < 5) {
         removeDOMElement(...pars);
         let url = window.location.href.split(/[#\?]/)[0];
         fetch(url)
@@ -2004,6 +2004,17 @@ else if (matchDomain('jpost.com')) {
   removeDOMElement(...premium_banners);
 }
 
+else if (matchDomain('kompas.id')) {
+  let paywall = document.querySelector('kompasid-paywall');
+  if (paywall) {
+    let intro = document.querySelector('div.paywall.block');
+    removeDOMElement(paywall, intro);
+    let div_hidden = document.querySelector('[class*="paywall"].hidden');
+    if (div_hidden)
+      div_hidden.classList.remove('hidden');
+  }
+}
+
 else if (matchDomain(['latimes.com', 'sandiegouniontribune.com'])) {
   let subscribers = pageContains('div.infobox > p.infobox-title', /subscribers/i);
   if (subscribers.length)
@@ -2131,6 +2142,10 @@ else if (matchDomain('ndtvprofit.com')) {
   }
   let ads = 'div.responsive-ad';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('newcriterion.com')) {
+  getJsonUrl('div.paywall-overlay', '', 'div.entry-content');
 }
 
 else if (matchDomain('newleftreview.org')) {
