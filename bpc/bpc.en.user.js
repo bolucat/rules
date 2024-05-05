@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.6.5
+// @version         3.6.6.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -1192,7 +1192,7 @@ else if (matchDomain('bloomberg.com')) {
   } else
     window.localStorage.clear();
   window.setTimeout(function () {
-    let shimmering = document.querySelector('article.first-story div[class^="Placeholder_placeholderParagraphWrapper-"]');
+    let shimmering = document.querySelector('article.first-story div[class*="Placeholder_placeholderParagraphWrapper-"]');
     if (shimmering) {
       header_nofix(shimmering.parentNode, 'BPC > disable Dark Reader or enable Javascript for site');
     }
@@ -3501,6 +3501,66 @@ else if (domain = matchDomain('voguebusiness.com')) {
 }
 
 else if (matchDomain('washingtonpost.com')) {
+  let metered_sel = 'div.meteredContent';
+  let article = document.querySelector(metered_sel + ' > div.teaser-content');
+  let pars = document.querySelectorAll(metered_sel + ' div.article-body');
+  if (pars.length && pars.length < 5 && article) {
+    let json_script = document.querySelector('script#__NEXT_DATA__');
+    if (json_script) {
+      try {
+        let json = JSON.parse(json_script.text);
+        if (json && json.props.pageProps.globalContent.content_elements) {
+          let pars_new = json.props.pageProps.globalContent.content_elements;
+          let par_class;
+          let art_par = article.querySelector('p');
+          if (art_par)
+            par_class = art_par.className;
+          let par_first = true;
+          let parser = new DOMParser();
+          article.innerHTML = '';
+          for (let par of pars_new) {
+            let elem;
+            if (['header', 'text'].includes(par.type)) {
+              let doc = parser.parseFromString('<p class="' + par_class + '">' + par.content + '</p>', 'text/html');
+              elem = doc.querySelector('p');
+              if (par.type === 'header')
+                elem.style = 'font-weight: bold;';
+            } else if (par.type === 'image') {
+              if (par.url && !par_first) {
+                elem = document.createElement('p');
+                elem.className = par_class;
+                let sub_elem = document.createElement('figure');
+                let img = document.createElement('img');
+                img.src = 'https://www.washingtonpost.com/wp-apps/imrs.php?src=' + par.url + '&w=1200';
+                img.style = 'width:100%';
+                sub_elem.appendChild(img);
+                if (par.credits_caption_display) {
+                  let caption = document.createElement('p');
+                  caption.innerText = par.credits_caption_display;
+                  sub_elem.appendChild(caption);
+                }
+                elem.appendChild(sub_elem);
+              }
+            } else if (par.type === 'custom_embed' && par.subtype) {
+              if (!['magnet'].includes(par.subtype) && par.embed && par.embed.url) {
+                elem = document.createElement('iframe');
+                elem.src = par.embed.url;
+                elem.style = 'height: 400px; width: 100%';
+              }
+            } else if (!['divider'].includes(par.type))
+              console.log(par);
+            if (elem)
+              article.appendChild(elem);
+            if (par_first)
+              par_first = false;
+          }
+          window.scrollTo(0, 0);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
   let leaderboard = '#leaderboard-wrapper';
   let ads = 'div[data-qa$="-ad"]';
   hideDOMStyle(leaderboard + ', ' + ads);
