@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sun, 05 May 2024 06:22:51 +0000
-! Diff-Path: ../patches/2024.5.5.800.patch#ublock-quick-fixes
+! Last modified: Mon, 06 May 2024 09:46:25 +0000
+! Diff-Path: ../patches/2024.5.6.864.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -117,33 +117,17 @@ puzzle-loop.com,puzzle-words.com,puzzle-chess.com,puzzle-thermometers.com,puzzle
 ||statics.1mv.xyz/statics/*.js|$script,3p,replace=/;return _0x[a-z0-9]+\['[_a-z]+'\]\['s'\]/;return false/
 ||statics.1mv.xyz/statics/*.js|$script,3p,replace=/;if\(null!==\(_0x[a-z0-9]+=this\['[_a-z]+'\]\)[^)]+\)return;/;if(true)return;/
 ! in-jpn.com anti-adb
-in-jpn.com##+js(trusted-replace-xhr-response, /.*/, , pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?)
-in-jpn.com##+js(aost, HTMLElement.prototype.remove, HTMLBodyElement.get injectedScript)
-in-jpn.com,oninet.ne.jp##img:style(visibility: visible !important;)
-@@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xhr,domain=in-jpn.com
-xth.jp##body:style(background: none !important;)
-xth.jp#@##ggH1:style(height: 50px !important; position: absolute !important; left:-4000px !important;)
 xth.jp##[id]:has(> ins.adsbygoogle):style(height: 100px !important; position: absolute !important; left: -4000px !important;)
 !#if cap_html_filtering
-||in-jpn.com^$script,replace=/var w_status[\s\S\n]+?doSakigake\(\);[\s\S\n]+?\}//,badfilter
 ||in-jpn.com^$script,replace=/w_mode==1/1/
 ||in-jpn.com^$script,replace=/function myFunc[\s\S\n]+?doSakigake\(\);[\s\S\n]+?\}//
-xth.jp##^script:has-text(ブロックをオフにして下さい)
 !#endif
-@@||oninet.ne.jp/sakigakesoft/s/leaf_main.js$script,1p,strict1p
-@@||googletagmanager.com/gtag/js$domain=showroom-live.com
-ad-contents.jp#@#.large-banner
-ad-contents.jp##.ui-main-body > div.large-banner
 @@||keytiles.com/tracking/$script,domain=blikk.hu
 ! EL mistake
 ||ygosu.com^$document,popup,badfilter
 ||bamgosu.site^$document,popup,badfilter
-! FP on mobile marketplace
-facebook.com#@##screen-root > :not(.bg-s2) .m[data-type="vscroller"] > :is(.bg-s2, .bg-s3, .bg-s4):has(+ .m + :is(.bg-s2, .bg-s3, .bg-s4) > .m > .m .nb[style*="inset(0"] > .m[style*="margin-top:1px;"][style*="margin-left:1px;"]:is([style*="height:32px;"], [style*="height:35px;"]) div[data-mcomponent$="TextArea"]:not(:empty))
-facebook.com#@##screen-root > :not(.bg-s2) .m[data-type="vscroller"] > :is(.bg-s2, .bg-s3, .bg-s4):has(+ :is(.bg-s2, .bg-s3, .bg-s4) > .m > .m .nb[style*="inset(0"] > .m[style*="margin-top:1px;"][style*="margin-left:1px;"]:is([style*="height:32px;"], [style*="height:35px;"]):not(:empty))
-facebook.com#@##screen-root > :not(.bg-s2) .m[data-type="vscroller"] > :is(.bg-s2, .bg-s3, .bg-s4):has(> .m > .m .nb[style*="inset(0"] > .m[style*="margin-top:1px;"][style*="margin-left:1px;"]:is([style*="height:32px;"], [style*="height:35px;"]))
-facebook.com#@##screen-root > :not(.bg-s2) .m[data-type="vscroller"] > :is(.bg-s2, .bg-s3, .bg-s4):has(> .m > .m .nb[style*="inset(0"] > .m[style*="margin-top:1px;"][style*="margin-left:1px;"]:is([style*="height:32px;"], [style*="height:35px;"])) + .m:not(:has(.m:empty))
-facebook.com#@##screen-root > :not(.bg-s2) .m[data-type="vscroller"] > :is(.bg-s2, .bg-s3, .bg-s4):has(> .m > .m .nb[style*="inset(0"] > .m[style*="margin-top:1px;"][style*="margin-left:1px;"]:is([style*="height:32px;"], [style*="height:35px;"])) + .m:not(:has(.m:empty)) + .m:has(div[data-mcomponent$="TextArea"]:not(:empty)):has(+ .m .m[data-mcomponent$="TextArea"]:empty)
 pixiv.net#@#+js(set-cookie-reload, privacy_policy_agreement, 5)
 ! breaking
 bloomberg.com,bloomberg.co.jp#@#[title="SP Consent Message"]
+facebook.com,facebookwkhpilnemxj7asaniu7vnjjbiltxjqhye3mhbshg7kx5tfyd.onion#@#:not(:matches-path(/groups/)) div[aria-posinset] :is(h3, h4) span > a[href]:not([href^="/groups/"]):not([href*="section_header_type"]):matches-attr(href="/__cft__\[0\]=[-\w]{270,}/"):upward(div[aria-posinset]):style(height: 0 !important; overflow: hidden !important;)
+facebook.com,facebookwkhpilnemxj7asaniu7vnjjbiltxjqhye3mhbshg7kx5tfyd.onion#@#div[aria-describedby]:not([aria-posinset]) :is(h3, h4) span > a[href]:not([href^="/groups/"]):not([href*="section_header_type"]):matches-attr(href="/__cft__\[0\]=[-\w]{270,}/"):upward(div[aria-describedby]):style(height: 0 !important; overflow: hidden !important;)

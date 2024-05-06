@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.6.6
+// @version         3.6.6.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -143,7 +143,7 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"]';
+var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"]';
 hideDOMStyle(ads, 10);
 
 var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 'thepeterboroughexaminer.com', 'therecord.com', 'thespec.com', 'thestar.com', 'wellandtribune.ca'];
@@ -2090,7 +2090,7 @@ else if (matchDomain('mid-day.com')) {
   if (window.location.pathname.startsWith('/amp/')) {
     amp_unhide_access_hide('="granted"', '="NOT granted"', 'amp-ad, amp-embed, [class*="BannerAd"], div.midday-wrapper');
   } else {
-    amp_redirect('div.modal.fade');
+    amp_redirect('div#myModalFullscreen');
     let read_more = document.querySelector('#read-more-my');
     if (read_more)
       read_more.click();
@@ -2858,7 +2858,7 @@ else if (matchDomain('theglobeandmail.com')) {
 else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
   if (!window.location.pathname.endsWith('/amp/')) {
     let counter = '#test';
-    let ads = 'div.article-ad, div.dfp-ad, div#paywallbox, div[id^="piano-art-"]';
+    let ads = 'div.ad, div.article-ad, div.dfp-ad, div#paywallbox, div[id^="piano-art-"]';
     hideDOMStyle(counter + ', ' + ads);
   } else {
     let ads = 'amp-ad, amp-embed, [class^="height"], [class^="advt"], [id^="piano"]';
@@ -3567,7 +3567,7 @@ else if (matchDomain('washingtonpost.com')) {
 }
 
 else if (matchDomain('winnipegfreepress.com')) {
-  let ads = '.billboard-ad-space, .article-ad, .fixed-sky';
+  let ads = '.billboard-ad-space, .ad, .article-ad, .fixed-sky';
   hideDOMStyle(ads);
 }
 
