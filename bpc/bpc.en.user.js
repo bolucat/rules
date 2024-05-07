@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.6.8
+// @version         3.6.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -1596,31 +1596,34 @@ else if (matchDomain('fastcompany.com')) {
   let paywall = document.querySelector('div.paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    let scripts = document.querySelectorAll('script:not([src]):not([type])');
+    let scripts = document.querySelectorAll('script:not([src]):not([type]):not([id])');
     let json_script;
     for (let script of scripts) {
-      if (script.text.match(/window\.appState\s=\s/)) {
+      if (script.text.match(/\\"content\\":\[/)) {
         json_script = script;
         break;
       }
     }
     if (json_script) {
       try {
-        let json = JSON.parse(json_script.text.split(/window\.appState\s=\s/)[1].split('};')[0].replace(/:undefined([,}])/g, ':"undefined"$1') + '}');
+        let json = JSON.parse('[' + json_script.text.split(/\\"content\\":\[/)[1].split(/\],\\"/)[0].replace(/\\\\\\"/g, '\\"').replace(/(\[|,)\\"/g, '$1"').replace(/\\"(\]|,)/g, '"$1').replace(/\\\\n/g, '') + ']');
         if (json) {
-          let pars_array = json.post.data.post.content;
           let article = document.querySelector('article');
-          if (pars_array.length && article) {
+          if (article) {
             article.innerHTML = '';
-            article.classList.remove('post__article--lock');
+            article.className = 'article-container';
             let parser = new DOMParser();
-            for (let par_array of pars_array) {
-              for (let par of par_array) {
-                let content_new = parser.parseFromString('<div>' + par + '</div>', 'text/html');
-                let elem = content_new.querySelector('div');
-                article.appendChild(elem);
+            for (let pars of json)
+              for (let par of pars) {
+                if (!par.match(/^\$\w{2}$/)) {
+                  let content_new = parser.parseFromString('<div class="content-chunk">' + par + '</div>', 'text/html');
+                  let elem = content_new.querySelector('div');
+                  let img_srcset_drop = elem.querySelectorAll('figure > img[srcset]');
+                  for (let img of img_srcset_drop)
+                    img.removeAttribute('srcset');
+                  article.appendChild(elem);
+                }
               }
-            }
           }
         }
       } catch (err) {
@@ -1847,22 +1850,6 @@ else if (matchDomain('indiatoday.in')) {
     } else {
       amp_unhide_access_hide('="granted"', '="NOT NOT granted"', 'amp-ad, amp-embed');
     }
-  }
-}
-
-else if (matchDomain('infzm.com')) {
-  let url = window.location.href;
-  if (url.includes('/wap/#/')) {
-    let container = document.querySelector('section.container');
-    if (container)
-      container.classList.remove('container');
-    let overlay = document.querySelector('div.article-content[style]');
-    if (overlay)
-      overlay.removeAttribute('style');
-  } else if (url.includes('.com/contents/')) {
-    window.setTimeout(function () {
-      window.location.href = url.replace('.com/contents/', '.com/wap/#/content/');
-    }, 500);
   }
 }
 
