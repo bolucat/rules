@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.7.0
+// @version         3.6.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -1955,21 +1955,12 @@ else if (matchDomain('janes.com')) {
 
 else if (matchDomain('japantimes.co.jp')) {
   setCookie('xbc', '', 'japantimes.co.jp', '/', 0);
-  if (!window.location.pathname.endsWith('/amp')) {
-    window.setTimeout(function () {
-      let paywall = document.querySelector('div.subscribe');
-      if (paywall) {
-        let banner = document.querySelector('div.blocker > div.tp-container-inner');
-        removeDOMElement(paywall, banner);
-        let article = document.querySelector('div.article-body');
-        if (article) {
-          let url = window.location.href;
-          article.firstChild.before(nftLink(url));
-        }
-      }
-    }, 2000);
-  } else
-    ampToHtml();
+  let url = window.location.href;
+  getArchive(url, 'div.blocker', '', 'div#jtarticle');
+  let banner = document.querySelector('div.subscribe');
+  removeDOMElement(banner);
+  let ads = 'div.DisplayAd';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('jazziz.com')) {

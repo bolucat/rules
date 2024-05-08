@@ -233,6 +233,8 @@
 - [bypass-paywalls-firefox-clean-master.zip](https://rules.neuq.de/bpc/bypass-paywalls-firefox-clean-master.zip)
 - [bypass_paywalls_clean-3.6.6.0-custom.xpi](https://rules.neuq.de/bpc/bypass_paywalls_clean-3.6.6.0-custom.xpi)
 - [bypass_paywalls_clean-3.6.6.0.xpi](https://rules.neuq.de/bpc/bypass_paywalls_clean-3.6.6.0.xpi)
+- [bypass_paywalls_clean-3.6.7.1-custom.xpi](https://rules.neuq.de/bpc/bypass_paywalls_clean-3.6.7.1-custom.xpi)
+- [bypass_paywalls_clean-3.6.7.1.xpi](https://rules.neuq.de/bpc/bypass_paywalls_clean-3.6.7.1.xpi)
 - [bypass_paywalls_clean-latest.xpi](https://rules.neuq.de/bpc/bypass_paywalls_clean-latest.xpi)
 # clearurls
 - [data.min.json](https://rules.neuq.de/clearurls/data.min.json)
