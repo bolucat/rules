@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.7.1
+// @version         3.6.7.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -165,7 +165,7 @@ var usa_mcc_domains = ['bnd.com', 'charlotteobserver.com', 'elnuevoherald.com', 
 var usa_mng_domains =   ['bostonherald.com', 'denverpost.com', 'eastbaytimes.com', 'mercurynews.com', 'ocregister.com', 'pressenterprise.com', 'twincities.com'];
 var usa_nymag_domains = ['curbed.com', 'grubstreet.com', 'nymag.com', 'thecut.com', 'vulture.com'];
 var usa_outside_mag_domains = ["backpacker.com", "betamtb.com", "betternutrition.com", "cleaneatingmag.com", "climbing.com", "outsideonline.com", "oxygenmag.com", "skimag.com", "trailrunnermag.com", "triathlete.com", "vegetariantimes.com", "womensrunning.com", "yogajournal.com"];
-var usa_tribune_domains = ['baltimoresun.com', 'chicagotribune.com', 'courant.com', 'dailypress.com', 'mcall.com', 'nydailynews.com', 'orlandosentinel.com', 'pilotonline.com', 'sun-sentinel.com'];
+var usa_tribune_domains = ['baltimoresun.com', 'capitalgazette.com', 'chicagotribune.com', 'courant.com', 'dailypress.com', 'mcall.com', 'nydailynews.com', 'orlandosentinel.com', 'pilotonline.com', 'sun-sentinel.com'];
 
 if (matchDomain('gitlab.com') && window.location.pathname.startsWith('/magnolia1234')) {
   let bio = document.querySelector('p.profile-user-bio');
@@ -715,7 +715,7 @@ else if (matchDomain('citywire.com')) {
 
 else if (matchDomain('ft.com')) {
   let url = window.location.href;
-  getArchive(url, 'div[data-component="unlockBanner"], img[src*="icons/padlock_icon.svg"]', '', 'div#barrier-page', '', 'article#site-content', 'article#article-body');
+  getArchive(url, 'div#barrier-page', '', 'div.n-layout__row--content', '', 'div[style*="article-body"]', 'body');
 }
 
 else if (matchDomain('gbnews.com')) {
@@ -3414,8 +3414,9 @@ else if (matchDomain(usa_outside_mag_domains)) {
 }
 
 else if (matchDomain(usa_tribune_domains)) {
-  let overlay = document.querySelector('div#zephr-overlay');
-  removeDOMElement(overlay);
+  getJsonUrl('div.paywall-container', '', 'div.body-copy', {art_class: 'body-copy'});
+  let ads = 'div.dfp-ad';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('usatoday.com')) {

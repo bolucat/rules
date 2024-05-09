@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: EJfpf2n/UJynjWMaBACZpw
-! Diff-Path: ../patches/7/7-s-1715164448-3600.patch
+! Checksum: 61QuIUiT9O6gWisHKA2Asg
+! Diff-Path: ../patches/7/7-s-1715272448-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.51.43
-! TimeUpdated: 2024-05-08T10:31:39+00:00
+! Version: 2.0.51.50
+! TimeUpdated: 2024-05-09T16:31:36+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1566,6 +1566,7 @@ n.lat/login|$document
 /?phone=(0101)-$document
 ://www.eki-net.*.com/$document
 ://*.*.xyz/jp.html^$document
+.net/funccode.php|$document
 .com/funccode.php|$document
 .co.jp.*.com/login|$document
 /\.com\/index\.php\?t=[0-9a-f]{64}$/$document,match-case,domain=com
@@ -1699,6 +1700,12 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+pazusoku.com##.ad-box-02
+pazusoku.com##.responsibe-adsense-wrap
+itmedia.co.jp#?##cmsBody > div.inner > h2.format--crosshead:contains(/売れ筋ランキング|聴き放題！|楽天ポイント/)
+itmedia.co.jp###cmsBody > div.inner > h2.format--crosshead ~ div.cmsBodyBox:has(> div > center > strong > span > a[target="_blank"][rel="noopener"])
+adacomi.com##div[style="border-top:1px solid #555;padding:20px 10px;"]
+nlab.itmedia.co.jp##.main-pr-single-top
 adacomi.com##div[style="min-height:260px;"]
 ||sourcenext.com/shinseihin/img/bunner/125x125.jpg
 ||linkshare.ne.jp/mgm/bn/200709/sky_01.gif
