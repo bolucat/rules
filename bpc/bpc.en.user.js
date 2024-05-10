@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.7.2
+// @version         3.6.7.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -714,6 +714,17 @@ else if (matchDomain('citywire.com')) {
 }
 
 else if (matchDomain('ft.com')) {
+  func_post = function () {
+    let lazy_images = document.querySelectorAll('figure > picture > img[loading="lazy"][src^="data:image/gif"][new-cursrc]');
+    for (let elem of lazy_images) {
+      elem.removeAttribute('loading');
+      elem.style = 'width: 100%;';
+      let figure = elem.parentNode.parentNode;
+      if (figure.parentNode && figure.parentNode.nodeName === 'DIV')
+        figure.parentNode.removeAttribute('style');
+      elem.src = elem.getAttribute('new-cursrc');
+    }
+  }
   let url = window.location.href;
   getArchive(url, 'div#barrier-page', '', 'div.n-layout__row--content', '', 'div[style*="article-body"]', 'body');
 }
@@ -2489,6 +2500,7 @@ else if (matchDomain('seekingalpha.com')) {
       waitDOMAttribute('body', 'BODY', 'style', sa_noscroll, true);
       waitDOMAttribute('body', 'BODY', 'class', sa_noscroll, true);
       waitDOMAttribute('main', 'MAIN', 'inert', node => node.removeAttribute('inert'), true);
+      waitDOMAttribute('footer', 'FOOTER', 'inert', node => node.removeAttribute('inert'), true);
     }
   }
 }

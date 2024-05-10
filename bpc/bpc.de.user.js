@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.6.6.0
+// @version         3.6.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -681,7 +681,7 @@ else if (matchDomain('spiegel.de')) {
     let html_embed = 'section[data-area="html-embed"]';
     hideDOMStyle(html_embed);
   }
-  getArchive(url, 'div[data-area="paywall"]', '', 'div[data-area="body"]');
+  getArchive(url, 'div[data-area="paywall"]', '', 'article');
 }
 
 else if (matchDomain('springermedizin.de')) {
