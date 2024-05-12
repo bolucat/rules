@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.6.7.0
+// @version         3.6.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -47,7 +47,7 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"]';
+var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"]';
 hideDOMStyle(ads, 10);
 
 var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'morgenpost.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
@@ -910,13 +910,6 @@ else if (matchDomain('weltkunst.de')) {
 else if (matchDomain('weser-kurier.de')) {
   let ads = 'div.ad-wrapper, div.anyad';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('wiwo.de')) {
-  let url = window.location.href;
-  getArchive(url, 'div.o-paywall', '', 'article');
-  let banner = 'div.c-overscroller';
-  hideDOMStyle(banner);
 }
 
 else if (matchDomain('zeit.de')) {
