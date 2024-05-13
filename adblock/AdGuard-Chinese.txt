@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: A8j6/HguV1PGZnvQSoU4KQ
-! Diff-Path: ../patches/224/224-s-1715520831-3600.patch
+! Checksum: tO1fGOF54PcbTywLQOepWA
+! Diff-Path: ../patches/224/224-s-1715614503-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.15.69
-! TimeUpdated: 2024-05-12T13:32:04+00:00
+! Version: 2.1.15.76
+! TimeUpdated: 2024-05-13T15:32:31+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -761,6 +761,10 @@ nfmovies.com#$#a[onclick*="openurl"][target="_blank"] img[src^="/static/"] { pos
 !--------------------------------------!
 ! SECTION: Chinese - JS
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/178988
+now.com##+js(set-constant, preBid, {})
+now.com##+js(set-constant, preBid.displayAd, noopFunc)
+now.com##+js(set-constant, preBid.getPrerollVASTUrl, noopFunc)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/169652
 3dmgame.com##+js(abort-on-property-write, adStart)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/168192
@@ -1083,7 +1087,8 @@ $script,third-party,denyallow=fastly.net|statically.io|sharecast.ws|b-cdn.net|bu
 !
 !
 !
-$script,third-party,denyallow=myqcloud.com|bytecdntp.com|pddpic.com|googletagmanager.com,domain=yjys.me
+natgeomedia.com##div[id^="AD-970x250"]
+hkepc.com###headBanner
 speedtest.cn##.speedtest-recommend
 tsdm39.com###ct > div > a[target="_blank"] > img
 ||img.mikudm.net/img01/MP3/GG/20240415_CPS_960X75_general.gif
@@ -2455,7 +2460,7 @@ tw.yahoo.com##div[id^="applet_p_"][class^="dealstdv2wafer"]
 minhangcidian.com##div[id^="googleAd"]
 ||icao4.com/uploads/pic/2.jpg
 gas.goodlife.tw###leaderboard_banner
-setn.com,eprice.com.tw##div[class^="ad-"]
+natgeomedia.com,setn.com,eprice.com.tw##div[class^="ad-"]
 yzl333.com##a[href^="https://jump.9118ads.com/"]
 yzl333.com#?#.row > div.col-sm-6:has(> div.well > a[href^="https://jump.9118ads.com/"])
 jxnews.com.cn##.ad120050
@@ -2699,6 +2704,7 @@ jable.tv##a[href="http://uus52.com/"]
 jable.tv##.badge
 jable.tv##a[href*="?banner="]
 jable.tv##.uu-ads
+! https://github.com/AdguardTeam/AdguardFilters/issues/178577
 ! https://github.com/AdguardTeam/AdguardForWindows/issues/4227
 ! nfmovies.com
 nfmovies.com##a[href][onclick^="openurl()"] img[src^="/static/"]
@@ -2753,6 +2759,8 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_chinese
 ! Bad:  @@||example.org^$stealth (should be in AdGuard Base - allowlist_stealth.txt)
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/178988
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,domain=now.com,important
 ! https://github.com/AdguardTeam/AdguardFilters/issues/174552
 @@||api.val.qq.com/go/agame/resource/banner?bannerid=aclos_website_banner$domain=val.qq.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/170147
@@ -5533,6 +5541,15 @@ newduba.cn###jq_youxi
 ||mnpzrgz.xyz^
 ||pwuxnr.cn^
 ||lizijing12.top^
+||vpwizuj.icu^
+||nltsvf.xyz^
+||dfprljx.xyz^
+||rttnvz.xyz^
+||mohvxrvd.xyz^
+||kgidskid.top^
+||upyzqf.cn^
+||mdiygc.xyz^
+||dyccdk.xyz^
 ||zuvbzl.xyz^
 ||zwdtvx.xyz^
 ||zwxxcb.icu^
@@ -19684,6 +19701,7 @@ android-doc.com,apk.tw,chaojizhibo.net,chtoen.com,dizhishengcheng.com,doitwell.t
 @@||520cc.cc/jspopunder.
 @@||520cc.cc^*/ad.php
 @@||5278.cool^$generichide
+@@||goodinfo.tw^$generichide
 @@||52zy.com/gg/
 @@||58.com/adJump?adType=
 @@||58b.tv/static/js/ad.js

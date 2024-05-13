@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.6.5.1
+// @version         3.6.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.fr.user.js
@@ -57,7 +57,7 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"]';
+var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"]';
 hideDOMStyle(ads, 10);
 
 var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net'];
@@ -513,7 +513,7 @@ else if (matchDomain('lepoint.fr')) {
       removeDOMElement(...paywall);
       insert_script(lepoint_main);
     }
-    let ads = 'div[id*="WRAP_"], div#StickyPaywall, div#paywall-sticky, div.slotpub, div.sticky-block';
+    let ads = 'div[id*="WRAP_"], div#StickyPaywall, div#paywall-sticky, #article-body div.slotpub, div.sticky-block';
     hideDOMStyle(ads);
   } else {
     let url = window.location.href;
