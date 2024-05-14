@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.6.7.0
+// @version         3.6.7.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.nl.user.js
@@ -128,6 +128,7 @@ var be_mediahuis_domains = ['nieuwsblad.be', 'standaard.be'];
 var be_roularta_domains = ['artsenkrant.com', 'beleggersbelangen.nl', 'flair.be', 'knack.be', 'kw.be', 'libelle.be'];
 var nl_dpg_adr_domains = ['ad.nl', 'bd.nl', 'bndestem.nl', 'destentor.nl', 'ed.nl', 'gelderlander.nl', 'pzc.nl', 'tubantia.nl'];
 var nl_dpg_media_domains = ['demorgen.be', 'flair.nl', 'humo.be', 'libelle.nl', 'margriet.nl', 'parool.nl', 'trouw.nl', 'volkskrant.nl'];
+var nl_mediahuis_region_domains = ['gooieneemlander.nl', 'haarlemsdagblad.nl', 'ijmuidercourant.nl', 'leidschdagblad.nl', 'noordhollandsdagblad.nl'];
 
 if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
   window.setTimeout(function () {
@@ -282,6 +283,22 @@ else if (matchDomain(nl_dpg_media_domains)) {
     for (let elem of elem_hidden)
       elem.removeAttribute('style');
   }, 500);
+}
+
+else if (matchDomain(nl_mediahuis_region_domains)) {
+  func_post = function () {
+    let lazy_images = document.querySelectorAll('div > div > img[loading="lazy"][style]');
+    for (let elem of lazy_images) {
+      elem.removeAttribute('style');
+      elem.parentNode.removeAttribute('style');
+      let container = elem.parentNode.parentNode;
+      container.removeAttribute('style');
+      let svg = container.querySelector('svg');
+      removeDOMElement(svg);
+    }
+  }
+  let url = window.location.href;
+  getArchive(url, 'div[data-auth-root="paywall"]', '', 'div[data-mht-block="article-detail__article-main"]', '', 'div[id$="article-main"]');
 }
 
 else if (matchDomain('nrc.nl')) {

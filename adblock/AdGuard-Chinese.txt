@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: tO1fGOF54PcbTywLQOepWA
-! Diff-Path: ../patches/224/224-s-1715614503-3600.patch
+! Checksum: GkYsMUGZBAmzJbfLUYnUZQ
+! Diff-Path: ../patches/224/224-s-1715704818-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.15.76
-! TimeUpdated: 2024-05-13T15:32:31+00:00
+! Version: 2.1.15.83
+! TimeUpdated: 2024-05-14T16:33:24+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1087,6 +1087,8 @@ $script,third-party,denyallow=fastly.net|statically.io|sharecast.ws|b-cdn.net|bu
 !
 !
 !
+upsangel.com##a[href="https://upsangel.com/check/surfsharkvpn/"]
+popdaily.com.tw##div[class^="ad-delimiter-"]
 natgeomedia.com##div[id^="AD-970x250"]
 hkepc.com###headBanner
 speedtest.cn##.speedtest-recommend
@@ -2656,12 +2658,12 @@ netfly.*,netfly.tv##div[class*="tt-"] > a[target="_blank"] + span.tt-icon-close
 ! https://user-images.githubusercontent.com/3976203/273172163-25ff30a0-c988-4ec3-9e51-cf4722a90976.jpg
 ! bilibili.com#?#.bili-video-card.is-rcmd > div > a[href*="cm.bilibili.com"][data-target-url]:not([data-target-url*=".bili"]) + .bili-video-card__info:upward(2)
 bilibili.com#$?#.container > div.floor-single-card:has(> div.skeleton) { remove: true; }
-bilibili.com##.bili-video-card > div[class^="extension-tips"]
+bilibili.com#$?#.bili-video-card > div[class]:only-child:matches-css(before, content: /Adblock/) { remove: true; }
 bilibili.com##.bili-video-card:has(.bili-video-card__info--ad) > .bili-video-card__wrap
 bilibili.com##.bili-video-card:has(.bili-video-card__info--creative-ad) > .bili-video-card__wrap
 bilibili.com#$#.bili-video-card:has(.bili-video-card__info--ad) > .bili-video-card__skeleton { visibility: visible !important; }
 bilibili.com#$#.bili-video-card:has(.bili-video-card__info--creative-ad) > .bili-video-card__skeleton { visibility: visible !important; }
-bilibili.com##.carousel-container > .carousel-transform > div[class^="carousel-slide"] > div[class^="extension-tips"]
+bilibili.com#$?#.carousel-container > .carousel-transform > div[class^="carousel-slide"] > div[class]:only-child:matches-css(before, content: /Adblock/) { remove: true; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/149414
 nivod8.tv,nivod7.tv##.nav-ads
 ||api.nivodz.com/commercial/incr/
@@ -5550,6 +5552,15 @@ newduba.cn###jq_youxi
 ||upyzqf.cn^
 ||mdiygc.xyz^
 ||dyccdk.xyz^
+||jyuskb.cn^
+||ypgjkk.xyz^
+||onmstgh.icu^
+||nvvqrv.xyz^
+||dfryzh.xyz^
+||sgidskib.top^
+||pxtjfmv.xyz^
+||mqsjzm.cn^
+||qwsanan.top^
 ||zuvbzl.xyz^
 ||zwdtvx.xyz^
 ||zwxxcb.icu^
@@ -13959,6 +13970,7 @@ hxsame.hexun.com$domain=~quote.hexun.com
 ||koyso.com/static/js/abc.
 ||bcebos.com/24x360x528.gif
 szxx.com.cn###A0
+wenxuecity.com###gg_multitext
 123pan.com##.ant-carousel
 123pan.com##.banner-container-pc
 123pan.com##.banner-container-h5
