@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.7.5
+// @version         3.6.7.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -2879,11 +2879,12 @@ else if (matchDomain(['thejuggernaut.com', 'jgnt.co'])) {
     if (json_script) {
       try {
         let json = JSON.parse(json_script.text);
-        if (json && json.props.pageProps.post) {
+        if (json && json.props.pageProps.post.fields) {
           let url_next = json.query.slug;
           if (url_next && !window.location.pathname.includes(url_next))
             refreshCurrentTab();
-          let pars = json.props.pageProps.post.fields.fullText.content;
+          let fields = json.props.pageProps.post.fields;
+          let pars = fields.fullText ? fields.fullText.content : fields.textEssay.fields.body.content;
           window.setTimeout(function () {
           let article = document.querySelector('div[class*="opacity-"]');
           if (article) {

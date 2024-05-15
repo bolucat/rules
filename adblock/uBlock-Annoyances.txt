@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Tue, 14 May 2024 08:41:49 +0000
-! Diff-Path: ../patches/2024.5.14.1041.patch#ublock-annoyances
+! Last modified: Wed, 15 May 2024 04:04:24 +0000
+! Diff-Path: ../patches/2024.5.15.803.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -863,8 +863,6 @@ lublin.eu##+js(aeld, contextmenu)
 ! right click tekloggers .com/2019/10/iklan-anime-pocari-sweat-ternyata.html
 tekloggers.com##+js(ra, oncontextmenu|onkeydown|onmousedown)
 molineuxmix.co.uk##+js(acs, $, undefined)
-defenseone.com,govexec.com,nextgov.com,route-fifty.com##.interstitial
-defenseone.com,govexec.com,nextgov.com,route-fifty.com##body:style(overflow-x: auto !important; overflow-y: scroll !important; margin-right: 0 !important;)
 foxnews.com##:xpath('//*[contains(text(),"blocking software")]/../../..')
 /google-funding-choices.js$script,domain=foxnews.com
 ! nfltraderumors.co right click, select
@@ -2200,6 +2198,8 @@ gooyaabitemplates.com##*:style(-webkit-touch-callout: default !important; -webki
 urbharat.xyz##+js(ra, oncontextmenu, body)
 urbharat.xyz##+js(set, document.onkeydown, null)
 bilibili.com##+js(aeld, selectionchange, quill.emitter)
+bilibili.com##+js(aeld, copy)
+bilibili.com##.adblock-tips
 sogou.com##*:style(-webkit-touch-callout: default !important; -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important;)
 boke112.com##+js(aopw, stopPrntScr)
 boke112.com##*::selection:style(background-color:#338FFF!important)
@@ -3888,7 +3888,6 @@ bbc.com##+js(trusted-click-element, [data-testid="consentBanner"] > button[data-
 bbc.com##+js(trusted-click-element, [data-testid="consentBanner"] > button[data-testid="banner-button"], , 1200)
 bbc.com##+js(trusted-click-element, [data-testid="consentBanner"] > button[data-testid="banner-button"], , 1300)
 bbc.com##+js(nano-stb, viewClickAttributeId)
-bilibili.com##+js(aeld, copy)
 @@||smithsonianmag.com^$ghide
 patreon.com##+js(trusted-set-local-storage-item, halfSheetAppBannerDismissed, '{"halfSheetAppBannerDismissed":{"expiration":2000000000000,"data":true}}')
 ! liverpoolecho.co.uk anti proxy (google translator)
