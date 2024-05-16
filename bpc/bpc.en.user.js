@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.7.6
+// @version         3.6.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -2244,9 +2244,26 @@ else if (matchDomain('nybooks.com')) {
 }
 
 else if (matchDomain('nytimes.com')) {
-  waitDOMElement('div#dock-container', 'DIV', removeDOMElement, false);
-  let banners = 'div[data-testid="inline-message"], div[id^="ad-"], div.pz-ad-box';
-  hideDOMStyle(banners);
+  if (!window.location.pathname.startsWith('/athletic/')) {
+    waitDOMElement('div#dock-container', 'DIV', removeDOMElement, false);
+    let banners = 'div[data-testid="inline-message"], div[id^="ad-"], div.pz-ad-box';
+    hideDOMStyle(banners);
+  } else {
+    function theathletic_func(node) {
+      removeDOMElement(node);
+      let overlays = 'div[id*="overlay"], div:empty:not([data-rjs])';
+      hideDOMStyle(overlays);
+      let body = document.querySelector('body');
+      if (body) {
+        body.style.overflow = 'visible';
+        body.style.position = 'relative';
+        window.scrollTo(0, 1000);
+      }
+    }
+    waitDOMElement('div[id^="slideup-"]', 'DIV', theathletic_func);
+    let apron = document.querySelector('div#free-apron-cta, div.slideup-free-apron-container');
+    removeDOMElement(apron);
+  }
 }
 
 else if (matchDomain('nzherald.co.nz')) {
@@ -2734,28 +2751,6 @@ else if (matchDomain('theamericanconservative.com')) {
     noscroll.classList.remove('modal-open');
 }
 
-else if (matchDomain('theathletic.com')) {
-  if (!(window.location.search.match(/(\?|&)amp/) && !document.querySelector('head > link[rel="amphtml"]'))) {
-    function theathletic_func(node) {
-      removeDOMElement(node);
-      let overlays = 'div[id*="overlay"], div:empty:not([data-rjs])';
-      hideDOMStyle(overlays);
-      let body = document.querySelector('body');
-      if (body) {
-        body.style.overflow = 'visible';
-        body.style.position = 'relative';
-        window.scrollTo(0, 1000);
-      }
-    }
-    waitDOMElement('div[id^="slideup-"]', 'DIV', theathletic_func);
-  } else {
-    amp_unhide_subscr_section();
-    amp_unhide_access_hide('', '*="NOT granted"');
-  }
-  let apron = document.querySelector('div#free-apron-cta, div.slideup-free-apron-container');
-  removeDOMElement(apron);
-}
-
 else if (matchDomain('theatlantic.com')) {
   setCookie('articleViews', '', 'theatlantic.com', '/', 0);
   let lazy_images = document.querySelectorAll('img[class*="Image_lazy__"]');
@@ -3065,10 +3060,10 @@ else if (matchDomain('thepointmag.com')) {
 }
 
 else if (matchDomain('thequint.com')) {
-  let lock = document.querySelector('div > img[alt^="lock"]');
-  if (lock) {
-    lock.removeAttribute('alt');
-    window.setTimeout(function () {
+  window.setTimeout(function () {
+    let lock = document.querySelector('div > img[alt^="lock"]');
+    if (lock) {
+      lock.removeAttribute('alt');
       let paywall = document.querySelector('div#paywall-widget');
       if (paywall) {
         removeDOMElement(paywall);
@@ -3084,12 +3079,12 @@ else if (matchDomain('thequint.com')) {
         body_hidden.removeAttribute('class');
         body_hidden.removeAttribute('style');
       }
-    }, 4000);
-    function thequint_unhide(node) {
-      node.removeAttribute('style');
+      function thequint_unhide(node) {
+        node.removeAttribute('style');
+      }
+      waitDOMAttribute('div#story-body-wrapper', 'DIV', 'style', thequint_unhide, true);
     }
-    waitDOMAttribute('div#story-body-wrapper', 'DIV', 'style', thequint_unhide, true);
-  }
+  }, 4000);
 }
 
 else if (matchDomain('theverge.com')) {
