@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Unbreak
 ! Expires: 5 days
-! Last modified: Sat, 18 May 2024 05:21:58 +0000
-! Diff-Path: ../patches/2024.5.18.984.patch#ublock-unbreak
+! Last modified: Sun, 19 May 2024 15:17:58 +0000
+! Diff-Path: ../patches/2024.5.19.1040.patch#ublock-unbreak
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/unbreak.txt ***
@@ -1406,6 +1406,7 @@ coolmathgames.com##+js(set, network_user_id, '')
 ||fundingchoicesmessages.google.com/i/$script,domain=9to5google.com|9to5mac.com,important
 ||googletagmanager.com^$domain=9to5google.com|9to5mac.com,important
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect-rule=google-ima.js,domain=olympics.com
+olympics.com##+js(no-fetch-if, event-router.olympics.com)
 ://ads.$popup,domain=~smartnews.com,badfilter
 ://ads.$popup,domain=~kakaku.com|~smartnews.com
 !#if env_mobile
@@ -2552,3 +2553,4 @@ myair.resmed.com##+js(no-xhr-if, 1.1.1.1/cdn-cgi/trace)
 gifmagic.com###logoContainer:style(top: 0px !important;)
 @@||go.redirectingat.com^$popup,3p,domain=slickdeals.net
 @@||googletagmanager.com/gtag/js$3p,script,domain=trinket.io
+||artstation.com/*/views_tracking/$xhr,1p,redirect-rule=nooptext

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.6.7.2
+// @version         3.6.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.nl.user.js
@@ -124,25 +124,12 @@ if (overlay)
 var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"]';
 hideDOMStyle(ads, 10);
 
-var be_mediahuis_domains = ['nieuwsblad.be', 'standaard.be'];
 var be_roularta_domains = ['artsenkrant.com', 'beleggersbelangen.nl', 'flair.be', 'knack.be', 'kw.be', 'libelle.be'];
 var nl_dpg_adr_domains = ['ad.nl', 'bd.nl', 'bndestem.nl', 'destentor.nl', 'ed.nl', 'gelderlander.nl', 'pzc.nl', 'tubantia.nl'];
 var nl_dpg_media_domains = ['demorgen.be', 'flair.nl', 'humo.be', 'libelle.nl', 'margriet.nl', 'parool.nl', 'trouw.nl', 'volkskrant.nl'];
 var nl_mediahuis_region_domains = ['gooieneemlander.nl', 'haarlemsdagblad.nl', 'ijmuidercourant.nl', 'leidschdagblad.nl', 'noordhollandsdagblad.nl'];
 
-if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
-  window.setTimeout(function () {
-    let url = window.location.href;
-    getArchive(url, 'div[data-cj-root="subscription-wall"]', '', 'article div[id], section div[id]:not([id^="warning"]');
-    let button_close = document.querySelector('span[data-testid="button-close"]');
-    if (button_close)
-      button_close.click();
-    let banners = 'div.paywall--titel';
-    hideDOMStyle(banners);
-  }, 1500);
-}
-
-else if (matchDomain('businessam.be')) {
+if (matchDomain('businessam.be')) {
   let paywall = document.querySelector('div.paywall');
   if (paywall) {
     removeDOMElement(paywall);

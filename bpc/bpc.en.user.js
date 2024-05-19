@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.8.2
+// @version         3.6.8.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -559,7 +559,7 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['investmentweek.co.uk', 'vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'citywire.com', 'ft.com', 'granta.com', 'motorsportmagazine.com', 'scotsman.com', 'tes.com', 'unherd.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['investmentweek.co.uk', 'vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'citywire.com', 'fnlondon.com', 'ft.com', 'granta.com', 'motorsportmagazine.com', 'scotsman.com', 'tes.com', 'unherd.com'])) {//united kingdom/ireland
 
 if (matchDomain('apollo-magazine.com')) {
   setCookie('blaize_session', '', 'apollo-magazine.com', '/', 0);
@@ -711,6 +711,13 @@ else if (matchDomain('citywire.com')) {
   getGoogleWebcache(url, 'div#lockedLoginPanel', '', 'div#newsArticleBody');
   let ads = 'div.cw-top-advert';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('fnlondon.com')) {
+  let url = window.location.href;
+  getArchive(url, 'div[data-testid="articleSignInSubscribeWrapper"]', '', 'article');
+  let fade = 'div#cx-snippet';
+  hideDOMStyle(fade);
 }
 
 else if (matchDomain('ft.com')) {
