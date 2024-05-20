@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 2/jzHeipnWTmXCw0a7CeLA
-! Diff-Path: ../patches/7/7-s-1716132867-3600.patch
+! Checksum: yk+ByX3kChyKUe2yzl7z+g
+! Diff-Path: ../patches/7/7-s-1716208507-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.51.99
-! TimeUpdated: 2024-05-19T15:31:51+00:00
+! Version: 2.0.52.3
+! TimeUpdated: 2024-05-20T12:31:29+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -486,11 +486,13 @@
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/179614
+kotobank.jp##+js(no-setTimeout-if, return, 7400)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/178919
-guitarmagazine.jp#$#.tp-backdrop { display: none!important; }
-guitarmagazine.jp#$#.tp-modal { display: none!important; }
-guitarmagazine.jp#$#body.tp-modal-open { overflow: visible!important; touch-action: auto!important; }
-guitarmagazine.jp#$#html.tp-scroll-prevented { overflow: visible!important; touch-action: auto!important; }
+guitarmagazine.jp#$#.tp-backdrop { display: none !important; }
+guitarmagazine.jp#$#.tp-modal { display: none !important; }
+guitarmagazine.jp#$#body.tp-modal-open { overflow: visible !important; touch-action: auto !important; }
+guitarmagazine.jp#$#html.tp-scroll-prevented { overflow: visible !important; touch-action: auto !important; }
 ! anti-adb
 tuyano.com#@#.adspace
 hatenablog.com#@##adframe:not(frameset)
@@ -1704,6 +1706,10 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+appmarketinglabo.net##article[id^="post-"] > div.box_single_content:has(> div.ad_300x250)
+gameinn.jp##a[id$="-banner"]
+ddnavi.com##.archives-list > ul > li.archives-list__item:has(> div[id^="div-gpt-ad"])
+sakigake.jp##.p-articles__list > .p-articles__item:has(> div[id^="sakigake_"])
 ||nan-net.com/bbs_side/ada_$subdocument
 adacomi.com##div[style="height:90px;"]
 ||suruga-ya.jp/images/idol_bn.jpg$domain=hobbylabon.com
