@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.8.5
+// @version         3.6.8.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -196,7 +196,8 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || (!matchDo
   if (paywall) {
     paywall.removeAttribute('class');
     paywall.firstChild.before(freediumLink(url));
-    paywall.firstChild.before(googleWebcacheLink(url));
+    paywall.firstChild.before(readMediumLink(url));
+    //paywall.firstChild.before(googleWebcacheLink(url));
   }
   window.setTimeout(function () {
     let banner = pageContains('div > div > p', /author made this story available to/);
@@ -2480,6 +2481,17 @@ else if (matchDomain('rugbypass.com')) {
   }
 }
 
+else if (matchDomain('scholastic.com')) {
+  let paywall = document.querySelector('div.paywallModalElement');
+  if (paywall) {
+    let modal = document.querySelector('div.modal-backdrop');
+    removeDOMElement(paywall, modal);
+    let body_modal = document.querySelector('body.modal-open');
+    if (body_modal)
+      body_modal.removeAttribute('class');
+  }
+}
+
 else if (matchDomain('science.org')) {
   let paywall = document.querySelector('div.alert-read-limit');
   removeDOMElement(paywall);
@@ -4193,6 +4205,10 @@ function nftLink(url, text_fail = 'BPC > Full article text:\r\n') {
 
 function freediumLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
   return externalLink(['freedium.cfd'], 'https://{domain}/{url}', url, text_fail);
+}
+
+function readMediumLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
+  return externalLink(['readmedium.com'], 'https://{domain}/{url}', url, text_fail);
 }
 
 function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full article text:\r\n') {
