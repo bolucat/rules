@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: yyyC4Bft8nkpQ/D0jYM9kQ
-! Diff-Path: ../patches/7/7-s-1716384842-3600.patch
+! Checksum: j40fvfr93n6jTbwu7c65og
+! Diff-Path: ../patches/7/7-s-1716485704-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.52.11
-! TimeUpdated: 2024-05-22T13:31:43+00:00
+! Version: 2.0.52.18
+! TimeUpdated: 2024-05-23T17:32:55+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -508,8 +508,9 @@ success-corp.co.jp##+js(no-fetch-if, pagead2.googlesyndication.com)
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xmlhttprequest,domain=success-corp.co.jp
 nieru.net#@#.ad-space
 nieru.net#@#.adWidget
+! https://github.com/AdguardTeam/AdguardFilters/issues/179875
 ! https://github.com/AdguardTeam/AdguardFilters/issues/159931
-iwb.jp##+js(abort-on-property-read, onload)
+iwb.jp##+js(abort-on-property-read, alert)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/171258
 jprime.jp#$?#.js-reward-modal  { remove: true; }
 jprime.jp#$?#.js-reward-gallery-modal  { remove: true; }
@@ -520,8 +521,7 @@ blog.2nt.com#@#.AdSense
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167887
 ||nazology.net/*/adb/adb.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167723
-pvpoke-re.com##+js(no-setTimeout-if, checkMyBlock)
-pvpoke-re.com#@#ins.adsbygoogle[data-ad-slot]
+pvpoke-re.com##body > div[id][style*="9999"][style*="fixed"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/166650
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167434
 bm.best-hit.tv,h178.com##+js(abort-current-script, addEventListener, AdBlock)
@@ -1708,11 +1708,13 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+maruhorror.com###more > .t_b ~ p:has(> a[href^="https://www.amazon.co.jp"])
+hikasango.com##div[id^="msmaflink-"] + br + span[style="color: rgb(255, 0, 0);"]
 supari.jp##.AfiBigText
 conveni-now.com##.added_app_box
 ||stat.ameba.jp/user_images/20210415/17/kotaro-izawa/69/4f/j/o1080108014926818586.jpg
-conveni-now.com,discka.com,smopia.com###kakidashi-box-field
-conveni-now.com,discka.com,smopia.com###under-toc-block-container
+shisha-press.com,conveni-now.com,discka.com,smopia.com###kakidashi-box-field
+shisha-press.com,conveni-now.com,discka.com,smopia.com###under-toc-block-container
 appmarketinglabo.net##article[id^="post-"] > div.box_single_content:has(> div.ad_300x250)
 gameinn.jp##a[id$="-banner"]
 ddnavi.com##.archives-list > ul > li.archives-list__item:has(> div[id^="div-gpt-ad"])
@@ -3755,7 +3757,7 @@ anime365.net##div[id^="comicRanking"]
 ||tok2.com/app/ad/
 supari.jp##div[class^="c-ads-tag"]
 milkcafe.net##div[class^="adSection_"]
-discka.com,supari.jp,smopia.com,conveni-now.com,iqos-laboratory.com##div[class^="ads-tag"]
+shisha-press.com,discka.com,supari.jp,smopia.com,conveni-now.com,iqos-laboratory.com##div[class^="ads-tag"]
 my-best.com##.p-press__ad
 ||signal-flag-z.asuscomm.com:9443/api/amznWidget
 p-game.jp##.gameDetailSideBar > div > p.chakra-text.css-0
@@ -7559,6 +7561,7 @@ zekamashi.net###JP_ZKN_pc_all_billboard
 zekamashi.net###secondary > div.widget_execphp
 zekamashi.net##.free-area_after-cont > div.widget_custom_html
 zekamashi.net##.free-area_before-title > div.widget_execphp
+kotobank.jp###myPaymentModal
 kotobank.jp##div[class$="word-ad"]
 kotobank.jp##div[class$="iframe-ad"]
 tokyo-sports.co.jp##.head-bnr-area
@@ -8130,7 +8133,7 @@ ekilog.info###widget-under-article
 ||ekilog.info/wp-content/uploads/*-1024x768.png
 mammemo.net##.aaprad_con
 mammemo.net##.side_pc_con > div[style="text-align:center; margin-bottom:30px; padding:10px; overflow:hidden"]
-kuku81kuku81.hatenablog.com,spla3sokuhou.games,pontako.com##div[id^="msmaflink-"]
+hikasango.com,kuku81kuku81.hatenablog.com,spla3sokuhou.games,pontako.com##div[id^="msmaflink-"]
 ||a.toremaga.com/ad/
 toremaga.com###ar_w300px > div.mb14px
 member.toremaga.com###ar_w655px
@@ -10395,6 +10398,9 @@ avgle.com##.well#ps32-container
 $popup,domain=avgle.com,third-party
 avgle.com##.container > div[style*="overflow: hidden"]
 !
+! https://github.com/AdguardTeam/AdguardForiOS/issues/2315
+! https://github.com/AdguardTeam/AdguardFilters/issues/179893
+! TODO: remove the rule when the issue is fixed
 !+ PLATFORM(ext_ublock)
 2chblog.jp,blog.jp,blog.livedoor.jp,bloggeek.jp,blogism.jp,blogo.jp,blogstation.jp,blogto.jp,cafeblog.jp,corpblog.jp,diary.to,doorblog.jp,dreamlog.jp,gger.jp,golog.jp,ldblog.jp,liblo.jp,livedoor.biz,livedoor.blog,myjournal.jp,mynikki.jp,officeblog.jp,officialblog.jp,publog.jp,storeblog.jp,teamblog.jp,techblog.jp,weblog.to,xxxblog.jp,youblog.jp##.blogroll_ads
 !+ PLATFORM(ext_ublock)
