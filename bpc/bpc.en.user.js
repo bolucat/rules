@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.8.7
+// @version         3.6.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -151,7 +151,7 @@ var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
 var no_nhst_media_domains = ['europower.no', 'fiskeribladet.no', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
 var pl_ringier_domains = ['auto-swiat.pl', 'businessinsider.com.pl', 'forbes.pl', 'komputerswiat.pl', 'newsweek.pl', 'onet.pl'];
 var sg_sph_media_domains = ['straitstimes.com'];
-var timesofindia_domains = ['epaper.indiatimes.com', 'timesofindia.com', 'timesofindia.indiatimes.com'];
+var timesofindia_domains = ['epaper.indiatimes.com', 'timesofindia.indiatimes.com'];
 var uk_incisive_media_domains = ['businessgreen.com', 'internationalinvestment.net', 'investmentweek.co.uk', 'professionaladviser.com', 'professionalpensions.com'];
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
@@ -3281,7 +3281,17 @@ else if (matchDomain(timesofindia_domains)) {
               let json_text = json.articleBody;
               let article = document.querySelector('div.paywall');
               if (json_text && article) {
-                article.innerText = breakText(json_text);
+                if (!json_text.match(/\s(src|href)=/))
+                  json_text = breakText(json_text).replace(/\n\n/g, '<br><br>');
+                window.setTimeout(function () {
+                  let parser = new DOMParser();
+                  let doc = parser.parseFromString('<div>' + parseHtmlEntities(json_text) + '</div>', 'text/html');
+                  let article_new = doc.querySelector('div');
+                  if (article_new) {
+                    article.innerHTML = '';
+                    article.appendChild(article_new);
+                  }
+                }, 1500);
                 let sheet = document.createElement('style');
                 sheet.innerText = 'div.paywall::after {background-image: none !important;}';
                 document.head.appendChild(sheet);
