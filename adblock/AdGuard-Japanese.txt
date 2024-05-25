@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: bWCub6Ts1lMU8fqvtoAz3Q
-! Diff-Path: ../patches/7/7-s-1716554149-3600.patch
+! Checksum: zA5bNcDAK5Hq2CC2GEnpSA
+! Diff-Path: ../patches/7/7-s-1716640483-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.52.21
-! TimeUpdated: 2024-05-24T12:33:01+00:00
+! Version: 2.0.52.25
+! TimeUpdated: 2024-05-25T12:32:18+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -82,6 +82,7 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp
 !
+||adleap.jp^
 ||ad.unique1static.jp^
 ||bance.jp^
 ||appdraft.link^$third-party
@@ -993,6 +994,8 @@ nasubiblog.com,kyukyoku-matome.com##.widget_pc_ad
 !-------JS----------
 !-------------------
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/179821
+twi-fans.com##+js(addEventListener-defuser, /touchmove|wheel/, preventDefault())
 ! Leftover
 kasegeru.blog.jp##+js(remove-node-text, #text, /スポンサードリンク：?|楽天広告：/)
 ! Ads
@@ -1138,6 +1141,9 @@ avgle.com##+js(abort-current-script, __htapop)
 !-------CSS---------
 !-------------------
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/179821
+twi-fans.com#$#.fixed.data-\[state\=open\]\:animate-in { display: none !important; }
+twi-fans.com#$#body[style="pointer-events: none;"] { pointer-events: auto !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/178408
 2game.info#$#.sponsored-loop300x250 { position: absolute !important; left: -4000px !important; }
 ! https://github.com/uBlockOrigin/uAssets/issues/23212
@@ -1508,6 +1514,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/themes/CashLINESystem/js/modal.$script
 !
 ! Malware/Phishing
+/\/t_([0-9A-Za-z]{32})\?token=\1/$document,domain=cn|com|top
 -go-jp.com/$document
 .com/wp-content/mufg.jp$document
 ||web.core.windows.net/merrx01*/index.html$document
@@ -1516,7 +1523,6 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 ||z13.web.core.windows.net/*-*-*-*-*-*-*/index.html$document
 .co.jp.*.cn/t_$document
 ://ac*.top/t_*?token=$document
-://aeon.jp.*.com/t_$document
 ://vpass.*.cn/all/login.php$document
 ://rakuten-bank.*.cn/$document
 ||z13.web.core.windows.net/index.html^$document
@@ -1711,6 +1717,10 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+comic-walker.com##div[class^="AdSection_"]
+taishurx.jp##.catchup
+taishurx.jp##div.bnr
+twi-fans.com##.fixed.lg\:h-\[320px\]
 ||s.yimg.jp/images/finance/nisa/image/banner/sbi/$domain=finance.yahoo.co.jp
 finance.yahoo.co.jp###contents > div[class^="_"] > div[class^="_1"] > div[class^="_2"] > div[class*=" _"]:has(> #subAdTop)
 finance.yahoo.co.jp##main > div[class^="_"] > div[class] > div[class^="wP-"] > div[class]:has(> div[id^="ad_"][class])
@@ -2415,6 +2425,7 @@ hoge5ch.info##.amazon_item
 hoge5ch.info##.right-container > div.plugin-memo:last-child
 ||coneti.net/post_image/mt_20220623211055_jF696njUWbNW.jpg$third-party
 ||poginfo.ddo.jp/pogs/images/pr/
+times.abema.tv##.u-lg-overflow-hidden[style="height: 200px;"]
 times.abema.tv#?#.c-article-footer-title:contains(/^関連(記事|動画)/)
 times.abema.tv##.article-tvbtn-under-ad
 yuki0918kw.com#?##block-106 ~ div.widget_block.fix_sidebar:has(> center > a)
@@ -7545,7 +7556,7 @@ nurse-senka.jp###side > div.inline-block
 web.ultra-soccer.jp##.stripe-free
 ushigyu.net,dobon.net###im_panel_pc
 eigo.plus##div[id^="omc_ad_widget"]
-lee.hpplus.jp##.media-ad
+hpplus.jp##.media-ad
 yoheim.net##.topAdsenseArea
 dl-x.com##.vip-size-728x90
 ||akibablog.net/lilbox/$subdocument
@@ -10709,7 +10720,7 @@ minpo.jp#@#.ads970
 ! unhide popIn
 osusume.mynavi.jp#@#.ad-widget
 ! baila.hpplus.jp unbreak self-promo
-@@||img-baila.hpplus.jp/common/large/image/ad/$image,~third-party
+@@||img-baila.hpplus.jp/*/image/ad/$image,~third-party
 ! https://github.com/AdguardTeam/AdguardFilters/issues/110785
 @@||ascii.jp/img/ad/radeon/logo.png
 ! vector.co.jp - fixing images
