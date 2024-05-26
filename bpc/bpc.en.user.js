@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.9.1
+// @version         3.6.9.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -741,6 +741,11 @@ else if (matchDomain('ft.com')) {
       if (figure.parentNode && figure.parentNode.nodeName === 'DIV')
         figure.parentNode.removeAttribute('style');
       elem.src = elem.getAttribute('new-cursrc');
+    }
+    if (mobile) {
+      let grids = document.querySelectorAll('div[style*="grid-template-areas"], article#site-content');
+      for (let elem of grids)
+        elem.style = 'margin: 10px;';
     }
   }
   let url = window.location.href;
@@ -1585,7 +1590,6 @@ else if (matchDomain('economictimes.indiatimes.com')) {
 
 else if (matchDomain('economist.com')) {
   let url = window.location.href;
-  let article_sel = 'section[data-body-id]';
   if (window.location.pathname.startsWith('/interactive/')) {
     let paywall = document.querySelector('div.paywall');
     if (paywall) {
@@ -1593,23 +1597,27 @@ else if (matchDomain('economist.com')) {
       removeDOMElement(paywall, hide_style);
     }
   } else if (window.location.pathname.startsWith('/podcasts/'))
-    getGoogleWebcache(url, 'div[aria-labelledby="paywall-heading"]', '', article_sel);
+    getGoogleWebcache(url, 'div[aria-labelledby="paywall-heading"]', '', 'section[data-body-id]');
   else {
-    if (!document.querySelector(article_sel))
-      article_sel = 'main';
-    getGoogleWebcache(url, 'div#tp-regwall', '', article_sel);
-    window.setTimeout(function () {
-      let fail = document.querySelector('div#bpc_fail');
-      if (fail) {
-        removeDOMElement(fail);
-        let article = document.querySelector(article_sel);
-        if (article)
-          article.firstChild.before(archiveLink(url));
+    let paywall_sel = 'div#tp-regwall';
+    let article_sel = 'main';
+    let video = document.querySelector('iframe[src^="https://www.youtube.com/"]');
+    func_post = function () {
+      if (video) {
+        let video_new = document.querySelector('div[old-src^="https://www.youtube.com/"]');
+        if (video_new && video_new.parentNode)
+          video_new.parentNode.replaceChild(video, video_new);
       }
-    }, 1000);
+      if (mobile) {
+        let grids = document.querySelectorAll('div[style*="grid-template-columns"]');
+        for (let elem of grids)
+          elem.removeAttribute('style');
+      }
+    }
+    getArchive(url, paywall_sel, '', 'main');
+    let ads = 'div[class*="_advert__"]';
+    hideDOMStyle(ads);
   }
-  let ads = 'div[class*="_advert__"]';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('enotes.com')) {
