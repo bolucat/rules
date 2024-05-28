@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.9.2
+// @version         3.6.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -2100,6 +2100,14 @@ else if (matchDomain('magazine.atavist.com')) {
   if (paywall)
     paywall.classList.remove('paywall-notification-visible');
   window.localStorage.clear();
+}
+
+else if (matchDomain('manoramaonline.com')) {
+  if (!window.location.pathname.endsWith('.amp.html')) {
+    amp_redirect('ev-engagement');
+  } else {
+    amp_unhide_access_hide("='result=\"ALLOW_ACCESS\"'", "^='result=\"REQUIRE_\"'");
+  }
 }
 
 else if (matchDomain('marketwatch.com')) {
