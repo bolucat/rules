@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Tue, 28 May 2024 13:10:16 +0000
-! Diff-Path: ../patches/2024.5.28.986.patch#ublock-filters
+! Last modified: Wed, 29 May 2024 15:47:11 +0000
+! Diff-Path: ../patches/2024.5.29.1043.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -639,11 +639,6 @@ transfermarkt.*##body > div[id]:has(a[href^="/intern/adblock"])
 transfermarkt.*###werbung_superbanner
 transfermarkt.*##.werbung
 transfermarkt.*##[id^="home-rectangle-"]
-shink.me##+js(acs, $, blockAdBlock)
-shink.me##+js(aopr, jsPopunder)
-shink.me##+js(aopr, pup)
-shink.me##+js(aopw, Fingerprint2)
-shink.me##+js(popads.net)
 ! kissasian .sh, .li, .sk
 kissasian.*##+js(aeld, /^(?:click|mousedown)$/, _0x)
 keephealth.info,kissasian.*##+js(aopr, mm)
@@ -844,16 +839,6 @@ mcloud.bz,vidplay.*##[src^="assets/bn"]:upward([style])
 vidstream.pro##.aslot
 /lazymolecule/*.js$script
 youtubedownloader.*##+js(nowoif)
-torrentdownloads.*##+js(nowebrtc)
-torrentdownload.*,torrentdownloads.*##+js(acs, adcashMacros)
-torrentdownloads.*##.download [href^="/td/?"]
-torrentdownload.*##[href^="/bing."]
-torrentdownload.*##[href^="/get.php"]
-torrentdownload.*##[href^="https://goo.gl/"]
-torrentdownload.*##TR:has-text(Stream:)
-torrentdownload.*##.table2:has-text(Sponsored)
-||torrentdownload.*/*.gif$image
-torrentdownload.*##[href^="/td."]
 liferayiseasy.*##+js(aeld, load, getComputedStyle)
 liferayiseasy.*##+js(aeld, load, adsense)
 iptvbin.com##+js(aost, String.prototype.charCodeAt, ai_)
@@ -894,13 +879,7 @@ vipleague.*##.bg-dark.ratio > .position-absolute
 nolive.me##+js(set, attachEvent, trueFunc)
 nolive.me##+js(nosiif, debug)
 vipleague.*##.m-1.btn-danger.btn
-imgking.co,imgkings.com,imgprime.com##+js(aopr, document.createElement)
-imgkings.com##+js(acs, __htapop)
-imgkings.com##+js(aopr, ExoLoader)
-imgkings.com##+js(nostif, location.href)
 cs-fundamentals.com##+js(aopr, google_jobrunner)
-watchparksandrecreation.net##+js(nowoif)
-watchparksandrecreation.net###keeper2
 xmoviesforyou.*##+js(aopr, popjs.init)
 xmoviesforyou.*##+js(aopr, decodeURI)
 kisshentai.net##+js(aopr, adblock)
@@ -1062,11 +1041,6 @@ imgadult.com,imgdrive.net,imgtaxi.com,imgwallet.com##.sidebar > h3:first-child
 imgadult.com,imgdrive.net,imgwallet.com##.bottom_abs
 imgadult.com,imgdrive.net,imgwallet.com##.centered
 imgtaxi.com###image_details:style(margin-top: 30px !important)
-porntrex.com###index-link
-*$script,3p,denyallow=blazingcdn.net|cdntrex.com|fastly.net|google.com|googleapis.com|gstatic.com|h-cdn.com|stackpathcdn.com,domain=porntrex.com
-porntrex.com##+js(disable-newtab-links)
-||porndoe.com/movie/preroll/*$media,redirect=noopmp4-1s,domain=porntrex.com
-||porndoe.com/sitePreRoll/
 sxyprn.*##+js(acs, decodeURI, decodeURIComponent)
 sxyprn.*##+js(set, vast_urls, {})
 sxyprn.*##+js(aopr, popns)
@@ -1475,6 +1449,7 @@ mcfucker.com##+js(aopw, t4PP)
 sponsor=$domain=mcfucker.com
 mcfucker.com##.vadv
 mcfucker.com##.c2p
+imgprime.com##+js(aopr, document.createElement)
 imgprime.com##+js(ra, href|target, a[href="https://imgprime.com/view.php"][target="_blank"], complete)
 ||imgprime.com/*.php$script
 imgprime.com##.overlayBg
@@ -9329,6 +9304,23 @@ linkneverdie.net##.show.fade.modal-backdrop
 linkneverdie.net##body:style(overflow: auto !important;)
 linkneverdie.net#@#+js(nostif, t)
 @@||quantumdex.io^$script,domain=linkneverdie.net
+porntrex.com###index-link
+*$script,3p,denyallow=blazingcdn.net|cdntrex.com|fastly.net|google.com|googleapis.com|gstatic.com|h-cdn.com|stackpathcdn.com,domain=porntrex.com
+porntrex.com##+js(disable-newtab-links)
+||porndoe.com/movie/preroll/*$media,redirect=noopmp4-1s,domain=porntrex.com
+||porndoe.com/sitePreRoll/
+porndoe.com##.bunny-container:style(display: flex !important;)
+porndoe.com##.bunny-button-resume:style(display: grid !important;)
+porndoe.com##.bunny-icon[disabled]:remove-attr(disabled)
+torrentdownloads.*##+js(nowebrtc)
+torrentdownload.*,torrentdownloads.*##+js(acs, adcashMacros)
+torrentdownload.*,torrentdownloads.*##[href^="/td/?"]
+torrentdownload.*##[href^="/bing."]
+torrentdownload.*##[href^="/get.php"]
+torrentdownload.*##[href^="https://goo.gl/"]
+torrentdownload.*##TR:has-text(Stream:)
+torrentdownload.*##.table2:has-text(Sponsored)
+||torrentdownload.*/*.gif$image
 ! END: Rules from filters.txt
 ! START: Regional lists
 ! <<<<< czech slovak filters >>>>>
@@ -10125,8 +10117,7 @@ learn-cpp.org###google-ad-right > div.mt-3
 learn-cpp.org##a[href^="https://codingforkids.io"]
 ||learn-cpp.org/static/img/banners/cfk/$image,1p
 ||rtuew.xyz^
-cosmonova-broadcast.tv##+js(rpnt, script, "skip":0, "skip":-1)
-cosmonova-broadcast.tv##+js(trusted-click-element, #preroll-skip-button.enabled, , 100)
+cosmonova-broadcast.tv##+js(set, amodule.data, emptyArr)
 libertycity.net##+js(nano-sib, timer)
 ||gankana.com^
 porno-baguette.com##.daily-premium
@@ -10568,13 +10559,15 @@ amanguides.com,highkeyfinance.com##+js(rmnt, script, deblocker)
 ! cuty.io (https://cutty.app/b6InEDRzF8NF)
 exego.app,cutlink.net,cutsy.net,cutyurls.com,cutty.app,cutnet.net##.steps-to-earn, .flex.share-icons-container, .register-banner, fieldset, .partners-container, .actions
 exego.app,cutlink.net,cutsy.net,cutyurls.com,cutty.app,cutnet.net##+js(aeld, click, handleClick)
-adcrypto.net,aduzz.com,bitcrypto.info,hbz.us,savego.org,owsafe.com###wpsafe-link:style(display: block !important;)
-aduzz.com,bitcrypto.info,owsafe.com##+js(no-fetch-if, ads)
+adcrypto.net,admediaflex.com,aduzz.com,bitcrypto.info,cdrab.com,datacheap.io,hbz.us,savego.org,owsafe.com,sportweb.info###wpsafe-link:style(display: block !important;)
+adcrypto.net,admediaflex.com,aduzz.com,bitcrypto.info,cdrab.com,datacheap.io,hbz.us,savego.org,owsafe.com,sportweb.info##+js(no-fetch-if, ads)
+adcrypto.net,admediaflex.com,aduzz.com,bitcrypto.info,cdrab.com,datacheap.io,hbz.us,savego.org,owsafe.com,sportweb.info##+js(aeld, load, bypass)
 !aduzz.com,bitcrypto.info##+js(set, wpsafelinkCount, 0)
-adcrypto.net,aduzz.com,bitcrypto.info,hbz.us,savego.org,owsafe.com##.adslr
-adcrypto.net,aduzz.com,bitcrypto.info,hbz.us,savego.org,owsafe.com##.floating-banner
-adcrypto.net,aduzz.com,bitcrypto.info,hbz.us,savego.org,owsafe.com##table[class^="a"]
-adcrypto.net,aduzz.com,bitcrypto.info,hbz.us,savego.org,owsafe.com##center:has(> a[href="javascript:hidepromol();"])
+adcrypto.net,admediaflex.com,aduzz.com,bitcrypto.info,cdrab.com,datacheap.io,hbz.us,savego.org,owsafe.com,sportweb.info##.adslr
+adcrypto.net,admediaflex.com,aduzz.com,bitcrypto.info,cdrab.com,datacheap.io,hbz.us,savego.org,owsafe.com,sportweb.info##.floating-banner
+adcrypto.net,admediaflex.com,aduzz.com,bitcrypto.info,cdrab.com,datacheap.io,hbz.us,savego.org,owsafe.com,sportweb.info##table[class^="a"]
+adcrypto.net,admediaflex.com,aduzz.com,bitcrypto.info,cdrab.com,datacheap.io,hbz.us,savego.org,owsafe.com,sportweb.info##center:has(> a[href="javascript:hidepromol();"])
+adcrypto.net,admediaflex.com,aduzz.com,bitcrypto.info,cdrab.com,datacheap.io,hbz.us,savego.org,owsafe.com,sportweb.info#@#.adb-top
 finish.addurl.biz##+js(nowoif)
 finish.addurl.biz##+js(set, document.hasFocus, trueFunc)
 tinys.click##+js(noeval-if, adsBlocked)
@@ -21510,7 +21503,7 @@ moto.it##+js(no-fetch-if, googlesyndication)
 ||supercast2.com/z-$script,1p
 ##[style="top: 0px; left: 0px; width: 940px; height: 600px; position: absolute; z-index: 2147483647;"]
 ! z-popup scripts
-/^https:\/\/[.\w]+\.[a-z]{2,3}\/z-[5-7]\d{6}$/$script,match-case,1p,strict1p
+/^https:\/\/[.\w]+\.[a-z]{2,3}\/z-[5-9]\d{6}$/$script,match-case,1p,strict1p
 ||hoca4u.com/z-$script,1p
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,domain=littlebigsnake.com
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,domain=watchtv24.com,redirect-rule=google-ima.js
@@ -21547,9 +21540,8 @@ allround-pc.com#@#a[rel="noopener external"] > img[src^="/"]
 allround-pc.com##.singlePostAd
 allround-pc.com##.inlineAd
 trangchu.news##+js(noeval-if, chp_ad)
-@@||ph.ontools.net^$ghide
 techhelpbd.com##+js(nostif, /adblocker|alert/)
-ac.ontools.net##+js(aeld, load, blocker)
+ontools.net##+js(aeld, load, blocker)
 ||tvonline123.com^$1p,frame,redirect-rule=noop.html
 wellness4live.com##+js(no-fetch-if, googlesyndication)
 /wpsafelink.js|$script

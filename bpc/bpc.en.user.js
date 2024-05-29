@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.6.9.3
+// @version         3.7.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -1596,9 +1596,13 @@ else if (matchDomain('economist.com')) {
       let hide_style = document.querySelector('body > style');
       removeDOMElement(paywall, hide_style);
     }
-  } else if (window.location.pathname.startsWith('/podcasts/'))
-    getGoogleWebcache(url, 'div[aria-labelledby="paywall-heading"]', '', 'section[data-body-id]');
-  else {
+  } else if (window.location.pathname.startsWith('/podcasts/')) {
+    let paywall = document.querySelector('div[aria-labelledby="paywall-heading"]');
+    if (paywall) {
+      removeDOMElement(paywall);
+      header_nofix(document.querySelector('section[data-body-id]'));
+    }
+  } else {
     let paywall_sel = 'div#tp-regwall';
     let article_sel = 'main';
     let video = document.querySelector('iframe[src^="https://www.youtube.com/"]');
@@ -3325,17 +3329,25 @@ else if (matchDomain(timesofindia_domains)) {
 }
 
 else if (matchDomain(no_nhst_media_domains)) {
-  let url = window.location.href;
-  if (url.includes('.tradewindsnews.com/markets/')) {
-    let paywall = document.querySelector('iframe[src]');
-    removeDOMElement(paywall);
-    let overflow = document.querySelector('body[style]');
-    if (overflow)
-      overflow.removeAttribute('style');
-    let blurred = document.querySelector('body > div[style]');
-    if (blurred)
-      blurred.removeAttribute('style');
-  } else if (matchDomain('upstreamonline.com')) {
+  if (matchDomain('tradewindsnews.com')) {
+    if (window.location.pathname.startsWith('/markets/')) {
+      let paywall = document.querySelector('iframe[src]');
+      removeDOMElement(paywall);
+      let overflow = document.querySelector('body[style]');
+      if (overflow)
+        overflow.removeAttribute('style');
+      let blurred = document.querySelector('body > div[style]');
+      if (blurred)
+        blurred.removeAttribute('style');
+    } else {
+      let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
+      if (fade) {
+        removeDOMElement(fade);
+        let header = document.querySelector('div.article-body > div');
+        header_nofix(header);
+      }
+    }
+  } else {
     window.setTimeout(function () {
       let paywall = document.querySelector('div.dn-paywall > div#sub-paywall-container');
       if (paywall) {
@@ -3387,12 +3399,23 @@ else if (matchDomain(no_nhst_media_domains)) {
                       elem.appendChild(caption);
                     }
                   }
+                } else if (type === 'factbox') {
+                  elem = document.createElement('p');
+                  if (par.title)
+                    elem.innerText = pars[par.title];
+                  if (par.html) {
+                    let content_new = parser.parseFromString('<div>' + pars[par.html] + '</div>', 'text/html');
+                    let box = content_new.querySelector('div');
+                    elem.appendChild(box);
+                  }
                 } else if (type === 'news' && par.title && par.url) {
-                  elem = document.createElement('a');
-                  elem.href = pars[par.url];
-                  elem.innerText = 'Related: ' + pars[par.title];
-                  elem.style = 'font-weight: bold;';
-                } else if (!['ad', 'author', 'break', 'Location', 'news', 'Organisation', 'promobox', 'Person', 'Region', 'Regions', 'related', 'Sectors'].includes(type)) {
+                  elem = document.createElement('p');
+                  let sub_elem = document.createElement('a');
+                  sub_elem.href = pars[par.url];
+                  sub_elem.innerText = 'Related: ' + pars[par.title];
+                  sub_elem.style = 'font-weight: bold;';
+                  elem.appendChild(sub_elem);
+                } else if (!['ad', 'author', 'break', 'embed', 'Emne', 'Location', 'news', 'Organisasjon', 'Organisation', 'Organization', 'promobox', 'Person', 'Region', 'Regions', 'related', 'Sector', 'Sectors', 'Sted', 'Topic'].includes(type)) {
                   for (let item in par) {
                     console.log(item);
                     console.log(pars[par[item]]);
@@ -3408,13 +3431,6 @@ else if (matchDomain(no_nhst_media_domains)) {
         }
       }
     }, 1000);
-  } else {
-    let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
-    if (fade) {
-      removeDOMElement(fade);
-      let header = document.querySelector('div.article-body > div');
-      header_nofix(header);
-    }
   }
 }
 
