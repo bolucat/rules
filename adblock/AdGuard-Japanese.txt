@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: VkZ4A2fbgnxkk0bIqysepw
-! Diff-Path: ../patches/7/7-s-1716996914-3600.patch
+! Checksum: YOh/ZRHn+vBHE7Nzdzo8pw
+! Diff-Path: ../patches/7/7-s-1717079830-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.52.41
-! TimeUpdated: 2024-05-29T15:32:28+00:00
+! Version: 2.0.52.44
+! TimeUpdated: 2024-05-30T14:34:30+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -995,6 +995,8 @@ nasubiblog.com,kyukyoku-matome.com##.widget_pc_ad
 !-------JS----------
 !-------------------
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/180461
+akibablog.blog.jp##+js(abort-current-script, document.write, sitejack)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/179821
 twi-fans.com##+js(addEventListener-defuser, /touchmove|wheel/, preventDefault())
 ! Leftover
@@ -1515,6 +1517,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/themes/CashLINESystem/js/modal.$script
 !
 ! Malware/Phishing
+.cfd/item-*.html|$document
 .com/grp01.id.rakuten.co.jp/jp/$document
 -co-jp-*.com/reg/login$document
 _co_jp.*.com/MS/Login.php$document
@@ -1535,6 +1538,7 @@ _co_jp.*.com/MS/Login.php$document
 /login.php?yc/login/index.html?returnUrl=https%3A%2F%2Fwww.yodobashi.com$document,domain=cn
 ://rakuten-card.*.cn/Mobile/login.php$document
 ||web.core.windows.net/*Security0*/index.html$document
+.com/shopping/item/m*/?zenid=$document
 .com/mart/detail/m*?zenid=$document
 .com/mart/pri/m*.html?zenid=$document
 count/login/?=id/log/*/login.asp$document,domain=cc|com
@@ -1594,7 +1598,7 @@ n.lat/login|$document
 ?ph0ne=050-$document
 .co.jp.*.cn/ai/$document
 /\.com\/(?:[a-z]{2,}-)+p-\d{4,6}\.html\?(?:page_source|prevRef|re[fl])=/$document,match-case
-/^https:\/\/(?:(?!www)[a-z]{3,}\.)?[0-9a-z\-]{3,}\.(?:com|net)\/index\.php\?main_page=product_info(&stl=\d)?&(?:cPath|products_id)=/$document
+/^https:\/\/(?:(?!www)[a-z]{3,}\.)?[0-9a-z\-]{3,}\.(?:com|net|org)\/index\.php\?main_page=product_info(&stl=\d)?&(?:cPath|products_id)=/$document
 ://www2.etc-*.com/$document
 ://www2.etc-*.net/$document
 ://www2.etc-*.icu/$document
@@ -1715,6 +1719,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+akibablog.blog.jp##div[style^="top:0px;position:fixed;z-index:0;left:50%;"]
+iot-consulting.co.jp##.entry-content > div.sng-box:has(a[href^="//ck.jp.ap.valuecommerce.com/"])
 itachirin.com##p:has(> span > ins.adsbygoogle)
 chara.ge###cls-improvement
 kingsmor.com##div[class^="advads-"]
