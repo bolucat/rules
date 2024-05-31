@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.6.7.1
+// @version         3.7.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -29,6 +29,7 @@
 // @connect         archive.ph
 // @connect         archive.vn
 // @connect         archive.fo
+// @connect         och.to
 // @connect         webcache.googleusercontent.com
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
@@ -54,6 +55,7 @@ var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'mo
 var de_lv_domains = ['profi.de', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de'];
 var de_motor_presse_domains = ['aerokurier.de', 'auto-motor-und-sport.de', 'flugrevue.de', 'motorradonline.de', 'womenshealth.de'];
+var de_rp_medien_domains = ['ga.de', 'rp-online.de'];
 
 if (matchDomain('aerztezeitung.de')) {
   let paywall = document.querySelector('div.AZLoginModule');
@@ -459,6 +461,23 @@ else if (matchDomain('freitag.de')) {
   }
 }
 
+else if (matchDomain('golem.de')) {
+  let url = window.location.href;
+  func_post = function () {
+    let js_block = 'figure[id]:not([class])';
+    hideDOMStyle(js_block);
+  }
+  getOchToUnlock(url, 'div.paywall-wrapper', '', 'article');
+  let ads = 'div[id^="iqadtile"]';
+}
+
+else if (matchDomain('heise.de')) {
+  let url = window.location.href;
+  getOchToUnlock(url, 'a-gift', '', 'article');
+  let ads = 'div.ad-ldb-container, div.inread-cls-reduc';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('jacobin.de')) {
   let paywall = pageContains('h3.m-auto', 'Dieser Artikel ist nur mit Abo zugänglich.');
   if (paywall.length) {
@@ -708,10 +727,19 @@ else if (matchDomain('sueddeutsche.de')) {
   let url = window.location.href;
   if (matchDomain('sz-magazin.sueddeutsche.de'))
     getArchive(url, 'p.paragraph--reduced', {rm_class: 'paragraph--reduced'}, 'main');
-  else if (window.location.pathname.startsWith('/projekte/artikel/'))
+  else if (window.location.pathname.startsWith('/projekte/artikel/')) {
+    func_post = function () {
+      let lazy_images = document.querySelectorAll('img[loading="lazy"][style]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 80%; margin: auto;';
+      let containers = document.querySelectorAll('div[id^="module-"][style]');
+      for (let elem of containers)
+        elem.removeAttribute('style');
+    }
     getArchive(url, 'div.offer-page', '', 'main');
-  else
-    getArchive(url, 'head > meta[content="locked"]', '', 'div[itemprop="articleBody"]');
+  } else {
+    getOchToUnlock(url, 'head > meta[content="locked"]', '', 'div[itemprop="articleBody"]');
+  }
   let ads = 'er-ad-slot, div.iqdcontainer';
   hideDOMStyle(ads);
 }
@@ -941,6 +969,28 @@ else if (matchDomain(de_lv_domains)) {
   hideDOMStyle(ads);
 }
 
+else if (matchDomain(de_motor_presse_domains)) {
+  let ads = 'div#ads-container, div.va-sponsored, div.mps_markAd';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain(de_rp_medien_domains)) {
+  let url = window.location.href;
+  if (window.location.pathname.startsWith('/fotos/')) {
+    let paywall = document.querySelector('div.park-paywall-content');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let article = document.querySelector('article[data-cy="gallery"]');
+      if (article)
+        article.firstChild.before(externalLink(['och.to'], 'https://och.to/unlock/{url}', url, 'BPC > Try for photo gallery:\r\n'));
+    }
+  } else {
+    getOchToUnlock(url, 'div.park-article-reduced-overlay', '', 'article[data-park-article]');
+  }
+  let ads = 'div.portal-slot';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain(de_madsack_domains) || document.querySelector('head > link[href*=".rndtech.de/"]')) {
   if (!window.location.search.startsWith('?outputType=valid_amp')) {
     let ads = 'div[class^="Adstyled__AdWrapper"]';
@@ -948,11 +998,6 @@ else if (matchDomain(de_madsack_domains) || document.querySelector('head > link[
   } else {
     ampToHtml();
   }
-}
-
-else if (matchDomain(de_motor_presse_domains)) {
-  let ads = 'div#ads-container, div.va-sponsored, div.mps_markAd';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('ovb-online.de') || matchDomain(['bgland24.de', 'chiemgau24.de', 'innsalzach24.de', 'mangfall24.de', 'rosenheim24.de', 'wasserburg24.de'])) {
@@ -1204,6 +1249,7 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
 function replaceTextFail(url, article, proxy, text_fail) {
   if (text_fail && article) {
     let text_fail_div = document.createElement('div');
+    text_fail_div.id = 'bpc_fail';
     text_fail_div.setAttribute('style', 'margin: 0px 50px; font-weight: bold; color: red;');
     text_fail_div.appendChild(document.createTextNode(text_fail));
     if (proxy) {
@@ -1249,6 +1295,16 @@ function getArchive(url, paywall_sel, paywall_action = '', selector, text_fail =
   if (paywall.length) {
     clearPaywall(paywall, paywall_action);
     replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
+  }
+}
+
+function getOchToUnlock(url, paywall_sel, paywall_action = '', selector, selector_source = selector) {
+  let url_unlock = 'https://och.to/unlock/' + url.split(/[#\?]/)[0];
+  let paywall = document.querySelectorAll(paywall_sel);
+  if (paywall.length) {
+    clearPaywall(paywall, paywall_action);
+    csDoneOnce = true;
+    replaceDomElementExt(url_unlock, true, false, selector, '', selector_source);
   }
 }
 

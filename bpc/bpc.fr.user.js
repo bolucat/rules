@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.6.5.2
+// @version         3.7.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.fr.user.js
@@ -13,6 +13,7 @@
 // @match           *://*.argusdelassurance.com/*
 // @match           *://*.businessam.be/*
 // @match           *://*.connaissancedesarts.com/*
+// @match           *://*.courrierinternational.com/*
 // @match           *://*.dhnet.be/*
 // @match           *://*.femmesdaujourdhui.be/*
 // @match           *://*.flair.be/fr/*
@@ -230,6 +231,11 @@ else if (matchDomain('charliehebdo.fr')) {
 else if (matchDomain('cieletespace.fr')) {
   let url = window.location.href;
   getGoogleWebcache(url, 'div.article-content__subscribe', '', 'div.article-content');
+}
+
+else if (matchDomain('courrierinternational.com')) {
+  let url = window.location.href;
+  getArchive(url, 'div#bloc_paywall', '', 'article');
 }
 
 else if (matchDomain('elle.fr')) {
