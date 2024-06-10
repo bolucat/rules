@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.0.0
+// @version         3.7.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -660,7 +660,7 @@ else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
       }
     }
   }
-  let ads = 'div[id^="ad_article"]';
+  let ads = 'div.ad';
   hideDOMStyle(ads);
 }
 
@@ -2110,7 +2110,7 @@ else if (matchDomain('manoramaonline.com')) {
   if (!window.location.pathname.endsWith('.amp.html')) {
     amp_redirect('ev-engagement');
   } else {
-    amp_unhide_access_hide("='result=\"ALLOW_ACCESS\"'", "^='result=\"REQUIRE_\"'");
+    amp_unhide_access_hide("=\"result='ALLOW_ACCESS'\"");
   }
 }
 
@@ -2306,7 +2306,7 @@ else if (matchDomain('nytimes.com')) {
   } else {
     function theathletic_func(node) {
       removeDOMElement(node);
-      let overlays = 'div[id*="overlay"], div:empty:not([data-rjs])';
+      let overlays = 'div[id*="overlay"], div#article-container-grid div:empty:not([data-rjs])';
       hideDOMStyle(overlays);
       let body = document.querySelector('body');
       if (body) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.7.0.0
+// @version         3.7.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.fr.user.js
@@ -434,35 +434,6 @@ else if (matchDomain('lemagit.fr')) {
     paywall.classList.remove('paywall');
     let banners = document.querySelectorAll('p#firstP, div#inlineRegistrationWrapper');
     removeDOMElement(...banners);
-  }
-}
-
-else if (matchDomain('lemonde.fr')) {
-  let paywall_sel = 'section.paywall';
-  let paywall = document.querySelector(paywall_sel);
-  if (paywall) {
-    let article_sel = 'article';
-    let figure = document.querySelector('figure.article__media');
-    func_post = function () {
-      if (figure) {
-        let figure_new = document.querySelector('article figure');
-        let article = document.querySelector(article_sel);
-        if (!figure_new && article)
-          article.firstChild.before(figure);
-      }
-      let view_more = document.querySelector('section > label[for^="view-more-"]');
-      if (view_more) {
-        let view_more_div = view_more.parentNode.querySelector('div[style*="max-height"]');
-        if (view_more_div)
-          view_more_div.removeAttribute('style');
-        removeDOMElement(view_more);
-      }
-    }
-    let url = window.location.href;
-    getArchive(url, paywall_sel, '', article_sel);
-    let hide = document.querySelector('section.article__wrapper--premium');
-    if (hide)
-      removeClassesByPrefix(hide, 'article__content--restricted');
   }
 }
 
@@ -1071,6 +1042,7 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
 function replaceTextFail(url, article, proxy, text_fail) {
   if (text_fail && article) {
     let text_fail_div = document.createElement('div');
+    text_fail_div.id = 'bpc_fail';
     text_fail_div.setAttribute('style', 'margin: 0px 50px; font-weight: bold; color: red;');
     text_fail_div.appendChild(document.createTextNode(text_fail));
     if (proxy) {

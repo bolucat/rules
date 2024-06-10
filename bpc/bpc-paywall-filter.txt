@@ -4,7 +4,7 @@
 ! Homepage: https://github.com/bpc-clone/bypass-paywalls-clean-filters
 ! License: MIT; https://github.com/bpc-clone/bypass-paywalls-clean-filters/blob/main/LICENSE
 ! Last modified: 
-! Version: 3.6.9.1
+! Version: 3.7.0.5
 
 ! General
 
@@ -255,7 +255,7 @@ nybooks.com##div.toast-cta
 nytimes.com##div[data-testid="inline-message"],div[id^="ad-"],div#dock-container,div.pz-ad-box
 ||cooking.nytimes.com/api/*/access$xmlhttprequest,~third-party
 ! athletic
-nytimes.com##div[id^="slideup-"],div[id*="overlay"],div:empty:not([data-rjs]),#paywall,div.ad-container
+nytimes.com##div[id^="slideup-"],div[id*="overlay"],div#article-container-grid div:empty:not([data-rjs]),#paywall,div.ad-container
 nytimes.com##body[class]:style(overflow:visible !important; position:relative !important)
 ||nzherald.co.nz/sales/public/v*/entitlements$xmlhttprequest,~third-party
 nzherald.co.nz##+js(set, Fusion.globalContent.isPremium, false)
@@ -282,6 +282,7 @@ scholastic.com##div.paywallModalElement,div.modal-backdrop
 schwaebische.de##+js(ra, style, body[style], stay)
 science.org##div.alert-read-limit
 science.org##+js(rc, alert-read-limit__overlay, body.alert-read-limit__overlay, stay)
+sciencenews.org##+js(cookie-remover, blaize_session)
 sciencesetavenir.fr##div.amorce.manual
 sciencesetavenir.fr##+js(ra, class|hidden, .user-paying-content)
 ||scientificamerican.com/api/tinypass.min.js$script,~third-party
@@ -343,8 +344,8 @@ thepointmag.com##+js(cookie-remover, monthly_history)
 thepointmag.com##div.overlay,div#tpopup-
 thequint.com##div.zsqcu
 thequint.com##+js(ra, class|style, div#story-body-wrapper, stay)
-||thesaturdaypaper.com.au/sites/all/modules/custom/node_meter/pw.js$script,~third-party
-thesaturdaypaper.com.au##+js(cookie-remover, /^/)
+||thesaturdaypaper.com.au/sites/all/modules/custom/node_meter/pw.js$~third-party
+/\.thesaturdaypaper\.com\.au\/.+\/(\w+-){3,}/$inline-script
 thesaturdaypaper.com.au##div.paywall-hard-always-show
 thetimes.co.uk##+js(ra, style, html[style], stay)
 thetimes.co.uk##+js(ra, style, body[style], stay)
@@ -468,6 +469,9 @@ dieharke.de,dnn.de,gnz.de,goettinger-tageblatt.de,haz.de,kn-online.de,landeszeit
 
 ! McClatchy Group
 ||mcclatchy.com/mcc-paywall.js$script,third-party
+
+! Mediahuis Belgie & Limburger.nl
+/extra/assets/resources/js/zephrIntegration.js$script,~third-party,domain=gva.be|hbvl.be|nieuwsblad.be|standaard.be|limburger.nl
 
 ! Mediahuis Noord
 ||ndcmediagroep.nl/js/evolok/$script,third-party

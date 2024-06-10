@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Fri, 31 May 2024 11:28:20 +0000
-! Diff-Path: ../patches/2024.5.31.862.patch#ublock-quick-fixes
+! Last modified: Sun, 09 Jun 2024 21:57:23 +0000
+! Diff-Path: ../patches/2024.6.10.268.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -33,6 +33,13 @@ aternos.org##.header-center:style(margin-top:-5000px !important;)
 aternos.org##.sidebar:style(width: 1.745px !important; padding: 1px !important)
 aternos.org##.ad-dfp:style(min-height: 0.1485mm !important; height: 0.1485mm !important;)
 aternos.org###placement-takeover
+! pixsera
+imgnnnvbrf.sbs##+js(aopr, console.clear)
+imgnnnvbrf.sbs##+js(nano-sib, timer)
+imgnnnvbrf.sbs##div[id][style^="position: fixed; display: block; width: 100%;"]
+imgnnnvbrf.sbs##div[style="width:100%;height:110px"]
+imgnnnvbrf.sbs##+js(nowoif, !/prcf.fiyar|themes|pixsense|.jpg/)
+imgnnnvbrf.sbs##div[class][style="display: block;"]
 !#if !env_mv3
 !#if !cap_html_filtering
 !#if env_firefox
@@ -41,15 +48,21 @@ youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAd
 !#endif
 !#endif
 ||googlevideo.com/videoplayback*&ctier=L&*%2Cctier%2C$xhr,3p,domain=m.youtube.com|music.youtube.com|www.youtube.com
-!m.youtube.com,music.youtube.com,www.youtube.com##+js(trusted-rpnt, script, /^(\(function serverContract\(\))/s, '/*start*/(function(){const wrapper=(target,thisArg,args)=>{let content=Reflect.apply(target,thisArg,args);if(content.includes("ssapPrerollEnabled")){const modifiedContent=content.replace(/\n.\n.playerConfig\.ssapConfig\.ssapPrerollEnabled.{2}(?:tru|fals)e/,"");return modifiedContent;}return content;};const handler={apply:wrapper};window.atob=new Proxy(window.atob,handler);document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g,"");}());/*end*/$1')
-m.youtube.com,music.youtube.com,www.youtube.com##+js(set, ytInitialPlayerResponse.playerConfig.ssapConfig, undefined)
-m.youtube.com,music.youtube.com,www.youtube.com##+js(set, ytInitialPlayerResponse.streamingData.serverAbrStreamingUrl, undefined)
-m.youtube.com,music.youtube.com,www.youtube.com##+js(json-prune, playerResponse.playerConfig.ssapConfig playerResponse.streamingData.serverAbrStreamingUrl playerConfig.ssapConfig streamingData.serverAbrStreamingUrl)
-m.youtube.com,music.youtube.com,www.youtube.com##+js(trusted-rpnt, script, /^(\(function serverContract\(\))/s, /*start*/(function(){const wrapper=(target\,thisArg\,args)=>{let result=Reflect.apply(target\,thisArg\,args);try{const decoded=atob(result);if(decoded.includes("ssapPrerollEnabled")){const modifiedContent=decoded.replace(/\n.\n.playerConfig\.ssapConfig\.ssapPrerollEnabled.{2}(?:tru|fals)e/\,"");const encodeToBase64=btoa(modifiedContent);return encodeToBase64;}}catch(e){}return result;};const handler={apply:wrapper};window.Array.prototype.join=new Proxy(window.Array.prototype.join\,handler);document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g\,"");})();/*end*/$1)
+!!#if cap_html_filtering
+!m.youtube.com,music.youtube.com,www.youtube.com##+js(trusted-rpnt, script, window.Polymer=, /*start*/(function(){const e={apply:(e\,t\,o)=>{if(!window.yt?.config_?.EXPERIMENT_FLAGS?.html5_enable_ssap_entity_id||!o[0]||"X-Goog-Visitor-Id"!==o[0]||!o[1])return Reflect.apply(e\,t\,o)}};window.XMLHttpRequest.prototype.setRequestHeader=new Proxy(window.XMLHttpRequest.prototype.setRequestHeader\,e)})();(function(){const e={construct:(e\,t\,o)=>{if(window.yt?.config_?.EXPERIMENT_FLAGS?.html5_enable_ssap_entity_id){const c=t[0]\,s=t[1];if("https://www.youtube.com/"!==location.href&&c&&c.includes?.("/youtubei/"))try{delete s.headers["X-Goog-Visitor-Id"]}catch(e){}if(s&&s.body?.includes("visitorData"))try{t[1].body=t[1].body.replace(/"visitorData":".*?"\,/\,"")}catch(e){}}return Reflect.construct(e\,t\,o)}};window.Request=new Proxy(window.Request\,e)})();document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g\,"");/*end*/window.Polymer=)
+!||youtube.com/watch?v=$doc,domain=m.youtube.com|music.youtube.com|www.youtube.com,replace=/sabr=1(.+?ssapPrerollEnabled)/\$1/s
+!!#else
+!m.youtube.com,music.youtube.com,www.youtube.com##+js(trusted-rpnt, script, window.Polymer=, /*start*/(function(){const e={apply:(e\,t\,o)=>{if(!window.yt?.config_?.EXPERIMENT_FLAGS?.html5_enable_ssap_entity_id||!o[0]||"X-Goog-Visitor-Id"!==o[0]||!o[1])return Reflect.apply(e\,t\,o)}};window.XMLHttpRequest.prototype.setRequestHeader=new Proxy(window.XMLHttpRequest.prototype.setRequestHeader\,e)})();(function(){const e={construct:(e\,t\,o)=>{if(window.yt?.config_?.EXPERIMENT_FLAGS?.html5_enable_ssap_entity_id){const c=t[0]\,s=t[1];if("https://www.youtube.com/"!==location.href&&c&&c.includes?.("/youtubei/"))try{delete s.headers["X-Goog-Visitor-Id"]}catch(e){}if(s&&s.body?.includes("visitorData"))try{t[1].body=t[1].body.replace(/"visitorData":".*?"\,/\,"")}catch(e){}if(c&&c.includes?.("&sabr=1"))try{t[0]=t[0].replace("&sabr=1"\,"")}catch(e){}}return Reflect.construct(e\,t\,o)}};window.Request=new Proxy(window.Request\,e)})();document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g\,"");/*end*/window.Polymer=)
+!m.youtube.com,music.youtube.com,www.youtube.com##+js(trusted-rpnt, script, sabr=1, , condition, serverAbrStreamingUrl)
+!!#endif
+!m.youtube.com,music.youtube.com,www.youtube.com##+js(trusted-replace-fetch-response, "useServerDrivenAbr":true, "useServerDrivenAbr":false, /playlist?)
+!||youtube.com/playlist?$doc,domain=m.youtube.com|music.youtube.com|www.youtube.com,replace=/sabr=1(.+?ssapPrerollEnabled)/\$1/s
+!m.youtube.com,music.youtube.com,www.youtube.com##+js(set, ytcfg.data_.INNERTUBE_CONTEXT.client.visitorData, undefined)
+www.youtube.com##+js(json-prune-fetch-response, playerAds adPlacements adSlots playerResponse.playerAds playerResponse.adPlacements playerResponse.adSlots, , propsToMatch, /playlist?)
 ! VOE sites
-||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=brucevotewithin.com,important
-brucevotewithin.com##+js(nowoif)
-brucevotewithin.com##+js(set, console.clear, undefined)
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=loriwithinfamily.com,important
+loriwithinfamily.com##+js(nowoif)
+loriwithinfamily.com##+js(set, console.clear, undefined)
 ! ytlarge detection
 @@||ytlarge.com^$ghide
 @@||googlesyndication.com^$script,xhr,domain=ytlarge.com
@@ -66,9 +79,10 @@ ytlarge.com##ins.adsbygoogle[data-ad-slot]
 !next-episode.net##+js(rpnt, script, '/.then[\s\S]{0,}?;/g')
 !next-episode.net##+js(rmnt, script, '/\d+\+\d|64|\+\+|\+1|adbl|ablk|[\s\S]{0,}(\.\.|function)[\s\S]{1800,}|document\[/i')
 @@||pagead2.googlesyndication.com^$script,domain=next-episode.net
-download.megaup.net##+js(rpnt, script, /for\s*\(\s*(const|let|var).*?return;}}/g, , condition, attribute)
-raenonx.cc##body > div[class] > style:first-child + .w-full:has(> .button-clickable-bg-opaque > .transform-smooth > svg)
-raenonx.cc##.w-full:has(> style + div > style + div .adsbygoogle)
+download.megaup.net##+js(rpnt, script, /for\s*\(\s*(const|let|var).*?return;}}.*;return;\}/g, , condition, attribute)
+raenonx.cc##div[class*="main_announcement-animation"]:has(> [class*="announcement"] > .markdown > p > a[href$="/docs/view/site/ads-and-credits"])
+raenonx.cc##div[class="fixed bottom-0 z-anchor w-full bg-slate-500"]:has(> div[class="flex flex-col w-full"] > button.button-clickable-bg-opaque > .transform-smooth > svg)
+raenonx.cc##div[class^="grid w-full size-full grid-cols"]:has(> div[class^="relative bottom-0 w-full overflow-hidden outline-transparent"] > .absolute > .adsbygoogle)
 raenonx.cc##[id^="headlessui-"] [role="dialog"]:has(.w-full > .w-full > .markdown > p > a[href="https://pks.raenonx.cc/en/docs/view/help/disable-adblock"])
 raenonx.cc##.w-full > div[class*="min-h-"]:has(> style + div > .markdown > p > a[href*="adblock"])
 raenonx.cc##.size-full > .w-full > .flex-col > style + div:has-text(/blocker|ブロッカー/)
@@ -76,12 +90,16 @@ raenonx.cc##html[style*="hidden"]:style(overflow: visible !important;)
 @@*$xhr,3p,method=head,domain=raenonx.cc
 @@||googlesyndication.com/|$xhr,domain=raenonx.cc
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xhr,domain=raenonx.cc
-! Can be removed on 31th of May, 2024.
-www.google.*#@#+js(trusted-set-cookie, SOCS, CAESHAgBEhJnd3NfMjAyMzA2MTItMF9SQzIaAmZpIAEaBgiAzK6kBg, 1year)
-japscan.lol#@#+js(acs, EventTarget.prototype.addEventListener, '/((ad-img|banner)-|interstitial|getComputedStyle)[\s\S]{1,5000}$/')
+||raenonx.cc/api/scripts
+japscan.lol#@#+js(acs, EventTarget.prototype.addEventListener, '/((ad-img|banner)-|interstitial|getComputedStyle|\)break;else)[\s\S]{1,5000}$/')
 japscan.lol##+js(acs, EventTarget.prototype.addEventListener, /mgid_iframe|ad[_-]/)
-@@||googletagmanager.com/gtm.js$domain=eki-net.com
-/ad/img/*$image,domain=~jiji.com,badfilter
-/ad/img/*$image,domain=~eki-net.com|~jiji.com
-uta-net.com#@#.ad-area-b:not(.pc-official-link)
-uta-net.com##.ad-area-b:has(> div.text-center > div[id^="div-gpt-"])
+japscan.lol##+js(rmnt, script, /'push'\,'shift'|banner-|ApoZow/)
+||cmoa.pro^$badfilter
+||js.cmoa.pro^
+/web-vitals/*$badfilter
+@@||g.doubleclick.net/gampad/live/ads?iu=*jp.tver.$xmlhttprequest,domain=imasdk.googleapis.com
+||cu-cdn-ad-v3.ntv.co.jp^$media,redirect=noop-1s.mp4
+@@||taplytics.com^$domain=royalbank.com
+! Ad-Shield
+loawa.com,ygosu.com,sportalkorea.com,edaily.co.kr,economist.co.kr,etoday.co.kr,isplus.com,hometownstation.com,inven.co.kr,honkailab.com,genshinlab.com,thestockmarketwatch.com,thephoblographer.com,issuya.com,etnews.com,iusm.co.kr,dogdrip.net,worldhistory.org,text-compare.com,bamgosu.site,etnewskorea.com,automobile-catalog.com,maketecheasier.com,thesaurus.net,gadgets360.com,thestar.co.uk,yorkshirepost.co.uk,logicieleducatif.fr,motorbikecatalog.com,jjang0u.com,raenonx.cc#@#+js(set, window.googletag.apiReady, undefined)
+loawa.com,ygosu.com,sportalkorea.com,edaily.co.kr,economist.co.kr,etoday.co.kr,isplus.com,hometownstation.com,inven.co.kr,honkailab.com,genshinlab.com,thestockmarketwatch.com,thephoblographer.com,issuya.com,etnews.com,iusm.co.kr,dogdrip.net,worldhistory.org,text-compare.com,bamgosu.site,etnewskorea.com,automobile-catalog.com,maketecheasier.com,thesaurus.net,gadgets360.com,thestar.co.uk,yorkshirepost.co.uk,logicieleducatif.fr,motorbikecatalog.com,jjang0u.com,raenonx.cc##+js(set, window.googletag.apiReady, false)
