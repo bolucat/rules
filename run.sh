@@ -35,7 +35,7 @@ CUR=${PWD}
 
 clean() {
 	rm -rf clash/Loyalsoldier \
-	clash/DivineEngine clash/ip-show-list \
+	clash/ip-show-list \
 	clash/anti-ad clash/openclash \
 	clash/fei-rules clash/ios-rule-script \
 	clash/cf-ip clash/my/my-reject-*.yaml \
@@ -44,18 +44,18 @@ clean() {
 }
 
 clash() {
-	mkdir -p clash/Loyalsoldier clash/DivineEngine clash/anti-ad clash/openclash clash/ip-show-list clash/cf-ip clash/meta-rules-dat
+	mkdir -p clash/Loyalsoldier clash/anti-ad clash/openclash clash/ip-show-list clash/cf-ip clash/meta-rules-dat
 	# Loyalsoldier
 	pushd clash/Loyalsoldier || exit 1
     	export LOY=$(wget -qO- https://api.github.com/repos/Loyalsoldier/clash-rules/tags | grep 'name' | cut -d\" -f4 | head -1)
     	wget -qO- https://api.github.com/repos/Loyalsoldier/clash-rules/releases/tags/${LOY} | jq ".assets[] | {browser_download_url}" -c | jq .browser_download_url -r | wget -q -i -
 	popd || exit 1
 	# DivineEngine
-    	pushd clash/DivineEngine || exit 1
-    	git clone --depth 1 -b master https://github.com/DivineEngine/Profiles Profiles
-    	mv Profiles/Clash/* . && rm -rf Profiles
-	sed $'/DOMAIN-SUFFIX,cn/d' -i RuleSet/China.yaml
-    	popd || exit 1
+    	# pushd clash/DivineEngine || exit 1
+    	# git clone --depth 1 -b master https://github.com/DivineEngine/Profiles Profiles
+    	# mv Profiles/Clash/* . && rm -rf Profiles
+	# sed $'/DOMAIN-SUFFIX,cn/d' -i RuleSet/China.yaml
+    	# popd || exit 1
      	# meta-rules-dat
       	pushd clash/meta-rules-dat || exit 1
        	wget -qO- "https://api.github.com/repos/MetaCubeX/meta-rules-dat/contents/?ref=release" | jq ".[] | {download_url}" -c | jq .download_url -r | grep -v ".sha256sum" | wget -c -i -
