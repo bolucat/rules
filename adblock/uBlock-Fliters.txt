@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Sat, 15 Jun 2024 13:43:47 +0000
-! Diff-Path: ../patches/2024.6.15.862.patch#ublock-filters
+! Last modified: Sun, 16 Jun 2024 11:13:35 +0000
+! Diff-Path: ../patches/2024.6.16.922.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -243,7 +243,6 @@ m.timesofindia.com##.asAffiliate
 seithy.com##.slick-track
 indiatimes.com##.PPD_ADS_JS
 timesofindia.indiatimes.com##+js(set, nsShowMaxCount, 0)
-||timesofindia.indiatimes.com/toiads_react/minify-1.cms$script,domain=indiatimes.com|timesofindia.com
 ||assets.toiimg.com/affiliates/sdk/v2.js$script,domain=indiatimes.com|timesofindia.com
 ||assets.toiimg.com/affiliates/sdk/v1.js$script,domain=indiatimes.com|timesofindia.com
 timesofindia.indiatimes.com##.nonAppView > .mPws3
@@ -344,12 +343,12 @@ www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.[-].__bbox.r
 !#endif
 www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.serpResponse.results.edges.[-].relay_rendering_strategy.view_model.story.sponsored_data.ad_id)
 !#if cap_html_filtering
-||www.facebook.com/api/graphql/$xhr,replace=/\{"brs_content_label":[^,]+,"category":"SPONSORED"[^\n]+"cursor":"[^"]+"\}/{}/g
+||www.facebook.com/api/graphql/$xhr,replace=/\{"brs_content_label":[^,]+,"(?:category|feed_story_category)":"SPONSORED"[^\n]+"cursor":"[^"]+"\}/{}/g
 ||www.facebook.com/api/graphql/$xhr,replace=/\{"node":\{"role":"SEARCH_ADS"[^\n]+?cursor":[^}]+\}/{}/g
 ||www.facebook.com/api/graphql/$xhr,replace=/\{"node":\{"__typename":"MarketplaceFeedAdStory"[^\n]+?"cursor":(?:null|"\{[^\n]+?\}"|[^\n]+?MarketplaceSearchFeedStoriesEdge")\}/{}/g
 ||www.facebook.com/api/graphql/$xhr,replace=/\{"node":\{"__typename":"VideoHomeFeedUnitSectionComponent"[^\n]+?"sponsored_data":\{"ad_id"[^\n]+?"cursor":null\}/{}/
 !#else
-www.facebook.com##+js(trusted-replace-xhr-response, '/\{"brs_content_label":[^,]+,"category":"SPONSORED"[^\n]+"cursor":"[^}]+\}/g', {}, /api/graphql)
+www.facebook.com##+js(trusted-replace-xhr-response, '/\{"brs_content_label":[^,]+,"(?:category|feed_story_category)":"SPONSORED"[^\n]+"cursor":"[^}]+\}/g', {}, /api/graphql)
 www.facebook.com##+js(trusted-replace-xhr-response, /\{"node":\{"role":"SEARCH_ADS"[^\n]+?cursor":[^}]+\}/g, {}, /api/graphql)
 www.facebook.com##+js(trusted-replace-xhr-response, /\{"node":\{"__typename":"MarketplaceFeedAdStory"[^\n]+?"cursor":(?:null|"\{[^\n]+?\}"|[^\n]+?MarketplaceSearchFeedStoriesEdge")\}/g, {}, /api/graphql)
 www.facebook.com##+js(trusted-replace-xhr-response, /\{"node":\{"__typename":"VideoHomeFeedUnitSectionComponent"[^\n]+?"sponsored_data":\{"ad_id"[^\n]+?"cursor":null\}/, {}, /api/graphql)
@@ -9091,7 +9090,7 @@ xvideos.com,xvideos2.com##+js(nowoif)
 xvideos.com,xvideos2.com##+js(aeld, click, ShouldShow)
 1337x.*##+js(rmnt, script, style)
 1337x.*##+js(aost, document.createElement, _0x)
-1337x.*,x1337x.*##+js(nowoif)
+1337x.*,x1337x.*##+js(nowoif, , 1)
 1337x.*##+js(aopr, afScript)
 1337x.*##+js(nostif, adb)
 1337x.*##^script:has-text(admc)
@@ -9114,8 +9113,9 @@ x1337x.*##+js(acs, setTimeout, admc)
 x1337x.eu##.mgbox
 1337x.*##+js(aopr, AaDetector)
 @@||torrage.info/torrent.php$popup,domain=1337x.to
-1337x.*##+js(aeld, popstate)
+1337x.*,x1337x.*##+js(aeld, popstate)
 1337x.*,x1337x.*##+js(aost, navigator, FingerprintJS)
+||x1337x.*/mm.js$script,1p
 cheatcloud.cc,cheater.ninja,cheatermad.com,cheatsquad.gg##+js(nano-sib, clearInterval)
 cheatsquad.gg##+js(nosiif, visibility, 1000)
 cheatermad.com##+js(nostif, offset)
@@ -9326,10 +9326,8 @@ mhn.quest##+js(nostif, adblock)
 @@||mhn.quest^$script,1p
 bonsaiprolink.shop##+js(noeval-if, ads)
 ! paste. fo ads
-paste.fo##a[href="https://bit.ly/3vKxLhC"], a[href="https://bit.ly/4aDbAcb"], a[href="https://bit.ly/4cL4Jz2"], a[href="https://goldenaccounts.cc/?r=pastefo"], a[href="https://discord.gg/R5pN8ZvBVW"], a[href="https://spadone.cc/"], a[href="https://orion.hydrolmn.com/"], a[href^="https://anonsmm.com/?utm_source"], a[href="https://cryptochanger.to/"], a[href="https://sellsn.io/"], a[href="https://astralproxies.sellpass.io/"], a[href="https://discord.gg/GeDqHNzyEh"], a[href="https://proxylist.to/?ref=pfo"]
-paste.fo##a:has-text(Free:)
-paste.fo##a *:matches-css-after(content:/Free/)
-paste.fo##a *:matches-css-before(content:/Free/)
+paste.fo##a[href="https://bit.ly/3vKxLhC"], a[href="https://bit.ly/4aDbAcb"], a[href="https://bit.ly/4cL4Jz2"], a[href="https://bit.ly/3VEkIbL"], a[href="https://goldenaccounts.cc/?r=pastefo"], a[href="https://discord.gg/R5pN8ZvBVW"], a[href="https://spadone.cc/"], a[href="https://orion.hydrolmn.com/"], a[href^="https://anonsmm.com/?utm_source"], a[href="https://cryptochanger.to/"], a[href="https://sellsn.io/"], a[href="https://astralproxies.sellpass.io/"], a[href="https://discord.gg/GeDqHNzyEh"], a[href="https://proxylist.to/?ref=pfo"], a[href="https://themario.sellpass.io/"]
+paste.fo##body > .wrapper > p[class]:has(> a[id] > *)
 /paste\.fo\/[A-Z0-9]{70,130}\.(gif|jpeg|jpg)$/$image,1p,domain=paste.fo
 ||paste.fo/*?as=*&tkn=$xhr
 paste.fo##a[href] img:not([src$=".php"])
@@ -10181,7 +10179,7 @@ closedjelly.net,compensationcoincide.net,hitsports.pro,sportsonline.so,onloop.pr
 papa4k.online##+js(rmnt, script, popundersPerIP)
 /aclib.js|$script
 movierr.online##+js(no-fetch-if, googlesyndication)
-eloshapes.com##header.v-toolbar--flat:has(a[target="_blank"].individual-container)
+eloshapes.com##header.v-toolbar--flat:has([id^="promo-slider-"])
 eloshapes.com##header.elevation-3:style(top: 0px !important;)
 eloshapes.com##main:style(--v-layout-top: 64px !important;)
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect-rule=google-ima.js,domain=zloteprzeboje.pl|radiopogoda.pl
@@ -10189,6 +10187,12 @@ eloshapes.com##main:style(--v-layout-top: 64px !important;)
 ! filmyhub.one, anime4u.xyz antiadb
 ||pagead2.googlesyndication.com^$script,domain=filmyhub.*|anime4u.*,redirect-rule=noopjs
 @@||fundingchoicesmessages.google.com/f^$script,domain=teve2.com.tr
+filerox.com##body:style(overflow: auto !important; position: initial !important;)
+filerox.com##.mhide
+lowcygier.pl###zatloczony-rondel
+lowcygier.pl##.tile-container-small:has(> a[href*="/?utm_term=index&utm_source=mainpage-tile-"] > img)
+lowcygier.pl##header.intro:style(margin-bottom: 0px !important;)
+vandaaginside.nl##+js(trusted-rpnt, script, '"adblock-detection","enabled":true', '"adblock-detection","enabled":false')
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -17720,6 +17724,7 @@ cricfree.*,cricplay2.*,primetubsub.*,yourtehzeeb.com##+js(nowoif)
 primetubsub.*##+js(aopr, AaDetector)
 *.gif$image,domain=cricfree.*
 onlymp3.to##+js(nowoif)
+||onlymp3.to/ad_request.js$script,1p,redirect-rule=noopjs
 ||ublockpop.com^$all
 ||drectsearch.com^$all
 ||worektobe.co^$all
@@ -22323,11 +22328,11 @@ dvm360.com###welcome-ad-container
 teknisitv.com,paylaterin.com##+js(aost, decodeURIComponent, autoptimize)
 ||interest.co.nz/modules/custom/presspatron/js/pp-ablock-banner.js$script
 *$script,3p,denyallow=bootstrapcdn.com|disqus.com|disquscdn.com|jsdelivr.net|jwpcdn.com|fastly.net|fastlylb.net|jquery.com|hwcdn.net|recaptcha.net|cloudflare.com|cloudflare.net|google.com|googleapis.com|gstatic.com,domain=torrentgalaxy.*|tgx.rs
-torrentgalaxy.to,tgx.rs##+js(aost, String.prototype.charCodeAt, $)
-torrentgalaxy.to,tgx.rs##.alert
-/\/common\/images\/[a-z0-9]{1,5}\-[a-z0-9]{1,5}\.png$/$match-case,image,1p,domain=torrentgalaxy.to|tgx.rs
-torrentgalaxy.to,tgx.rs##a[href^="/hx?r0ff3r="][href$="&tfh"], #stopad, .kdguszftmyrvenilh, a[onmouseout="#"][href], img[src^="/common/images/"][alt="wide"][data-src="bin"]
-torrentgalaxy.to,tgx.rs##body > [id] > div[class]:only-child > div[class]:first-child > div[class][style="padding: 0px 7px;max-width:445px;"] > div:first-child:not([class]):has(> div:only-child #stopad)
+torrentgalaxy.*,tgx.rs##+js(aost, String.prototype.charCodeAt, $)
+torrentgalaxy.*,tgx.rs##.alert
+/\/common\/images\/[a-z0-9]{1,5}\-[a-z0-9]{1,5}\.png$/$match-case,image,1p,domain=torrentgalaxy.*|tgx.rs
+torrentgalaxy.*,tgx.rs##a[href^="/hx?r0ff3r="][href$="&tfh"], #stopad, .kdguszftmyrvenilh, a[onmouseout="#"][href], img[src^="/common/images/"][alt="wide"][data-src="bin"]
+torrentgalaxy.*,tgx.rs##body > [id] > div[class]:only-child > div[class]:first-child > div[class][style="padding: 0px 7px;max-width:445px;"] > div:first-child:not([class]):has(> div:only-child #stopad)
 ||startgaming.net/*&utm_source$doc,popup
 ||startgaming.net/*affil=Torrentgalaxy$doc,popup
 gplastra.com##+js(noeval-if, ads)
