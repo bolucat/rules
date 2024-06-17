@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: tmSPSphpa53yEHjgTpr6sA
-! Diff-Path: ../patches/7/7-s-1718541273-3600.patch
+! Checksum: PeZwTFJggMaYdtTfunGMRg
+! Diff-Path: ../patches/7/7-s-1718638536-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.52.79
-! TimeUpdated: 2024-06-16T12:32:24+00:00
+! Version: 2.0.52.84
+! TimeUpdated: 2024-06-17T15:32:50+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -490,6 +490,8 @@
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/181591
+iwb.jp##+js(addEventListener-defuser, DOMContentLoaded, getComputedStyle(a).height)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/179614
 kotobank.jp##+js(no-setTimeout-if, return, 7400)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/178919
@@ -512,10 +514,6 @@ success-corp.co.jp##+js(no-fetch-if, pagead2.googlesyndication.com)
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xmlhttprequest,domain=success-corp.co.jp
 nieru.net#@#.ad-space
 nieru.net#@#.adWidget
-! https://github.com/AdguardTeam/AdguardFilters/issues/179875
-! https://github.com/AdguardTeam/AdguardFilters/issues/159931
-iwb.jp##+js(abort-on-property-read, alert)
-iwb.jp##+js(abort-on-property-read, onload)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/171258
 jprime.jp#$?#.js-reward-modal  { remove: true; }
 jprime.jp#$?#.js-reward-gallery-modal  { remove: true; }
@@ -1725,6 +1723,27 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+oricon.co.jp##.affiliateLinks
+oricon.co.jp##.relatedLinksPhoto > div[style^="width:"][style$="float: left;"]
+oricon.co.jp#$#.relatedLinksPhoto > ul#orecView2 { margin-top: 0 !important; }
+oricon.co.jp##.block-sub > div.border-box > table > tbody:has(> tr > td > div[data-uz-url])
+gizmodo.jp##.bnL
+oricon.co.jp###content-main div.block-link-list-b > article:has(> a > div.pr)
+mainichi.jp##div[id^="ad-"]
+||altema.jp/*/ad_random.js
+||altema.jp/*/ads_interstitial.js
+||altema.jp/*/ffbeadsjs.js
+altema.jp##.ad_random_tag
+altema.jp##.all-center:has(> tbody > tr > td > a[href^="https://t.quoriza.net"] > img)
+altema.jp##.article > h2:has(+ p > a[href*="/?code="] > img)
+altema.jp##.article > p:has(> a[href*="/?code="] > img)
+altema.jp##.article > p:has(> a[href*="/?code="] > img) + p
+altema.jp##.article > table.tableLine:has(> tbody > tr > td > a[href*="/?code="] > img)
+altema.jp##.cta-link-box02
+altema.jp##.cta-link-box02 + h3
+altema.jp##.cta-link-box02 + h3 + table.tableLine
+altema.jp##.joubu-rank02
+altema.jp##.overrayBox_01
 flashff-blog.com##aside > div[style]:has(> div.smanone > p > a[href^="https://www.dlsite.com/"])
 ||seitainavi.jp/wp-content/themes/hone-new/assets/images/banner
 ||seitainavi.jp/wp-content/themes/hone-new/assets/images/footer-bnr_common
@@ -7574,12 +7593,13 @@ fx-koryaku.com##.textwidget > center > a[target="_blank"]
 ||gacraft.jp^$domain=mainichikirei.jp
 ||mainichikirei.jp/assets/kirei/css/*_ad.css
 ||dmm.co.jp^$domain=exploader.net
-||exploader.net/d/ebook-assets/
-exploader.net##a:not([href])
+||exploader.net/d/ebook//digital/e-book/
+exploader.net##[data-pr]
+exploader.net##a[href="#"]
 exploader.net##div[class^="d_"]
 exploader.net##div[style^="height: 305px;display: flex;align-items: center"]
 exploader.net##body ul.list > li[style="clear: left;width: calc(100% + 3px) !important;margin-right: -1px;height: 120px;margin-left: -2px;float: none;display: block !important;"]
-exploader.net##.tag + div:last-child
+exploader.net##.tag + div[class]
 coromoo.com##div[class$="-ad"]
 news.denfaminicogamer.jp,coromoo.com##.amazon-link
 ||spox.com/daznpic/$subdocument,domain=full-count.jp
