@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.0.2
+// @version         3.7.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -209,11 +209,11 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || (!matchDo
 else if (window.location.hostname.match(/\.(com|net)\.au$/) || matchDomain(['afr.com', 'inc-aus.com'])) {//australia
 
 if (matchDomain('afr.com')) {
-  let article_sel = 'div#endOfArticle';
+  let article_sel = '#endOfArticle';
   let article = document.querySelector(article_sel);
   if (article) {
     window.setTimeout(function () {
-      let pars = article.querySelectorAll('p, figure');
+      let pars = article.querySelectorAll('p:not([class]), figure');
       if (pars.length && pars.length < 5) {
         removeDOMElement(...pars);
         let url = window.location.href.split(/[#\?]/)[0];
@@ -972,9 +972,9 @@ else if (matchDomain('theneweuropean.co.uk')) {
   removeDOMElement(...banners);
 }
 
-else if (matchDomain('thetimes.co.uk')) {
+else if (matchDomain('thetimes.com')) {
   let url = window.location.href;
-  if (window.location.hostname !== 'epaper.thetimes.co.uk') {
+  if (window.location.hostname !== 'epaper.thetimes.com') {
     func_post = function () {
       let figure = document.querySelector('figure > div[style] > div[style]');
       if (figure) {
@@ -1146,6 +1146,10 @@ else if (matchDomain('asia.nikkei.com')) {
   }
   let popup = document.querySelector('#pianoj_ribbon');
   removeDOMElement(popup);
+  window.setTimeout(function () {
+    let url = window.location.href;
+    getGoogleWebcache(url, 'div.limit-view-overlay', '', 'div#article-body-preview');
+  }, 3000);
 }
 
 else if (matchDomain('axios.com')) {
@@ -1167,7 +1171,7 @@ else if (matchDomain(['barandbench.com', 'thenewsminute.com'])) {
   let paywall = document.querySelector('div[id*="paywall-banner"]');
   if (paywall) {
     removeDOMElement(paywall);
-    let article = document.querySelector('div[class^="paywall-story-"]');
+    let article = document.querySelector('div.paywall');
     if (article) {
       let article_new = getArticleQuintype();
       if (article_new && article.parentNode)
