@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.1.1
+// @version         3.7.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -148,7 +148,7 @@ hideDOMStyle(ads, 10);
 
 var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 'thepeterboroughexaminer.com', 'therecord.com', 'thespec.com', 'thestar.com', 'wellandtribune.ca'];
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
-var no_nhst_media_domains = ['europower.no', 'fiskeribladet.no', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
+var no_nhst_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
 var pl_ringier_domains = ['auto-swiat.pl', 'businessinsider.com.pl', 'forbes.pl', 'komputerswiat.pl', 'newsweek.pl', 'onet.pl'];
 var sg_sph_media_domains = ['straitstimes.com'];
 var timesofindia_domains = ['epaper.indiatimes.com', 'timesofindia.indiatimes.com'];
@@ -3375,7 +3375,7 @@ else if (matchDomain(no_nhst_media_domains)) {
             let parser = new DOMParser();
             for (let par of pars) {
               let elem;
-              if (par.type) {
+              if (par && par.type) {
                 let type = pars[par.type];
                 if (['text', 'subhead'].includes(type)) {
                   if (par.html || par.value) {
@@ -3419,7 +3419,7 @@ else if (matchDomain(no_nhst_media_domains)) {
                   sub_elem.innerText = 'Related: ' + pars[par.title];
                   sub_elem.style = 'font-weight: bold;';
                   elem.appendChild(sub_elem);
-                } else if (!['ad', 'author', 'break', 'embed', 'Emne', 'Location', 'news', 'Organisasjon', 'Organisation', 'Organization', 'promobox', 'Person', 'Region', 'Regions', 'related', 'Sector', 'Sectors', 'Sted', 'Topic'].includes(type)) {
+                } else if (!['ad', 'adobetarget', 'author', 'break', 'embed', 'Emne', 'Location', 'news', 'Organisasjon', 'Organisation', 'Organization', 'promobox', 'Person', 'Personer', 'Region', 'Regions', 'related', 'Sector', 'Sectors', 'Selskap', 'Sted', 'Topic'].includes(type)) {
                   for (let item in par) {
                     console.log(item);
                     console.log(pars[par[item]]);
@@ -3431,6 +3431,16 @@ else if (matchDomain(no_nhst_media_domains)) {
             }
           } catch (err) {
             console.log(err);
+          }
+        }
+      } else if (matchDomain('dn.no') && window.location.pathname.match(/^\/(d2|magasinet|smak)\//)) {
+        let paywall = document.querySelector('div#sub-paywall-container');
+        if (paywall) {
+          removeDOMElement(paywall);
+          let article = document.querySelector('p.vrs-article-header__summary');
+          if (article) {
+            let url = window.location.href;
+            article.firstChild.before(googleSearchToolLink(url));
           }
         }
       }
