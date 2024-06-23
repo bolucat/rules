@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.7.1.0
+// @version         3.7.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.nl.user.js
@@ -111,8 +111,8 @@ if (matchDomain('telegraaf.nl')) {
     }
     article.after(div_main);
   }
-  let banners = document.querySelectorAll('.ArticleBodyBlocks__inlineArticleSpotXBanner, .WebpushOptin');
-  removeDOMElement(...banners);
+  let ads = 'div.WebpushOptin, div[data-ad-position]';
+  hideDOMStyle(ads);
 }
 
 window.setTimeout(function () {
@@ -292,19 +292,20 @@ else if (matchDomain(nl_dpg_media_domains)) {
 }
 
 else if (matchDomain(nl_mediahuis_region_domains)) {
-  func_post = function () {
-    let lazy_images = document.querySelectorAll('div > div > img[loading="lazy"][style]');
-    for (let elem of lazy_images) {
-      elem.removeAttribute('style');
-      elem.parentNode.removeAttribute('style');
-      let container = elem.parentNode.parentNode;
-      container.removeAttribute('style');
-      let svg = container.querySelector('svg');
-      removeDOMElement(svg);
-    }
+  let paywall_sel = 'div[data-testid="paywall-container"]';
+  let paywall = document.querySelector(paywall_sel);
+  if (paywall) {
+    let url = window.location.href;
+    getArchive(url, paywall_sel, '', 'article.premium-content', '', 'div > article');
+    window.setTimeout(function () {
+      let overlay = document.querySelector('div.paywalled-article');
+      if (overlay)
+        overlay.classList.remove('paywalled-article');
+      let noscroll = document.querySelectorAll('.noscroll');
+      for (let elem of noscroll)
+        elem.classList.remove('noscroll');
+    }, 500);
   }
-  let url = window.location.href;
-  getArchive(url, 'div[data-auth-root="paywall"]', '', 'div[data-mht-block="article-detail__article-main"]', '', 'div[id$="article-main"]');
 }
 
 else if (matchDomain('nrc.nl')) {
