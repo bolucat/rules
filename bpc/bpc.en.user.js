@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.1.3
+// @version         3.7.1.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -23,7 +23,6 @@
 // @match           *://*.europower.no/*
 // @match           *://*.fiskeribladet.no/*
 // @match           *://*.haaretz.co.il/*
-// @match           *://*.hindutamil.in/*
 // @match           *://*.independent.ie/*
 // @match           *://*.indiatoday.in/*
 // @match           *://*.intrafish.no/*
@@ -148,7 +147,7 @@ hideDOMStyle(ads, 10);
 
 var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 'thepeterboroughexaminer.com', 'therecord.com', 'thespec.com', 'thestar.com', 'wellandtribune.ca'];
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
-var no_nhst_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
+var no_dn_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
 var pl_ringier_domains = ['auto-swiat.pl', 'businessinsider.com.pl', 'forbes.pl', 'komputerswiat.pl', 'newsweek.pl', 'onet.pl'];
 var sg_sph_media_domains = ['straitstimes.com'];
 var timesofindia_domains = ['epaper.indiatimes.com', 'timesofindia.indiatimes.com'];
@@ -1139,17 +1138,10 @@ else if (matchDomain('artnet.com')) {
 
 else if (matchDomain('asia.nikkei.com')) {
   setCookie('xbc', '', 'nikkei.com', '/', 0);
-  let paywall = document.querySelector('div#paywall-offer > div.tp-container-inner');
-  if (paywall) {
-    removeDOMElement(paywall);
-    refreshCurrentTab();
-  }
   let popup = document.querySelector('#pianoj_ribbon');
   removeDOMElement(popup);
-  window.setTimeout(function () {
-    let url = window.location.href;
-    getGoogleWebcache(url, 'div.limit-view-overlay', '', 'div#article-body-preview');
-  }, 3000);
+  let url = window.location.href;
+  getGoogleWebcache(url, 'div.limit-view-overlay', '', 'div#article-body-preview');
 }
 
 else if (matchDomain('axios.com')) {
@@ -1872,12 +1864,6 @@ else if (matchDomain('hindustantimes.com')) {
   let close_story = '.closeStory';
   let ads = 'div[class^="adHeight"]';
   hideDOMStyle(close_story + ', ' + ads);
-}
-
-else if (matchDomain('hindutamil.in')) {
-  if (!window.location.pathname.startsWith('/amp/')) {
-    amp_redirect('div.premium-class-bt');
-  }
 }
 
 else if (matchDomain('historyextra.com')) {
@@ -3332,7 +3318,7 @@ else if (matchDomain(timesofindia_domains)) {
   }
 }
 
-else if (matchDomain(no_nhst_media_domains)) {
+else if (matchDomain(no_dn_media_domains)) {
   if (matchDomain('tradewindsnews.com')) {
     if (window.location.pathname.startsWith('/markets/')) {
       let paywall = document.querySelector('iframe[src]');
