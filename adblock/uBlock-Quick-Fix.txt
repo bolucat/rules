@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Wed, 26 Jun 2024 12:29:32 +0000
-! Diff-Path: ../patches/2024.6.26.924.patch#ublock-quick-fixes
+! Last modified: Thu, 27 Jun 2024 11:34:22 +0000
+! Diff-Path: ../patches/2024.6.27.988.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -89,7 +89,7 @@ raenonx.cc##html[style*="hidden"]:style(overflow: visible !important;)
 ||raenonx.cc/api/scripts
 japscan.lol#@#+js(acs, EventTarget.prototype.addEventListener, '/((ad-img|banner)-|interstitial|getComputedStyle|\)break;else)[\s\S]{1,5000}$/')
 japscan.lol##+js(acs, EventTarget.prototype.addEventListener, /mgid_iframe|ad[_-]|sessionStorage/)
-japscan.lol##+js(rmnt, script, _0x)
+japscan.lol##+js(rmnt, script, while (!![]))
 japscan.lol##+js(aeld, load, /function.{1\,3000}$/)
 japscan.lol##+js(aost, onload, inlineScript)
 @@||japscan.lol^$ghide
@@ -107,13 +107,12 @@ forumactif.com#@#.croco_wrapper, [onclick*="_"], [onclick*="var"], [onmousedown*
 apkmirror.com#@#.listWidget > .appRow
 kotobank.jp##+js(nostif, return)
 !#if cap_html_filtering
-client.falixnodes.net#@#^script:has-text(/adblock|_0x|onloadcheck|typeof adngin/)
-client.falixnodes.net##^script:has-text(/detectAdBlock|_0x|appelislekker|'\/func'/)
+client.falixnodes.net##^script:has-text(/detectAdBlock|\=\= "undefined"\)|typeof adngin|_0x|akbkgpnvldiofdlbfov|'\/func'/)
 !#else
-client.falixnodes.net#@#+js(rmnt, script, /adblock|_0x|onloadcheck|typeof adngin/)
-client.falixnodes.net##+js(rmnt, script, /detectAdBlock|_0x|appelislekker|'\/func'/)
+client.falixnodes.net##+js(rmnt, script, /detectAdBlock|\=\= "undefined"\)|typeof adngin|_0x|akbkgpnvldiofdlbfov|'\/func'/)
 !#endif
 client.falixnodes.net##+js(rpnt, script, typeof window.googlescriptloaded, typeof window.googlescriptloaded === true && typeof window.googlescriptloaded)
 client.falixnodes.net##+js(rpnt, script, (window.googlescriptloaded, (window.googlescriptloaded === undefined || true || window.googlescriptloaded)
 matsukiyococokara-online.com#@#.storyblock-wrapper
 @@||fireworkapi1.com^$domain=matsukiyococokara-online.com
+kimcartoon.*##+js(aost, getComputedStyle, Scripts)

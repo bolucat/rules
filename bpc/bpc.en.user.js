@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.1.6
+// @version         3.7.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -33,6 +33,7 @@
 // @match           *://*.niagarafallsreview.ca/*
 // @match           *://*.newsweek.pl/*
 // @match           *://*.nzherald.co.nz/*
+// @match           *://*.puck.news/*
 // @match           *://*.rp.pl/*
 // @match           *://*.sloanreview.mit.edu/*
 // @match           *://*.stcatharinesstandard.ca/*
@@ -2466,6 +2467,16 @@ else if (matchDomain('project-syndicate.org')) {
   }
 }
 
+else if (matchDomain('puck.news')) {
+  let url = window.location.href;
+  getArchive(url, 'div[class*="paywall"]', '', 'article');
+  let modal = document.querySelector('div#paywall-modal');
+  removeDOMElement(modal);
+  let overlay = document.querySelector('body.paywall-active');
+  if (overlay)
+    overlay.classList.remove('paywall-active');
+}
+
 else if (matchDomain('reuters.com')) {
   let ads = 'div[data-testid="ResponsiveAdSlot"], div[data-testid="Dianomi"]';
   hideDOMStyle(ads);
@@ -2534,6 +2545,7 @@ else if (matchDomain('seattletimes.com')) {
 
 else if (matchDomain('seekingalpha.com')) {
   if (window.location.pathname.match(/^\/(article|news)\//)) {
+    window.setTimeout(function () {
     let article_sel = 'article div > section[data-test-id="card-container"]';
     let article = document.querySelector(article_sel);
     if (article) {
@@ -2580,9 +2592,14 @@ else if (matchDomain('seekingalpha.com')) {
         sa_noscroll(body);
       waitDOMAttribute('body', 'BODY', 'style', sa_noscroll, true);
       waitDOMAttribute('body', 'BODY', 'class', sa_noscroll, true);
+      let html = document.querySelector('html[style]');
+      if (html)
+        html.style.overflow = 'visible';
+      waitDOMAttribute('html', 'HTML', 'style', node => node.style.overflow = 'visible', true);
       waitDOMAttribute('main', 'MAIN', 'inert', node => node.removeAttribute('inert'), true);
       waitDOMAttribute('footer', 'FOOTER', 'inert', node => node.removeAttribute('inert'), true);
     }
+    }, 2000);
   }
 }
 
