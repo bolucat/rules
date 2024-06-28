@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 6YKaoykKrubjw9dX0nxtKQ
-! Diff-Path: ../patches/224/224-s-1719502522-3600.patch
+! Checksum: StuCyajhYtbPH8GLq4o5Ig
+! Diff-Path: ../patches/224/224-s-1719570946-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.18.13
-! TimeUpdated: 2024-06-27T15:33:06+00:00
+! Version: 2.1.18.19
+! TimeUpdated: 2024-06-28T10:33:37+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1096,6 +1096,8 @@ $script,third-party,denyallow=authkong.com|rsc.cdn77.org|linkvertise.com|fastly.
 !
 !
 !
+baike.baidu.com###J-union-wrapper
+letsplay.tw##.entry-content > div[style="min-width: 300px; min-height:300px;"]
 yanaifei.net#$?#.swiper-wrapper > .swiper-slide:has(> .banner[href^="https://"][target="_blank"]) { remove: true; }
 health.tvbs.com.tw##.fromEditor > section.ed-px-5.ed-lg-hidden
 health.tvbs.com.tw##.h-full > div.flex-wrap > div.max-w-full > div.px-5.lg\:hidden:has(> div > div.flex.justify-center)
@@ -2828,6 +2830,9 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_chinese
 ! Bad:  @@||example.org^$stealth (should be in AdGuard Base - allowlist_stealth.txt)
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/182017
+@@||republicbharat.com/_app/immutable/chunks/FloatAd.*.js$domain=republicbharat.com
+@@||republicbharat.com/_app/immutable/assets/FloatAd.*.css$domain=republicbharat.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/182307
 app.n26.com#@#.bl > .gg
 ! https://github.com/AdguardTeam/AdguardFilters/issues/180027
@@ -3039,6 +3044,7 @@ nfmovies.com#@?#div[id]:-abp-has(>img[onclick="openurl()"])
 -*-*-*-*.as^$script,third-party
 -*-*-*-*.panda^$script,third-party
 /smflow/get.*=gAdCallback_
+wss://*.xyz:*?x=$third-party
 -1316632262.cos.
 -1316899192.cos.
 -1688-wp-media/ads/
@@ -4713,6 +4719,15 @@ newduba.cn###jq_youxi
 ||67.21.92.*.gif
 ||107.167.16.*.gif
 ||cupfox.app^$third-party
+||mdoshbx.top^
+||gklox.cn^
+||rmioswx.icu^
+||trvxbd.xyz^
+||a1bw2cup.top^
+||uyislot.top^
+||555ppp777ppp.com^
+||666ppp222ppp.com^
+||sxlmggx12.com^
 ||efhis.cn^
 ||udoshbt.top^
 ||lhtzfn.xyz^
@@ -14526,6 +14541,7 @@ hxsame.hexun.com$domain=~quote.hexun.com
 ||ssp.moeli.net^
 ||jinman4.com/ad/
 moe-acg.com##A[href*=".x8o.de"]
+dailygh.com###video_fade
 moe-acg.com##div[style="position: relative;width: 100%;height: 0;padding-bottom: 18%;"]
 szxx.com.cn###A0
 ijiandao.com,ijiandao.cn##.index-ad
@@ -22103,6 +22119,7 @@ bxwx888.org###bdstatic
 duanwenxue.com##.qgzdwx
 smjb.net##div[style*="height: 50%"]
 ||139xiaoshuo.com/css/js/tools.
+||fkxs.net/tops/
 ||13txt.net/js/ssgdd.
 ||1pwx.com/js/ck.js
 ||222xs.com/js/greentea.js
