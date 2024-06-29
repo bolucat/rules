@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.7.1.1
+// @version         3.7.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.nl.user.js
@@ -142,6 +142,17 @@ if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
         if (video_new && video_new.parentNode)
           video_new.parentNode.replaceChild(video, video_new);
       }
+      if (mobile) {
+        let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
+        for (let elem of lazy_images)
+          elem.style = 'width: 95%;';
+        let figures = document.querySelectorAll('figure div');
+        for (let elem of figures) {
+          elem.removeAttribute('style');
+          let svg = elem.querySelector('svg');
+          removeDOMElement(svg);
+        }
+      }
     }
     let url = window.location.href;
     getArchive(url, 'head > meta[name$="article_ispaidcontent"][content="true"]', '', 'article div[id], section div[id]:not([id^="warning"])');
@@ -275,6 +286,9 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
     let shades = document.querySelectorAll('div[style*="background-color"][style*=";width"]');
     for (let elem of shades)
       elem.style.width = '85%';
+    let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
+    for (let elem of lazy_images)
+      elem.style = 'width: 95%;';
   }
   let url = window.location.href;
   getArchive(url, 'div#remaining-paid-content[data-reduced="true"]', '', 'div.article__body', '', 'div#remaining-paid-content');

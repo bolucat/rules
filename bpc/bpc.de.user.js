@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.1.2
+// @version         3.7.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -694,6 +694,11 @@ else if (matchDomain('spiegel.de')) {
   func_post = function () {
     let html_embed = 'section[data-area="html-embed"]';
     hideDOMStyle(html_embed);
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 95%;';
+    }
   }
   getArchive(url, 'div[data-area="paywall"]', '', 'article');
 }
@@ -751,6 +756,11 @@ else if (matchDomain('tagesspiegel.de')) {
     func_post = function () {
       let opinionary = 'div[element="[object Object]"]';
       hideDOMStyle(opinionary);
+      if (mobile) {
+        let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
+        for (let elem of lazy_images)
+          elem.style = 'width: 95%;';
+      }
     }
     getArchive(url, paywall_sel, '', 'div#story-elements');
   } else if (matchDomain('interaktiv.tagesspiegel.de')) {
@@ -892,6 +902,13 @@ else if (matchDomain('vol.at')) {
 }
 
 else if (matchDomain('welt.de')) {
+  func_post = function () {
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 95%;';
+    }
+  }
   let url = window.location.href;
   getArchive(url, 'div.contains_walled_content', '', 'article');
   let ads = 'div[data-component="Outbrain"], div[class*="c-ad"]';
@@ -936,6 +953,13 @@ else if (matchDomain('weser-kurier.de')) {
 }
 
 else if (matchDomain('zeit.de')) {
+  func_post = function () {
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 95%;';
+    }
+  }
   let url = window.location.href.split(/[#\?]/)[0];
   if (document.querySelector('head > link[rel="next"]'))
     url += '/komplettansicht';
@@ -943,6 +967,13 @@ else if (matchDomain('zeit.de')) {
 }
 
 else if (matchDomain(de_funke_medien_domains)) {
+  func_post = function () {
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 95%;';
+    }
+  }
   let url = window.location.href;
   getArchive(url, 'div#paywall-container', '', 'article');
   let ads = 'aside.ad-slot-wrapper';
