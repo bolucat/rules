@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.1.3
+// @version         3.7.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -167,6 +167,26 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
   }
   let ads = 'div.ad-wrapper, div[id^="apn-ad-slot-"]';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('bild.de')) {
+  func_post = function () {
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
+      for (let elem of lazy_images) {
+        elem.style = 'width: 95%; margin: 10px;';
+        elem.parentNode.removeAttribute('style');
+      }
+      let header = document.querySelector('article > h2 > span:last-child');
+      if (header)
+        header.style = 'margin: 10px;';
+      let content = document.querySelector('article time ~ div');
+      if (content)
+        content.style = 'margin: 10px;';
+    }
+  }
+  let url = window.location.href;
+  getArchive(url, 'div.offer-module', '', 'article');
 }
 
 else if (matchDomain('boersen-zeitung.de')) {

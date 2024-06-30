@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sat, 29 Jun 2024 11:41:42 +0000
-! Diff-Path: ../patches/2024.6.29.802.patch#ublock-quick-fixes
+! Last modified: Sun, 30 Jun 2024 11:55:40 +0000
+! Diff-Path: ../patches/2024.6.30.862.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -58,9 +58,9 @@ www.youtube.com##+js(trusted-rpnt, script, (function() {window.ytplayer=, /*star
 !#endif
 www.youtube.com##+js(nano-stb, [native code], 17000, 0.001)
 ! VOE sites
-||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=loriwithinfamily.com,important
-loriwithinfamily.com##+js(nowoif)
-loriwithinfamily.com##+js(set, console.clear, undefined)
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=roberteachfinal.com,important
+roberteachfinal.com##+js(nowoif)
+roberteachfinal.com##+js(set, console.clear, undefined)
 ! ytlarge detection
 @@||ytlarge.com^$ghide
 @@||googlesyndication.com^$script,xhr,domain=ytlarge.com
@@ -91,7 +91,7 @@ raenonx.cc##html[style*="hidden"]:style(overflow: visible !important;)
 ||raenonx.cc/api/scripts
 japscan.lol#@#+js(acs, EventTarget.prototype.addEventListener, '/((ad-img|banner)-|interstitial|getComputedStyle|\)break;else)[\s\S]{1,5000}$/')
 japscan.lol##+js(acs, EventTarget.prototype.addEventListener, /mgid_iframe|ad[_-]|sessionStorage/)
-japscan.lol##+js(rmnt, script, /while \(!!\[\]\)|String\(\)\.fromCharCode|\.join\(\w+\)\.split\(\w+\)|"undefined"/)
+japscan.lol##+js(rmnt, script, /while \(!!\[\]\)|String\(\)\.fromCharCode|\.join\(\w+\)\.split\(\w+\)|"undefined"|_\$/)
 japscan.lol##+js(aeld, load, /function.{1\,3000}$/)
 japscan.lol##+js(aost, onload, inlineScript)
 @@||japscan.lol^$ghide
@@ -106,15 +106,14 @@ japscan.lol##+js(no-fetch-if, www.japscan.lol/imgs/japo/reader)
 ||www.japscan.lol/imgs/japo/reader$image,1p,redirect=1x1.gif
 @@*$xhr,script,3p,from=announcedcatchix1t.shop|brotherfox91.shop|currentcolorq2dv.shop|customsfencei3.shop|determinemousecshe.shop|fencethoughgdrt.shop|fencethroughout642.shop|foxwent6ot.shop|havingmovementu8x.shop|homebasis4d.shop|includingbreath5ku.shop|ironwinter6m.shop|leadmorning4ivn.shop|limiteddollqjc.shop|linelocatemfsn.shop|littlesound6c.shop|mindmotion93y8.shop|mightbadly4f.shop|monkeynecktj4w.shop|neighbormajorkex.shop|nervousdoctor9bx.shop|pantogether6jpi.shop|publicspeed5c.shop|quietlywheat23.shop|saddletopg3tk.shop|soldrubber5xrp.shop|somehowrockyng.shop|strangernervousql.shop|superabbit.shop|supportrightufd.shop|studyinghuman6js.shop|wholecommonrrvp.shop|wintertold7nq.shop,to=autos|sbs|shop
 forumactif.com#@#.croco_wrapper, [onclick*="_"], [onclick*="var"], [onmousedown*="x"], [style*="height: 90px;"]
-kotobank.jp##+js(nostif, return)
 !#if cap_html_filtering
-client.falixnodes.net##^script:has-text(/detectAdBlock|\(typeof .+? \=\=\=? "undefined"\)|typeof adngin|_0x|'\/func'/)
+client.falixnodes.net##^script:has-text(/detectAdBlock|\(typeof .+? \=\=\=? ("undefined"|"function")\)|typeof adngin|_0x|'\/func'/)
 !#else
-client.falixnodes.net##+js(rmnt, script, /detectAdBlock|\(typeof .+? \=\=\=? "undefined"\)|typeof adngin|_0x|'\/func'/)
+client.falixnodes.net##+js(rmnt, script, /detectAdBlock|\(typeof .+? \=\=\=? ("undefined"|"function")\)|typeof adngin|_0x|'\/func'/)
 !#endif
 client.falixnodes.net##+js(rpnt, script, typeof window.googlescriptloaded, typeof window.googlescriptloaded === true && typeof window.googlescriptloaded)
 client.falixnodes.net##+js(rpnt, script, (window.googlescriptloaded, (window.googlescriptloaded === undefined || true || window.googlescriptloaded)
 matsukiyococokara-online.com#@#.storyblock-wrapper
 @@||fireworkapi1.com^$domain=matsukiyococokara-online.com
-kimcartoon.*##+js(rmnt, script, /^\s+setTimeout/)
+kimcartoon.*##+js(rmnt, script, /^\s+setTimeout|setTimeout\([^\)]+?'[^\)]+\)/)
 ||fewcents.co^$3p

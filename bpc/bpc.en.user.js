@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.2.2
+// @version         3.7.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -2462,21 +2462,16 @@ else if (matchDomain(pl_ringier_domains)) {
 }
 
 else if (matchDomain('project-syndicate.org')) {
-  let url = window.location.href;
-  let paywall_sel = 'div.paywall--base';
-  let paywall = document.querySelector(paywall_sel);
-  if (paywall) {
-    let article_sel = 'main > article';
-    let article = document.querySelector(article_sel);
-    if (article)
-      getArchive(url, paywall_sel, '', article_sel);
-    else {
-      removeDOMElement(paywall);
-      let split_top = document.querySelector('div.split-top');
-      if (split_top)
-        split_top.after(archiveLink(url));
+  func_post = function () {
+    let hidden_images = document.querySelectorAll('img[src][new-cursrc]');
+    for (let elem of hidden_images) {
+      if (elem.src.startsWith('data:image/'))
+        elem.src = elem.getAttribute('new-cursrc');
+      elem.style = 'width: 95%;';
     }
   }
+  let url = window.location.href;
+  getArchive(url, 'div.paywall--base', '', 'main > article');
 }
 
 else if (matchDomain('puck.news')) {
