@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: tt+RUuvgJcD3sd31Mu5smA
-! Diff-Path: ../patches/7/7-s-1719758151-3600.patch
+! Checksum: h1elbYpiGBXW7Q2MoWs8tQ
+! Diff-Path: ../patches/7/7-s-1719844646-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.53.37
-! TimeUpdated: 2024-06-30T14:33:28+00:00
+! Version: 2.0.53.42
+! TimeUpdated: 2024-07-01T14:34:25+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1001,6 +1001,8 @@ nasubiblog.com,kyukyoku-matome.com##.widget_pc_ad
 !-------JS----------
 !-------------------
 !
+! https://itest.bbspink.com/
+itest.bbspink.com#$#.footer-with-ad { padding-bottom: 10px !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/180461
 akibablog.blog.jp##+js(abort-current-script, document.write, sitejack)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/179821
@@ -1733,6 +1735,9 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+nordot.app##.listPage__ad
+vook.vc##.note-right-spnsr
+tousatu-ch.net##.posts-under-1.widget_custom_html:has(> div.textwidget > iframe[src^="https://ad.duga.jp"])
 namaeuranai.biz##div[style="margin:10px 0;text-align:center;height:360px;"]
 blog.jp##iframe[style^="width: 300px; height: 250px;"]
 newskingdom.jp##.kkkarea
@@ -1742,8 +1747,8 @@ voyeurgeek.com##.elementor-widget-flat-posts + section.elementor-section.itigyot
 5urprise.jp##.entry-content > center > b
 5urprise.jp##.is-style-yellow_box:has(> div.cboxcomment > center > a[rel="nofollow"])
 my-best.com##.css-92i9wm
-ettina.blogterest.net##.blockAreaMainFooter > div.blockWrapper:has(> div.blockBody > iframe)
-ettina.blogterest.net##.entryDetail div[style^="width: 100%; height: 3"][style*="overflow-y: hidden;"]
+sukebelog.blogterest.net,ettina.blogterest.net##.blockAreaMainFooter > div.blockWrapper:has(> div.blockBody > iframe)
+sukebelog.blogterest.net,ettina.blogterest.net##.entryDetail div[style^="width: 100%; height: 395px; overflow-y: hidden;"]
 blogterest.net##.blockAreaMainFooter > div.blockWrapper:has(> div.blockBody > div.eroterest_mgs_rec_parts)
 ddd-smart.net##iframe[src^="https://go.mnaspm.com/"]
 ddd-smart.net##iframe[src^="https://creative.rmhfrtnd.com/"]
@@ -3537,7 +3542,7 @@ techinsight.jp##.rectangle-images-main
 wwdjapan.com##.sp-infeed-ad
 wwdjapan.com##.wwdj-ad
 yamakamu.net###pc_text-8
-2ch-uwaki.com,holosoku.com,yamakamu.net##.widget-above-single-sns-buttons
+hyougaki.xyz,2ch-uwaki.com,holosoku.com,yamakamu.net##.widget-above-single-sns-buttons
 ||sites.google.com/view/8loomy-love/halaman-muka$document
 digital-soccer.net##.footer_dlsite
 bunshun.jp##.banner-pc_right_1st
@@ -10494,6 +10499,7 @@ vip-front.video.g.fc2.com,video.laxd.com,video.fc2.com##[class^="c-ad"]:not(.c-a
 !
 ! itest.5ch.net,itest.bbspink.com
 ||itest.5ch.net/assets/img/*-300x250.png
+itest.5ch.net###floatingBottomAdsMain
 itest.5ch.net##div[id^="topAdheader-"]
 itest.5ch.net###subback > li[id][class*="_"]
 itest.5ch.net,itest.bbspink.com###js-imageview-ad
@@ -10509,6 +10515,7 @@ itest.5ch.net,itest.bbspink.com##.ad
 itest.5ch.net,itest.bbspink.com###instant_ad
 puzzcore.com,itest.5ch.net,itest.bbspink.com###float-bnr
 itest.5ch.net###js-adstir-320x50
+itest.bbspink.com###floater_ads
 itest.bbspink.com###js-bottom-ad-300x250
 itest.5ch.net###js-bottom-ad-320x250
 itest.5ch.net###js-cardview_ad

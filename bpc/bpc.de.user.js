@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.2.0
+// @version         3.7.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -614,7 +614,7 @@ else if (matchDomain('motorradonline.de')) {
     ampToHtml();
 }
 
-else if (matchDomain(['mz.de', 'volksstimme.de'])) {
+else if (matchDomain('mz.de')) {
   let url = window.location.href;
   getGoogleWebcache(url, 'div.fp-paywall', '', 'div[data-t-name="Article"]');
 }
@@ -972,6 +972,20 @@ else if (matchDomain('weser-kurier.de')) {
   hideDOMStyle(ads);
 }
 
+else if (matchDomain('wiwo.de')) {
+  func_post = function () {
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('article img[loading="lazy"][style]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 95%;';
+    }
+  }
+  let url = window.location.href;
+  getArchive(url, 'div.o-paywall', '', 'article');
+  let banner = 'div.c-overscroller';
+  hideDOMStyle(banner);
+}
+
 else if (matchDomain('zeit.de')) {
   func_post = function () {
     if (mobile) {
@@ -983,7 +997,7 @@ else if (matchDomain('zeit.de')) {
   let url = window.location.href.split(/[#\?]/)[0];
   if (document.querySelector('head > link[rel="next"]'))
     url += '/komplettansicht';
-  getArchive(url, 'aside#paywall', '', 'article');
+  getArchive(url, 'aside#paywall', '', 'article', '', 'article', 'article > div');
 }
 
 else if (matchDomain(de_funke_medien_domains)) {
