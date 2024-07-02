@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.2.3
+// @version         3.7.2.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -982,8 +982,12 @@ else if (matchDomain('wiwo.de')) {
   }
   let url = window.location.href;
   getArchive(url, 'div.o-paywall', '', 'article');
-  let banner = 'div.c-overscroller';
-  hideDOMStyle(banner);
+  if (!mobile) {
+    let banner = 'div.c-overscroller';
+    hideDOMStyle(banner, 5);
+  }
+  let ads = 'div.iqadtile';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('zeit.de')) {
