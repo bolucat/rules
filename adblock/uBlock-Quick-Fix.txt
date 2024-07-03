@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Tue, 02 Jul 2024 10:54:05 +0000
-! Diff-Path: ../patches/2024.7.2.989.patch#ublock-quick-fixes
+! Last modified: Wed, 03 Jul 2024 12:26:10 +0000
+! Diff-Path: ../patches/2024.7.3.1042.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -77,7 +77,7 @@ ytlarge.com##ins.adsbygoogle[data-ad-slot]
 !next-episode.net##+js(rpnt, script, '/.then[\s\S]{0,}?;/g')
 !next-episode.net##+js(rmnt, script, '/\d+\+\d|64|\+\+|\+1|adbl|ablk|[\s\S]{0,}(\.\.|function)[\s\S]{1800,}|document\[/i')
 @@||pagead2.googlesyndication.com^$script,domain=next-episode.net
-download.megaup.net##+js(rpnt, script, /for\s*\(\s*(const|let|var).*?return\;\}\}/g, , condition, attribute)
+download.megaup.net##+js(rpnt, script, /for\s*\(\s*(const|let|var).*return;\}/g, , condition, attribute)
 raenonx.cc##div[class*="main_announcement-animation"]:has(> [class*="announcement"] > .markdown > p > a[href$="/docs/view/site/ads-and-credits"])
 raenonx.cc##div[class="fixed bottom-0 z-anchor w-full bg-slate-500"]:has(> div[class="flex flex-col w-full"] > button.button-clickable-bg-opaque > .transform-smooth > svg)
 raenonx.cc##div[class^="grid w-full size-full grid-cols"]:has(> div[class^="relative bottom-0 w-full overflow-hidden outline-transparent"] > .absolute > .adsbygoogle)
@@ -91,7 +91,7 @@ raenonx.cc##html[style*="hidden"]:style(overflow: visible !important;)
 ||raenonx.cc/api/scripts
 japscan.lol#@#+js(acs, EventTarget.prototype.addEventListener, '/((ad-img|banner)-|interstitial|getComputedStyle|\)break;else)[\s\S]{1,5000}$/')
 japscan.lol##+js(acs, EventTarget.prototype.addEventListener, /mgid_iframe|ad[_-]|sessionStorage/)
-japscan.lol##+js(rmnt, script, /while \(!!\[\]\)|String\(\)\.fromCharCode|\.join\(\w+\)\.split\(\w+\)|"undefined"|_\$|\[\d+\][^=]*==/)
+japscan.lol##+js(rmnt, script, /while \(!!\[\]\)|String\(\)\.fromCharCode|\.join\(\w+\)\.split\(\w+\)|"undefined"|_\$|\[\d+\][^=]*==|\.join/)
 japscan.lol##+js(aeld, load, /function.{1\,3000}$/)
 japscan.lol##+js(aost, onload, inlineScript)
 @@||japscan.lol^$ghide
@@ -121,3 +121,5 @@ kimcartoon.*,kisscartoon.se,kc.linksgen.com##+js(rmnt, script, /^\s+setTimeout|s
 kimcartoon.*,kisscartoon.se,kc.linksgen.com##+js(aost, document.getElementById, Scripts)
 ||fewcents.co^$3p
 @@||pv.sohu.com/cityjson$domain=ems.com.cn
+hikaku.kurashiru.com#@#a[rel="nofollow sponsored"]
+hikaku.kurashiru.com##a[class^="side-banner_side_fixed_banner_"]

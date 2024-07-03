@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.2.5
+// @version         3.7.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -187,6 +187,18 @@ else if (matchDomain('bild.de')) {
   }
   let url = window.location.href;
   getArchive(url, 'div.offer-module', '', 'article');
+}
+
+else if (matchDomain('bnn.de')) {
+  func_post = function () {
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 95%;';
+    }
+  }
+  let url = window.location.href;
+  getArchive(url, 'section.paywall', '', 'article');
 }
 
 else if (matchDomain('boersen-zeitung.de')) {
@@ -617,16 +629,6 @@ else if (matchDomain('motorradonline.de')) {
 else if (matchDomain('mz.de')) {
   let url = window.location.href;
   getGoogleWebcache(url, 'div.fp-paywall', '', 'div[data-t-name="Article"]');
-}
-
-else if (matchDomain(['shz.de', 'svz.de'])) {
-  if (window.location.pathname.endsWith('/amp')) {
-    amp_unhide_access_hide('="NOT data.reduced"', '="data.reduced"', 'amp-ad, amp-embed, .ads-wrapper, #flying-carpet-wrapper');
-  } else {
-    amp_redirect('.paywall');
-    let ads = 'div.nozmhn_ad';
-    hideDOMStyle(ads);
-  }
 }
 
 else if (matchDomain('nw.de')) {

@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: YQ3nq2qdcOYsVrf5o01KLQ
-! Diff-Path: ../patches/224/224-s-1719941727-3600.patch
+! Checksum: wUSWm5p7qJl5xVY9TQLr8w
+! Diff-Path: ../patches/224/224-s-1720013721-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.18.39
-! TimeUpdated: 2024-07-02T17:33:24+00:00
+! Version: 2.1.18.46
+! TimeUpdated: 2024-07-03T13:33:26+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -833,8 +833,19 @@ iwatchme2u.com##+js(adjust-setTimeout, video-ad-timeout, *, 0.02)
 o8tv.com##+js(abort-current-script, document.write, tips)
 ! popup
 xvideo.cc##+js(set-constant, poped, true)
+! https://github.com/AdguardTeam/AdguardFilters/issues/182779
 ! https://github.com/uBlockOrigin/uAssets/issues/9650
+msn.cn##+js(json-prune, *.*, adFeedbackData adType adServedUrls)
 msn.cn##+js(json-prune, *, list.*.link.ad list.*.link.kicker)
+! Removes ad placeholders in sliders
+! Current path is "properties.componentConfigs.slideshowConfigs.slideshowSettings.interstitialNativeAds"
+! Other paths probably can be removed, but keep them just in case for some time
+msn.cn##+js(json-prune, configs.*.properties.slideshowWCSettings.interstitialNativeAds configs.*.properties.fullScreenSlideshowSettings.interstitialNativeAds properties.componentConfigs.slideshowConfigs.interstitialNativeAds properties.componentConfigs.slideshowConfigs.slideshowSettings.interstitialNativeAds)
+! Removes ad placeholders on the main page
+! Removes ad placeholders in articles in "More for You" section
+! Removes ad placeholders in sliders
+! Current path is "properties.componentConfigs.slideshowConfigs.slideshowSettings.interstitialNativeAds"
+! Other rules probably can be removed, but keep them just in case for some time
 ! https://github.com/AdguardTeam/AdguardFilters/issues/32133
 ! https://github.com/AdguardTeam/AdguardFilters/issues/34910
 goodav17.com##+js(abort-on-property-read, popunder)
@@ -4726,6 +4737,20 @@ newduba.cn###jq_youxi
 ||hzrnbl.xyz^
 ||8208tp.com^
 ||imgoss511.top^
+||ovejqw.xyz^
+||jiusudie.com^
+||cmqxy.cn^
+||pnvtlh.xyz^
+||idipsumo.top^
+||hyislou.top^
+||tlpyft.xyz^
+||jbkqemk.icu^
+||jdipsuma.top^
+||fzllis.cn^
+||feofamdak.top^
+||askdlajfbv.top^
+||dajiahao17.top^
+||afqodjc.top^
 ##a[href*=".68hantang.com"]
 ##a[href*=".asd245796.com:"]
 ##a[href*=".asd252466.com:"]
@@ -10188,7 +10213,7 @@ $popup,third-party,domain=76fengyun.com|avsdown.com|downdv.com|downdvs.com|downh
 $image,third-party,domain=lady1.top
 $script,third-party,domain=52movieba.com|audio699.com|kan-tv.com|m.supfree.net|movieffm.net|xiaoxintv.net
 $script,third-party,websocket,domain=52codes.net
-$third-party,xmlhttprequest,domain=cocolamanhua.com|subhd.tv|subhdtw.com|xyg688.com|xyg688.xyz|zzzzz688.com
+$third-party,xmlhttprequest,domain=subhd.tv|subhdtw.com|xyg688.com|xyg688.xyz|zzzzz688.com
 .194007.com/4058.gif
 .gif|$domain=7mshipin.org|viidii.info
 .html|$domain=www.gamer.com.tw
@@ -21987,7 +22012,7 @@ bejson.com##div[id^="shua"] + font[color="red"]
 bejson.com##div[id^="shuangshi"]
 bejson.com##img[src^="data"]
 !#bde4.cc
-52bdys.com###ayx
+52bdys.com###ayx > img
 @@||jsdelivr.net/gh/bde4admin/*/prebid-ads.js$domain=52bdys.com
 52bdys.com##center[style*="background"]
 52bdys.com##div[style^="position: fixed;bottom:"]

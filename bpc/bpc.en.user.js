@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.2.4
+// @version         3.7.2.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -582,12 +582,13 @@ else if (matchDomain('autosport.com')) {
 }
 
 else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
-  let flip_pay = document.querySelector('div#flip-pay');
-  if (flip_pay && flip_pay.hasChildNodes()) {
+  let paywall = document.querySelector('div[class*="_fadetowhite"]');
+  if (paywall) {
     let content = document.querySelector('script[data-fragment-type="ArticleContent"]');
     if (content) {
-      let fade = document.querySelector('div[class*="_fadetowhite"]');
-      removeDOMElement(flip_pay, fade);
+      removeDOMElement(paywall);
+      let flip_pay = 'div#flip-pay';
+      hideDOMStyle(flip_pay, 5);
       let intro = document.querySelector('div > div[data-auth-intro="article"]');
       if (intro) {
         let intro_par = intro.querySelector('p[class]');
@@ -3921,7 +3922,7 @@ else if (matchDomain(usa_mng_domains) || document.querySelector('head > link[rel
   }
 }
 
-else if (document.querySelector('script[src*=".axate.io/"]')) {
+else if (document.querySelector('head > script[src*=".axate.io/"]')) {
   let premium = document.querySelector('.premium, div[class*="-premium"]');
   if (premium)
     premium.removeAttribute('class');
@@ -3929,6 +3930,11 @@ else if (document.querySelector('script[src*=".axate.io/"]')) {
 
 else if (document.querySelector('head > meta[property][content^="https://cdn.forumcomm.com/"]')) {
   let ads = 'div.GoogleDfpAd-Content';
+  hideDOMStyle(ads);
+}
+
+else if (document.querySelector('head > script[src*=".postmedia.digital/"], head > meta[content*=".postmedia.digital/"]')) {
+  let ads = 'div.ad__section-border, div[id^="tbl_"], div.js-widget-content';
   hideDOMStyle(ads);
 }
 
