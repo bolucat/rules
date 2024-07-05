@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: LBvTf2/DnT/qqizEdRclbQ
-! Diff-Path: ../patches/7/7-s-1720107681-3600.patch
+! Checksum: ALEpNeR6txpBd6p5Hy6djA
+! Diff-Path: ../patches/7/7-s-1720193824-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.53.59
-! TimeUpdated: 2024-07-04T15:36:28+00:00
+! Version: 2.0.53.65
+! TimeUpdated: 2024-07-05T15:32:58+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -961,7 +961,6 @@ nasubiblog.com,kyukyoku-matome.com##.widget_pc_ad
 ##iframe.lazyloaded[data-src^="https://ad.jp.ap.valuecommerce.com/"]
 ##iframe[id^="IFTG"]
 !
-##.article-body a[title^="コミックINN"][href^="https://px.a8.net/svt/ejp"][target="_blank"] img.pict
 ##.plugin-freearea > div[id^="msmaflink"]
 ##.plugin-freearea a[href*="al.dmm.co"]
 ##.plugin-freearea a[href*="amazon.co.jp"]
@@ -978,6 +977,7 @@ nasubiblog.com,kyukyoku-matome.com##.widget_pc_ad
 ##.t_b ~ a[href^="https://www.amazon.co.jp"]
 ##.t_b ~ div > a[href^="https://al.dmm.co"]
 ##.t_b ~ div > a[href^="https://www.amazon.co.jp"]
+##.textwidget a[href^="https://pcmax.jp/lp/?ad_id="] > img
 ##.widget_custom_html > .custom-html-widget > a[href^="https://www.e-nls.com/access.php"]
 !
 ! uBO specific
@@ -1735,8 +1735,17 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
-the21.php.co.jp##.bnr_wrap
-the21.php.co.jp##div[style="height: 250px"]
+fitnesslove.net##.mainbox > div.st-pagelink ~ div.st-widgets-box
+fashiontechnews.zozo.com##div[class^="style-module--ads--"]
+36kr.jp###bottom_banner_wrap
+adult-video.tokyo#?#body:xpath(//div[contains(@class, "entry-content ")]//a[@target="_blank" and contains(@rel, "noopener") and not(@href=ancestor::div[contains(@class, "entry-content ")]/p[2]/a[1]/@href)]/img)
+dot.asahi.com##ul[class^="m-article-list"][class$="readmore"] > li.m-article-list__item:has(> div[id^="taboola-below-article-"])
+cat.benesse.ne.jp,dog.benesse.ne.jp##div[style="min-height: 600px;"]
+cat.benesse.ne.jp,dog.benesse.ne.jp##.text_c[style="height: 50px;"]
+recipe.rakuten.co.jp##.box_banner--top
+voice.php.co.jp,the21.php.co.jp##.bnr_wrap
+voice.php.co.jp,the21.php.co.jp##div[style="height:250px;"]
+voice.php.co.jp,the21.php.co.jp##div[style="height: 250px"]
 the21.php.co.jp###sc_pc_article_billboard
 ||cont.pancolle-movie.jp/goods/$third-party
 ||cont.pancolle-movie.jp/affer_img/$third-party
@@ -9133,7 +9142,7 @@ livedoor.jp##.google-user-ad
 4gamer.net##.hot_game_now
 fashion-news.net,fgamers.saikyou.biz,jnews1.com,shanbara.jp,ameblo.jp##a[href*="ck.jp.ap.valuecommerce.com/"]
 bi-girl.net##.toppage_av
-moeyo.com,dq8clear.com,game-gundam.com,khclear.com,bi-girl.net,himado.in,news.nifty.com,e-typing.ne.jp,freesoft-100.com##div[class^="ad_"]
+fm-p.jp,moeyo.com,dq8clear.com,game-gundam.com,khclear.com,bi-girl.net,himado.in,news.nifty.com,e-typing.ne.jp,freesoft-100.com##div[class^="ad_"]
 news.nifty.com###sidebar_head_banner
 news.nifty.com###_popIn_infeed1
 news.nifty.com##a[id*="_banner"][target="_blank"]

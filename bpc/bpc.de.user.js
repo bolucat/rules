@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.3.2
+// @version         3.7.3.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -575,34 +575,15 @@ else if (matchDomain('krautreporter.de')) {
 }
 
 else if (matchDomain(['ksta.de', 'rundschau-online.de'])) {
-  window.setTimeout(function () {
-    let paywall = document.querySelector('div.dm-paywall-wrapper');
-    if (paywall) {
-      let json_script = getArticleJsonScript();
-      if (json_script) {
-        removeDOMElement(paywall);
-        try {
-          let json = JSON.parse(json_script.text);
-          if (json && json['@graph']) {
-            let json_data = json['@graph'].filter(x => x.articleBody)[0];
-            let url_json = json_data['@id'];
-            if (url_json && !url_json.includes(window.location.pathname))
-              refreshCurrentTab();
-            let json_text = json_data.articleBody;
-            let article = document.querySelector('article');
-            if (json_text && article) {
-              let article_new = document.createElement('p');
-              article_new.setAttribute('class', 'dm-paragraph my-8 dm-article-content-width');
-              article_new.innerText = json_text;
-              article.appendChild(article_new);
-            }
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
+  function unhide_article(node) {
+    removeDOMElement(node);
+    let article = document.querySelector('div.paywalled-content[style]');
+    if (article) {
+      article.removeAttribute('class');
+      article.removeAttribute('style');
     }
-  }, 1000);
+  }
+  waitDOMElement('div[data-type="paywall"]', 'DIV', unhide_article, true);
   let banners = 'div.dm-slot';
   hideDOMStyle(banners);
 }

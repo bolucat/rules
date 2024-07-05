@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Thu, 04 Jul 2024 12:48:23 +0000
-! Diff-Path: ../patches/2024.7.4.805.patch#ublock-filters
+! Last modified: Fri, 05 Jul 2024 13:39:25 +0000
+! Diff-Path: ../patches/2024.7.5.863.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -9137,7 +9137,6 @@ abysscdn.com##div[style*="z-index:100000"]
 ##div[style="width:100%;height:auto;position:absolute;z-index:100000;justify-content:center;align-items:center;display:flex;top:0px;bottom:0px;background:rgba(0, 0, 0, .6);user-select: none;"]
 @@*$ghide,domain=kimcartoon.*|kisscartoon.se|kc.linksgen.com
 kimcartoon.*,kisscartoon.se,kc.linksgen.com##+js(spoof-css, .kcAds1, display, block)
-kimcartoon.*,kisscartoon.se,kc.linksgen.com##+js(acs, setTimeout, /Adb|_0x/i)
 kimcartoon.*,kisscartoon.se,kc.linksgen.com##+js(no-xhr-if, /googlesyndication|mgid\.com/)
 kimcartoon.*,kisscartoon.se,kc.linksgen.com##+js(no-xhr-if, method:/get|head/i)
 kimcartoon.*##+js(nowoif)
@@ -10230,8 +10229,8 @@ myp2p.*###reklama_sidebar
 myp2p.*##a[rel="sponsored"]
 game8.co##.js-side-ads-movie-container:remove()
 modrinth.com##section.normal-page__content a[href*="/redirect/"] img
-modrinth.com##section.normal-page__content :is([href^="https://shockbyte.com/"][href*="/partner/"],[href^="https://billing.kinetichosting.net/"],[href*="bisecthosting.com/"],[href^="https://meloncube.net/"],[href^="https://scalacube.com/"],[href^="https://billing.ember.host/"],[href^="https://nodecraft.com/"],[href^="https://billing.bloom.host/"],[href^="https://minefort.com/"],[href^="https://www.ocean-hosting.top/"],[href^="https://billing.apexminecrafthosting.com/"],[href^="https://mcph.info/"], [href*="/kinetic/"], [href*="/creeperhost"], [href^="https://www.akliz.net/"]) > img
-curseforge.com##:is(.project-description,div.project-detail__content) [href^="/linkout?remoteUrl=http"]:is([href*="shockbyte.com"],[href*="billing.kinetichosting.net"],[href*="bisecthosting.com"],[href*="meloncube.net"],[href*="scalacube.com"],[href*="billing.ember.host"],[href*="nodecraft.com"],[href*="billing.bloom.host"],[href*="minefort.com"],[href*="www.ocean-hosting.top"],[href*="billing.apexminecrafthosting.com"],[href*="mcph.info"]) > img
+modrinth.com##section.normal-page__content :is([href^="https://billing.bloom.host/"],[href^="https://minefort.com/"],[href^="https://www.ocean-hosting.top/"],[href^="https://billing.apexminecrafthosting.com/"],[href^="https://mcph.info/"], [href*="/kinetic/"], [href*="/creeperhost"], [href^="https://www.akliz.net/"]) > img
+curseforge.com##:is(.project-description,div.project-detail__content) [href^="/linkout?remoteUrl=http"]:is([href*="billing.bloom.host"],[href*="minefort.com"],[href*="www.ocean-hosting.top"],[href*="billing.apexminecrafthosting.com"],[href*="mcph.info"]) > img
 arenascan.com##+js(aost, document.getElementById, adsBlocked)
 arenascan.com###floatcenter
 *$script,3p,denyallow=google.com|gstatic.com,domain=datanodes.to
@@ -10308,6 +10307,8 @@ questloops.com##+js(aopr, b2a)
 ||instacart.ca/graphql?operationName=DisplayAdPlacement^$xhr,1p
 onlybabes.site##+js(acs, $, btoa)
 coomer.su,kemono.su##+js(acs, String.fromCharCode, \x)
+audiobookbay.lu##a[href*="?f="]
+audiobookbay.lu##a[href^="/"]:matches-attr(href=/^\/[-a-z0-9]+$/) img
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -10331,7 +10332,8 @@ gplinks.*##+js(aopr, clickCount)
 @@/adpartner.min.js$script,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
 sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com,tiktokcounter.net,tpayr.xyz,poqzn.xyz,ashrfd.xyz,rezsx.xyz,tryzt.xyz,ashrff.xyz,rezst.xyz,dawenet.com,erzar.xyz,waezm.xyz,waezg.xyz,cryptednews.space,vivuq.com,swgop.com,vbnmll.com,telcoinfo.online,dshytb.com##+js(no-fetch-if, ads)
 sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com,tiktokcounter.net,tpayr.xyz,poqzn.xyz,ashrfd.xyz,rezsx.xyz,tryzt.xyz,ashrff.xyz,rezst.xyz,dawenet.com,erzar.xyz,waezm.xyz,waezg.xyz,cryptednews.space,vivuq.com,swgop.com,vbnmll.com,telcoinfo.online,dshytb.com##+js(no-fetch-if, method:HEAD)
-sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com,tiktokcounter.net,tpayr.xyz,poqzn.xyz,ashrfd.xyz,rezsx.xyz,tryzt.xyz,ashrff.xyz,rezst.xyz,dawenet.com,erzar.xyz,waezm.xyz,waezg.xyz,blackwoodacademy.org,cryptednews.space,vivuq.com,swgop.com,vbnmll.com,telcoinfo.online,dshytb.com##+js(rpnt, script, /^([^{])/, document.addEventListener('DOMContentLoaded'\, ()=> {const i = document.createElement('iframe');i.style = 'height:0;width:0;border:0';i.id = 'aswift_0';document.body.appendChild(i);i.focus();});$1, sedCount, 2)
+sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com,tiktokcounter.net,tpayr.xyz,poqzn.xyz,ashrfd.xyz,rezsx.xyz,tryzt.xyz,ashrff.xyz,rezst.xyz,dawenet.com,erzar.xyz,waezm.xyz,waezg.xyz,cryptednews.space,vivuq.com,swgop.com,vbnmll.com,telcoinfo.online,dshytb.com##+js(nostif, documentElement.innerHTML)
+sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com,tiktokcounter.net,tpayr.xyz,poqzn.xyz,ashrfd.xyz,rezsx.xyz,tryzt.xyz,ashrff.xyz,rezst.xyz,dawenet.com,erzar.xyz,waezm.xyz,waezg.xyz,blackwoodacademy.org,cryptednews.space,vivuq.com,swgop.com,vbnmll.com,telcoinfo.online,dshytb.com##+js(trusted-replace-node-text, script, /^([^{])/, "document.addEventListener('DOMContentLoaded',()=>{const i=document.createElement('iframe');i.style='height:0;width:0;border:0';i.id='aswift_0';document.body.appendChild(i);i.focus();const f=document.createElement('div');f.id='9JJFp';document.body.appendChild(f);});$1", sedCount, 2)
 sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com,tiktokcounter.net,tpayr.xyz,poqzn.xyz,ashrfd.xyz,rezsx.xyz,tryzt.xyz,ashrff.xyz,rezst.xyz,dawenet.com,erzar.xyz,waezm.xyz,waezg.xyz,blackwoodacademy.org,cryptednews.space,vivuq.com,swgop.com,vbnmll.com,telcoinfo.online,dshytb.com##+js(set, document.hasFocus, trueFunc)
 droplink.co##+js(aopr, app_vars.force_disable_adblock)
 droplink.co##.text-left
@@ -14880,6 +14882,12 @@ olympicstreams.me##.position-absolute
 ! buffstreams. tv => sx popups
 buffstreams.*##+js(nowoif)
 buffstreams.*##+js(acs, setTimeout, admc)
+buffstreams.*##+js(json-prune, *, *.adserverDomain)
+!#if cap_html_filtering
+buffstreams.*##^script:has-text(/aclib\.runPop|aclib/)
+!#else
+buffstreams.*##+js(acs, document.createElement, /aclib|runPop/)
+!#endif
 buffstreams.*##.position-absolute
 buffstreams.*##.m-1.fw-bold.btn-danger.btn
 nsfwyoutube.com##pp
@@ -17038,7 +17046,7 @@ ac-illust.com,photo-ac.com##body.modal-open *:style(filter: none!important;)
 123-movies.*,123movies4u.site,123movieshd.*,123movieshub.*,123moviesme.*,1337x.*,1337xporn.com,141jav.com,1bit.space,1bitspace.com,1stream.*,1tamilmv.*,2ddl.*,2umovies.*,38dh2.top,3dporndude.com,3hiidude.*,4archive.org,4horlover.com,4stream.*,560pmovie.com,5movies.*,60fps.xyz,7hitmovies.*,85tube.com,85videos.com,8xlinks.click,9xmovie.*##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
 a2zcrackworld.com,aagmaal.*,aazzz.xyz,acefile.co,actusports.eu,adblockeronstape.*,adblockeronstreamtape.*,adblockplustape.*,adblockstreamtape.*,adblockstrtape.*,adblockstrtech.*,adblocktape.*,adclickersbot.com,adcorto.*,adricami.com,adslink.pw,adultstvlive.com,adz7short.space,aeblender.com,ahdafnews.blogspot.com,ak47sports.com,akuma.moe,alexsports.*,alexsports.*,alexsportss.*,alexsportz.*,allplayer.tk,allstreaming.online,amadoras.cf,amadorasdanet.shop,amateurblog.tv,amateurblog.tv,androidadult.com,anhsexjav.xyz,anidl.org,anime-loads.org,animeblkom.net,animefire.plus,animelek.me,animepahe.*,animesanka.*,animespire.net,animestotais.xyz,animeyt.es,animixplay.*,aniplay.*,anroll.net,antiadtape.*,anymoviess.xyz,aotonline.org,asenshu.com,asialiveaction.com,asianclipdedhd.net,asianclub.*,ask4movie.*,askim-bg.com,asumsikedaishop.com,atomixhq.*,atomohd.*,avcrempie.com,avseesee.com,gettapeads.com##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
 backfirstwo.com,bajarjuegospcgratis.com,balkanportal.net,balkanteka.net,bdnewszh.com,beinmatch.*,belowporn.com,bestclaimtrx.xyz,bestgirlsexy.com,bestnhl.com,bestporn4free.com,bestporncomix.com,bet36.es,bhaai.*,bikinitryon.net,birdurls.com,bitsearch.to,blackcockadventure.com,blackcockchurch.org,blackporncrazy.com,blizzboygames.net,blizzpaste.com,blkom.com,blog-peliculas.com,blogtrabalhista.com,blurayufr.xyz,bobsvagene.club,bolly4umovies.click,bonusharian.pro,brilian-news.id,brupload.net,bucitana.com,buffstreams.*##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
-cablegratis.online,camchickscaps.com,camgirlcum.com,camgirls.casa,canalesportivo.*,cashurl.in,castingx.net,ccurl.net,celebrity-leaks.net,cgpelis.net,charexempire.com,choosingnothing.com,clasico.tv,clickndownload.*,clicknupload.*,clik.pw,coin-free.com,coins100s.fun,comicsmanics.com,compucalitv.com,coolcast2.com,cosplaytab.com,countylocalnews.com,cpmlink.net,crackstreamshd.click,crespomods.com,crisanimex.com,crunchyscan.fr,cuevana3.fan,cuevana3hd.com,cumception.com,curvaweb.com,cutpaid.com##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
+cablegratis.online,camchickscaps.com,camgirlcum.com,camgirls.casa,canalesportivo.*,cashurl.in,castingx.net,ccurl.net,celebrity-leaks.net,cgpelis.net,charexempire.com,choosingnothing.com,clasico.tv,clickndownload.*,clicknupload.*,clik.pw,coin-free.com,coins100s.fun,comicsmanics.com,compucalitv.com,coolcast2.com,cosplaytab.com,countylocalnews.com,cpmlink.net,crackstreamshd.click,crespomods.com,crisanimex.com,crunchyscan.fr,cuevana3.fan,cuevana3hd.com,cumception.com,curvaweb.com,cutpaid.com,cypherscans.xyz##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
 daddylive.*,daddylivehd.*,datawav.club,daughtertraining.com,ddrmovies.*,deepgoretube.site,deltabit.co,depvailon.com,derleta.com,desiremovies.*,desivdo.com,desixx.net,detikkebumen.com,deutschepornos.me,devlib.*,diasoft.xyz,directupload.net,diskusscan.com,divxtotal.*,divxtotal1.*,dixva.com,dlhd.*,doctormalay.com,dofusports.xyz,dogemate.com,doods.cam,doodskin.lat,downloadrips.com,downvod.com,dphunters.mom,dragontranslation.com,duddes.xyz,dvdfullestrenos.com,dvdplay.*##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
 ebookbb.com,ebookhunter.net,egyanime.com,egygost.com,egyshare.cc,ekasiwap.com,electro-torrent.pl,elil.cc,elixx.*,embed4u.xyz,embedstream.me,enjoy4k.*,eplayer.click,erovoice.us,eroxxx.us,estrenosdoramas.net,estrenosflix.*,estrenosflux.*,estrenosgo.*,everia.club,everythinginherenet.blogspot.com,extrafreetv.com,extremotvplay.com##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
 f1stream.*,fapinporn.com,fapptime.com,fashionblog.tv,fashionblog.tv,fastreams.live,faucethero.com,fbstream.*,fembed.com,femdom-joi.com,file4go.*,fileone.tv,film1k.com,filmeonline2023.net,filmesonlinex.org,filmesonlinexhd.biz,filmovitica.com,filmymaza.blogspot.com,filmyzilla.*,filthy.family,findav.*,findporn.*,fixfinder.click,flixmaza.*,flizmovies.*,flostreams.xyz,flyfaucet.com,footyhunter.lol,footyhunter3.xyz,forex-golds.com,forex-trnd.com,forumchat.club,forumlovers.club,freemoviesonline.biz,freeomovie.co.in,freeomovie.co.in,freeomovie.to,freeporncomic.net,freepornhdonlinegay.com,freeproxy.io,freetvsports.*,freeuse.me,freeusexporn.com,fsicomics.com,fullymaza.*##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
@@ -19166,7 +19174,7 @@ logicieleducatif.fr##[data-ez-ph-id]
 ||html-load.com/report?$xhr
 ||html-load.cc^$font,ping,doc,popup
 ||html-load.cc/report?$xhr
-||html-load.com/loader.min.js$domain=ndtvprofit.com
+||html-load.com/loader.min.js$domain=ndtvprofit.com|javatpoint.com
 *$popup,domain=html-load.cc|07c225f3.online|content-loader.com|css-load.com|html-load.com|html-load.cc
 /\.(xyz|online|site)\/[a-z0-9]{7}\/[a-z0-9]{50,}$/$match-case,popup,domain=ygosu.com|loawa.com|sportalkorea.com|edaily.co.kr|economist.co.kr|etoday.co.kr|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|etnews.com|iusm.co.kr|dogdrip.net|worldhistory.org|text-compare.com|bamgosu.site|etnewskorea.com|automobile-catalog.com|maketecheasier.com|thesaurus.net|gadgets360.com|thestar.co.uk|yorkshirepost.co.uk|mydaily.co.kr|ndtvprofit.com|badmouth1.com|logicieleducatif.fr|taxguru.in|globalrph.com|raenonx.cc|sportsrec.com|reportera.co.kr|carscoops.com|slobodnadalmacija.hr|flatpanelshd.com|wfmz.com|videogamemods.com
 a-ha.io,cboard.net,jjang0u.com,joongdo.co.kr,viva100.com,thephoblographer.com,gamingdeputy.com,thesaurus.net,alle-tests.nl,maketecheasier.com,automobile-catalog.com,motorbikecatalog.com##+js(noeval-if, /07c225f3\.online|content-loader\.com|css-load\.com|html-load\.com/)
@@ -20225,6 +20233,8 @@ sportskart.*##+js(aopr, afScript)
 sportskart.*##^script:has-text(u_cfg)
 cdnm4m.nl##+js(nowoif)
 euro2024direct.ru##+js(acs, document.documentElement, break;case $.)
+||mrmnd.com^
+||ss-mndsrv.b-cdn.net^
 ! *** uAssets:filters/filters-2023.txt ***
 streamhide.to##+js(acs, setTimeout, checkADB)
 guccihide.com##+js(nowoif)
