@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.3.3
+// @version         3.7.3.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -695,8 +695,12 @@ else if (matchDomain('spektrum.de')) {
 else if (matchDomain('spiegel.de')) {
   let url = window.location.href;
   func_post = function () {
-    let html_embed = 'section[data-area="html-embed"]';
-    hideDOMStyle(html_embed);
+    let failed_iframes = document.querySelectorAll('div > div[x-show="!iframeIsLoaded"]');
+    for (let elem of failed_iframes)
+      hideDOMElement(elem.parentNode);
+    let body_dark = document.querySelector('body[class*="dark:"]');
+    if (body_dark)
+      removeClassesByPrefix(body_dark, 'dark:');
     if (mobile) {
       let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
       for (let elem of lazy_images)
@@ -985,6 +989,8 @@ else if (matchDomain('zeit.de')) {
   if (document.querySelector('head > link[rel="next"]'))
     url += '/komplettansicht';
   getArchive(url, 'aside#paywall', '', 'article', '', 'article', 'article > div');
+  let ads = 'div[id^="iqadtile"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(de_funke_medien_domains)) {
@@ -1392,6 +1398,14 @@ function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full artic
     text_fail_div.appendChild(a_link);
   }
   return text_fail_div;
+}
+
+function removeClassesByPrefix(el, prefix) {
+  let el_classes = el.classList;
+  for (let el_class of el_classes) {
+    if (el_class.startsWith(prefix))
+      el_classes.remove(el_class);
+  }
 }
 
 function amp_iframes_replace(weblink = false, source = '') {

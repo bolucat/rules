@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: ALEpNeR6txpBd6p5Hy6djA
-! Diff-Path: ../patches/7/7-s-1720193824-3600.patch
+! Checksum: FMkWE4VKjgUVcvFEJ5DY9Q
+! Diff-Path: ../patches/7/7-s-1720265823-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.53.65
-! TimeUpdated: 2024-07-05T15:32:58+00:00
+! Version: 2.0.53.68
+! TimeUpdated: 2024-07-06T11:33:14+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -549,6 +549,7 @@ shindanmaker.com#$#div[id^="div-gpt-"] { min-height: 1px !important; }
 qa.crefan.jp##+js(abort-current-script, onload, google_esf)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/155441
 tters.jp#$#.ad-section { height: 10px !important; position: absolute !important; left: -3000px !important; }
+tters.jp#@#ins.adsbygoogle[data-ad-client]
 tters.jp#@#ins.adsbygoogle[data-ad-slot]
 tters.jp#@#.ad-section
 ! anti-adb on login
@@ -559,11 +560,12 @@ pointi.jp##+js(abort-on-property-read, adBlockDetected)
 egotter.com##+js(set-constant, adBlockerDetected, false)
 egotter.com#$#.adsense-container { height: 1px !important; }
 egotter.com#@#.adsense-container
+egotter.com#@#ins.adsbygoogle[data-ad-client]
 egotter.com#@#ins.adsbygoogle[data-ad-slot]
 ||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$script,xmlhttprequest,redirect=googlesyndication.com/adsbygoogle.js,domain=egotter.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/152033
 puzzle-ch.com#@##adframe:not(frameset)
-puzzle-ch.com##+js(no-setTimeout-if, getComputedStyle)
+puzzle-ch.com##+js(no-setTimeout-if, block)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/151651
 blog.housinkai.com,kakenhi.net,seesaa.net##+js(addEventListener-defuser, DOMContentLoaded, interstitialAd)
 ||blog.seesaa.jp/visual/*/common/js/footer.js
@@ -622,6 +624,7 @@ logworker.net#$#.entry-content { display: block !important; }
 o-dan.net##+js(remove-class, visited, #oRslt li a.visited, stay)
 o-dan.net##+js(no-setTimeout-if, oAdChk)
 ! musmus.main.jp anti-adb
+musmus.main.jp#@#ins.adsbygoogle[data-ad-client]
 musmus.main.jp#@#ins.adsbygoogle[data-ad-slot]
 musmus.main.jp#$#div[class*="ad_"] {  height: 1px !important; width: 1px !important; min-height: 1px !important; padding: 0 !important; margin: 0 !important; overflow: hidden !important; }
 musmus.main.jp#$#div[id^="sub_ad"] {  height: 1px !important; width: 1px !important; min-height: 1px !important; padding: 0 !important; margin: 0 !important; overflow: hidden !important; }
@@ -743,6 +746,7 @@ intaa.net#$##adstop { display: block !important; height: 51px !important; }
 @@||yoshidakenkou.net^$generichide
 yoshidakenkou.net##.adsbygoogle
 ! https://github.com/AdguardTeam/AdguardFilters/issues/88158
+battlecats-db.com#@#ins.adsbygoogle[data-ad-client]
 battlecats-db.com#@#ins.adsbygoogle[data-ad-slot]
 ||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$script,redirect=googlesyndication.com/adsbygoogle.js,domain=battlecats-db.com
 ! for DNS
@@ -1529,6 +1533,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/themes/CashLINESystem/js/modal.$script
 !
 ! Malware/Phishing
+.fixdynamics.info/hh/$document
 .top/memx/force_login?acr_values=$document
 .com/?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=sign-in&path=home&ref_=nav_Account&signIn=1&useRedirectOnSuccess=1|$document
 ://kuronekoyam*.top/jp$document
@@ -1735,7 +1740,6 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
-fitnesslove.net##.mainbox > div.st-pagelink ~ div.st-widgets-box
 fashiontechnews.zozo.com##div[class^="style-module--ads--"]
 36kr.jp###bottom_banner_wrap
 adult-video.tokyo#?#body:xpath(//div[contains(@class, "entry-content ")]//a[@target="_blank" and contains(@rel, "noopener") and not(@href=ancestor::div[contains(@class, "entry-content ")]/p[2]/a[1]/@href)]/img)
@@ -4513,7 +4517,7 @@ ckworks.jp##div[class^="google_adsense"]
 ckworks.jp##.listItemGoodsAd
 ckworks.jp##.listItemGoodsAdContentsBottomBox
 utakata.work,papasu1102.com##.entry-content > p > a[href^="https://www.amazon.co.jp/dp/"]
-warorince.com,avtokutei.com,murakichi.net,dassen-azara4.com,papasu1102.com##.post-widgets-bottom
+fitnesslove.net,warorince.com,avtokutei.com,murakichi.net,dassen-azara4.com,papasu1102.com##.post-widgets-bottom
 papasu1102.com##a[href^="//af.moshimo.com"]
 porn78.info##div[id^="adArea"]
 memo.appri.me##.memomaru_ads

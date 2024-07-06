@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.3.0
+// @version         3.7.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -1895,11 +1895,8 @@ else if (matchDomain('inc42.com')) {
   if (window.location.pathname.endsWith('/amp/')) {
     amp_unhide_access_hide('="status"', '="NOT status"', 'amp-ad, amp-embed, div.wru-widget');
   } else {
-    let div_hidden = document.querySelector('div.single-post-content');
-    if (div_hidden)
-      div_hidden.removeAttribute('class');
-    let banner = 'div[id*="_leaderboard_"]';
-    hideDOMStyle(banner);
+    let banner = document.querySelector('div[id*="_leaderboard_"]');
+    removeDOMElement(banner);
   }
 }
 
