@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Sat, 06 Jul 2024 15:18:06 +0000
-! Diff-Path: ../patches/2024.7.6.922.patch#ublock-badware
+! Last modified: Sun, 07 Jul 2024 07:31:09 +0000
+! Diff-Path: ../patches/2024.7.7.985.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -701,6 +701,7 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||arcanecheat.com^$doc
 ||vavilonhack.fun^$all
 ||csfusion.ru^$all
+||upload.advgroup.ru/mvWwiE4h$all
 ||cloud-folder.org^$doc
 .systems/signup?ad_domain=$doc,popup
 ! fake software updaters /redirections
@@ -3038,6 +3039,19 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||21cpromotions.com/logs/postch/$all,to=~laposte.fr
 ||inner.website/*.html^$all
 ||yellowjacket.co.nz^$all,to=~fedex.com
+! booking.com
+||rating-booking-vip.com^$all,to=~booking.com
+/^https:\/\/(?:[a-z]+\.)?hotel-(?:id)?\d{5,8}\.eu\//$doc,domain=eu|~booking.com
+/^https:\/\/(?:[a-z]+\.)?hotel-(?:id)?\d{5,8}\.com\//$doc,domain=com|~booking.com
+! vodafone
+||vodafone.scralead.com^$all,to=~vodafone.es
+||vodafone-mail-de.brimble.app^$all,to=~vodafone.de
+! labanquepostale
+||oasisministries.com/fr/postale/$all,to=~labanquepostale.fr
+||group-postban.firebaseapp.com^$all,to=~labanquepostale.fr
+! adobe
+||adobecloud5xpo.yolasite.com^$all,to=~adobe.com
+||socalthesyndicate.com/*/adobefud/$all,to=~adobe.com
 ! gazprom
 /^https:\/\/[a-z0-9]{5}\.shop\/l\/gaz\//$1p,strict1p,match-case,domain=shop
 /^https:\/\/[a-z0-9]{5}\.shop\/uniq$/$xhr,1p,strict1p,match-case,method=get,domain=shop
@@ -3065,6 +3079,8 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||xxtl-v1.biz.id^$doc,domain=~dana.id
 ||xlink-dna-log-new.xxtl-v1.biz.id^$all,to=~dana.id
 ||xform-dna-log-x.resmi-v1.biz.id^$all,to=~dana.id
+||xclaimz-id-danakagetxid7.x-id.my.id^$all,to=~dana.id
+||bntuanoffcl-dna.hdco.my.id^$all,to=~dana.id
 ! orange.fr
 ||orange53.yolasite.com^$all,to=~orange.fr
 ||dev-7614646544.pantheonsite.io^$all,to=~orange.fr
@@ -3131,6 +3147,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||sparkasse-oberhessen.info^$all,to=~sparkasse.de
 ||mybluehost.me/service/*/nkl-log.php$doc,domain=~nickel.eu
 ||turkiyecumhuriyetiziraatbankasi.com^$all,to=~ziraatbank.com.tr
+||c1.is/BRI/$doc,domain=~bri.co.id
 ! DHL
 ||dhl.*.potabox.com^$doc,domain=~dhl.com
 ||dhl-event.app^$all,to=~dhl.com
@@ -3148,6 +3165,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||facebook.prantiksoft.com^$all
 ||facebook-guidelines.com^$all
 ||hotvideoustiktok2021.blogspot.com^$all
+||facebookpocztaweb.weebly.com^$all
 ||www-mfacebook.$doc
 ||www-facebooks.$doc
 ||www-facebook-$doc
@@ -3159,6 +3177,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||www-facebooks.com.vn^$all
 ||govern-assessment-validation-njbujm.vercel.app^$all
 ||request-page-violation-*.surge.sh^$all
+||instructions-video.vercel.app/detailed_video.mp4$media
 ! shopping sites
 /api/user/do_login|$xhr,1p,to=com|info,method=post,header=access-control-allow-headers:/authorization\,content-type\,if-match\,if-modified-since\,if-none-match\,if-unmodified-since\,x-requested-with/i
 /api/user/do_login|$xhr,1p,to=com|info,method=post,header=Access-Control-Allow-Headers:/authorization\,content-type\,if-match\,if-modified-since\,if-none-match\,if-unmodified-since\,x-requested-with/i
@@ -3184,6 +3203,8 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||sp.26skins.com^$all
 ||steamommunity.com^$all
 ||steam.communityart-work.com^$all
+||steam.workshop-art.com^$all
+||steancommunlity.com^$all
 ! garena
 /^https:\/\/(?:www\.)?(?:ff[-.])?member[-.]gare[a-z]+a(?:\.pro)?\.vn\//$doc,domain=vn|~garena.vn
 /^https:\/\/(?:www\.)?(?:ff[-.])?men?mber[-.]garena\.vn\//$doc,domain=vn|~garena.vn
@@ -3195,6 +3216,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||pubg-arena.top^$all
 ||pubgm.kraftonevent.com^$all
 ||globalx.krafton-redeem.com^$all
+||register-turnamen.free.nf^$all
 ! google
 ||bxzxenzidrmrksu.jiongcao.cn^$all
 ||google-stare.com^$all
@@ -3221,6 +3243,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||storageapi-new.fleek.co/*/yss/ind.html$all
 ||wwwservicemsnlive-*.hubspotpagebuilder.com^$all
 ||conohawing.com/*/outlook-$doc
+||hergunavantaj.com.tr^$all
 ! telegram
 ||telegramhcn.com^$all
 ||web.telegram.data-bees.cn^$all
@@ -3275,6 +3298,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||syncwallet.pages.dev^$all,to=~walletconnect.com
 ||azuki-*.vercel.app^$all,to=~azuki.com
 ||base-swap-frontend-*.vercel.app^$doc
+||metamask*.webflow.io^$doc
 ! imtoken
 ||imtoken.org.cn^$all,to=~token.im
 ||imtoken-lk.top^$all,to=~token.im
@@ -3290,13 +3314,10 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ! openphish
 ||air.bnb-id*.com^$all,to=~airbnb.com
 ||pakket-bpost-be.web.app^$all,to=~bpost.be
-||vodafone-mail-de.brimble.app^$all,to=~vodafone.de
-||adobecloud5xpo.yolasite.com^$all,to=~adobe.com
 ||mmitalianbeef.square.site^$all,to=~mmitalianbeef.com
-||rating-booking-vip.com^$all,to=~booking.com
+||bigbauer.com^$all,to=~gmx.com
 ||beluxrepm.followme.fr/FolloWMe$all,to=~realestate.bnpparibas.com
 ||mybluehost.me/Cope346/$all
-||oasisministries.com/fr/postale/$all,to=~labanquepostale.fr
 ||hopp.bio/servernet^$all,to=~sasktel.com
 ||glitch.me/pdf.html?email=$doc
 ||fislbxcentral.com/lms/santander$doc,domain=~santanderbank.com|~santander.co.uk
@@ -3308,6 +3329,12 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 /^https?:\/\/dienmayxanh[-a-z0-9]+\.com\//$doc,domain=com|~dienmayxanh.com
 /^https:\/\/dich-vu(?:-[a-z0-9]+){2,3}\.com\//$doc,domain=com
 /^https:\/\/zla\d{3}\.top\//$doc,domain=top|~tiki.vn
+||cskh-vib-$doc
+||cskh-vib.$doc
+||chamsockhachang-$doc
+||chamsocthekhachang-$doc
+||nang-cap-$doc
+||ho-tro-tin-dung-ca-nhan.com^$all
 ||hdsaison-$doc,domain=cc|vip|~hdsaison.com.vn
 ||dichvucong.$doc,domain=~gov.vn
 ||tikimall.$doc,domain=tikimall.*|~tiki.vn
@@ -3423,3 +3450,8 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||bloxstrap.*^$doc
 ||bloxstrapmenu.com^$doc
 ||joannclearances.com^$all,to=~joann.com
+||getsecurify.com^$doc
+||securifyguard.com^$doc
+||withsecurify.com^$doc
+||pcapp.store^$doc
+||convertwithwave.com^$doc
