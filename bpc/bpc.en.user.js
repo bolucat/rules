@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.3.1
+// @version         3.7.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -2825,6 +2825,10 @@ else if (matchDomain('theamericanconservative.com')) {
   let noscroll = document.querySelector('body.modal-open');
   if (noscroll)
     noscroll.classList.remove('modal-open');
+}
+
+else if (matchDomain('theamericanscholar.org')) {
+  getJsonUrl('div.ssagk-form', '', 'div.post_summary');
 }
 
 else if (matchDomain('theatlantic.com')) {
