@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.7.1.3
+// @version         3.7.1.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.nl.user.js
@@ -223,6 +223,13 @@ else if (matchDomain('doorbraak.be')) {
 }
 
 else if (matchDomain('fd.nl')) {
+  func_post = function () {
+    let paywall = document.querySelectorAll('[h-case]');
+    if (paywall) {
+      removeDOMElement(...paywall);
+      header_nofix(document.querySelector('main header'), 'BPC > no archive-fix');
+    }
+  }
   let url = window.location.href;
   getArchive(url, 'section.upsell, div.upsell-modal-background', '', 'main');
 }
