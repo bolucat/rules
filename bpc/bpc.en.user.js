@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.3.3
+// @version         3.7.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -29,6 +29,7 @@
 // @match           *://*.ipolitics.ca/*
 // @match           *://*.japantimes.co.jp/*
 // @match           *://*.livelaw.in/*
+// @match           *://*.nation.africa/*
 // @match           *://*.nautil.us/*
 // @match           *://*.niagarafallsreview.ca/*
 // @match           *://*.newsweek.pl/*
@@ -147,6 +148,7 @@ var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-
 hideDOMStyle(ads, 10);
 
 var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 'thepeterboroughexaminer.com', 'therecord.com', 'thespec.com', 'thestar.com', 'wellandtribune.ca'];
+var ke_nation_media_domains = ['businessdailyafrica.com', 'nation.africa'];
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
 var no_dn_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'hydrogeninsight.com', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
 var pl_ringier_domains = ['auto-swiat.pl', 'businessinsider.com.pl', 'forbes.pl', 'komputerswiat.pl', 'newsweek.pl', 'onet.pl'];
@@ -2375,6 +2377,7 @@ else if (matchDomain('outlookindia.com')) {
 }
 
 else if (matchDomain(pl_ringier_domains)) {
+  let url = window.location.href;
   if (matchDomain('businessinsider.com.pl')) {
     setCookie('xbc', '', 'businessinsider.com.pl', '/', 0);
     let paywall = document.querySelector('div#content-premium-offer');
@@ -2395,53 +2398,80 @@ else if (matchDomain(pl_ringier_domains)) {
       placeholder.removeAttribute('class');
   } else if (matchDomain('onet.pl')) {
     function onet_main(node) {
-      removeDOMElement(node);
       let json_script = document.querySelector('script#__NEXT_DATA__');
       if (json_script) {
+        removeDOMElement(node);
         try {
           let json = JSON.parse(json_script.text);
-          if (json) {
+          if (json && json.props.pageProps) {
             let article = document.querySelector('section[class^="Body_content__"] > div') || document.querySelector('article section');
             if (article) {
               let parser = new DOMParser();
-              let blocks = json.props.pageProps.story ? json.props.pageProps.story.blocks : json.props.pageProps.blocks;
-              let pars = blocks.find(x => x.type === 'contentPremium').elements;
-              for (let par of pars) {
-                let par_elem;
-                if (['heading', 'paragraph'].includes(par.type)) {
-                  if (par.text) {
-                    let doc = parser.parseFromString('<div style="margin: 25px 0px;">' + par.text + '</div>', 'text/html');
-                    par_elem = doc.querySelector('div');
-                  }
-                } else if (par.type === 'unordered_list') {
-                  if (par.entries) {
-                    par_elem = document.createElement('ul');
-                    par_elem.style = 'list-style-type: disc;';
-                    for (let item of par.entries) {
-                      let doc = parser.parseFromString('<li>' + item + '</li>', 'text/html');
-                      par_item = doc.querySelector('li');
-                      par_elem.appendChild(par_item);
+              let blocks = findKeyJson(json.props.pageProps, ['blocks']);
+              if (blocks) {
+                let pars = blocks.find(x => x.type === 'contentPremium').elements; ;
+                for (let par of pars) {
+                  let par_elem;
+                  if (['heading', 'paragraph'].includes(par.type)) {
+                    if (par.text) {
+                      let doc = parser.parseFromString('<div style="margin: 25px 0px;">' + par.text + '</div>', 'text/html');
+                      par_elem = doc.querySelector('div');
                     }
-                  }
-                } else if (par.parameters) {
-                  if (par.parameters.embedCode) {
-                    let doc = parser.parseFromString('<div style="margin: 25px 0px;">' + par.parameters.embedCode + '</div>', 'text/html');
-                    par_elem = doc.querySelector('div');
-                  }
-                } else if (!(par.slotId || ['commentsButton'].includes(par.type)))
-                  console.log(par);
-                if (par_elem)
-                  article.appendChild(par_elem);
+                  } else if (par.type === 'image') {
+                    if (par.src) {
+                      par_elem = document.createElement('figure');
+                      let img = document.createElement('img');
+                      img.src = par.src;
+                      img.alt = par.alt;
+                      par_elem.appendChild(img);
+                      if (par.description) {
+                        let caption = document.createElement('figcaption');
+                        caption.innerText = par.description + (par.copyright ? ' - ' + par.copyright : '');
+                        par_elem.appendChild(caption);
+                      }
+                    }
+                  } else if (par.type === 'unordered_list') {
+                    if (par.entries) {
+                      par_elem = document.createElement('ul');
+                      par_elem.style = 'list-style-type: disc;';
+                      for (let item of par.entries) {
+                        let doc = parser.parseFromString('<li>' + item + '</li>', 'text/html');
+                        par_item = doc.querySelector('li');
+                        par_elem.appendChild(par_item);
+                      }
+                    }
+                  } else if (par.parameters) {
+                    if (par.parameters.embedCode) {
+                      let doc = parser.parseFromString('<div style="margin: 25px 0px;">' + par.parameters.embedCode + '</div>', 'text/html');
+                      par_elem = doc.querySelector('div');
+                    }
+                  } else if (!(par.slotId || ['commentsButton'].includes(par.type)))
+                    console.log(par);
+                  if (par_elem)
+                    article.appendChild(par_elem);
+                }
               }
             }
           }
         } catch (err) {
           console.log(err);
         }
+      } else {
+        func_post = function () {
+          let ads = document.querySelectorAll('aside > span');
+          for (let elem of ads)
+            removeDOMElement(elem.parentNode.removeAttribute('style'));
+        }
+        getArchive(url, paywall_sel, '', 'div[itemprop="articleBody"]');
       }
     }
     let tp_container_sel = ' div.tp-container-inner';
-    waitDOMElement('div#pianoOffer' + tp_container_sel + ', div.contentPremium' + tp_container_sel, 'DIV', onet_main);
+    let paywall_sel = 'div#pianoOffer' + tp_container_sel + ', div.contentPremium' + tp_container_sel;
+    let paywall = document.querySelector(paywall_sel);
+    if (paywall)
+      onet_main(paywall);
+    else
+      waitDOMElement(paywall_sel, 'DIV', onet_main);
   } else {
     function archive_main(node) {
       removeDOMElement(node);
@@ -2452,13 +2482,12 @@ else if (matchDomain(pl_ringier_domains)) {
         article_sel = 'div[data-header="header#pageHeader"]';
       else if (matchDomain('komputerswiat.pl'))
         article_sel = 'div[data-run-module="local/main.adult"] > div:nth-last-of-type(1) article';
-      let url = window.location.href;
       let url_archive = 'https://' + archiveRandomDomain() + '/' + url.split(/[#\?]/)[0];
       replaceDomElementExt(url_archive, true, false, article_sel);
     }
     waitDOMElement('div.contentPremium div.tp-container-inner', 'DIV', archive_main);
   }
-  let ads = 'div[class^="AdPlaceholder_"], div[data-placeholder-caption], div[data-run-module$=".floatingAd"], aside[data-ad-container], [class^="pwAds"], .hide-for-paying, div.onet-ad, div.bottomBar';
+  let ads = 'div.adPlaceholder , div[class^="AdPlaceholder_"], div[data-placeholder-caption], div[data-run-module$=".floatingAd"], aside[data-ad-container], [class^="pwAds"], .hide-for-paying, div.onet-ad, div.bottomBar';
   hideDOMStyle(ads);
 }
 
@@ -3780,6 +3809,21 @@ else if (matchDomain('zerohedge.com')) {
       }
     }
   }
+}
+
+else if (matchDomain(ke_nation_media_domains)) {
+  let paywall = document.querySelectorAll('div.modal, [id*="wall"], section.wall-guard');
+  if (paywall.length) {
+    removeDOMElement(...paywall);
+    let div_hidden = document.querySelectorAll('div.article-page .nmgp');
+    for (let elem of div_hidden)
+      elem.classList.remove('nmgp');
+    let page_hidden = document.querySelector('div.article-page .hidden');
+    if (page_hidden)
+      page_hidden.classList.remove('hidden');
+  }
+  let banners = 'div.banner, div.spinner';
+  hideDOMStyle(banners);
 }
 
 else if ((domain = matchDomain(usa_gannett_domains)) || document.querySelector('head > link[href*=".gannettdigital.com/"], head > link[href*=".gannett-cdn.com/"]')) {

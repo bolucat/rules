@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.6.5.3
+// @version         3.6.5.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.es.pt.user.js
@@ -513,6 +513,8 @@ else if (matchDomain('eltiempo.com')) {
   let modulos = document.querySelector('div.modulos');
   if (modulos)
     modulos.classList.remove('modulos');
+  let ads = '[class^="c-add"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('eltribuno.com')) {
