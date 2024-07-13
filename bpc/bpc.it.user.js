@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.6.4.2
+// @version         3.6.4.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.it.user.js
@@ -107,11 +107,18 @@ else if (matchDomain('gazzetta.it')) {
 }
 
 else if (matchDomain('ilfattoquotidiano.it')) {
-  let url = window.location.href;
-  if (url.includes('/amp/')) {
-    amp_unhide_subscr_section('amp-ad, amp-embed, div#_4sVideoContainer');
+  if (window.location.pathname.endsWith('/amp/')) {
+    amp_unhide_subscr_section('amp-ad, amp-embed, div#_4sVideoContainer, div#post-consent-ui');
     let comments = document.querySelector('div.content.comments');
     removeDOMElement(comments);
+    let logo = document.querySelector('a > amp-img[src$="/logo-tablet.svg"]');
+    if (logo) {
+      let logo_new = document.createElement('img');
+      logo_new.src = logo.getAttribute('src').replace('logo-tablet.svg', 'logo-desktop.svg');
+      logo_new.height = logo.getAttribute('height');
+      logo_new.width = logo.getAttribute('width');
+      logo.parentNode.replaceChild(logo_new, logo);
+    }
   } else if (window.location.pathname.match(/\/\d{4}\/\d{2}\/\d{2}\//)) {
     let paywall = document.querySelector('div.read-more');
     if (paywall) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.3.4
+// @version         3.7.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -79,16 +79,8 @@ if (matchDomain('aerztezeitung.de')) {
 
 else if (matchDomain('augsburger-allgemeine.de')) {
   let url = window.location.href;
-  if (!url.includes('-amp.html')) {
-    let paywall = document.querySelector('div.aa-visible-logged-out');
-    if (paywall) {
-      removeDOMElement(paywall);
-      window.location.href = url.replace('.html', '-amp.html');
-    }
-  } else {
-    amp_unhide_subscr_section();
-  }
-  let ads = 'div.piano-article, div.p-ad';
+  getGoogleWebcache(url, 'div.piano-inline-paywall', '', 'div#article-body-paid-content');
+  let ads = 'div.sdgSlotHull, div[id^="taboola-"]';
   hideDOMStyle(ads);
 }
 
