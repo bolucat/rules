@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.4.1
+// @version         3.7.4.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -19,6 +19,7 @@
 // @match           *://*.pub/*
 // @match           *://*.businessinsider.com.pl/*
 // @match           *://*.businesspost.ie/*
+// @match           *://*.capital.bg/*
 // @match           *://*.epoch.org.il/*
 // @match           *://*.europower.no/*
 // @match           *://*.fiskeribladet.no/*
@@ -1312,6 +1313,48 @@ else if (matchDomain('businessoffashion.com')) {
   } else {
     let ads = 'div[class^="default__AdsBlockWrapper"]';
     hideDOMStyle(ads);
+  }
+}
+
+else if (matchDomain('capital.bg')) {
+  let paywall = document.querySelector('div.paywall-story');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = json.articleBody;
+        let img_main = document.querySelector('div.story--header picture > img[src]');
+        let article = document.querySelector('div.story-content');
+        if (json_text && article) {
+          let article_new = document.createElement('p');
+          let json_pars = parseHtmlEntities(json_text).replace(/\s{2,}/g, '\r\n\r\n').split(/[\[\]]{2}/);
+          for (let elem of json_pars) {
+            let par;
+            if (!elem.match(/[\[\]]{2}/)) {
+              if (elem.match(/img:(\d)+/)) {
+                if (img_main) {
+                  if (elem.includes('img:')) {
+                    let img_new_id = elem.split('img:')[1];
+                    if (img_new_id) {
+                      par = document.createElement('img');
+                      par.src = img_main.src.replace(/_\d+\./, '_' + img_new_id + '.').split('?')[0];
+                      par.style = 'margin: 20px; width: 90%;';
+                    }
+                  }
+                }
+              } else {
+                par = document.createElement('p');
+                par.innerText = elem;
+              }
+            }
+            if (par)
+              article.appendChild(par);
+          }
+        }
+      }
+    }
   }
 }
 
