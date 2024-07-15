@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Sun, 14 Jul 2024 11:08:53 +0000
-! Diff-Path: ../patches/2024.7.14.805.patch#ublock-filters
+! Last modified: Mon, 15 Jul 2024 12:33:42 +0000
+! Diff-Path: ../patches/2024.7.15.862.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -7440,17 +7440,6 @@ mangahere.onl##.container.ads-container
 ||mangahere.onl/adsbygoogle.js$script,redirect=noopjs,1p
 soy502.com##+js(acs, document.getElementById, length)
 *$script,3p,denyallow=101placeonline.com|bootstrapcdn.com|cloudflare.com|cloudflare.net|disqus.com|disquscdn.com|fastly.net|fastlylb.net|google.com|googleapis.com|gstatic.com|hcaptcha.com|hwcdn.net|jquery.com|jsdelivr.net|jwpcdn.com|recaptcha.net|sportscentral.io,domain=mlbstreams.to|nbastreams.to|nflbite.com|nflstreams.to|nhlstreams.to|soccerstreams.net
-hentaihaven.xxx##+js(noeval-if, debugger)
-*$xhr,redirect-rule=nooptext,domain=hentaihaven.xxx
-hentaihaven.xxx##+js(nowoif)
-@@||hentaihaven.xxx^$script,1p
-@@||hentaihaven.xxx^$ghide
-||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect-rule=google-ima.js,domain=hentaihaven.xxx
-! hentaihaven .com/icu ads, popup
-||hentaihaven.icu/wp-content/plugins/sscript-manager/
-||mult-imgs.cyou/images/*.gif$image,domain=hentaihaven.xxx
-! interstitial page
-hentaihaven.xxx##+js(aopw, Script_Manager)
 openloadmovies.*##+js(aopr, AaDetector)
 streamango.*###ad_buts
 naughtymachinima.com##+js(aopr, loadTool)
@@ -7858,6 +7847,7 @@ publish0x.com##body:style(overflow: auto !important;)
 *$script,redirect-rule=noopjs,domain=ehubsoft.herokuapp.com
 spectrum.ieee.org##+js(aopr, splashpage.init)
 doujindesu.*##+js(aeld, load, 2000)
+doujindesu.*##+js(aost, Math.random, inlineScript)
 port.hu##+js(aeld, DOMContentLoaded, offsetHeight)
 port.hu##+js(nostif, offsetHeight)
 indavideo.hu##+js(nano-sib)
@@ -9018,8 +9008,8 @@ x1337x.eu##.mgbox
 @@||torrage.info/torrent.php$popup,domain=1337x.to
 1337x.*,x1337x.*##+js(aeld, popstate)
 1337x.*,x1337x.*##+js(aost, navigator, FingerprintJS)
-1337x.*,x1337x.*##+js(aost, localStorage, .js)
-1337x.*,x1337x.*##+js(aost, onload, .js)
+1337x.*,x1337x.*##+js(aost, localStorage, /https:\/\/x?1337x\.[a-z]+\/\S+\.js/)
+1337x.*,x1337x.*##+js(aost, onload, /https:\/\/x?1337x\.[a-z]+\/\S+\.js/)
 /ma.js^$script,domain=1337x.*|x1337x.*
 /mm.js^$script,domain=1337x.*|x1337x.*
 cheatcloud.cc,cheater.ninja,cheatermad.com,cheatsquad.gg##+js(nano-sib, clearInterval)
@@ -9300,6 +9290,23 @@ acortalo.*,acortar.*,megadescarga.net,megadescargas.net##+js(set, sync, true)
 @@*$ghide,domain=acortalo.*|acortar.*|megadescarga.net
 *$popunder,domain=acortalo.*|acortar.*|megadescarga.net|megadescargas.net
 ||imasdk.googleapis.com/js/sdkloader/ima3.js^$script,3p,redirect-rule=google-ima.js,domain=acortalink.*
+hentaihaven.xxx##+js(noeval-if, debugger)
+*$xhr,redirect-rule=nooptext,domain=hentaihaven.xxx
+hentaihaven.xxx##+js(nowoif)
+hentaihaven.xxx##+js(set, PlayerLogic.prototype.detectADB, noopFunc)
+hentaihaven.xxx##+js(no-fetch-if, ads-twitter.com)
+hentaihaven.xxx##+js(json-prune, *, all)
+hentaihaven.xxx##.hhzt
+hentaihaven.xxx##.code-block
+||aj3038.bid^
+@@||hentaihaven.xxx^$script,1p
+@@||hentaihaven.xxx^$ghide
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect-rule=google-ima.js,domain=hentaihaven.xxx
+! hentaihaven .com/icu ads, popup
+||hentaihaven.icu/wp-content/plugins/sscript-manager/
+||mult-imgs.cyou/images/*.gif$image,domain=hentaihaven.xxx
+! interstitial page
+hentaihaven.xxx##+js(aopw, Script_Manager)
 ! END: Rules from filters.txt
 ! START: Regional lists
 ! <<<<< czech slovak filters >>>>>
@@ -10334,6 +10341,9 @@ tubator.com##+js(aeld, getexoloader)
 ||wochenblitz.com^$xhr,1p,redirect-rule=nooptext
 listen2.ai##.backdrop-blur-sm
 listen2.ai##article > div:has(> ins.adsbygoogle)
+zerioncc.pl##+js(no-fetch-if, doubleclick)
+||filehaus.*/ads/$image
+filehaus.*##div:has(> a[href] > img[src^="ads/"])
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -10350,13 +10360,12 @@ gplinks.*##a.exclude-pop.smartlink, .exclude-pop.quiz-container, #PlayQuiz, #qui
 gplinks.*##+js(set, blurred, false)
 gplinks.*##+js(aopr, clickCount)
 *$script,3p,denyallow=cloudflare.com|github.io|google.com|googleapis.com|gstatic.com|hwcdn.net|jquery.com|recaptcha.net|tipsforce.com|unpkg.com,domain=gplinks.*
-*$script,xhr,redirect-rule=noopjs,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
+*$xhr,redirect-rule=noopjs,method=get|post,from=antonimos.de|ashrfd.xyz|ashrff.xyz|blackwoodacademy.org|cryptednews.space|dawenet.com|dshytb.com|erzar.xyz|poqzn.xyz|quesignifi.ca|rezst.xyz|rezsx.xyz|sinonimos.de|swgop.com|telcoinfo.online|tiktokcounter.net|tiktokrealtime.com|tpayr.xyz|tryzt.xyz|vbnmll.com|vivuq.com|waezg.xyz|waezm.xyz
+@@*$xhr,method=head,domain=antonimos.de|ashrfd.xyz|ashrff.xyz|blackwoodacademy.org|cryptednews.space|dawenet.com|dshytb.com|erzar.xyz|poqzn.xyz|quesignifi.ca|rezst.xyz|rezsx.xyz|sinonimos.de|swgop.com|telcoinfo.online|tiktokcounter.net|tiktokrealtime.com|tpayr.xyz|tryzt.xyz|vbnmll.com|vivuq.com|waezg.xyz|waezm.xyz
 @@*$ghide,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
 @@*$script,1p,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
 @@||profitsfly.com^$script,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
 @@/adpartner.min.js$script,domain=sinonimos.de|antonimos.de|quesignifi.ca|tiktokrealtime.com|tiktokcounter.net|tpayr.xyz|poqzn.xyz|ashrfd.xyz|rezsx.xyz|tryzt.xyz|ashrff.xyz|rezst.xyz|dawenet.com|erzar.xyz|waezm.xyz|waezg.xyz|blackwoodacademy.org|cryptednews.space|vivuq.com|swgop.com|vbnmll.com|telcoinfo.online|dshytb.com
-sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com,tiktokcounter.net,tpayr.xyz,poqzn.xyz,ashrfd.xyz,rezsx.xyz,tryzt.xyz,ashrff.xyz,rezst.xyz,dawenet.com,erzar.xyz,waezm.xyz,waezg.xyz,cryptednews.space,vivuq.com,swgop.com,vbnmll.com,telcoinfo.online,dshytb.com##+js(no-fetch-if, ads)
-sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com,tiktokcounter.net,tpayr.xyz,poqzn.xyz,ashrfd.xyz,rezsx.xyz,tryzt.xyz,ashrff.xyz,rezst.xyz,dawenet.com,erzar.xyz,waezm.xyz,waezg.xyz,cryptednews.space,vivuq.com,swgop.com,vbnmll.com,telcoinfo.online,dshytb.com##+js(no-fetch-if, method:HEAD)
 sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com,tiktokcounter.net,tpayr.xyz,poqzn.xyz,ashrfd.xyz,rezsx.xyz,tryzt.xyz,ashrff.xyz,rezst.xyz,dawenet.com,erzar.xyz,waezm.xyz,waezg.xyz,cryptednews.space,vivuq.com,swgop.com,vbnmll.com,telcoinfo.online,dshytb.com##+js(nostif, documentElement.innerHTML)
 sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com,tiktokcounter.net,tpayr.xyz,poqzn.xyz,ashrfd.xyz,rezsx.xyz,tryzt.xyz,ashrff.xyz,rezst.xyz,dawenet.com,erzar.xyz,waezm.xyz,waezg.xyz,blackwoodacademy.org,cryptednews.space,vivuq.com,swgop.com,vbnmll.com,telcoinfo.online,dshytb.com##+js(trusted-replace-node-text, script, /^([^{])/, "document.addEventListener('DOMContentLoaded',()=>{const i=document.createElement('iframe');i.style='height:0;width:0;border:0';i.id='aswift_0';document.body.appendChild(i);i.focus();const f=document.createElement('div');f.id='9JJFp';document.body.appendChild(f);});$1", sedCount, 2)
 sinonimos.de,antonimos.de,quesignifi.ca,tiktokrealtime.com,tiktokcounter.net,tpayr.xyz,poqzn.xyz,ashrfd.xyz,rezsx.xyz,tryzt.xyz,ashrff.xyz,rezst.xyz,dawenet.com,erzar.xyz,waezm.xyz,waezg.xyz,blackwoodacademy.org,cryptednews.space,vivuq.com,swgop.com,vbnmll.com,telcoinfo.online,dshytb.com##+js(set, document.hasFocus, trueFunc)
@@ -21309,7 +21318,7 @@ daemon-hentai.com,daij1n.info,dailytechupdates.in,dailyweb.pl,davidsonbuilders.c
 e-food.jp,e-kakoh.com,earlymemorials.com,earninginwork.com,easyjapanesee.com,easytodoit.com,ecommercewebsite.store,eczpastpapers.net,editions-actu.org,editorsadda.com,edivaldobrito.com.br,edjerba.com,edukamer.info,egram.com.ng,einewelteinezukunft.de,elcriticodelatele.com,elcultura.pl,elearning-cpge.com,eleceedmanhwa.me,embraceinnerchaos.com,emperorscan.com,empleo.com.uy,encuentratutarea.com,encurtareidog.top,eng-news.com,english-dubbed.com,english-topics.com,english101.co.za,enryumanga.com,ensenchat.com,entenpost.com,epicpdf.com,epsilonakdemy.com,eramuslim.com,erreguete.gal,ervik.as,esportsmonk.com,esportsnext.com,et-invest.de,eternalhonoring.com,ethiopia.co.il,everydayhomeandgarden.com,eventiavversinews.*,evlenmekisteyenbayanlar.net,ewybory.eu,exam-results.in,exeking.top,expertskeys.com,eymockup.com,ezmanga.net##+js(noeval-if, /chp_?ad/)
 f1gplive.xyz,faaduindia.com,fapfapgames.com,fapkingsxxx.com,faqwiki.us,farolilloteam.es,fattelodasolo.it,fchopin.net,felicetommasino.com,femisoku.net,ferdroid.net,fessesdenfer.com,feyorra.top,fhedits.in,fhmemorial.com,fibwatch.store,filmypoints.in,finalnews24.com,financeandinsurance.xyz,financeyogi.net,financid.com,finclub.in,findheman.com,findnewjobz.com,fine-wings.com,firescans.xyz,fitnesshealtharticles.com,fitnessscenz.com,flashssh.net,flexamens.com,flixhub.*,flowsnet.com,fmhublog.xyz,folkmord.se,foodgustoso.it,foodiesjoy.com,footoks.online,footymercato.com,forex-yours.com,forexcracked.com,forexrw7.com,foxaholic.com,francaisfacile.net,free.7hd.club,freebiesmockup.com,freecoursesonline.me,freedom3d.art,freefiremaxofficial.com,freefireupdate.com,freegetcoins.com,freelancerartistry.com,freemedicalbooks.org,freemovies-download.com,freeoseocheck.com,freepasses.org,freescorespiano.com,freetarotonline.com,freetubetv.net,freevstplugins.*,freewoodworking.ca,fresherbaba.com,freshersgold.com,frpgods.com,ftuapps.dev,fumettologica.it,funeral-memorial.com,funeralmemorialnews.com,funeralobitsmemorial.com,fx-22.com##+js(noeval-if, /chp_?ad/)
 gabrielcoding.com,gadgetxplore.com,gadgetspidy.com,gahag.net,galaxytranslations97.com,gameblog.jp,gamenv.net,gamefi-mag.com,gamers-haven.org,games-manuals.com,gamerxyt.com,gamevcore.com,gaminglariat.com,gamingsearchjournal.com,gatagata.net,ganzoscan.com,gazetazachodnia.eu,gdrivemovies.xyz,geekering.com,gemiadamlari.org,gentiluomodigitale.it,gesund-vital.online,getsuicidegirlsfree.com,ghostsfreaks.com,gisvacancy.com,giuseppegravante.com,gkbooks.in,gkgsca.com,gksansar.com,globelempire.com,gnusocial.jp,goegoe.net,gogetadoslinks.*,gogetapast.com.br,gogifox.com,gogueducation.com,gokerja.net,gokushiteki.com,gold-24.net,golf.rapidmice.com,gomov.bio,goodriviu.com,googlearth.selva.name,gorating.in,gotocam.net,grafikos.cz,grasta.net,grazymag.com,greasygaming.com,greattopten.com,grootnovels.com,groovyfreestuff.com,gsdn.live,gsmfreezone.com,gsmmessages.com,gtavi.pl,gwiazdatalkie.com##+js(noeval-if, /chp_?ad/)
-habuteru.com,hackingwala.com,hackmodsapk.com,hadakanonude.com,hairjob.wpx.jp,happy-otalife.com,harbigol.com,harley.top,haryanaalert.*,haveyaseenjapan.com,hdhub4one.pics,healthbeautybee.com,healthfatal.com,heartrainbowblog.com,hechos.net,hellenism.net,heutewelt.com,hhesse.de,highdefdiscnews.com,hilaw.vn,hindimatrashabd.com,hindishri.com,hiphopa.net,historichorizons.com,hobbykafe.com,hockeyfantasytools.com,hojii.net,hookupnovel.com,hopsion-consulting.com,hostingreviews24.com,hotspringsofbc.ca,howtoblogformoney.net,hub2tv.com,hungarianhardstyle.hu,hyderone.com,hyogo.ie-t.net,hypelifemagazine.com,hypesol.com##+js(noeval-if, /chp_?ad/)
+habuteru.com,hackingwala.com,hackmodsapk.com,hadakanonude.com,hairjob.wpx.jp,happy-otalife.com,harbigol.com,harley.top,haryanaalert.*,haveyaseenjapan.com,hdhub4one.pics,healthbeautybee.com,healthfatal.com,heartrainbowblog.com,hechos.net,hellenism.net,heutewelt.com,hhesse.de,highdefdiscnews.com,hilaw.vn,hindimatrashabd.com,hindishri.com,hiphopa.net,historichorizons.com,hivetoon.com,hobbykafe.com,hockeyfantasytools.com,hojii.net,hookupnovel.com,hopsion-consulting.com,hostingreviews24.com,hotspringsofbc.ca,howtoblogformoney.net,hub2tv.com,hungarianhardstyle.hu,hyderone.com,hyogo.ie-t.net,hypelifemagazine.com,hypesol.com##+js(noeval-if, /chp_?ad/)
 ideatechy.com,idesign.wiki,idevfast.com,idevice.me,idpvn.com,iggtech.com,ignoustudhelp.in,ikarianews.gr,ilbassoadige.it,ilbolerodiravel.org,indiasmagazine.com,individualogist.com,inertz.org,infamous-scans.com,infocycles.com,infodani.net,infojabarloker.com,infrafandub.com,infulo.com,inlovingmemoriesnews.com,inprogrammer.com,inra.bg,insideeducation.co.za,insidememorial.com,insider-gaming.com,insurancepost.xyz,intelligence-console.com,interculturalita.it,inventionsdaily.com,iptvxtreamcodes.com,isabihowto.com.ng,italiadascoprire.net,itdmusic.*,itmaniatv.com,itopmusic.com,itopmusics.com,itopmusicx.com,itz-fast.com,iumkit.net,iwb.jp##+js(noeval-if, /chp_?ad/)
 jackofalltradesmasterofsome.com,jaktsidan.se,japannihon.com,javboys.*,javcock.com,jcutrer.com,jk-market.com,jkhentai.co,jobsbd.xyz,jobslampung.net,josemo.com,jra.jpn.org,jrlinks.in,jungyun.net,juninhoscripts.com.br,juventusfc.hu##+js(noeval-if, /chp_?ad/)
 kacikcelebrytow.com,kagohara.net,kakiagune.com,kali.wiki,kana-mari-shokudo.com,kanaeblog.net,kandisvarlden.com,karaoke4download.com,kawaguchimaeda.com,kaystls.site,kenkou-maintenance.com,kenta2222.com,keroseed.*,kgs-invest.com,kh-pokemon-mc.com,khabarbyte.com,khabardinbhar.net,khohieu.com,kickcharm.com,kinisuru.com,kits4beats.com,kllproject.lv,know-how-tree.com,kobitacocktail.com,kodaika.com,kodewebsite.com,kokosovoulje.com,koreanbeauty.club,korogashi-san.org,korsrt.eu.org,kotanopan.com,koume-in-huistenbosch.net,krx18.com,kukni.to,kupiiline.com,kurosuen.live##+js(noeval-if, /chp_?ad/)
@@ -23351,12 +23360,9 @@ easybib.com##+js(nano-sib)
 realmadryt.pl##+js(no-fetch-if, method:GET)
 @@||mirroshu.top^$script,other,ghide,1p
 mirroshu.top##[id^="div-gpt-ad-"]
-veev.to##+js(nosiif, checkBait)
 veev.to##+js(nowoif)
-veev.to##+js(rmnt, script, popundersPerIP)
-veev.to##+js(set, fapit.check, noopFunc)
 !veev.to##+js(aopr, XMLHttpRequest.prototype.onreadystatechange)
-||magsrv.com/ad-provider.js$script,domain=veev.to,redirect-rule=noopjs
+*$script,domain=veev.to,redirect-rule=noopjs
 @@||veev.to^$ghide
 veev.to#@#.avb-active
 ! filmydown .site/fast-dl .co popups

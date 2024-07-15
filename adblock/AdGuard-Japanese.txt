@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: kEvPwSb4exKl7Hcc3YAsog
-! Diff-Path: ../patches/7/7-s-1720949804-3600.patch
+! Checksum: 5PiBWUxfjUh1VGT38zHTKg
+! Diff-Path: ../patches/7/7-s-1721065027-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.54.8
-! TimeUpdated: 2024-07-14T09:33:12+00:00
+! Version: 2.0.54.12
+! TimeUpdated: 2024-07-15T17:33:11+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1743,6 +1743,9 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+otonano-shumatsu.com##.container > div[style]:has(> div.adv-bb)
+otonano-shumatsu.com##.logly-block
+otonano-shumatsu.com##.popin-block
 wealthadvisor.co.jp##.bottom_prarea
 go2senkyo.com##.m_left_column_long_banner
 jprime.jp##div[class^="dfp-"]
@@ -2079,6 +2082,7 @@ adacomi.com,eroita.net##div[style^="margin-top:50px;background-color:#FFF;paddin
 uchubiz.com###RECT
 uchubiz.com##.p-top__ad
 uchubiz.com##.p-under__kv
+withnews.jp###pickupNewsModal_gallary
 ||withnews.jp/assets/js/ad/
 sippo.asahi.com##.ad-pc-billboard
 jukenbbs.com##.container-fluid > div[style]:has(> ins.adsbygoogle)
@@ -4233,10 +4237,9 @@ hadasirori.blog.jp##.article-body-more > a[href*="dmm.co.jp/"]
 hadasirori.blog.jp##.article-body-more > a[href*="dmm.co.jp/"] + br
 hadasirori.blog.jp##.article-body-more > a[href*="dmm.co.jp/"] + br + br
 erogazoufactory.com###main-top-widget
-erogazooo.club###top_pr
-erogazooo.club##.pcad
+erogazoo.net###top_pr
+erogazoo.net##.pcad
 erogazoo555.com###list > article.entry:first-of-type:not([id])
-eroangle.net##.excerpt_pick
 cavolump.com##.float-right
 livefans.jp###headlineBanner
 tozanchannel.blog.jp##.article-body-inner div[style="text-align: center; padding-top:0px"]
@@ -5475,7 +5478,7 @@ news.ameba.jp##div[class^="AdGoogle_"]
 news.ameba.jp##div[class^="SpAd"]
 huffingtonpost.jp##.leaderboard-flex-placeholder
 macaro-ni.jp##.articleShow__nativeAd
-mantan-web.jp,macaro-ni.jp##.yadsOverlay
+ox-tv.co.jp,mantan-web.jp,macaro-ni.jp##.yadsOverlay
 ac-illust.com,photo-ac.com,mitok.info,entamega.com,getnews.jp,webcartop.jp##div[style="min-height: 250px;"]
 juken.oricon.co.jp,response.jp,getnews.jp,withonline.jp,jprime.jp##div[style="min-height:250px;"]
 otajo.jp##iframe[src^="https://rcm-jp.amazon.co.jp/e/cm?"]
@@ -8233,9 +8236,10 @@ zigsow.jp##.panel-banner
 ||internal.co.jp/support/2chmatome/tmpimg/mpx_banner.jpg
 ||adultfreedom.info^$image,third-party
 ||free911263.net^$subdocument,third-party
-erogazooo.club,erogazoo555.com,eroangle.net,ero-shame.com##.bbsarea
-ero-shame.com##.image-ad
-ero-shame.com##.smanone > h4
+eroangle.club##.article > div.clear + div.clear + h3.frontTitle ~ article.excerpt_pick:has(~ div.clear + h3.frontTitle + article.excerpt_pick + div.clear)
+eroangle.club##.article > h3.frontTitle:contains(お勧めサイト[PR])
+||telegra.ph/file/$domain=ero-shame.club|eroangle.club|erogazoo.net
+erogazoo.net,erogazoo555.com,eroangle.club,ero-shame.club##.bbsarea
 womanlife.online,anime-news.net##.afc_popup
 soccer.yahoo.co.jp##.sc-lrec
 kanaloco.jp##.blk-bnr02
@@ -8774,6 +8778,7 @@ allabout.co.jp##.ec-site-box.sys-ga-event-affiliate
 allabout.co.jp###sys-article-upper-afc
 allabout.co.jp##.aa_rec-box
 asia.nikkei.com##.article__footer:last-child
+||atwiki.jp/common/dist/js/amazon_flux.js
 atwiki.jp###google_relate_ads
 atwiki.jp##.atwiki-ads-margin
 ||img.atwiki.jp/gtav/attach/*/300_250.jpg
@@ -9983,7 +9988,6 @@ chiebukuro.yahoo.co.jp#?#div[class^="Top_chie-Pages__ColumnItem--Sub"] > div[cla
 figsoku.net#?#.pluginWrap > div > div > a[target="_blank"][rel="noopener"] > img:upward(4)
 fevian.org#?#article > a[href^="https://al.dmm.co.jp"]:upward(1)
 eroanime-movie.com#?#.main-section:has(a[href^="https://2ji-planet.com"])
-eroangle.net#?#.article > h3.frontTitle:contains(/ピックアップ|PR/)
 kijyomita.com#?#.plugin-memo > div.side > center > script[src^="https://cdn-fluct.sh.adingo.jp"]:upward(3)
 hochi.news#?#.newslist__item > div[id^="div-gpt-"]:upward(1)
 anicobin.ldblog.jp#?#.related-wadai:contains(ベストセラー)

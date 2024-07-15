@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.4.0
+// @version         3.7.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -78,8 +78,15 @@ if (matchDomain('aerztezeitung.de')) {
 }
 
 else if (matchDomain('augsburger-allgemeine.de')) {
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div.piano-inline-paywall', '', 'div#article-body-paid-content');
+  let article = document.querySelector('div#page-body');
+  if (article) {
+    let url = window.location.href;
+    getGoogleWebcache(url, 'div.piano-inline-paywall', '', 'div#article-body-paid-content');
+    let plus = pageContains('span[class*="plusplus"]', 'Bildergalerie');
+    if (plus.length) {
+      article.before(googleSearchToolLink(url));
+    }
+  }
   let ads = 'div.sdgSlotHull, div[id^="taboola-"]';
   hideDOMStyle(ads);
 }
@@ -1348,7 +1355,6 @@ function getOchToUnlock(url, paywall_sel, paywall_action = '', selector, selecto
   let paywall = document.querySelectorAll(paywall_sel);
   if (paywall.length) {
     clearPaywall(paywall, paywall_action);
-    csDoneOnce = true;
     replaceDomElementExt(url_unlock, true, false, selector, '', selector_source);
   }
 }
