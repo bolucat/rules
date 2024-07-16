@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.4.2
+// @version         3.7.4.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -3332,23 +3332,13 @@ else if (matchDomain('thewrap.com')) {
 }
 
 else if (matchDomain('timeshighereducation.com')) {
-  let paywall_cta = document.querySelector('div.paywall-cta');
-  if (paywall_cta) {
-    paywall_cta.removeAttribute('style');
-    let hidden_divs = document.querySelectorAll('div[style="display: none;"]');
-    for (let hidden_div of hidden_divs)
-      hidden_div.removeAttribute('style');
-    let paywall_fade = document.querySelector('div.paywall-fade');
-    if (paywall_fade)
-      paywall_fade.classList.remove('paywall-fade');
-  }
   let hidden_images = document.querySelectorAll('img.b-lazy[src^="data:image/"][data-src]');
   for (let hidden_image of hidden_images) {
     hidden_image.setAttribute('src', hidden_image.getAttribute('data-src'));
     hidden_image.classList.remove('b-lazy');
     hidden_image.parentElement.classList.remove('media--loading');
   }
-  let ads = 'div[id^="div-gpt-in-article-ad-"], div[class^="the-dfp__in-article-ATD"]';
+  let ads = 'div[data-ad-page], section.block-the-dfp';
   hideDOMStyle(ads);
 }
 

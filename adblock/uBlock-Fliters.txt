@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Mon, 15 Jul 2024 12:33:42 +0000
-! Diff-Path: ../patches/2024.7.15.862.patch#ublock-filters
+! Last modified: Tue, 16 Jul 2024 14:19:48 +0000
+! Diff-Path: ../patches/2024.7.16.919.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -10344,17 +10344,23 @@ listen2.ai##article > div:has(> ins.adsbygoogle)
 zerioncc.pl##+js(no-fetch-if, doubleclick)
 ||filehaus.*/ads/$image
 filehaus.*##div:has(> a[href] > img[src^="ads/"])
+||teraboxdownloader.in/assets/js/adblocker-detector.min.js^
+zippyshare.day##+js(no-fetch-if, googlesyndication)
+zippyshare.day##.vr-adv-unit
+zippyshare.day##.fixed-leftSd
+zippyshare.day##.fixed-rightSd
+vidhidepre.com##+js(nowoif, !vidhidepre.com)
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
-@@*$ghide,domain=gplinks.*|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link
-@@*$script,xhr,to=googlesyndication.com|doubleclick.net,from=techreviewhere.com|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link
-@@||gplinks.in/track/$script,xhr,domain=gplinks.*|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link
-odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com##center:others()
-odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com###SmileyBanner:remove()
-odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com##+js(aopw, AdBDetected)
-odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com##+js(set, count, 0)
-odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com##[id*="iframe"], [id*="gpt_unit"], [id*="div-gpt-"]:style(height:0.0001px !important;)
+@@*$ghide,domain=gplinks.*|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com
+@@*$script,xhr,to=googlesyndication.com|doubleclick.net,from=techreviewhere.com|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com
+@@||gplinks.in/track/$script,xhr,domain=gplinks.*|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com
+rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com##center:others()
+rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com###SmileyBanner:remove()
+rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com##+js(aopw, AdBDetected)
+rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com##+js(set, count, 0)
+rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com##[id*="iframe"], [id*="gpt_unit"], [id*="div-gpt-"]:style(height:0.0001px !important;)
 gplinks.*##a.exclude-pop.smartlink, .exclude-pop.quiz-container, #PlayQuiz, #quiz-frame, .exclude-popad
 ||gamezop.com^$domain=gplinks.*
 gplinks.*##+js(set, blurred, false)
@@ -10987,8 +10993,8 @@ codesnse.com##+js(nano-sib, counter, *, 0.001)
 codesnse.com##[href^="https://app.adjust.com/"]
 ! pandaznetwork.com (pandaznetwork.com/TN8cD)
 pandaznetwork.com##+js(set, blurred, false)
-freemodsapp.xyz###wpsafe-link:style(display: block !important;)
-freemodsapp.xyz###wpsafe-link:others()
+freemodsapp.xyz,panda.freemodsapp.in###wpsafe-link:style(display: block !important;)
+freemodsapp.xyz,panda.freemodsapp.in###wpsafe-link:others()
 ! nanolinks.in (nanolinks.in/4o78F)
 itscybertech.com##+js(nano-sib, counter)
 itscybertech.com###combtn, .download.medium.button:style(display: inline-block !important;)
@@ -17067,20 +17073,6 @@ svetserialu.to##+js(nowoif)
 onlytech.com##+js(acs, $, test)
 /fret/meow4/*$script,3p
 ! *** uAssets:filters/filters-2022.txt ***
-*$script,redirect-rule=noopjs,domain=djxmaza.in|thecubexguide.com|dev.miuiflash.com|jytechs.in
-*$frame,redirect-rule=noopframe,domain=djxmaza.in|dev.miuiflash.com|thecubexguide.com|jytechs.in
-*$xhr,redirect-rule=nooptext,domain=djxmaza.in|dev.miuiflash.com|thecubexguide.com|jytechs.in
-*$image,redirect-rule=32x32.png:5,domain=djxmaza.in|thecubexguide.com|dev.miuiflash.com|jytechs.in
-@@*$ghide,domain=dev.miuiflash.com|djxmaza.in|thecubexguide.com|jytechs.in
-@@||googletagmanager.com^$script,domain=dev.miuiflash.com|djxmaza.in|thecubexguide.com|jytechs.in
-@@*$script,xhr,to=googlesyndication.com|doubleclick.net|fundingchoicesmessages.google.com,from=dev.miuiflash.com|djxmaza.in|thecubexguide.com|jytechs.in
-@@||googlesyndication.com^$frame,image,domain=djxmaza.in|thecubexguide.com|dev.miuiflash.com|jytechs.in
-||devfiles.pages.dev/img/*.jpeg$image,domain=djxmaza.in|dev.miuiflash.com|thecubexguide.com|jytechs.in
-jytechs.in,dev.miuiflash.com,djxmaza.in,thecubexguide.com##+js(nowoif, _blank)
-jytechs.in,djxmaza.in,miuiflash.com,thecubexguide.com#@##featuredimage
-jytechs.in,djxmaza.in,miuiflash.com,thecubexguide.com##[href*="random-affiliate.atimaze.com"]:style(clip-path: circle(0) !important;)
-jytechs.in,dev.miuiflash.com,djxmaza.in,thecubexguide.com##html.i-amphtml-inabox:style(clip-path: circle(0) !important;)
-jytechs.in,dev.miuiflash.com,djxmaza.in,thecubexguide.com##+js(spoof-css, html.i-amphtml-inabox\, [href*="random-affiliate.atimaze.com"], clip-path, none)
 akoam.*##+js(nowoif)
 javhdfree.icu##+js(aopr, __Y)
 porner.tv##.sources
@@ -18827,8 +18819,7 @@ xxxxsx.com##^responseheader(location)
 xxxxsx.com##+js(cookie-remover)
 xxxxsx.com##+js(nostif, href)
 xxxxsx.com##.ps
-gocmod.com##.counter
-gocmod.com##.download-btn-group:style(display: inline-flex !important;)
+file.gocmod.com##+js(aeld, blur)
 zojav.com##+js(aopr, __Y)
 jav68.net#@#.ads-header
 ! voirseries. rip popups
@@ -19201,8 +19192,8 @@ canale.live##+js(nosiif, href)
 ||thestar.co.uk/_build/main.$script,1p,replace=/,adshield\:\w{2}//
 ||yorkshirepost.co.uk/_build/main.$script,1p,replace=/,adshield\:\w{2}//
 !#else
-*$doc,csp=script-src-attr 'none',domain=lamire.jp|picrew.me|mydaily.co.kr|badmouth1.com|taxguru.in|sportsrec.com|reportera.co.kr|tweaksforgeeks.com|fourfourtwo.co.kr|flatpanelshd.com|wfmz.com|videogamemods.com|thestar.co.uk|yorkshirepost.co.uk
-||html-load.com/loader.min.js$domain=lamire.jp|picrew.me|mydaily.co.kr|badmouth1.com|taxguru.in|sportsrec.com|reportera.co.kr|tweaksforgeeks.com|fourfourtwo.co.kr|flatpanelshd.com|wfmz.com|videogamemods.com|thestar.co.uk|yorkshirepost.co.uk
+*$doc,csp=script-src-attr 'none',domain=lamire.jp|picrew.me|mydaily.co.kr|badmouth1.com|taxguru.in|sportsrec.com|reportera.co.kr|tweaksforgeeks.com|fourfourtwo.co.kr|flatpanelshd.com|wfmz.com|videogamemods.com|thestar.co.uk|yorkshirepost.co.uk|carscoops.com
+||html-load.com/loader.min.js$domain=lamire.jp|picrew.me|mydaily.co.kr|badmouth1.com|taxguru.in|sportsrec.com|reportera.co.kr|tweaksforgeeks.com|fourfourtwo.co.kr|flatpanelshd.com|wfmz.com|videogamemods.com|thestar.co.uk|yorkshirepost.co.uk|carscoops.com
 loawa.com,ygosu.com,sportalkorea.com,edaily.co.kr,economist.co.kr,etoday.co.kr,isplus.com,hometownstation.com,inven.co.kr,honkailab.com,genshinlab.com,thestockmarketwatch.com,thephoblographer.com,issuya.com,etnews.com,iusm.co.kr,dogdrip.net,worldhistory.org,text-compare.com,bamgosu.site,etnewskorea.com,automobile-catalog.com,maketecheasier.com,thesaurus.net,gadgets360.com,logicieleducatif.fr,motorbikecatalog.com,jjang0u.com,raenonx.cc##+js(no-fetch-if, /ad\.doubleclick\.net|static\.dable\.io/)
 loawa.com,ygosu.com,sportalkorea.com,edaily.co.kr,economist.co.kr,etoday.co.kr,isplus.com,hometownstation.com,inven.co.kr,honkailab.com,genshinlab.com,thestockmarketwatch.com,thephoblographer.com,issuya.com,etnews.com,iusm.co.kr,dogdrip.net,worldhistory.org,text-compare.com,bamgosu.site,etnewskorea.com,automobile-catalog.com,maketecheasier.com,thesaurus.net,gadgets360.com,logicieleducatif.fr,motorbikecatalog.com,jjang0u.com,raenonx.cc##+js(no-fetch-if, adsbygoogle, war:googlesyndication_adsbygoogle.js)
 @@||static.criteo.net/js/ld/publishertag.prebid.js|$xhr,domain=ygosu.com|loawa.com|sportalkorea.com|edaily.co.kr|economist.co.kr|etoday.co.kr|isplus.com|hometownstation.com|inven.co.kr|honkailab.com|genshinlab.com|thestockmarketwatch.com|thephoblographer.com|issuya.com|etnews.com|iusm.co.kr|dogdrip.net|worldhistory.org|text-compare.com|bamgosu.site|etnewskorea.com|automobile-catalog.com|maketecheasier.com|thesaurus.net|gadgets360.com|logicieleducatif.fr|motorbikecatalog.com|jjang0u.com|raenonx.cc
@@ -19236,7 +19227,6 @@ gadgets360.com##.adhead
 gadgets360.com###adslot300x250ATF
 logicieleducatif.fr##[data-ez-ph-id]
 !#endif
-||html-load.cc/script/$script
 ||07c225f3.online^$font,ping
 ||07c225f3.online/report?$xhr
 ||content-loader.com^$font,ping
@@ -19831,7 +19821,6 @@ woiden.id##+js(no-fetch-if, googlesyndication)
 ||npttech.com/advertising.js$script,redirect-rule=noop.js
 ||content.sinpartycdn.com/*pre-roll-ads/*$media,redirect=noopmp4-1s,domain=sinparty.com
 ||content.sinpartycdn.com/videos-ads/*$media,redirect=noopmp4-1s,domain=sinparty.com
-||ssbsblg.blogspot.com^$inline-script
 *$3p,script,redirect-rule=noop.js,domain=toolxox.com
 ssyoutube.com##+js(nowoif)
 adzz.in##+js(ra, disabled, button#getlink)
@@ -22163,7 +22152,8 @@ steamcrackedgames.com##.blink
 steamcrackedgames.com##+js(nowoif)
 app.covemarkets.com##+js(noeval-if, show)
 j91.asia##+js(nostif, fuckadb)
-rekidai-info.github.io##+js(no-fetch-if, /a(dsbygoogle)?\.js/)
+rekidai-info.github.io##+js(prevent-fetch, /a(dsbygoogle)?\.js/, war:googlesyndication_adsbygoogle.js, '{ "type": "cors" }')
+@@*$xhr,domain=rekidai-info.github.io
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$domain=rekidai-info.github.io
 online2pdf.com##div[id*="horizontal_box"]
 online2pdf.com##div[id*="title_vertical"]

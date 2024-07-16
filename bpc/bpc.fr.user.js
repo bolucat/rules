@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.7.0.1
+// @version         3.7.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.fr.user.js
@@ -546,7 +546,7 @@ else if (matchDomain('lesechos.fr')) {
           }
         }
       }
-      let ads = '[class*="jzxvkd"]';
+      let ads = 'div.sc-1u9r8h-0';
       hideDOMStyle(ads);
     }, 500);
   }
