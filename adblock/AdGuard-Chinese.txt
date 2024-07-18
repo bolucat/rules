@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: qofn/ap+akMz16gq+OMFLQ
-! Diff-Path: ../patches/224/224-s-1721234229-3600.patch
+! Checksum: sei/WYLn5dtV+95Id/MSbA
+! Diff-Path: ../patches/224/224-s-1721324229-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.19.16
-! TimeUpdated: 2024-07-17T16:33:38+00:00
+! Version: 2.1.19.23
+! TimeUpdated: 2024-07-18T17:33:50+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -865,8 +865,8 @@ v-wb.youku.com##+js(set-constant, Object.prototype.adData, {})
 ! https://github.com/AdguardTeam/AdguardFilters/issues/54359
 ! https://github.com/AdguardTeam/AdguardFilters/issues/26318
 ! https://forum.adguard.com/index.php?threads/youku-com-v-qq-com.30749/
-youku.com##+js(adjust-setTimeout, e-, , 0.02)
-youku.com##+js(adjust-setTimeout, r--, , 0.02)
+||ott.cibntv.net/*/ad/*.ts?ccode=$xmlhttprequest,domain=v.youku.com
+youku.com##+js(adjust-setTimeout, , , 0.02)
 m.youku.com,v.youku.com##+js(set-constant, Object.prototype._adData, {})
 ! https://github.com/AdguardTeam/AdguardFilters/issues/87232
 qciss.net##+js(window.open-defuser, 0, qciss.net)
@@ -1115,6 +1115,13 @@ $script,third-party,denyallow=authkong.com|rsc.cdn77.org|linkvertise.com|fastly.
 !
 !
 !
+ifoodie.tw##.ad-right-column-desktop
+ifoodie.tw##.ad-container
+91porna.com##.carousel-container:has(#carouselExampleInterval)
+||pic.shedsgs.cn/upload_*/upload/*.gif$domain=91porna.com
+91porna.com##.row > div.flex-container:has(> a[href][target="_blank"] > img)
+91porna.com##.row > div[class^="col"]:has(> .video-wrap > a.checkNum)
+91porna.com##div[class^="col"] div.filters:has(a.checkNum)
 *.gif$domain=aeahsck.cc
 ||imgsrc.baidu.com/*/pic/*.jpg$domain=aeahsck.cc
 aeahsck.cc##.stui-vodlist  > li:has(> div.stui-vodlist__box > a[href][target="_blank"])
@@ -2399,7 +2406,7 @@ xgan.cn##body > center > a[target="_blank"][rel="nofollow"]
 xgan.cn##.bottom_fixed
 xgan.cn##.container center > a[target="_blank"] > img
 xgan.cn##a[href^="https://www.jspp9.xyz"]
-avtb01.com,beauty321.com,aotu43.com,csdn.net##.ads
+ifoodie.tw,avtb01.com,beauty321.com,aotu43.com,csdn.net##.ads
 sina.cn##div[sax-type="proxy"]
 sina.cn##.midThreeAds
 ||adblock.sina.cn^
@@ -2720,7 +2727,6 @@ csdn.net###footerRightAds
 !
 ! 18comic
 18comic.org,18comic.vip##div[class="row"][style="display: flex;flex-wrap: wrap;"]
-18comic.org,18comic.vip##+js(set-constant, adv_resize, noopFunc)
 18comic.org,18comic.vip##div[data-group^="photo_center_games_"]
 18comic.org,18comic.vip##div[data-group^="skyscraper_"]
 18comic.org,18comic.vip##div[data-height="250"][data-width="300"]
@@ -4771,6 +4777,14 @@ newduba.cn###jq_youxi
 ||vxdrfr.xyz^
 ||mkscy6.cn^
 ||mikka.app^
+||ieymhkx.icu^
+||bdipsumv.top^
+||juznlx.xyz^
+||molpmh.xyz^
+||hjrcjz.xyz^
+||baijs010.xyz^
+||doujs09.xyz^
+||google-js-08.xyz^
 ||gkypgw.xyz^
 ||lyislol.top^
 ||tgrpzl.xyz^
@@ -14775,6 +14789,7 @@ hxsame.hexun.com$domain=~quote.hexun.com
 ||zzzyk.com/js/
 ||singtao.ca/editions/affiliate_
 szxx.com.cn###A0
+7itv.com##body > div[style]
 fengchedmp.com##body > div[style]
 huya.com##.huya-ab
 orangenews.hk##img[advid]

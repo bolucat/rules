@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.4.3
+// @version         3.7.4.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -3554,8 +3554,8 @@ else if (matchDomain(uk_incisive_media_domains)) {
 }
 
 else if (matchDomain(usa_conde_nast_domains)) {
-  let banners = document.querySelectorAll('aside.paywall-bar, div[class^="MessageBannerWrapper-"], div.ad-stickyhero');
-  removeDOMElement(...banners);
+  let banners = 'aside.paywall-bar, div[class^="MessageBannerWrapper-"], div.ad-stickyhero';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain(usa_craincomm_domains)) {

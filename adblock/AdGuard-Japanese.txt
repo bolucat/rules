@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: +IzxdwpOQVt6IzpNEidRmg
-! Diff-Path: ../patches/7/7-s-1721237827-3600.patch
+! Checksum: 9wwZm8B52ZgFIAUvjtUJqA
+! Diff-Path: ../patches/7/7-s-1721320640-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.54.27
-! TimeUpdated: 2024-07-17T17:33:06+00:00
+! Version: 2.0.54.34
+! TimeUpdated: 2024-07-18T16:33:12+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -500,7 +500,6 @@
 !
 !
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183252
-exploader.net##+js(remove-node-text, script, window.load_daotag)
 exploader.net##+js(no-xhr-if, .js)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/181591
 iwb.jp##+js(addEventListener-defuser, DOMContentLoaded, getComputedStyle(a).height)
@@ -1168,8 +1167,6 @@ twi-fans.com#$#.fixed.data-\[state\=open\]\:animate-in { display: none !importan
 twi-fans.com#$#body[style="pointer-events: none;"] { pointer-events: auto !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/178408
 2game.info#$#.sponsored-loop300x250 { position: absolute !important; left: -4000px !important; }
-! https://github.com/uBlockOrigin/uAssets/issues/23212
-service.webgoto.net#$#.image_box[style*="amazon.co"] { background: none !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/160407
 ! https://github.com/AdguardTeam/AdguardFilters/issues/174081
 telling.asahi.com#$#.p-header-billboard { min-height: 0 !important; }
@@ -1535,6 +1532,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/themes/CashLINESystem/js/modal.$script
 !
 ! Malware/Phishing
+.one/Sign|$document
 ://sm*/sp/index$document,domain=buzz|cfd
 .fixdynamics.info/hh/$document
 .top/memx/force_login?acr_values=$document
@@ -1743,6 +1741,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+dic.pixiv.net###d_toparticle_flux_ad
+||comedydouga.com/temu_ads2.png
 news.1242.com##.area_banner
 ||s3.goodpic.com/jquery/blog.ajaxamazon.js
 skebetter.com##+js(no-setTimeout-if, return n(!0), 10000)
@@ -2198,7 +2198,6 @@ buywrite.jp##.c-infoBar
 buywrite.jp##div[id^="fourm_video_"]
 service.webgoto.net##.j_pv_20:has(a[href^="https://www.amazon.co.jp"][target="_blank"])
 service.webgoto.net##[data-is^="riot-fee"]:not(:has(.re_ph_2 > a[href^="https://donation.yahoo.co.jp/search/?"]))
-service.webgoto.net##a[href^="https://www.amazon.co.jp"][target="_blank"]
 sirogohan.com##.ad-halfwrap
 yamakei-online.com###movie_ad
 city.takasaki.gunma.jp##.content5:has(#top_banner_7_list)
@@ -4211,8 +4210,8 @@ moez-m.com##.font_pr4
 moez-m.com###top2_left
 moez-m.com##.entry-body > center > table[width="430"]:not([cellspacing])
 moez-m.com##.solinkimag
-||ota-goods.info/json/widget.php$third-party
-||figsoku.net/rank/load.php
+||ota-goods.info^$third-party
+figsoku.net##a[href*="px.a8.net/svt/ejp"]
 figsoku.net##.checker-related-wrap
 figsoku.net##.tokka
 figsoku.net##div[class^="spadd"]
@@ -6034,8 +6033,8 @@ novel.prcm.jp##.footer__ad
 novel.prcm.jp##app-remote-ad-frame
 narutonti.com##.entry-under > div[style="margin: 0px 0px 20px 0px;"]
 hhmanga.com,mihomiho0109.com,ibiza-games.jp,rittsun.com,xn--btr874bhs1ao5h.xyz,umaroidblog.com,lifematome.blog,gadget.phileweb.com,shootingbar-ea.jp,lovinyou.site,wp-etc.navich.net,fruit01.xyz,bonjour-anne.jp,yakyufan-asobiba.com,driverwork.xyz,kanonway.link,asianews2ch.jp,bibilab.jp,bkrb.net,boukenki.info,comicin.jp,culture-school.top,hs-math.komaro.net,katsudonrecords.com,kcsf-eco-ap.jp,m-raft.info,nana-trading.com,naruto-mon.jp,oni-on-design.com,popnews.info,senmonsyoku.top,shinise.tv,shinsengumi.link,tentacles.biz,thedebu.com,vegetables01.xyz,xn--r8jwklh769h2mc880dk1o431a.com,ikikatadatabase.com,p3fan.com,followcheck.itby.net,vapejp.net,virtualgorillaplus.com,rawdd.com,k-daidokoro.com,campify.jp,appl-y.com,l-media.tokyo,bunkai.biz###text-2
-hhmanga.com,programming-se.com,cfnmroshutsucmnf.com,mens-vio.info,ogurigo.jp,movient.net,sharevideos.org,g-times.jp,56s.thick.jp,affi-convert.com,akandama.com,tentacles.biz,anotherlife.xyz,azpek.asia,blog.cgfm.jp,bridgebook.jp,bsj-k.com,eroero29.com,gosanke.net,hentai4610.com,hs-math.komaro.net,katsudonrecords.com,kazenonaosikata.com,kyomohot.com,trendview.info,xn--u9jxj9b3c781sw80b0xxaz5s182b.com,ysk-consulting.com,dearfukui.jp,ero-doujin-blog.com,chikiyasuibuki1104.com,furugi1717.net,androplus.org,rensai.jp,l-media.tokyo,javprice.com,buhidoh.net###text-3
-kokodora.com,hhmanga.com,cfnmroshutsucmnf.com,entame-lab.com,bonjour-anne.jp,coco2i.com,g-times.jp,apprisejp.xyz,blog.imazeki-ryoga.com,bonblo.com,carmania.info,delmot-tea.org,driverwork.xyz,kanonway.link,nonde-tabete.com,nozokizennkaimax.xyz,oranne.net,papamode.net,smartio.life,vivahentai4u.net,affi-convert.com,gosanke.net,xn--gutnkx91i.com,minnano-casino.com,camp-house.com,virtualgorillaplus.com,campify.jp,56s.thick.jp,l-media.tokyo###text-4
+kaiten-heiten-24.com,hhmanga.com,programming-se.com,cfnmroshutsucmnf.com,mens-vio.info,ogurigo.jp,movient.net,sharevideos.org,g-times.jp,56s.thick.jp,affi-convert.com,akandama.com,tentacles.biz,anotherlife.xyz,azpek.asia,blog.cgfm.jp,bridgebook.jp,bsj-k.com,eroero29.com,gosanke.net,hentai4610.com,hs-math.komaro.net,katsudonrecords.com,kazenonaosikata.com,kyomohot.com,trendview.info,xn--u9jxj9b3c781sw80b0xxaz5s182b.com,ysk-consulting.com,dearfukui.jp,ero-doujin-blog.com,chikiyasuibuki1104.com,furugi1717.net,androplus.org,rensai.jp,l-media.tokyo,javprice.com,buhidoh.net###text-3
+kaiten-heiten-24.com,kokodora.com,hhmanga.com,cfnmroshutsucmnf.com,entame-lab.com,bonjour-anne.jp,coco2i.com,g-times.jp,apprisejp.xyz,blog.imazeki-ryoga.com,bonblo.com,carmania.info,delmot-tea.org,driverwork.xyz,kanonway.link,nonde-tabete.com,nozokizennkaimax.xyz,oranne.net,papamode.net,smartio.life,vivahentai4u.net,affi-convert.com,gosanke.net,xn--gutnkx91i.com,minnano-casino.com,camp-house.com,virtualgorillaplus.com,campify.jp,56s.thick.jp,l-media.tokyo###text-4
 vr18.jp,keisan-mondai.com,english-can.com,bluesea0925.com,gayroom.jp,hentai4daily.com,kawaii-girl.jp,theyellowmonkey-movie.jp,akiba3d.com,g-times.jp,growrichslowly.net,gudeful.jp,ichitaso.com,tsugumi-life.com,wadaiwosaguru.com,delmot-tea.org,nozokizennkaimax.xyz,oranne.net,affi-convert.com,amapc.p2pzen.com,gifubo-shine.com,ero-doujin-blog.com,mathwords.net,virtualgorillaplus.com,chikiyasuibuki1104.com,sound-tv.net,xn--glay-yn4c8b9a8lo661apz3h.com,n-switch.com,alpaca76.com,l-media.tokyo###text-5
 hhmanga.com,kokoro-racing.net,shakinghip.com,rittsun.com,coolbee1.com,wp-etc.navich.net,c-camera.com,mens-vio.info,mondra.jp,xn--gutnkx91i.com,animalbattles.wealthyblogs.com,chiebiyori.com,doujin-voice.com,happy-news-style.com,kikiki-fps.com,multilingualtraveler.com,noinfo-nolife.jp,nufufu.com,spi.komaro.net,avianmedicine.jp,gadgetrip.jp,xn--glay-yn4c8b9a8lo661apz3h.com,jsan-invest.com,vapejp.net,vipcle2.com,nihonjinnanmin.com,m4ex.com,virtualgorillaplus.com,nyaasokuvip.net,takapon.net,l-media.tokyo,jj-blues.com###text-6
 wp-etc.navich.net,check-pc.com,gayroom.jp,topitane.net,1173go.com,benefitdmv.site,life-hack.xyz,nerima-kosodate.net,todoetan.com,doujin-voice.com,campify.jp,driverwork.xyz,nonde-tabete.com,sethplan.com,kk1up.jp,yuu01.jp,kiragamiteru.com,urutike.com,l-media.tokyo,99hs.org###text-7
@@ -6431,7 +6430,7 @@ travel-nippon.net##a[href^="https://click.linksynergy.com/fs-bin/click"]
 adultexpo.jp##.bfb_textBtnTextBtn
 nttdocomo.co.jp##.sec-crpTop-stop
 hinapishi.com##iframe[width="320"][height="100"]
-vipsister23.com##a[href*="https://al.dmm.com/"]
+vipsister23.com##a[href*="https://al.dmm.co"]
 vipsister23.com##a[href*="https://www.bybit.com/jpwelcome/"]
 ||digiket.net/blog/$script,third-party
 h1g.jp##table[width="750"][height^="3"]
@@ -7435,9 +7434,6 @@ jmty.jp##.p-adsense-in-list
 jmty.jp##.p-custom-search-ad
 jmty.jp##.p-adsense-list-right-column-high-block
 jmty.jp##.u-margin-xl-t > .u-margin-m-b[style^="height: 300px;"]
-news24.jp###bigSkyscraperBanner
-news24.jp###regularBanner
-news24.jp###sideRectBanner
 kabutan.jp##.bg-ash-200[style="height: 94px;"]
 kabutan.jp##div[style="clear:both;overflow:hidden;max-height:90px;min-height:90px;"]
 ||kabutan.jp/js/rand_ads.js
@@ -7564,7 +7560,6 @@ autos.goo.ne.jp##.ads_h253
 mfujin.blog.jp##.page-article-side > div.plugin-memo:first-child
 mfujin.blog.jp##.page-article-side > div.plugin-popular_articles_with_image + div.plugin-memo
 tsukiji.or.jp##.l-pr
-news.tbs.co.jp##.cp-pcAd
 ||jalan.net/jalan/doc/ad/
 ||jalan.net/jalan/doc/top/js/targetingAdSearchlist.js
 ||jalan.net/js/gl_SwBanner_YadSyo.js
@@ -8374,7 +8369,6 @@ toremaga.com###ar_w300px > div.mb14px
 member.toremaga.com###ar_w655px
 i.best-hit.tv##.row > div[class^="col-md-"] > div[style^="text-align:center;margin-bottom:"] > table[border="0"]
 kanasoku.info###headrank2:first-child
-mudainodocument.com,kanasoku.info##.adset-Cover
 iwate-np.co.jp##.high-CMSbox
 iwate-np.co.jp##.ad:not(.wrap > .ad)
 iwate-np.co.jp##.ad-lmc
@@ -8989,8 +8983,6 @@ audioreview.m1001.coreserver.jp###list > .posts-list-upper-widget
 audioreview.m1001.coreserver.jp###side-fixed a[href^="//af.moshimo.com/af/c/click?"]
 kashi-mo.com##.rectangle_bnr
 yahoo.co.jp###lrec
-||vipsister23.com/vipsister.html
-vipsister23.com###share2
 ibbs.info##.ad_data
 blog.esuteru.com##.azrank_quote
 blog.esuteru.com##.siteAside > div.ad-aside:nth-child(-n+2)
@@ -10586,7 +10578,8 @@ vip-front.video.g.fc2.com,video.laxd.com,video.fc2.com##[class^="c-ad"]:not(.c-a
 !
 ! itest.5ch.net,itest.bbspink.com
 ||itest.5ch.net/assets/img/*-300x250.png
-itest.5ch.net,itest.bbspink.com###floatingBottomAdsMain
+itest.5ch.net##.ad_5th_300x250
+itest.5ch.net,itest.bbspink.com##div[id$="AdsMain"]
 itest.5ch.net##div[id^="topAdheader-"]
 itest.5ch.net###subback > li[id][class*="_"]
 itest.5ch.net,itest.bbspink.com###js-imageview-ad
@@ -10707,8 +10700,6 @@ famitsu.com##+js(set-constant, TagProvider.cleanup, noopFunc)
 ! Recommend hidden
 rankingoo.net#@#.widget_swell_ad_widget
 ! https://twitter.com/_webgoto/status/1779190832840753612
-service.webgoto.net#@$#:matches-path(/amafav/).image_box[style*="amazon.co"] { background: none !important; }
-service.webgoto.net#@#:matches-path(/amafav/)a[href^="https://www.amazon.co.jp"][target="_blank"]
 ! TEST unblock ranking https://github.com/AdguardTeam/AdguardFilters/issues/176290
 @@||i2i.jp/view/index.php$domain=erostopics.net
 ! Unbreak ranking

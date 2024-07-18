@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.7.1.4
+// @version         3.7.1.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.nl.user.js
@@ -224,9 +224,10 @@ else if (matchDomain('doorbraak.be')) {
 
 else if (matchDomain('fd.nl')) {
   func_post = function () {
-    let paywall = document.querySelectorAll('[h-case]');
-    if (paywall) {
-      removeDOMElement(...paywall);
+    let paywall = pageContains('section > div > h2', 'Dit artikel verder lezen?');
+    if (paywall.length) {
+      let div_empty = document.querySelectorAll('div:empty');
+      removeDOMElement(paywall[0].parentNode.parentNode, ...div_empty);
       header_nofix(document.querySelector('main header'), 'BPC > no archive-fix');
     }
   }
@@ -738,6 +739,23 @@ function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options =
         getJsonUrlAdd(json_text, article, art_options);
     }, article_id);
   }
+}
+
+function header_nofix(header, msg = 'BPC > no fix') {
+  if (header && !document.querySelector('div#bpc_nofix')) {
+    let nofix_div = document.createElement('div');
+    nofix_div.id = 'bpc_nofix';
+    nofix_div.style = 'margin: 20px; font-size: 20px; font-weight: bold; color: red;';
+    nofix_div.innerText = msg;
+    header.before(nofix_div);
+  }
+}
+
+function pageContains(selector, text) {
+  let elements = document.querySelectorAll(selector);
+  return Array.prototype.filter.call(elements, function (element) {
+    return RegExp(text).test(element.textContent);
+  });
 }
 
 function parseHtmlEntities(encodedString) {

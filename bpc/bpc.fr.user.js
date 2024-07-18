@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.7.0.2
+// @version         3.7.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.fr.user.js
@@ -139,6 +139,13 @@ else if (matchDomain('atlantico.fr')) {
   let paywall = document.querySelector('div.markup[class*="Paywall"]');
   if (paywall)
     paywall.setAttribute('class', 'markup');
+}
+
+else if (matchDomain('autohebdo.fr')) {
+  if (window.location.hostname.startsWith('www.') && window.location.pathname.endsWith('.html')) {
+    if (true)
+      getJsonUrl('div.box-info.yellow', '', 'div.editor', {art_append: 1});
+  }
 }
 
 else if (matchDomain(be_groupe_ipm_domains)) {

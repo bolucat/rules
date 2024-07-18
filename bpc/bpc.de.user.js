@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.4.1
+// @version         3.7.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -499,7 +499,7 @@ else if (matchDomain('golem.de')) {
 
 else if (matchDomain('heise.de')) {
   let url = window.location.href;
-  getOchToUnlock(url, 'a-gift', '', 'article');
+  getArchive(url, 'a-gift', '', 'article');
   let ads = 'div.ad-ldb-container, div.inread-cls-reduc';
   hideDOMStyle(ads);
 }
