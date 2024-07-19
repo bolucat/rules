@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.4.4
+// @version         3.7.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -563,7 +563,7 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['investmentweek.co.uk', 'vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'citywire.com', 'fnlondon.com', 'ft.com', 'granta.com', 'motorsportmagazine.com', 'scotsman.com', 'tes.com', 'unherd.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['investmentweek.co.uk', 'vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'citywire.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'motorsportmagazine.com', 'scotsman.com', 'tes.com', 'thelawyer.com', 'thetimes.com', 'unherd.com'])) {//united kingdom/ireland
 
 if (matchDomain('apollo-magazine.com')) {
   setCookie('blaize_session', '', 'apollo-magazine.com', '/', 0);
@@ -956,6 +956,10 @@ else if (matchDomain('the-tls.co.uk')) {
   let fade = 'div.tls-single-article__closed-paywall-wrapper';
   let ads = 'div[class*="tls-single-article__ad-slot"]';
   hideDOMStyle(fade + ', ' + ads);
+}
+
+else if (matchDomain('thelawyer.com')) {
+  getJsonUrl('div.registered-content-box', '', 'article#content', {art_append: 1, art_hold: 1, art_class: 'article-body'}, '', true);
 }
 
 else if (matchDomain('theneweuropean.co.uk')) {
@@ -4617,11 +4621,14 @@ function getArticleQuintype() {
   return article_new;
 }
 
-function getJsonUrlText(article, callback, article_id = '') {
+function getJsonUrlText(article, callback, article_id = '', url_slash = false) {
   let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
   let json_url;
-  if (json_url_dom)
+  if (json_url_dom) {
     json_url = json_url_dom.href;
+    if (url_slash)
+      json_url = json_url.replace('/wp-json/', '//wp-json/');
+  }
   if (!json_url && article_id)
     json_url = window.location.origin + '/wp-json/wp/v2/posts/' + article_id;
   if (json_url) {
@@ -4667,7 +4674,7 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
     article.parentNode.replaceChild(article_new, article);
 }
 
-function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '') {
+function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', url_slash = false) {
   let paywall = document.querySelectorAll(paywall_sel);
   let article = document.querySelector(article_sel);
   if (paywall.length && article) {
@@ -4675,7 +4682,7 @@ function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options =
     getJsonUrlText(article, (json_text, article) => {
       if (json_text && article)
         getJsonUrlAdd(json_text, article, art_options);
-    }, article_id);
+    }, article_id, url_slash);
   }
 }
 

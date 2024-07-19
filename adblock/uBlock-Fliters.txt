@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Thu, 18 Jul 2024 15:25:59 +0000
-! Diff-Path: ../patches/2024.7.18.1043.patch#ublock-filters
+! Last modified: Fri, 19 Jul 2024 10:18:58 +0000
+! Diff-Path: ../patches/2024.7.19.804.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -9323,6 +9323,8 @@ bydleni.cz###clickLeft
 ! <<<<< Liste FR >>>>>
 *$script,3p,domain=faselhd-watch.shop|kickassanime.mx,badfilter
 *$xhr,3p,domain=faselhd-watch.shop|kickassanime.mx,badfilter
+! <<<<< Oficjalne polskie filtry przeciwko alertom o Adblocku >>>>>
+dziennik.pl#@#+js(abort-current-script, parseInt, adblock)
 ! END: Regional lists
 flixscans.org##+js(no-fetch-if, googlesyndication)
 mhn.quest##+js(nostif, adblock)
@@ -10360,6 +10362,9 @@ f95zone.to.it##.ad-download
 admiregirls.su##+js(acs, $, btoa)
 service.webgoto.net##:not(:matches-path(/amafav/)) .image_box[style*="amazon.co"]:style(background: none !important;)
 service.webgoto.net##:not(:matches-path(/amafav/)) a[href^="https://www.amazon.co.jp"][target="_blank"]
+dreamdth.com,freemodsapp.in,onlytech.com##+js(acs, eval, replace)
+freemodsapp.in##^script:has-text(/eval\(.+?decodeURIComponent/)
+tokuzilla.net##.btn-warning[href="#watch"]:remove-attr(onclick)
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -11111,12 +11116,14 @@ mrproblogger.com,themezon.net###btn2, .tp-blue:others()
 shrinkforearn.in##+js(aopr, app_vars.force_disable_adblock)
 shrinkforearn.in,techyuth.xyz##+js(set, blurred, false)
 shrinkforearn.in##.box-main:style(font-size: 0px !important;)
+shrinkforearn.in##[class*="wp-image"]
 techyuth.xyz##+js(aopr, window.open)
-drinkspartner.com,uploadsoon.com,wp.uploadfiles.in,viralxns.com##+js(noeval-if, /fairAdblock|chp_adblock|adsbygoogle\.js/)
-drinkspartner.com,uploadsoon.com,wp.uploadfiles.in,viralxns.com###tp-snp2, #timeout:style(display:block !important; margin-top: 520px !important; height: 100px !important; width: 100px !important)
-drinkspartner.com,uploadsoon.com,wp.uploadfiles.in,viralxns.com###timeout, #btn1, #tp-snp2:others()
-drinkspartner.com,uploadsoon.com,wp.uploadfiles.in,viralxns.com##+js(nano-sib, /.?/, *, 0.02)
-drinkspartner.com,uploadsoon.com,wp.uploadfiles.in,viralxns.com###timeout:remove-attr(disabled)
+cmphost.com,drinkspartner.com,uploadsoon.com,wp.uploadfiles.in,viralxns.com##+js(noeval-if, /fairAdblock|chp_adblock|adsbygoogle\.js/)
+cmphost.com,drinkspartner.com,uploadsoon.com,wp.uploadfiles.in,viralxns.com##body:style(overflow: auto !important;)
+cmphost.com,drinkspartner.com,uploadsoon.com,wp.uploadfiles.in,viralxns.com###tp-snp2, #timeout:style(display:block !important; margin-top: 520px !important; height: 100px !important; width: 100px !important)
+cmphost.com,drinkspartner.com,uploadsoon.com,wp.uploadfiles.in,viralxns.com###timeout, #btn1, #tp-snp2:others()
+cmphost.com,drinkspartner.com,uploadsoon.com,wp.uploadfiles.in,viralxns.com##+js(nano-sib, /.?/, *, 0.02)
+cmphost.com,drinkspartner.com,uploadsoon.com,wp.uploadfiles.in,viralxns.com###timeout:remove-attr(disabled)
 viralsbaba1.blogspot.com###btn-gotolink:style(display:block !important; margin-top: 410px !important; margin-left: 200px !important; height: 100px !important; width: 100px !important)
 viralsbaba1.blogspot.com###btn-gotolink:remove-attr(disabled)
 viralsbaba1.blogspot.com###btn-gotolink:others()
@@ -13910,7 +13917,7 @@ shahiid-anime.net##+js(aost, Object,  /(?=^(?!.*(https)))/)
 ||filmovi.ws^$csp=script-src * 'unsafe-inline'
 ||serijefilmovi.com^$csp=script-src * 'unsafe-inline'
 ! pp server
-/^https?:\/\/[a-z]{8,15}\.[a-z]{2,3}\/5\/\d{6,7}(?:\?_=\d+)?$/$script,3p
+/^https?:\/\/[a-z]{8,15}\.[a-z]{2,3}\/5\/\d{6,7}(?:\?_=\d+)?$/$script,xhr,3p
 /^https?:\/\/[a-z]{8,15}\.[a-z]{3}\/5\/\d{7}\/\?/$xhr,3p
 /^https?:\/\/[-a-z]{8,15}\.(?:com|net)\/400\/\d{7}$/$script,3p
 /^https?:\/\/[-a-z]{8,15}\.(?:com|net)\/401\/\d{7}$/$script,3p
@@ -17543,6 +17550,7 @@ myflixertv.to##.modal
 myflixertv.to##.modal-backdrop
 etsy.com##body.no-touch li.wt-list-unstyled div.v2-listing-card__info > div.wt-text-caption.wt-text-grey > span:not(.wt-icon):not([aria-role]):matches-css(display:inline-block):has-text(/^Ad/i):upward(li):remove()
 etsy.com##li:not(#ad-ubo) .listing-link[href*="ref=sc_gallery"]:upward(li)
+www.etsy.com##ol[data-results-grid-container] > li > div:not([data-appears-event-data*="listing_ids"]):not([data-appears-component-name="search2_organic_listings_group"])
 techhelpbd.com##+js(nano-sib, counter--)
 techhelpbd.com##.THBD-Ads
 techhelpbd.com##.pum-overlay
@@ -21714,7 +21722,6 @@ qcheng.cc##+js(aopr, killAdKiller)
 *$frame,redirect-rule=noopframe,domain=busuu.com
 ||busuu.com/*/busuu_ad$media
 busuu.com##+js(nano-sib, current-=1)
-||brightcove.com^$xhr,removeparam=ad_config_id,domain=roosterteeth.com
 crazydl.net##+js(nostif, show)
 darksoftware.net##+js(acs, XV)
 darksoftware.net##+js(acs, $, XF)
@@ -23233,7 +23240,6 @@ cryptobr.biz###player:style(display:block !important)
 9animetv.to##[href^="//keefeezo.net/"]
 lscomic.com##+js(noeval-if, ads)
 ||teads.tv^$3p,script,redirect-rule=noop.js,from=tf1info.fr
-||edge.api.brightcove.com/playback/v1/accounts/6415718365001/$3p,xhr,removeparam=ad_config_id,domain=brightcove.net
 tv.durbinlive.com##+js(noeval-if, ads)
 gplastra.com##+js(aost, setTimeout, data)
 @@||s.yimg.com^$ghide
@@ -23374,7 +23380,10 @@ realmadryt.pl##+js(no-fetch-if, method:GET)
 mirroshu.top##[id^="div-gpt-ad-"]
 veev.to##+js(nowoif)
 !veev.to##+js(aopr, XMLHttpRequest.prototype.onreadystatechange)
+veev.to##+js(aost, document.createElement, eval)
+||adcharriot.com^
 *$script,domain=veev.to,redirect-rule=noopjs
+*$frame,3p,domain=veev.to
 @@||veev.to^$ghide
 veev.to#@#.avb-active
 ! filmydown .site/fast-dl .co popups
