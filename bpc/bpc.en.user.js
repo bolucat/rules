@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.5.0
+// @version         3.7.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -1434,32 +1434,6 @@ else if (matchDomain('dailywire.com')) {
 else if (matchDomain('dallasnews.com')) {
   if (window.location.search.startsWith('?outputType=amp')) {
     amp_unhide_subscr_section('amp-ad, amp-embed');
-  }
-}
-
-else if (matchDomain('dealstreetasia.com')) {
-  let paywall = document.querySelectorAll('div.subscribe-now, div.overlay');
-  if (paywall.length) {
-    removeDOMElement(...paywall);
-    let json_script = document.querySelector('script#__NEXT_DATA__');
-    if (json_script) {
-      try {
-        let json = JSON.parse(json_script.innerText);
-        if (json && json.props.pageProps.wpData.content) {
-          let content_new = json.props.pageProps.wpData.content;
-          let article = document.querySelector('article');
-          if (article) {
-            article.innerHTML = '';
-            let parser = new DOMParser();
-            let doc = parser.parseFromString('<div>' + content_new + '</div>', 'text/html');
-            let article_new = doc.querySelector('div');
-            article.appendChild(article_new);
-          }
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
   }
 }
 
@@ -3731,6 +3705,16 @@ else if (matchDomain('washingtonpost.com')) {
   let leaderboard = '#leaderboard-wrapper';
   let ads = 'div[data-qa$="-ad"]';
   hideDOMStyle(leaderboard + ', ' + ads);
+  if (window.location.pathname.startsWith('/comments') && window.location.search.startsWith('?storyUrl=')) {
+    let wrapper = document.querySelector('div#comments-wrapper');
+    if (wrapper) {
+      let com_link = document.createElement('a');
+      com_link.href = window.location.href.replace('https://www.washingtonpost.com/comments?storyUrl', 'https://talk.washingtonpost.com/embed/stream?storyURL');
+      com_link.innerText = 'BPC > open comments (in new tab)';
+      com_link.target = '_blank';
+      wrapper.appendChild(com_link);
+    }
+  }
 }
 
 else if (matchDomain('winnipegfreepress.com')) {
