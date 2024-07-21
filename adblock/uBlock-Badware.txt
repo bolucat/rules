@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Sat, 20 Jul 2024 13:34:59 +0000
-! Diff-Path: ../patches/2024.7.20.861.patch#ublock-badware
+! Last modified: Sun, 21 Jul 2024 14:56:41 +0000
+! Diff-Path: ../patches/2024.7.21.924.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -2873,7 +2873,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||vancedmanager.$all,domain=~revanced.app
 ||revancedapps.$all,domain=~revanced.app
 ! LuckyPatcher - Official site: luckypatchers.com
-||luckypatchers.net^$all,domain=~luckypatchers.com
+||luckypatcher.*^$all,domain=~luckypatchers.com
+||luckypatchers.*^$all,domain=~luckypatchers.com,to=~luckypatchers.com
 ||luckypatcherwin.com^$all,domain=~luckypatchers.com
 ! Balena Etcher - Official site: etcher.balena.io
 ||etcher.net^$all,domain=~etcher.balena.io
@@ -3061,6 +3062,9 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||inner.website/*.html^$all
 ||colegiovilamilitar.com.br/*/linkedin_^$all,to=~linkedin.com
 ||hand-to-hand.cfolks.pl^$all,to=~ram.co.za
+! tiktok
+/^https:\/\/(?:[a-z]{4,6}\.)?tiktok\d{2,5}\.com\//$doc,domain=com|~tiktok.com
+/^https:\/\/(?:[a-z]{4,6}\.)?tiktok\d{2,5}\.cc\//$doc,domain=cc|~tiktok.com
 ! made-in-china.com
 ||griffithdds.com/*/madeinchina.com/$all,to=~made-in-china.com
 ||oortech.com/mic.shtml^$doc,domain=~made-in-china.com
@@ -3116,6 +3120,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||xlink-dna-log-new.xxtl-v1.biz.id^$all,to=~dana.id
 ||hadiah-dana2024.beviz.biz.id^$all,to=~dana.id
 ||kelim-kaget-dana.masuk.biz.id^$all,to=~dana.id
+||aktivasi-danaid.resmi7752.biz.id^$all,to=~dana.id
 ||danaxspaylaterr.biz.id^$all,to=~dana.id
 ! my.id
 ||xcxcx.my.id^$doc,domain=~dana.id
@@ -3149,6 +3154,8 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||c.vn-ebayn.vip^$all
 ||vn-ebay.quxlpuj.cn^$all
 ||ebayasean.com^$all
+||vilbuy.com^$all
+||ebaydw.com^$all
 ||51eabay.com^$all
 ||135buy.com^$all
 ||ebaydw.cc^$all
@@ -3171,6 +3178,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||alisongaudino992.wixsite.com^$all
 ||deenveerww.wixsite.com^$all
 ||att5h6.wixsite.com^$all
+||wixstudio.io/mysiteattmail940940^$doc
 ! BT
 ||homelogginbbt.weebly.com^$all,to=~bt.com
 ||boardband.univer.se^$all,to=~bt.com
@@ -3189,6 +3197,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||contactsupport.10ffc20.wcomhost.com^$all
 ||wcomhost.com/amendes-gouv/$doc,domain=~amendes.gouv.fr
 ||wcomhost.com/*/am/3dsece.php^$doc,domain=~amendes.gouv.fr
+/am/*.php^$doc,domain=mybluehost.me|wcomhost.com|~amendes.gouv.fr
 ! bank
 ||chamsocthekhachhang-$doc,domain=~edu|~gov|~edu.vn|~gov.vn
 ||sotuyenvcb.vietcombanker.com^$all,to=~vietcombank.com.vn
@@ -3216,6 +3225,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||ewp.live/*/pages/region.php^$doc
 ||glitch.me/*/nationwide^$doc,domain=~nationwide.co.uk
 ||mybluehost.me/ameli/$doc,domain=~ameli.fr
+/28kxhS^$doc,domain=online|shop|top|~sberbank.ru
 ! DHL
 ||dhl.*.potabox.com^$doc,domain=~dhl.com
 ||dhl-event.app^$all,to=~dhl.com
@@ -3298,6 +3308,8 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||steamcomuniry.com^$all
 ||steamcommunlyt.com^$all
 ||steemcommuntiy.com^$all
+||steemcoonmmunjty.com^$all
+||sceancoonmmunjty.com^$all
 ||steam.workshopstyle.com^$all
 ||steam.communitybrowserpowered.com^$all
 ! game sites
@@ -3314,6 +3326,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||pubg-arena.top^$all
 ||register-turnamen.free.nf^$all
 ||pubgm-zing-vn.com^$all
+||sukien-pubg.io.vn^$all
 ! mobile legends
 ||mobilelegendsmycode.com^$all
 ||eventdmkuning.brenn.biz.id^$all
@@ -3356,6 +3369,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||athenasbaklava.com^$all
 ||mail.sorbeadindias.com^$all
 ||pages.dev/smart89/$doc
+||microsofthotmailsi1.wixsite.com^$all
 ! telegram
 ||telegramhcn.com^$all
 ||web.telegram.data-bees.cn^$all
@@ -3431,6 +3445,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ! imtoken
 ||imtoken.org.cn^$all,to=~token.im
 ||tokenap.app^$all,to=~token.im
+||imcosom.com^$all,to=~token.im
 ! opensea
 ||opensea-nft.web.app^$all,to=~opensea.io
 ||paslanmazspider.org/bin/$all,to=~opensea.io
@@ -3446,6 +3461,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||mmitalianbeef.square.site^$all,to=~mmitalianbeef.com
 ||bigbauer.com^$all,to=~gmx.com
 ||paypal-complete.com^$all
+||sacredtreespirit.com^$all,to=~ups.com
 ||beluxrepm.followme.fr/FolloWMe$all,to=~realestate.bnpparibas.com
 ||mybluehost.me/Cope346/$all
 ||tesakom.com/aa/index.html^$all,to=~ebestsec.co.kr
@@ -3459,6 +3475,7 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ?email=3mail@b.c/|$doc
 ||com/isignesp.php^$doc,domain=com|~apple.com
 ||help/isignesp.php^$doc,domain=help|~apple.com
+/^https:\/\/([a-z]-){10,15}[a-z]\.(?:com|net)\.tr\//$doc,domain=com.tr|net.tr
 ||lazada.gg^$all
 ||chamsockhachhang-$doc
 ! /^https:\/\/hdsaison-?[a-z]{2,}\.(?:cc|com|vip)\//$doc,domain=cc|com|vip|~hdsaison.com.vn
@@ -3626,29 +3643,13 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||uniwspapp.com^$all,to=~uniswap.org
 ||crowdstrike-helpdesk.com^$doc
 ||crowdstrikebluescreen.com^$doc
-||crowdstrike-bsod.com^$doc
-||crowdstrikedown.site^$doc
 ||crowdstrike0day.com^$doc
 ||crowdstrikedoomsday.com^$doc
-||crowdstrikefix.com^$doc
 ||crowdstriketoken.com^$doc
-||fix-crowdstrike-bsod.com^$doc
 ||bsodsm8r.xamzgjedu.com^$doc
-||crowdstrikebsodfix.blob.core.windows.net^$doc
-||crowdstrikecommuication.app^$doc
-||fix-crowdstrike-apocalypse.com^$doc
-||supportportal-crowdstrike-com.translate.goog^$doc
 ||crowdstrike-cloudtrail-storage-bb-126d5e.s3.us-west-1.amazonaws.com^$doc
 ||crowdstrikeoutage.info^$doc
-||clownstrike.co.uk^$doc
-||crowdstrikebsod.com^$doc
-||whatiscrowdstrike.com^$doc
-||clownstrike.co^$doc
 ||microsoftcrowdstrike.com^$doc
-||crowdfalcon-immed-update.com^$doc
-||crowdstuck.org^$doc
-||failstrike.com^$doc
-||winsstrike.com^$doc
 ||crowdpass.live^$doc
 ||crowdstrike.life^$doc
 ||crowdstrikeupdate.com^$doc
@@ -3657,8 +3658,6 @@ oltacidergisi.com##+js(acs, atob, minimalDrainValue)
 ||crowdstrike-falcon.online^$doc
 ||crowdstrike-solutions.nl^$doc
 ||crowdstrikeclaim.com^$doc
-||crowdstrikebug.com^$doc
-||crowdstrikeoopsie.com^$doc
 ||crowdstrokeme.me^$doc
 ||crowdstrikeoutage.com^$doc
 ||crowdstrikefix.zip^$doc
