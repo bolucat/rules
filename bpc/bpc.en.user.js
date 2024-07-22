@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.5.2
+// @version         3.7.5.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -3642,79 +3642,90 @@ else if (matchDomain('voguebusiness.com')) {
 }
 
 else if (matchDomain('washingtonpost.com')) {
-  let metered_sel = 'div.meteredContent';
-  let article = document.querySelector(metered_sel + ' > div.teaser-content');
-  let pars = document.querySelectorAll(metered_sel + ' div.article-body');
-  if (pars.length && pars.length < 5 && article) {
-    let json_script = document.querySelector('script#__NEXT_DATA__');
-    if (json_script) {
-      try {
-        let json = JSON.parse(json_script.text);
-        if (json && json.props.pageProps.globalContent.content_elements) {
-          let pars_new = json.props.pageProps.globalContent.content_elements;
-          let par_class;
-          let art_par = article.querySelector('p');
-          if (art_par)
-            par_class = art_par.className;
-          let par_first = true;
-          let parser = new DOMParser();
-          article.innerHTML = '';
-          for (let par of pars_new) {
-            let elem;
-            if (['header', 'text'].includes(par.type)) {
-              let doc = parser.parseFromString('<p class="' + par_class + '">' + par.content + '</p>', 'text/html');
-              elem = doc.querySelector('p');
-              if (par.type === 'header')
-                elem.style = 'font-weight: bold;';
-            } else if (par.type === 'image') {
-              if (par.url && !par_first) {
-                elem = document.createElement('p');
-                elem.className = par_class;
-                let sub_elem = document.createElement('figure');
-                let img = document.createElement('img');
-                img.src = 'https://www.washingtonpost.com/wp-apps/imrs.php?src=' + par.url + '&w=1200';
-                img.style = 'width:100%';
-                sub_elem.appendChild(img);
-                if (par.credits_caption_display) {
-                  let caption = document.createElement('p');
-                  caption.innerText = par.credits_caption_display;
-                  sub_elem.appendChild(caption);
+  if (window.location.pathname.startsWith('/comments') && window.location.search.startsWith('?storyUrl=')) {
+    let wrapper = document.querySelector('div#comments-wrapper');
+    if (wrapper) {
+      let com_link = document.createElement('a');
+      com_link.href = window.location.href.replace('https://www.washingtonpost.com/comments?storyUrl', 'https://talk.washingtonpost.com/embed/stream?storyURL');
+      com_link.innerText = 'BPC > open comments';
+      wrapper.appendChild(com_link);
+    }
+  } else if (window.location.hostname === 'talk.washingtonpost.com') {
+    let body = document.querySelector('body');
+    if (body)
+      body.style = 'margin: 10px;';
+    let nav = document.querySelector('main > nav');
+    if (nav && window.location.search.startsWith('?storyURL=')) {
+      let com_link = document.createElement('a');
+      com_link.href = decodeURIComponent(window.location.href.split('?storyURL=')[1]);
+      com_link.innerText = 'BPC > return to article';
+      nav.after(com_link);
+    }
+  } else {
+    let metered_sel = 'div.meteredContent';
+    let article = document.querySelector(metered_sel + ' > div.teaser-content');
+    let pars = document.querySelectorAll(metered_sel + ' div.article-body');
+    if (pars.length && pars.length < 5 && article) {
+      let json_script = document.querySelector('script#__NEXT_DATA__');
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text);
+          if (json && json.props.pageProps.globalContent.content_elements) {
+            let pars_new = json.props.pageProps.globalContent.content_elements;
+            let par_class;
+            let art_par = article.querySelector('p');
+            if (art_par)
+              par_class = art_par.className;
+            let par_first = true;
+            let parser = new DOMParser();
+            article.innerHTML = '';
+            for (let par of pars_new) {
+              let elem;
+              if (['header', 'text'].includes(par.type)) {
+                let doc = parser.parseFromString('<p class="' + par_class + '">' + par.content + '</p>', 'text/html');
+                elem = doc.querySelector('p');
+                if (par.type === 'header')
+                  elem.style = 'font-weight: bold;';
+              } else if (par.type === 'image') {
+                if (par.url && !par_first) {
+                  elem = document.createElement('p');
+                  elem.className = par_class;
+                  let sub_elem = document.createElement('figure');
+                  let img = document.createElement('img');
+                  img.src = 'https://www.washingtonpost.com/wp-apps/imrs.php?src=' + par.url + '&w=1200';
+                  img.style = 'width:100%';
+                  sub_elem.appendChild(img);
+                  if (par.credits_caption_display) {
+                    let caption = document.createElement('p');
+                    caption.innerText = par.credits_caption_display;
+                    sub_elem.appendChild(caption);
+                  }
+                  elem.appendChild(sub_elem);
                 }
-                elem.appendChild(sub_elem);
-              }
-            } else if (par.type === 'custom_embed' && par.subtype) {
-              if (!['magnet'].includes(par.subtype) && par.embed && par.embed.url) {
-                elem = document.createElement('iframe');
-                elem.src = par.embed.url;
-                elem.style = 'height: 400px; width: 100%';
-              }
-            } else if (!['divider'].includes(par.type))
-              console.log(par);
-            if (elem)
-              article.appendChild(elem);
-            if (par_first)
-              par_first = false;
+              } else if (par.type === 'custom_embed' && par.subtype) {
+                if (!['magnet'].includes(par.subtype) && par.embed && par.embed.url) {
+                  elem = document.createElement('iframe');
+                  elem.src = par.embed.url;
+                  elem.style = 'height: 400px; width: 100%';
+                }
+              } else if (!['divider'].includes(par.type))
+                console.log(par);
+              if (elem)
+                article.appendChild(elem);
+              if (par_first)
+                par_first = false;
+            }
+            window.scrollTo(0, 0);
           }
-          window.scrollTo(0, 0);
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
       }
     }
   }
   let leaderboard = '#leaderboard-wrapper';
   let ads = 'div[data-qa$="-ad"]';
   hideDOMStyle(leaderboard + ', ' + ads);
-  if (window.location.pathname.startsWith('/comments') && window.location.search.startsWith('?storyUrl=')) {
-    let wrapper = document.querySelector('div#comments-wrapper');
-    if (wrapper) {
-      let com_link = document.createElement('a');
-      com_link.href = window.location.href.replace('https://www.washingtonpost.com/comments?storyUrl', 'https://talk.washingtonpost.com/embed/stream?storyURL');
-      com_link.innerText = 'BPC > open comments (in new tab)';
-      com_link.target = '_blank';
-      wrapper.appendChild(com_link);
-    }
-  }
 }
 
 else if (matchDomain('winnipegfreepress.com')) {

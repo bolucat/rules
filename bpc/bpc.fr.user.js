@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.7.5.0
+// @version         3.7.5.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.fr.user.js
@@ -277,41 +277,17 @@ else if (matchDomain(fr_groupe_infopro_domains)) {
 }
 
 else if (matchDomain(fr_groupe_la_depeche_domains)) {
-  if (window.location.pathname.startsWith('/amp/')) {
-    amp_unhide_subscr_section('amp-ad, amp-embed');
-  } else {
-    let paywall = document.querySelector('div.paywall');
-    let amphtml = document.querySelector('head > link[rel="amphtml"]');
-    if (paywall) {
-      removeDOMElement(paywall);
-      if (amphtml)
-        amp_redirect_not_loop(amphtml);
-      else {
-        let json_script = getArticleJsonScript();
-        if (json_script) {
-          try {
-            let json = JSON.parse(json_script.text);
-            if (json) {
-              if (json[0])
-                json = json[0];
-              let json_text = parseHtmlEntities(json.articleBody);
-              let content = document.querySelector('div.article-full__body-content');
-              if (json_text && content) {
-                content.innerHTML = '';
-                let article_new = document.createElement('p');
-                article_new.innerText = json_text;
-                content.appendChild(article_new);
-                content.removeAttribute('style');
-                content.removeAttribute('data-state');
-              }
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article_paywall = document.querySelector('div.article-paywall[style]');
+    if (article_paywall) {
+      article_paywall.classList.remove('article-paywall');
+      article_paywall.removeAttribute('style');
     }
   }
+  let ads = 'div.ad';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(fr_groupe_nice_matin_domains)) {
