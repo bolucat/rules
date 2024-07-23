@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.6.5.4
+// @version         3.7.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.es.pt.user.js
@@ -605,16 +605,20 @@ else if (matchDomain('latercera.com')) {
 
 else if (matchDomain('revistaoeste.com')) {
   if (window.location.pathname.startsWith('/revista/')) {
-    let intro = document.querySelector('div.is-locked');
-    let sub_panel = document.querySelector('div.subscribe-panel');
-    removeDOMElement(intro, sub_panel);
-    let div_hidden = document.querySelector('div.hidden[data-url]');
-    if (div_hidden)
-      div_hidden.classList.remove('hidden');
+    let loading_content = document.querySelector('div.loading_content');
+    if (loading_content)
+      loading_content.removeAttribute('class');
+    let spinner = document.querySelector('svg.spinner-eclipse');
+    removeDOMElement(spinner);
+    let lazy_images = document.querySelectorAll('img[src^="data:image/"][data-src]');
+    for (let elem of lazy_images)
+      elem.src = elem.getAttribute('data-src');
   } else {
     let div_expandable = document.querySelector('div.expandable');
     if (div_expandable)
       div_expandable.classList.remove('expandable');
+    let ads = 'section.ad-wrapper, div.autozep-outer';
+    hideDOMStyle(ads);
   }
 }
 
