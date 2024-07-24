@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.5.3
+// @version         3.7.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -996,7 +996,7 @@ else if (matchDomain('thetimes.com')) {
         window.setTimeout(function () {
           let page_scroll = document.querySelectorAll('html, body');
           for (let elem of page_scroll)
-            elem.removeAttribute('style');
+            elem.style.overflow = 'auto';
         }, n * 500);
       }
     }

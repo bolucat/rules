@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Tue, 23 Jul 2024 15:14:21 +0000
-! Diff-Path: ../patches/2024.7.23.1043.patch#ublock-badware
+! Last modified: Wed, 24 Jul 2024 10:54:23 +0000
+! Diff-Path: ../patches/2024.7.24.807.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -417,7 +417,6 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||updaterlife.com^$all
 ^s=*&ssk=*&svar=*&z=$doc
 /?cid=*&dom=$doc
-^s1=*&click_id=$doc
 ||totalrecaptcha.top^$all
 /?type=*&button=2&clickid=$doc
 ||valrogrowth.com^$all
@@ -627,7 +626,6 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||adultminglenight.click^$all
 ||miallafun.com^$all
 ||derriks.site^$all
-||mikkim.top^$all
 ||butya.top^$all
 ||onenightfindertm.com^$all
 ||datenaughtysingles.click^$all
@@ -640,6 +638,12 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||painfont.cyou^$all
 ||builder.hufs.ac.kr/goLink.jsp?url=xn-$doc
 ||m.jubilantrefreshingvisit.buzz^$all
+||mikkim.top^$all
+||discordvip.createsocialcard.top^$all
+||discordvip.pages.dev^$all
+^s1=*&click_id=$doc
+^mh=*&s2=$doc
+||onenightchicko.com^$all
 /^https:\/\/[0-9a-z]{3,}\.[-a-z]{10,}\.(?:li[fv]e|top|xyz)\/[a-z]{8}\/(?:article\d{4}\.doc)?\?utm_campaign=\w{40,}/$doc,match-case,domain=life|live|top|xyz
 /^https:\/\/[a-z]{2,3}\d\.biz\/go\/[0-9a-z]{15,18}$/$doc,domain=biz
 ! fake dating/prize/video sites
@@ -2615,6 +2619,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||desk-dictionary.com^$doc
 ||event-experiment.com^$doc
 ||final-future.com^$doc
+||t-uraaka.site^$doc
 ||soft-pro.site^$all
 ||apkmirror.co^$all
 ||webogram.org^$all
@@ -2792,6 +2797,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||windows.net/*?bcda=$doc
 /index.html?ph0n=1-$doc
 ||technosoft35.ru^$all
+||tube-dvm.com^$all
 ||japanonlinebroadcast.live^$all
 ||crackedpc.org^$all
 ||cracksway.com^$all
@@ -2976,6 +2982,9 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||uniproject.substack.com^$all
 ||web3projects.substack.com^$all
 ||webpublic.substack.com^$all
+||teslafond.io^$doc
+||teslacore.io^$doc
+||crypto-drop24.com^$all
 ! Phishing - See https://bbs.kafan.cn/thread-2264505-1-1.html
 ||counter-strike2-official.net^$all
 ! http://telegram.app0w.ltd/?rcd=c61d5 - Scam telegram
@@ -3050,6 +3059,9 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 /^https:\/\/vietg[a-z]v[0-9]*\.cc\//$doc,domain=cc
 ||clickhereecraigslist.tripod.com^$all
 ||1234854.com^$all,to=~shopify.com
+||thriveinclusion.com^$all,to=~web.de
+||talktalk0.godaddysites.com^$all,to=~talktalk.co.uk
+||unclepigva.com^$all,to=~chase.com
 ||final-ua.eu/vasilisa/votings$all
 ||roycamining.com/pdeb/Untitled/$all,to=~docusign.com
 ||flow.page/foxhills.co.uk^$all,to=~foxhills.co.uk
@@ -3063,6 +3075,9 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 /^https:\/\/www\.[a-z]{4,5}\.[a-z]{3,7}\/[a-z0-9]{36}\.html\b/$doc,match-case,domain=com|info|website|~edu|~gov|~google.com
 ||colegiovilamilitar.com.br/*/linkedin_^$all,to=~linkedin.com
 ||hand-to-hand.cfolks.pl^$all,to=~ram.co.za
+! paypal
+||paypal-complete.com^$all
+||prizegift.top^$all
 ! jio
 /\/recharge\d?\.(?:html|php)\?mobile=\d{10}\b/$doc,match-case,domain=~jio.com|~edu|~gov
 /offer.php?rechargenumber=$doc,domain=~jio.com|~edu|~gov
@@ -3082,6 +3097,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||griffithdds.com/*/madeinchina.com/$all,to=~made-in-china.com
 ||oortech.com/mic.shtml^$doc,domain=~made-in-china.com
 ! fedex
+||fedexridn.com^$all
 ||yellowjacket.co.nz^$all,to=~fedex.com
 ||bookingtool.azurewebsites.net^$all,to=~fedex.com
 ||saham.hugaf.dev^$all,to=~fedex.com
@@ -3120,8 +3136,9 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||allegrostore.cc^$all
 ||allegrostu.com^$all
 ||allegrocolombia.com^$all
+||allegrocx.com^$all
 ||allegro-online.ru^$all
-||wz-2-allegro-4dv.pages.dev^$all
+##html[lang][style] > body[ontouchstart=""] > div#app[data-v-app=""] > div#app[class] > div.grow
 ! rackspace
 ||racks.pages.dev^$all,to=~rackspace.com
 ||rackweb-----support*.weebly.com^$all,to=~rackspace.com
@@ -3165,7 +3182,8 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||etisalat-amazonprime.com^$all,to=~etisalat.ae
 ||shop73.online^$all
 ||syae3289.top^$all
-##html[lang][data-dpr="1"][style] > body.bluetheme.false > div#app.wrapper > div.app-wrapper > div.main-container
+||ww26mb8.top^$all
+##html[lang][data-dpr="1"][style] > body.bluetheme.false > div#app.wrapper
 ||mybluehost.me/wp-admin/amz/$doc
 ! ebay
 ||c.vn-ebayn.vip^$all
@@ -3173,6 +3191,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||ebayasean.com^$all
 ||vilbuy.com^$all
 ||ebaydw.com^$all
+||ebayhelpre.org^$all
 ||show.naturecircle.shop^$all
 ||51eabay.com^$all
 ||135buy.com^$all
@@ -3265,6 +3284,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||dhl-express-ppd.infanion.com^$all,to=~dhl.com
 ! instagram
 ||instagram-mail.net^$all
+||privrendom.com^$all
 ! facebook
 ||mait.inhhome.top^$all
 ! /^https:\/\/[vw]ww-[a-z]?facebook[a-z]?([.-]com)?\.vn\//$doc,domain=vn
@@ -3301,7 +3321,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||metabussines.com^$all
 ||transparency-business.com^$all
 ||http://marketplace-item-details-*.zya.me^$all
-/^https:\/\/business\.[a-z]+identiityconfirm\.com\/meta-community-standard\d{15}\/?/$doc,domain=com
+/^https:\/\/business\.[a-z]+confirm\.com\/meta-community-standard\d{15}\/?/$doc,match-case,domain=com
 /\.(?:pages\.dev|surge\.sh)\/help\/contact\/\d{14,19}\b/$doc,match-case,domain=pages.dev|surge.sh|~facebook.com
 ||business-help-temp-$doc
 ||instructions-video.vercel.app/detailed_video.mp4$media
@@ -3342,17 +3362,21 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||sceancoonmmunjty.com^$all
 ||steam.workshopstyle.com^$all
 ||steam.communitybrowserpowered.com^$all
+||workshop-users.com^$all
 ! game sites
+||battlegrounds-bgmi-reward.events-games.com^$all
 ! garena
+||rewards-ff-garenaa.ru^$all
+||tes.lkowi.cfd^$all
 /^https:\/\/(?:www\.)?(?:ff[-.])?member[-.]gare[a-z]+a(?:\.pro)?\.vn\//$doc,domain=vn|~garena.vn
 /^https:\/\/(?:www\.)?(?:ff[-.])?men?mber[-.]garena\.vn\//$doc,domain=vn|~garena.vn
 ||garerna.vn^$all,to=~garena.vn
 ||gareza.vn^$all,to=~garena.vn
 ||garena.pro.vn^$all,to=~garena.vn
 ||ff-menmber-garena.vn^$all,to=~garena.vn
-||rewards-ff-garenaa.ru^$all
 ||gaerana.io.vn^$all,to=~garena.vn
 ||gareana.vn^$all,to=~garena.vn
+||doivangfreefiregarena.io.vn^$all,to=~garena.vn
 ! pubg
 ||pubg-arena.top^$all
 ||register-turnamen.free.nf^$all
@@ -3364,6 +3388,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ! google
 ||bxzxenzidrmrksu.jiongcao.cn^$all
 ||google-stare.com^$all
+||confirmktk.com^$all
 ||datahub.center^$all
 ||channelhub.info^$all
 ! microsoft
@@ -3405,12 +3430,15 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||microsofthotmailsi1.wixsite.com^$all
 ||supplieradvisor.ciamlogin.com^$all
 ||e-messsage.com^$all
+||supp0rt.co.za^$all
 ! telegram
 ||telegramhcn.com^$all
 ||web.telegram.data-bees.cn^$all
 ||haveplentymusic.com^$all
 ||sozdor9s.com^$all
 ||newappmssg.ru^$all
+||teleagram.icu^$all
+||telesgram.work^$all
 ||telegrambotsolution.pages.dev^$all
 /^https:\/\/www\.telegramk[a-z]\.com\//$domain=com|~telegram.org
 ||telegramkv.com^$all
@@ -3480,6 +3508,8 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||azuki-*.vercel.app^$all,to=~azuki.com
 ||base-swap-frontend-*.vercel.app^$doc
 ||metamask*.webflow.io^$doc
+! coinbase
+||baseguardauth.net^$all,to=~coinbase.com
 ||cbnotifser.top^$all,to=~coinbase.com
 ||cbnotif.top^$all,to=~coinbase.com
 ! imtoken
@@ -3500,9 +3530,10 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||pakket-bpost-be.web.app^$all,to=~bpost.be
 ||mmitalianbeef.square.site^$all,to=~mmitalianbeef.com
 ||bigbauer.com^$all,to=~gmx.com
-||paypal-complete.com^$all
 ||sacredtreespirit.com^$all,to=~ups.com
 ||snapchatplus.fr^$all,to=~snapchat.com
+||lkmw88.com^$all,to=~mercadolibre.com
+||hologramid.cn^$all,to=~alibaba.com
 ||beluxrepm.followme.fr/FolloWMe$all,to=~realestate.bnpparibas.com
 ||mybluehost.me/Cope346/$all
 ||tesakom.com/aa/index.html^$all,to=~ebestsec.co.kr
@@ -3512,9 +3543,8 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||utahpolicetraining.*.mybluehost.me^$all
 ||mybluehost.me/*/choronopost/$doc,domain=~chronopost.fr
 ||dropbox*.weebly.com^$doc
-?email=3mail@b.c|$doc
-?email=3mail@b.c/|$doc
-/^https:\/\/([a-z]-){10,15}[a-z]\.(?:com|net)\.tr\//$doc,domain=com.tr|net.tr
+/^https:\/\/([a-z]-){10,15}[a-z]\.(?:com|net|org)\.tr\//$doc,domain=com.tr|net.tr|org.tr
+/views/go/start.php^$doc
 ||khach-hang-the-$doc
 ||lazada.gg^$all
 ||chamsockhachhang-$doc
@@ -3642,8 +3672,6 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||get-express-vpn.online^$all,to=~expressvpn.com
 ||chromnius.com^$all
 ||premium-x-notes.com^$all
-||teslafond.io^$doc
-||teslacore.io^$doc
 ||bloxstrap.*^$doc,domain=~bloxstrap.pizzaboxer.xyz,to=~bloxstrap.pizzaboxer.xyz
 ||bloxstrapmenu.com^$doc
 ||joannclearances.com^$all,to=~joann.com
@@ -3697,7 +3725,6 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||crowdstrikeoutage.com^$doc
 ||crowdstrikefix.zip^$doc
 ||crowdstuck.com^$doc
-||microsoftcrowdstrike.com^$doc
 ||portalintranetgrupobbva.com^$all
 ||dropbox.com/*/crowdstrike-hotfix.zip^$all
 ||amazon-analytic.com^$all
