@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.7.1.7
+// @version         3.7.1.9
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.nl.user.js
@@ -34,7 +34,6 @@
 // @connect         archive.md
 // @connect         archive.ph
 // @connect         archive.vn
-// @connect         archive.fo
 // @connect         webcache.googleusercontent.com
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
@@ -228,7 +227,7 @@ else if (matchDomain('fd.nl')) {
     if (paywall.length) {
       let div_empty = document.querySelectorAll('div:empty');
       removeDOMElement(paywall[0].parentNode.parentNode, ...div_empty);
-      header_nofix(document.querySelector('main header'), 'BPC > no archive-fix');
+      header_nofix(document.querySelector('main header'), '', 'BPC > no archive-fix');
     }
   }
   let url = window.location.href;
@@ -297,6 +296,7 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
     let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
     for (let elem of lazy_images)
       elem.style = 'width: 95%;';
+    header_nofix(document.querySelector('footer'), 'article[id^="PURCHASE"]', 'BPC > no archive-fix');
   }
   let url = window.location.href;
   getArchive(url, 'div#remaining-paid-content[data-reduced="true"]', '', 'div.article__body', '', 'div#remaining-paid-content');
@@ -317,8 +317,14 @@ else if (matchDomain(nl_mediahuis_region_domains)) {
   let paywall_sel = 'div[data-testid="paywall-container"]';
   let paywall = document.querySelector(paywall_sel);
   if (paywall) {
+    let article_sel = 'div > article';
+    func_post = function () {
+      let article = document.querySelector(article_sel);
+      if (article && article.innerText.length < 1000)
+        header_nofix(document.querySelector('hgroup'), '', 'BPC > no archive-fix');
+    }
     let url = window.location.href;
-    getArchive(url, paywall_sel, '', 'article.premium-content', '', 'div > article');
+    getArchive(url, paywall_sel, '', 'article.premium-content', '', article_sel);
     window.setTimeout(function () {
       let overlay = document.querySelector('div.paywalled-article');
       if (overlay)
@@ -741,8 +747,15 @@ function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options =
   }
 }
 
-function header_nofix(header, msg = 'BPC > no fix') {
+function header_nofix(header, cond_sel = '', msg = 'BPC > no fix') {
   if (header && !document.querySelector('div#bpc_nofix')) {
+    if (cond_sel) {
+      let elem = document.querySelectorAll(cond_sel);
+      if (elem.length)
+        removeDOMElement(...elem);
+      else
+        return false;
+    }
     let nofix_div = document.createElement('div');
     nofix_div.id = 'bpc_nofix';
     nofix_div.style = 'margin: 20px; font-size: 20px; font-weight: bold; color: red;';

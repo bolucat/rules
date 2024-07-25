@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.5.1
+// @version         3.7.5.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -28,7 +28,6 @@
 // @connect         archive.md
 // @connect         archive.ph
 // @connect         archive.vn
-// @connect         archive.fo
 // @connect         och.to
 // @connect         webcache.googleusercontent.com
 // @grant           GM.xmlHttpRequest
@@ -183,6 +182,13 @@ else if (matchDomain('bild.de')) {
       if (content)
         content.style = 'margin: 10px;';
     }
+    let div_empty = document.querySelectorAll('div[style');
+    for (let elem of div_empty)
+      if (!elem.innerText.length)
+        removeDOMElement(elem);
+    let article = document.querySelector('main > article');
+    if (article && article.innerText.length < 1000)
+      header_nofix(document.querySelector('h2'), '', 'BPC > no archive-fix');
   }
   let url = window.location.href;
   getArchive(url, 'div.offer-module', '', 'article');
@@ -914,6 +920,7 @@ else if (matchDomain('welt.de')) {
       for (let elem of lazy_images)
         elem.style = 'width: 95%;';
     }
+    header_nofix(document.querySelector('article header'), 'img[alt="WELTplus"][loading]', 'BPC > no archive-fix');
   }
   let url = window.location.href;
   getArchive(url, 'div.contains_walled_content', '', 'article');
@@ -1131,8 +1138,15 @@ function clearPaywall(paywall, paywall_action) {
   }
 }
 
-function header_nofix(header, msg = 'BPC > no fix') {
+function header_nofix(header, cond_sel = '', msg = 'BPC > no fix') {
   if (header && !document.querySelector('div#bpc_nofix')) {
+    if (cond_sel) {
+      let elem = document.querySelectorAll(cond_sel);
+      if (elem.length)
+        removeDOMElement(...elem);
+      else
+        return false;
+    }
     let nofix_div = document.createElement('div');
     nofix_div.id = 'bpc_nofix';
     nofix_div.style = 'margin: 20px; font-size: 20px; font-weight: bold; color: red;';
@@ -1439,7 +1453,7 @@ function amp_redirect_not_loop(amphtml) {
     window.location.href = amphtml.href;
   } else {
     let header = (document.body && document.body.firstChild) || document.documentElement;
-    header_nofix(header, 'BPC > redirect to amp failed (disable amp-to-html extension/add-on or browser setting)');
+    header_nofix(header, '', 'BPC > redirect to amp failed (disable amp-to-html extension/add-on or browser setting)');
   }
 }
 
@@ -1546,11 +1560,14 @@ function getArticleJsonScript() {
   return json_script;
 }
 
-function getJsonUrlText(article, callback, article_id = '') {
+ffunction getJsonUrlText(article, callback, article_id = '', url_slash = false) {
   let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
   let json_url;
-  if (json_url_dom)
+  if (json_url_dom) {
     json_url = json_url_dom.href;
+    if (url_slash)
+      json_url = json_url.replace('/wp-json/', '//wp-json/');
+  }
   if (!json_url && article_id)
     json_url = window.location.origin + '/wp-json/wp/v2/posts/' + article_id;
   if (json_url) {
@@ -1596,7 +1613,7 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
     article.parentNode.replaceChild(article_new, article);
 }
 
-function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '') {
+function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', url_slash = false) {
   let paywall = document.querySelectorAll(paywall_sel);
   let article = document.querySelector(article_sel);
   if (paywall.length && article) {
@@ -1604,7 +1621,7 @@ function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options =
     getJsonUrlText(article, (json_text, article) => {
       if (json_text && article)
         getJsonUrlAdd(json_text, article, art_options);
-    }, article_id);
+    }, article_id, url_slash);
   }
 }
 

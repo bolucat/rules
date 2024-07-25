@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.6.0
+// @version         3.7.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -47,7 +47,6 @@
 // @connect         archive.md
 // @connect         archive.ph
 // @connect         archive.vn
-// @connect         archive.fo
 // @connect         webcache.googleusercontent.com
 // @exclude         *://*.dwcdn.net/*
 // @exclude         *://*.google.com/*
@@ -577,11 +576,7 @@ else if (matchDomain('autocar.co.uk')) {
 }
 
 else if (matchDomain('autosport.com')) {
-  let paywall = document.querySelector('div.ms-piano_article-banner');
-  if (paywall) {
-    removeDOMElement(paywall);
-    header_nofix(document.querySelector('div.ms-article-content > p'));
-  }
+  header_nofix(document.querySelector('div.ms-article-content > p'), 'div.ms-piano_article-banner');
 }
 
 else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
@@ -1243,7 +1238,7 @@ else if (matchDomain('bloomberg.com')) {
   window.setTimeout(function () {
     let shimmering = document.querySelector('article.first-story div[class*="Placeholder_placeholderParagraphWrapper-"]');
     if (shimmering) {
-      header_nofix(shimmering.parentNode, 'BPC > disable Dark Reader or enable Javascript for site');
+      header_nofix(shimmering.parentNode, '', 'BPC > disable Dark Reader or enable JavaScript for site');
     }
   }, 5000);
 }
@@ -1621,11 +1616,7 @@ else if (matchDomain('economist.com')) {
       removeDOMElement(paywall, hide_style);
     }
   } else if (window.location.pathname.startsWith('/podcasts/')) {
-    let paywall = document.querySelector('div[aria-labelledby="paywall-heading"]');
-    if (paywall) {
-      removeDOMElement(paywall);
-      header_nofix(document.querySelector('section[data-body-id]'));
-    }
+     header_nofix(document.querySelector('section[data-body-id]'), 'div[aria-labelledby="paywall-heading"]');
   } else {
     let paywall_sel = 'div#tp-regwall';
     let article_sel = 'main';
@@ -2968,7 +2959,7 @@ else if (matchDomain('theglobeandmail.com')) {
   let lazy_images = document.querySelectorAll('img[src^="data:image/"][data-src]');
   for (let elem of lazy_images)
     elem.src = elem.getAttribute('data-src');
-  let ads = 'div.c-ad, div[class^="BaseAd__"]';
+  let ads = 'div.c-ad--base';
   hideDOMStyle(ads);
 }
 
@@ -3408,12 +3399,7 @@ else if (matchDomain(no_dn_media_domains)) {
       if (blurred)
         blurred.removeAttribute('style');
     } else {
-      let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
-      if (fade) {
-        removeDOMElement(fade);
-        let header = document.querySelector('div.article-body > div');
-        header_nofix(header);
-      }
+       header_nofix(document.querySelector('div.article-body > div'), 'div[style*="background-image: linear-gradient"]');
     }
   } else {
     window.setTimeout(function () {
@@ -4112,8 +4098,15 @@ function clearPaywall(paywall, paywall_action) {
   }
 }
 
-function header_nofix(header, msg = 'BPC > no fix') {
+function header_nofix(header, cond_sel = '', msg = 'BPC > no fix') {
   if (header && !document.querySelector('div#bpc_nofix')) {
+    if (cond_sel) {
+      let elem = document.querySelectorAll(cond_sel);
+      if (elem.length)
+        removeDOMElement(...elem);
+      else
+        return false;
+    }
     let nofix_div = document.createElement('div');
     nofix_div.id = 'bpc_nofix';
     nofix_div.style = 'margin: 20px; font-size: 20px; font-weight: bold; color: red;';
@@ -4457,7 +4450,7 @@ function amp_redirect_not_loop(amphtml) {
     window.location.href = amphtml.href;
   } else {
     let header = (document.body && document.body.firstChild) || document.documentElement;
-    header_nofix(header, 'BPC > redirect to amp failed (disable amp-to-html extension/add-on or browser setting)');
+    header_nofix(header, '', 'BPC > redirect to amp failed (disable amp-to-html extension/add-on or browser setting)');
   }
 }
 

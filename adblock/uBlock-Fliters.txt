@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Wed, 24 Jul 2024 11:32:24 +0000
-! Diff-Path: ../patches/2024.7.24.807.patch#ublock-filters
+! Last modified: Thu, 25 Jul 2024 13:51:25 +0000
+! Diff-Path: ../patches/2024.7.25.863.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -7685,7 +7685,6 @@ animekaizoku.com##+js(aopr, decodeURI)
 pccomponentes.com##div[id^="div-gpt-ad-"]
 techradar.com##+js(aopr, _sp_._networkListenerData)
 gamesradar.com,techradar.com,tomsguide.com,tomshardware.com,whathifi.com##.mobile-leaderboard-320-50:upward([style])
-androidcentral.com,gamesradar.com,livescience.com,pcgamer.com,space.com,techradar.com,tomsguide.com,tomshardware.com,whathifi.com,windowscentral.com##.related-articles-block
 androidcentral.com,gamesradar.com,livescience.com,pcgamer.com,space.com,techradar.com,tomsguide.com,tomshardware.com,whathifi.com,windowscentral.com##.van_taboola
 whathifi.com##.dfp-leaderboard-container
 whathifi.com###ultimedia_wrapper
@@ -9264,6 +9263,7 @@ bydleni.cz###clickLeft
 ! <<<<< Liste FR >>>>>
 *$script,3p,domain=faselhd-watch.shop|kickassanime.mx,badfilter
 *$xhr,3p,domain=faselhd-watch.shop|kickassanime.mx,badfilter
+wiflix-catalogue.pro#@#a[href*=".php"]
 ! <<<<< Oficjalne polskie filtry przeciwko alertom o Adblocku >>>>>
 dziennik.pl#@#+js(abort-current-script, parseInt, adblock)
 ! END: Regional lists
@@ -10346,17 +10346,21 @@ thumpertalk.com##a[data-autolink]::after
 thumpertalk.com##a[data-autolink]:style(text-decoration: none !important; color: inherit !important; pointer-events: none;)
 thumpertalk.com##.ipsResponsive_block
 ||rxlife.net/src/adb.js
+*$script,3p,denyallow=google.com|gstatic.com,domain=severeporn.com
+||ohjfacva.com^
+##.fp-ui > a[href][target="_blank"][style^="position: absolute; inset: 0px;"]
+mitaku.net##+js(set, globalThis, null)
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
-@@*$ghide,domain=gplinks.*|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com|djrachit.com|120fpsconfig.com|sololevelinghindi.online|pharmastudyaid.com
-@@*$script,xhr,to=googlesyndication.com|doubleclick.net,from=techreviewhere.com|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com|djrachit.com|120fpsconfig.com|sololevelinghindi.online|pharmastudyaid.com
-@@||gplinks.in/track/$script,xhr,domain=gplinks.*|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com|djrachit.com|120fpsconfig.com|sololevelinghindi.online|pharmastudyaid.com
-pharmastudyaid.com,sololevelinghindi.online,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com,120fpsconfig.com##center:others()
-pharmastudyaid.com,sololevelinghindi.online,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com,120fpsconfig.com###SmileyBanner:remove()
-pharmastudyaid.com,sololevelinghindi.online,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com,120fpsconfig.com##+js(aopw, AdBDetected)
-pharmastudyaid.com,sololevelinghindi.online,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com,120fpsconfig.com##+js(set, count, 0)
-pharmastudyaid.com,sololevelinghindi.online,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com,120fpsconfig.com##[id*="iframe"], [id*="gpt_unit"], [id*="div-gpt-"]:style(height:0.0001px !important;)
+@@*$ghide,domain=gplinks.*|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com|djrachit.com|120fpsconfig.com|sololevelinghindi.online|pharmastudyaid.com|sarkisozleri.pro
+@@*$script,xhr,to=googlesyndication.com|doubleclick.net,from=techreviewhere.com|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com|djrachit.com|120fpsconfig.com|sololevelinghindi.online|pharmastudyaid.com|sarkisozleri.pro
+@@||gplinks.in/track/$script,xhr,domain=gplinks.*|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com|djrachit.com|120fpsconfig.com|sololevelinghindi.online|pharmastudyaid.com|sarkisozleri.pro
+sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com,120fpsconfig.com##center:others()
+sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com,120fpsconfig.com###SmileyBanner:remove()
+sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com,120fpsconfig.com##+js(aopw, AdBDetected)
+sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com,120fpsconfig.com##+js(set, count, 0)
+sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,odiaalbumsong.com,djrkmusicjaunpur.in,cmsarkariyojana.com,apkeclipse.com,decidewhy.com,insurelist.online,recipenames.com,filmfliqz.co,morestate.pro,puresports.pro,funkeykida.com,oriyaremix.com,120fpsconfig.com##[id*="iframe"], [id*="gpt_unit"], [id*="div-gpt-"]:style(height:0.0001px !important;)
 gplinks.*##a.exclude-pop.smartlink, .exclude-pop.quiz-container, #PlayQuiz, #quiz-frame, .exclude-popad
 ||gamezop.com^$domain=gplinks.*
 gplinks.*##+js(set, blurred, false)
@@ -11290,6 +11294,11 @@ exactpay.online##form > div:style(display: block !important;)
 litonmods.com##+js(no-fetch-if, googlesyndication)
 litonmods.com###wpsafe-link:style(display: block !important;)
 litonmods.com###wpsafe-link:others()
+.gif^$image,domain=universitiesonline.xyz
+universitiesonline.xyz##+js(no-fetch-if, googlesyndication)
+universitiesonline.xyz##.popup
+universitiesonline.xyz##.overlay
+universitiesonline.xyz###tp-generate, #tp-snp2:style(display: block !important;)
 !#if env_mobile
 ! *** filters/filters-mobile.txt ***
 !----- 2020 -----
@@ -13882,7 +13891,7 @@ moviezwap.*##[style^=" width: 305px;"][type^="button"][onclick^="window.location
 ! ##+js(acs, String.fromCharCode, /btoa|break/)
 0123movies.*,2conv.com,anonymous-links.com,bdupload.*,dl-protect.*,dl-protect1.*,doctor-groups.com,dubhappy.net,egyanime.com,filmesonlinehd1.org,firstonetv.*,flvto.biz,goalup.live,gomovieshub.io,gplinks.co,hdmovieplus.*,hdss.*,hydracdn.*,kissanime.*,linkshorts.*,manga-raw.club,mangamanga.*,modapkfile.com,movieshub.*,movs4u.*,multifaucet.org,nbaup.live,o2tvseries.website,pewgame.com,q1-tdsge.com,readm.org,shortearn.*,shrlink.top,shugraithou.com,sports24.*,url4cut.xyz,ustream.*,vexfile.com,vexmovies.*,vidlox.*,voe.sx,watchtvseries.video,yesmovies123.me,yifysubtitles.*##+js(acs, String.fromCharCode, /btoa|break/)
 ! ##+js(aost, Math.random, /\st\.[a-zA-Z]*\s/)
-cablegratis.online,filmypur.*,kmo.to,nuroflix.*,onifile.com,oxanime.com,pelis28.*,pelisplusgo.*,pelisplusxd.*,pewgame.com,piraproxy.app,repelisgoo.*,repelisgooo.*,repelisgt.*,repelisxd.*,sexphimhd.net,theproxy.*,tvply.*,updatesmovie.xyz,vidlox.*,voirseries.io,watchfree.*##+js(aost, Math.random, /\st\.[a-zA-Z]*\s/)
+cablegratis.online,filmypur.*,kmo.to,nuroflix.*,onifile.com,oxanime.com,pelis28.*,pelisplusgo.*,pelisplusxd.*,pewgame.com,piraproxy.app,repelisgoo.*,repelisgooo.*,repelisgt.*,repelisxd.*,severeporn.com,sexphimhd.net,theproxy.*,tvply.*,updatesmovie.xyz,vidlox.*,voirseries.io,watchfree.*##+js(aost, Math.random, /\st\.[a-zA-Z]*\s/)
 ! ##+js(acs, globalThis, break;case)
 10starhd.*,1337xx.to,alphagames4u.com,anysex.com,asianclub.*,cheatermad.com,downloadpirate.com,embed.casa,embedsito.com,exee.app,f2movies.to,fembed.com,fileone.tv,films5k.com,gcloud.live,hdss.*,imx.to,javideo.pw,javstream.top,just-upload.com,mavplay.*,moviesflix.*,ouo.*,playfinder.xyz,projectfreetv.*,qdembed.com,streamvid.net,svpri.xyz,ujav.me,videobb.*,voirseries.*##+js(acs, globalThis, break;case)
 ! ##+js(acs, JSON.parse, Promise)
@@ -19129,14 +19138,10 @@ streaming-french.net##^script:has-text(BetterJsPop.add)
 secretstash.in##+js(noeval)
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect-rule=noopjs,domain=liveone.com
 /freemcserver\.net\/assets\/[a-zA-Z]{10,30}\/[a-zA-Z]{10,30}\.js\?v=17/$script,1p,match-case,important,domain=freemcserver.net|~panel.freemcserver.net
-*$xhr,script,redirect-rule=noopjs,domain=freemcserver.net
-*$image,redirect-rule=1x1.gif,domain=freemcserver.net
 @@||freemcserver.net^$script,1p
 @@||freemcserver.net^$ghide
 @@||stpd.cloud/saas/$script,domain=freemcserver.net
 freemcserver.net,~panel.freemcserver.net##+js(nostif, '])?)
-freemcserver.net##+js(nostif, /\w\'\+\'\w/)
-freemcserver.net##+js(nostif, 0x)
 @@||orbispatches.com^$ghide
 orbispatches.com##.adsbyvli:style(max-height: 1px !important;)
 @@||vlitag.com^$script,xhr,domain=orbispatches.com
@@ -21555,6 +21560,7 @@ www.wp.pl##div:has(> div:first-child:empty + div:empty)
 money.pl##div:has-text(> style:has-text(flex: 0 0 100%))
 wiadomosci.wp.pl##div:has(> div[data-native-adv] > a[href*="utm_"])
 !#endif
+~www.wp.pl,wp.pl##header + div[data-reactid]:has(> div:only-child > div:first-child > div:only-child > a > div:only-child:empty)
 pilot.wp.pl##div[class]:has(> img[src] + div + style:has-text(flex: 0 0 100%))
 benchmark.pl##style:has-text(right:0;top:0;bottom:0;left:0;margin:auto;position:absolute;):upward(1)
 money.pl##section + div:has(> iframe[src*="promoted"])
@@ -21570,7 +21576,7 @@ genialne.pl,jastrzabpost.pl##div[style="background: #ddd9d9; margin-bottom: 10px
 wiadomosci.wp.pl##div:has(> div:first-child > img[src^="https://v.wpimg.pl/"][height="45"][width="56"])
 pysznosci.pl###bottom-sticky-container > div:matches-attr(class=/^[a-zA-Z]{2}$/):not([id])
 parenting.pl,abczdrowie.pl##main + div:has(> div > a img[src^="https://v.wpimg.pl/"])
-kobieta.wp.pl##div[data-alternative-wrapper]:has(> div > div > a > img[src^="https://v.wpimg.pl/"][style])
+kobieta.wp.pl,wiadomosci.wp.pl##div[data-alternative-wrapper]:has(> div > div > a > img[src^="https://v.wpimg.pl/"])
 deliciousmagazine.pl##div[style="min-height: 400px; height: auto;"]:has([class^="cdc-products"])
 turystyka.wp.pl##[data-reactid]:has(> div > div > span > div > .border > .container > .w_boxContent > a.w_contentLink[target="_blank"][rel="noreferrer noopener"] > img[width="100%"])
 abczdrowie.pl,domodi.pl##*:has(> div:first-child:has(> div:first-child > a > img[src^="https://v.wpimg.pl/"]):not([alt], [id], [width], [data-src]) + div:empty)
@@ -21579,6 +21585,7 @@ sportowefakty.wp.pl##.article > .article__top + div:has(> div:last-child > div >
 sportowefakty.wp.pl##.article-footer + div:has(> div:last-child > div > div > div > div[id^="div-gpt-ad-"])
 ! against blinking ads
 kobieta.wp.pl,wiadomosci.wp.pl,film.wp.pl##header + [data-alternative-wrapper]:has(> div > div > a > img[src^="https://v.wpimg.pl/"])
+~www.wp.pl,wp.pl##div:matches-css-after(content:/R.*E.*K.*L.*A.*M.*A/):upward(1):remove()
 @@||googletagmanager.com/gtm.js$script,domain=abczdrowie.pl
 ||adrino.io^
 ||adcontext.pl^
@@ -21763,7 +21770,7 @@ clarifystraight.com##+js(nostif, pop)
 bagpipe.news##+js(acs, document.getElementById, fakeElement)
 pepperlive.info##+js(noeval-if, fairAdblock)
 pepperlive.info##^script:has-text(decodeURIComponent(escape(r)))
-##[style="position:absolute;top:0;left:0;width: 100%;height: 100%;z-index:2147483647"]
+##.jwplayer ~ div[style="position:absolute;top:0;left:0;width: 100%;height: 100%;z-index:2147483647"]
 bunkr.la##+js(acs, document.createElement, click)
 *$script,3p,denyallow=cdn.plyr.io|b-cdn.net,domain=bunkr.la
 ||bunkr.la/build/lv.js$script,1p
@@ -22390,12 +22397,11 @@ moviesapi.club##+js(aopr, my_pop)
 bestx.stream,moviesapi.club##+js(nowoif)
 moviesapi.club,bestx.stream,boosterx.stream,watchx.top##+js(no-fetch-if, googlesyndication)
 animesaga.in,moviesapi.club,bestx.stream,watchx.top##+js(set, S_Popup, 10)
-||hmxg5mhyx.com^
 bestx.stream,boosterx.stream,moviesapi.club,stream.anplay.in###video_player ~ div[id]:has(> div[style^="position:fixed;inset:0px;z-index"] > a[target="_blank"])
 ! Clickadu reinjection
 agupulsa.xyz,bunkrr.*,fapfappy.com,homemoviestube.com,jav.direct,javmix.tv,klmanga.*,komikmanhwa.me,lovingsiren.com,manga1001.*,mangaraw.*,mangarawjp.*,mesex.pro,netfapx.com,syosetu.*,vlxyz.tv,xanimeporn.com##+js(acs, WebAssembly, atob)
 /aas/r45d/vki/*$script,redirect=noop.js
-/^https:\/\/[a-z]{8,12}\.com\/[\/a-z]{2,}\?(?:[a-z]+=(?:\d+|[a-z]+)&)*?id=[12]\d{6}/$script,3p,to=com,match-case,header=x-js-ab2
+/^https:\/\/[a-z]{8,12}\.com\/en\/(?:[a-z]{2,5}\/){2}[a-z]{2,}\?(?:[a-z]+=(?:\d+|[a-z]+)&)+?id=[12]\d{6}/$script,3p,match-case,header=etag
 gaminginfos.com##+js(rmnt, script, /userAgent|adb|htmls/)
 gaminginfos.com##+js(aopr, document.write)
 tinxahoivn.com##+js(rmnt, script, myModal)
@@ -23230,12 +23236,21 @@ app.vaia.com##aside > .ng-star-inserted
 */dyasds/$media,redirect=noopmp3-0.1s,domain=111.90.141.252
 ! wsj ads
 ||cloudfront.net/o?fqdn=$xhr,3p,domain=marketwatch.com|wsj.com
-*$media,redirect=noopmp3-0.1s,domain=filmizlehdfilm.com|filmizletv.*
-filmizlehdfilm.com,filmizletv.*##+js(nano-sib)
-filmizlehdfilm.com,filmizletv.*##+js(set, reklam_1_saniye, 0)
-filmizlehdfilm.com,filmizletv.*##+js(set, reklam_1_gecsaniye, 0)
-filmizlehdfilm.com,filmizletv.*##a[onclick^="tiklakapat"]
-filmizlehdfilm.com,filmizletv.*###rekgecyen
+*$media,redirect=noopmp3-0.1s,domain=filmizlehdfilm.com|filmizletv.*|fullfilmizle.cc
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##+js(nano-sib)
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##+js(set, reklam_1_saniye, 0)
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##+js(set, reklam_1_gecsaniye, 0)
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##+js(set, reklamsayisi, 1)
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##+js(set, reklam_1, )
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##+js(nostif, psresimler)
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##a[onclick^="tiklakapat"]
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc###rekgecyen
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##.r_header_0
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##.r_header_2
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##.r_filmbaslik-alti_0
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##.footer_fad
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##a.play_ust_txt
+filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##body.pageskin:style(margin-top: 0px !important;)
 gourmetsupremacy.com##+js(nostif, null)
 @@||click-me.today^$ghide
 cryptobr.biz###player:style(display:block !important)
@@ -23581,7 +23596,7 @@ idlixofficials.com,idlixplus.com,idlixplus.net,idlixofficial.co,idlixofficial.ne
 idlixofficials.com,idlixplus.com,idlixplus.net,idlixofficial.co,idlixofficial.net##+js(aost, document.querySelector, /(?!\bjquery\b)/)
 idlixofficials.com,idlixplus.com,idlixplus.net,idlixofficial.co,idlixofficial.net#@#.module_single_ads
 idlixofficialx.com,idlixplus.co##+js(no-fetch-if, doubleclick.net/instream/ad_status.js, war:doubleclick_instream_ad_status.js)
-idlixofficialx.net##+js(aost, document.querySelector, /^((?!jquery|wpdiscuz|recaptcha|cssHas).)*$/)
+idlixofficialx.net##+js(aost, document.querySelector, /^((?!jquery|wpdiscuz|recaptcha|cssHas|orchestrate).)*$/)
 @@||choralia.net/popu.js$script
 pl#@#.ad
 pl#@#[class$="-ads"]

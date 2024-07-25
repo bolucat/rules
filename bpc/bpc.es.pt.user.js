@@ -698,8 +698,15 @@ function clearPaywall(paywall, paywall_action) {
   }
 }
 
-function header_nofix(header, msg = 'BPC > no fix') {
+function header_nofix(header, cond_sel = '', msg = 'BPC > no fix') {
   if (header && !document.querySelector('div#bpc_nofix')) {
+    if (cond_sel) {
+      let elem = document.querySelectorAll(cond_sel);
+      if (elem.length)
+        removeDOMElement(...elem);
+      else
+        return false;
+    }
     let nofix_div = document.createElement('div');
     nofix_div.id = 'bpc_nofix';
     nofix_div.style = 'margin: 20px; font-size: 20px; font-weight: bold; color: red;';
@@ -754,7 +761,7 @@ function amp_redirect_not_loop(amphtml) {
     window.location.href = amphtml.href;
   } else {
     let header = (document.body && document.body.firstChild) || document.documentElement;
-    header_nofix(header, 'BPC > redirect to amp failed (disable amp-to-html extension/add-on or browser setting)');
+    header_nofix(header, '', 'BPC > redirect to amp failed (disable amp-to-html extension/add-on or browser setting)');
   }
 }
 

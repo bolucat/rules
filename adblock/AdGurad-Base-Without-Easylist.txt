@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: ezC8ORCjKkUlaYG2M5DWKg
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1721842589-3600.patch
+! Checksum: /Flbj2k8j1s90w53yjuGoQ
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1721929030-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.45.32
-! TimeUpdated: 2024-07-24T17:31:33+00:00
+! Version: 2.3.45.46
+! TimeUpdated: 2024-07-25T17:31:32+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -78,6 +78,7 @@
 !
 !
 !
+/^139\.45\.197\.2(4[0-9]|5[0-4]):/
 ||prwfwayui.com^
 ||pteegostie.com^
 ||frutwafiwah.com^
@@ -7916,6 +7917,7 @@ gearingcommander.com##+js(no-setTimeout-if, fnMaskAdBlock)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/182040
 ! https://github.com/AdguardTeam/AdguardFilters/issues/179916
 ! https://github.com/AdguardTeam/AdguardFilters/issues/175439
+@@||veev.to^$generichide
 veev.to##+js(set-constant, fapit.check, noopFunc)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/175266
 @@||rddywd.com/advertising.js$domain=herokuapp.com
@@ -9265,6 +9267,7 @@ phimlongtieng.net,abysscdn.com,watchx.top##+js(no-fetch-if, pagead2.googlesyndic
 ! https://github.com/AdguardTeam/AdguardFilters/issues/160020
 ! https://github.com/AdguardTeam/AdguardFilters/issues/151674
 ! https://github.com/AdguardTeam/AdguardFilters/issues/150149
+! Vidguard
 ||heardaccumulatebeans.com/*.js$script,redirect-rule=noop.js
 ||oaphoace.net/*/$script,redirect-rule=noop.js
 ||acacdn.com/script/*.js$script,redirect-rule=noop.js
@@ -14867,7 +14870,6 @@ readcomiconline.li##+js(no-xhr-if, /bidgear\.com|mgid\.com|pagead2\.googlesyndic
 ||kimcartoon.li/Ads/$subdocument,important
 ||kisscartoon.se/Ads/$subdocument,important
 kisstvshow.net,lifestylehack.info,keephealth.info,kimcartoon.li,kissorg.net,kisstvshow.to,kissasian.*##+js(abort-current-script, setTimeout, /i.*\..*i.*m.*g.*u.*r.*\..*c.*o.*m/)
-kisstvshow.net,lifestylehack.info,keephealth.info,kimcartoon.li,kissorg.net,kisstvshow.to,kissasian.*##+js(remove-node-text, script, Check)
 kisstvshow.net,lifestylehack.info,keephealth.info,kimcartoon.li,kissorg.net,kisstvshow.to,kissasian.*#$##divContentVideo { display: block !important; }
 kisstvshow.net,lifestylehack.info,keephealth.info,kimcartoon.li,kissorg.net,kisstvshow.to,kissasian.*#?##centerDivVideo > div[id]:has(> img[src^="https://i.imgur.com"])
 kisstvshow.net,lifestylehack.info,keephealth.info,kimcartoon.li,kissorg.net,kisstvshow.to,kissasian.*##+js(set-constant, cpe, false)
@@ -26397,6 +26399,9 @@ vatantat.ru##a[href="https://pobeda.onf.ru/"]
 !---------------------------------------------------------------------
 ! NOTE: Thai
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/184497
+||9king888.cc^
+avsubthai.me###page > center
 ! https://github.com/AdguardTeam/AdguardFilters/issues/176223
 ||goldtraders.or.th/uploads/banner/
 ||goldtraders.or.th/*/advertisement.gif
@@ -26999,6 +27004,9 @@ asilmedia.org###banner
 !---------------------------------------------------------------------
 ! NOTE: Vietnamese
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/184486
+phimvsub.cc##.movie-banner
+||phimvsub.cc/wp-banner/*/banner.gif
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183464
 animevietsub.*##.Ads
 animevietsub.*##div[id$="-catfixx"]
@@ -28363,7 +28371,7 @@ smycdn.ru,myvidster.com,torrentmac.net,illink.net,123ssgm.cc,skidrowcodex.net,me
 godzcast.com,vipbox.*,nolive.me,cat-a-cat.net,comando.to,gogoplay5.com,asianembed.io,voirseries.io,seeeed.xyz,arabseed.*,crichd.*,mangadna.com,tomatomatela.com,akwam.*,megafilmeshd50.com,prmovies.ph,uploadrar.com,go-stream.site,mp3juice.info,gogoplay.*,freemoviesfull.com,nxbrew.com,stape.fun,gomovies.*,xsanime.com,rodanesia.com,gnula.nu,filmovi.co,123movies2022.org,thenetnaija.co,extralinks.*,4anime.gg,deportealdia.live,noweconomy.live,mangalek.com,skidrowcodex.net,katflys.com,watchonlinemovies50.com.pk,viprow.*,strikeout.*,emule-island.eu,hdfilme.cx,masteredutech.com,dl-protect.info,zone-telechargement.work,123moviesc.*,pahe.ph,adshort.*,nuroflix.club,mlsbd.shop,appvn.com,yifysubtitles.vip,oploverz.*,jkanime.net,tamilfreemp3songs.com,ostreaming.tv,govid.cyou,watchseries.*,romshub.com,mp3juices.cc,comedyshow.to,streamta.*,watchdoctorwhoonline.com,allinonedownloadzz.site,gdriveplayer.us,watchtheoffice.cc,watchcharmedonline.com,egyshare.cc,vidembed.*##+js(abort-current-script, Promise, delete window)
 1qwebplay.xyz,hdfungamezz.xyz,elgoles.pro,illink.net,lookmovie.ag##+js(abort-on-property-write, zfgproxyhttp)
 watchseries.tube,chrisellisonllc.xyz,arcasiangrocer.store,hdfungamezz.xyz,poscitechs.xyz,rapelust.com##+js(abort-current-script, Object.create, break;case)
-vgfplay.xyz,elbailedeltroleo.site,tioplayer.com,listeamed.net,adblockplustape.xyz,lol-foot.ru,coolrea.link,tapelovesads.org,bembed.net,fslinks.org,gettapeads.com,tapeadsenjoyer.com,embedv.net,vembed.net,vid-guard.com,noblocktape.com,antiadtape.com,lilymanga.net,hexupload.net,filepress.fun,apkmody.fun,daddylive.*##+js(abort-on-stack-trace, String.prototype.charAt, $0)
+go-streamer.net,vgfplay.xyz,elbailedeltroleo.site,tioplayer.com,listeamed.net,adblockplustape.xyz,lol-foot.ru,coolrea.link,tapelovesads.org,bembed.net,fslinks.org,gettapeads.com,tapeadsenjoyer.com,embedv.net,vembed.net,vid-guard.com,noblocktape.com,antiadtape.com,lilymanga.net,hexupload.net,filepress.fun,apkmody.fun,daddylive.*##+js(abort-on-stack-trace, String.prototype.charAt, $0)
 dlhd.so,lewblivehdplay.ru,topcartoons.tv,hdtoday.tv,watchcartoononline.bz,hitsports.pro,chrisellisonllc.xyz,arcasiangrocer.store,1qwebplay.xyz,buffsports.me,itopmusic.com,projectfreetv.mx,streamsb.online,fstream365.com,holymanga.net,januflix.expert,mangareader.to,9animetv.to,rufiguta.com,buffsports.stream,moddroid.com,coolcast2.com,klmanga.*,manga1000.*,watchseries1.video,universanime.co,megafilmeshdseries.com,harimanga.com,theflixer.tv,gmanga.me,hentaizm.fun,apkmody.io,netcine.*,kick4ss.com,voirseries.io,mangatuli.com,theproxy.to,y2mate.com,pelismart.com,movies123.pk,manga-raw.club##+js(no-setInterval-if, [$.)
 dlhd.so,lewblivehdplay.ru,topcartoons.tv,hdtoday.tv,watchcartoononline.bz,hitsports.pro,chrisellisonllc.xyz,arcasiangrocer.store,1qwebplay.xyz,buffsports.me,itopmusic.com,projectfreetv.mx,streamsb.online,fstream365.com,holymanga.net,januflix.expert,mangareader.to,9animetv.to,rufiguta.com,buffsports.stream,moddroid.com,coolcast2.com,klmanga.*,manga1000.*,watchseries1.video,universanime.co,megafilmeshdseries.com,harimanga.com,theflixer.tv,gmanga.me,hentaizm.fun,apkmody.io,netcine.*,kick4ss.com,voirseries.io,mangatuli.com,theproxy.to,y2mate.com,pelismart.com,movies123.pk,123movieslinks.live,kickass.ws,kickass.love,kissanime.nz,repackov.com##+js(no-setTimeout-if, [$.)
 dlhd.so,lewblivehdplay.ru,topcartoons.tv,hdtoday.tv,watchcartoononline.bz,hitsports.pro,chrisellisonllc.xyz,arcasiangrocer.store,1qwebplay.xyz,buffsports.me,itopmusic.com,projectfreetv.mx,streamsb.online,holymanga.net,januflix.expert,mangareader.to,9animetv.to,rufiguta.com,buffsports.stream,moddroid.com,coolcast2.com,klmanga.*,manga1000.*,watchseries1.video,universanime.co,megafilmeshdseries.com,harimanga.com,theflixer.tv,gmanga.me,hentaizm.fun,apkmody.io,netcine.*,ninjashare.to,kick4ss.com,voirseries.io,turkish123.com,mangatuli.com,theproxy.to,y2mate.com,noweconomy.live,pelismart.com,downloadingadda.com,hhdstreams.club,uhdstreams.club,beef1999.blogspot.com,movies123.pk,sportstreamtv.live,samehadaku.vip,kickass.ws,kickass.love,animafan.biz,manga-raw.club,kissanime.nz,repackov.com##+js(addEventListener-defuser, , [$.)
@@ -28652,11 +28660,6 @@ haes.tech##+js(window.open-defuser)
 scoresports786.com##+js(abort-on-property-read, newTab)
 scoresports786.com##+js(abort-on-property-write, xorEncryptDecrypt)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/170296
-! https://github.com/AdguardTeam/AdguardFilters/issues/170170
-swatchseries.mx##+js(set-cookie, __pf, 1)
-! https://github.com/AdguardTeam/AdguardFilters/issues/169887
-myflixer.is,kerapoxy.cc,myflixerz.nl,flixwave.to,anix.to,fmoviesz.to,aniwave.to##+js(window.open-defuser)
-myflixer.is,kerapoxy.cc,myflixerz.nl,flixwave.to,anix.to,fmoviesz.to,aniwave.to##+js(set-cookie, __pf, 1)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/8265
 xxxx.se##+js(set-cookie, pu_count, 1)
 ! https://forum.adguard.com/index.php?threads/5-missed-ads-19-nsfw.24974/
@@ -28878,9 +28881,9 @@ kurakura21.space##+js(noeval-if, UserCustomPop)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/158018
 tuborstb.co##+js(window.open-defuser)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/157909
-vgfplay.xyz,elbailedeltroleo.site,tioplayer.com,listeamed.net,bembed.net,fslinks.org,embedv.net,vembed.net,vid-guard.com,v6embed.xyz,gaystream.online,vgembed.com##+js(window.open-defuser)
-vgfplay.xyz,elbailedeltroleo.site,tioplayer.com,listeamed.net,bembed.net,fslinks.org,embedv.net,vembed.net,vid-guard.com,v6embed.xyz,gaystream.online,vgembed.com##+js(abort-on-stack-trace, open, _openAd)
-vgfplay.xyz,elbailedeltroleo.site,tioplayer.com,listeamed.net,bembed.net,fslinks.org,embedv.net,vembed.net,vid-guard.com,v6embed.xyz,gaystream.online,vgembed.com##+js(abort-on-stack-trace, document.createElement, afterOpen)
+go-streamer.net,vgfplay.xyz,elbailedeltroleo.site,tioplayer.com,listeamed.net,bembed.net,fslinks.org,embedv.net,vembed.net,vid-guard.com,v6embed.xyz,gaystream.online,vgembed.com##+js(window.open-defuser)
+go-streamer.net,vgfplay.xyz,elbailedeltroleo.site,tioplayer.com,listeamed.net,bembed.net,fslinks.org,embedv.net,vembed.net,vid-guard.com,v6embed.xyz,gaystream.online,vgembed.com##+js(abort-on-stack-trace, open, _openAd)
+go-streamer.net,vgfplay.xyz,elbailedeltroleo.site,tioplayer.com,listeamed.net,bembed.net,fslinks.org,embedv.net,vembed.net,vid-guard.com,v6embed.xyz,gaystream.online,vgembed.com##+js(abort-on-stack-trace, document.createElement, afterOpen)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/157993
 porntrex.com##+js(abort-on-property-write, __showPush)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/157705
@@ -33164,7 +33167,7 @@ _clickunder&pb=$popup
 .com/pw/waWQiOjEw
 ! Clickadu
 ! ex. https://kaqppajmofte.com/en/owh/avw?spfrctux=ude&qdsp=jzub&dce=808204&jvkcce=391260&iilmwn=auge&id=1971897
-/^https:\/\/[a-z]{8,12}\.com\/[\/a-z]{2,}\?(?:[a-z]+=(?:\d+|[a-z]+)&)*?id=[12]\d{6}/$script,third-party,match-case,header=x-js-ab2
+/^https:\/\/[a-z]{8,12}\.com\/en\/(?:[a-z]{2,5}\/){2}[a-z]{2,}\?(?:[a-z]+=(?:\d+|[a-z]+)&)*?id=[12]\d{6}/$script,third-party,match-case,header=etag
 ?zoneid=*&ab=1|$script,third-party
 /get/*?zoneid=*&jp=$script
 ! https://github.com/AdguardTeam/AdguardFilters/pull/83787
@@ -33653,6 +33656,8 @@ $xmlhttprequest,third-party,denyallow=authkong.com|rsc.cdn77.org|linkvertise.com
 !
 ! NOTE: Specific rules
 !
+thebarentsobserver.com##div[class*="field-name-adsense"]
+livemint.com##.rightblockAd
 pornwex.tv##+js(addEventListener-defuser, click, fp-screen)
 pornhoarder.net##.cdl-banner a[rel="nofollow"] > img
 pdfconvertonline.com##.section-banner
@@ -33708,7 +33713,6 @@ txxx.com##.pplayer div.jw-title-secondary:has(a[target="_blank"])
 txxx.com#?#.video-content > div[class] > div.pwa-ad ~ div[class]:has(span:contains(AD))
 dev.to##.js-billboard-container
 tech5s.co,yoshare.net##center:has(> div > button[onclick^="handleDownload("])
-mangafire.to##+js(window.open-defuser)
 bing.com##.b_bza_pole
 nytimes.com##div:has(> div[data-testid="StandardAd"]:only-child)
 hentaigasm.com##.adv
@@ -35776,7 +35780,7 @@ wcofun.org##div[style="margin-bottom:30px"] div[style^="float:right;"]:not([clas
 wcofun.org##div[class^="bg-ssp-"]
 ip.me##.pt-5 > div.col-md-6 > p > a[target="_blank"]
 ||game.downloadtanku.org/wp-content/plugins/cm-pop-up-banners/
-vgfplay.xyz,elbailedeltroleo.site,tioplayer.com,listeamed.net,bembed.net,fslinks.org,embedv.net,vembed.net,vid-guard.com,v6embed.xyz,gaystream.online,vgembed.com##body > div[class]:empty
+go-streamer.net,vgfplay.xyz,elbailedeltroleo.site,tioplayer.com,listeamed.net,bembed.net,fslinks.org,embedv.net,vembed.net,vid-guard.com,v6embed.xyz,gaystream.online,vgembed.com##body > div[class]:empty
 indy100.com###thirdparty01
 stuff.tv##.c-squirrel-embed
 porntrex.com##iframe.ipp
@@ -42026,7 +42030,7 @@ claimcrypto.cc##.form-group > ins[class][style="display:inline-block;width:300px
 skyracing.com.au##img[src^="/assets/website_images/images/Advertisements/"]
 ||wetpussygames.com/includes/skin-istripper.js
 ||static.opensubtitles.org/libs/js/prop-pu.js
-vgfplay.xyz,elbailedeltroleo.site,tioplayer.com,listeamed.net,bembed.net,fslinks.org,embedv.net,vembed.net,vid-guard.com,v6embed.xyz,vgembed.com,vgfplay.com,fusevideo.net,erome.com,coolors.co,pstream.net,kropic.com##body > a[target="_blank"]
+go-streamer.net,vgfplay.xyz,elbailedeltroleo.site,tioplayer.com,listeamed.net,bembed.net,fslinks.org,embedv.net,vembed.net,vid-guard.com,v6embed.xyz,vgembed.com,vgfplay.com,fusevideo.net,erome.com,coolors.co,pstream.net,kropic.com##body > a[target="_blank"]
 ||kropic.com/js/ad.js
 ||gosexpod.com/videos/xts3.php
 ||gosexpod.com/exad/
@@ -50352,7 +50356,7 @@ homeworklib.com#?#.span8 > div.box:has(> div.adsbyvli)
 news18.com#?##right > div[style="height:250px;"]:has(> div.expandoad)
 news18.com#?#.recomeded_story > ul > li:has(> div[style]> div[class*="dfp-ad"])
 addmusictophoto.com#?#h6:contains(/^Advertisement$/)
-fromtexttospeech.com#?#h2:contains(/^Advertisement$/)
+thebarentsobserver.com,fromtexttospeech.com#?#h2:contains(/^Advertisement$/)
 cgtips.org#?#.sidebar > div.widget:has(> div[class] ins.adsbygoogle)
 sweethentai.com#?##picture > center:has(> b:contains(Recommended Hentai games))
 dmitripavlutin.com#?#header + div[class] > main + aside[class] > div[class]:has(> div[class] > div > script[src^="//cdn.carbonads.com/"])
@@ -50985,6 +50989,10 @@ circleofcricket.com#$##myModal { display: none !important; }
 circleofcricket.com##div.container-full.add:has(> a[href]:first-child)
 ||circleofcricket.com/assets/adv/
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/169887
+swatchseries.mx,mangafire.to,myflixer.is,kerapoxy.cc,myflixerz.nl,flixwave.to,anix.to,fmoviesz.to,aniwave.to##+js(window.open-defuser)
+swatchseries.mx,mangafire.to,myflixer.is,kerapoxy.cc,myflixerz.nl,flixwave.to,anix.to,fmoviesz.to,aniwave.to##+js(set-cookie, __pf, 1)
+!
 ! instagram.com
 instagram.com##+js(json-prune, data.xdt_injected_story_units.ad_media_items)
 ||instagram.com/api/v*/injected_story_units/
@@ -51518,6 +51526,7 @@ me##body[bgcolor="#000000"] > div[id="adbtm"][style^="position: fixed;"]
 apl100.me,apl101.me,apl102.me,apl103.me,apl104.me,apl105.me,apl106.me,apl107.me,apl108.me,apl109.me,apl110.me,apl111.me,apl112.me,apl113.me,apl114.me,apl115.me,apl116.me,apl117.me,apl118.me,apl119.me,apl120.me,apl121.me,apl122.me,apl123.me,apl124.me,apl125.me,apl126.me,apl127.me,apl128.me,apl129.me,apl130.me,apl131.me,apl132.me,apl133.me,apl134.me,apl135.me,apl136.me,apl137.me,apl138.me,apl139.me,apl140.me,apl141.me,apl142.me,apl143.me,apl144.me,apl145.me,apl146.me,apl147.me,apl148.me,apl149.me,apl150.me,apl151.me,apl152.me,apl153.me,apl154.me,apl155.me,apl156.me,apl157.me,apl158.me,apl159.me,apl160.me,apl161.me,apl162.me,apl163.me,apl164.me,apl165.me,apl166.me,apl167.me,apl168.me,apl169.me,apl170.me,apl171.me,apl172.me,apl173.me,apl174.me,apl175.me,apl176.me,apl177.me,apl178.me,apl179.me,apl180.me,apl181.me,apl182.me,apl183.me,apl184.me,apl185.me,apl186.me,apl187.me,apl188.me,apl189.me,apl190.me,apl191.me,apl192.me,apl193.me,apl194.me,apl195.me,apl196.me,apl197.me,apl198.me,apl199.me,apl200.me,apl201.me,apl202.me,apl203.me,apl204.me,apl205.me,apl206.me,apl207.me,apl208.me,apl209.me,apl210.me,apl211.me,apl212.me,apl213.me,apl214.me,apl215.me,apl216.me,apl217.me,apl218.me,apl219.me,apl220.me,apl221.me,apl222.me,apl223.me,apl224.me,apl225.me,apl226.me,apl227.me,apl228.me,apl229.me,apl230.me,apl231.me,apl232.me,apl233.me,apl234.me,apl235.me,apl236.me,apl237.me,apl238.me,apl239.me,apl240.me,apl241.me,apl242.me,apl243.me,apl244.me,apl245.me,apl246.me,apl247.me,apl248.me,apl249.me,apl250.me,apl250.me,apl251.me,apl252.me,apl253.me,apl254.me,apl255.me,apl256.me,apl257.me,apl258.me,apl259.me,apl260.me,apl261.me,apl262.me,apl263.me,apl264.me,apl265.me,apl266.me,apl267.me,apl268.me,apl269.me,apl270.me,apl271.me,apl272.me,apl273.me,apl274.me,apl275.me,apl276.me,apl277.me,apl278.me,apl279.me,apl280.me,apl281.me,apl282.me,apl283.me,apl284.me,apl285.me,apl286.me,apl287.me,apl288.me,apl289.me,apl290.me,apl291.me,apl292.me,apl293.me,apl294.me,apl295.me,apl296.me,apl297.me,apl298.me,apl299.me,apl300.me,apl301.me,apl302.me,apl303.me,apl304.me,apl305.me,apl306.me,apl307.me,apl308.me,apl309.me,apl310.me,apl311.me,apl312.me,apl313.me,apl314.me,apl315.me,apl316.me,apl317.me,apl318.me,apl319.me,apl320.me,apl321.me,apl322.me,apl323.me,apl324.me,apl325.me,apl326.me,apl327.me,apl328.me,apl329.me,apl330.me,apl331.me,apl332.me,apl333.me,apl334.me,apl335.me,apl336.me,apl337.me,apl338.me,apl339.me,apl340.me,apl341.me,apl342.me,apl343.me,apl344.me,apl345.me,apl346.me,apl347.me,apl348.me,apl349.me,apl350.me##+js(abort-on-property-write, ct_siteunder)
 !
 ! xhamster.com
+xhtab4.com,xhbranch5.com,galleryxh.site,xhbig.com,xhaccess.com,xhofficial.com,seexh.com,taoxh.life,xhamster42.desi,xhvid.com,xhtab2.com,xhamster20.desi,xhamster19.desi,xhwebsite2.com,xhamster18.desi,xhadult3.com,xhadult2.com,xhmoon5.com,xhwide1.com,xhamster3.com,xhplanet2.com,megaxh.com,xhamster16.*,hamsterix.*,xhamster.com,xhamster2.com,xhamster7.com,xhamster8.com,xhamster9.com,xhamster10.com,xhamster12.com,xhamster13.*,xhamster14.com,xhamster15.com,xhamster17.*,xhamster18.*,xhamster19.com,xhamster1.desi,xhamster2.desi,xhamster3.*,xhamster4.desi,xhamster20.com,xhamster22.com,xhamster23.com,xhamster25.com,xhamster26.com,xhamster27.com,openxh.com,xhamster31.com,xhamster32.com,xhamster34.com,xhamster35.com,xhamster36.com,xhamster37.com,xhamster38.com,xhamster5.desi,xhopen.com,openxh1.com,xhamster39.com,xhamster40.com,xhamster.one,xhamster.desi,stripchat.com##div[class*="clipstore-bottom"]
 xhtab4.com,xhbranch5.com,galleryxh.site,xhbig.com,xhaccess.com,xhofficial.com,seexh.com,taoxh.life,xhamster42.desi,xhvid.com,xhtab2.com,xhamster20.desi,xhamster19.desi,xhwebsite2.com,xhamster18.desi,xhadult3.com,xhadult2.com,xhmoon5.com,xhwide1.com,xhamster3.com,xhplanet2.com,megaxh.com,xhamster16.*,hamsterix.*,xhamster.com,xhamster2.com,xhamster7.com,xhamster8.com,xhamster9.com,xhamster10.com,xhamster12.com,xhamster13.*,xhamster14.com,xhamster15.com,xhamster17.*,xhamster18.*,xhamster19.com,xhamster1.desi,xhamster2.desi,xhamster3.*,xhamster4.desi,xhamster20.com,xhamster22.com,xhamster23.com,xhamster25.com,xhamster26.com,xhamster27.com,openxh.com,xhamster31.com,xhamster32.com,xhamster34.com,xhamster35.com,xhamster36.com,xhamster37.com,xhamster38.com,xhamster5.desi,xhopen.com,openxh1.com,xhamster39.com,xhamster40.com,xhamster.one,xhamster.desi,stripchat.com##div[class^="VIq-"]
 xhtab4.com,xhbranch5.com,galleryxh.site,xhbig.com,xhaccess.com,xhofficial.com,seexh.com,taoxh.life,xhamster42.desi,xhvid.com,xhtab2.com,xhamster20.desi,xhamster19.desi,xhwebsite2.com,xhamster18.desi,xhadult3.com,xhadult2.com,xhmoon5.com,xhwide1.com,xhamster3.com,xhplanet2.com,megaxh.com,xhamster16.*,hamsterix.*,xhamster.com,xhamster2.com,xhamster7.com,xhamster8.com,xhamster9.com,xhamster10.com,xhamster12.com,xhamster13.*,xhamster14.com,xhamster15.com,xhamster17.*,xhamster18.*,xhamster19.com,xhamster1.desi,xhamster2.desi,xhamster3.*,xhamster4.desi,xhamster20.com,xhamster22.com,xhamster23.com,xhamster25.com,xhamster26.com,xhamster27.com,openxh.com,xhamster31.com,xhamster32.com,xhamster34.com,xhamster35.com,xhamster36.com,xhamster37.com,xhamster38.com,xhamster5.desi,xhopen.com,openxh1.com,xhamster39.com,xhamster40.com,xhamster.one,xhamster.desi,stripchat.com##div[class*="widget-section"]
 xhtab4.com,xhbranch5.com,galleryxh.site,xhbig.com,xhaccess.com,xhofficial.com,seexh.com,taoxh.life,xhamster42.desi,xhvid.com,xhtab2.com,xhamster20.desi,xhamster19.desi,xhwebsite2.com,xhamster18.desi,xhadult3.com,xhadult2.com,xhmoon5.com,xhwide1.com,xhamster3.com,xhplanet2.com,megaxh.com,xhamster16.*,hamsterix.*,xhamster.com,xhamster2.com,xhamster7.com,xhamster8.com,xhamster9.com,xhamster10.com,xhamster12.com,xhamster13.*,xhamster14.com,xhamster15.com,xhamster17.*,xhamster18.*,xhamster19.com,xhamster1.desi,xhamster2.desi,xhamster3.*,xhamster4.desi,xhamster20.com,xhamster22.com,xhamster23.com,xhamster25.com,xhamster26.com,xhamster27.com,openxh.com,xhamster31.com,xhamster32.com,xhamster34.com,xhamster35.com,xhamster36.com,xhamster37.com,xhamster38.com,xhamster5.desi,xhopen.com,openxh1.com,xhamster39.com,xhamster40.com,xhamster.one,xhamster.desi,stripchat.com##div[data-testid="right-banner-section"]
