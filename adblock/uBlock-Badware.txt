@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Thu, 25 Jul 2024 05:58:19 +0000
-! Diff-Path: ../patches/2024.7.25.863.patch#ublock-badware
+! Last modified: Fri, 26 Jul 2024 14:26:40 +0000
+! Diff-Path: ../patches/2024.7.26.923.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -597,7 +597,7 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||love-places.ru^$all
 /click.php?key=*&price=$doc
 ?click_id=*&tds_cid=$doc
-/lp_*.html?zoneid=$doc
+.com/lp*.html?zoneid=$doc
 /vpn/adult/*/index.html?*p1=$doc
 ||fervidpopsyk.com^$all
 ||dunabear.com^$all
@@ -638,6 +638,9 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||painfont.cyou^$all
 ||builder.hufs.ac.kr/goLink.jsp?url=xn-$doc
 ||m.jubilantrefreshingvisit.buzz^$all
+||lamilagq.com^$all
+/1/index.html?p1=$doc
+/fb_video_googleplay/*/index.html?*p1=$doc
 ||mikkim.top^$all
 ||discordvip.createsocialcard.top^$all
 ||discordvip.pages.dev^$all
@@ -652,9 +655,9 @@ tech4yougadgets.com##+js(aopr, Notification)
 .live/web/?sid=t*~$doc
 /?u1=*&o1=*&sid=t*~$doc
 ! push notification scam
-/^https:\/\/(?:www\d\.)?[-a-z]{6,}\.(?:com|info|net|org)\/(?=[-_a-zA-Z]{0,42}\d)(?=[-_0-9a-z]{0,42}[A-Z])[-_0-9a-zA-Z]{43}\/\?cid=[-_0-9a-zA-Z]{10,36}(?:&qs\d=\S+)?&(?:s|pub)id=[-_0-9a-z{}]{1,32}(?:&s=0\.\d+)?(?:#\S+)?$/$doc,match-case,domain=com|info|net|org
-/^https:\/\/(?:www\d\.)?[-a-z]{6,}\.(?:com|info|net|org)\/(?=[-_a-zA-Z]{0,42}\d)(?=[-_0-9a-z]{0,42}[A-Z])[-_0-9a-zA-Z]{43}\/\?(?:pub|s)id=[-_0-9a-z{}]{1,32}(?:&qs\d=\S+)?&cid=[-_0-9a-zA-Z]{10,36}(?:&s=0\.\d+)?(?:#\S+)?$/$doc,match-case,domain=com|info|net|org
-/^https:\/\/(?:www\d\.)?[-a-z]{6,}\.(?:com|info|net|org)\/(?=[-_a-zA-Z]{0,42}\d)(?=[-_0-9a-z]{0,42}[A-Z])[-_0-9a-zA-Z]{43}\/\?clickID=[0-9a-f]{32}&sourceID=\d+$/$doc,match-case,domain=com|info|net|org
+/^https:\/\/(?:www\d\.)?[-a-z]{6,}\.(?:club|com|info|net|org)\/(?=[-_a-zA-Z]{0,42}\d)(?=[-_0-9a-z]{0,42}[A-Z])[-_0-9a-zA-Z]{43}\/\?cid=[-_0-9a-zA-Z]{10,36}(?:&qs\d=\S+)?&(?:s|pub)id=[-_0-9a-z{}]{1,32}(?:&s=0\.\d+)?(?:#\S+)?$/$doc,match-case,domain=club|com|info|net|org
+/^https:\/\/(?:www\d\.)?[-a-z]{6,}\.(?:club|com|info|net|org)\/(?=[-_a-zA-Z]{0,42}\d)(?=[-_0-9a-z]{0,42}[A-Z])[-_0-9a-zA-Z]{43}\/\?(?:pub|s)id=[-_0-9a-z{}]{1,32}(?:&qs\d=\S+)?&cid=[-_0-9a-zA-Z]{10,36}(?:&s=0\.\d+)?(?:#\S+)?$/$doc,match-case,domain=club|com|info|net|org
+/^https:\/\/(?:www\d\.)?[-a-z]{6,}\.(?:club|com|info|net|org)\/(?=[-_a-zA-Z]{0,42}\d)(?=[-_0-9a-z]{0,42}[A-Z])[-_0-9a-zA-Z]{43}\/\?clickID=[0-9a-f]{32}&sourceID=\d+$/$doc,match-case,domain=club|com|info|net|org
 ||ogtrk.net^
 ||91.241.60.117^$all
 ||mfilecloud.com^$all
@@ -2620,6 +2623,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||event-experiment.com^$doc
 ||final-future.com^$doc
 ||t-uraaka.site^$doc
+||jap.cookingsboss.com^
+||jap.cookinggenuine.com^
 ||soft-pro.site^$all
 ||apkmirror.co^$all
 ||webogram.org^$all
@@ -2823,7 +2828,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||goglel.com^$all
 ||easylist.club^$all
 ||bestextensionegde.com^$all
-.com/api/users?token=*&uuid=&pii=&in=false^$doc
+.com/api/users*uuid=&pii=&in=false^$doc
 ||asdmcm.com^$all
 .com/bot-captcha-1?h=$doc
 /^https:\/\/[a-z]{5,7}\.[0-9a-z]{12}\.top\/[0-9a-f]{32}\/[0-9-a-f]{32}\/$/$doc,match-case,domain=top
@@ -3061,6 +3066,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||thriveinclusion.com^$all,to=~web.de
 ||talktalk0.godaddysites.com^$all,to=~talktalk.co.uk
 ||unclepigva.com^$all,to=~chase.com
+||ee-billing-recovery.web.app^$all,to=~ee.co.uk
 ||final-ua.eu/vasilisa/votings$all
 ||roycamining.com/pdeb/Untitled/$all,to=~docusign.com
 ||flow.page/foxhills.co.uk^$all,to=~foxhills.co.uk
@@ -3075,6 +3081,9 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||colegiovilamilitar.com.br/*/linkedin_^$all,to=~linkedin.com
 ||hand-to-hand.cfolks.pl^$all,to=~ram.co.za
 ||mybluehost.me/intesasanpaolo/$doc,domain=~intesasanpaolo.com
+! snapchat
+||snapchatplus.fr^$all,to=~snapchat.com
+||snapscrttm.serv00.net^$all,to=~snapchat.com
 ! shopify
 ||1234854.com^$all,to=~shopify.com
 ||suoncopbaonk.com^$all,to=~shopify.com
@@ -3089,7 +3098,6 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ! apple
 ||com/isignesp.php^$doc,domain=com|~apple.com
 ||help/isignesp.php^$doc,domain=help|~apple.com
-/^https:\/\/apple\.[a-z0-9]{6}\.com\//$domain=com|~apple.com
 ! ourtime
 ||login-ourtime.members-datings.workers.dev^$all,domain=~ourtime.com
 ||profile-ourtime.*.workers.dev^$doc,domain=~ourtime.com
@@ -3141,8 +3149,9 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||allegrostu.com^$all
 ||allegrocolombia.com^$all
 ||allegrocx.com^$all
+||allegrocns.com^$all
+||allegro-005.com^$all
 ||allegro-online.ru^$all
-~edu,~gov##html[lang][style] > body[ontouchstart=""] > div#app[data-v-app=""] > div#app[class] > div.grow
 /^https:\/\/allegro[a-z]{2,}\.shop\//$doc,domain=shop
 ||allegroshop.shop^$all
 ||allegrocn.shop^$all
@@ -3169,6 +3178,8 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||pemulihan.akun-dana-24.system-online.my.id^$all,to=~dana.id
 ! others
 ||gdnapqmhbs.1myall.com^$all,to=~dana.id
+||ambiil-hadiaa4h.cs-resmi.com^$all,to=~dana.id
+||danadigital2024.cs-zx.top^$all,to=~dana.id
 ! orange.fr
 ||orange53.yolasite.com^$all,to=~orange.fr
 ||dev-7614646544.pantheonsite.io^$all,to=~orange.fr
@@ -3191,7 +3202,6 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||shop73.online^$all
 ||syae3289.top^$all
 ||ww26mb8.top^$all
-~amazon.com,~edu,~gov##html##html[lang][data-dpr="1"][style] > body.bluetheme.false > div#app.wrapper
 ||mybluehost.me/wp-admin/amz/$doc
 ! ebay
 ||c.vn-ebayn.vip^$all
@@ -3206,8 +3216,9 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||135buy.com^$all
 ||ebaydw.cc^$all
 ||pages.dev/errors/validateCaptcha^$doc
-||shopvip-alibaba.com^$all
-~alibaba.com,~edu,~gov##html[lang][translate] > body.deeppurple-theme:not([id]) > div#app:not([class]) > div.aiz-main-wrapper:not([id])
+! alibaba
+||topmarifle.life^$all,to=~alibaba.com
+||shopvip-alibaba.com^$all,to=~alibaba.com
 ! AT&T
 ||wixsite.com/att-support/$doc
 ||diwapa3051.wixsite.com^$all
@@ -3227,6 +3238,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||deenveerww.wixsite.com^$all
 ||att5h6.wixsite.com^$all
 ||wixstudio.io/mysiteattmail940940^$doc
+||f.digital-*.com/igit/$doc
 ! BT
 ||homelogginbbt.weebly.com^$all,to=~bt.com
 ||boardband.univer.se^$all,to=~bt.com
@@ -3245,9 +3257,10 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||contactsupport.10ffc20.wcomhost.com^$all
 ||wcomhost.com/amendes-gouv/$doc,domain=~amendes.gouv.fr
 ||wcomhost.com/*/am/3dsece.php^$doc,domain=~amendes.gouv.fr
-/am/*.php^$doc,domain=mybluehost.me|wcomhost.com|~amendes.gouv.fr
+/am/*.php^$doc,domain=arubabusiness.it|mybluehost.me|wcomhost.com|~amendes.gouv.fr
 ||fi/a/Amendes/*.php^$doc,domain=fi|~amendes.gouv.fr
 ||fi/part/Amendes/*.php^$doc,domain=fi|~amendes.gouv.fr
+||mybluehost.me/wp-content/12/*.php^$doc,domain=~amendes.gouv.fr
 ! bank
 ||chamsocthekhachhang-$doc,domain=~edu|~gov|~edu.vn|~gov.vn
 ||sotuyenvcb.vietcombanker.com^$all,to=~vietcombank.com.vn
@@ -3263,6 +3276,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||itaconsorciodigital.com.br^$all,to=~itau.com.br
 ||americanexpressempresas.com^$all,to=~americanexpress.com
 ||wizardpayroll.com.ar^$all,to=~hsbc.com
+||spareb1.com^$all,to=~sparebank1.no
 ||amigosdelasfinanzas.com^$all,to=~bancocajasocial.com
 ||e-cmv.ph^$all,to=~grupobancolombia.com
 ||recompensaszurichsantander.com.mx^$all
@@ -3295,6 +3309,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||leatherqueen.shop^$all
 ||dhl-express-ppd.infanion.com^$all,to=~dhl.com
 ||elementor.cloud/*/ENGHUY645/$doc,domain=~dhl.com
+||mybluehost.me/*/phpmailer/src/dh/$doc,domain=~dhl.com
 ! whatsapp
 ||ann.tess1.top^$all
 ||play.funfourmob.com^$all
@@ -3353,6 +3368,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 /^https:\/\/sp\d{2,3}88(?:vn)?\.com\//$doc,domain=com|~shopee.vn
 ||vivanoticiando.com^$all
 ||mez.ink/reademcashbackshopee.1.1^$all
+||virtualnoticiasaqui.com^$all
 ! sendo
 ||vnsendo.*^$all,to=info|shop|vip|~sendo.vn
 ||sendotv.com^$all,to=~sendo.vn
@@ -3396,11 +3412,14 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||gaerana.io.vn^$all,to=~garena.vn
 ||gareana.vn^$all,to=~garena.vn
 ||doivangfreefiregarena.io.vn^$all,to=~garena.vn
+||garane.io.vn^$all,to=~garena.vn
+||garcna.vn^$all,to=~garena.vn
 ! pubg
 ||pubg-arena.top^$all
 ||register-turnamen.free.nf^$all
 ||pubgm-zing-vn.com^$all
 ||sukien-pubg.io.vn^$all
+||napthepubg.mobi^$all
 ! mobile legends
 ||mobilelegendsmycode.com^$all
 ||eventdmkuning.brenn.biz.id^$all
@@ -3452,6 +3471,8 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||e-messsage.com^$all
 ||supp0rt.co.za^$all
 ||ariabcon.com^$all
+||vkcs.cloud/owa.html^$doc
+||ocalam.com:8443/impact^$doc
 ! telegram
 ||telegramhcn.com^$all
 ||web.telegram.data-bees.cn^$all
@@ -3469,6 +3490,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||telegram-zhongwen.com^$all
 ||rr.nu^$doc
 ! usps
+||uspsparcels.net^$all,to=~usps.com
 /^https:\/\/usps\.[-a-z]{6,}\.(?:com|top)\/(?:address\.html|information|verify)\b/$doc,domain=com|top|~usps.com
 /^https:\/\/ur[cex][a-z]{2,4}\.com\/(?:address\.html|information|verify)\b/$doc,domain=com|~usps.com
 .top/pg?do=$doc,domain=top
@@ -3513,11 +3535,13 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||mybluehost.me/*/csom/$doc,domain=~swisscom.ch
 ||secureserver.net/ruckstantung907921/$doc,domain=~swisscom.ch
 ||sviluppo.host/df/pass.php^$doc,domain=~swisscom.ch
+||mybluehost.me/sssssssssssssss/$doc,domain=~swisscom.ch
 ||codeanyapp.com/swiss-login/$doc
 ! swisspost
 ||swisspost.web.app^$all,to=~post.ch
 ! upc
 ||wcomhost.com/ch/upc/$all,to=~upc.ch
+||exodusrt.azurewebsites.net^$all,to=~exodus.com
 ||ledgerwallive.com^$all,to=~ledger.com
 ||mantanetworkcn.com^$all,to=~manta.network
 ||interface-git-parallel-cypress-uniswap.vercel.app^$doc,domain=~uniswap.org
@@ -3552,9 +3576,9 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||mmitalianbeef.square.site^$all,to=~mmitalianbeef.com
 ||bigbauer.com^$all,to=~gmx.com
 ||sacredtreespirit.com^$all,to=~ups.com
-||snapchatplus.fr^$all,to=~snapchat.com
 ||lkmw88.com^$all,to=~mercadolibre.com
 ||hologramid.cn^$all,to=~alibaba.com
+||seguro.serasaexperian.site^$all,to=~serasa.com.br
 ||beluxrepm.followme.fr/FolloWMe$all,to=~realestate.bnpparibas.com
 ||mybluehost.me/Cope346/$all
 ||tesakom.com/aa/index.html^$all,to=~ebestsec.co.kr
@@ -3568,18 +3592,16 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 /views/go/start.php^$doc
 /^https:\/\/pub-[a-f0-9]{32}\.r2\.dev/be[a0-9]\d{2,3}\.html\b/$doc,match-case,domain=r2.dev
 ||pub-*.r2.dev/adobe2024.html^$doc
-r2.dev##html[lang] > body:not([class]):not([id]) > div.container-fluid:not([id]) > div.row[style^="background-image"][style*="data:image/jpeg;base64"]
 ||pub-*.r2.dev/owa.html^$doc
-r2.dev##html[lang] > body.signInBg[oncontextmenu="return false;"][style]:not([id]) > div#mainLogonDiv.mouse
 ! docusign.com
 ||pub-*.r2.dev/alt_type.html^$doc,domain=~docusign.com
 ||pub-*.r2.dev/doc_start.html^$doc,domain=~docusign.com
 ||pub-*.r2.dev/dse_sign.html^$doc,domain=~docusign.com
 ||pub-*.r2.dev/secure_response.html^$doc,domain=~docusign.com
 ||pub-*.r2.dev/utility_base.html^$doc,domain=~docusign.com
-||r2.dev/auth_*.html^$doc,domain=~docusign.com
-||r2.dev/response_*.html^$doc,domain=~docusign.com
-r2.dev##html.account-server[lang] > body.site-content[onload="Z()"]:not([id]) > div#root:not([class]) > div.ink-authentication:not([id])
+||tin-dung-$doc
+||khcn-tindung-$doc
+||viettelgroup.com^$all,to=~viettel.com.vn
 ||khach-hang-the-$doc
 ||lazada.gg^$all
 ||chamsockhachhang-$doc
@@ -3634,13 +3656,17 @@ r2.dev##html.account-server[lang] > body.site-content[onload="Z()"]:not([id]) > 
 ||lapdatinternet.net^$all,to=~sctv.com.vn
 ||hethongnhanvien.com^$all,to=~lazada.vn
 ||lazadaevent.com^$all,to=~lazada.vn
-||tikifreeship.vip^$all,to=~tiki.vn
 ||vntiki.vip^$all,to=~tiki.vn
-||momoshopvip.com^$all,to=~momo.vn
 ||baovietcom.vip^$all,to=~baovietbank.vn
 ||mcqdvn.com^$all,to=~mbbank.com.vn
 ||hethongvaynhanh247.com^$all
 ||bethivetranh2024.weebly.com^$all
+||ebaymall168.shop^$all
+||tikifreeship.vip^$all,to=~tiki.vn
+||flikois.com^$all
+||f997.sbs^$all
+||371j.xyz^$all
+||momoshopvip.com^$all,to=~momo.vn
 ||puttyconnect.info^$all
 ||astrosphere.world^$all
 ||marketplace-item-*.000.pe^$doc
@@ -3661,7 +3687,6 @@ r2.dev##html.account-server[lang] > body.site-content[onload="Z()"]:not([id]) > 
 ||magicslimnhatban.com^$all
 ||giamcannhatban.com^$all
 ||examated.co.in^$doc
-||github.com/abyous3r/pocketfi_switch_farm-bot^$doc
 ||github.com/linarweloper/Blumfarmbot^$doc
 ||waredot.com^$doc
 ||waredot.us^$doc

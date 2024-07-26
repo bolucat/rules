@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.6.1
+// @version         3.7.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -3615,14 +3615,102 @@ else if (matchDomain('vikatan.com')) {
 
 else if (matchDomain('voguebusiness.com')) {
   setCookie('userId', '', 'voguebusiness.com', '/', 0);
-  let article_sel = 'article';
-  let article = document.querySelector(article_sel);
+  let article = document.querySelector('article');
   if (article) {
-    let pars = article.querySelectorAll('p:not([class])');
+    let pars = article.querySelectorAll('p:not([class]), p.paywall');
     if (pars.length < 5) {
-      let url = window.location.href;
-      let url_archive = 'https://' + archiveRandomDomain() + '/' + url.split(/[#\?]/)[0];
-      replaceDomElementExt(url_archive, true, false, article_sel);
+      removeDOMElement(...pars);
+      let scripts = document.querySelectorAll('script[type]:not([src])');
+      let json_script;
+      for (let script of scripts) {
+        if (script.text.match(/^window\.__PRELOADED_STATE__\s?=\s?/)) {
+          json_script = script;
+          break;
+        }
+      }
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text.split(/window\.__PRELOADED_STATE__\s?=\s?/)[1].split('};')[0] + '}');
+          let body = document.querySelector('div.body__inner-container');
+          if (body) {
+            let pars = json.transformed.article.body;
+            function makeElem(elem, par_elem) {
+              let elem_new = document.createTextNode('');
+              if (Array.isArray(elem) && elem.length) {
+                let item = elem[0];
+                if (typeof item === 'string') {
+                  if (['p', 'h2'].includes(item)) {
+                    elem_new = document.createElement(item);
+                    par_elem.appendChild(elem_new);
+                    elem.shift();
+                    makeElem(elem, elem_new);
+                  } else if (item === 'inline-embed' || !(['ad', 'cm-unit', 'inline-newsletter', 'native-ad'].includes(item) || (item.length < 30 && item.includes('inline-embed')))) {
+                    if (item === 'inline-embed') {
+                      let img_data = elem[1];
+                      if (img_data && img_data.type === 'image') {
+                        if (img_data.props && img_data.props.image && img_data.props.image.sources) {
+                          let figure = document.createElement('figure');
+                          let img = document.createElement('img');
+                          img.src = img_data.props.image.sources.lg.url;
+                          figure.appendChild(img);
+                          if (img_data.props.dangerousCaption) {
+                            let caption = document.createElement('figcaption');
+                            caption.innerText = img_data.props.dangerousCaption.replace(/<\/?\w+>/g, '');
+                            if (img_data.props.dangerousCredit)
+                              caption.innerText += ' ' + img_data.props.dangerousCredit;
+                            figure.appendChild(caption);
+                          }
+                          par_elem.appendChild(figure);
+                        }
+                      }
+                    } else {
+                      elem_new = document.createTextNode(item);
+                      par_elem.appendChild(elem_new);
+                      elem.shift();
+                      makeElem(elem, par_elem);
+                    }
+                  }
+                } else if (Array.isArray(item) && item.length) {
+                  if (item[0] === 'a' && item.length === 3) {
+                    elem_new = document.createElement('a');
+                    let a_data = item[1];
+                    elem_new.href = a_data.href;
+                    if (a_data.isExternal)
+                      elem_new.target = '_blank';
+                    let a_text = item[2];
+                    if (typeof a_text === 'string')
+                      elem_new.innerText = a_text;
+                    else if (Array.isArray(a_text) && a_text[1])
+                      elem_new.innerText = a_text[1];
+                    par_elem.appendChild(elem_new);
+                    elem.shift();
+                    makeElem(elem, par_elem);
+                  } else if (['em', 'strong'].includes(item[0])) {
+                    elem_new = document.createElement(item[0]);
+                    item.shift();
+                    makeElem(item, elem_new);
+                    par_elem.appendChild(elem_new);
+                    elem.shift();
+                    makeElem(elem, par_elem);
+                  } else {
+                    console.log(item);
+                  }
+                } else if (typeof item === 'object') {
+                  if (!item.class)
+                    console.log(item);
+                  elem.shift();
+                  makeElem(elem, par_elem);
+                }
+              }
+            }
+            for (let par of pars)
+              makeElem(par, body);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      
     }
   }
 }
