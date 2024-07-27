@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.6.2
+// @version         3.7.6.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -3635,15 +3635,27 @@ else if (matchDomain('voguebusiness.com')) {
           if (body) {
             let pars = json.transformed.article.body;
             function makeElem(elem, par_elem) {
-              let elem_new = document.createTextNode('');
               if (Array.isArray(elem) && elem.length) {
+                let elem_new;
                 let item = elem[0];
                 if (typeof item === 'string') {
-                  if (['p', 'h2'].includes(item)) {
+                  if (['p', 'h2', 'em', 'strong'].includes(item)) {
                     elem_new = document.createElement(item);
                     par_elem.appendChild(elem_new);
                     elem.shift();
                     makeElem(elem, elem_new);
+                  } else if (item === 'a' && elem.length === 3) {
+                    elem_new = document.createElement('a');
+                    let a_data = elem[1];
+                    elem_new.href = a_data.href;
+                    if (a_data.isExternal)
+                      elem_new.target = '_blank';
+                    let a_text = elem[2];
+                    if (typeof a_text === 'string')
+                      elem_new.innerText = a_text;
+                    else if (Array.isArray(a_text) && a_text[1])
+                      elem_new.innerText = a_text[1];
+                    par_elem.appendChild(elem_new);
                   } else if (item === 'inline-embed' || !(['ad', 'cm-unit', 'inline-newsletter', 'native-ad'].includes(item) || (item.length < 30 && item.includes('inline-embed')))) {
                     if (item === 'inline-embed') {
                       let img_data = elem[1];
@@ -3670,26 +3682,9 @@ else if (matchDomain('voguebusiness.com')) {
                       makeElem(elem, par_elem);
                     }
                   }
-                } else if (Array.isArray(item) && item.length) {
-                  if (item[0] === 'a' && item.length === 3) {
-                    elem_new = document.createElement('a');
-                    let a_data = item[1];
-                    elem_new.href = a_data.href;
-                    if (a_data.isExternal)
-                      elem_new.target = '_blank';
-                    let a_text = item[2];
-                    if (typeof a_text === 'string')
-                      elem_new.innerText = a_text;
-                    else if (Array.isArray(a_text) && a_text[1])
-                      elem_new.innerText = a_text[1];
-                    par_elem.appendChild(elem_new);
-                    elem.shift();
-                    makeElem(elem, par_elem);
-                  } else if (['em', 'strong'].includes(item[0])) {
-                    elem_new = document.createElement(item[0]);
-                    item.shift();
-                    makeElem(item, elem_new);
-                    par_elem.appendChild(elem_new);
+                } else if (Array.isArray(item)) {
+                  if (['a', 'em', 'strong'].includes(item[0])) {
+                    makeElem(item, par_elem);
                     elem.shift();
                     makeElem(elem, par_elem);
                   } else {
@@ -3701,6 +3696,8 @@ else if (matchDomain('voguebusiness.com')) {
                   elem.shift();
                   makeElem(elem, par_elem);
                 }
+              } else if (typeof elem === 'string' && !['div'].includes(elem)) {
+                par_elem.appendChild(document.createTextNode(elem));
               }
             }
             for (let par of pars)
@@ -3710,7 +3707,6 @@ else if (matchDomain('voguebusiness.com')) {
           console.log(err);
         }
       }
-      
     }
   }
 }
