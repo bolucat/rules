@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.7.5.1
+// @version         3.7.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.fr.user.js
@@ -690,6 +690,15 @@ else if (matchDomain('pourleco.com')) {
     if (article)
       article.removeAttribute('style');
   }
+}
+
+else if (matchDomain('reforme.net')) {
+  if (true) {
+    let article_sel = 'div.elementor-widget-theme-post-content';
+    getJsonUrl(article_sel + ' section', '', article_sel);
+  }
+  let banner = 'div.free-access-banner';
+  hideDOMStyle(banner);
 }
 
 else if (matchDomain('science-et-vie.com')) {

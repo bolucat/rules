@@ -3644,17 +3644,13 @@ else if (matchDomain('voguebusiness.com')) {
                     par_elem.appendChild(elem_new);
                     elem.shift();
                     makeElem(elem, elem_new);
-                  } else if (item === 'a' && elem.length === 3) {
+                  } else if (item === 'a' && elem.length > 2) {
                     elem_new = document.createElement('a');
                     let a_data = elem[1];
                     elem_new.href = a_data.href;
                     if (a_data.isExternal)
                       elem_new.target = '_blank';
-                    let a_text = elem[2];
-                    if (typeof a_text === 'string')
-                      elem_new.innerText = a_text;
-                    else if (Array.isArray(a_text) && a_text[1])
-                      elem_new.innerText = a_text[1];
+                    makeElem(elem.slice(2), elem_new);
                     par_elem.appendChild(elem_new);
                   } else if (item === 'inline-embed' || !(['ad', 'cm-unit', 'inline-newsletter', 'native-ad'].includes(item) || (item.length < 30 && item.includes('inline-embed')))) {
                     if (item === 'inline-embed') {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.5.3
+// @version         3.7.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -10,7 +10,6 @@
 // @license         MIT; https://github.com/bpc-clone/bypass-paywalls-clean-filters/blob/main/LICENSE
 // @match           *://*.de/*
 // @match           *://*.beobachter.ch/*
-// @match           *://*.diepresse.com/*
 // @match           *://*.faz.net/*
 // @match           *://*.handelszeitung.ch/*
 // @match           *://*.kurier.at/*
@@ -201,6 +200,7 @@ else if (matchDomain('bnn.de')) {
       for (let elem of lazy_images)
         elem.style = 'width: 95%;';
     }
+    header_nofix(document.querySelector('article section'), 'section > span[style*="filter:blur"]', 'BPC > no archive-fix');
   }
   let url = window.location.href;
   getArchive(url, 'section.paywall', '', 'article');
@@ -238,57 +238,6 @@ else if (matchDomain('cicero.de')) {
 else if (matchDomain('deraktionaer.de')) {
   let url = window.location.href;
   getOchToUnlock(url, 'div#paywall-container', '', 'div#article-body');
-}
-
-else if (matchDomain('diepresse.com')) {
-  let paywall = document.querySelector('div.paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.premium-content');
-    if (article) {
-      article.removeAttribute('class');
-      let scripts = document.querySelectorAll('script:not([src]):not([type])');
-      let json_script;
-      for (let script of scripts) {
-        if (script.text.match(/window\.contentInformation\s?=\s?/)) {
-          json_script = script;
-          break;
-        }
-      }
-      if (json_script) {
-        try {
-          let json = JSON.parse(json_script.text.split(/window\.contentInformation\s?=\s?/)[1].split('};')[0] + '}');
-          if (json.flexmodule_list) {
-            let pars = json.flexmodule_list;
-            let par_first = false;
-            let split = false;
-            let parser = new DOMParser();
-            for (let par of pars) {
-              if (split) {
-                if (par) {
-                  let doc = parser.parseFromString('<div>' + par + '</div>', 'text/html');
-                  let content_new = doc.querySelector('div');
-                  article.appendChild(content_new);
-                }
-              } else {
-                if (par)
-                  par_first = true;
-                else if (!par && par_first)
-                  split = true;
-              }
-              let lazy_images = article.querySelectorAll('img.lazyload[data-src]:not([src])');
-              for (let elem of lazy_images) {
-                elem.removeAttribute('class');
-                elem.src = elem.getAttribute('data-src')
-              }
-            }
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    }
-  }
 }
 
 else if (matchDomain('faz.net')) {
@@ -986,9 +935,11 @@ else if (matchDomain('wiwo.de')) {
 else if (matchDomain('zeit.de')) {
   func_post = function () {
     if (mobile) {
-      let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
+      let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
       for (let elem of lazy_images)
         elem.style = 'width: 95%;';
+      let span_empty = document.querySelectorAll('span:empty');
+      removeDOMElement(...span_empty);
     }
   }
   let url = window.location.href.split(/[#\?]/)[0];
@@ -1560,7 +1511,7 @@ function getArticleJsonScript() {
   return json_script;
 }
 
-ffunction getJsonUrlText(article, callback, article_id = '', url_slash = false) {
+function getJsonUrlText(article, callback, article_id = '', url_slash = false) {
   let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
   let json_url;
   if (json_url_dom) {

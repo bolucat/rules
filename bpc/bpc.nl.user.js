@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.7.1.9
+// @version         3.7.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.nl.user.js
@@ -137,7 +137,7 @@ if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
     let video = document.querySelector('div.video');
     func_post = function () {
       if (video) {
-        let video_new = document.querySelector('div[id$="-streamone"], div[id^="video-player-"]');
+        let video_new = document.querySelector('div[id$="-streamone"], div[id^="video-player-"]') || document.querySelector('article div[style^="background-color"]');
         if (video_new && video_new.parentNode)
           video_new.parentNode.replaceChild(video, video_new);
       }
@@ -152,9 +152,16 @@ if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
           removeDOMElement(svg);
         }
       }
+      let article = document.querySelector(article_sel);
+      if (article) {
+        let pars = article.querySelectorAll('p');
+        if (pars.length < 3)
+          header_nofix(document.querySelector('article header'), '', 'BPC > no archive-fix');
+      }
     }
     let url = window.location.href;
-    getArchive(url, 'head > meta[name$="article_ispaidcontent"][content="true"]', '', 'article div[id], section div[id]:not([id^="warning"], [id^="ad_overlayer"]), main div[id]:not([id^="warning"], [id^="ad_overlayer"])');
+    let article_sel = 'article div[id], section div[id]:not([id^="warning"], [id^="ad_overlayer"]), main div[id]:not([id^="warning"], [id^="ad_overlayer"])';
+    getArchive(url, 'head > meta[name$="article_ispaidcontent"][content="true"]', '', article_sel);
   }, 1500);
 }
 

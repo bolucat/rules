@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: pFg3UlQHoMGTRrPdzp59wg
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1722101814-3600.patch
+! Checksum: u3vuu+cULLxBFkG3X7oNIA
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1722188206-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.45.76
-! TimeUpdated: 2024-07-27T17:31:29+00:00
+! Version: 2.3.45.81
+! TimeUpdated: 2024-07-28T17:31:21+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -9003,7 +9003,7 @@ linuxcapable.com##+js(set-constant, nitroAds.abp, true)
 hqq.to##+js(abort-on-stack-trace, olplayer.error, Be.o.dispatcher.o.dispatcher)
 hqq.to##+js(set-constant, adblockcheck, false)
 ! Clickadu reinjection
-safestream.cc,javmix.tv,hentai2read.com,sxyprn.com,xmoviesforyou.com,fapfappy.com,jav.direct,mangaraw.vip,syosetu.*,telorku.xyz,kissjav.li,lovingsiren.com,mesex.pro,tojav.net,vlxyz.tv,xanimeporn.com##+js(abort-current-script, WebAssembly, atob)
+safestream.cc,javmix.tv,hentai2read.com,sxyprn.com,xmoviesforyou.com,fapfappy.com,jav.direct,mangaraw.vip,syosetu.*,telorku.xyz,kissjav.li,lovingsiren.com,mesex.pro,vlxyz.tv,xanimeporn.com##+js(abort-current-script, WebAssembly, atob)
 /aas/r45d/vki/*$script,redirect=noop.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/155761
 wellness4live.com##+js(no-fetch-if, pagead2.googlesyndication.com)
@@ -33077,7 +33077,8 @@ neowin.net#$#div[class^="banner-"] { height: 0!important; min-height: 0!importan
 ://www.*.com/js/css/$script,third-party,header=link:/adsco\.re\/>;rel=preconnect/
 ! https://github.com/uBlockOrigin/uAssets/issues/9139#issuecomment-1945860142
 /tds/ae?*&clickid=$document
-.com/api/users*uuid=&pii=&in=false^$document
+.com/api/users*^pii=&in=false^$document
+.com/api/users*^in=false&pii=$document
 ! https://github.com/AdguardTeam/AdguardFilters/issues/158316
 ://trk.*.run^$document
 ! https://github.com/AdguardTeam/AdguardFilters/issues/156603
@@ -33661,6 +33662,7 @@ $xmlhttprequest,third-party,denyallow=authkong.com|rsc.cdn77.org|linkvertise.com
 !
 ! NOTE: Specific rules
 !
+tojav.net##+js(abort-current-script, onload, puHref)
 ||supervideo.cc/tag01.js
 worldledaily.com###worldledaily-com_300x1050
 javeng.com##center > form > a[target="_blank"]
