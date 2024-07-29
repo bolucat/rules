@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.6.4
+// @version         3.7.6.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -60,7 +60,6 @@
 // @exclude         *://*.cronista.com/*
 // @exclude         *://*.diariocordoba.com/*
 // @exclude         *://*.diariovasco.com/*
-// @exclude         *://*.diepresse.com/*
 // @exclude         *://*.elconfidencial.com/*
 // @exclude         *://*.elcorreo.com/*
 // @exclude         *://*.elespanol.com/*
@@ -98,6 +97,7 @@
 // @exclude         *://*.railfreight.cn/*
 // @exclude         *://*.railfreight.com/*
 // @exclude         *://*.railtech.com/*
+// @exclude         *://*.reforme.net/*
 // @exclude         *://*.revistaoeste.com/*
 // @exclude         *://*.science-et-vie.com/*
 // @exclude         *://*.topagrar.com/*
@@ -1615,8 +1615,67 @@ else if (matchDomain('economist.com')) {
       let hide_style = document.querySelector('body > style');
       removeDOMElement(paywall, hide_style);
     }
-  } else if (window.location.pathname.startsWith('/podcasts/')) {
-     header_nofix(document.querySelector('section[data-body-id]'), 'div[aria-labelledby="paywall-heading"]');
+  } else if (window.location.pathname.includes('/podcasts/')) {
+    let parser = new DOMParser();
+    if (window.location.pathname.match(/^\/podcasts\/\d{4}\//)) {
+      let paywall = document.querySelector('div[aria-labelledby="paywall-heading"]');
+      if (paywall) {
+        removeDOMElement(paywall);
+        let fade = document.querySelector('div.bilxSE');
+        if (fade)
+          fade.classList.remove('bilxSE');
+        let json_script = document.querySelector('script#__NEXT_DATA__');
+        if (json_script) {
+          try {
+            let json = JSON.parse(json_script.text);
+            if (json) {
+              let podcast = json.props.pageProps.cp2Content.podcast;
+              if (podcast.audio.url) {
+                let header = document.querySelector('section[data-body-id]');
+                if (header) {
+                  let pod = '<div><audio controls="" controlslist="nodownload" style="width: 100%"><source src="' + podcast.audio.url + '"></audio><br></div>';
+                  let pod_new = parser.parseFromString(pod, 'text/html');
+                  header.firstChild.before(pod_new.querySelector('div'));
+                }
+              }
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+    } else {
+      let paywall = document.querySelector('div[data-testid="paywall"]');
+      if (paywall) {
+        removeDOMElement(paywall);
+        let json_script = document.querySelector('script#__NEXT_DATA__');
+        if (json_script) {
+          try {
+            let json = JSON.parse(json_script.text);
+            if (json) {
+              let episodes = json.props.pageProps.showPageData.fullEpisode.episodes;
+              for (let episode of episodes) {
+                let episode_art = episode.episodeArticle;
+                if (episode_art.articleUrl && episode_art.articleHeadline) {
+                  let header = document.querySelector('main > div');
+                  if (header) {
+                    let pod = '<p style="margin: 30px; font-weight: bold; font-size: 1.5rem;"><a href="' + episode_art.articleUrl + '">' + episode_art.articleHeadline + '</a></p>';
+                    let pod_new = parser.parseFromString(pod, 'text/html');
+                    header.appendChild(pod_new.querySelector('p'));
+                  }
+                }
+                let cards = document.querySelectorAll('a.ds-podcast-card__headline');
+                for (let card of cards) {
+                  card.target = '_top';
+                }
+              }
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+    }
   } else {
     let paywall_sel = 'div#tp-regwall';
     let article_sel = 'main';
