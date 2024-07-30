@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.6.2
+// @version         3.7.6.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -326,11 +326,12 @@ else if (matchDomain('faz.net')) {
                             let rel_art_index = rel_art[type];
                             let rel_articles = pars[rel_art_index];
                             for (let art_id of rel_articles) {
-                              let art = pars[art_id];
+                              let art = pars[pars[art_id].link];
+                              let art_label = pars[pars[art_id].label];
                               if (art.canonicalPath && art.title) {
                                 let art_link = document.createElement('a');
                                 art_link.href = pars[art.canonicalPath];
-                                art_link.innerText = pars[art.label] + ' - ' + pars[art.title];
+                                art_link.innerText = art_label + ' - ' + pars[art.title];
                                 elem.appendChild(art_link);
                                 elem.appendChild(document.createElement('br'));
                               }
