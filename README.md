@@ -219,6 +219,7 @@
 - [china-aptv-iptv.m3u](https://rules.neuq.de/iptv/china-aptv-iptv.m3u)
 # bypass-wall-clean
 - [bpc-paywall-filter.txt](https://rules.neuq.de/bpc/bpc-paywall-filter.txt)
+- [bpc-v3-chrome-4.0.0.0.zip](https://rules.neuq.de/bpc/bpc-v3-chrome-4.0.0.0.zip)
 - [bpc.de.user.js](https://rules.neuq.de/bpc/bpc.de.user.js)
 - [bpc.en.user.js](https://rules.neuq.de/bpc/bpc.en.user.js)
 - [bpc.es.pt.user.js](https://rules.neuq.de/bpc/bpc.es.pt.user.js)
