@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.7.6.0
+// @version         3.7.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.es.pt.user.js
@@ -599,8 +599,11 @@ else if (matchDomain('lanacion.com.ar')) {
 }
 
 else if (matchDomain('latercera.com')) {
-  let subscr_banner = document.querySelector('.empty');
-  removeDOMElement(subscr_banner);
+  let paywall = document.querySelector('div.pw-frontier');
+  if (paywall)
+    removeDOMElement(paywall);
+  let ads = 'div.spm';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('revistaoeste.com')) {
