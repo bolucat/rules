@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Thu, 01 Aug 2024 04:40:22 +0000
-! Diff-Path: ../patches/2024.8.1.988.patch#ublock-badware
+! Last modified: Fri, 02 Aug 2024 15:06:59 +0000
+! Diff-Path: ../patches/2024.8.2.1042.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -650,17 +650,17 @@ tech4yougadgets.com##+js(aopr, Notification)
 ^s1=*&click_id=$doc
 ^mh=*&s2=$doc
 ||onenightchicko.com^$all
-/^https:\/\/[0-9a-z]{3,}\.[-a-z]{10,}\.(?:li[fv]e|top|xyz)\/[a-z]{8}\/(?:article\d{4}\.doc)?\?utm_campaign=\w{40,}/$doc,match-case,domain=life|live|top|xyz
-/^https:\/\/[a-z]{2,3}\d\.biz\/go\/[0-9a-z]{15,18}$/$doc,domain=biz
+/^https:\/\/[0-9a-z]{3,}\.[-a-z]{10,}\.(?:li[fv]e|top|xyz)\/[a-z]{8}\/(?:article\d{4}\.doc)?\?utm_campaign=\w{40,}/$doc,match-case,to=life|live|top|xyz
+/^https:\/\/[a-z]{2,3}\d\.biz\/go\/[0-9a-z]{15,18}$/$doc,to=biz
 ! fake dating/prize/video sites
 /^https?:\/\/[0-9a-z]*\.?[-0-9a-z]{4,}\.[a-z]{2,11}\.?[a-z]{0,7}\/(?:[0-9a-z]{6,10}\/)?\/?(?:article\d{4}\.doc)?\?(?:cid=[0-9a-z]+&)?u=[0-9a-z]{7}(?:&t=\d+)?&o=[0-9a-z]{7}/$doc,frame,match-case
 /^https?:\/\/[0-9a-z]*\.?[-0-9a-z]{4,}\.[a-z]{2,11}\.?[a-z]{0,7}\/(?:[0-9a-z]{6,10}\/)?\/?(?:article\d{4}\.doc)?\?(?:cid=[0-9a-z]+&)?o=[0-9a-z]{7}(?:&t=\d+)?&u=[0-9a-z]{7}/$doc,frame,match-case
 .live/web/?sid=t*~$doc
 /?u1=*&o1=*&sid=t*~$doc
 ! push notification scam
-/^https:\/\/(?:www\d\.)?[-a-z]{6,}\.(?:club|com|info|net|org)\/(?=[-_a-zA-Z]{0,42}\d)(?=[-_0-9a-z]{0,42}[A-Z])[-_0-9a-zA-Z]{43}\/\?cid=[-_0-9a-zA-Z]{10,36}(?:&qs\d=\S+)?&(?:s|pub)id=[-_0-9a-z{}]{1,32}(?:&s=0\.\d+)?(?:#\S+)?$/$doc,match-case,domain=club|com|info|net|org
-/^https:\/\/(?:www\d\.)?[-a-z]{6,}\.(?:club|com|info|net|org)\/(?=[-_a-zA-Z]{0,42}\d)(?=[-_0-9a-z]{0,42}[A-Z])[-_0-9a-zA-Z]{43}\/\?(?:pub|s)id=[-_0-9a-z{}]{1,32}(?:&qs\d=\S+)?&cid=[-_0-9a-zA-Z]{10,36}(?:&s=0\.\d+)?(?:#\S+)?$/$doc,match-case,domain=club|com|info|net|org
-/^https:\/\/(?:www\d\.)?[-a-z]{6,}\.(?:club|com|info|net|org)\/(?=[-_a-zA-Z]{0,42}\d)(?=[-_0-9a-z]{0,42}[A-Z])[-_0-9a-zA-Z]{43}\/\?clickID=[0-9a-f]{32}&sourceID=\d+$/$doc,match-case,domain=club|com|info|net|org
+/^https:\/\/(?:www\d\.)?[-a-z]{6,}\.(?:club|com|info|net|org)\/(?=[-_a-zA-Z]{0,42}\d)(?=[-_0-9a-z]{0,42}[A-Z])[-_0-9a-zA-Z]{43}\/\?cid=[-_0-9a-zA-Z]{10,36}(?:&qs\d=\S+)?&(?:s|pub)id=[-_0-9a-z{}]{1,32}(?:&s=0\.\d+)?(?:#\S+)?$/$doc,match-case,to=club|com|info|net|org
+/^https:\/\/(?:www\d\.)?[-a-z]{6,}\.(?:club|com|info|net|org)\/(?=[-_a-zA-Z]{0,42}\d)(?=[-_0-9a-z]{0,42}[A-Z])[-_0-9a-zA-Z]{43}\/\?(?:pub|s)id=[-_0-9a-z{}]{1,32}(?:&qs\d=\S+)?&cid=[-_0-9a-zA-Z]{10,36}(?:&s=0\.\d+)?(?:#\S+)?$/$doc,match-case,to=club|com|info|net|org
+/^https:\/\/(?:www\d\.)?[-a-z]{6,}\.(?:club|com|info|net|org)\/(?=[-_a-zA-Z]{0,42}\d)(?=[-_0-9a-z]{0,42}[A-Z])[-_0-9a-zA-Z]{43}\/\?clickID=[0-9a-f]{32}&sourceID=\d+$/$doc,match-case,to=club|com|info|net|org
 ||ogtrk.net^
 ||91.241.60.117^$all
 ||mfilecloud.com^$all
@@ -683,14 +683,9 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||mediafire.com/folder/47ccu44v3b5sq/$doc
 ||mediafire.com/folder/s5k8d836a2xwr/$doc
 ||mediafire.com/folder/atuqt39mahs1x/$doc
-||mediafire.com/folder/upkvl96lgm82i/$doc
 ||mediafire.com/folder/n2cwlepl4zeov/$doc
 ||mediafire.com/folder/cybqk7ulnmptm/$doc
-||mediafire.com/folder/dsnn4gpdlnig4/$doc
-||mediafire.com/folder/6q6psz38mqj7b/$doc
-||mediafire.com/folder/d36tcrxj403tj/$doc
-||www.youtube.com/channel/UCuHeiORKwgjZ5-n8xoq_zVA/$doc
-||www.youtube.com/channel/UCCmzcphyrH6Br5eNUnQR2mw/$doc
+||mediafire.com/folder/dqp2hwa872obn/$doc
 ||www.youtube.com/@pengwincheat/$doc
 ||sites.google.com/view/amamsoft|$doc
 ||sites.google.com/view/hubgames|$doc
@@ -706,12 +701,12 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||cheatworld.site^$doc
 ||sssrust.com^$doc
 ||softport.fun^$all
-||cheat.sierramercado.com^$doc
 ||upload.advgroup.ru/mvWwiE4h$all
 ||blazehack.top^$doc
 ||fusionhacks.pro^$doc
-||gameggss.site^$all
 ||cheatify.co^$doc
+||whitegames.club^$doc
+||apocalypsecheats.xyz^$all
 ||cloud-folder.org^$doc
 .systems/signup?ad_domain=$doc,popup
 ! fake software updaters /redirections
@@ -1075,6 +1070,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||t-pia.me^$all
 ||toythieves.com^$all
 ||rlfrbxj.com^$all
+||dsichina.com^$all
 ||pocket-888.com^$all
 ! scam sites
 ||webuzz.me^$doc
@@ -3099,6 +3095,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ! shopify
 ||1234854.com^$all,to=~shopify.com
 ||suoncopbaonk.com^$all,to=~shopify.com
+||xsjt.site^$all,to=~shopify.com
 ! paypal
 ||paypal-complete.com^$all
 ||prizegift.top^$all
@@ -3201,6 +3198,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||assistancesosh.wixsite.com^$all,to=~orange.fr
 /or/.espace-.client/(;authentication.htm^$doc,to=~orange.fr
 ||tw1.ru/Orange/$doc,to=~orange.fr
+||dariusdomain.com/orange/$doc,to=~orange.fr
 ! amazon
 ||amazon-*.shop^$doc
 ||amazon-shopping.shop^$all
@@ -3212,6 +3210,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||shop73.online^$all
 ||syae3289.top^$all
 ||mybluehost.me/wp-admin/amz/$doc
+||adswip.com^$all
 ! ebay
 ||c.vn-ebayn.vip^$all
 ||vn-ebay.quxlpuj.cn^$all
@@ -3316,6 +3315,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||dhexpress.weebly.com^$all,to=~dhl.com
 ||delivery.attempt.failure.ebbs.co.za^$all,to=~dhl.com
 ||packages.mpinsureit.com^$all,to=~dhl.com
+||deliverytodayrequest.com^$all,to=~dhl.com
 ||sites.google.com/view/expressdhl^$all,to=~dhl.com
 ||xn--d1aqfkf.xn--p1ai/bitrix/.../GlobalSources/$all,to=~dhl.com
 ||app.farmaciadelmonestironline.com/SER/dnkdl/$all,to=~dhl.com
@@ -3325,6 +3325,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||elementor.cloud/*/ENGHUY645/$doc,to=~dhl.com
 ||mybluehost.me/*/phpmailer/src/dh/$doc,to=~dhl.com
 ||acheter-fichier-email.com^$all,to=~dhl.com
+||de.pathloading.com^$all,to=~dhl.com
 ! whatsapp
 ||ann.tess1.top^$all
 ||play.funfourmob.com^$all
@@ -3332,6 +3333,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||privrendom.com^$all
 ! facebook
 ||mait.inhhome.top^$all
+||mail.pages.exchange-midasbuy.com^$all
 ! /^https:\/\/[vw]ww-[a-z]?facebook[a-z]?([.-]com)?\.vn\//$doc,to=vn
 ||notificationbyfacebook.$doc
 ||notificationbyfacebook.firebaseapp.com^$all
@@ -3375,7 +3377,10 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||business-help-temp-$doc
 /\.cfd\/contract\/\d{14,19}\b/$doc,match-case,to=cfd|~facebook.com
 ||business-center-$doc
-||instructions-video.vercel.app/detailed_video.mp4$doc,media
+||xyzxyz55.xyz^$all
+||thepatrones.blob.core.windows.net^$all
+||m-isist-emai-nmu-ne-*.vercel.app^$all
+||vah-cont-in-uou-slyle-com-ay7t6dbmag9vhg8srhj4.vercel.app^$all
 ! shopping sites
 /api/user/do_login|$xhr,1p,to=com|info,method=post,header=access-control-allow-headers:/authorization\,content-type\,if-match\,if-modified-since\,if-none-match\,if-unmodified-since\,x-requested-with/i
 /api/user/do_login|$xhr,1p,to=com|info,method=post,header=Access-Control-Allow-Headers:/authorization\,content-type\,if-match\,if-modified-since\,if-none-match\,if-unmodified-since\,x-requested-with/i
@@ -3383,6 +3388,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||lazada.bbc6666.com^$all
 ||tuyendungtiki2024.vn^$all,to=~tiki.vn
 ! shopee
+||shopeas.cc^$all
 /^https:\/\/sp\d{2,3}88(?:vn)?\.com\//$doc,to=com|~shopee.vn
 ||vivanoticiando.com^$all
 ||virtualnoticiasaqui.com^$all
@@ -3500,6 +3506,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||enexdirecto.com^$all
 ||ccefactoring.com.br/ziujhyhtrer/$doc
 /Message%20Centre/mc.php^$doc
+/\.com\.[a-z]{2}\/wp-includes\/images\/smilies\/images?\/smili?es\/[a-z]{25,35}\.html/$doc
 ! telegram
 ||telegramhcn.com^$all
 ||web.telegram.data-bees.cn^$all
@@ -3526,6 +3533,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||mybluehost.me/uspshome/$doc
 ||mybluehost.me/us/post/$doc
 ||mybluehost.me/tracking-mail-delivery/$doc
+/^https:\/\/transportation[a-z]{4,5}pro\.top\/i\b/$doc,to=top
 ! weebly/square phishing
 /^https:\/\/(?:[a-z0-9]{2,}-)+10\d{4}\.weeblysite\.com\//$doc,to=weeblysite.com
 /^https:\/\/(?:[a-z0-9]{2,}-)+10\d{4}\.square\.site\//$doc,to=square.site
@@ -3613,6 +3621,7 @@ app##html > body[style]:not([class]):not([id]) > center#yangchen[style]:not([cla
 ||vangphutai.com^$all,to=~vangphutai.vn
 ||snapscrttm.serv00.net^$all,to=~snapchat.com
 ||aliexpressr.top^$all,to=~aliexpress.com
+||autoscurt24.de^$all,to=~autoscout24.de
 ||beluxrepm.followme.fr/FolloWMe$all,to=~realestate.bnpparibas.com
 ||mybluehost.me/Cope346/$all
 ||tesakom.com/aa/index.html^$all,to=~ebestsec.co.kr
@@ -3854,3 +3863,11 @@ app##html > body[style]:not([class]):not([id]) > center#yangchen[style]:not([cla
 ||twitterfollowers.site^$doc
 ##html[lang] > body#body > * > div.cv-xwrapper > div.cvc > div.cv-inner
 ##html[lang] > body#body > * > div.cvh.BlockClicksActivityBusy
+||bilsevvakfi.org^$doc
+||ogrencilerbirligi.com^$doc
+||lcwpaketleme.com^$doc
+||herkeseuygunisilanlari.com^$doc
+||cagrievi.com^$doc
+||kariyerfirsatin.com.tr^$doc
+||cartepak.online^$doc
+||aryapaketleme.com^$doc

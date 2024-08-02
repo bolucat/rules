@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.6.5
+// @version         3.7.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -2084,27 +2084,6 @@ else if (matchDomain('ipolitics.ca')) {
   }
 }
 
-else if (matchDomain('janes.com')) {
-  let articles = document.querySelectorAll('div.article-box');
-  for (let article of articles) {
-    let gated_text = article.querySelector('div > div.gated-text');
-    if (gated_text) {
-      let art_link = article.querySelector('a[href^="mailto:"][href*="&body="]');
-      if (art_link) {
-        let url = decodeURIComponent(art_link.href.split('&body=')[1]);
-        let url_pathname = new URL(url).pathname;
-        let og_url = url_pathname.match(/\/[\w-]+\//)[0] + 'news-detail' + url_pathname.match(/\/[\w-]+$/)[0];
-        let par = document.createElement('p');
-        let weblink = document.createElement('a');
-        weblink.href = og_url;
-        weblink.innerText = 'BPC > full text';
-        par.appendChild(weblink);
-        gated_text.parentNode.replaceChild(par, gated_text);
-      }
-    }
-  }
-}
-
 else if (matchDomain('japantimes.co.jp')) {
   setCookie('xbc', '', 'japantimes.co.jp', '/', 0);
   let url = window.location.href;
@@ -2402,6 +2381,7 @@ else if (matchDomain('nytimes.com')) {
       }
     }
     waitDOMElement('div[id^="slideup-"]', 'DIV', theathletic_func);
+    waitDOMElement('iframe[src*="regwall"]', 'IFRAME', removeDOMElement);
     let apron = document.querySelector('div#free-apron-cta, div.slideup-free-apron-container');
     removeDOMElement(apron);
   }
