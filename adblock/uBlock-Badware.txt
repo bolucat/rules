@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Fri, 02 Aug 2024 15:06:59 +0000
-! Diff-Path: ../patches/2024.8.2.1042.patch#ublock-badware
+! Last modified: Sat, 03 Aug 2024 06:56:16 +0000
+! Diff-Path: ../patches/2024.8.3.802.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -587,7 +587,7 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||hornydateclub.link^$all
 ||guardlnkcaptcha.com^$all
 /gambling/main/default/*/index.html?*p1=$doc
-/?p=*5gi3bp*$doc,domain=biz|com
+/?p=*5gi3bp*$doc,to=biz|com
 ||landings.namapper.com^
 ||hornysmart.link^$all
 ||bd4jn7dk9u.com^$all
@@ -644,12 +644,24 @@ tech4yougadgets.com##+js(aopr, Notification)
 /1/index.html?p1=$doc
 /fb_video_googleplay/*/index.html?*p1=$doc
 .sbs/c/*?s1=$doc
+||lurk-online.com^$all
+||datesmart.link^$all
+||maxerotica.com^$all
+||foxymilfspo.com^$all
 ||mikkim.top^$all
 ||discordvip.createsocialcard.top^$all
-||discordvip.pages.dev^$all
 ^s1=*&click_id=$doc
-^mh=*&s2=$doc
+##html[lang] > body.ishome:not([id]) > div.adult:not([id]) + main.main:not([id])
+^mh=*&mmid=$doc,script
 ||onenightchicko.com^$all
+||nudepopsy71c.com^$all
+||mamielournes.buzz^$doc
+||miahershberger.buzz^$doc
+||sanjuanitaliscano.click^$doc
+||viktoriadelenick.za.com^$doc
+||tinyurl.com/25wegbkm^$doc
+||tinyurl.com/2clnbozb^$doc
+||tinyurl.com/27xz35pu^$doc
 /^https:\/\/[0-9a-z]{3,}\.[-a-z]{10,}\.(?:li[fv]e|top|xyz)\/[a-z]{8}\/(?:article\d{4}\.doc)?\?utm_campaign=\w{40,}/$doc,match-case,to=life|live|top|xyz
 /^https:\/\/[a-z]{2,3}\d\.biz\/go\/[0-9a-z]{15,18}$/$doc,to=biz
 ! fake dating/prize/video sites
@@ -776,13 +788,12 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||dabaicai.com^$all
 ||qqfzn.com^$all
 ||lubuntu.net^$doc
-/^https:\/\/serch\d{2}\.biz\/\?p=/$doc,domain=biz
+/^https:\/\/serch\d{2}\.biz\/\?p=/$doc,to=biz
 ! ||driverfix.com^$doc
 ||gghacks.com^$all
 ||rewardsgiantusa.com^$doc
 ||promotionsonlineusa.com^$doc
 ||displayoptoffers.com^$doc
-||sweepstakesalerts.com^$doc
 ||qualityhealth.com^$doc
 ||consumerproductsusa.com^$doc
 ||get-cracked.com^$all
@@ -2928,7 +2939,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||akyr3h9x5mb.com^$all
 ||tiger.qnews.media^$3p
 ||s8bet.com^$doc
-/\.br\/(?:[a-z]{4,8}\/){1,2}\?(?:app|patt|videos?)=\S+\.shtml$/$doc,match-case,domain=gov.br
+/\.br\/(?:[a-z]{4,8}\/){1,2}\?(?:app|patt|videos?)=\S+\.shtml$/$doc,match-case,to=gov.br
 c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||azure.z97z.com/go.html$doc
 ||sites.uft.edu.br/topama/news.php$doc
@@ -2997,6 +3008,8 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||webpublic.substack.com^$all
 ||teslafond.io^$doc
 ||teslacore.io^$doc
+||btc24.info^$doc
+||youtube.com/@tesla24official^$doc
 ! Phishing - See https://bbs.kafan.cn/thread-2264505-1-1.html
 ||counter-strike2-official.net^$all
 ||primeleech.com^$all
@@ -3205,17 +3218,20 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||amazonl3.com^$all
 ||tepoty.com^$all
 ||daroznel.com^$all
+||amazon8898.com^$all
 ||ecommrce-web-amazon.netlify.app^$all
 ||etisalat-amazonprime.com^$all,to=~etisalat.ae
 ||shop73.online^$all
 ||syae3289.top^$all
 ||mybluehost.me/wp-admin/amz/$doc
 ||adswip.com^$all
+||amserva.com^$all
 ! ebay
 ||c.vn-ebayn.vip^$all
 ||vn-ebay.quxlpuj.cn^$all
 ||ebayasean.com^$all
 ||vilbuy.com^$all
+||epayu.cc^$all
 ||show.naturecircle.shop^$all
 /^https:\/\/(?:seller\.)?ebay-[a-z]{8,15}\.com\//$doc,to=com
 ||ebay-european.com^$all
@@ -3309,6 +3325,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 /views/choice/*/start.php^$doc
 ||sparkasse-oberhessen.info^$all,to=~sparkasse.de
 ||skylarkspb.ru/raiffeisentwint/$all,to=~raiffeisen.ch
+||amxprd.com^$doc,to=~americanexpress.com
 ! DHL
 ||dhl.*.potabox.com^$doc,to=~dhl.com
 ||dhl-event.app^$all,to=~dhl.com
@@ -3372,8 +3389,8 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||transparency-business.com^$all
 ||http://marketplace-item-details-*.zya.me^$all
 ||mediacontrolcenters.com^$all
-/^https:\/\/business\.[a-z]+confirm\.com\/meta-community-standard\d{15}\/?/$doc,match-case,to=com
-/\.(?:pages\.dev|surge\.sh)\/help\/contact\/\d{14,19}\b/$doc,match-case,to=pages.dev|surge.sh|~facebook.com
+/^https:\/\/business\.[a-z]+confii?rm\.com\/meta-community-standard\d{15}\/?/$doc,match-case,to=com
+/\.(?:click|dev|surge\.sh)\/help\/contact\/\d{14,19}\b/$doc,match-case,to=click|dev|surge.sh|~facebook.com
 ||business-help-temp-$doc
 /\.cfd\/contract\/\d{14,19}\b/$doc,match-case,to=cfd|~facebook.com
 ||business-center-$doc
@@ -3417,6 +3434,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||steamcomuniry.com^$all
 ||steamcommunlyt.com^$all
 ||steemcommuntiy.com^$all
+||stemcommunty.com^$all
 ||workshop-users.com^$all
 ||steam.poweredworkcreate.com^$all
 ||st-friends.com^$all
@@ -3512,6 +3530,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||web.telegram.data-bees.cn^$all
 ||newappmssg.ru^$all
 ||brawllstars.ru^$all
+||webz.dev^$all
 ||telegrambotsolution.pages.dev^$all
 /^https:\/\/www\.telegramk[a-z]\.com\//$to=com|~telegram.org
 ||telegramkv.com^$all
@@ -3563,6 +3582,7 @@ c0c9d.cmi.rj.gov.br,cambe.pr.gov.br##^responseheader(location)
 ||altitudesim.ca/*/CHFINAL/$doc,to=~swisspass.ch
 ||codeanyapp.com/Swissp/$doc,to=~swisspass.ch
 ||orr.swq.mybluehost.me^$doc,to=~swisspass.ch
+||xrphealthcare.com^$doc
 ! swisscom
 ||secureserver.net/myswisscom$doc,to=~swisscom.ch
 ||codeanyapp.com/Swiss_com/$doc,to=~swisscom.ch
@@ -3622,6 +3642,7 @@ app##html > body[style]:not([class]):not([id]) > center#yangchen[style]:not([cla
 ||snapscrttm.serv00.net^$all,to=~snapchat.com
 ||aliexpressr.top^$all,to=~aliexpress.com
 ||autoscurt24.de^$all,to=~autoscout24.de
+||rogersales.com^$all,to=~rogers.com
 ||beluxrepm.followme.fr/FolloWMe$all,to=~realestate.bnpparibas.com
 ||mybluehost.me/Cope346/$all
 ||tesakom.com/aa/index.html^$all,to=~ebestsec.co.kr
@@ -3719,9 +3740,9 @@ app##html > body[style]:not([class]):not([id]) > center#yangchen[style]:not([cla
 ||puttyconnect.info^$all
 ||astrosphere.world^$all
 ||marketplace-item-*.000.pe^$doc
-! /^https:\/\/(?:ai|art|get)?-?midjourney(?:s|ai)[^\/]+\//$doc,domain=~midjourney.com|~edu|~gov
-/^https:\/\/(?:ai|art|get)-?midjourney[^\/]+\//$doc,domain=~midjourney.com|~edu|~gov
-/^https:\/\/mid-journey\.[a-z]+\//$doc,domain=~midjourney.com|~edu|~gov
+! /^https:\/\/(?:ai|art|get)?-?midjourney(?:s|ai)[^\/]+\//$doc,to=~midjourney.com|~edu|~gov
+/^https:\/\/(?:ai|art|get)-?midjourney[^\/]+\//$doc,to=~midjourney.com|~edu|~gov
+/^https:\/\/mid-journey\.[a-z]+\//$doc,to=~midjourney.com|~edu|~gov
 ||midjourney.co^$all
 ||runningapplications-b7dae-default-rtdb.firebaseio.com^$all
 ||kisanbethak.com^$all
@@ -3819,8 +3840,8 @@ app##html > body[style]:not([class]):not([id]) > center#yangchen[style]:not([cla
 ||sites.google.com/view/sora-ai-v2^$all
 /^https:\/\/[a-z]{6,19}\.(?:com|net)\/js\?t=[_a-z0-9]+&ns=[a-z]{2}$/$script,3p,strict3p,match-case,to=com|net
 /^https:\/\/[a-z]{6,19}\.(?:com|net)\/(?:static_)?file\/\?t=[_a-z0-9]+&ns=[a-z]{2}$/$frame,popup,3p,strict3p,match-case,to=com|net
-/^https:\/\/[a-z]{6,19}\.(?:com|net)\/(?:static_)?file\/\?t=[_a-z0-9]+&ns=[a-z]{2}$/$doc,match-case,domain=com|net
-||shy-boat-90ce.jiko728928922.workers.dev^$doc,domain=~uniswap.org
+/^https:\/\/[a-z]{6,19}\.(?:com|net)\/(?:static_)?file\/\?t=[_a-z0-9]+&ns=[a-z]{2}$/$doc,match-case,to=com|net
+||shy-boat-90ce.jiko728928922.workers.dev^$doc,to=~uniswap.org
 ||uniwspapp.com^$all,to=~uniswap.org
 ||crowdstrike-helpdesk.com^$doc
 ||crowdstrikebluescreen.com^$doc
@@ -3871,3 +3892,4 @@ app##html > body[style]:not([class]):not([id]) > center#yangchen[style]:not([cla
 ||kariyerfirsatin.com.tr^$doc
 ||cartepak.online^$doc
 ||aryapaketleme.com^$doc
+||cdmx-gob-mx.com^$doc,to=~cdmx.gob.mx
