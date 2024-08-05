@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.7.7.1
+// @version         3.7.7.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.nl.user.js
@@ -154,9 +154,9 @@ if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
       }
       let article = document.querySelector(article_sel);
       if (article) {
-        let pars = article.querySelectorAll('p');
-        if (pars.length < 3)
-          header_nofix(document.querySelector('article header'), '', 'BPC > no archive-fix');
+        let pars = article.querySelectorAll('div[style*="font-size"]');
+        if (pars.length < 5)
+          header_nofix(article.querySelector('header'), '', 'BPC > no archive-fix');
       }
     }
     let url = window.location.href;
