@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.7.2
+// @version         3.7.7.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.en.user.js
@@ -1149,7 +1149,7 @@ else if (matchDomain('axios.com')) {
     hideDOMStyle(overlay, 2);
   }
   waitDOMAttribute('html', 'HTML', 'style', axios_noscroll, true);
-  let banners = 'div[data-cy="pro-paywall"], div.apexAd';
+  let banners = 'div[data-cy="pro-paywall"], div.apexAd, div[class*="NativeAd"], span[data-ad-type]';
   hideDOMStyle(banners);
 }
 
@@ -1637,9 +1637,9 @@ else if (matchDomain('economist.com')) {
       }
     }
     getArchive(url, paywall_sel, '', 'main');
-    let ads = 'div[class*="_advert__"]';
-    hideDOMStyle(ads);
   }
+  let ads = 'div[class*="adComponent"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('enotes.com')) {
