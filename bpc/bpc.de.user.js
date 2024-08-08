@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.6.3
+// @version         3.7.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
@@ -299,19 +299,15 @@ else if (matchDomain('faz.net')) {
                           let url_id = pars[par.imageId];
                           let url = pars.find(x => typeof x === 'string' && x.includes('/' + url_id + '/'));
                           if (url) {
-                            elem = document.createElement('figure');
-                            let img = document.createElement('img');
-                            img.src = url;
-                            elem.appendChild(img);
+                            let caption_text = '';
                             let url_index = pars.indexOf(url);
                             if (url_index) {
-                              let caption = document.createElement('figcaption');
                               if (typeof pars[url_index - 2] === 'string')
-                                caption.innerText += pars[url_index - 2];
+                                caption_text += pars[url_index - 2];
                               if (typeof pars[url_index - 1] === 'string')
-                                caption.innerText += ' ' + pars[url_index - 1];
-                              elem.appendChild(caption);
+                                caption_text += ' ' + pars[url_index - 1];
                             }
+                            elem = makeFigure(url, caption_text);
                             elem.appendChild(document.createElement('br'));
                           }
                         }
@@ -368,23 +364,18 @@ else if (matchDomain('faz.net')) {
 
 else if (matchDomain('freiepresse.de')) {
   if (window.location.pathname.includes('-artikel')) {
-    let url = window.location.href;
-    func_post = function () {
-      let lazy_images = document.querySelectorAll('picture.lazy');
-      for (let elem of lazy_images) {
-        elem.removeAttribute('class');
-        let source = elem.querySelector('source[data-srcset]');
-        if (source) {
-          let img_new = document.createElement('img');
-          img_new.src = source.getAttribute('data-srcset').split(' ')[0];
-          source.parentNode.replaceChild(img_new, source);
-        }
-      }
+    function main_fp(node) {
+      let url = window.location.href;
+      getGoogleWebcache(url, paywall_sel, '', 'article');
     }
-    getGoogleWebcache(url, 'div.article-teaser', '', 'article');
+    let paywall_sel = 'div.default-paywall, div#upscore-paywall-placeholder';
+    let paywall = document.querySelector(paywall_sel);
+    if (paywall)
+      main_fp(paywall);
+    waitDOMElement(paywall_sel, 'DIV', main_fp, true);
+    let ads = 'div.rgt-content';
+    hideDOMStyle(ads);
   }
-  let ads = 'div.rgt-content';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('freitag.de')) {
@@ -553,7 +544,7 @@ else if (matchDomain('kurier.at')) {
       div_hidden.removeAttribute('style');
     }
   }
-  let ads = 'div[data-outbrain]';
+  let ads = 'div[data-ad], div[data-outbrain]';
   hideDOMStyle(ads);
 }
 
@@ -1088,6 +1079,27 @@ function clearPaywall(paywall, paywall_action) {
       }
     }
   }
+}
+
+function makeFigure(url, caption_text, img_attrib = {}, caption_attrib = {}) {
+  let elem = document.createElement('figure');
+  let img = document.createElement('img');
+  img.src = url;
+  for (let attrib in img_attrib)
+    if (img_attrib[attrib])
+      img.setAttribute(attrib, img_attrib[attrib]);
+  elem.appendChild(img);
+  if (caption_text) {
+    let caption = document.createElement('figcaption');
+    for (let attrib in caption_attrib)
+      if (caption_attrib[attrib])
+        caption.setAttribute(attrib, caption_attrib[attrib]);
+    let cap_par = document.createElement('p');
+    cap_par.innerText = caption_text;
+    caption.appendChild(cap_par);
+    elem.appendChild(caption);
+  }
+  return elem;
 }
 
 function header_nofix(header, cond_sel = '', msg = 'BPC > no fix') {
