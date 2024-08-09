@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Thu, 08 Aug 2024 12:58:28 +0000
-! Diff-Path: ../patches/2024.8.8.805.patch#ublock-filters
+! Last modified: Fri, 09 Aug 2024 13:43:56 +0000
+! Diff-Path: ../patches/2024.8.9.864.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -27,6 +27,8 @@ m.youtube.com,music.youtube.com,tv.youtube.com,www.youtube.com,youtubekids.com,y
 m.youtube.com,music.youtube.com,tv.youtube.com,www.youtube.com,youtubekids.com,youtube-nocookie.com##+js(set, playerResponse.adPlacements, undefined)
 m.youtube.com,music.youtube.com,youtubekids.com,youtube-nocookie.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots important)
 www.youtube.com##+js(json-prune-fetch-response, playerAds adPlacements adSlots playerResponse.playerAds playerResponse.adPlacements playerResponse.adSlots, , propsToMatch, /playlist?)
+www.youtube.com##+js(json-prune-fetch-response, playerAds adPlacements adSlots playerResponse.playerAds playerResponse.adPlacements playerResponse.adSlots [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots, , propsToMatch, /player?)
+www.youtube.com##+js(json-prune-xhr-response, playerAds adPlacements adSlots playerResponse.playerAds playerResponse.adPlacements playerResponse.adSlots [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots, , propsToMatch, /player?)
 youtube.com##.ytlr-horizontal-list-renderer__items > .yt-virtual-list__container > .yt-virtual-list__item--visible.yt-virtual-list__item--selected.yt-virtual-list__item:has-text(Ad)
 ||googlevideo.com/initplayback?source=youtube*&c=TVHTML5&oad=$xhr,domain=youtube.com
 ! Shorts Ad
@@ -9871,16 +9873,17 @@ pandadevelopment.net##+js(no-fetch-if, adsbygoogle)
 ||go.aff.7k-partners.com^$popup
 megacanais.com##+js(aopr, Adcash)
 !#if cap_html_filtering
-buffsports.me,rnbastreams.com,4kwebplay.xyz,qqwebplay.xyz,totalsportek.to,eztvx.to,topstreams.info,lewblivehdplay.ru,claplivehdplay.ru,mixdrop.*,viwlivehdplay.ru,antennasports.ru,buffstreams.app,1stream.eu##^script:has-text(adserverDomain)
+1stream.eu,4kwebplay.xyz,antennasports.ru,buffsports.me,buffstreams.app,claplivehdplay.ru,cracksports.me,ext.to,eztv.tf,eztvx.to,kenitv.me,lewblivehdplay.ru,mixdrop.*,mlbbite.net,mlbstreams.ai,qqwebplay.xyz,rnbastreams.com,soccerworldcup.me,topstreams.info,totalsportek.to,viwlivehdplay.ru##^script:has-text(adserverDomain)
 !#else
-buffsports.me,rnbastreams.com,4kwebplay.xyz,qqwebplay.xyz,totalsportek.to,eztvx.to,topstreams.info,lewblivehdplay.ru,claplivehdplay.ru,mixdrop.*,viwlivehdplay.ru,antennasports.ru,buffstreams.app,1stream.eu##+js(rmnt, script, adserverDomain)
+1stream.eu,4kwebplay.xyz,antennasports.ru,buffsports.me,buffstreams.app,claplivehdplay.ru,cracksports.me,ext.to,eztv.tf,eztvx.to,kenitv.me,lewblivehdplay.ru,mixdrop.*,mlbbite.net,mlbstreams.ai,qqwebplay.xyz,rnbastreams.com,soccerworldcup.me,topstreams.info,totalsportek.to,viwlivehdplay.ru##+js(rmnt, script, adserverDomain)
 !#endif
 ###dontfoid
 ##div[style="top: 0px; left: 0px; width: 1287px; height: 500px; position: fixed; z-index: 2147483647;"]
 ##div[style="position: fixed; inset: 0px; z-index: 2147483647; pointer-events: auto;"]
+cracksports.me##+js(acs, JSON.parse, atob)
 /\/z-[a-z0-9]{7,10}(\.js)?$/$script,domain=embedflix.online|koyso.com|nepu.to|methstreams.com
 /^https:\/\/[a-z]{4,}\.(?:com|to)\/z-[a-z0-9]{7,10}(\.js)?$/$script,1p,strict1p,domain=com|to,header=etag:/^"[a-f0-9]{4,}-[a-f0-9]{4,}"$/
-/^https?:\/\/[a-z]{5,12}\.com\/[0-9a-h]{1,17}\?[0-9a-zA-Z]{1,21}=[0-9a-zA-Z]{300,1300}/$xhr,3p,match-case,to=com,method=get,header=via:/1[-.:]1/
+/^https?:\/\/[a-z]{5,12}\.com\/[0-9a-h]{1,17}\?[0-9a-zA-Z]{1,21}=[0-9a-zA-Z]{300,1300}/$xhr,3p,match-case,to=com,method=get,header=via:/1[-.:]\d/
 ! cricket sites popups
 crictime.is,freehit.eu,mobilecric.com##[href*="?key"][target="_blank"]:remove-attr(href)
 factorp.xyz##+js(nowoif)
@@ -10359,17 +10362,6 @@ watchdirty.to##+js(set, flashvars.adv_pre_vast, '')
 ||2linkpath.com^
 watchdirty.to##.block-video > .table
 cinemitas.org,cinelatino.net,cineplus123.org,paraveronline.org,pobreflix.vc,verpelis.gratis##+js(trusted-set, dtGonza.playeradstime, '"-1"')
-cracksports.me##+js(acs, JSON.parse, atob)
-!#if cap_html_filtering
-cracksports.me,kenitv.me##^script:has-text(adserverDomain)
-!#else
-cracksports.me,kenitv.me##+js(rmnt, script, adserverDomain)
-!#endif
-!#if cap_html_filtering
-mlbbite.net,mlbstreams.ai##^script:has-text(adserverDomain)
-!#else
-mlbbite.net,mlbstreams.ai##+js(rmnt, script, adserverDomain)
-!#endif
 al.com,cleveland.com,mlive.com,nj.com,oregonlive.com##+js(rmnt, script, admiral)
 manoramaonline.com##+js(aopr, EV.Dab)
 ||profitsence.com^$script,3p,redirect=noopjs,domain=gamezone.cam
@@ -10379,11 +10371,6 @@ pianetalecce.it##+js(acs, document.getElementById, ablk)
 hiraethtranslation.com##+js(rmnt, script, adsSrc)
 chasingthedonkey.com##+js(nowoif)
 taste.com.au##.main-header:style(top: 0 !important)
-!#if cap_html_filtering
-soccerworldcup.me##^script:has-text(adserverDomain)
-!#else
-soccerworldcup.me##+js(rmnt, script, adserverDomain)
-!#endif
 tvline.com##+js(rmnt, script, /adm|adb/i)
 @@||decompiler.com/javascripts/*$script,1p
 ! ytlarge detection
@@ -10413,6 +10400,14 @@ olympicstreams.ru##+js(aost, Object, Pop)
 avxhm.se##[data-localize]:has(a[href^="https://icerbox.com/"])
 avxhm.se##center:has(a[href^="https://canv.ai/"])
 avxhm.se##center:has(a[href^="https://canv.ai/"]) ~ span:has(a[href^="https://canv.ai/"])
+||heraldnet.com/wp-content/plugins/incognito_dectector/js/incognito-detector.js$script,1p
+repack-games.com##+js(rmnt, script, ai_adb)
+! hesgoal-*.io detection
+hesgoal-tv.io,hesgoal-vip.io##+js(rmnt, script, /adbl/i)
+! hesgoal. watch popups
+||hesgoal.watch^$csp=sandbox allow-forms allow-same-origin allow-scripts allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation
+homesports.net##+js(aeld, DOMContentLoaded, fetch)
+||ssstik.cam^$csp=sandbox allow-forms allow-same-origin allow-scripts allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -11278,7 +11273,9 @@ phongroblox.com##+js(set-cookie, antiBlock, 1)
 dl.apkmoddone.com,phongroblox.com##+js(rpnt, script, return!![];, return![];)
 dl.apkmoddone.com,phongroblox.com##+js(set, aSl.gcd, 0)
 apkmoddone.com##+js(trusted-replace-argument, fetch, 0, {"value": "https://www.apkmoddone.com/feeds/posts/summary/-/_Apps?alt=json&max-results=0"}, condition, ipinfo.io)
-apkmoddone.com##+js(nowoif, /wheceelt\.net|shopee\./)
+apkmoddone.com##+js(nowoif, /wheceelt\.net|shopee\./, 10, obj)
+www.apkmoddone.com##+js(rpnt, script, ;return;, , condition, _0x)
+www.apkmoddone.com##+js(trusted-replace-argument, document.querySelector, 0, {"value": "body"}, condition, iframe)
 @@||acscdn.com/script/$script,3p,header=x-guploader-uploadid,domain=www.apkmoddone.com
 @@||acscdn.com/script/$script,3p,domain=www.apkmoddone.com
 @@||youradexchange.com/script/$xhr,3p,domain=www.apkmoddone.com
@@ -15020,6 +15017,8 @@ nudeof.com##div.happy-section
 @@||skmedix.pl^$ghide,script,1p
 ||skmedix.pl/cdn-cgi/zaraz/$script,1p,important
 *$frame,redirect-rule=noopframe,domain=skmedix.pl
+skmedix.pl##+js(cookie-remover)
+skmedix.pl##+js(trusted-click-element, button.fc-button)
 yxoshort.com##+js(aopr, app_vars.force_disable_adblock)
 yxoshort.com##+js(set, blurred, false)
 yxoshort.com##.banner
@@ -22260,6 +22259,7 @@ truyentranhfull.net##+js(rmnt, script, ai_adb)
 /adpia_click_popup_after.js
 @@||endowmentoverhangutmost.com/*/code.js^$script,3p,domain=empire-stream.*|empire-streaming.*|empire-streamz.*
 @@||brittlesturdyunlovable.com/*/code.js^$script,3p,domain=empire-stream.*|empire-streaming.*|empire-streamz.*
+@@||brittlesturdyunlovable.com/get/$script,3p,domain=empire-stream.*|empire-streaming.*|empire-streamz.*
 @@*$ghide,domain=empire-stream.*|empire-streaming.*|empire-streamz.*
 empire-stream.*,empire-streaming.*,empire-streamz.*##.direct-lads
 empire-stream.*,empire-streaming.*,empire-streamz.*##+js(set, empire.pop, undefined)

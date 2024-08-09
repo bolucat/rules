@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.7.6.0
+// @version         3.7.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.fr.user.js
@@ -25,6 +25,7 @@
 // @match           *://*.ledevoir.com/*
 // @match           *://*.legrandcontinent.eu/*
 // @match           *://*.lenouvelliste.ch/*
+// @match           *://*.lerevenu.com/*
 // @match           *://*.lesinrocks.com/*
 // @match           *://*.levif.be/*
 // @match           *://*.loeildelaphotographie.com/*
@@ -480,6 +481,11 @@ else if (matchDomain('lepoint.fr')) {
   }
 }
 
+else if (matchDomain('lerevenu.com')) {
+  let ads = 'div.wrapperAd';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('lesechos.fr')) {
   if (window.location.pathname.startsWith('/amp/')) {
     ampToHtml();
@@ -581,7 +587,7 @@ else if (matchDomain(be_roularta_domains)) {
 }
 
 else if (matchDomain('lexpress.fr')) {
-  let ads = 'div[class^="block_pub"], div.bottom-bar-full, div.tead, div.ban-bottom, div.placeholder--ban-atf';
+  let ads = 'div[class^="block_pub"], div[class^="bottom-bar"], div.teads__block, div.ban-bottom, div[class^="placeholder--ban-atf"]';
   hideDOMStyle(ads);
 }
 

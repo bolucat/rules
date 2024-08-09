@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.7.7.0
+// @version         3.7.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.es.pt.user.js
@@ -256,16 +256,7 @@ else if (matchDomain('expresso.pt')) {
                       par_new = doc.querySelector('div');
                     } else if (par.type === 'PICTURE') {
                       if (par.urlOriginal) {
-                        par_new = document.createElement('figure');
-                        let img = document.createElement('img');
-                        img.src = par.urlOriginal;
-                        img.style = 'width:100%';
-                        par_new.appendChild(img);
-                        if (par.caption) {
-                          let caption = document.createElement('p');
-                          caption.innerText = par.caption;
-                          par_new.appendChild(caption);
-                        }
+                        par_new = makeFigure(par.urlOriginal, par.caption, {style: 'width:100%'});
                       }
                     } else if (par.link && par.title) {
                       if (par.contents) {
@@ -276,16 +267,7 @@ else if (matchDomain('expresso.pt')) {
                             let doc = parser.parseFromString('<div>' + elem.html + '</div>', 'text/html');
                             elem_new = doc.querySelector('div');
                           } else if (elem.urlOriginal) {
-                            elem_new = document.createElement('figure');
-                            let img = document.createElement('img');
-                            img.src = elem.urlOriginal;
-                            img.style = 'width:100%';
-                            elem_new.appendChild(img);
-                            if (elem.caption) {
-                              let caption = document.createElement('p');
-                              caption.innerText = elem.caption;
-                              elem_new.appendChild(caption);
-                            }
+                            elem_new = makeFigure(elem.urlOriginal, elem.caption, {style: 'width:100%'});
                           }
                           if (elem_new)
                             par_new.appendChild(elem_new);
@@ -699,6 +681,27 @@ function clearPaywall(paywall, paywall_action) {
       }
     }
   }
+}
+
+function makeFigure(url, caption_text, img_attrib = {}, caption_attrib = {}) {
+  let elem = document.createElement('figure');
+  let img = document.createElement('img');
+  img.src = url;
+  for (let attrib in img_attrib)
+    if (img_attrib[attrib])
+      img.setAttribute(attrib, img_attrib[attrib]);
+  elem.appendChild(img);
+  if (caption_text) {
+    let caption = document.createElement('figcaption');
+    for (let attrib in caption_attrib)
+      if (caption_attrib[attrib])
+        caption.setAttribute(attrib, caption_attrib[attrib]);
+    let cap_par = document.createElement('p');
+    cap_par.innerText = caption_text;
+    caption.appendChild(cap_par);
+    elem.appendChild(caption);
+  }
+  return elem;
 }
 
 function header_nofix(header, cond_sel = '', msg = 'BPC > no fix') {
