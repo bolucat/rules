@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.8.0
+// @version         3.7.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
-// @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
-// @updateURL       https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.de.user.js
-// @homepageURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters
-// @supportURL      https://github.com/bpc-clone/bypass-paywalls-clean-filters
-// @license         MIT; https://github.com/bpc-clone/bypass-paywalls-clean-filters/blob/main/LICENSE
+// @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
+// @updateURL       https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
+// @homepageURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
+// @supportURL      https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
+// @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
 // @match           *://*.de/*
 // @match           *://*.beobachter.ch/*
 // @match           *://*.faz.net/*

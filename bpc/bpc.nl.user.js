@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.7.7.2
+// @version         3.7.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
-// @downloadURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.nl.user.js
-// @updateURL       https://github.com/bpc-clone/bypass-paywalls-clean-filters/raw/main/userscript/bpc.nl.user.js
-// @homepageURL     https://github.com/bpc-clone/bypass-paywalls-clean-filters
-// @supportURL      https://github.com/bpc-clone/bypass-paywalls-clean-filters
-// @license         MIT; https://github.com/bpc-clone/bypass-paywalls-clean-filters/blob/main/LICENSE
+// @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
+// @updateURL       https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
+// @homepageURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
+// @supportURL      https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
+// @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
 // @match           *://*.nl/*
 // @match           *://*.artsenkrant.com/*
 // @match           *://*.businessam.be/*
