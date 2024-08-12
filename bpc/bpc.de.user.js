@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.8.1
+// @version         3.7.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -678,20 +678,29 @@ else if (matchDomain('springermedizin.de')) {
 
 else if (matchDomain('sueddeutsche.de')) {
   let url = window.location.href;
-  if (matchDomain('sz-magazin.sueddeutsche.de'))
-    getArchive(url, 'p.paragraph--reduced', {rm_class: 'paragraph--reduced'}, 'main');
-  else if (window.location.pathname.startsWith('/projekte/artikel/')) {
+  if (matchDomain('sz-magazin.sueddeutsche.de')) {
     func_post = function () {
-      let lazy_images = document.querySelectorAll('img[loading="lazy"][style]');
-      for (let elem of lazy_images)
-        elem.style = 'width: 80%; margin: auto;';
-      let containers = document.querySelectorAll('div[id^="module-"][style]');
-      for (let elem of containers)
-        elem.removeAttribute('style');
+      let hidden_images = document.querySelectorAll('img[src^="data:image/"][data-src]');
+      for (let hidden_image of hidden_images)
+        hidden_image.setAttribute('src', hidden_image.getAttribute('data-src'));
     }
-    getArchive(url, 'div.offer-page', '', 'main');
+    getOchToUnlock(url, 'p.paragraph--reduced', {rm_class: 'paragraph--reduced'}, 'main');
+  } else if (window.location.pathname.startsWith('/projekte/artikel/')) {
+    func_post = function () {
+      let par = document.querySelector('div.publishdate');
+      if (par) {
+        let lazy_images = document.querySelectorAll('img[loading]');
+        for (let elem of lazy_images) {
+          if (elem.width) {
+            let ratio = elem.width / (par.offsetWidth);
+            elem.style = 'width: ' + elem.width / ratio + 'px; height: ' + elem.height / ratio + 'px; margin: 20px;';
+          }
+        }
+      }
+    }
+    getOchToUnlock(url, 'div.offer-page', '', 'main');
   } else {
-    getArchive(url, 'head > meta[content="locked"]', '', 'div[itemprop="articleBody"]');
+    getOchToUnlock(url, 'head > meta[content="locked"]', '', 'div[itemprop="articleBody"]');
   }
   let ads = 'er-ad-slot, div.iqdcontainer';
   hideDOMStyle(ads);
