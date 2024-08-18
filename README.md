@@ -235,5 +235,5 @@
 - [rules.min.hash](https://rules.neuq.de/clearurls/rules.min.hash)
 - [rules.minify.hash](https://rules.neuq.de/clearurls/rules.minify.hash)
 # userscripts
-- [gkd-default-subscription.json](https://rules.neuq.de/userscripts/gkd-default-subscription.json)
+- [gkd-AIsouler-subscription.json](https://rules.neuq.de/userscripts/gkd-AIsouler-subscription.json)
 - [immersive-translate.user.js](https://rules.neuq.de/userscripts/immersive-translate.user.js)
