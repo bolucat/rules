@@ -244,9 +244,17 @@ iptv() {
 bpc() {
 	mkdir -p bpc
 	pushd bpc || exit 1
- 	wget -qO- "https://api.github.com/repos/bpc-clone/bypass-paywalls-clean-filters/contents/userscript" | jq ".[] | {download_url}" -c | jq .download_url -r | wget -c -i -
-	wget https://raw.githubusercontent.com/bpc-clone/bypass-paywalls-clean-filters/main/bpc-paywall-filter.txt -O bpc-paywall-filter.txt
- 	wget -qO- https://api.github.com/repos/bpc-clone/bpc_updates/releases/latest | jq ".assets[] | {browser_download_url}" -c | jq .browser_download_url -r | wget -c -i -
+ 	wget --content-disposition "https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript%2Fbpc.de.user.js"
+  	wget --content-disposition "https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript%2Fbpc.en.user.js"
+	wget --content-disposition "https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript%2Fbpc.es.pt.user.js"
+	wget --content-disposition "https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript%2Fbpc.fi.se.user.js"
+	wget --content-disposition "https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript%2Fbpc.fr.user.js"
+	wget --content-disposition "https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript%2Fbpc.it.user.js"
+	wget --content-disposition "https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript%2Fbpc.nl.user.js"
+	wget "https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=bpc-paywall-filter.txt" -O bpc-paywall-filter.txt
+ 	wget --content-disposition "https://gitflic.ru/project/magnolia1234/bpc_uploads/blob/raw?file=bypass-paywalls-chrome-clean-master.zip"
+	wget --content-disposition "https://gitflic.ru/project/magnolia1234/bpc_uploads/blob/raw?file=bypass-paywalls-firefox-clean-master.zip"
+	wget --content-disposition "https://gitflic.ru/project/magnolia1234/bpc_uploads/blob/raw?file=bypass_paywalls_clean-latest.xpi"
 	popd || exit 1
 }
 
