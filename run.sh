@@ -276,7 +276,7 @@ userscripts() {
 	mkdir -p userscripts
  	pushd userscripts || exit 1
   	wget https://github.com/immersive-translate/immersive-translate/releases/latest/download/immersive-translate.user.js -O immersive-translate.user.js
-   	wget https://raw.githubusercontent.com/gkd-kit/subscription/main/dist/gkd.json -O gkd-default-subscription.json
+   	wget https://raw.githubusercontent.com/AIsouler/GKD_subscription/main/dist/AIsouler_gkd.json5 -O gkd-AIsouler-subscription.json
    	popd || exit 1
 }
 
