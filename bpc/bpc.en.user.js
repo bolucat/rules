@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.8.2
+// @version         3.7.9.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2622,7 +2622,7 @@ else if (matchDomain('seekingalpha.com')) {
     let article = document.querySelector(article_sel);
     if (article) {
       function sa_main(node) {
-        hideDOMElement(node);
+        hideDOMStyle(paywall_sel);
         let parser = new DOMParser();
         let url = window.location.href.split(/[#\?]/)[0];
         fetch(url)
@@ -2640,6 +2640,9 @@ else if (matchDomain('seekingalpha.com')) {
         }).catch(function (err) {
           false;
         });
+        let read_more = document.querySelector('button[id^="continueReadingButton"]');
+        if (read_more)
+          read_more.click();
         let unfade = document.querySelector('head > style#fade');
         if (!unfade && document.head) {
           let sheet = document.createElement('style');
@@ -2647,8 +2650,13 @@ else if (matchDomain('seekingalpha.com')) {
           sheet.innerText = 'div.vibB6, div.bg-share-card-bg {position:unset !important;}';
           document.head.appendChild(sheet);
         }
+        let overlays = document.querySelectorAll('div[class*="bg-black\\/"]');
+        removeDOMElement(...overlays);
+        let inert_links = document.querySelectorAll('[inert]');
+        for (let elem of inert_links)
+          elem.removeAttribute('inert');
       }
-      let paywall_sel = 'div[role="dialog"]';
+      let paywall_sel = 'div[role="dialog"], div.overflow-auto.bg-share-card-bg, div[data-test-id="modal-content"]';
       let paywall = document.querySelector(paywall_sel);
       if (paywall) {
         sa_main(paywall);

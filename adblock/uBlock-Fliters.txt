@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Mon, 19 Aug 2024 12:57:53 +0000
-! Diff-Path: ../patches/2024.8.19.866.patch#ublock-filters
+! Last modified: Tue, 20 Aug 2024 15:24:06 +0000
+! Diff-Path: ../patches/2024.8.20.924.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -9262,10 +9262,12 @@ mhn.quest##+js(nostif, adblock)
 bonsaiprolink.shop##+js(noeval-if, ads)
 ! paste. fo ads
 paste.fo##.wrapper > [class] > a[href*="https://bit.ly/3vKxLhC"], a[href*="https://bit.ly/4aDbAcb"], a[href*="https://bit.ly/4cL4Jz2"], a[href*="https://bit.ly/3VEkIbL"], a[href*="https://goldenaccounts.cc/?r=pastefo"], a[href*="https://discord.gg/R5pN8ZvBVW"], a[href*="https://spadone.cc/"], a[href*="https://orion.hydrolmn.com/"], a[href*="https://anonsmm.com/?utm_source"], a[href*="https://cryptochanger.to/"], a[href*="https://sellsn.io/"], a[href*="https://astralproxies.sellpass.io/"], a[href*="https://discord.gg/GeDqHNzyEh"], a[href*="https://proxylist.to/?ref=pfo"], a[href*="https://themario.sellpass.io/"], a[href*="sigmaproxies.com"], a[href*="notokyc.com"], a[href="https://adultslayer.shop/"]
-/paste\.fo\/[A-Z0-9]{70,130}\.(gif|jpeg|jpg|webp)$/$image,1p,domain=paste.fo
+paste.fo##.wrapper > *:has(a [style^="height: "][style*="background-"])
+/paste\.fo\/[A-Z0-9]{70,130}\.[a-z]{1,6}$/$image,1p,domain=paste.fo
 ||paste.fo/*?as=*&tkn=$xhr
-paste.fo##a[href]:has([style*="background-image"])
-paste.fo##.wrapper > [class]:has(> a > *:empty:only-child)
+paste.fo##a[href]:has([style^="height: 110px;width: 440px;background-repeat: no-repeat;background-size: contain;"])
+paste.fo##.wrapper > [class]:has(> a > *:first-child:empty)
+paste.fo##style:has-text(background-image:):remove()
 ! bharathwick .com anti-adb
 bharathwick.com##+js(rmnt, script, deblocker)
 @@||easyupload.io/cdn-cgi/zaraz/s.js$1p
@@ -9870,14 +9872,12 @@ factorp.xyz##+js(nowoif)
 ssstik.io##+js(no-xhr-if, googlesyndication)
 animeunity.to##+js(rmnt, script, Popup)
 !#if env_chromium
-decrypt.day##[id="aswift_0_host"], [id="aswift_1_host"], [id="aswift_2_host"], [id="aswift_3_host"], [id="aswift_4_host"], [id="aswift_5_host"]:style(clip-path: clircle(0) !important;)
-decrypt.day##+js(spoof-css, [id="aswift_0_host"]\, [id="aswift_1_host"]\, [id="aswift_2_host"]\, [id="aswift_3_host"]\, [id="aswift_4_host"]\, [id="aswift_5_host"], clip-path, none)
-@@*$xhr,domain=decrypt.day
-||pagead2.googlesyndication.com/getconfig/sodar?$xhr,important,domain=decrypt.day
-||fundingchoicesmessages.google.com^$xhr,important,domain=decrypt.day
+decrypt.day##[id="aswift_0_host"], [id="aswift_1_host"], [id="aswift_2_host"], [id="aswift_3_host"], [id="aswift_4_host"], [id="aswift_5_host"]:style(opacity: 0 !important; pointer-events: none !important;)
 !#else
 decrypt.day##ins.adsbygoogle > *:style(position: relative !important; left: -10000px !important;)
 !#endif
+||pagead2.googlesyndication.com/getconfig/sodar?$xhr,important,domain=decrypt.day
+||fundingchoicesmessages.google.com^$xhr,important,domain=decrypt.day
 decrypt.day##+js(no-fetch-if, adsbygoogle)
 @@||decrypt.day^$ghide
 @@||decrypt.day^$xhr,1p
@@ -10416,17 +10416,18 @@ crackshash.com##+js(acs, document.getElementsByClassName, wp-ad)
 crackshash.com##[id^="crack"]:has(.wp-ad)
 careersatcouncil.com.au##+js(acs, document.getElementById, fakeElement)
 tradingview.com##+js(no-fetch-if, doubleclick)
+estudyme.com##+js(no-fetch-if, doubleclick)
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
-@@*$ghide,domain=gplinks.*|techreviewhere.com|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com|djrachit.com|120fpsconfig.com|sololevelinghindi.online|pharmastudyaid.com|sarkisozleri.pro|jobsparky.com|techglobo.com|mytastyrecipe.in|tmtaz.com|syllabusdownload.com|babamp3.in|djbarmanmusic.com|dheerajrock.com|bgmiipadview.com|bmkmafiya.com|taporibass.com|sipplanhindi.in|veteranautoinc.com|rjmraju.com|fort-myers-airport.org|doggyclothes.store|ringtonsmp3.in|techybattle.com|aijankari.com|biharstudyfamily.in|upgraminyojana.in|shikkharalo.in|djprincemusic.com|loan70.com|djratanmamatamix.com|remixxodia.com|djapmusic.in|aestheticsymbolsbio.com|aicameraphone.com|iasgujarat.com|odishagovtjobin.com|freeaccountshub.com
-@@*$script,xhr,to=googlesyndication.com|doubleclick.net,from=techreviewhere.com|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com|djrachit.com|120fpsconfig.com|sololevelinghindi.online|pharmastudyaid.com|sarkisozleri.pro|jobsparky.com|techglobo.com|mytastyrecipe.in|tmtaz.com|syllabusdownload.com|babamp3.in|djbarmanmusic.com|dheerajrock.com|bgmiipadview.com|bmkmafiya.com|taporibass.com|sipplanhindi.in|veteranautoinc.com|rjmraju.com|fort-myers-airport.org|doggyclothes.store|ringtonsmp3.in|techybattle.com|aijankari.com|biharstudyfamily.in|upgraminyojana.in|shikkharalo.in|djprincemusic.com|loan70.com|djratanmamatamix.com|remixxodia.com|djapmusic.in|aestheticsymbolsbio.com|aicameraphone.com|iasgujarat.com|odishagovtjobin.com|freeaccountshub.com
-@@||gplinks.in/track/$script,xhr,domain=gplinks.*|techreviewhere.com|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com|djrachit.com|120fpsconfig.com|sololevelinghindi.online|pharmastudyaid.com|sarkisozleri.pro|jobsparky.com|techglobo.com|mytastyrecipe.in|tmtaz.com|syllabusdownload.com|babamp3.in|djbarmanmusic.com|dheerajrock.com|bgmiipadview.com|bmkmafiya.com|taporibass.com|sipplanhindi.in|veteranautoinc.com|rjmraju.com|fort-myers-airport.org|doggyclothes.store|ringtonsmp3.in|techybattle.com|aijankari.com|biharstudyfamily.in|upgraminyojana.in|shikkharalo.in|djprincemusic.com|loan70.com|djratanmamatamix.com|remixxodia.com|djapmusic.in|aestheticsymbolsbio.com|aicameraphone.com|iasgujarat.com|odishagovtjobin.com|freeaccountshub.com
-freeaccountshub.com,odishagovtjobin.com,iasgujarat.com,aicameraphone.com,aestheticsymbolsbio.com,djapmusic.in,remixxodia.com,djratanmamatamix.com,loan70.com,djprincemusic.com,shikkharalo.in,upgraminyojana.in,biharstudyfamily.in,aijankari.com,techybattle.com,ringtonsmp3.in,doggyclothes.store,fort-myers-airport.org,rjmraju.com,veteranautoinc.com,sipplanhindi.in,taporibass.com,bmkmafiya.com,bgmiipadview.com,dheerajrock.com,djbarmanmusic.com,babamp3.in,syllabusdownload.com,tmtaz.com,mytastyrecipe.in,techglobo.com,jobsparky.com,sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,120fpsconfig.com,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,oriyaremix.com,funkeykida.com,puresports.pro,morestate.pro,filmfliqz.com,recipenames.com,insurelist.online,odiaalbumsong.com,decidewhy.com,apkeclipse.com,cmsarkariyojana.com,djrkmusicjaunpur.in,techreviewhere.com##center:others()
-freeaccountshub.com,odishagovtjobin.com,iasgujarat.com,aicameraphone.com,aestheticsymbolsbio.com,djapmusic.in,remixxodia.com,djratanmamatamix.com,loan70.com,djprincemusic.com,shikkharalo.in,upgraminyojana.in,biharstudyfamily.in,aijankari.com,techybattle.com,ringtonsmp3.in,doggyclothes.store,fort-myers-airport.org,rjmraju.com,veteranautoinc.com,sipplanhindi.in,taporibass.com,bmkmafiya.com,bgmiipadview.com,dheerajrock.com,djbarmanmusic.com,babamp3.in,syllabusdownload.com,tmtaz.com,mytastyrecipe.in,techglobo.com,jobsparky.com,sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,120fpsconfig.com,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,oriyaremix.com,funkeykida.com,puresports.pro,morestate.pro,filmfliqz.com,recipenames.com,insurelist.online,odiaalbumsong.com,decidewhy.com,apkeclipse.com,cmsarkariyojana.com,djrkmusicjaunpur.in,techreviewhere.com###SmileyBanner:remove()
-freeaccountshub.com,odishagovtjobin.com,iasgujarat.com,aicameraphone.com,aestheticsymbolsbio.com,djapmusic.in,remixxodia.com,djratanmamatamix.com,loan70.com,djprincemusic.com,shikkharalo.in,upgraminyojana.in,biharstudyfamily.in,aijankari.com,techybattle.com,ringtonsmp3.in,doggyclothes.store,fort-myers-airport.org,rjmraju.com,veteranautoinc.com,sipplanhindi.in,taporibass.com,bmkmafiya.com,bgmiipadview.com,dheerajrock.com,djbarmanmusic.com,babamp3.in,syllabusdownload.com,tmtaz.com,mytastyrecipe.in,techglobo.com,jobsparky.com,sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,120fpsconfig.com,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,oriyaremix.com,funkeykida.com,puresports.pro,morestate.pro,filmfliqz.com,recipenames.com,insurelist.online,odiaalbumsong.com,decidewhy.com,apkeclipse.com,cmsarkariyojana.com,djrkmusicjaunpur.in,techreviewhere.com##+js(aopw, AdBDetected)
-freeaccountshub.com,odishagovtjobin.com,iasgujarat.com,aicameraphone.com,aestheticsymbolsbio.com,djapmusic.in,remixxodia.com,djratanmamatamix.com,loan70.com,djprincemusic.com,shikkharalo.in,upgraminyojana.in,biharstudyfamily.in,aijankari.com,techybattle.com,ringtonsmp3.in,doggyclothes.store,fort-myers-airport.org,rjmraju.com,veteranautoinc.com,sipplanhindi.in,taporibass.com,bmkmafiya.com,bgmiipadview.com,dheerajrock.com,djbarmanmusic.com,babamp3.in,syllabusdownload.com,tmtaz.com,mytastyrecipe.in,techglobo.com,jobsparky.com,sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,120fpsconfig.com,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,oriyaremix.com,funkeykida.com,puresports.pro,morestate.pro,filmfliqz.com,recipenames.com,insurelist.online,odiaalbumsong.com,decidewhy.com,apkeclipse.com,cmsarkariyojana.com,djrkmusicjaunpur.in,techreviewhere.com##+js(set, count, 0)
-freeaccountshub.com,odishagovtjobin.com,iasgujarat.com,aicameraphone.com,aestheticsymbolsbio.com,djapmusic.in,remixxodia.com,djratanmamatamix.com,loan70.com,djprincemusic.com,shikkharalo.in,upgraminyojana.in,biharstudyfamily.in,aijankari.com,techybattle.com,ringtonsmp3.in,doggyclothes.store,fort-myers-airport.org,rjmraju.com,veteranautoinc.com,sipplanhindi.in,taporibass.com,bmkmafiya.com,bgmiipadview.com,dheerajrock.com,djbarmanmusic.com,babamp3.in,syllabusdownload.com,tmtaz.com,mytastyrecipe.in,techglobo.com,jobsparky.com,sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,120fpsconfig.com,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,oriyaremix.com,funkeykida.com,puresports.pro,morestate.pro,filmfliqz.com,recipenames.com,insurelist.online,odiaalbumsong.com,decidewhy.com,apkeclipse.com,cmsarkariyojana.com,djrkmusicjaunpur.in,techreviewhere.com##[id*="iframe"], [id*="gpt_unit"], [id*="div-gpt-"]:style(height:0.0001px !important;)
+@@*$ghide,domain=gplinks.*|techreviewhere.com|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com|djrachit.com|120fpsconfig.com|sololevelinghindi.online|pharmastudyaid.com|sarkisozleri.pro|jobsparky.com|techglobo.com|mytastyrecipe.in|tmtaz.com|syllabusdownload.com|babamp3.in|djbarmanmusic.com|dheerajrock.com|bgmiipadview.com|bmkmafiya.com|taporibass.com|sipplanhindi.in|veteranautoinc.com|rjmraju.com|fort-myers-airport.org|doggyclothes.store|ringtonsmp3.in|techybattle.com|aijankari.com|biharstudyfamily.in|upgraminyojana.in|shikkharalo.in|djprincemusic.com|loan70.com|djratanmamatamix.com|remixxodia.com|djapmusic.in|aestheticsymbolsbio.com|aicameraphone.com|iasgujarat.com|odishagovtjobin.com|freeaccountshub.com|pcnocredit.com|djkalakarmusic.com|usaloanraas.in|wbeon.com|jxfiles.me
+@@*$script,xhr,to=googlesyndication.com|doubleclick.net,from=techreviewhere.com|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com|djrachit.com|120fpsconfig.com|sololevelinghindi.online|pharmastudyaid.com|sarkisozleri.pro|jobsparky.com|techglobo.com|mytastyrecipe.in|tmtaz.com|syllabusdownload.com|babamp3.in|djbarmanmusic.com|dheerajrock.com|bgmiipadview.com|bmkmafiya.com|taporibass.com|sipplanhindi.in|veteranautoinc.com|rjmraju.com|fort-myers-airport.org|doggyclothes.store|ringtonsmp3.in|techybattle.com|aijankari.com|biharstudyfamily.in|upgraminyojana.in|shikkharalo.in|djprincemusic.com|loan70.com|djratanmamatamix.com|remixxodia.com|djapmusic.in|aestheticsymbolsbio.com|aicameraphone.com|iasgujarat.com|odishagovtjobin.com|freeaccountshub.com|pcnocredit.com|djkalakarmusic.com|usaloanraas.in|wbeon.com|jxfiles.me
+@@||gplinks.in/track/$script,xhr,domain=gplinks.*|techreviewhere.com|djrkmusicjaunpur.in|cmsarkariyojana.com|apkeclipse.com|decidewhy.com|odiaalbumsong.com|insurelist.online|recipenames.com|filmfliqz.com|morestate.pro|puresports.pro|funkeykida.com|oriyaremix.com|freegadgets24.com|odisharemix.link|rajgarhsamachar.com|djrachit.com|120fpsconfig.com|sololevelinghindi.online|pharmastudyaid.com|sarkisozleri.pro|jobsparky.com|techglobo.com|mytastyrecipe.in|tmtaz.com|syllabusdownload.com|babamp3.in|djbarmanmusic.com|dheerajrock.com|bgmiipadview.com|bmkmafiya.com|taporibass.com|sipplanhindi.in|veteranautoinc.com|rjmraju.com|fort-myers-airport.org|doggyclothes.store|ringtonsmp3.in|techybattle.com|aijankari.com|biharstudyfamily.in|upgraminyojana.in|shikkharalo.in|djprincemusic.com|loan70.com|djratanmamatamix.com|remixxodia.com|djapmusic.in|aestheticsymbolsbio.com|aicameraphone.com|iasgujarat.com|odishagovtjobin.com|freeaccountshub.com|pcnocredit.com|djkalakarmusic.com|usaloanraas.in|wbeon.com|jxfiles.me
+jxfiles.me,wbeon.com,usaloanraas.in,djkalakarmusic.com,pcnocredit.com,freeaccountshub.com,odishagovtjobin.com,iasgujarat.com,aicameraphone.com,aestheticsymbolsbio.com,djapmusic.in,remixxodia.com,djratanmamatamix.com,loan70.com,djprincemusic.com,shikkharalo.in,upgraminyojana.in,biharstudyfamily.in,aijankari.com,techybattle.com,ringtonsmp3.in,doggyclothes.store,fort-myers-airport.org,rjmraju.com,veteranautoinc.com,sipplanhindi.in,taporibass.com,bmkmafiya.com,bgmiipadview.com,dheerajrock.com,djbarmanmusic.com,babamp3.in,syllabusdownload.com,tmtaz.com,mytastyrecipe.in,techglobo.com,jobsparky.com,sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,120fpsconfig.com,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,oriyaremix.com,funkeykida.com,puresports.pro,morestate.pro,filmfliqz.com,recipenames.com,insurelist.online,odiaalbumsong.com,decidewhy.com,apkeclipse.com,cmsarkariyojana.com,djrkmusicjaunpur.in,techreviewhere.com##center:others()
+jxfiles.me,wbeon.com,usaloanraas.in,djkalakarmusic.com,pcnocredit.com,freeaccountshub.com,odishagovtjobin.com,iasgujarat.com,aicameraphone.com,aestheticsymbolsbio.com,djapmusic.in,remixxodia.com,djratanmamatamix.com,loan70.com,djprincemusic.com,shikkharalo.in,upgraminyojana.in,biharstudyfamily.in,aijankari.com,techybattle.com,ringtonsmp3.in,doggyclothes.store,fort-myers-airport.org,rjmraju.com,veteranautoinc.com,sipplanhindi.in,taporibass.com,bmkmafiya.com,bgmiipadview.com,dheerajrock.com,djbarmanmusic.com,babamp3.in,syllabusdownload.com,tmtaz.com,mytastyrecipe.in,techglobo.com,jobsparky.com,sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,120fpsconfig.com,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,oriyaremix.com,funkeykida.com,puresports.pro,morestate.pro,filmfliqz.com,recipenames.com,insurelist.online,odiaalbumsong.com,decidewhy.com,apkeclipse.com,cmsarkariyojana.com,djrkmusicjaunpur.in,techreviewhere.com###SmileyBanner:remove()
+jxfiles.me,wbeon.com,usaloanraas.in,djkalakarmusic.com,pcnocredit.com,freeaccountshub.com,odishagovtjobin.com,iasgujarat.com,aicameraphone.com,aestheticsymbolsbio.com,djapmusic.in,remixxodia.com,djratanmamatamix.com,loan70.com,djprincemusic.com,shikkharalo.in,upgraminyojana.in,biharstudyfamily.in,aijankari.com,techybattle.com,ringtonsmp3.in,doggyclothes.store,fort-myers-airport.org,rjmraju.com,veteranautoinc.com,sipplanhindi.in,taporibass.com,bmkmafiya.com,bgmiipadview.com,dheerajrock.com,djbarmanmusic.com,babamp3.in,syllabusdownload.com,tmtaz.com,mytastyrecipe.in,techglobo.com,jobsparky.com,sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,120fpsconfig.com,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,oriyaremix.com,funkeykida.com,puresports.pro,morestate.pro,filmfliqz.com,recipenames.com,insurelist.online,odiaalbumsong.com,decidewhy.com,apkeclipse.com,cmsarkariyojana.com,djrkmusicjaunpur.in,techreviewhere.com##+js(aopw, AdBDetected)
+jxfiles.me,wbeon.com,usaloanraas.in,djkalakarmusic.com,pcnocredit.com,freeaccountshub.com,odishagovtjobin.com,iasgujarat.com,aicameraphone.com,aestheticsymbolsbio.com,djapmusic.in,remixxodia.com,djratanmamatamix.com,loan70.com,djprincemusic.com,shikkharalo.in,upgraminyojana.in,biharstudyfamily.in,aijankari.com,techybattle.com,ringtonsmp3.in,doggyclothes.store,fort-myers-airport.org,rjmraju.com,veteranautoinc.com,sipplanhindi.in,taporibass.com,bmkmafiya.com,bgmiipadview.com,dheerajrock.com,djbarmanmusic.com,babamp3.in,syllabusdownload.com,tmtaz.com,mytastyrecipe.in,techglobo.com,jobsparky.com,sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,120fpsconfig.com,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,oriyaremix.com,funkeykida.com,puresports.pro,morestate.pro,filmfliqz.com,recipenames.com,insurelist.online,odiaalbumsong.com,decidewhy.com,apkeclipse.com,cmsarkariyojana.com,djrkmusicjaunpur.in,techreviewhere.com##+js(set, count, 0)
+jxfiles.me,wbeon.com,usaloanraas.in,djkalakarmusic.com,pcnocredit.com,freeaccountshub.com,odishagovtjobin.com,iasgujarat.com,aicameraphone.com,aestheticsymbolsbio.com,djapmusic.in,remixxodia.com,djratanmamatamix.com,loan70.com,djprincemusic.com,shikkharalo.in,upgraminyojana.in,biharstudyfamily.in,aijankari.com,techybattle.com,ringtonsmp3.in,doggyclothes.store,fort-myers-airport.org,rjmraju.com,veteranautoinc.com,sipplanhindi.in,taporibass.com,bmkmafiya.com,bgmiipadview.com,dheerajrock.com,djbarmanmusic.com,babamp3.in,syllabusdownload.com,tmtaz.com,mytastyrecipe.in,techglobo.com,jobsparky.com,sarkisozleri.pro,pharmastudyaid.com,sololevelinghindi.online,120fpsconfig.com,djrachit.com,rajgarhsamachar.com,odisharemix.link,freegadgets24.com,oriyaremix.com,funkeykida.com,puresports.pro,morestate.pro,filmfliqz.com,recipenames.com,insurelist.online,odiaalbumsong.com,decidewhy.com,apkeclipse.com,cmsarkariyojana.com,djrkmusicjaunpur.in,techreviewhere.com##[id*="iframe"], [id*="gpt_unit"], [id*="div-gpt-"]:style(height:0.0001px !important;)
 gplinks.*##a.exclude-pop.smartlink, .exclude-pop.quiz-container, #PlayQuiz, #quiz-frame, .exclude-popad
 ||gamezop.com^$domain=gplinks.*
 gplinks.*##+js(set, blurred, false)
@@ -10473,20 +10474,23 @@ moonplusnews.com,loanoffering.in###tp4, #rtg-snp2, #rtg-snp22:style(display: blo
 comptegratuite.com,timestej.com,theramishali.blogspot.com,thepowerofpen.in##+js(nano-sib, _0x, *, 0.001)
 comptegratuite.com,timestej.com,theramishali.blogspot.com,thepowerofpen.in##.safeb:style(display: block !important;)
 comptegratuite.com,timestej.com,theramishali.blogspot.com,thepowerofpen.in##li, ul, p, h2, h3, .type-related, .entry-labels, .entry-title, .entry-header, .comments-system-blogger, .post-widget, #sidebar-wrapper, .main-header
-xpshort.com##+js(set, blurred, false)
-xpshort.com##.banner
-@@*$ghide,domain=iisfvirtual.in|starxinvestor.com|viewmyknowledge.com|infinityskull.com|nayisahara.com|wikifilmia.com|careersides.com|funkeypagali.com|spatsify.com
-||cdn.jsdelivr.net/gh/itspro-dev/*/js/main.js$script,domain=iisfvirtual.in|starxinvestor.com|viewmyknowledge.com|infinityskull.com|nayisahara.com|wikifilmia.com|careersides.com|funkeypagali.com|spatsify.com
+gyanlight.com,xpshort.com##+js(set, blurred, false)
+gyanlight.com,xpshort.com##.banner
+odisha-remix.com,themoviesradar.in,forexsalary.com,dailywebsite.in,mamatamusicbanaras.com,missionupsc.com##+js(no-fetch-if, googlesyndication)
+odisha-remix.com,themoviesradar.in,forexsalary.com,dailywebsite.in,mamatamusicbanaras.com,missionupsc.com###wpsafe-link:style(display: block !important;)
+odisha-remix.com,themoviesradar.in,forexsalary.com,dailywebsite.in,mamatamusicbanaras.com,missionupsc.com###wpsafe-link, .wpsafelink-multiple-pages:others()
+@@*$ghide,domain=tea-coffee.net|spatsify.com|newedutopics.com|getviralreach.in|edukaroo.com|funkeypagali.com|careersides.com|nayisahara.com|wikifilmia.com|infinityskull.com|viewmyknowledge.com|iisfvirtual.in|starxinvestor.com
+||cdn.jsdelivr.net/gh/itspro-dev/*/js/main.js$script,domain=tea-coffee.net|spatsify.com|newedutopics.com|getviralreach.in|edukaroo.com|funkeypagali.com|careersides.com|nayisahara.com|wikifilmia.com|infinityskull.com|viewmyknowledge.com|iisfvirtual.in|starxinvestor.com
 !#if env_firefox
-spatsify.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com##+js(rmnt, script, /ABDetected|navigator.brave|fetch/)
+tea-coffee.net,spatsify.com,newedutopics.com,getviralreach.in,edukaroo.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com##+js(rmnt, script, /ABDetected|navigator.brave|fetch/)
 !#else
-spatsify.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com##^script:has-text(/ABDetected|navigator.brave|fetch/)
+tea-coffee.net,spatsify.com,newedutopics.com,getviralreach.in,edukaroo.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com##^script:has-text(/ABDetected|navigator.brave|fetch/)
 !#endif
-spatsify.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com##+js(no-fetch-if, googlesyndication)
-spatsify.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com##+js(noeval-if, /chp_?ad/)
-spatsify.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com##+js(set, count, 0)
-spatsify.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com###tp98, #btn6:style(display: block !important;)
-spatsify.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com##[id$="-Ads"], [id*="-gpt-ad"], center > h3, #skull, #content, #btnx, .mh-clearfix.mh-wrapper
+tea-coffee.net,spatsify.com,newedutopics.com,getviralreach.in,edukaroo.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com##+js(no-fetch-if, googlesyndication)
+tea-coffee.net,spatsify.com,newedutopics.com,getviralreach.in,edukaroo.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com##+js(noeval-if, /chp_?ad/)
+tea-coffee.net,spatsify.com,newedutopics.com,getviralreach.in,edukaroo.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com##+js(set, count, 0)
+tea-coffee.net,spatsify.com,newedutopics.com,getviralreach.in,edukaroo.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com###tp98, #btn6:style(display: block !important;)
+tea-coffee.net,spatsify.com,newedutopics.com,getviralreach.in,edukaroo.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com##[id$="-Ads"], [id*="-gpt-ad"], center > h3, #skull, #content, #btnx, .mh-clearfix.mh-wrapper
 go.publicearn.com##.page-header > h3, .banner, .bg-soft-primary
 techcyan.com,kiktu.com,upshrink.com,trangchu.news,banaraswap.in##+js(acs, $, google_ads_iframe_)
 @@*$ghide,domain=techcyan.com|kiktu.com|upshrink.com|trangchu.news|banaraswap.in
@@ -20160,8 +20164,8 @@ jiocinema.com##ins[id^="jioads"]
 *$script,domain=koamnewsnow.com,redirect-rule=noopjs
 kpkuang.org##+js(nostif, _0x)
 kpkuang.org###sterra-ad-onmid
-chip.de###dlcharts-list + .mt-md:has(> div > h2:has-text(/Gesponsert|Bezahlte Empfehlung/) + a[href^="https://www.chip.de/downloads/"])
-chip.de##.fb > .Listing > div:has(> h2:has-text(/Gesponsert|Bezahlte Empfehlung/) + a[href^="https://www.chip.de/downloads/"])
+www.chip.de###dlcharts-list + .mt-md:has(> div > h2:has-text(/Gesponsert|Bezahlte Empfehlung/) + a[href^="https://www.chip.de/downloads/"])
+www.chip.de##.fb > .Listing > div:has(> h2:has-text(/Gesponsert|Bezahlte Empfehlung/) + a[href^="https://www.chip.de/downloads/"])
 chip.de###R1C3[role="complementary"]
 chip.de###R1C2[role="complementary"]:not(:has(> .Hero))
 chip.de###R1C1[role="complementary"]
@@ -20181,16 +20185,16 @@ www.chip.de##div:has(img[src*="https://im.chip.de/"]):has(+ style:has-text(/aspe
 www.chip.de##body[class="l-DownloadListing is-sticky"] > [class="Main Main--Skyscraper"] > .Main__Container > main[class="Downloads DownloadListing bg-white mt-xs"] > [class="mt-sm wrapper-bleed bg-blue"] + [class="wrapper-safe"]:has(a img[src*="https://im.chip.de/ii/"])
 www.chip.de##body[class="l-DownloadListing is-sticky"] > [class="Main Main--Skyscraper"] > .Main__Container > [class]:not([class^="Downloads DownloadListing"]) > div > ul.List.is-separated:has(a img[src*="https://im.chip.de/ii/"])
 www.chip.de##body[class="l-DownloadListing is-sticky"] > [class]:has(> div > section:only-child > ul.List.is-separated a img[src*="https://im.chip.de/ii/"])
-www.chip.de##body[class="l-DownloadListing is-sticky"] .wrapper-safe.mt-sm > .fb > section:not(.Listing) > div[style^="min-height: 2"]:has(> div > img[src*="https://im.chip.de/ii/"])
+www.chip.de##body[class="l-DownloadListing is-sticky"] .wrapper-safe.mt-sm > .fb > section:not(.Listing) > div[style^="min-height: 2"]:has(img[src*="https://im.chip.de/ii/"])
 www.chip.de###CR[class="Downloads-Select"] > #G32 > #M1 > [class="wrapper-safe"] > [class^="fb mt-"] > section[class="fb-col-12 fb-col-lg-8"] > [class]:not(.ButtonAuswahl):has(> a[href^="https://www.chip.de/downloads/"])
 www.chip.de###CR[class="Downloads-Select"] > #G32 > #M1 > [class="wrapper-safe"] > .mt-md > section [class]:has(> div > ul.is-separated a img[src^="data:image"])
 www.chip.de###CR[class="Downloads-Getfile"] > #G32 > #M1 > [class="wrapper-safe"] > .mt-md > section [class]:has(> div > ul.is-separated a img[src^="data:image"])
 www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > [class="wrapper-safe"] > [class="fb mt-lg"] > [class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > *:has(a img[src*="https://im.chip.de/ii/"])
 www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > *:not(section[class="wrapper-safe mt-md ft-alts"]) .ar-1-1.bg-gray-l[style*="width"]:has(a img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > [class]:not(section[class="wrapper-safe mt-md ft-alts"]) div[style^="min-height: 2"]:has(> div[class] > img[src*="https://im.chip.de/ii/"])
+www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > [class]:not(section[class="wrapper-safe mt-md ft-alts"]) div[style^="min-height: 2"]:has(img[src*="https://im.chip.de/ii/"])
 www.chip.de###CR[class="Downloads-Getfile"] > #G32 > #M1 > *:not(section[class="wrapper-safe mt-md ft-alts"]) a[href^="https://www.chip.de/downloads/"][title]:has(img[src*="https://im.chip.de/ii/"][alt][width][data-was-processed])
-www.chip.de###CR[class="Downloads-Select"] > #G32 > #M1 > [class="wrapper-safe"] > [class="fb mt-md"] > [class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > div[style^="min-height: 2"]:has(> div[class] > img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR[class="Downloads-Getfile"] > #G32 > #M1 > [class="wrapper-safe"] > [class="fb mt-lg"] > [class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > div[style^="min-height: 2"]:has(> div[class] > img[src*="https://im.chip.de/ii/"])
+www.chip.de###CR[class="Downloads-Select"] > #G32 > #M1 > [class="wrapper-safe"] > [class="fb mt-md"] > [class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > div[style^="min-height: 2"]:has(img[src*="https://im.chip.de/ii/"])
+www.chip.de###CR[class="Downloads-Getfile"] > #G32 > #M1 > [class="wrapper-safe"] > [class="fb mt-lg"] > [class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > div[style^="min-height: 2"]:has(img[src*="https://im.chip.de/ii/"])
 www.chip.de###CR[class="Downloads-Select"] > #G32 > #M1 > div:not([class="wrapper-safe"]) [class="ar-1-1 bg-gray-l"][style]:has(a img[src*="https://im.chip.de/ii/"])
 www.chip.de###CR[class="Downloads-Getfile"] > #G32 > #M1 > div:not([class="wrapper-safe"]) [class="ar-1-1 bg-gray-l"][style]:has(a img[src*="https://im.chip.de/ii/"])
 ! restore speed (the anti adblock script causing lag spikes)
@@ -20557,6 +20561,8 @@ topsporter.net,sportshub.to##+js(rmnt, script, /ConsoleBan|alert|AdBlocker/)
 @@*$ghide,domain=sportshub.to|topsporter.net
 sportfacts.net,sportshub.to,sportnews.to##+js(no-fetch-if, googlesyndication)
 sportfacts.net,sportshub.to,sportnews.to##+js(no-xhr-if, googlesyndication)
+*$xhr,redirect-rule=nooptext,domain=sportfacts.net|sportshub.to|sportnews.to
+/fox/plugins/aoa/js/aoa-functions.js^
 ||sportshub.to/fox/plugins/block/js/$script
 ||sportnews.to/fox/plugins/block/js/$script
 sportfacts.net,sportnews.to##+js(aopr, antiAdBlockerHandler)
@@ -23350,7 +23356,8 @@ app.vaia.com##aside > .ng-star-inserted
 111.90.141.252##+js(aopr, preroll_helper.advs)
 */dyasds/$media,redirect=noopmp3-0.1s,domain=111.90.141.252
 ! wsj ads
-||cloudfront.net/o?fqdn=$xhr,3p,domain=marketwatch.com|wsj.com
+||cloudfront.net/o?*fqdn=$xhr,3p,domain=marketwatch.com|wsj.com
+||cloudfront.net/*.js|$script,3p,domain=marketwatch.com|wsj.com
 *$media,redirect=noopmp3-0.1s,domain=filmizlehdfilm.com|filmizletv.*|fullfilmizle.cc
 filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##+js(nano-sib)
 filmizlehdfilm.com,filmizletv.*,fullfilmizle.cc##+js(set, reklam_1_saniye, 0)
