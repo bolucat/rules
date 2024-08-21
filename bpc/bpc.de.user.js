@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.7.8.3
+// @version         3.8.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -262,13 +262,15 @@ else if (matchDomain('faz.net')) {
         if (fade)
           fade.removeAttribute('class');
         let article = document.querySelector('div.body-elements');
-        if (article) {
+        let article_story_sel = 'div.storyContainer';
+        let article_story = document.querySelector(article_story_sel);
+        if (article || article_story) {
           let json_script = document.querySelector('script#__NUXT_DATA__');
           if (json_script) {
             try {
               let pars = JSON.parse(json_script.text);
               let par_index = pars.indexOf('paragraph');
-              if (par_index) {
+              if (article && par_index) {
                 let intro_par = document.querySelector('.body-elements__paragraph');
                 if (intro_par && (!pars[par_index + 1] || !pars[par_index + 1].startsWith(intro_par.innerHTML.substring(0, 25))))
                   refreshCurrentTab();
@@ -317,7 +319,7 @@ else if (matchDomain('faz.net')) {
                           elem = document.createElement('div');
                           elem.appendChild(document.createTextNode('MEHR ZUM THEMA'));
                           elem.appendChild(document.createElement('br'));
-                          let rel_art = pars.find(x => x[type]);
+                          let rel_art = pars.find(x => x && x[type]);
                           if (rel_art) {
                             let rel_art_index = rel_art[type];
                             let rel_articles = pars[rel_art_index];
@@ -338,6 +340,21 @@ else if (matchDomain('faz.net')) {
                       if (elem)
                         article.appendChild(elem);
                     }
+                  }
+                }
+              } else if (article_story) {
+                let par_body = pars.find(x => x && x.fullBody);
+                if (par_body && pars[par_body.fullBody]) {
+                  let parser = new DOMParser();
+                  let doc = parser.parseFromString(pars[par_body.fullBody], 'text/html');
+                  let article_new = doc.querySelector(article_story_sel);
+                  let par_sel = 'div.story-content, div.story-full:not([data-module="scrollytelling"])';
+                  if (article_new) {
+                    let article_pars = article_story.querySelectorAll(par_sel);
+                    removeDOMElement(...article_pars);
+                    let article_new_pars = article_new.querySelectorAll(par_sel);
+                    for (let par_new of article_new_pars)
+                      article_story.appendChild(par_new);
                   }
                 }
               }

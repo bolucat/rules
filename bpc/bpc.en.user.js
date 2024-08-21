@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.7.9.0
+// @version         3.8.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -23,7 +23,6 @@
 // @match           *://*.epoch.org.il/*
 // @match           *://*.europower.no/*
 // @match           *://*.fiskeribladet.no/*
-// @match           *://*.haaretz.co.il/*
 // @match           *://*.independent.ie/*
 // @match           *://*.indiatoday.in/*
 // @match           *://*.intrafish.no/*
@@ -1836,47 +1835,6 @@ else if (matchDomain('foxnews.com')) {
   let overlay = document.querySelector('div[class*="gated-overlay"]');
   if (overlay)
     overlay.removeAttribute('class');
-}
-
-else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
-  window.setTimeout(function () {
-  let url = window.location.href;
-  let body_wrapper_sel = 'section[data-testid="article-body-wrapper"]';
-  let paywall_sel = 'div[data-test="paywallMidpage"], ' + body_wrapper_sel + ' a[href^="https://promotion."]';
-  let article_sel = 'div[data-test="articleBody"], ' + body_wrapper_sel;
-  let article_link_sel = 'article header, main.article-page p, ' + article_sel;
-  if (window.location.pathname.includes('/.')) {
-    func_post = function () {
-      let article_link = document.querySelector(article_link_sel);
-      if (article_link) {
-        let article_new = document.querySelector(article_sel);
-        let paywall = article_new.querySelector(paywall_sel);
-        if (paywall) {
-          removeDOMElement(paywall);
-          article_link.firstChild.before(googleSearchToolLink(url));
-        }
-      }
-    }
-    getArchive(url, paywall_sel, '', article_sel, '', article_sel, article_link_sel);
-  } else if (window.location.pathname.includes('/ty-article-live/')) {
-    let paywall = document.querySelector(paywall_sel);
-    if (paywall) {
-      removeDOMElement(paywall);
-      let article = document.querySelector(article_sel);
-      if (article) {
-        //article.before(archiveLink_renew(url));
-        article.before(archiveLink(url));
-      }
-    }
-  } else if (window.location.pathname === '/') {
-    let overlays = document.querySelectorAll('div > div > svg[data-test="IconAlefLogoTransparent"]');
-    for (let elem of overlays)
-      removeDOMElement(elem.parentNode.parentNode);
-    let inert_links = document.querySelectorAll('article[inert]');
-    for (let elem of inert_links)
-      elem.removeAttribute('inert');
-  }
-  }, 2000);
 }
 
 else if (matchDomain('harpers.org')) {
