@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Wed, 21 Aug 2024 13:33:14 +0000
-! Diff-Path: ../patches/2024.8.21.989.patch#ublock-quick-fixes
+! Last modified: Thu, 22 Aug 2024 17:02:49 +0000
+! Diff-Path: ../patches/2024.8.22.1044.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -83,9 +83,10 @@ japscan.lol#@#a[target="_blank"].donate
 japscan.lol#@#a.donate[target="_blank"][rel="noopener noreferrer nofollow"] img
 japscan.lol##.navbar-nav > li.nav-item:last-child > a.donate[target="_blank"][rel="noopener noreferrer nofollow"]
 japscan.lol###sidebar > .card > .card > a.aikoi.donate[target="_blank"][rel="noopener noreferrer nofollow"] img
-japscan.lol##.container.text-center > div.mt-3 > a.Aikoi.donate
+japscan.lol#@#.container.text-center > div.mt-3 > a.Aikoi.donate
 japscan.lol#@#.Aikoi.donate
 japscan.lol#@#.aikoi.donate
+japscan.lol##.container.text-center > div.mt-3 > a.Aikoi.donate > img
 ! ads
 japscan.lol##+js(no-fetch-if, www.japscan.lol/imgs/)
 ||japscan.lol^$csp=sandbox allow-forms allow-same-origin allow-scripts allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation
@@ -117,7 +118,7 @@ panel.freemcserver.net##div[style^="min-height:"]:has(> div[id^="stpd-"])
 ||prebid-stag.setupad.net/cookie_sync|$xhr,important,domain=panel.freemcserver.net
 ||prebid-stag.setupad.net/openrtb2/auction|$xhr,important,domain=panel.freemcserver.net
 ||fastlane.rubiconproject.com/a/api/fastlane.json?$xhr,important,domain=panel.freemcserver.net
-||tlx.3lift.com/header/auction?lib=prebid*panel.freemcserver.net*&gdpr=$xhr,important,domain=panel.freemcserver.net
+||tlx.3lift.com/header/auction?lib=prebid&v=*&referrer=https%3A%2F%2Fpanel.freemcserver.net%2Fserver%2Findex&tmax=*&gdpr=true&cmp_cs=$xhr,important,domain=panel.freemcserver.net
 ||rtb.openx.net/openrtbb/prebidjs|$xhr,important,domain=panel.freemcserver.net
 ||hbopenbid.pubmatic.com/translator?source=prebid-client|$xhr,important,domain=panel.freemcserver.net
 ||adx.adform.net/adx/openrtb|$xhr,important,domain=panel.freemcserver.net
@@ -134,10 +135,11 @@ panel.freemcserver.net##div[style^="min-height:"]:has(> div[id^="stpd-"])
 kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(no-fetch-if, bidgear)
 ! @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$script,domain=kimcartoon.li
 ! kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(nostif, navigator.userAgent)
-kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(set, _btcCheck, noopFunc)
-! kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(rmnt, script, /document\.getElementById\(\'divContentVideo\'\)\.innerHTML|var (_btcCheck|cpe) = true;/)
-! kimcartoon.li,kc.linksgen.com,kisscartoon.se###divContentVideo:style(display: block !important;)
-! kimcartoon.li,kc.linksgen.com,kisscartoon.se###centerDivVideo > div[id]:has(> img[src^="https://i.imgur.com"])
+kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(set, _btcCheck, false)
+kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(rmnt, script, /document\.getElementById\(\'divContentVideo\'\)\.innerHTML|var (_btcCheck|cpe) = true;/)
+kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(set, isAdb, false)
+kimcartoon.li,kc.linksgen.com,kisscartoon.se###divContentVideo:style(display: block !important;)
+kimcartoon.li,kc.linksgen.com,kisscartoon.se###centerDivVideo > div[id]:has(> img[src^="https://i.imgur.com"])
 kimcartoon.li,kc.linksgen.com,kisscartoon.se#@##hideAds
 @@||kc.linksgen.com^$frame,1p,strict1p
 @@||kimcartoon.li^$frame,1p,strict1p
@@ -157,11 +159,10 @@ veev.to##+js(trusted-suppress-native-method, XMLHttpRequest.prototype.open, | "a
 !#endif
 ! Better to counter the old filter for a while... https://github.com/uBlockOrigin/uAssets/commit/f44ac328b718bab3118f759880128fe420afb906
 www.google.*#@#+js(trusted-set-cookie, SOCS, CAISNQgQEitib3FfaWRlbnRpdHlmcm9udGVuZHVpc2VydmVyXzIwMjQwNTE0LjA2X3AwGgJmaSADGgYIgOu0sgY, 1year)
-news.yahoo.co.jp#@#main#contents > div[class^="sc-"]:has(> div[class*=" "]:not([style]) > div[id^="yads_"])
-@@||ads.anitube.vip^$xhr,domain=dattebayo-br.com
-@@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xhr,domain=animesonlinecc.us|anitube.vip|dattebayo-br.com|hinatasoul.com
+@@||ads.anitube.vip^$xhr,domain=animefire.info|animesonlinecc.us|animesup.info|animeyabu.net|animeyabu.org|anitube.vip|dattebayo-br.com|drstonebr.com|goanimes.vip|goyabu.us|hinatasoul.com|isekaibrasil.com|meuanime.info|otakuanimess.net
+@@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xhr,domain=animefire.info|animesonlinecc.us|animesup.info|animeyabu.net|animeyabu.org|anitube.vip|dattebayo-br.com|drstonebr.com|goanimes.vip|goyabu.us|hinatasoul.com|isekaibrasil.com|meuanime.info|otakuanimess.net
+@@||www.popads.net/js/adblock.js$xhr,domain=animefire.info|animesonlinecc.us|animesup.info|animeyabu.net|animeyabu.org|anitube.vip|dattebayo-br.com|drstonebr.com|goanimes.vip|goyabu.us|hinatasoul.com|isekaibrasil.com|meuanime.info|otakuanimess.net
 caroloportunidades.com.br###player:style(display: block !important;)
-caroloportunidades.com.br##+js(no-xhr-if, popads.net)
 caroloportunidades.com.br##+js(nostif, hasAdblock)
 al.com,cleveland.com,mlive.com,nj.com,oregonlive.com#@#+js(rmnt, script, admiral)
 motimoti3d.jp##+js(nowoif)

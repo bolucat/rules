@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.7.8.0
+// @version         3.8.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -136,37 +136,6 @@ else if (matchDomain('ilfoglio.it')) {
     let ads = '.advertisement';
     hideDOMStyle(ads);
   }
-}
-
-else if (matchDomain('ilmanifesto.it')) {
-  window.setTimeout(function () {
-    if (window.location.pathname.match(/((\w)+(\-)+){3,}/)) {
-      let paywall = document.querySelector('div[class^="PostPaywall_PostPaywall__"]');
-      if (paywall) {
-        removeDOMElement(paywall);
-        let json_script = document.querySelector('script#__NEXT_DATA__');
-        if (json_script) {
-          let json = JSON.parse(json_script.innerText);
-          if (json && json.props.pageProps.content && json.props.pageProps.content.content) {
-            let article_new = json.props.pageProps.content.content;
-            let article = document.querySelector('div.ArticleBody');
-            if (article) {
-              article.innerHTML = '';
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div>' + article_new + '</div>', 'text/html');
-              let content_new = doc.querySelector('div');
-              article.appendChild(content_new);
-            }
-          } else
-            refreshCurrentTab();
-        }
-      }
-    }
-    let service_page = document.querySelector('div.service-page');
-    if (service_page) {
-      refreshCurrentTab();
-    }
-  }, 2000);
 }
 
 else if (domain = matchDomain(['iltirreno.it', 'lanuovasardegna.it']) || matchDomain(['gazzettadimodena.it', 'gazzettadireggio.it', 'lanuovaferrara.it'])) {
