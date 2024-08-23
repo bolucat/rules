@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Thu, 22 Aug 2024 17:02:49 +0000
-! Diff-Path: ../patches/2024.8.22.1044.patch#ublock-quick-fixes
+! Last modified: Fri, 23 Aug 2024 10:20:12 +0000
+! Diff-Path: ../patches/2024.8.23.805.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -86,7 +86,8 @@ japscan.lol###sidebar > .card > .card > a.aikoi.donate[target="_blank"][rel="noo
 japscan.lol#@#.container.text-center > div.mt-3 > a.Aikoi.donate
 japscan.lol#@#.Aikoi.donate
 japscan.lol#@#.aikoi.donate
-japscan.lol##.container.text-center > div.mt-3 > a.Aikoi.donate > img
+japscan.lol#@#.container.text-center > div.mt-3 > a.Aikoi.donate > img
+japscan.lol##.container.text-center > div.mt-3 > a.Aikoi.donate[href^="http"] > img
 ! ads
 japscan.lol##+js(no-fetch-if, www.japscan.lol/imgs/)
 ||japscan.lol^$csp=sandbox allow-forms allow-same-origin allow-scripts allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation
@@ -123,6 +124,19 @@ panel.freemcserver.net##div[style^="min-height:"]:has(> div[id^="stpd-"])
 ||hbopenbid.pubmatic.com/translator?source=prebid-client|$xhr,important,domain=panel.freemcserver.net
 ||adx.adform.net/adx/openrtb|$xhr,important,domain=panel.freemcserver.net
 !#endif
+! paste.fo ads
+paste.fo##.wrapper > [class] > a[href*="https://bit.ly/3vKxLhC"], a[href*="https://bit.ly/4aDbAcb"], a[href*="https://bit.ly/4cL4Jz2"], a[href*="https://bit.ly/3VEkIbL"], a[href*="https://goldenaccounts.cc/?r=pastefo"], a[href*="https://discord.gg/R5pN8ZvBVW"], a[href*="https://spadone.cc/"], a[href*="https://orion.hydrolmn.com/"], a[href*="https://anonsmm.com/?utm_source"], a[href*="https://cryptochanger.to/"], a[href*="https://sellsn.io/"], a[href*="https://astralproxies.sellpass.io/"], a[href*="https://discord.gg/GeDqHNzyEh"], a[href*="https://proxylist.to/?ref=pfo"], a[href*="https://themario.sellpass.io/"], a[href*="sigmaproxies.com"], a[href*="notokyc.com"], a[href="https://adultslayer.shop/"]
+||paste.fo^$image,1p
+@@||paste.fo/assets/svg/*.php$image,1p
+@@||paste.fo/assets/svg/*.svg$image,1p
+@@||paste.fo/favicon.ico|$image,1p
+@@||paste.fo/assets/img/$image,1p
+||paste.fo/*?as=*&tkn=$xhr
+paste.fo##.lolimg
+paste.fo##.wrapper > *:has(> a > * > * > * [class])
+paste.fo##.wrapper > [class]:has(> a[href^="https://paste.fo/"][id] > * > *)
+paste.fo##style:has-text(background-image:):remove()
+paste.fo##style:has-text(/background\: url\(https/):remove()
 ! kimcartoon.*,kisscartoon.se,kc.linksgen.com##+js(aost, jQuery.fn.html, /^(?!.*jquery).*(Scripts|inlineScript)/i)
 @@*$xhr,1p,domain=kimcartoon.*|kisscartoon.se|kc.linksgen.com
 ! kimcartoon.*##+js(nostif, /tryHard|leHz|Adb/)
@@ -136,7 +150,7 @@ kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(no-fetch-if, bidgear)
 ! @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$script,domain=kimcartoon.li
 ! kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(nostif, navigator.userAgent)
 kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(set, _btcCheck, false)
-kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(rmnt, script, /document\.getElementById\(\'divContentVideo\'\)\.innerHTML|var (_btcCheck|cpe) = true;/)
+kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(rmnt, script, /document\.getElementById\(\'divContentVideo\'\)\.innerHTML|var cpe = true;|function dcmarvel\(prm\)/)
 kimcartoon.li,kc.linksgen.com,kisscartoon.se##+js(set, isAdb, false)
 kimcartoon.li,kc.linksgen.com,kisscartoon.se###divContentVideo:style(display: block !important;)
 kimcartoon.li,kc.linksgen.com,kisscartoon.se###centerDivVideo > div[id]:has(> img[src^="https://i.imgur.com"])
@@ -181,3 +195,4 @@ tvpworld.com#@#+js(trusted-set-cookie, TVPtcs22, CQC-zoAQC-zoAFfADAENBAFgAAAAAEP
 tvpworld.com#@#+js(set-cookie, TVPtcs22ver, 64)
 ||ab.chatgpt.com^$badfilter
 ||chatgpt.com/ces/$badfilter
+lifehacker.jp#@#div[class^="article_pArticle_Embed"]

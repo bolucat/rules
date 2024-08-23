@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 6kBhfi2FYQja+v9vXZERCA
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1724344695-3600.patch
+! Checksum: xcEoUWzNK8ngI7bUirzcXQ
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1724431025-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.49.45
-! TimeUpdated: 2024-08-22T16:31:10+00:00
+! Version: 2.3.49.61
+! TimeUpdated: 2024-08-23T16:31:22+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -78,6 +78,8 @@
 !
 !
 !
+||wwcpyupbrcuhcsn.com^
+||peenuteque.net^
 ||palaesavgs.com^
 ||flyads1.com^
 ||fasgazazxvi.com^
@@ -7846,7 +7848,8 @@ live.golato.io##+js(addEventListener-defuser, load, abDetectorPro)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/181517
 @@||decompiler.com/javascripts/ads-prebid/prebid-ad*.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/180134
-stfly.biz,explorosity.net,torovalley.net,optimizepics.com,blogesque.net,stfly.cc##+js(abort-on-property-read, abwn)
+! shrtfly
+stfly.biz,explorosity.net,torovalley.net,optimizepics.com,blogesque.net,stfly.cc,bookbucketlyst.com,metoza.net,trekcheck.net,travize.net,techlike.net##+js(abort-on-property-read, abwn)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/181267
 ! https://github.com/AdguardTeam/AdguardFilters/issues/181189
 yourimageshare.com,ovabee.com##+js(abort-on-property-write, detectAdBlock)
@@ -8312,10 +8315,12 @@ tubereader.me##+js(abort-on-stack-trace, document.createElement, showAdblock)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/170115
 24sport.stream##+js(no-setTimeout-if, keepChecking)
 ||24sport.stream/public/js/dublocker.js
+! https://github.com/AdguardTeam/AdguardFilters/issues/187001
 ! https://github.com/AdguardTeam/AdguardFilters/issues/180587
 ! https://github.com/AdguardTeam/AdguardFilters/issues/172154
 ! https://github.com/AdguardTeam/AdguardFilters/issues/170084
-idlixofficial.net,idlixofficial.co,idlixofficials.com##+js(abort-on-stack-trace, DOMTokenList.prototype.contains, manageBodyClasses)
+idlixofficialx.net,idlixofficial.net,idlixofficial.co,idlixofficials.com##+js(abort-on-stack-trace, Array.from, manageBodyClasses)
+idlixofficialx.net,idlixofficial.net,idlixofficial.co,idlixofficials.com##+js(abort-on-stack-trace, DOMTokenList.prototype.contains, manageBodyClasses)
 @@||static.doubleclick.net/instream/ad_status.js$domain=idlixofficials.com|idlixofficial.co|idlixofficial.net
 ! https://github.com/AdguardTeam/AdguardFilters/issues/169962
 nudecams.xxx###adb
@@ -15016,7 +15021,7 @@ readcomiconline.li##+js(no-xhr-if, /bidgear\.com|mgid\.com|pagead2\.googlesyndic
 @@||kisscartoon.se^$subdocument,~third-party
 kc.linksgen.com,kisscartoon.se,kimcartoon.li,kissorg.net,kissasian.*##+js(set-constant, _btcCheck, false)
 kc.linksgen.com,kisscartoon.se,kimcartoon.li,kissorg.net,kissasian.*##+js(no-setTimeout-if, dcmarvel)
-kc.linksgen.com,kisscartoon.se,kimcartoon.li,kissorg.net,kissasian.*##+js(remove-node-text, script, /document\.getElementById\(\'divContentVideo\'\)\.innerHTML|var (_btcCheck|cpe) = true;/)
+kc.linksgen.com,kisscartoon.se,kimcartoon.li,kissorg.net,kissasian.*##+js(remove-node-text, script, /document\.getElementById\(\'divContentVideo\'\)\.innerHTML|var cpe = true;|function dcmarvel\(prm\)/)
 kc.linksgen.com,kisscartoon.se,kimcartoon.li,kissorg.net,kissasian.*#$##divContentVideo { display: block !important; }
 kc.linksgen.com,kisscartoon.se,kimcartoon.li,kissorg.net,kissasian.*#?##centerDivVideo > div[id]:has(> img[src^="https://i.imgur.com"])
 kc.linksgen.com,kisscartoon.se,kimcartoon.li,kissorg.net,kissasian.*##.kcAds1:not(#ad-promo)
@@ -26163,6 +26168,7 @@ interia.pl##div[class*="ad ad_"]
 !---------------------------------------------------------------------
 ! NOTE: Romanian
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/186989
 ! https://github.com/AdguardTeam/AdguardFilters/issues/185062
 ||publisher.freerider.ro/storage/images/_Freerider-Afisport
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183110
@@ -27674,8 +27680,6 @@ downfile.site##img[alt^="Banner"]
 ||traderviet.com/data/Siropu/$image
 ! https://github.com/AdguardTeam/AdguardFilters/issues/65885
 quantrimang.com##.adbox
-! https://github.com/AdguardTeam/AdguardFilters/issues/64611
-game4v.com##div[class^="banner-mobile-"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/63539
 phuongtrinhhoahoc.com##.ads_blocks_advice
 phuongtrinhhoahoc.com##+js(no-setTimeout-if, adsbygoogle iframe)
@@ -27703,8 +27707,6 @@ vieon.vn#$#.pub_300x250.pub_300x250m.pub_728x90.text-ad.textAd.text_ad.text_ads.
 ! https://github.com/AdguardTeam/AdguardFilters/issues/61340
 tuoi69.site##div[class^="adspopup"]
 tuoi69.site##.logo1
-! https://github.com/AdguardTeam/AdguardFilters/issues/60255
-game4v.com###fixedban
 ! https://github.com/AdguardTeam/AdguardFilters/issues/60179
 thienvadia.net##.my_responsive_ads
 ! https://github.com/AdguardTeam/AdguardFilters/issues/59524
@@ -27720,8 +27722,6 @@ anonyviet.com##.jeg_ad
 ! https://github.com/AdguardTeam/AdguardFilters/issues/57612
 ||storage.fshare.vn/support/*-300x600-
 fshare.vn##div[class^="quang-cao-"]
-! https://github.com/AdguardTeam/AdguardFilters/issues/56400
-||game4v.com/*/banner-*.gif
 ! https://github.com/AdguardTeam/AdguardFilters/issues/55957
 hentaivn.net###over
 ! https://github.com/AdguardTeam/AdguardFilters/issues/54824
@@ -33731,6 +33731,7 @@ triblive.com###storyContent > div[data-type="float"][data-stn-player]
 !##################
 !
 ! START: Ad-Shield ad reinsertion
+||07c225f3.online/loader.min.js$domain=edaily.co.kr
 ||slobodnadalmacija.hr/templates/site/js/adrecover.js$script
 !
 ! Common rules, which partially hide banners
@@ -33778,6 +33779,8 @@ eztv.unblocked.sh,animeshow.tv,vidzi.tv##body > div[id][style*="position: fixed"
 !***
 !
 ! Spotify - https://github.com/AdguardTeam/AdguardFilters/issues/10050
+! https://github.com/AdguardTeam/AdguardFilters/issues/186979
+||media-us.amillionads.com/*.mp3$media,redirect=noop-1s.mp4,domain=spotify.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/136566
 ||audio-*.scdn.co/audio/$media,redirect=noop-1s.mp4,domain=spotify.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/171225
@@ -33952,6 +33955,10 @@ $xmlhttprequest,third-party,denyallow=authkong.com|rsc.cdn77.org|linkvertise.com
 !
 ! NOTE: Specific rules
 !
+vxxx.com#?#.wrapper > div[class]:has(> div:contains(Advertisement))
+/whisperingauroras\.com\/[a-z0-9]{20,32}\.js/$domain=whisperingauroras.com
+carwale.com##.lb-wrapper.js-impression-tracking-lb > .video-container
+carwale.com###media-property-ticker > .model-countdown-ticker.js-impression-tracking-ticker
 httpstatus.io##section:has(> div.container > div.ethicalads)
 ||webgames.io/video/*.mp4$domain=starve.io
 dailycaller.com##div[id^="dailycaller_incontent_"]
@@ -34427,8 +34434,8 @@ growdiaries.com##.cpm_item > .adv-visibility + a[target="_blank"] > img
 kingstreamz.lol,mylivestream.pro###openLinks
 namify.tech##.suggestion-rows .suggestion__namify-partner
 namify.tech##[class*="gtm-banner-"]
-w1mp.com,analpornxl.com,sexpester.com,w4nkr.com##.asside-link
-w1mp.com,analpornxl.com,sexpester.com,w4nkr.com##.link-offer
+hugewangs.com,w1mp.com,analpornxl.com,sexpester.com,w4nkr.com##.asside-link
+hugewangs.com,w1mp.com,analpornxl.com,sexpester.com,w4nkr.com##.link-offer
 /player/html.php$domain=fapnfuck.com|sexpester.com|w4nkr.com|w1mp.com
 ||melban7.top^$domain=wcup.one
 ||afrikalyrics.com/images/download-vantaart-
@@ -37543,7 +37550,7 @@ revolve.com##.site-footer__promo-container
 limetorrents.lol##.torrentinfo > div > div[style^="float:"]
 9gag.com###jsid-ad-container-billboard
 pinloker.com,sekilastekno.com##.separator > a[\@click="scroll"][target="_blank"]
-ios-repo-updates.com##.blockads
+ios-repo-updates.com##.adsbygoogleblock
 snopes.com##.outer-ad-unit-wrapper
 vikatan.com##div[stylename^="mgid-ad-container"]
 ||veryfast.litimgs.com^$domain=literotica.com
@@ -42176,7 +42183,7 @@ cartoonbrew.com##.cb-ad
 compress-or-die.com##.component_global-ad
 ||compress-or-die.com/public/ad-bg.svg
 pornoamatorialeitaliano.it,animehentaihub.com,youporntube.net,bestjavporn.com,hentaiasmr.moe##.happy-header
-pornoamatorialeitaliano.it,sexkbj.com,gotocam.net,mundoxgay.com,pornxday.com,animehentaihub.com,youporntube.net,twinkybf.com,javfull.pro,gaytail.com##.happy-sidebar
+pornxbit.com,pornoamatorialeitaliano.it,sexkbj.com,gotocam.net,mundoxgay.com,pornxday.com,animehentaihub.com,youporntube.net,twinkybf.com,javfull.pro,gaytail.com##.happy-sidebar
 ||vast.yomeno.xyz^$xmlhttprequest,other,redirect=noop.txt
 lolalytics.com###any
 lolalytics.com##div[class^="AdsGutter_"]
@@ -53208,6 +53215,10 @@ $popup,third-party,domain=dood.ws,badfilter
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/186551
+nejm.org#@#.adplaceholder
+! https://github.com/AdguardTeam/AdguardFilters/issues/186985
+@@||go.redirectingat.com/*&url=$domain=forums.redflagdeals.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/186555
 ! TODO: remove, when https://github.com/AdguardTeam/AGLint/issues/213 will be fixed
 ! aglint-disable-next-line
