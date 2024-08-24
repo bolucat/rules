@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.0.0
+// @version         3.8.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -199,7 +199,6 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || (!matchDo
     paywall.removeAttribute('class');
     paywall.firstChild.before(freediumLink(url));
     paywall.firstChild.before(readMediumLink(url));
-    //paywall.firstChild.before(googleWebcacheLink(url));
   }
   window.setTimeout(function () {
     let banner = pageContains('div > div > p', /author made this story available to/);
@@ -1201,30 +1200,37 @@ else if (matchDomain('billboard.com')) {
 }
 
 else if (matchDomain('bizjournals.com')) {
-  window.setTimeout(function () {
-  let paywall = document.querySelector('div[data-dev="CxWidget_article:wall"]');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let hidden_content = document.querySelector('article div[style="display: none;"]');
-    if (hidden_content)
-      hidden_content.removeAttribute('style');
+  if (window.location.pathname.includes('/subscriber-only/')) {
+    header_nofix(document.querySelector('div.article__head'));
   } else {
-    let paywall = document.querySelector('div#cxense-paywall');
+    let paywall = document.querySelector('div[data-dev="CxWidget_article:wall"]');
     if (paywall) {
       removeDOMElement(paywall);
-      let paywalled_content = document.querySelectorAll('.paywalled-content[style]');
-      for (let elem of paywalled_content)
-        elem.removeAttribute('style');
+      let hidden_content = document.querySelector('article div[style="display: none;"]');
+      if (hidden_content)
+        hidden_content.removeAttribute('style');
+    } else {
+      let paywall = document.querySelector('div#cxense-paywall');
+      if (paywall) {
+        removeDOMElement(paywall);
+        let paywalled_content = document.querySelectorAll('.paywalled-content[style]');
+        for (let elem of paywalled_content)
+          elem.removeAttribute('style');
+      }
     }
+    window.setTimeout(function () {
+      let dialog = document.querySelector('div[id^="headlessui-dialog-"]');
+      if (dialog) {
+        removeDOMElement(dialog);
+        let html = document.querySelector('html[style]');
+        if (html)
+          html.removeAttribute('style');
+        let nuxt_inert = document.querySelector('div#__nuxt[inert]');
+        if (nuxt_inert)
+          nuxt_inert.removeAttribute('inert');
+      }
+    }, 1000);
   }
-  let dialog = document.querySelector('div[id^="headlessui-dialog-"]');
-  if (dialog) {
-    removeDOMElement(dialog);
-    let body = document.querySelector('body');
-    if (body)
-      body.click();
-  }
-  }, 1000);
   let ads = 'div.adwrap';
   hideDOMStyle(ads);
 }
@@ -4238,6 +4244,8 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     if (!text_fail) {
       if (url.startsWith('https://webcache.googleusercontent.com'))
         text_fail = 'BPC > failed to load from Google webcache:\r\n';
+      else if (url.startsWith('https://och.to/unlock'))
+        text_fail = 'BPC > failed to load from external site:\r\n';
       else if (url.startsWith('https://archive.'))
         text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n';
     }
@@ -4402,7 +4410,7 @@ function nftLink(url, text_fail = 'BPC > Full article text:\r\n') {
 }
 
 function freediumLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
-  return externalLink(['freedium.cfd'], 'https://{domain}/{url}', url, text_fail);
+  return externalLink(['www.freedium.cfd'], 'https://{domain}/{url}', url, text_fail);
 }
 
 function readMediumLink(url, text_fail = 'BPC > Try for full article text:\r\n') {

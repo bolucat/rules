@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.0.1
+// @version         3.8.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -698,27 +698,26 @@ else if (matchDomain('sueddeutsche.de')) {
   let url = window.location.href;
   if (matchDomain('sz-magazin.sueddeutsche.de')) {
     func_post = function () {
-      let hidden_images = document.querySelectorAll('img[src^="data:image/"][data-src]');
-      for (let hidden_image of hidden_images)
-        hidden_image.setAttribute('src', hidden_image.getAttribute('data-src'));
+      header_nofix(document.querySelector('main'), 'div#sz-paywall', 'BPC > no archive-fix');
     }
-    getOchToUnlock(url, 'p.paragraph--reduced', {rm_class: 'paragraph--reduced'}, 'main');
+    getArchive(url, 'div.articlemain__inner--reduced', {rm_class: 'articlemain__inner--reduced'}, 'main');
   } else if (window.location.pathname.startsWith('/projekte/artikel/')) {
     func_post = function () {
-      let par = document.querySelector('div.publishdate');
-      if (par) {
-        let lazy_images = document.querySelectorAll('img[loading]');
-        for (let elem of lazy_images) {
-          if (elem.width) {
-            let ratio = elem.width / (par.offsetWidth);
-            elem.style = 'width: ' + elem.width / ratio + 'px; height: ' + elem.height / ratio + 'px; margin: 20px;';
-          }
-        }
-      }
+      let lazy_images = document.querySelectorAll('img[loading="lazy"][style]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 80%; margin: auto;';
+      let containers = document.querySelectorAll('div[id^="module-"][style]');
+      for (let elem of containers)
+        elem.removeAttribute('style');
+      header_nofix(document.querySelector('main'), 'div#sz-paywall', 'BPC > no archive-fix');
     }
-    getOchToUnlock(url, 'div.offer-page', '', 'main');
+    getArchive(url, 'div.offer-page', '', 'main');
   } else {
-    getOchToUnlock(url, 'head > meta[content="locked"]', '', 'div[itemprop="articleBody"]');
+    func_post = function () {
+      header_nofix(document.querySelector(article_sel), 'div#sz-paywall', 'BPC > no archive-fix');
+    }
+    let article_sel = 'div[itemprop="articleBody"]';
+    getArchive(url, 'head > meta[content="locked"]', '', article_sel);
   }
   let ads = 'er-ad-slot, div.iqdcontainer';
   hideDOMStyle(ads);
@@ -1226,6 +1225,8 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     if (!text_fail) {
       if (url.startsWith('https://webcache.googleusercontent.com'))
         text_fail = 'BPC > failed to load from Google webcache:\r\n';
+      else if (url.startsWith('https://och.to/unlock'))
+        text_fail = 'BPC > failed to load from external site:\r\n';
       else if (url.startsWith('https://archive.'))
         text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n';
     }
