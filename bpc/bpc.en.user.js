@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.0.1
+// @version         3.8.0.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -164,7 +164,7 @@ var usa_gannett_domains = ['azcentral.com', 'cincinnati.com', 'commercialappeal.
 var usa_hearst_comm_domains = ['ctpost.com', 'expressnews.com', 'houstonchronicle.com', 'nhregister.com', 'sfchronicle.com', 'timesunion.com'];
 var usa_lee_ent_domains = ['buffalonews.com', 'journalnow.com', 'journalstar.com', 'madison.com', 'nwitimes.com', 'omaha.com', 'richmond.com', 'stltoday.com', 'tucson.com', 'tulsaworld.com'];
 var usa_mcc_domains = ['bnd.com', 'charlotteobserver.com', 'elnuevoherald.com', 'fresnobee.com', 'kansas.com', 'kansascity.com', 'kentucky.com', 'mcclatchydc.com', 'miamiherald.com', 'newsobserver.com', 'sacbee.com', 'star-telegram.com', 'thestate.com', 'tri-cityherald.com'];
-var usa_mng_domains =   ['bostonherald.com', 'denverpost.com', 'eastbaytimes.com', 'mercurynews.com', 'ocregister.com', 'pressenterprise.com', 'twincities.com'];
+var usa_mng_domains =   ['bostonherald.com', 'denverpost.com', 'eastbaytimes.com', 'mercurynews.com', 'ocregister.com', 'pressenterprise.com', 'sandiegouniontribune.com', 'twincities.com'];
 var usa_nymag_domains = ['curbed.com', 'grubstreet.com', 'nymag.com', 'thecut.com', 'vulture.com'];
 var usa_outside_mag_domains = ["backpacker.com", "betamtb.com", "betternutrition.com", "cleaneatingmag.com", "climbing.com", "outsideonline.com", "oxygenmag.com", "skimag.com", "trailrunnermag.com", "triathlete.com", "vegetariantimes.com", "womensrunning.com", "yogajournal.com"];
 var usa_tribune_domains = ['baltimoresun.com', 'capitalgazette.com', 'chicagotribune.com', 'courant.com', 'dailypress.com', 'mcall.com', 'nydailynews.com', 'orlandosentinel.com', 'pilotonline.com', 'sun-sentinel.com'];
@@ -1843,6 +1843,23 @@ else if (matchDomain('foxnews.com')) {
     overlay.removeAttribute('class');
 }
 
+else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
+  if (window.location.pathname.match(/\/(.|ty-article-magazine\/)/)) {
+    let paywall_sel = 'div[data-test="paywallMidpage"], section[data-testid="article-body-wrapper"] div[data-testid="logo-loading-indicator"]';
+    let article_sel = 'main';
+    let article_link_sel = 'article header, main.article-page p, h1#article-header, ' + article_sel;
+    func_post = function () {
+      let disabled_items = 'section[data-testid="zoidberg-list"], section#comments-section, div[old-position="sticky"]';
+      hideDOMStyle(disabled_items);
+    }
+    let url = window.location.href;
+    getArchive(url, paywall_sel, '', article_sel, '', article_sel, article_link_sel);
+  }
+  let history_keys = Object.keys(window.localStorage).filter(x => x.match(/^(reading(Count)?History|raData)/i));
+  for (let item of history_keys)
+    window.localStorage.removeItem(item);
+}
+
 else if (matchDomain('harpers.org')) {
   setCookie('hr_session', '', 'harpers.org', '/', 0);
 }
@@ -2069,7 +2086,7 @@ else if (matchDomain('kompas.id')) {
   }
 }
 
-else if (matchDomain(['latimes.com', 'sandiegouniontribune.com'])) {
+else if (matchDomain('latimes.com')) {
   let subscribers = pageContains('div.infobox > p.infobox-title', /subscribers/i);
   if (subscribers.length)
     removeDOMElement(subscribers[0].parentNode);
@@ -4244,10 +4261,10 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     if (!text_fail) {
       if (url.startsWith('https://webcache.googleusercontent.com'))
         text_fail = 'BPC > failed to load from Google webcache:\r\n';
-      else if (url.startsWith('https://och.to/unlock'))
-        text_fail = 'BPC > failed to load from external site:\r\n';
       else if (url.startsWith('https://archive.'))
         text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n';
+      else if (!matchUrlDomain(window.location.hostname, url))
+        text_fail = 'BPC > failed to load from external site:\r\n';
     }
     getArticleSrc(url, '', proxy, base64, selector, text_fail, selector_source, selector_archive);
   } else {

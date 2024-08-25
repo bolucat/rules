@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.7.8.1
+// @version         3.7.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -129,6 +129,11 @@ if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
     func_post = function () {
       if (video) {
         let video_new = document.querySelector('div[id$="-streamone"], div[id^="video-player-"]') || document.querySelector('article div[style^="background-color"]');
+        if (!video_new) {
+          let empty_div = document.querySelector('div > div[aria-hidden="true"]:empty:not([class])');
+          if (empty_div)
+            video_new = empty_div.parentNode;
+        }
         if (video_new && video_new.parentNode)
           video_new.parentNode.replaceChild(video, video_new);
       }
@@ -515,6 +520,8 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
         text_fail = 'BPC > failed to load from Google webcache:\r\n';
       else if (url.startsWith('https://archive.'))
         text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n';
+      else if (!matchUrlDomain(window.location.hostname, url))
+        text_fail = 'BPC > failed to load from external site:\r\n';
     }
     getArticleSrc(url, '', proxy, base64, selector, text_fail, selector_source, selector_archive);
   } else {

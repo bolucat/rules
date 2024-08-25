@@ -966,6 +966,8 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
         text_fail = 'BPC > failed to load from Google webcache:\r\n';
       else if (url.startsWith('https://archive.'))
         text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n';
+      else if (!matchUrlDomain(window.location.hostname, url))
+        text_fail = 'BPC > failed to load from external site:\r\n';
     }
     getArticleSrc(url, '', proxy, base64, selector, text_fail, selector_source, selector_archive);
   } else {

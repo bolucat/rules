@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.0.2
+// @version         3.8.0.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -27,7 +27,6 @@
 // @connect         archive.md
 // @connect         archive.ph
 // @connect         archive.vn
-// @connect         och.to
 // @connect         webcache.googleusercontent.com
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
@@ -53,9 +52,20 @@ var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'ik
 var de_lv_domains = ['profi.de', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de'];
 var de_motor_presse_domains = ['aerokurier.de', 'auto-motor-und-sport.de', 'flugrevue.de', 'motorradonline.de', 'womenshealth.de'];
-var de_rp_medien_domains = ['ga.de', 'rp-online.de'];
+var de_rp_medien_domains = ['ga.de', 'rp-online.de', 'saarbruecker-zeitung.de', 'volksfreund.de'];
 
-if (matchDomain('aerztezeitung.de')) {
+if (matchDomain('aachener-zeitung.de')) {
+  let url = window.location.href;
+  getArchive(url, 'div[data-testid="paywall-container"]', '', 'article');
+  let shade = document.querySelector('div.paywalled-article');
+  if (shade)
+    shade.classList.remove('paywalled-article');
+  let noscroll = document.querySelectorAll('html[class], body[class]');
+  for (let elem of noscroll)
+    elem.removeAttribute('class');
+}
+
+else if (matchDomain('aerztezeitung.de')) {
   let paywall = document.querySelector('div.AZLoginModule');
   if (paywall) {
     removeDOMElement(paywall);
@@ -233,11 +243,6 @@ else if (matchDomain('cicero.de')) {
   }
   let urban_ad_sign = document.querySelectorAll('.urban-ad-sign');
   removeDOMElement(...urban_ad_sign);
-}
-
-else if (matchDomain('deraktionaer.de')) {
-  let url = window.location.href;
-  getOchToUnlock(url, 'div#paywall-container', '', 'div#article-body');
 }
 
 else if (matchDomain('faz.net')) {
@@ -449,26 +454,6 @@ else if (matchDomain('freitag.de')) {
       }
     }
   }
-}
-
-else if (matchDomain('golem.de')) {
-  let url = window.location.href;
-  func_post = function () {
-    let js_block = 'figure[id]:not([class])';
-    hideDOMStyle(js_block);
-  }
-  getOchToUnlock(url, 'div.paywall-wrapper', '', 'article');
-  let ads = 'div[id^="iqadtile"]';
-}
-
-else if (matchDomain('heise.de')) {
-  func_post = function () {
-    header_nofix(document.querySelector('article'), 'a-gift', 'BPC > no external site-fix');
-  }
-  let url = window.location.href;
-  getOchToUnlock(url, 'a-gift', '', 'article');
-  let ads = 'div.ad-ldb-container, div.inread-cls-reduc';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('jacobin.de')) {
@@ -1005,17 +990,7 @@ else if (matchDomain(de_motor_presse_domains)) {
 
 else if (matchDomain(de_rp_medien_domains)) {
   let url = window.location.href;
-  if (window.location.pathname.startsWith('/fotos/')) {
-    let paywall = document.querySelector('div.park-paywall-content');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let article = document.querySelector('article[data-cy="gallery"]');
-      if (article)
-        article.firstChild.before(externalLink(['och.to'], 'https://och.to/unlock/{url}', url, 'BPC > Try for photo gallery:\r\n'));
-    }
-  } else {
-    getOchToUnlock(url, 'div.park-article-reduced-overlay', '', 'article[data-park-article]');
-  }
+  getArchive(url, 'div.park-paywall-content', '', 'article');
   let ads = 'div.portal-slot';
   hideDOMStyle(ads);
 }
@@ -1225,10 +1200,10 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     if (!text_fail) {
       if (url.startsWith('https://webcache.googleusercontent.com'))
         text_fail = 'BPC > failed to load from Google webcache:\r\n';
-      else if (url.startsWith('https://och.to/unlock'))
-        text_fail = 'BPC > failed to load from external site:\r\n';
       else if (url.startsWith('https://archive.'))
         text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n';
+      else if (!matchUrlDomain(window.location.hostname, url))
+        text_fail = 'BPC > failed to load from external site:\r\n';
     }
     getArticleSrc(url, '', proxy, base64, selector, text_fail, selector_source, selector_archive);
   } else {
@@ -1354,15 +1329,6 @@ function getArchive(url, paywall_sel, paywall_action = '', selector, text_fail =
   if (paywall.length) {
     clearPaywall(paywall, paywall_action);
     replaceDomElementExt(url_archive, true, false, selector, text_fail, selector_source, selector_archive);
-  }
-}
-
-function getOchToUnlock(url, paywall_sel, paywall_action = '', selector, selector_source = selector) {
-  let url_unlock = 'https://och.to/unlock/' + url.split(/[#\?]/)[0];
-  let paywall = document.querySelectorAll(paywall_sel);
-  if (paywall.length) {
-    clearPaywall(paywall, paywall_action);
-    replaceDomElementExt(url_unlock, true, false, selector, '', selector_source);
   }
 }
 
