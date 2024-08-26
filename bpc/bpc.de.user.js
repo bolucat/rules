@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.0.5
+// @version         3.8.0.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -27,6 +27,7 @@
 // @connect         archive.md
 // @connect         archive.ph
 // @connect         archive.vn
+// @connect         och.to
 // @connect         webcache.googleusercontent.com
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
@@ -245,6 +246,11 @@ else if (matchDomain('cicero.de')) {
   removeDOMElement(...urban_ad_sign);
 }
 
+else if (matchDomain('deraktionaer.de')) {
+  let url = window.location.href;
+  getOchToUnlock(url, 'div#paywall-container', '', 'div#article-body');
+}
+
 else if (matchDomain('faz.net')) {
   if (matchDomain('zeitung.faz.net')) { // legacy
     let paywall_z = document.querySelector('div.c-red-carpet');
@@ -454,6 +460,26 @@ else if (matchDomain('freitag.de')) {
       }
     }
   }
+}
+
+else if (matchDomain('golem.de')) {
+  let url = window.location.href;
+  func_post = function () {
+    let js_block = 'figure[id]:not([class])';
+    hideDOMStyle(js_block);
+  }
+  getOchToUnlock(url, 'div.paywall-wrapper', '', 'article');
+  let ads = 'div[id^="iqadtile"]';
+}
+
+else if (matchDomain('heise.de')) {
+  func_post = function () {
+    header_nofix(document.querySelector('article'), 'a-gift', 'BPC > no external site-fix');
+  }
+  let url = window.location.href;
+  getOchToUnlock(url, 'a-gift', '', 'article');
+  let ads = 'div.ad-ldb-container, div.inread-cls-reduc';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('jacobin.de')) {
@@ -683,26 +709,27 @@ else if (matchDomain('sueddeutsche.de')) {
   let url = window.location.href;
   if (matchDomain('sz-magazin.sueddeutsche.de')) {
     func_post = function () {
-      header_nofix(document.querySelector('main'), 'div#sz-paywall', 'BPC > no archive-fix');
+      let hidden_images = document.querySelectorAll('img[src^="data:image/"][data-src]');
+      for (let hidden_image of hidden_images)
+        hidden_image.setAttribute('src', hidden_image.getAttribute('data-src'));
     }
-    getArchive(url, 'div.articlemain__inner--reduced', {rm_class: 'articlemain__inner--reduced'}, 'main');
+    getOchToUnlock(url, 'p.paragraph--reduced', {rm_class: 'paragraph--reduced'}, 'main');
   } else if (window.location.pathname.startsWith('/projekte/artikel/')) {
     func_post = function () {
-      let lazy_images = document.querySelectorAll('img[loading="lazy"][style]');
-      for (let elem of lazy_images)
-        elem.style = 'width: 80%; margin: auto;';
-      let containers = document.querySelectorAll('div[id^="module-"][style]');
-      for (let elem of containers)
-        elem.removeAttribute('style');
-      header_nofix(document.querySelector('main'), 'div#sz-paywall', 'BPC > no archive-fix');
+      let par = document.querySelector('div.publishdate');
+      if (par) {
+        let lazy_images = document.querySelectorAll('img[loading]');
+        for (let elem of lazy_images) {
+          if (elem.width) {
+            let ratio = elem.width / (par.offsetWidth);
+            elem.style = 'width: ' + elem.width / ratio + 'px; height: ' + elem.height / ratio + 'px; margin: 20px;';
+          }
+        }
+      }
     }
-    getArchive(url, 'div.offer-page', '', 'main');
+    getOchToUnlock(url, 'div.offer-page', '', 'main');
   } else {
-    func_post = function () {
-      header_nofix(document.querySelector(article_sel), 'div#sz-paywall', 'BPC > no archive-fix');
-    }
-    let article_sel = 'div[itemprop="articleBody"]';
-    getArchive(url, 'head > meta[content="locked"]', '', article_sel);
+    getOchToUnlock(url, 'head > meta[content="locked"]', '', 'div[itemprop="articleBody"]');
   }
   let ads = 'er-ad-slot, div.iqdcontainer';
   hideDOMStyle(ads);
@@ -1190,6 +1217,16 @@ function getArticleSrc(url, url_src, proxy, base64, selector, text_fail = '', se
         replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail, selector_source, selector_archive);
     }
   });
+}
+
+function getOchToUnlock(url, paywall_sel, paywall_action = '', selector, selector_source = selector) {
+  let url_unlock = 'https://och.to/unlock/' + url.split(/[#\?]/)[0];
+  let paywall = document.querySelectorAll(paywall_sel);
+  if (paywall.length && dompurify_loaded) {
+    clearPaywall(paywall, paywall_action);
+    csDoneOnce = true;
+    replaceDomElementExt(url_unlock, true, false, selector, '', selector_source);
+  }
 }
 
 function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {

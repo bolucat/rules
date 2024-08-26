@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: wQgArpTJEg3TYmBdatDlGg
-! Diff-Path: ../patches/7/7-s-1724603857-3600.patch
+! Checksum: dw9SnmZdRLiEa7mnkOPl3A
+! Diff-Path: ../patches/7/7-s-1724686717-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.55.79
-! TimeUpdated: 2024-08-25T16:33:14+00:00
+! Version: 2.0.55.83
+! TimeUpdated: 2024-08-26T15:32:23+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -497,6 +497,9 @@
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/187229
+@@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$domain=techlog.ta-yan.ai
+techlog.ta-yan.ai#$#.adsbygoogle.Ad-Container.sidebar-ad.ad-slot.ad.ads.doubleclick.ad-placement.ad-placeholder.adbadge.BannerAd.adsbox.convertjsontoad.contads.adoverride.ad_center.ad-right.adsasync.feast_ad.adcalloverride.iframe-ad.googleads.photoad.pauseadextension.ads_home.getadcontent.admarubanners.adsbgd.ad_small.adengine.adweb.adtopsky.adrectangle.article-ad.realmedia_banner.adsrotateheader.slider-ad.adsyndication.imgad.partnerad.yahooadsapi.openxtag.adwiz.advert.searchad.adver_hor.adamz.onlineadv.adembed.adiframeanchor.buzzad.adsjs { display: block !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183252
 exploader.net##+js(spoof-css, article > div[style="margin-left: -63px;width: 1120px;height: 450px;margin-bottom: 5px;display: flex;align-items: center;"] > div, left, auto)
 exploader.net#$#article > div[style="margin-left: -63px;width: 1120px;height: 450px;margin-bottom: 5px;display: flex;align-items: center;"] { position: absolute !important; left: -3000px !important; }
@@ -1729,6 +1732,13 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+car-me.jp##body > div[style^="position:fixed;bottom:"]
+mtame.jp###contents_right > div.banner_nor:has(> a[href="https://mtame.jp/digital_marketing/industry_marketing/"]) ~ div.banner_nor
+news.yahoo.co.jp###contentsWrap > div[class]:has(> div[class] > div[id^="yads_"])
+ekme-pk2.hateblo.jp##.entry-content > p:has(> a[href^="http://x4.namidaame.com/"])
+ekme-pk2.hateblo.jp##.entry-content > div[align="center"] > p:has(> script[src^="//xml.affiliate.rakuten.co.jp/"])
+ekme-pk2.hateblo.jp##.entry-content > div[align="center"] > p:has(> script[src^="//xml.affiliate.rakuten.co.jp/"]) ~ p
+skypenguin.net##.entry-content > div.block-box:has(> div.wp-block-columns > div.wp-block-column div.wp-block-button > a[href^="https://amzn.to/"])
 joshi-spa.jp##.csw-content-box:has(> div.csw-content-footer > span.csw-ad-icon)
 qiita.com##div[data-testid="popup-lapras-signup"]
 himanatokiniyaruo.com##div[id^="sponsor"]
@@ -4666,7 +4676,7 @@ shico.xyz##.tes_wrap
 cysoku.com##div[style="margin-bottom:20px;"]
 dark-soku.blog.jp##.amazon ~ br[style="clear:left"]
 howtonote.jp,javadrive.jp###admokuji
-anniversarys-mag.jp##.adsp
+navi.lol-gg.net,anniversarys-mag.jp##.adsp
 cantera.camp##.p-cb__item--ad
 telling.asahi.com##.c-promotion
 telling.asahi.com##.kiji_rect01
