@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.0.3
+// @version         3.8.0.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -23,6 +23,7 @@
 // @match           *://*.epoch.org.il/*
 // @match           *://*.europower.no/*
 // @match           *://*.fiskeribladet.no/*
+// @match           *://*.haaretz.co.il/*
 // @match           *://*.independent.ie/*
 // @match           *://*.indiatoday.in/*
 // @match           *://*.intrafish.no/*
@@ -1845,9 +1846,10 @@ else if (matchDomain('foxnews.com')) {
 
 else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
   if (window.location.pathname.match(/\/(.|ty-article-magazine\/)/)) {
-    let paywall_sel = 'div[data-test="paywallMidpage"], section[data-testid="article-body-wrapper"] div[data-testid="logo-loading-indicator"]';
+    let body_wrapper_sel = 'section[data-testid="article-body-wrapper"]';
+    let paywall_sel = 'div[data-test="paywallMidpage"], ' + body_wrapper_sel + ' div[data-testid="logo-loading-indicator"], ' + body_wrapper_sel + ' a[href^="https://promotion."]';
     let article_sel = 'main';
-    let article_link_sel = 'article header, main.article-page p, h1#article-header, ' + article_sel;
+    let article_link_sel = 'article header, main.article-page p:not([id]), h1#article-header, ' + body_wrapper_sel;
     func_post = function () {
       let disabled_items = 'section[data-testid="zoidberg-list"], section#comments-section, div[old-position="sticky"]';
       hideDOMStyle(disabled_items);
@@ -4291,6 +4293,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
 
 function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let article = document.querySelector(selector);
+  let article_link = document.querySelector(selector_archive);
   let no_content_msg = '&nbsp;| no article content found! | :';
   if (html) {
     if (!proxy && base64) {
@@ -4334,10 +4337,10 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
           }, 200);
         }
       } else
-        replaceTextFail(url, article, proxy, text_fail.replace(':', no_content_msg));
+        replaceTextFail(url, article_link, proxy, text_fail.replace(':', no_content_msg));
     }, 200);
   } else {
-    replaceTextFail(url, article, proxy, url_src ? text_fail.replace(':', no_content_msg) : text_fail);
+    replaceTextFail(url, article_link, proxy, url_src ? text_fail.replace(':', no_content_msg) : text_fail);
   }
 }
 

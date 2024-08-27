@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.7.8.2
+// @version         3.8.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -357,15 +357,28 @@ else if (matchDomain('nrc.nl')) {
 }
 
 else if (matchDomain('vn.nl')) {
-  getJsonUrl('div.content__message-no-access-container', '', 'div[data-article-content-target]', {art_append: true});
-  let content_restriction = document.querySelector('div.content__restriction');
-  removeDOMElement(content_restriction);
-  let article_content = document.querySelector('section[data-article-content-element]');
-  if (article_content) {
-    article_content.style = 'max-height:none !important;';
-    let body = document.querySelector('body');
-    if (body)
-      body.style = 'height:auto !important;';
+  let paywall = document.querySelector('section.c-paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.c-article-content__container');
+    if (article) {
+      let json_script = document.querySelector('script#__NEXT_DATA__');
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text);
+          if (json && json.props.pageProps.article && json.props.pageProps.article.content) {
+            let parser = new DOMParser();
+            let doc = parser.parseFromString('<div>' + json.props.pageProps.article.content + '</div>', 'text/html');
+            let content_new = doc.querySelector('div');
+            article.innerHTML = '';
+            article.appendChild(content_new);
+          } else
+            refreshCurrentTab();
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
   }
 }
 
@@ -548,6 +561,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
 
 function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let article = document.querySelector(selector);
+  let article_link = document.querySelector(selector_archive);
   let no_content_msg = '&nbsp;| no article content found! | :';
   if (html) {
     if (!proxy && base64) {
@@ -591,10 +605,10 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
           }, 200);
         }
       } else
-        replaceTextFail(url, article, proxy, text_fail.replace(':', no_content_msg));
+        replaceTextFail(url, article_link, proxy, text_fail.replace(':', no_content_msg));
     }, 200);
   } else {
-    replaceTextFail(url, article, proxy, url_src ? text_fail.replace(':', no_content_msg) : text_fail);
+    replaceTextFail(url, article_link, proxy, url_src ? text_fail.replace(':', no_content_msg) : text_fail);
   }
 }
 
