@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Tue, 27 Aug 2024 15:51:58 +0000
-! Diff-Path: ../patches/2024.8.27.1043.patch#ublock-badware
+! Last modified: Wed, 28 Aug 2024 10:36:33 +0000
+! Diff-Path: ../patches/2024.8.28.806.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -693,7 +693,6 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||mediafire.com/folder/10ejpiwio2gfh/$doc
 ||mediafire.com/folder/47ccu44v3b5sq/$doc
 ||mediafire.com/folder/n2cwlepl4zeov/$doc
-||mediafire.com/folder/cybqk7ulnmptm/$doc
 ||mediafire.com/folder/v6itahr4p07b1/$doc
 ||mediafire.com/folder/01t0gadw328j9/$doc
 ||mediafire.com/folder/h9o4dqf15amrc/$doc
@@ -721,6 +720,7 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||freefiles-upload.com^$doc
 ||rgcatalyst.biz^$all
 ||arcanecheat.com^$doc
+||apocalypsecheats.fun^$all
 ||gameggss.store^$all
 ||cloud-folder.org^$doc
 ||cloud-pack.org^$doc
@@ -1083,6 +1083,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||sportslevels.com^$all
 ||sso.biglobe.jp.net^$all
 ||lsdfex.shop^$all
+||jaborcall.app^$doc
 ||pocket-888.com^$all
 ! scam sites
 ||webuzz.me^$doc
@@ -3049,8 +3050,13 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||mybluehost.me/Versan/UPS/$doc,to=~ups.com
 ||preprod.exclusifparis.com/modules/deleteordersfree/$all,to=~ups.com
 ! ee.co.uk
+/^https:\/\/ee(?:-[a-z]{7,}){1,2}\.web\.app\//$doc,to=web.app|~ee.co.uk
+||my-ee-*.web.app^$doc,to=~ee.co.uk
+||ee-network.web.app^$all,to=~ee.co.uk
 ||ee-billing-recovery.web.app^$all,to=~ee.co.uk
 ||my-ee-web.web.app^$all,to=~ee.co.uk
+||my-ee-details.web.app^$all,to=~ee.co.uk
+||my-info-ee.web.app^$all,to=~ee.co.uk
 ||ee-payment-method-issue.firebaseapp.com^$all,to=~ee.co.uk
 ! bpost.be
 ||pakket-bpost-be.web.app^$all,to=~bpost.be
@@ -3103,6 +3109,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||group-postban.firebaseapp.com^$all,to=~labanquepostale.fr
 ||oasisministries.com/fr/postale/$all,to=~labanquepostale.fr
 ||lidarusa.com/*/Bpostale2022/$all,to=~labanquepostale.fr
+||plesk.page/*--_--$doc,to=~labanquepostale.fr
 ! adobe
 ||adobecloud5xpo.yolasite.com^$all,to=~adobe.com
 ||socalthesyndicate.com/*/adobefud/$all,to=~adobe.com
@@ -3177,6 +3184,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||dalabuso.com^$all
 ||mm39sg6.top^$all
 ||dalazeey.com^$all
+||gimkax.com^$all
 ||ecommrce-web-amazon.netlify.app^$all
 ||etisalat-amazonprime.com^$all,to=~etisalat.ae
 ||mybluehost.me/wp-admin/amz/$doc
@@ -3342,6 +3350,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||ann.tess1.top^$all
 ||play.funfourmob.com^$all
 ||fevertime.com/wasop/$all
+! instagram
+||instogromv.com^$all
 ! facebook
 ||slimhealth.us^$all
 ||mait.inhhome.top^$all
@@ -3605,6 +3615,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||mybluehost.me/sbb-ch/$doc,to=~swisspass.ch
 ||mybluehost.me/pass/index/$doc,to=~swisspass.ch
 ||mybluehost.me/seitech/$doc,to=~swisspass.ch
+||mybluehost.me/*/swpassfr/$doc,to=~swisspass.ch
 ||mybluehost.me/*/CHFINAL/$doc,to=~swisspass.ch
 ||acconsult.info/*/CHFINAL/$doc,to=~swisspass.ch
 ||sviluppo.host/sbb-chf-id/$doc,to=~swisspass.ch
@@ -3633,12 +3644,13 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||swisspost.web.app^$all,to=~post.ch
 ! upc
 ||wcomhost.com/ch/upc/$all,to=~upc.ch
+||claim-etherfi.me^$doc,to=~ether.fi
+||trziostart.com^$all,to=~trezor.io
 ||novastakingwallet.com^$doc,to=~novawallet.io
 ||airdrop-carv.com^$doc,to=~carv.io
 ||bnbc-onay-sayfasi-global.smtp-host.de^$all,to=~binance.com
 ||xei.claims^$doc,to=~xei.ai
 ||kucoin0101.com^$all,to=~kucoin.com
-||pepesunchained.net^$doc,to=~pepeunchained.com
 ||airdrope.live^$doc,to=~ton.org
 ||scroll-dapprader.com^$doc,to=~dappradar.com
 ||routerprotocol-migrate.com^$doc,to=~routerprotocol.com
@@ -3651,7 +3663,6 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||cyberblast.info^$doc,to=~cyberblast.io
 ||gz-gmy.com^$all,to=~paxos.com
 ||tokenpocket-com.cc^$all,to=~tokenpocket.pro
-||ledgerwallive.com^$all,to=~ledger.com
 ||mantanetworkcn.com^$all,to=~manta.network
 ||interface-git-parallel-cypress-uniswap.vercel.app^$doc,to=~uniswap.org
 ||mode-claim.xyz^$doc,to=~mode.network
@@ -3659,6 +3670,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||tpro-airdrop.pages.dev^$doc,to=~tpro.network
 ||claim-wienerdog.com^$doc,to=~wienerdog.ai
 ||claimable-bankless.com^$all,to=~bankless.com
+||pepesunchained.net^$doc,to=~pepeunchained.com
+||pepecoinsuper-airdrop.pages.dev^$doc,to=~pepe20.vip
 ||appmemekombatclaim.pages.dev^$doc,to=~memekombat.io
 ||testmyaa.pages.dev^$doc,to=~earndrop.io
 ||claimspaace.pages.dev^$doc,to=~lingocoin.io
@@ -3680,9 +3693,9 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||alienxchain*.pages.dev^$doc,to=~alienxchain.io
 ||bfq.h100.top^$all,to=~bybit.com
 /index/index/*Trade/tradelist^$doc
-! berachain.com
-||beraprotocol.com^$doc,to=~berachain.com
-||beraprotocol.app^$doc,to=~berachain.com
+! ledger.com
+||ledgerwallive.com^$all,to=~ledger.com
+||pub-*.r2.dev/ledge.html^$doc,to=~ledger.com
 ! magamemecoin.com
 ||trump-coin1.pages.dev^$doc,to=~magamemecoin.com
 ||coin-trump.pages.dev^$doc,to=~magamemecoin.com
@@ -3690,17 +3703,10 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||pinksales-pools.pages.dev^$doc,to=~pinksale.finance
 ||pink-sales.pages.dev^$doc,to=~pinksale.finance
 ||pink-sale.pages.dev^$doc,to=~pinksale.finance
-! trezor.io
-||treezorrwallett.webflow.io^$all,to=~trezor.io
-||trziostart.com^$all,to=~trezor.io
-! ether.fi
-||ethfi-claims.xyz^$doc,to=~ether.fi
-||claim-etherfi.me^$doc,to=~ether.fi
 ! coinbase
 ||baseguardauth.net^$all,to=~coinbase.com
 ||coinbase-yield.info^$all,to=~coinbase.com
 ||cbnotifser.top^$all,to=~coinbase.com
-||cbnotif.top^$all,to=~coinbase.com
 ||coin-notif.top^$all,to=~coinbase.com
 ||koinssendspro.top^$all,to=~coinbase.com
 ||e-stata.ru/track/1/$all,to=~coinbase.com
@@ -3710,7 +3716,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||tokenap.app^$all,to=~token.im
 ||tokenax.app^$all,to=~token.im
 ||imtoken-etc.com^$all,to=~token.im
-app##html > body[style]:not([class]):not([id]) > center#yangchen[style]:not([class]) > iframe#external-frame[src="https://im136.mom/"]:not([class])
+app##center#yangchen > iframe#external-frame[src="https://im136.mom/"]:not([class])
 ! pancakeswap
 ||pancake.saaedal.com^$all,to=~pancakeswap.finance
 /^https:\/\/pancake(?:dro|swa)pclick\d+\.vercel\.app\//$doc,to=vercel.app|~pancakeswap.finance
@@ -3759,6 +3765,8 @@ app##html > body[style]:not([class]):not([id]) > center#yangchen[style]:not([cla
 ||mybluehost.me/servizi/assistenza/$doc,to=~mooney.it
 ||mybluehost.me/wise/number-account-$doc,to=~wise.com
 ||smrturl.co/o/*/53458494^$doc
+||play.huikzkw.top^$doc,to=~dbsvickers.com
+||agripro-fr-*.com^$doc,to=~agriaffaires.com
 ! docusign.com
 ||signature-rho.vercel.app^$all,to=~docusign.com
 ||roycamining.com/pdeb/Untitled/$all,to=~docusign.com
@@ -3880,6 +3888,16 @@ app##html > body[style]:not([class]):not([id]) > center#yangchen[style]:not([cla
 ||tikivn84.com^$all,to=~tiki.vn
 ||snggov.com^$all,to=~gov.vn
 ||vn-eid.com^$all,to=~dichvucong.gov.vn
+/^https:\/\/nz[a-z]\d{5}s\.com\//$doc,to=com|~shopee.vn
+||lazada68.com^$all,to=~lazada.vn
+||558-558-559.com^$all,to=~shopee.vn
+||nzx65821s.com^$all,to=~shopee.vn
+||congtygiaohangtietkiemvn.com^$all,to=~giaohangtietkiem.vn
+||giaohangtietkiemvn.com^$all,to=~giaohangtietkiem.vn
+||adobedownloader.info^$all
+||opiumundi.com^$all
+||mirtiat.com^$all
+||lernehat.com^$all
 ||endrowl.com^$all
 ||xceteu.com^$all
 ||ripliguay.com^$all
@@ -3985,6 +4003,7 @@ app##html > body[style]:not([class]):not([id]) > center#yangchen[style]:not([cla
 ||union.macoms.la^$all
 ||polyfill.com^$all
 ||polyfill.top^$all
+||polyfill-js.cn^$all
 ||veilcurtin.world^$doc
 ||yikesgroto.com^$doc
 ||midnightsociety-x.com^$doc
@@ -3996,6 +4015,10 @@ app##html > body[style]:not([class]):not([id]) > center#yangchen[style]:not([cla
 ||bloxstrap.*^$doc,domain=~bloxstrap.pizzaboxer.xyz,to=~bloxstrap.pizzaboxer.xyz
 ||bloxstrapmenu.com^$doc
 ||joannclearances.com^$all,to=~joann.com
+||joannstoressales.shop^$all,to=~joann.com
+||joannmax.com^$doc,to=~joann.com
+||joannofficial.com^$all,to=~joann.com
+||joannoutlet.com^$all,to=~joann.com
 ||pcapp.store^$doc
 ||convertwithwave.com^$doc
 ||withsecurify.com^
@@ -4103,3 +4126,10 @@ app##html > body[style]:not([class]):not([id]) > center#yangchen[style]:not([cla
 ||iqpoll.cn^$document
 ||zhandouxian.com^$all
 ||tempisite.com^$all
+||bit.ly/3MjP129$all
+||cdn.discordapp.com/attachments/1277836331501883449/1278023442498588702/fix.zip$all
+||eltacosu.lol^$all,to=~elta.gr
+||app.mediafire.com/9mrkd33xulszl^$all
+||mediafire.com/file/lsf541rgd5dyiam/x86_64-w64-ranlib.rar/file^$all
+||bit.ly/3MjP129^$all
+||cdn.discordapp.com/attachments/1277836331501883449/1278023442498588702/fix.zip^$all
