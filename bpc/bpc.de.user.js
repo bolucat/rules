@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.0.6
+// @version         3.8.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -744,16 +744,7 @@ else if (matchDomain('tagesspiegel.de')) {
   let paywall_sel = 'div#paywall';
   let url = window.location.href;
   if (matchDomain('www.tagesspiegel.de')) {
-    func_post = function () {
-      let opinionary = 'div[element="[object Object]"]';
-      hideDOMStyle(opinionary);
-      if (mobile) {
-        let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
-        for (let elem of lazy_images)
-          elem.style = 'width: 95%;';
-      }
-    }
-    getArchive(url, paywall_sel, '', 'div#story-elements');
+    getOchToUnlock(url, paywall_sel, '', 'div#story-elements');
   } else if (matchDomain('interaktiv.tagesspiegel.de')) {
     let paywall = document.querySelector(paywall_sel);
     if (paywall) {
@@ -867,13 +858,9 @@ else if (matchDomain('vol.at')) {
                 elem.src = elem.src.replace('https://www.vol.at', json_domain);
                 elem.removeAttribute('srcset');
               }
-              let hidden_comments = document.querySelector('div.vodl-region-article__content[hidden]');
-              if (hidden_comments) {
-                hidden_comments.removeAttribute('hidden');
-                let blurred = hidden_comments.querySelector('div.blur');
-                if (blurred)
-                  blurred.classList.remove('blur');
-              }
+              let hidden_comments = document.querySelector('div[class*="backdrop-blur"]');
+              if (hidden_comments)
+                hidden_comments.removeAttribute('class');
               let article = document.querySelector('div.article-body');
               if (article) {
                 article.innerHTML = '';
@@ -1267,6 +1254,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
 
 function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let article = document.querySelector(selector);
+  let article_link = document.querySelector(selector_archive);
   let no_content_msg = '&nbsp;| no article content found! | :';
   if (html) {
     if (!proxy && base64) {
@@ -1310,10 +1298,10 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
           }, 200);
         }
       } else
-        replaceTextFail(url, article, proxy, text_fail.replace(':', no_content_msg));
+        replaceTextFail(url, article_link, proxy, text_fail.replace(':', no_content_msg));
     }, 200);
   } else {
-    replaceTextFail(url, article, proxy, url_src ? text_fail.replace(':', no_content_msg) : text_fail);
+    replaceTextFail(url, article_link, proxy, url_src ? text_fail.replace(':', no_content_msg) : text_fail);
   }
 }
 
