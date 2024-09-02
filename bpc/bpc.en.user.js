@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.1.0
+// @version         3.8.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1847,15 +1847,25 @@ else if (matchDomain('foxnews.com')) {
 else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
   if (window.location.pathname.match(/\/(.|ty-article-magazine\/)/)) {
     let body_wrapper_sel = 'section[data-testid="article-body-wrapper"]';
-    let paywall_sel = 'div[data-test="paywallMidpage"], ' + body_wrapper_sel + ' div[data-testid="logo-loading-indicator"], ' + body_wrapper_sel + ' a[href^="https://promotion."]';
+    let paywall_sel = 'div[data-test="paywallMidpage"], ' + body_wrapper_sel + ' div[data-testid="logo-loading-indicator"]';
     let article_sel = 'main';
     let article_link_sel = 'main header, main.article-page p:not([id]), h1#article-header, ' + body_wrapper_sel;
-    func_post = function () {
-      let disabled_items = 'section[data-testid="zoidberg-list"], section#comments-section, div[old-position="sticky"]';
-      hideDOMStyle(disabled_items);
-    }
     let url = window.location.href;
-    getArchive(url, paywall_sel, '', article_sel, '', article_sel, article_link_sel);
+    if (!mobile) {
+      func_post = function () {
+        let disabled_items = 'section[data-testid="zoidberg-list"], section#comments-section, div[old-position="sticky"]';
+        hideDOMStyle(disabled_items);
+      }
+      getArchive(url, paywall_sel, '', article_sel, '', article_sel, article_link_sel);
+    } else {
+      let paywall = document.querySelector(paywall_sel);
+      if (paywall) {
+        removeDOMElement(paywall);
+        let article_link = document.querySelector(article_link_sel);
+        if (article_link)
+          article_link.before(archiveLink(url));
+      }
+    }
   }
   let history_keys = Object.keys(window.localStorage).filter(x => x.match(/^(reading(Count)?History|raData)/i));
   for (let item of history_keys)
