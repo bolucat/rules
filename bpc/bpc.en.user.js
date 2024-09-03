@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.1.2
+// @version         3.8.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2587,20 +2587,107 @@ else if (matchDomain('science.org')) {
 }
 
 else if (matchDomain('scmp.com')) {
-  if (window.location.hostname.startsWith('amp.')) {
-    amp_unhide_subscr_section('amp-ad, div.ad-banner, div.advert-fly-carpet-container, div.inline-advert');
-    let default_meters = document.querySelectorAll('div[id^="default-meter-page-views"]');
-    removeDOMElement(...default_meters);
-  } else {
-    let section_hidden = document.querySelectorAll('section[data-qa="ContentBody-ContentBodyContainer"][class]');
-    for (let elem of section_hidden)
-      elem.removeAttribute('class');
-    let paywalled = document.querySelector('div.paywalled-content');
-    if (paywalled)
-      paywalled.removeAttribute('class');
-    let ads = 'div[data-qa*="AdSlot"], div.adblock-message';
-    hideDOMStyle(ads);
+  let paywall = document.querySelector('div[data-qa="GenericArticle-PaywallContainer"]');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('section[data-qa="ContentBody-ContentBodyContainer"]');
+    if (article) {
+      let json_script = document.querySelector('script#__NEXT_DATA__');
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text);
+          if (json && json.props.pageProps.payload.data.article.body.json) {
+            let pars = json.props.pageProps.payload.data.article.body.json;
+            if (pars && pars.length)
+              article.innerHTML = '';
+            for (let par of pars) {
+              let elem = document.createElement('p');
+              if (par.type === 'p') {
+                for (sub_elem of par.children) {
+                  if (sub_elem.type === 'text') {
+                    if (sub_elem.data)
+                      elem.appendChild(document.createTextNode(sub_elem.data));
+                  } else if (['a', 'em'].includes(sub_elem.type)) {
+                    let first_child = sub_elem.children ? sub_elem.children[0] : '';
+                    if (first_child) {
+                      if (first_child.type === 'text') {
+                        if (first_child.data) {
+                          let a_link = document.createElement('span');
+                          if (sub_elem.attribs && sub_elem.attribs.href) {
+                            a_link = document.createElement('a');
+                            a_link.style = 'text-decoration: underline;';
+                            a_link.href = sub_elem.attribs.href;
+                            if (!matchUrlDomain(window.location.hostname, sub_elem.attribs.href))
+                              a_link.target = '_blank';
+                          } else
+                            a_link.style = 'font-style: italic;';
+                          a_link.innerText = first_child.data;
+                          elem.appendChild(a_link);
+                        }
+                      }
+                    }
+                  } else if (sub_elem.type === 'img') {
+                    if (sub_elem.attribs) {
+                      let attribs = sub_elem.attribs;
+                      if (attribs.src)
+                        elem = makeFigure(attribs.src, attribs.title, {alt: attribs.alt, style: 'width: 100%;'}, {style: 'font-size: 80%;'});
+                    }
+                  } else {
+                    console.log(sub_elem);
+                  }
+                }
+              } else if (par.type === 'div') {
+                if (par.attribs) {
+                  if (par.attribs.class === 'image-inline-container') {
+                    if (par.children && par.children[0]) {
+                      let attribs = par.children[0].attribs;
+                      if (attribs.src)
+                        elem = makeFigure(attribs.src, attribs.title, {alt: attribs.alt, style: 'width: 100%;'}, {style: 'font-size: 80%;'});
+                    }
+                  } else if (par.attribs.class.match(/(methode-html|oembed|video)-wrapper/)) {
+                    for (let sub_elem of par.children) {
+                      if (sub_elem.type === 'iframe') {
+                        let attribs = sub_elem.attribs;
+                        if (attribs.src) {
+                          let figure = document.createElement('figure');
+                          let iframe = document.createElement('iframe');
+                          iframe.src = attribs.src;
+                          if (attribs.width && attribs.height) {
+                            let ratio = attribs.width / (article.offsetWidth);
+                            iframe.width = attribs.width / ratio;
+                            iframe.height = attribs.height / ratio;
+                          } else if (attribs.style) {
+                            iframe.style = attribs.style;
+                            if (attribs.height)
+                              iframe.height = attribs.height;
+                          }
+                          figure.appendChild(iframe);
+                          if (attribs.title) {
+                            let iframe_title = document.createElement('figcaption');
+                            iframe_title.innerText = attribs.title;
+                            iframe_title.style = 'font-size: 80%;';
+                            figure.appendChild(iframe_title);
+                          }
+                          elem.appendChild(figure);
+                        }
+                      }
+                    }
+                  } else if (par.attribs.class)
+                    console.log(par);
+                }
+              }
+              if (elem.hasChildNodes())
+                article.appendChild(elem);
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
   }
+  let ads = 'div[data-qa*="AdSlot"], div.adblock-message';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('seattletimes.com')) {
