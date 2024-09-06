@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: ILuIPyfIMOraHskS7Sikcg
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1725557783-3600.patch
+! Checksum: AhZW6pUM7GZu1fio2mwoSg
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1725644185-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.51.40
-! TimeUpdated: 2024-09-05T17:31:16+00:00
+! Version: 2.3.51.56
+! TimeUpdated: 2024-09-06T17:31:14+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -7587,7 +7587,7 @@ leagueofgraphs.com,tv3.lv##+js(set-cookie, __adblocker, false)
 @@/libs/advertisement.js$domain=xfaucet.net|getfreebit.xyz|getfree.co.in|starbits.io|bagi.co.in|konstantinova.net|starfaucet.net|bitearns.com|cryptofreebies.info|trivisna.com|nosl.juezcoin.xyz|earn-cryptolive.000webhostapp.com|dogeatm.com|aztecafaucet.space|multifaucet.org|dogestar.website|claimbits.io|i-bits.io|diamondfaucet.space|gobits.io|russiacoin.xyz|lionltcfaucet.xyz|faucet.shorterall.com|yellowfaucet.ovh|faucet.cryptourl.net|simplyfaucet.xyz|up-cripto.com|highearn.xyz|tv3.lv
 !
 ! https://github.com/AdguardTeam/AdguardFilters/issues/76212
-thehindubusinessline.com,tv3.lv,bangordailynews.com,hnonline.sk,vijesti.me##+js(abort-on-property-read, setNptTechAdblockerCookie)
+thehindubusinessline.com,thehindubusinessline.com,tv3.lv,bangordailynews.com,hnonline.sk,vijesti.me##+js(abort-on-property-read, setNptTechAdblockerCookie)
 !
 ! https://github.com/AdguardTeam/AdguardFilters/issues/120388
 ! ##.wgAdBlockMessage
@@ -7642,6 +7642,9 @@ youporn.com##+js(remove-node-text, script, /window\.[\s\S]*?_zone_[\s\S]*?{"zone
 ! NOTE: Regular rules
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/188040
+drakecomic.com##+js(abort-on-property-write, checkAdBlocker)
+||drakecomic.com/wp-content/themes/mangareader/script.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/187439#issuecomment-2324127972
 cruisingearth.com##+js(no-setTimeout-if, show())
 @@||cruisingearth.com/community/js/BJumh/top-ads.js
@@ -7728,7 +7731,7 @@ win7simu.visnalize.com##+js(no-fetch-if, adsbygoogle)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183985
 ||snigelweb.com^$domain=editpad.org,redirect=noop.txt,important,image,media,subdocument,stylesheet,script,xmlhttprequest,other
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183599
-kin8-av.com,555fap.com##+js(no-fetch-if, pagead2.googlesyndication.com)
+javsunday.com,kin8-av.com,555fap.com##+js(no-fetch-if, pagead2.googlesyndication.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183925
 computerpedia.in###adb
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183838
@@ -7779,8 +7782,8 @@ theouterhaven.net##+js(addEventListener-defuser, load, detect-modal)
 @@||javtiful.com/ad-engine.js
 javtiful.com##+js(abort-current-script, document.getElementById, !document.body.contains(document.getElementById()
 ! https://github.com/AdguardTeam/AdguardFilters/issues/182430
-en-thunderscans.com##.lm-adblock-notfic-container
-en-thunderscans.com##+js(no-fetch-if, /(jubnaadserve|googlesyndication)\.com/)
+shojoscans.com,en-thunderscans.com##.lm-adblock-notfic-container
+shojoscans.com,en-thunderscans.com##+js(no-fetch-if, /(jubnaadserve|googlesyndication)\.com/)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/182239
 bong.ink##+js(no-fetch-if, adsbygoogle.js)
 bong.ink##body > div[style^="position: fixed; top:"][style*="z-index:"]
@@ -17733,9 +17736,21 @@ mob.hr##.side_banner
 !---------------------------------------------------------------------
 ! NOTE: Czech and Slovakian
 !
+rychlost.cz##.t-info-ban
+extra.cz##[data-advert-container]
 rychlost.cz##.t-ban
 olympijskytym.cz##div.bg-texture:has(> div[class^="ad-"])
 impuls.cz##.r-main
+! https://github.com/AdguardTeam/AdguardFilters/issues/188115
+slovaknet.sk###leftbar
+slovaknet.sk##iframe#ad365
+slovaknet.sk###right-top
+! https://github.com/AdguardTeam/AdguardFilters/issues/188070
+meteocentrum.cz###adform_leaderboard
+||storage.googleapis.com/adf-pmmm/impublishertag.repeater.js
+! https://github.com/AdguardTeam/AdguardFilters/issues/188068
+tiscali.cz##body .bbtitle
+tiscali.cz###article-videoAd-wrapper
 ! https://github.com/AdguardTeam/AdguardFilters/issues/186448
 ! https://github.com/AdguardTeam/AdguardFilters/issues/185657
 ! TODO: remove when it will be fixed in EasyList Czech and Slovak
@@ -18293,9 +18308,10 @@ denik.cz##.reklama-box-leaderboard
 denik.cz##div[class^="reklama-box"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/165900
 expres.cz#@#+js(addEventListener-defuser, beforeunload, ())
+! https://github.com/AdguardTeam/AdguardFilters/issues/188077
 ! https://github.com/AdguardTeam/AdguardFilters/issues/186794#issuecomment-2317024916
-idnes.cz###waiting-screen
-idnes.cz##+js(no-setTimeout-if, checkCookie(++)
+expres.cz,idnes.cz###waiting-screen
+expres.cz,idnes.cz##+js(no-setTimeout-if, checkCookie(++)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/147038
 ! https://github.com/AdguardTeam/AdguardFilters/issues/146543
 idnes.cz,expres.cz##+js(abort-on-property-read, _1gif)
@@ -22170,6 +22186,9 @@ gospodarkamorska.pl##.Home_categories_box > div.polecamy-slider > div[class*="po
 instalki.pl##center > a.gofollow > img
 onet.pl##a[href^="https://milionymonet.onet.pl/"]
 pograne.eu###custom_html-8
+! https://github.com/AdguardTeam/AdguardFilters/issues/188123
+rmf24.pl##.reklamaPage
+||rmf24.pl/j/videojs/ad-setup.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/187895
 5mindlazdrowia.pl###sticky-anchor
 5mindlazdrowia.pl##div[id^="mediapop-"]
@@ -33445,7 +33464,7 @@ http://www.ads.$third-party
 ! Malware spam on GitHub
 ! Example: https://github.com/AdguardTeam/AdguardFilters/issues/187256
 github.com##:matches-path(/AdguardTeam)a[href^="https://gofile.io/d/"]
-github.com#?#.comment-body > p:contains(desired compiler in the installer)
+github.com#?#.comment-body > p:contains(/must have gcc|changeme|d5kp14h/)
 github.com##.comment-body a[href*="/fix.zip"]
 github.com##.comment-body a[href*="/fix.rar"]
 ! https://github.com/AdguardTeam/CoreLibs/issues/1887
@@ -33673,6 +33692,13 @@ $xmlhttprequest,third-party,denyallow=authkong.com|rsc.cdn77.org|linkvertise.com
 !
 ! NOTE: Specific rules
 !
+vxxx.com#?#.wrapper > div:has(> div > h2:matches-css(after, content: Advertising))
+thehindubusinessline.com##.also-like
+news.abs-cbn.com##.MuiBox-root  > div.MuiBox-root:has(> div[style] > div > div[style^="background-color"] > div[id^="div-multiAd"])
+yify.guide##img[style="max-width:40%;height:auto;"]
+colorblindnesstest.org###bannerad1
+op.gg###content-container > div:not([class],[id]) > div[class]:empty
+dpreview.com##.articleBody > .videoWrapper:has(> .raptiveVideoWrapper > div[class^="adthrive-content"])
 cybernews.com##.adds__wrapper
 cybernews.com##.adds__wrapper + hr
 torrentfreak.com##section > div.o-widget:has(> p > a[rel*="sponsored"])
@@ -38463,7 +38489,6 @@ chinababe.net,javbabe.net##.container[style$="text-align: center;"]
 javbabe.net,chinababe.net##.clipxx
 javbabe.net###a-player
 fextralife.com##div[class="container"][style="height:120px"][align="center"]
-wiki.fextralife.com###sidebar-wrapper
 techhelpbd.com###stream-item-widget-6
 plurk.com##.adsense-holder
 modyolo.com##.text-center[style] > small
@@ -52421,6 +52446,8 @@ thepostmillennial.com###leader-mot
 thepostmillennial.com##.surfsharkcontent
 !+ NOT_OPTIMIZED
 masalaseen.com##a[target="_blank"] > img
+! https://github.com/AdguardTeam/AdguardFilters/issues/188028
+! https://github.com/AdguardTeam/AdguardFilters/issues/122383
 ! https://github.com/AdguardTeam/AdguardFilters/issues/186550
 southernliving.com#$#main.loc { margin-top: 3.75rem !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/149849
