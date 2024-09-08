@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.2.0
+// @version         3.8.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -386,22 +386,6 @@ else if (matchDomain('faz.net')) {
       }
     }, 1000);
     let ads = 'div.lay-PaySocial, div.iqadtile_wrapper, div.iqdcontainer';
-    hideDOMStyle(ads);
-  }
-}
-
-else if (matchDomain('freiepresse.de')) {
-  if (window.location.pathname.includes('-artikel')) {
-    function main_fp(node) {
-      let url = window.location.href;
-      getGoogleWebcache(url, paywall_sel, '', 'article');
-    }
-    let paywall_sel = 'div.default-paywall, div#upscore-paywall-placeholder';
-    let paywall = document.querySelector(paywall_sel);
-    if (paywall)
-      main_fp(paywall);
-    waitDOMElement(paywall_sel, 'DIV', main_fp, true);
-    let ads = 'div.rgt-content';
     hideDOMStyle(ads);
   }
 }

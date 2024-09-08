@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.8.0.0
+// @version         3.8.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -229,6 +229,26 @@ else if (domain = matchDomain(it_gedi_domains)) {
   }
   let ads = 'div[id^="adv"]';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('sport.sky.it')) {
+  let paywall = document.querySelector('div.c-paywall');
+  if (paywall) {
+    paywall.removeAttribute('class');
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      try {
+        let json = JSON.parse(json_script.text);
+        if (json) {
+          let json_text = json[0].articleBody;
+          if (json_text)
+            paywall.innerText = json_text;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
 }
 
 else if (matchDomain('tuttosport.com')) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.7.9.1
+// @version         3.7.9.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -352,10 +352,8 @@ else if (matchDomain('lamontagne.fr') || document.querySelector('head > meta[nam
 }
 
 else if (matchDomain('lanouvellerepublique.fr')) {
-  window.localStorage.clear();
-  let alert_didacticiel = document.querySelector('div.alert-didacticiel');
-  let loading = document.querySelectorAll('span.loading');
-  removeDOMElement(alert_didacticiel, ...loading);
+  let ads = 'aside.dfp';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('lecourrierdesstrateges.fr')) {
