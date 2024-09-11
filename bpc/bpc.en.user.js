@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.2.2
+// @version         3.8.2.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -217,9 +217,10 @@ if (matchDomain('afr.com')) {
   let article = document.querySelector(article_sel);
   if (article) {
     window.setTimeout(function () {
-      let pars = article.querySelectorAll('p:not([class]), figure');
+      let pars = article.querySelectorAll('p:not([class]), figure:not(:empty)');
       if (pars.length && pars.length < 5) {
-        removeDOMElement(...pars);
+        let loading = pageContains(article_sel + ' > div', 'Loading...');
+        removeDOMElement(...pars, ...loading);
         let url = window.location.href.split(/[#\?]/)[0];
         fetch(url)
         .then(response => {
@@ -242,7 +243,7 @@ if (matchDomain('afr.com')) {
                               if (['linkArticle', 'linkExternal'].includes(item.type)) {
                                 if (item.data.text) {
                                   if (item.data.url)
-                                    result = '<a href="' + item.data.url + '"' + (item.newTab ? 'target="_blank"' : '') + '>' + item.data.text + '</a>';
+                                    result = '<a href="' + item.data.url + '"' + (item.data.newTab ? 'target="_blank"' : '') + '>' + item.data.text + '</a>';
                                   else
                                     result = item.data.text;
                                 }

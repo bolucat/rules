@@ -99,6 +99,7 @@
 - [StreamingMedia/Video/niconico.yaml](https://rules.neuq.de/clash/DivineEngine/RuleSet/StreamingMedia/Video/niconico.yaml)
 - [Unbreak.yaml](https://rules.neuq.de/clash/DivineEngine/RuleSet/Unbreak.yaml)
 # clash/meta-rules-dat
+- [GeoLite2-ASN.mmdb](https://rules.neuq.de/clash/meta-rules-dat/GeoLite2-ASN.mmdb)
 - [country-lite.mmdb](https://rules.neuq.de/clash/meta-rules-dat/country-lite.mmdb)
 - [country.mmdb](https://rules.neuq.de/clash/meta-rules-dat/country.mmdb)
 - [geoip-lite.dat](https://rules.neuq.de/clash/meta-rules-dat/geoip-lite.dat)
