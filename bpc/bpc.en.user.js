@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.2.4
+// @version         3.8.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -36,6 +36,7 @@
 // @match           *://*.niagarafallsreview.ca/*
 // @match           *://*.newsweek.pl/*
 // @match           *://*.nzherald.co.nz/*
+// @match           *://*.pb.pl/*
 // @match           *://*.puck.news/*
 // @match           *://*.rp.pl/*
 // @match           *://*.sloanreview.mit.edu/*
@@ -2470,6 +2471,18 @@ else if (matchDomain('outlookindia.com')) {
         }
       }
     }
+  }
+}
+
+else if (matchDomain('pb.pl')) {
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    paywall.classList.remove('paywall');
+    let article_hidden = paywall.querySelector('section.o-article-content');
+    if (article_hidden)
+      article_hidden.removeAttribute('class');
+    let loader = document.querySelector('div.o-piano-template-loader-box');
+    removeDOMElement(loader);
   }
 }
 

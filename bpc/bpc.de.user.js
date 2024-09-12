@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.2.2
+// @version         3.8.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -458,7 +458,7 @@ else if (matchDomain('golem.de')) {
 
 else if (matchDomain('heise.de')) {
   func_post = function () {
-    header_nofix(document.querySelector('article'), 'a-gift', 'BPC > no external site-fix');
+    header_nofix(document.querySelector('article'), 'a-gift:not([has-access])', 'BPC > no external site-fix');
   }
   let url = window.location.href;
   getOchToUnlock(url, 'a-gift', '', 'article');
@@ -1277,6 +1277,10 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
               elem.removeAttribute('target');
             let invalid_links = article_new.querySelectorAll('link[rel="preload"]:not([href]');
             removeDOMElement(...invalid_links);
+          } else if (url.startsWith('https://och.to/unlock/')) {
+            let unlock_links = article_new.querySelectorAll('a[href^="/unlock/"]');
+            for (let elem of unlock_links)
+              elem.href = elem.href.split('/unlock/')[1];
           }
           window.setTimeout(function () {
             if (article.parentNode) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.7.9.2
+// @version         3.8.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -302,12 +302,8 @@ else if (matchDomain(fr_groupe_nice_matin_domains)) {
 }
 
 else if (matchDomain('humanite.fr')) {
-  let paywall = document.querySelector('div.single__categories svg');
-  if (paywall) {
-    let url = window.location.href;
-    let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split(/[#\?]/)[0];
-    replaceDomElementExt(url_cache, true, false, 'div.rich-text > div.gs-row');
-  }
+  let url = window.location.href;
+  getGoogleWebcache(url, 'div.single__categories svg[class]', {rm_attrib: 'class'}, 'div.rich-text:not([class*="margin"]');
 }
 
 else if (matchDomain('journaldunet.com')) {
