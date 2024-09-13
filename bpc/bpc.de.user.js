@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.3.0
+// @version         3.8.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -572,10 +572,19 @@ else if (matchDomain('mz.de')) {
 }
 
 else if (matchDomain('nw.de')) {
-  if (!window.location.pathname.endsWith('.amp.html')) {
-    amp_redirect('a[data-event-value="paywall-overlay-click"]', '', window.location.href.replace('.html', '.amp.html'));
-  } else {
-    amp_unhide_access_hide('="loggedIn AND hasAbo"', '', 'amp-ad, amp-embed, .banner');
+  let paywall = document.querySelector('div#paywall');
+  if (paywall) {
+    paywall.removeAttribute('id');
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = parseHtmlEntities(json.articleBody.replace(/\n/g, '\n\n'));
+        let article = paywall.querySelector('div[class*="paywall-overlay"]');
+        if (json_text && article)
+          article.innerText = json_text;
+      }
+    }
   }
 }
 
