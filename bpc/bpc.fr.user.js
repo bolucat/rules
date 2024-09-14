@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.8.3.0
+// @version         3.8.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -279,10 +279,10 @@ else if (matchDomain(fr_groupe_la_depeche_domains)) {
   let paywall = document.querySelector('div.paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    let article_paywall = document.querySelector('div.article-paywall[style]');
-    if (article_paywall) {
-      article_paywall.classList.remove('article-paywall');
-      article_paywall.removeAttribute('style');
+    let article = document.querySelector('div.article-full__body-content');
+    if (article) {
+      article.removeAttribute('style');
+      article.removeAttribute('data-state');
     }
   }
   let ads = 'div.ad';

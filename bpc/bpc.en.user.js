@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.3.0
+// @version         3.8.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -946,6 +946,11 @@ else if (matchDomain('theneweuropean.co.uk')) {
   }
   let banners = document.querySelectorAll('div[data-show-subs-blocked]');
   removeDOMElement(...banners);
+}
+
+else if (matchDomain('thestage.co.uk')) {
+  let url = window.location.href;
+  getArchive(url, 'div#ao-MeteringDNAllow', '', 'div[id^="aos-FeatureArticle2Col-"], div[id^="aos-ReviewArticle-"]');
 }
 
 else if (matchDomain('thetimes.com')) {
