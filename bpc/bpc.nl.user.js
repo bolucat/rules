@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.8.1.2
+// @version         3.8.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -292,6 +292,14 @@ else if (matchDomain(be_roularta_domains)) {
 else if (matchDomain('groene.nl')) {
   let url = window.location.href;
   getArchive(url, 'div#closed-block', '', 'article');
+  let more = pageContains('div.wrapper > h2', 'Verder lezen?');
+  if (more.length) {
+    let link_text = 'https://www.groene.nl/populair';
+    let a_link = document.createElement('a');
+    a_link.href = link_text;
+    a_link.innerText = 'BPC > ' + link_text.split('www.')[1];
+    more[0].parentNode.append(document.createElement('br'), a_link);
+  }
 }
 
 else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > link[href*=".ndcmediagroep.nl/"]')) {
