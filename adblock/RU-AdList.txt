@@ -1,8 +1,8 @@
 [Adblock Plus 2.0]
-! Checksum: bahYcgMjbUcGPefSjxpnZw
-! Version: 202409151811
+! Checksum: 0s8LpOIsIu3Z1Q4OChcKlw
+! Version: 202409161811
 ! Title: RU, UA, UZ, KZ
-! Last modified: 15 Sep 2024 18:11 UTC
+! Last modified: 16 Sep 2024 18:11 UTC
 ! Expires: 1 days (фильтр обновляется автоматически каждые 2 дня)
 ! Homepage: https://forums.lanik.us/viewforum.php?f=102
 !
@@ -2102,6 +2102,7 @@ me##td[background^="//cdn.livetv"] tr > td[valign="top"] + td[align="right"]
 /vsemayki_
 /w_inc/reklama.
 /warlog.
+/wcm/?sh=$third-party,script
 /webunder_
 /widget-a-b.js
 /wp-content/imgrekl/*
@@ -20434,6 +20435,7 @@ igdz1.ru^$script,domain=igdz.ru
 ||batpic.com/p/
 ||bazonserver.site/bazon/index.xml
 ||bazr.ru/videocontent/global/banner/
+||bb.lv/js/gam.js
 ||bb.pln24.ru/
 ||bbcont.ru/avtorealnost.html
 ||bddo.ru/uploads/*_ban_
@@ -22996,6 +22998,7 @@ igdz1.ru^$script,domain=igdz.ru
 ! запросы
 $csp=script-src-attr 'none',domain=eurointegration.com.ua|pravda.com.ua
 /^https?://24smi\.org/*[/]*[/][^\s]{8,}/$xmlhttprequest,domain=24smi.org
+://pikabu.ru/$csp=connect-src https://pikabu.ru/ajax/ https://pikabu.ru/ajax.php *.pikabu.ru/ data: https://pikabu.ru/.well-known/
 ://pikabu.ru/$csp=script-src 'self' * 'unsafe-inline' data:
 @@||imasdk.googleapis.com/$xmlhttprequest,domain=volley.ru
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js|$domain=besthdwallpaper.com
@@ -23017,17 +23020,16 @@ https://*adtech_uid=$~third-party,xmlhttprequest,domain=lena-miro.ru|levik.blog|
 !||www.liveinternet.ru/users/$csp=script-src 'unsafe-inline' 'unsafe-eval' i.li.ru https://www.liveinternet.ru/cgi-bin/rpls.fcgi?list= https://www.liveinternet.ru/spell/spell.js https://www.liveinternet.ru/share/js/share.js https://www.liveinternet.ru/4Ek/JS/diary/main/nav/regoradd.js https://www.liveinternet.ru/4Ek/JS/diary/trans.js
 !||www.liveinternet.ru/|$csp=script-src 'unsafe-inline' 'unsafe-eval' i.li.ru https://www.liveinternet.ru/utf/lici.js https://www.liveinternet.ru/utf/li.js https://www.liveinternet.ru/utf/main_new.js
 ! Pikabu (ловушка для обфускации)
-||pikabu.ru/*.*=*?*=$xmlhttprequest,domain=pikabu.ru
-||pikabu.ru/*~*?*=$xmlhttprequest,domain=pikabu.ru
+||pikabu.ru/*:*?*=$xmlhttprequest,domain=pikabu.ru
 ! селекторы
 anidub.vip,anidubonline.com##.plyr__menu
 anidub.vip,anidubonline.com##.plyr__progress__buffer
 pikabu.ru#?#.stories-feed__container > .story:-abp-has(div:-abp-properties(/min-height: 20.px|min-height: 29.px|min-height: 30.px|min-height: 300./))
 pikabu.ru#?#.story__header:-abp-has(> div:empty)
-dzen.ru##.ya__link
 fonmod.com,howdyho.net,howdyho.pro,ritsatv.ru##:not(my-obnaruzhili-blokirovshchik)
 android-mafia.com,game4you.top,games-pc.top,rustorka.com,rustorka.net,rustorka.top,rustorkacom.lib##:not(this-site-promotes-malware)
 @@||ozon.ru/highlight/kursk-$elemhide
+dzen.ru##[class*="ya"][class*="__link"]
 dzen.ru#?#[class]:-abp-has(> a[href^="https://dzen.ru/"]:not([class*="__link"]):not([class*="tabContent"]) [class] > [class] > [class] > [class])
 dzen.ru#?#[class]:-abp-properties(/--banner-color:/)
 www.drive2.ru##[data-container="outer"]
@@ -23035,7 +23037,7 @@ liveinternet.ru,sdamgia.ru##[data-container]
 sdamgia.ru##[data-name="partial-container"]
 www.drive2.ru##[data-sticky-adtune]
 www.drive2.ru##[data-test="AdKebabAndLabel--adLabelContent"]
-liveinternet.ru##[data-wrapper]
+dzen.ru,liveinternet.ru##[data-wrapper]
 dzen.ru##[data_name]
 lena-miro.ru,levik.blog,livejournal.com,olegmakarenko.ru,periskop.su,shakko.ru,shiro-kino.ru,vadimrazumov.ru##[role="banner"] > .s-header-extra + div[class]
 livejournal.com#?#a:-abp-has(span:-abp-contains(Реклама))
@@ -23048,7 +23050,7 @@ www.ixbt.com#?#body > style:-abp-contains(margin-top) {remove:true;}
 ~e.mail.ru,mail.ru,~octavius.mail.ru##body[style="overflow: unset; max-height: unset;"] section:empty
 ~e.mail.ru,mail.ru,~octavius.mail.ru##body[style="overflow: unset; max-height: unset;"] span:empty:not(.ph-marusia)
 sdamgia.ru##center > div[id][style]
-dzen.ru#?#div:-abp-has(> .ya__link)
+dzen.ru#?#div:-abp-has(> [class*="ya"][class*="__link"])
 dzen.ru#?#div:-abp-has(> div:first-child > style + div a span)
 cq.ru#?#div:-abp-properties(content: "Реклама")
 dzen.ru#?#div:-abp-properties(position: relative !important)
@@ -24247,6 +24249,7 @@ dzen.ru##div[style*=" !important; "][style$=" !important;"]
 /*yqilp=$popup,domain=dzen.ru
 /*yqipl=$popup,domain=dzen.ru
 /*yqppel=$popup,domain=dzen.ru
+/*yqqpel=$popup,domain=dzen.ru
 =mytarget$popup,domain=dzen.ru
 ||t.mail.ru/redir/$popup,domain=dzen.ru
 !

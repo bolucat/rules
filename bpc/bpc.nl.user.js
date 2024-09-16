@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.8.3.1
+// @version         3.8.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -723,11 +723,27 @@ function getArticleJsonScript() {
   return json_script;
 }
 
-function getJsonUrlText(article, callback, article_id = '') {
+function getNestedKeys(obj, key) {
+  if (key in obj)
+    return obj[key];
+  let keys = key.split('.');
+  let value = obj;
+  for (let i = 0; i < keys.length; i++) {
+    value = value[keys[i]];
+    if (value === undefined)
+      break;
+  }
+  return value;
+}
+
+function getJsonUrlText(article, callback, article_id = '', key = '', url_slash = false) {
   let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
   let json_url;
-  if (json_url_dom)
+  if (json_url_dom) {
     json_url = json_url_dom.href;
+    if (url_slash)
+      json_url = json_url.replace('/wp-json/', '//wp-json/');
+  }
   if (!json_url && article_id)
     json_url = window.location.origin + '/wp-json/wp/v2/posts/' + article_id;
   if (json_url) {
@@ -736,7 +752,7 @@ function getJsonUrlText(article, callback, article_id = '') {
       if (response.ok) {
         response.json().then(json => {
           try {
-            let json_text = parseHtmlEntities(json.content.rendered);
+            let json_text = parseHtmlEntities(!key ? json.content.rendered : getNestedKeys(json, key));
             callback(json_text, article);
           } catch (err) {
             console.log(err);
@@ -773,7 +789,7 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
     article.parentNode.replaceChild(article_new, article);
 }
   
-function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '') {
+function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_slash = false) {
   let paywall = document.querySelectorAll(paywall_sel);
   let article = document.querySelector(article_sel);
   if (paywall.length && article) {
@@ -781,7 +797,7 @@ function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options =
     getJsonUrlText(article, (json_text, article) => {
       if (json_text && article)
         getJsonUrlAdd(json_text, article, art_options);
-    }, article_id);
+    }, article_id, key, url_slash);
   }
 }
 
