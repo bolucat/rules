@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.3.3
+// @version         3.8.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2779,67 +2779,58 @@ else if (matchDomain('seattletimes.com')) {
 else if (matchDomain('seekingalpha.com')) {
   if (window.location.pathname.match(/^\/(article|news)\//)) {
     window.setTimeout(function () {
-    let article_sel = 'article div > section[data-test-id="card-container"]';
-    let article = document.querySelector(article_sel);
-    if (article) {
-      function sa_main(node) {
-        hideDOMStyle(paywall_sel);
-        let parser = new DOMParser();
-        let url = window.location.href.split(/[#\?]/)[0];
-        fetch(url)
-        .then(response => {
-          if (response.ok) {
-            response.text().then(html => {
-              if (html.includes(article_sel.split(/[\[\]]/)[1])) {
-                let doc = parser.parseFromString(html, 'text/html');
-                let article_new = doc.querySelector(article_sel);
-                if (article_new && article.parentNode)
-                  article.parentNode.replaceChild(article_new, article);
-              }
-            });
+      let article_sel = 'article div > section[data-test-id="card-container"]';
+      let article = document.querySelector(article_sel);
+      if (article) {
+        function sa_main(node) {
+          function enable_links() {
+            let inert_links = document.querySelectorAll('[inert]');
+            for (let elem of inert_links)
+              elem.removeAttribute('inert');
           }
-        }).catch(function (err) {
-          false;
-        });
+          let url = window.location.href;
+          func_post = function () {
+            if (mobile) {
+              let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
+              for (let elem of lazy_images)
+                elem.style = 'width: 95%;';
+            }
+            enable_links();
+            let empty_sections = document.querySelectorAll('section:not([data-test-id])');
+            removeDOMElement(...[].slice.call(empty_sections, 1));
+          }
+          getArchive(url, paywall_sel, [], article_sel, '', 'article div[style*="grid-column"]');
+          hideDOMStyle(paywall_sel);
+          let overlays = document.querySelectorAll('div[class*="bg-black\\/"]');
+          removeDOMElement(...overlays);
+          enable_links();
+        }
         let read_more = document.querySelector('button[id^="continueReadingButton"]');
         if (read_more)
           read_more.click();
-        let unfade = document.querySelector('head > style#fade');
-        if (!unfade && document.head) {
-          let sheet = document.createElement('style');
-          sheet.id = 'fade';
-          sheet.innerText = 'div.vibB6, div.bg-share-card-bg {position:unset !important;}';
-          document.head.appendChild(sheet);
+        let paywall_sel = 'div[role="dialog"], div.overflow-auto.bg-share-card-bg, div[data-test-id="modal-content"]';
+        let paywall = document.querySelector(paywall_sel);
+        if (paywall) {
+          sa_main(paywall);
+        } else {
+          waitDOMElement(paywall_sel, 'DIV', sa_main, true);
         }
-        let overlays = document.querySelectorAll('div[class*="bg-black\\/"]');
-        removeDOMElement(...overlays);
-        let inert_links = document.querySelectorAll('[inert]');
-        for (let elem of inert_links)
-          elem.removeAttribute('inert');
+        function sa_noscroll(node) {
+          node.removeAttribute('style');
+          node.removeAttribute('class');
+        }
+        let body = document.querySelector('body');
+        if (body)
+          sa_noscroll(body);
+        waitDOMAttribute('body', 'BODY', 'style', sa_noscroll, true);
+        waitDOMAttribute('body', 'BODY', 'class', sa_noscroll, true);
+        let html = document.querySelector('html[style]');
+        if (html)
+          html.style.overflow = 'visible';
+        waitDOMAttribute('html', 'HTML', 'style', node => node.style.overflow = 'visible', true);
+        waitDOMAttribute('main', 'MAIN', 'inert', node => node.removeAttribute('inert'), true);
+        waitDOMAttribute('footer', 'FOOTER', 'inert', node => node.removeAttribute('inert'), true);
       }
-      let paywall_sel = 'div[role="dialog"], div.overflow-auto.bg-share-card-bg, div[data-test-id="modal-content"]';
-      let paywall = document.querySelector(paywall_sel);
-      if (paywall) {
-        sa_main(paywall);
-      } else {
-        waitDOMElement(paywall_sel, 'DIV', sa_main, true);
-      }
-      function sa_noscroll(node) {
-        node.removeAttribute('style');
-        node.removeAttribute('class');
-      }
-      let body = document.querySelector('body');
-      if (body)
-        sa_noscroll(body);
-      waitDOMAttribute('body', 'BODY', 'style', sa_noscroll, true);
-      waitDOMAttribute('body', 'BODY', 'class', sa_noscroll, true);
-      let html = document.querySelector('html[style]');
-      if (html)
-        html.style.overflow = 'visible';
-      waitDOMAttribute('html', 'HTML', 'style', node => node.style.overflow = 'visible', true);
-      waitDOMAttribute('main', 'MAIN', 'inert', node => node.removeAttribute('inert'), true);
-      waitDOMAttribute('footer', 'FOOTER', 'inert', node => node.removeAttribute('inert'), true);
-    }
     }, 2000);
   }
 }
