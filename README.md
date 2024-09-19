@@ -157,7 +157,6 @@
 - [openclash_custom_hosts.list](https://rules.neuq.de/clash/openclash/openclash_custom_hosts.list)
 - [openclash_custom_localnetwork_ipv4.list](https://rules.neuq.de/clash/openclash/openclash_custom_localnetwork_ipv4.list)
 - [openclash_custom_localnetwork_ipv6.list](https://rules.neuq.de/clash/openclash/openclash_custom_localnetwork_ipv6.list)
-- [openclash_custom_netflix_domains.list](https://rules.neuq.de/clash/openclash/openclash_custom_netflix_domains.list)
 - [openclash_custom_overwrite.sh](https://rules.neuq.de/clash/openclash/openclash_custom_overwrite.sh)
 - [openclash_custom_rules.list](https://rules.neuq.de/clash/openclash/openclash_custom_rules.list)
 - [openclash_custom_rules_2.list](https://rules.neuq.de/clash/openclash/openclash_custom_rules_2.list)
