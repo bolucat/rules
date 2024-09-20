@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: D6uYim3IhQxwvMwFjwQ/6g
-! Diff-Path: ../patches/7/7-s-1726753034-3600.patch
+! Checksum: VaJZXRBmTRYGi/EUx3tvIg
+! Diff-Path: ../patches/7/7-s-1726850341-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.56.75
-! TimeUpdated: 2024-09-19T13:33:06+00:00
+! Version: 2.0.56.83
+! TimeUpdated: 2024-09-20T16:34:22+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -499,11 +499,12 @@
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/188544
+@@||wiki.yjsnpi.nu^$image,~third-party
 ! https://github.com/AdguardTeam/AdguardFilters/issues/188965
 ||kuji.xth.jp/ad-x-check.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183252
-exploader.net##+js(spoof-css, article > div[style="margin-left: -63px;width: 1120px;height: 450px;margin-bottom: 5px;display: flex;align-items: center;"] > div, left, auto)
-exploader.net#$#article > div[style="margin-left: -63px;width: 1120px;height: 450px;margin-bottom: 5px;display: flex;align-items: center;"] { position: absolute !important; left: -3000px !important; }
+exploader.net#$?#article > div[style="margin-left: -63px;width: 1120px;height: 450px;margin-bottom: 5px;display: flex;align-items: center;"] { remove: true; }
 @@||daotag.com/tag/$script,domain=exploader.net
 ! https://github.com/AdguardTeam/AdguardFilters/issues/181591
 iwb.jp##+js(addEventListener-defuser, DOMContentLoaded, getComputedStyle(a).height)
@@ -530,8 +531,8 @@ success-corp.co.jp##+js(no-fetch-if, pagead2.googlesyndication.com)
 nieru.net#@#.ad-space
 nieru.net#@#.adWidget
 ! https://github.com/AdguardTeam/AdguardFilters/issues/171258
-jprime.jp#$?#.js-reward-modal  { remove: true; }
-jprime.jp#$?#.js-reward-gallery-modal  { remove: true; }
+jprime.jp#$?#.js-reward-modal { remove: true; }
+jprime.jp#$?#.js-reward-gallery-modal { remove: true; }
 jprime.jp#$#.image-area { opacity: 1 !important; pointer-events: auto !imortant; filter: none !important; }
 jprime.jp#$#.js-article-wrap .article-body { opacity: 1 !important; pointer-events: auto !imortant; filter: none !important; }
 ! classic anti-adb on some blog.2nt.com sites
@@ -1484,7 +1485,6 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /ad/js/tokimeki_af.js
 /amazonjs.js?
 /azlink/tinywidget.min.js
-/banimg/*
 /blogparts/?w=$script
 /clog_ad.js
 /g_ad.js?
@@ -1735,6 +1735,12 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+wiki.yjsnpi.nu#$#.abp { min-height: 0 !important; }
+47news.jp##.pr_area
+bushikaku.net##div[class^="bustrip"][class*="banner"]
+purelovers.com##.k_footer-body > div.k_row:has(> div > div[style^="width:300px"])
+p-game.jp##a[href="https://myhome-cloud.net/"] > img
+openworldnews.net##blockquote:has(> div.amazon)
 wjsm.co.jp###dcms_layoutPageBlock > section[class^="dlb_box"]
 teyvatsokuho.com##.home-post
 bushikaku.net##div[class*="-on"][class$="y-ad"]
@@ -6368,7 +6374,7 @@ tripnote.jp##.same_theme
 tripnote.jp##div[style="border:1px solid #aaa; border-radius:10px; padding:0px 15px; margin:0px auto 10px; width:90%; max-width:700px;"]
 tripnote.jp##div[style="width:970px; height:90px; margin:20px auto 30px;"]
 jp-weathernews.com,keimusho.net,billionwallet.com##.adsense_center
-entax.news,mbs.jp,eroelog.com,ushigyu.net##div[class^="ad-"]
+gamer.ne.jp,entax.news,mbs.jp,eroelog.com,ushigyu.net##div[class^="ad-"]
 news.biglobe.ne.jp##.news-cpl
 biglobe.ne.jp###join-bnr
 kai-you.net##.l-pc_top_itiran_1st
@@ -9631,8 +9637,10 @@ medicalnote.jp#?#.c-glo-section > aside.l-post-aside > div[id^="logly-"]:upward(
 wws-channel.com#?#.side_banner > #_popIn_recommend_image_right:upward(1)
 wws-channel.com#?#.single_container > div[class=""]:contains(【あなたにオススメ記事】)
 toremaga.com#?##ar_w300px > div.cont > ul.tab:upward(1)
-marumie.name#?#.table_line:has(a[href^="https://click."])
-marumie.name#?#.table_line:has(iframe[src])
+marumie.name###side > div.td2:has(+ div > a[href^="https://click.duga.jp"])
+marumie.name###side > div[style^="width:"]:has(> a[href^="https://click.duga.jp"])
+marumie.name##.table_line:has(a[href^="http://www2.jp.jskypro.com/affiliate"])
+marumie.name##.table_line:has(iframe[src])
 iwate-np.co.jp#?#li[id^="top-news-article-"] > a.article-ad:upward(1)
 iwate-np.co.jp#?#.article-list > li > script[src^="//yads."]:upward(1)
 douga-getter.com#?#.section > div > ins.adsbygoogle:upward(2)
