@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.8.2.1
+// @version         3.8.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -82,7 +82,7 @@ else if (matchDomain('gazzetta.it')) {
         window.location.href = window.location.pathname.replace('_preview', '') + '?gaa_at=g';
       } else {
         let json_script = getArticleJsonScript();
-        let header = document.querySelector('div.content > h2');
+        let header = 'div.content > h2';
         if (json_script) {
           let json = JSON.parse(json_script.text);
           if (json) {
@@ -355,6 +355,8 @@ function clearPaywall(paywall, paywall_action) {
 }
 
 function header_nofix(header, cond_sel = '', msg = 'BPC > no fix') {
+  if (header && typeof header === 'string')
+    header = document.querySelector(header);
   if (header && !document.querySelector('div#bpc_nofix')) {
     if (cond_sel) {
       let elem = document.querySelectorAll(cond_sel);

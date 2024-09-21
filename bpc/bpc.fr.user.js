@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.8.3.2
+// @version         3.8.3.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -167,17 +167,11 @@ else if (matchDomain('businessam.be')) {
     removeDOMElement(paywall);
     let article = document.querySelector('div.text-gradient');
     if (article) {
-      let scripts = document.querySelectorAll('script:not([src]):not([type])');
-      let content_script;
-      for (let script of scripts) {
-        if (script.text.match(/window\.fullcontent64\s?=\s?"/)) {
-          content_script = script;
-          break;
-        }
-      }
+      let filter = /window\.fullcontent64\s?=\s?"/;
+      let content_script = getSourceJsonScript(filter);
       if (content_script) {
         try {
-          let content = decode_utf8(atob(content_script.text.split(/window\.fullcontent64\s?=\s?"/)[1].split('";')[0]));
+          let content = decode_utf8(atob(content_script.text.split(filter)[1].split('";')[0]));
           let parser = new DOMParser();
           let doc = parser.parseFromString('<div>' + content + '</div>', 'text/html');
           let content_new = doc.querySelector('div');
@@ -487,17 +481,11 @@ else if (matchDomain('lesechos.fr')) {
       let paywall = document.querySelector('div#paywall, div#registerWall');
       if (paywall) {
         removeDOMElement(paywall);
-        let scripts = document.querySelectorAll('script:not([src]):not([type])');
-        let json_script;
-        for (let script of scripts) {
-          if (script.text.match(/window\.__REACT_QUERY_STATE__\s?=\s?/)) {
-            json_script = script;
-            break;
-          }
-        }
+        let filter = /window\.__REACT_QUERY_STATE__\s?=\s?/;
+        let json_script = getSourceJsonScript(filter);
         if (json_script) {
           try {
-            let json = JSON.parse(json_script.text.split(/window\.__REACT_QUERY_STATE__\s?=\s?/)[1].split('};')[0] + '}');
+            let json = JSON.parse(json_script.text.split(filter)[1].split('};')[0] + '}');
             let data_article = json.queries[1].state;
             let url = window.location.href;
             let url_loaded = data_article.data.path;
@@ -813,6 +801,8 @@ function clearPaywall(paywall, paywall_action) {
 }
 
 function header_nofix(header, cond_sel = '', msg = 'BPC > no fix') {
+  if (header && typeof header === 'string')
+    header = document.querySelector(header);
   if (header && !document.querySelector('div#bpc_nofix')) {
     if (cond_sel) {
       let elem = document.querySelectorAll(cond_sel);
@@ -875,6 +865,17 @@ function insert_script(func, insertAfterDom) {
     let insertAfter = insertAfterDom ? insertAfterDom : (document.body || document.head || document.documentElement);
     insertAfter.appendChild(script);
   }
+}
+
+function getSourceJsonScript(filter, attributes = ':not([src], [type])') {
+  if (typeof filter === 'string')
+    filter = new RegExp(filter.replace(/\./g, '\\.'));
+  let scripts = document.querySelectorAll('script' + attributes);
+  for (let script of scripts) {
+    if (script.text.match(filter))
+      return script;
+  }
+  return false;
 }
 
 function getArticleJsonScript() {

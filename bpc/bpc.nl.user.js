@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.8.3.2
+// @version         3.8.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -240,7 +240,7 @@ else if (matchDomain('fd.nl')) {
       if (paywall.length) {
         let div_empty = document.querySelectorAll('div:empty');
         removeDOMElement(paywall[0].parentNode.parentNode, ...div_empty);
-        header_nofix(document.querySelector('main header'), '', 'BPC > no archive-fix');
+        header_nofix('main header', '', 'BPC > no archive-fix');
       }
     }
     let url = window.location.href;
@@ -318,7 +318,7 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
     let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
     for (let elem of lazy_images)
       elem.style = 'width: 95%;';
-    header_nofix(document.querySelector('footer'), 'article[id^="PURCHASE"]', 'BPC > no archive-fix');
+    header_nofix('footer', 'article[id^="PURCHASE"]', 'BPC > no archive-fix');
   }
   let url = window.location.href;
   getArchive(url, 'div#remaining-paid-content[data-reduced="true"]', '', 'div.article__body', '', 'div#remaining-paid-content');
@@ -343,7 +343,7 @@ else if (matchDomain(nl_mediahuis_region_domains)) {
     func_post = function () {
       let article = document.querySelector(article_sel);
       if (article && article.innerText.length < 1000)
-        header_nofix(document.querySelector('hgroup'), '', 'BPC > no archive-fix');
+        header_nofix('hgroup', '', 'BPC > no archive-fix');
     }
     let url = window.location.href;
     getArchive(url, paywall_sel, '', 'article.premium-content', '', article_sel);
@@ -802,6 +802,8 @@ function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options =
 }
 
 function header_nofix(header, cond_sel = '', msg = 'BPC > no fix') {
+  if (header && typeof header === 'string')
+    header = document.querySelector(header);
   if (header && !document.querySelector('div#bpc_nofix')) {
     if (cond_sel) {
       let elem = document.querySelectorAll(cond_sel);
