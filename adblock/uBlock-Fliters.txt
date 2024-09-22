@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Sat, 21 Sep 2024 16:57:01 +0000
-! Diff-Path: ../patches/2024.9.21.1045.patch#ublock-filters
+! Last modified: Sun, 22 Sep 2024 13:08:46 +0000
+! Diff-Path: ../patches/2024.9.22.805.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -954,9 +954,6 @@ userupload.*##a[href*="hotstar"]
 userupload.*##ins.adsbygoogle
 userupload.*##.ads
 ||tgwidget.com^$3p
-get.getpczone.com,rahim-soft.com,uploadrar.*###commonId > a[target="_blank"]
-||canoestallowrootsabre.com^
-||pixeltrey.com^
 wetter.com##+js(acs, $, lobster)
 at.wetter.com##+js(aopw, openLity)
 motorradonline.de,zentralplus.ch##+js(nofab)
@@ -2676,7 +2673,6 @@ hdbox.ws##+js(nostif, show)
 @@||benkhouya.com^$script,domain=anonymousemail.me
 timeforbitco.in##+js(set, adBlock, false)
 @@||timeforbitco.in^$ghide
-inmanga.com##+js(acs, setTimeout, manageAntiBlock)
 designmodo.com##.onp-sl-content:style(display: block !important;)
 designmodo.com##.onp-sl-social-locker
 ||ctrl.blog/ac/rba$frame,1p
@@ -3179,23 +3175,13 @@ uploadbank.com###iframeCore____
 ||yousaidthewallow.info^$popup
 filecrypt.*##+js(acs, decodeURIComponent, replace)
 filecrypt.*##+js(acs, parseInt, open)
-filecrypt.*##+js(aopr, __pop_debugX)
 filecrypt.*##+js(set, isAdblock, false)
 ||filecrypt.*^$popunder
 @@||cutcaptcha.com/captcha/*$script,domain=filecrypt.cc|filecrypt.co
 filecrypt.*##div:has(> [href*=".html"])
-filecrypt.*###jvb
-filecrypt.*##li:has-text(100% Anonym)
-filecrypt.*##.bums
-filecrypt.*##.support
-filecrypt.*##[src^="https://filecrypt.cc/images/"]
-filecrypt.*##[src^="../../../images/"]
-filecrypt.*##[href^="/xux/"]
-filecrypt.*##div[class] > i[style*="background:url"][onclick*="openLink"]
 filecrypt.*##+js(ra, onclick, button[id][onclick*=".html"])
-filecrypt.*##div[class] > i[style][onclick]
-filecrypt.*##button[id]:has-text(/High-speed/i)
 sharer.pw###overlay
+filecrypt.co###jh34[onmousedown^="var lsj = this;loc.href="]
 ||pornblade.com/*.php
 ||twincdn.com^$3p,script,image
 ||pornblade.com^$xhr,1p
@@ -10558,6 +10544,11 @@ realmoasis.com##+js(aeld, click, openPopupForChapter)
 realmoasis.com##.rev-src
 boardgameoracle.com##main div.MuiBox-root > span.MuiTypography-subtitle2:has-text(Advertisement):upward(1)
 ||tritinia.org/wp-content/plugins/from-grave-and-back-hidden/js/custom.js
+||inmanga.com/ads/$xhr,1p,redirect=nooptext
+x-video.tube##+js(acs, Math.floor, src_pop)
+x-video.tube##+js(rmnt, script, wpadmngr.com)
+||salbraddrepilly.com^
+||incomparable-pair.com^
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -12267,7 +12258,10 @@ reamporn.com###bnclose
 xxxmax.net##^script:has-text('shift')
 xxxmax.net##^script:has-text(\'shift\')
 xxxmax.net##+js(acs, String.fromCharCode, 'shift')
+get.getpczone.com,rahim-soft.com,uploadrar.*###commonId > a[target="_blank"]
+||pixeltrey.com^
 rahim-soft.com##+js(nosiif, visibility, 1000)
+rahim-soft.com##+js(rmnt, script, wpadmngr.com)
 damndelicious.net,simplywhisked.com##+js(aopr, __eiPb)
 @@||weibomiaopai.com^$ghide
 linksly.co##+js(aopr, app_vars.force_disable_adblock)
@@ -19558,6 +19552,8 @@ missyusa.com##+js(nostif, error-report.com)
 ||img-load.com^$~css,domain=etoday.co.kr|dogdrip.net|infinityfree.com|thestar.co.uk|yorkshirepost.co.uk|smsonline.cloud
 @@/loader.min.js$xhr,script,domain=etoday.co.kr|dogdrip.net|infinityfree.com|thestar.co.uk|yorkshirepost.co.uk|smsonline.cloud
 /loader.min.js$xhr,script,domain=etoday.co.kr|dogdrip.net|infinityfree.com|thestar.co.uk|yorkshirepost.co.uk|smsonline.cloud,replace=/;return [a-z0-9]{1,2}\(\)\[.*?\]\(\(function\([a-z0-9]{1,2}\){for\(var/;return; return whocare()[nobodycare(111)]((function(){for(var/g
+/loader.min.js$xhr,script,domain=etoday.co.kr|dogdrip.net|infinityfree.com|thestar.co.uk|yorkshirepost.co.uk|smsonline.cloud,replace=/function [a-zA-Z]{1,2}\([a-z]\,[a-z]\)\{var [a-u]=[a-u];try\{var/function dontcare(){var nevercare=1;try{var/g
+/loader.min.js$xhr,script,domain=etoday.co.kr|dogdrip.net|infinityfree.com|thestar.co.uk|yorkshirepost.co.uk|smsonline.cloud,replace=/\{var [a-z]{1,2}=[a-z]{1,2}\;try\{console\[.*?\)\}\}function /{} function /g
 ||thestar.co.uk/_build/main.$script,1p,replace=/,adshield\:\w{2}//
 ||yorkshirepost.co.uk/_build/main.$script,1p,replace=/,adshield\:\w{2}//
 !#else
@@ -19611,6 +19607,7 @@ hometownstation.com##+js(rpnt, script, window.dataLayer =, '/*start*/(function()
 sportalkorea.com##+js(rpnt, script, window.dataLayer =, '/*start*/(function(){let link=document.createElement("link");link.rel="stylesheet";link.href="/_css/css.css";document.head.appendChild(link)})();document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g,"");/*end*/window.dataLayer =')
 isplus.com##+js(rpnt, script, window.dataLayer =, '/*start*/(function(){let link=document.createElement("link");link.rel="stylesheet";link.href="/css_renew/pc/common.css";document.head.appendChild(link)})();document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g,"");/*end*/window.dataLayer =')
 thestockmarketwatch.com##+js(rpnt, script, document.getElementById("divRecentQuotes"), '/*start*/(function(){let link=document.createElement("link");link.rel="stylesheet";link.href="/css/so-clean.css";document.head.appendChild(link)})();document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g,"");/*end*/document.getElementById("divRecentQuotes")')
+m.edaily.co.kr##+js(rpnt, script, var _paq =, '/*start*/(function(){let link=document.createElement("link");link.rel="stylesheet";link.href="/Content/css/style.css";document.head.appendChild(link)})();document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g,"");/*end*/var _paq =', sedCount, 1)
 honkailab.com##+js(rpnt, script, var localize =, '/*start*/(function(){document.querySelectorAll("script[wp-data]").forEach(element=>{const html=new DOMParser().parseFromString(atob(element.getAttribute("wp-data")),"text/html");html.querySelectorAll("link:not([as])").forEach(linkEl=>{element.after(linkEl)});element.parentElement.removeChild(element);})})();document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g,"");/*end*/var localize =', sedCount, 1)
 honkailab.com##body:style(background-color: #2D2D2D;)
 a-ha.io,cboard.net,joongdo.co.kr,viva100.com,gamingdeputy.com,alle-tests.nl##+js(noeval-if, /07c225f3\.online|content-loader\.com|css-load\.com|html-load\.com/)
@@ -21909,7 +21906,7 @@ www.wp.pl##div[data-st-area] + div > div > div:has(> div > div > div[id^="div-gp
 www.wp.pl##aside > div > div[data-st-area="Wiadomosci"] ~ div[class]:has(div[style^="transform:"] > a[style="text-decoration: none;"])
 www.wp.pl,pudelek.pl,o2.pl##body > div[class]:has(> div + div + div > .spinner)
 !#if env_mobile
-www.wp.pl##div[data-section="section-glonews"] > .max-w-mobile > div[class]:has(> div > div > iframe[src^="https://ad.doubleclick.net/"])
+www.wp.pl##div[data-bdc="section-glonews"] > .max-w-mobile > div[class]:has(> div > div > iframe)
 www.wp.pl##div[class*=" "]:has(> div > div:first-child > div:first-child > a[href^="https://www.wp.pl/"]:first-child):matches-css(max-width: 420px):remove()
 www.wp.pl##.app-container > div:has(div + img[src^="https://v.wpimg.pl/"] + div:empty)
 www.wp.pl##div:has(> div:first-child:empty + div:empty)
@@ -22136,6 +22133,10 @@ bunkr.la##+js(acs, document.createElement, click)
 androidadult.com##+js(set, chp_adblock_browser, noopFunc)
 adultcomixxx.com##+js(noeval-if, chp_ad)
 adultcomixxx.com##.adsnative
+||cdnandroadu.b-cdn.net/wp-content/uploads/*_720x480_$media
+||i.ibb.co/gSkSXGm/levi-2.png$image
+androidadult.com###slidevideo
+androidadult.com##+js(aeld, DOMContentLoaded, .clientHeight)
 ! ||bytro.com^$image,domain=supremacy1914.*
 oneupload.to,oneupload.online##+js(set, cRAds, false)
 *$script,3p,denyallow=cloudflare.com|fastly.net|gstatic.com|jwpcdn.com,domain=oneupload.to
