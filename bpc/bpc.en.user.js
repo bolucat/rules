@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.4.4
+// @version         3.8.4.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2608,6 +2608,18 @@ else if (matchDomain('rp.pl')) {
   setCookie('blaize_session', '', 'rp.pl', '/', 0);
   let url = window.location.href;
   getGoogleWebcache(url, 'div.paywallComponentWrapper', '', 'div.main--content--body');
+}
+
+else if (matchDomain('rivals.com')) {
+  func_post = function () {
+    let lazy_images = document.querySelectorAll('div img[loading="lazy"][src$=".webp"]');
+    for (let elem of lazy_images) {
+      if (elem.src.match(/\/\w{5}\//))
+        elem.src = 'https://archive.ph' + elem.src;
+    }
+  }
+  let url = window.location.href;
+  getArchive(url, 'div[class^="Paywall_paywall_"]', '', 'div[class^="Article_body_"]', '', 'main div[style*="grid-row-start:body"]');
 }
 
 else if (matchDomain('rugbypass.com')) {
