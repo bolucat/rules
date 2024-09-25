@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.8.3.3
+// @version         3.8.5.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -10,7 +10,6 @@
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
 // @match           *://*.fr/*
 // @match           *://*.arcinfo.ch/*
-// @match           *://*.argusdelassurance.com/*
 // @match           *://*.businessam.be/*
 // @match           *://*.connaissancedesarts.com/*
 // @match           *://*.courrierinternational.com/*
@@ -33,14 +32,12 @@
 // @match           *://*.parismatch.com/*
 // @match           *://*.pourleco.com/*
 // @match           *://*.science-et-vie.com/*
-// @match           *://*.usinenouvelle.com/*
 // @connect         archive.fo
 // @connect         archive.is
 // @connect         archive.li
 // @connect         archive.md
 // @connect         archive.ph
 // @connect         archive.vn
-// @connect         webcache.googleusercontent.com
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
 
@@ -63,7 +60,6 @@ hideDOMStyle(ads, 10);
 
 var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net'];
 var be_roularta_domains = ['femmesdaujourdhui.be', 'flair.be', 'levif.be'];
-var fr_groupe_infopro_domains = ['argusdelassurance.com', 'cahiers-techniques-batiment.fr', 'lemoniteur.fr', 'lsa-conso.fr', 'usinenouvelle.com'];
 var fr_groupe_la_depeche_domains = ['centrepresseaveyron.fr', 'journaldemillau.fr', 'ladepeche.fr', 'lindependant.fr', 'midilibre.fr', 'nrpyrenees.fr', 'petitbleu.fr', 'rugbyrama.fr'];
 var fr_groupe_nice_matin_domains = ['monacomatin.mc', 'nicematin.com', 'varmatin.com'];
 
@@ -228,11 +224,6 @@ else if (matchDomain('charliehebdo.fr')) {
   }, 500);
 }
 
-else if (matchDomain('cieletespace.fr')) {
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div.article-content__subscribe', '', 'div.article-content');
-}
-
 else if (matchDomain('courrierinternational.com')) {
   let url = window.location.href;
   getArchive(url, 'div#bloc_paywall', '', 'article');
@@ -249,23 +240,6 @@ else if (matchDomain('elle.fr')) {
     removeDOMElement(subscription_bar);
   }
   let ads = 'div[class*="--placeholder"]';
-  hideDOMStyle(ads);
-}
-
-else if (matchDomain(fr_groupe_infopro_domains)) {
-  let paywall_sel = 'div.blocPasEncoreAbonne';
-  let url = window.location.href;
-  if (!matchDomain('cahiers-techniques-batiment.fr'))
-    getGoogleWebcache(url, paywall_sel, '', 'div.articleContent');
-  else {
-    func_post = function () {
-      let lazy_images = document.querySelectorAll('img[src^="data:image/"][data-original]');
-      for (let elem of lazy_images)
-        elem.src = elem.getAttribute('data-original');
-    }
-    getGoogleWebcache(url, paywall_sel, '', 'div[itemprop="articleBody"]');
-  }
-  let ads = 'div[class^="ad-slot-"], div[class*="Rhoo"]';
   hideDOMStyle(ads);
 }
 
@@ -295,11 +269,6 @@ else if (matchDomain(fr_groupe_nice_matin_domains)) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('humanite.fr')) {
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div.single__categories svg[class]', {rm_attrib: 'class'}, 'div.rich-text:not([class*="margin"]');
-}
-
 else if (matchDomain('journaldunet.com')) {
   let reg_wall = document.querySelector('div.reg_wall');
   removeDOMElement(reg_wall);
@@ -317,27 +286,6 @@ else if (matchDomain('la-croix.com')) {
     let paywall_block = '#paywall_block';
     let ads = 'amp-ad, amp-embed';
     hideDOMStyle(paywall_block + ', ' + ads);
-  }
-}
-
-else if (matchDomain('lamontagne.fr') || document.querySelector('head > meta[name="google-play-app"][content^="app-id=com.centrefrance"]')) {// Groupe Centre France
-  let paywall = document.querySelector('div#poool-widget');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_script = getArticleJsonScript();
-    if (json_script) {
-      let json = JSON.parse(json_script.text);
-      if (json) {
-        let json_text = json.articleBody;
-        let content = document.querySelector('div.entry-content');
-        if (json_text && content) {
-          content.innerHTML = '';
-          let article_new = document.createElement('p');
-          article_new.innerText = json_text;
-          content.appendChild(article_new);
-        }
-      }
-    }
   }
 }
 
@@ -957,9 +905,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     return;
   if (proxy) {
     if (!text_fail) {
-      if (url.startsWith('https://webcache.googleusercontent.com'))
-        text_fail = 'BPC > failed to load from Google webcache:\r\n';
-      else if (url.startsWith('https://archive.'))
+      if (url.startsWith('https://archive.'))
         text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n';
       else if (!matchUrlDomain(window.location.hostname, url))
         text_fail = 'BPC > failed to load from external site:\r\n';
@@ -1064,15 +1010,6 @@ function replaceTextFail(url, article, proxy, text_fail) {
   }
 }
 
-function getGoogleWebcache(url, paywall_sel, paywall_action = '', selector, selector_source = selector) {
-  let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split(/[#\?]/)[0];
-  let paywall = document.querySelectorAll(paywall_sel);
-  if (paywall.length) {
-    clearPaywall(paywall, paywall_action);
-    replaceDomElementExt(url_cache, true, false, selector, '', selector_source);
-  }
-}
-
 function randomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
@@ -1098,10 +1035,6 @@ function archiveLink(url, text_fail = 'BPC > Try for full article text (no need 
 
 function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
   return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href, url, text_fail);
-}
-
-function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
-  return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
 }
 
 function nftLink(url, text_fail = 'BPC > Full article text:\r\n') {

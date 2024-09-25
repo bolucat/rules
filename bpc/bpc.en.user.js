@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.4.5
+// @version         3.8.4.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -55,7 +55,6 @@
 // @exclude         *://*.google.com/*
 // @exclude         *://*.mediafire.com/*
 // @exclude         *://*.youtube.com/*
-// @exclude         *://*.argusdelassurance.com/*
 // @exclude         *://*.artsenkrant.com/*
 // @exclude         *://*.cambiocolombia.com/*
 // @exclude         *://*.clarin.com/*
@@ -107,7 +106,6 @@
 // @exclude         *://*.topagrar.com/*
 // @exclude         *://*.tt.com/*
 // @exclude         *://*.tuttosport.com/*
-// @exclude         *://*.usinenouvelle.com/*
 // @exclude         *://*.wochenblatt.com/*
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
@@ -196,7 +194,7 @@ if (matchDomain('gitlab.com') && window.location.pathname.startsWith('/magnolia1
   }
 }
 
-if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || (!matchDomain('webcache.googleusercontent.com') && document.querySelector('head > link[href*=".medium.com/"]'))) {
+if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || document.querySelector('head > link[href*=".medium.com/"]')) {
   let url = window.location.href;
   let paywall = document.querySelector('article.meteredContent');
   if (paywall) {
@@ -1142,14 +1140,6 @@ else if (matchDomain('artnet.com')) {
     let banner = document.querySelector('div[id^="issuem-leaky-paywall-"]');
     removeDOMElement(banner);
   }
-}
-
-else if (matchDomain('asia.nikkei.com')) {
-  setCookie('xbc', '', 'nikkei.com', '/', 0);
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div.limit-view-overlay', '', 'div#article-body-preview');
-  let banners = '#pianoj_ribbon, div#paywall-offer';
-  hideDOMStyle(banners);
 }
 
 else if (matchDomain('axios.com')) {
@@ -2284,40 +2274,11 @@ else if (matchDomain('newcriterion.com')) {
   getJsonUrl('div.paywall-overlay', '', 'div.entry-content');
 }
 
-else if (matchDomain('newleftreview.org')) {
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div.promo-wrapper', '', 'div.article-page');
-}
-
 else if (matchDomain('newrepublic.com')) {
   let modal = document.querySelector('div.article-scheduled-modal');
   let pw_popups = document.querySelector('div#pwPopups');
   removeDOMElement(modal, pw_popups);
   let ads = '.ad-unit';
-  hideDOMStyle(ads);
-}
-
-else if (matchDomain('newscientist.com')) {
-  let url = window.location.href;
-  func_post = function () {
-    let lazy_images = document.querySelectorAll('img.lazyload[data-src]:not([src])');
-    for (let elem of lazy_images)
-      elem.src = elem.getAttribute('data-src').split('?')[0] + '?width=800';
-    let break_pre_array = pageContains('div.non-paywall > p', /…\s?$/);
-    if (break_pre_array.length) {
-      let break_pre = break_pre_array[0];
-      let break_post = document.querySelector('div.paywall > p');
-      if (break_post) {
-        let parser = new DOMParser();
-        let doc = parser.parseFromString('<p>' + break_pre.innerHTML.replace(/\s?…\s?/, ' ') + break_post.innerHTML + '</p>', 'text/html');
-        let content_new = doc.querySelector('p');
-        break_pre.parentNode.replaceChild(content_new, break_pre);
-        removeDOMElement(break_post);
-      }
-    }
-  }
-  getGoogleWebcache(url, 'section#subscription-barrier', '', 'div.article-body, article');
-  let ads = 'div[class*="Advert"]';
   hideDOMStyle(ads);
 }
 
