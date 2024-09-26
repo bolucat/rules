@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.8.4.1
+// @version         3.8.4.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -146,19 +146,8 @@ else if (matchDomain(es_unidad_domains)) {
     if (!window.location.pathname.startsWith('/mejores-colegios')) {
       amp_redirect('div.ue-c-article__premium', '', url.replace('/www.', '/amp.'));
     } else if (matchDomain('elmundo.es')) {
-      let paywall = document.querySelector('div.ue-c-article__premium');
-      if (paywall) {
-        removeDOMElement(paywall);
-        header_nofix('main p');
-      } else {
-        paywall = document.querySelector('div.ue-c-paywall');
-        if (paywall) {
-          removeDOMElement(paywall);
-          let article = document.querySelector('table');
-          if (article)
-            article.before(googleWebcacheLink(url));
-        }
-      }
+      header_nofix('main p', 'div.ue-c-article__premium');
+      header_nofix('table', 'div.ue-c-paywall');
     }
   } else {
     amp_unhide_access_hide('="authorized=true"', '="authorized!=true"');
@@ -471,7 +460,7 @@ else if (matchDomain(['elmercurio.com', 'lasegunda.com'])) {
       removeDOMElement(...bt_readmore);
     }
   } else if (window.location.pathname.endsWith('/Registro/Login.aspx')) {
-    header_nofix('body', '', 'BPC > no fix');
+    header_nofix('body');
   }
 }
 

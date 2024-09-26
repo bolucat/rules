@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.8.5.1
+// @version         3.8.5.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -933,7 +933,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
   }
 }
 
-function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
+function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector, selector_level = false) {
   let article = document.querySelector(selector);
   let article_link = document.querySelector(selector_archive);
   let no_content_msg = '&nbsp;| no article content found! | :';
@@ -950,7 +950,9 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
         html = html.replace(new RegExp('https:\\/\\/' + domain_archive.replace('.', '\\.') + '\\/o\\/\\w+\\/', 'g'), '').replace(new RegExp("(src=\"|background-image:url\\(')" + pathname.replace('/', '\\/'), 'g'), "$1" + 'https://' + domain_archive + pathname);
       }
       let doc = parser.parseFromString(html, 'text/html');
-      let article_new = doc.querySelector(getSelectorLevel(selector_source));
+      if (selector_level)
+        selector_source = getSelectorLevel(selector_source);
+      let article_new = doc.querySelector(selector_source);
       if (article_new) {
         if (article && article.parentNode) {
           if (url.startsWith('https://archive.')) {
@@ -967,7 +969,7 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
             let targets = article_new.querySelectorAll('a[target="_blank"][href^="' + window.location.origin + '"]');
             for (let elem of targets)
               elem.removeAttribute('target');
-            let invalid_links = article_new.querySelectorAll('link[rel="preload"]:not([href]');
+            let invalid_links = article_new.querySelectorAll('link[rel*="preload"]:not([href])');
             removeDOMElement(...invalid_links);
           }
           window.setTimeout(function () {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.4.1
+// @version         3.8.4.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -28,7 +28,6 @@
 // @connect         archive.ph
 // @connect         archive.vn
 // @connect         och.to
-// @connect         webcache.googleusercontent.com
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
 
@@ -84,20 +83,6 @@ else if (matchDomain('aerztezeitung.de')) {
       }
     }
   }
-}
-
-else if (matchDomain('augsburger-allgemeine.de')) {
-  let article = document.querySelector('div#page-body');
-  if (article) {
-    let url = window.location.href;
-    getGoogleWebcache(url, 'div.piano-inline-paywall', '', 'div#article-body-paid-content');
-    let plus = pageContains('span[class*="plusplus"]', 'Bildergalerie');
-    if (plus.length) {
-      article.before(googleSearchToolLink(url));
-    }
-  }
-  let ads = 'div.sdgSlotHull, div[id^="taboola-"]';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
@@ -571,11 +556,6 @@ else if (matchDomain('motorradonline.de')) {
     ampToHtml();
 }
 
-else if (matchDomain('mz.de')) {
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div.fp-paywall', '', 'div[data-t-name="Article"]');
-}
-
 else if (matchDomain('nw.de')) {
   let paywall = document.querySelector('div#paywall');
   if (paywall) {
@@ -637,22 +617,6 @@ else if (matchDomain('profil.at')) {
   }
   let overlay = 'div.consentOverlay';
   hideDOMStyle(overlay, 2);
-}
-
-else if (matchDomain('schwaebische.de')) {
-  let url = window.location.href;
-  let paywall_sel = 'div > div.sve-paywall-wrapper_overlay';
-  let paywall = document.querySelector(paywall_sel);
-  getGoogleWebcache(url, paywall_sel, '', 'div.article_body');
-  if (paywall) {
-    removeDOMElement(paywall.parentNode);
-    let body = document.querySelector('body[style]');
-    if (body)
-      body.removeAttribute('style');
-    waitDOMAttribute('body', 'body', 'style', node => node.removeAttribute('style'), true);
-  }
-  let ads = 'div.fp-ad-placeholder';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('schweizermonat.ch')) {
@@ -975,6 +939,9 @@ else if (matchDomain('zeit.de')) {
       let span_empty = document.querySelectorAll('span:empty');
       removeDOMElement(...span_empty);
     }
+    let ads = document.querySelectorAll('div[style*=";min-height:"] > div[id^="iqadtile"]');
+    for (let ad of ads)
+      hideDOMElement(ad.parentNode);
   }
   let url = window.location.href.split(/[#\?]/)[0];
   if (document.querySelector('head > link[rel="next"]'))
@@ -1242,9 +1209,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     return;
   if (proxy) {
     if (!text_fail) {
-      if (url.startsWith('https://webcache.googleusercontent.com'))
-        text_fail = 'BPC > failed to load from Google webcache:\r\n';
-      else if (url.startsWith('https://archive.'))
+      if (url.startsWith('https://archive.'))
         text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n';
       else if (!matchUrlDomain(window.location.hostname, url))
         text_fail = 'BPC > failed to load from external site:\r\n';
@@ -1272,7 +1237,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
   }
 }
 
-function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
+function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector, selector_level = false) {
   let article = document.querySelector(selector);
   let article_link = document.querySelector(selector_archive);
   let no_content_msg = '&nbsp;| no article content found! | :';
@@ -1289,7 +1254,9 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
         html = html.replace(new RegExp('https:\\/\\/' + domain_archive.replace('.', '\\.') + '\\/o\\/\\w+\\/', 'g'), '').replace(new RegExp("(src=\"|background-image:url\\(')" + pathname.replace('/', '\\/'), 'g'), "$1" + 'https://' + domain_archive + pathname);
       }
       let doc = parser.parseFromString(html, 'text/html');
-      let article_new = doc.querySelector(getSelectorLevel(selector_source));
+      if (selector_level)
+        selector_source = getSelectorLevel(selector_source);
+      let article_new = doc.querySelector(selector_source);
       if (article_new) {
         if (article && article.parentNode) {
           if (url.startsWith('https://archive.')) {
@@ -1306,7 +1273,7 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
             let targets = article_new.querySelectorAll('a[target="_blank"][href^="' + window.location.origin + '"]');
             for (let elem of targets)
               elem.removeAttribute('target');
-            let invalid_links = article_new.querySelectorAll('link[rel="preload"]:not([href]');
+            let invalid_links = article_new.querySelectorAll('link[rel*="preload"]:not([href])');
             removeDOMElement(...invalid_links);
           } else if (url.startsWith('https://och.to/unlock/')) {
             let unlock_links = article_new.querySelectorAll('a[href^="/unlock/"]');
@@ -1353,15 +1320,6 @@ function replaceTextFail(url, article, proxy, text_fail) {
   }
 }
 
-function getGoogleWebcache(url, paywall_sel, paywall_action = '', selector, selector_source = selector) {
-  let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split(/[#\?]/)[0];
-  let paywall = document.querySelectorAll(paywall_sel);
-  if (paywall.length) {
-    clearPaywall(paywall, paywall_action);
-    replaceDomElementExt(url_cache, true, false, selector, '', selector_source);
-  }
-}
-
 function randomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
@@ -1387,10 +1345,6 @@ function archiveLink(url, text_fail = 'BPC > Try for full article text (no need 
 
 function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
   return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href, url, text_fail);
-}
-
-function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
-  return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
 }
 
 function nftLink(url, text_fail = 'BPC > Full article text:\r\n') {

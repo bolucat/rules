@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.4.8
+// @version         3.8.5.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -50,7 +50,6 @@
 // @connect         archive.md
 // @connect         archive.ph
 // @connect         archive.vn
-// @connect         webcache.googleusercontent.com
 // @exclude         *://*.dwcdn.net/*
 // @exclude         *://*.google.com/*
 // @exclude         *://*.mediafire.com/*
@@ -156,7 +155,6 @@ var no_dn_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'hydroge
 var pl_ringier_domains = ['auto-swiat.pl', 'businessinsider.com.pl', 'forbes.pl', 'komputerswiat.pl', 'newsweek.pl', 'onet.pl'];
 var sg_sph_media_domains = ['straitstimes.com'];
 var timesofindia_domains = ['epaper.indiatimes.com', 'timesofindia.indiatimes.com'];
-var uk_incisive_media_domains = ['businessgreen.com', 'internationalinvestment.net', 'investmentweek.co.uk', 'professionaladviser.com', 'professionalpensions.com'];
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
@@ -547,17 +545,12 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['investmentweek.co.uk', 'vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'citywire.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'motorsportmagazine.com', 'scotsman.com', 'tes.com', 'thelawyer.com', 'thetimes.com', 'unherd.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'motorsportmagazine.com', 'scotsman.com', 'tes.com', 'thelawyer.com', 'thetimes.com', 'unherd.com'])) {//united kingdom/ireland
 
 if (matchDomain('apollo-magazine.com')) {
   setCookie('blaize_session', '', 'apollo-magazine.com', '/', 0);
   let banner = document.querySelector('#subscribe-ribbon');
   removeDOMElement(banner);
-}
-
-else if (matchDomain('autocar.co.uk')) {
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div.ms-block, div.register-block', '', 'div.content-wrapper');
 }
 
 else if (matchDomain('autosport.com')) {
@@ -595,7 +588,7 @@ else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
                   if (type === 'bullet_list') {
                     let ul = document.createElement('ul');
                     for (let sub_item of item) {
-                      let li = document.createElement('li');
+                      li.innerText = parseHtmlEntities(sub_item.replace(/<[^<]*>/g, ''));
                       li.innerText = sub_item;
                       ul.appendChild(li);
                     }
@@ -613,8 +606,8 @@ else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
                         let elem_link = document.createElement('a');
                         elem_link.href = article.webcmsRelativeUrl;
                         elem_link.innerText = article.title;
-                        elem.appendChild(elem_link);
-                        elem.appendChild(document.createElement('br'));
+                        elem_link.style = 'text-decoration: underline;';
+                        elem.append(elem_link, document.createElement('br'));
                       }
                     }
                   } else if (!['ad', 'quote', 'streamone'].includes(type)) {
@@ -684,13 +677,6 @@ else if (matchDomain('businesspost.ie')) {
       insert_script(bpie_main);
     }
   }, 500);
-}
-
-else if (matchDomain('citywire.com')) {
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div#lockedLoginPanel', '', 'div#newsArticleBody');
-  let ads = 'div.cw-top-advert';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('fnlondon.com')) {
@@ -763,13 +749,6 @@ else if (matchDomain('motorsportmagazine.com')) {
   let banner = document.querySelector('div[data-behaviour="react-paywall-threshold"]');
   removeDOMElement(banner);
   let ads = 'aside.ad-space';
-  hideDOMStyle(ads);
-}
-
-else if (matchDomain('prospectmagazine.co.uk')) {
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div.paywall_overlay_blend, div.paywall', '', 'main');
-  let ads = '.ad-banner, .advert';
   hideDOMStyle(ads);
 }
 
@@ -1108,8 +1087,31 @@ if (matchDomain(usa_adv_local_domains)) {
 
 else if (matchDomain('adweek.com')) {
   setCookie('blaize_session', '', '.www.adweek.com', '/', 0);
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div#paywall-subscribe', '', 'div.adw-article-body');
+  let paywall = document.querySelector('div#paywall-subscribe');
+  if (paywall) {
+    let fade = document.querySelector('div[style*="linear-gradient"]');
+    removeDOMElement(paywall, fade);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      try {
+        let json = JSON.parse(json_script.text);
+        if (json) {
+          let json_text = json.sharedContent.articleBody;
+          let content = document.querySelector('div.aw-article-content');
+          if (json_text && content) {
+            let url = window.location.href;
+            content.before(archiveLink(url));
+            content.innerHTML = '';
+            let article_new = document.createElement('p');
+            article_new.innerText = json_text;
+            content.appendChild(article_new);
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
 }
 
 else if (matchDomain('ajc.com')) {
@@ -1401,13 +1403,15 @@ else if (matchDomain('cnn.com')) {
 
 else if (matchDomain('columbian.com')) {
   setCookie('blaize_session', '', 'columbian.com', '/', 0);
-  let url = window.location.href;
-  func_post = function () {
-    let modal = document.querySelector('div.modal');
-    let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
-    removeDOMElement(modal, fade);
+  let paywall = document.querySelectorAll('div#inline-paywall, div#paywall-modal');
+  if (paywall) {
+    removeDOMElement(...paywall);
+    let article = document.querySelector('article');
+    if (article) {
+      let url = window.location.href;
+      article.firstChild.before(googleSearchToolLink(url));
+    }
   }
-  getGoogleWebcache(url, 'div#inline-paywall', '', 'div[itemprop="articleBody"]');
 }
 
 else if (matchDomain('csmonitor.com')) {
@@ -2054,13 +2058,6 @@ else if (matchDomain('insidehighered.com')) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('institutionalinvestor.com')) {
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div.call_to_action', '', 'div.Page-articleBody');
-  let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
-  removeDOMElement(fade);
-}
-
 else if (matchDomain('ipolitics.ca')) {
   let login = document.querySelector('div.login');
   if (login) {
@@ -2567,8 +2564,15 @@ else if (matchDomain('reuters.com')) {
 
 else if (matchDomain('rp.pl')) {
   setCookie('blaize_session', '', 'rp.pl', '/', 0);
-  let url = window.location.href;
-  getGoogleWebcache(url, 'div.paywallComponentWrapper', '', 'div.main--content--body');
+  let paywall = document.querySelector('div.paywallComp');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.article--content');
+    if (article) {
+      let url = window.location.href;
+      article.firstChild.before(googleSearchToolLink(url));
+    }
+  }
 }
 
 else if (matchDomain('rivals.com')) {
@@ -2805,17 +2809,11 @@ else if (matchDomain('slideshare.net')) {
 }
 
 else if (matchDomain('sloanreview.mit.edu')) {
-  let url = window.location.href;
-  let article_sel = 'div.article-content';
-  func_post = function () {
-    let pars = document.querySelectorAll(article_sel + ' > p');
-    if (pars.length < 5) {
-      let article = document.querySelector(article_sel);
-      if (article)
-        article.firstChild.before(archiveLink(url));
-    }
+  if (window.location.pathname.startsWith('/article/')) {
+    let pars = document.querySelectorAll('div.article-content > p');
+    if (pars.length && pars.length < 7)
+      refreshCurrentTab();
   }
-  getGoogleWebcache(url, 'body.is-paywall', {rm_class: 'is-paywall'}, article_sel);
 }
 
 else if (matchDomain('sofrep.com')) {
@@ -3596,25 +3594,6 @@ else if (matchDomain(no_dn_media_domains)) {
   }
 }
 
-else if (matchDomain(uk_incisive_media_domains)) {
-  let url = window.location.href;
-  let paywall_sel = 'div#d-wrapper';
-  let paywall = document.querySelector(paywall_sel);
-  if (paywall) {
-    let live_blog = document.querySelector('head > meta[name="description"][content^="In this live blog"]');
-    let article_sel = 'div.article-content';
-    let article = document.querySelector(article_sel);
-    if (article) {
-      if (live_blog) {
-        removeDOMElement(paywall);
-        article.firstChild.before(googleWebcacheLink(url));
-      } else {
-        getGoogleWebcache(url, 'div#d-wrapper', '', article_sel);
-      }
-    }
-  }
-}
-
 else if (matchDomain(usa_conde_nast_domains)) {
   let banners = 'aside.paywall-bar, div[class^="MessageBannerWrapper-"], div.ad-stickyhero';
   hideDOMStyle(banners);
@@ -4377,9 +4356,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     return;
   if (proxy) {
     if (!text_fail) {
-      if (url.startsWith('https://webcache.googleusercontent.com'))
-        text_fail = 'BPC > failed to load from Google webcache:\r\n';
-      else if (url.startsWith('https://archive.'))
+      if (url.startsWith('https://archive.'))
         text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n';
       else if (!matchUrlDomain(window.location.hostname, url))
         text_fail = 'BPC > failed to load from external site:\r\n';
@@ -4407,7 +4384,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
   }
 }
 
-function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
+function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector, selector_level = false) {
   let article = document.querySelector(selector);
   let article_link = document.querySelector(selector_archive);
   let no_content_msg = '&nbsp;| no article content found! | :';
@@ -4424,7 +4401,9 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
         html = html.replace(new RegExp('https:\\/\\/' + domain_archive.replace('.', '\\.') + '\\/o\\/\\w+\\/', 'g'), '').replace(new RegExp("(src=\"|background-image:url\\(')" + pathname.replace('/', '\\/'), 'g'), "$1" + 'https://' + domain_archive + pathname);
       }
       let doc = parser.parseFromString(html, 'text/html');
-      let article_new = doc.querySelector(getSelectorLevel(selector_source));
+      if (selector_level)
+        selector_source = getSelectorLevel(selector_source);
+      let article_new = doc.querySelector(selector_source);
       if (article_new) {
         if (article && article.parentNode) {
           if (url.startsWith('https://archive.')) {
@@ -4441,7 +4420,7 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
             let targets = article_new.querySelectorAll('a[target="_blank"][href^="' + window.location.origin + '"]');
             for (let elem of targets)
               elem.removeAttribute('target');
-            let invalid_links = article_new.querySelectorAll('link[rel="preload"]:not([href]');
+            let invalid_links = article_new.querySelectorAll('link[rel*="preload"]:not([href])');
             removeDOMElement(...invalid_links);
           }
           window.setTimeout(function () {
@@ -4484,15 +4463,6 @@ function replaceTextFail(url, article, proxy, text_fail) {
   }
 }
 
-function getGoogleWebcache(url, paywall_sel, paywall_action = '', selector, selector_source = selector) {
-  let url_cache = 'https://webcache.googleusercontent.com/search?q=cache:' + url.split(/[#\?]/)[0];
-  let paywall = document.querySelectorAll(paywall_sel);
-  if (paywall.length) {
-    clearPaywall(paywall, paywall_action);
-    replaceDomElementExt(url_cache, true, false, selector, '', selector_source);
-  }
-}
-
 function randomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
@@ -4531,13 +4501,7 @@ function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is 
   return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href, url, text_fail);
 }
 
-function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
-  if (!matchUrlDomain(['hbrchina.org'], url))
-    url = url.split('?')[0];
-  return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
-}
-
-function googleSearchToolLink(url, text_fail = 'BPC > Full article text (test url & copy html (tab) code to [https://codebeautify.org/htmlviewer]):\r\n') {
+function googleSearchToolLink(url, text_fail = 'BPC > Try for full article text (test url & copy html (tab) code to [https://codebeautify.org/htmlviewer]):\r\n') {
   return externalLink(['search.google.com'], 'https://search.google.com/test/rich-results?url={url}', encodeURIComponent(url), text_fail);
 }
 
@@ -4873,7 +4837,7 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
   } else
     article.parentNode.replaceChild(article_new, article);
 }
-  
+
 function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_slash = false) {
   let paywall = document.querySelectorAll(paywall_sel);
   let article = document.querySelector(article_sel);

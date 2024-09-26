@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         3.7.8.0
+// @version         3.8.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fi.se.user.js
@@ -9,7 +9,6 @@
 // @supportURL      https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
 // @match           *://*.etc.se/*
-// @match           *://*.nyteknik.se/*
 // @match           *://*.suomensotilas.fi/*
 // ==/UserScript==
 
@@ -47,17 +46,6 @@ if (matchDomain('etc.se')) {
       elem.width = elem.width / ratio;
       elem.height = elem.height / ratio;
     }
-  }
-}
-
-else if (matchDomain('nyteknik.se')) {
-  let url = window.location.href;
-  let paywall = document.querySelector('div.paywallTeaser');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('article h2');
-    if (article)
-      article.firstChild.before(googleWebcacheLink(url));
   }
 }
 
@@ -107,10 +95,6 @@ function hideDOMStyle(selector, id = 1) {
 
 function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
   return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
-}
-
-function googleWebcacheLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
-  return externalLink(['webcache.googleusercontent.com'], 'https://{domain}/search?q=cache:{url}', url, text_fail);
 }
 
 function nftLink(url, text_fail = 'BPC > Full article text:\r\n') {
