@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.5.1
+// @version         3.8.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -697,8 +697,9 @@ else if (matchDomain('fnlondon.com')) {
     window.setTimeout(function () {
       let signin_links = node.querySelectorAll('a[href^="https://www.fnlondon.com/client/login?target="]');
       for (let elem of signin_links) {
-        elem.href = elem.href.split('target=')[1].split('&')[0];
-        elem.innerText = 'Click';
+        elem.href = '#';//elem.href.split('target=')[1].split('&')[0];
+        elem.innerText = 'Open';
+        elem.addEventListener('click', function () { window.location.reload(); });
       }
     }, 500);
   }
