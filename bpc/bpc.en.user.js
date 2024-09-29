@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.5.2
+// @version         3.8.5.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1189,6 +1189,40 @@ else if (matchDomain('barrons.com')) {
   }
 }
 
+else if (matchDomain('benzinga.com')) {
+  function benz_main(node) {
+    removeDOMElement(node);
+    let blurred = document.querySelector('div.article-content-paywalled');
+    if (blurred) {
+      blurred.classList.remove('article-content-paywalled');
+      let key_points = document.querySelectorAll('li.blur-sm');
+      for (let elem of key_points)
+        elem.classList.remove('blur-sm');
+      let article = document.querySelector('div#article-body');
+      if (article) {
+        let json_script = document.querySelector('script#__NEXT_DATA__');
+        if (json_script) {
+          try {
+            let json = JSON.parse(json_script.text);
+            if (json && json.props.pageProps.article.primaryImage) {
+              let img_data = json.props.pageProps.article.primaryImage;
+              if (img_data.url) {
+                let img = document.createElement('img');
+                img.src = img_data.url;
+                img.alt = img_data.alt;
+                article.before(img);
+              }
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+    }
+  }
+  waitDOMElement('div.paywall-content', 'DIV', benz_main, false);
+}
+
 else if (matchDomain('billboard.com')) {
   if (window.location.pathname.endsWith('/amp/')) {
     amp_unhide_subscr_section('amp-ad, amp-embed');
@@ -1548,7 +1582,7 @@ else if (matchDomain('dwell.com')) {
     } else {
       let paywall = document.querySelector('div#mainPanel div[class^="FCR_"]');
       let article = document.querySelector('div > section[class]');
-      if (paywall && article && dompurify_loaded) {
+      if (paywall && article) {
         removeDOMElement(paywall);
         article.classList.remove('_2S7l9_l2eDI5b8DSR29ijf');
         let filter = /^window\.INITIAL_STATE\s?=\s?/;
