@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.5.1
+// @version         3.8.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -83,6 +83,24 @@ else if (matchDomain('aerztezeitung.de')) {
       }
     }
   }
+}
+
+else if (matchDomain('augsburger-allgemeine.de')) {
+  let paywall_sel = 'div.piano-inline-paywall';
+  let paywall = document.querySelector(paywall_sel);
+  if (paywall) {
+    let url = window.location.href;
+    let plus = pageContains('span[class*="plusplus"]', 'Bildergalerie');
+    if (plus.length) {
+      removeDOMElement(paywall);
+      let article = document.querySelector('div#page-body');
+      if (article)
+        article.before(googleSearchToolLink(url));
+    } else
+      getOchToUnlock(url, paywall_sel, '', 'div#article-body-paid-content');
+  }
+  let ads = 'div[data-slot-name^="banner"], div[id^="taboola-"], div#piano-inline-offer';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
@@ -277,7 +295,7 @@ else if (matchDomain('faz.net')) {
                   refreshCurrentTab();
                 article.innerHTML = '';
                 let sheet = document.createElement('style');
-                sheet.innerText = 'div.body-elements > div {font-family: "Source Serif 4", serif; font-size: 1.25rem; font-weight: 400; line-height: 1.8; padding-bottom: 1.25rem; & a {text-decoration: underline !important;} & em {font-style: italic;} & strong {font-weight: bold;}}';
+                sheet.innerText = 'div.body-elements {margin: 0px 50px;} div.body-elements > div {font-family: "Source Serif 4", serif; font-size: 1.25rem; font-weight: 400; line-height: 1.8; padding-bottom: 1.25rem; & a {text-decoration: underline !important;} & em {font-style: italic;} & strong {font-weight: bold;}}';
                 document.head.appendChild(sheet);
                 let parser = new DOMParser();
                 for (let i = par_index - 1; i < pars.length; i++) {
@@ -342,6 +360,11 @@ else if (matchDomain('faz.net')) {
                         article.appendChild(elem);
                     }
                   }
+                }
+                let iframes = document.querySelectorAll('div.body-elements iframe[id][scrolling="no"]');
+                for (let elem of iframes) {
+                  elem.height = '400';
+                  elem.scrolling = 'yes';
                 }
               } else if (article_story) {
                 let par_body = pars.find(x => x && x.fullBody);

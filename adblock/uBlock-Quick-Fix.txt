@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sun, 29 Sep 2024 14:20:45 +0000
-! Diff-Path: ../patches/2024.9.29.925.patch#ublock-quick-fixes
+! Last modified: Mon, 30 Sep 2024 14:07:51 +0000
+! Diff-Path: ../patches/2024.9.30.992.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -63,22 +63,7 @@ japscan.lol#@##blur-inter
 japscan.lol#@##interstitial
 japscan.lol##body > .container.text-center > div.mt-3[style="margin: 0px auto; display: block;"] > a.Aikoi.donate[target="_blank"][href^="https://www."][href*="/?utm_source=manga&utm_"]:not([href^="https://www.google"]):not([href^="https://www.japscan"]):not([href^="https://www.example"]) > img.img-fluid[src^="/imgs/onc/"]
 japscan.lol#@#+js(aeld, DOMContentLoaded, /^_.+\+'\);'\)\( ?\);\}catch/)
-japscan.lol#@#.navbar-nav > li#navpromo2.nav-item > a[href^="https://www.origoclick.com"]
-japscan.lol#@#+js(ra, href, .navbar-nav > li#navpromo2.nav-item > a[href^="https://www.origoclick.com"])
-japscan.lol#@#+js(ra, href, .navbar-nav > li#navpromo2.nav-item > a[href^="https://www.origoclick.com"], complete)
-japscan.lol##body > style + .container:first-of-type > .row > #main + #sidebar.col-md-3 > .card.mt-1 > .card[style="margin: 0px auto; display: block;"] > a.aikoi.donate[href^="http"][target="_blank"][rel="noopener noreferrer nofollow"]:not([href^="http://japscan.lol"]) > img
-japscan.lol##body > style + .container:first-of-type > .row > #main.col-md-9 > .card > #chapters.tab-content > .row.justify-content-center.align-items-center > a.image-box.donate[href^="http"][target="_blank"][rel="noopener noreferrer nofollow"]:not([href^="http://japscan.lol"]) > img
-japscan.lol#@#.navbar-nav > li#navpromo2.nav-item > a[href^="https://www.origoclick.com"]:style(pointer-events: none !important;)
-japscan.lol#@#.navbar-nav > li#navpromo2.nav-item > a[href^="https://www.origoclick.com"]:style(margin-left: -5000px !important;)
-japscan.lol##body > .sticky-top + .container.text-center > .mb-2.mt-2[style="margin: 0px auto; display: block;"] > .text-center > a.donate[href^="http"][target="_blank"][rel="noopener noreferrer nofollow"]:not([href^="http://japscan.lol"]) > img
-japscan.lol#@#+js(ra, id, .navbar-nav > li#navpromo2.nav-item > a[href^="https://www.origoclick.com"], complete)
-japscan.lol#@#.navbar-nav > li#navpromo2.nav-item > a[href^="https://www.origoclick.com"]:not([id])
-japscan.lol#@#+js(set-attr, .navbar-nav > li#navpromo2.nav-item > a[href^="https://www.origoclick.com"]:not([id]), href, false)
 japscan.lol#@#.navbar-nav > li#navpromo2.nav-item > a[href^="https://www.origoclick.com"]:style(font-size: 0 !important;)
-japscan.lol#@#+js(acs, RegExp, japscan)
-japscan.lol#@#+js(acs, RegExp, www.japscan.lol)
-japscan.lol#@#+js(rmnt, script, www.japscan.lol)
-japscan.lol#@#+js(rmnt, script, iili.io)
 japscan.lol#@#+js(acs, addEventListener, /468_60.)
 japscan.lol#@#+js(aeld, DOMContentLoaded, /^_.+\+\'\);\'\)\( ?\);\}catch/)
 japscan.lol##+js(aeld, DOMContentLoaded, /^[-$0-9A-Z_a-z]+=>\{const .+\)\( \);\}catch\(/)
@@ -88,7 +73,9 @@ japscan.lol##.navbar-nav > li#navpromo2.nav-item > a[href^="https://www.origocli
 japscan.lol#@#+js(rmnt, script, /statically\.|cdn\.stati/)
 japscan.lol#@#+js(rmnt, script, https://cdn.)
 japscan.lol#@#+js(rmnt, script, Japscan/Test)
-japscan.lol##+js(rmnt, script, /2050Rhjynm|Test\/main|^function .{7000\,7500}eval\(.{10\,20}$|\,setTimeout\(function\(\)\{/)
+japscan.lol#@#+js(rmnt, script, /2050Rhjynm|Test\/main|^function .{7000\,7500}eval\(.{10\,20}$|\,setTimeout\(function\(\)\{/)
+japscan.lol#@#+js(rmnt, script, /\);\}\}\}$|\)\]\(\'div\'\)\,|^\(function\([A-Z].{6200\,6300}|catch\(.{20}=window;\}const /)
+japscan.lol##+js(rmnt, script, /^var [A-z]{1\,20};\(function\(\)\{var .{2500\,2700}$|return \d{4}\}\)\(\)$|\(\'[a-z]{37}\'\)\.substr/)
 /^https?:\/\/[-a-z]{8,15}\.(?:com|net)\/401\/\d{7}(?:\?v=\d+)?$/$script,3p,domain=japscan.lol,important
 /^https?:\/\/[a-z]{8,15}\.xyz\/$/$xhr,3p,to=xyz,method=head,header=x-traceid2,domain=japscan.lol,important
 /^https?:\/\/[a-z]{8,15}\.com\/$/$xhr,3p,to=com,method=head,header=x-traceid2,domain=japscan.lol,important
@@ -136,11 +123,10 @@ poophq.com,veev.to##+js(no-xhr-if, url:!/cdn\.plyr\.io|veev\.to|\/dl\?op=player_
 ||c.adsco.re/|$script,redirect=none:5,domain=poophq.com|veev.to
 !#endif
 !#endif
-@@||ads.anitube.vip^$xhr,domain=animefire.info|animesonlinecc.us|animesup.info|animeyabu.net|animeyabu.org|anitube.us|anitube.vip|caroloportunidades.com.br|dattebayo-br.com|drstonebr.com|flyanimes.cloud|goanimes.vip|goyabu.us|hinatasoul.com|isekaibrasil.com|meuanime.info|otakuanimess.net
-@@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xhr,domain=animefire.info|animesonlinecc.us|animesup.info|animeyabu.net|animeyabu.org|anitube.us|anitube.vip|caroloportunidades.com.br|dattebayo-br.com|drstonebr.com|flyanimes.cloud|goanimes.vip|goyabu.us|hinatasoul.com|isekaibrasil.com|meuanime.info|otakuanimess.net
-@@||www.popads.net/js/adblock.js$xhr,domain=animefire.info|animesonlinecc.us|animesup.info|animeyabu.net|animeyabu.org|anitube.us|anitube.vip|caroloportunidades.com.br|dattebayo-br.com|drstonebr.com|flyanimes.cloud|goanimes.vip|goyabu.us|hinatasoul.com|isekaibrasil.com|meuanime.info|otakuanimess.net
+@@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$xhr,domain=caroloportunidades.com.br|flyanimes.cloud
+@@||www.popads.net/js/adblock.js$xhr,domain=caroloportunidades.com.br|flyanimes.cloud
 @@||widgets.outbrain.com/outbrain.js$xhr,domain=animefire.info|animesonlinecc.us|animesup.info|animeyabu.net|animeyabu.org|anitube.us|anitube.vip|caroloportunidades.com.br|dattebayo-br.com|drstonebr.com|flyanimes.cloud|goanimes.vip|goyabu.us|hinatasoul.com|isekaibrasil.com|meuanime.info|otakuanimess.net
-anitube.us,anitube.vip,caroloportunidades.com.br##+js(no-fetch-if, mode:no-cors)
+coempregos.com.br##+js(nostif, hasAdblock)
 @@*$script,3p,from=sonixgvn.net,to=flashvps.xyz|nya.pub
 infinityscans.xyz,infinityscans.net##+js(rpnt, script, / \(?function\(.*catch.* \$\.ajax\(\{/s, $.ajax({ , condition, throw)
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js|$xhr,domain=infinityscans.xyz|infinityscans.net
@@ -152,6 +138,7 @@ infinityscans.xyz,infinityscans.net##+js(rpnt, script, ==0xc8, ==0, condition, t
 ||enigmaswhereas.com^$all
 youtube.com#@#+js(trusted-set-cookie, SOCS, CAISNQgDEitib3FfaWRlbnRpdHlmcm9udGVuZHVpc2VydmVyXzIwMjMwODI5LjA3X3AxGgJlbiADGgYIgJnPpwY, , , reload, 1, domain, youtube.com)
 sportnews.to##+js(aeld, DOMContentLoaded, adsSrc)
+*$script,redirect-rule=noopjs,domain=sportnews.to|sportshub.to
 1001tracklists.com##+js(rmnt, script, .className.indexOf)
 1001tracklists.com##+js(spoof-css, '[target="_blank"][rel="noopener noreferrer"]', display, block)
 ||nakamasweb.com^$badfilter
