@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.5.5
+// @version         3.8.5.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1147,6 +1147,11 @@ else if (matchDomain('artnet.com')) {
 
 else if (matchDomain('asia.nikkei.com')) {
   setCookie('xbc', '', 'nikkei.com', '/', 0);
+  waitDOMElement('div.tp-modal', 'DIV', removeDOMElement, true);
+  waitDOMElement('div.tp-backdrop', 'DIV', removeDOMElement, true);
+  let body = document.querySelector('body');
+  if (body)
+    body.style = 'height: auto !important; overflow: auto !important';
   let banners = 'div#pianoj_ribbon, div#paywall-offer';
   hideDOMStyle(banners);
 }
