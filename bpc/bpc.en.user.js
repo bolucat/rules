@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.5.6
+// @version         3.8.5.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1440,6 +1440,8 @@ else if (matchDomain('cnbc.com')) {
 }
 
 else if (matchDomain('cnn.com')) {
+  let subwall = document.querySelector('div[data-component-id="subwall"]');
+  removeDOMElement(subwall);
   let regwall_keys = Object.keys(window.localStorage).filter(x => x.match(/reg_?wall/i));
   for (let item of regwall_keys)
     window.localStorage.removeItem(item);
@@ -3812,6 +3814,11 @@ else if (matchDomain('voguebusiness.com')) {
   }
 }
 
+else if (matchDomain('vox.com')) {
+  let ads = 'div[id^="div-gpt-ad-"]';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('washingtonpost.com')) {
   if (window.location.pathname.startsWith('/comments') && window.location.search.startsWith('?storyUrl=')) {
     let wrapper = document.querySelector('div#comments-wrapper');
@@ -4113,7 +4120,7 @@ else if ((domain = matchDomain(usa_lee_ent_domains)) || matchDomain(ca_torstar_d
       let banners = document.querySelectorAll('div.subscription-required, div.redacted-overlay');
       removeDOMElement(...banners);
     }
-    let ads = 'div.tnt-ads-container, div[class*="adLabelWrapper"]';
+    let ads = 'div.tnt-ads-container, div[class*="adLabelWrapper"], div.globalHeaderBillboard';
     hideDOMStyle(ads);
   }
 }

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.5.2
+// @version         3.8.5.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -247,16 +247,6 @@ else if (matchDomain('cicero.de')) {
   }
   let urban_ad_sign = document.querySelectorAll('.urban-ad-sign');
   removeDOMElement(...urban_ad_sign);
-}
-
-else if (matchDomain('deraktionaer.de')) {
-  func_post = function () {
-    header_nofix(article_sel, paywall_sel, 'BPC > no external site-fix');
-  }
-  let paywall_sel = 'div#paywall-container';
-  let article_sel = 'div#article-body';
-  let url = window.location.href;
-  getOchToUnlock(url, paywall_sel, '', article_sel);
 }
 
 else if (matchDomain('faz.net')) {
