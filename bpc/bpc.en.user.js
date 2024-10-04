@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.5.7
+// @version         3.8.5.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1441,7 +1441,13 @@ else if (matchDomain('cnbc.com')) {
 
 else if (matchDomain('cnn.com')) {
   let subwall = document.querySelector('div[data-component-id="subwall"]');
-  removeDOMElement(subwall);
+  if (subwall) {
+    removeDOMElement(subwall);
+    let noscroll = document.querySelector('html[style]');
+    if (noscroll)
+      noscroll.removeAttribute('style');
+    waitDOMAttribute('html', 'HTML', 'style', node => node.removeAttribute('style'), true);
+  }
   let regwall_keys = Object.keys(window.localStorage).filter(x => x.match(/reg_?wall/i));
   for (let item of regwall_keys)
     window.localStorage.removeItem(item);

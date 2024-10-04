@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.5.3
+// @version         3.8.5.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -195,7 +195,7 @@ else if (matchDomain('bild.de')) {
       if (content)
         content.style = 'margin: 10px;';
     }
-    let div_empty = document.querySelectorAll('div[style');
+    let div_empty = document.querySelectorAll('div[style]');
     for (let elem of div_empty)
       if (!elem.innerText.length)
         removeDOMElement(elem);
@@ -234,7 +234,27 @@ else if (matchDomain('boersen-zeitung.de')) {
 else if (matchDomain('cicero.de')) {
   let url = window.location.href;
   if (!window.location.search.match(/(\?|&)amp/)) {
-    amp_redirect('.plenigo-paywall');
+    let paywall = document.querySelector('.plenigo-paywall');
+    if (paywall) {
+      removeDOMElement(paywall);
+      func_post = function () {
+        let related_images = document.querySelectorAll('amp-carousel a > amp-img[src]');
+        for (let elem of related_images) {
+          let img = document.createElement('img');
+          Object.assign(img, {
+            src: elem.getAttribute('src'),
+            height: elem.getAttribute('height'),
+            width: elem.getAttribute('width'),
+            alt: elem.getAttribute('alt')
+          });
+          elem.parentNode.replaceChild(img, elem);
+        }
+        let img_captions = document.querySelectorAll('div.carousel-caption:empty');
+        removeDOMElement(...img_captions);
+      }
+      let url_amp = url.split('?')[0] + '?amp';
+      replaceDomElementExt(url_amp, false, false, '.field-name-field-cc-body');
+    }
   } else {
     let teasered_content = document.querySelector('.teasered-content');
     if (teasered_content)
@@ -936,10 +956,18 @@ else if (matchDomain('wiwo.de')) {
       for (let elem of lazy_images)
         elem.style = 'width: 95%;';
     }
-    header_nofix('article', 'wiwo-paywall-ftc', 'BPC > no archive-fix');
+    let paywall = document.querySelector('wiwo-paywall-ftc');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let article = document.querySelector(article_sel);
+      if (article)
+        article.before(googleSearchToolLink(url));
+      header_nofix(article_sel, '', 'BPC > no archive-fix');
+    }
   }
+  let article_sel = 'article';
   let url = window.location.href;
-  getArchive(url, 'div.o-paywall', '', 'article');
+  getArchive(url, 'div.o-paywall', '', article_sel);
   if (!mobile) {
     let banner = 'div.c-overscroller';
     hideDOMStyle(banner, 5);
@@ -1053,6 +1081,21 @@ function matchDomain(domains, hostname) {
     domains = [domains];
   domains.some(domain => (hostname === domain || hostname.endsWith('.' + domain)) && (matched_domain = domain));
   return matched_domain;
+}
+
+function urlHost(url) {
+  if (/^http/.test(url)) {
+    try {
+      return new URL(url).hostname;
+    } catch (e) {
+      console.log(`url not valid: ${url} error: ${e}`);
+    }
+  }
+  return url;
+}
+
+function matchUrlDomain(domains, url) {
+  return matchDomain(domains, urlHost(url));
 }
 
 function setCookie(name, value, domain, path, days, localstorage_hold = false) {
@@ -1365,6 +1408,10 @@ function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is 
   return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href, url, text_fail);
 }
 
+function googleSearchToolLink(url, text_fail = 'BPC > Try for full article text (test url & copy html (tab) code to [https://codebeautify.org/htmlviewer]):\r\n') {
+  return externalLink(['search.google.com'], 'https://search.google.com/test/rich-results?url={url}', encodeURIComponent(url), text_fail);
+}
+
 function nftLink(url, text_fail = 'BPC > Full article text:\r\n') {
   return externalLink(['1ft.io'], 'https://{domain}/{url}', url, text_fail);
 }
@@ -1605,7 +1652,7 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
   } else
     article.parentNode.replaceChild(article_new, article);
 }
-  
+
 function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_slash = false) {
   let paywall = document.querySelectorAll(paywall_sel);
   let article = document.querySelector(article_sel);
