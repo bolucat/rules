@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Fri, 04 Oct 2024 13:50:46 +0000
-! Diff-Path: ../patches/2024.10.4.926.patch#ublock-filters
+! Last modified: Sat, 05 Oct 2024 16:26:46 +0000
+! Diff-Path: ../patches/2024.10.5.989.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -8970,7 +8970,6 @@ pixiv.net##div[style="position: static; z-index: auto;"] + div[style^="margin-le
 pixiv.net##section ul > li:has(> iframe[name="infeed"])
 mercurynews.com##+js(set, CnnXt.Event.fire, noopFunc)
 mercurynews.com##.dfp-ad
-@@||mercurynews.com^$ghide
 /wp-content/client-mu-plugins/src/Paywall/static/js/connext-paywall-analytics.min.js
 ||cdn.http.anno.channel4.com/m/1/$media,domain=uktvplay.uktv.co.uk
 u.co.uk,uktvplay.co.uk,uktvplay.uktv.co.uk##+js(no-xhr-if, fwmrm.net)
@@ -8993,6 +8992,7 @@ yahoo.com###HPSPON-ad
 www.yahoo.com##.sticky[class*="top-"]:has(style)
 www.yahoo.com##[id^="mid-center-ad"]
 www.yahoo.com##body#news-content-app li:has(.inset-0)
+www.yahoo.com##body.font-yahoobeta > div.items-center:has(style)
 jpopsingles.eu##+js(nano-sib, downloadTimer)
 jpopsingles.eu##+js(acs, document.createElement, /l\.parentNode\.insertBefore\(s/)
 jpopsingles.eu##+js(noeval-if, adsBlocked)
@@ -9143,9 +9143,10 @@ d0000d.com,d000d.com,d0o0d.com,do0od.com,dood.*,doods.pro,doodstream.*,dooood.*,
 ||dexchangegenius.com^
 ||rfsjuxlip.com^
 $popup,3p,domain=ds2play.com,badfilter
-/banners^$xhr,domain=doodstreams.net|megacloud.*
-doodstreams.net,megacloud.*###overlay-center
 hianime.to##[href="https://1flix.to/"]
+###vidcloud-player > #overlay-container
+/embed-1/ajax/e-1/banners|$xhr,1p,strict1p
+/ajax/embed-4/banners|$xhr,1p,strict1p
 /ajax/banner/vpn|$xhr,1p,strict1p
 /ajax/banners?page=$xhr,1p,strict1p
 ||iili.io/JvfIu1a.gif$image
@@ -10570,6 +10571,17 @@ deadline.com##+js(rmnt, script, admbenefits)
 ||dailymotion.com^$domain=le10sport.com
 ||mosqueventure.com^
 ||taprippier.com^
+javfc2.xyz##+js(aeld, click, doThePop)
+javfc2.xyz##+js(nowoif)
+javfc2.xyz##+js(acs, globalThis, break;case)
+javfc2.xyz##+js(no-fetch-if, thanksgivingdelights)
+javfc2.xyz##+js(aost, document.createElement, yes.onclick)
+ruidrive.com##+js(no-fetch-if, method:GET)
+! xcinema. ro => embed.hideiframe. com player popups
+embed.hideiframe.com##+js(nowoif)
+/gamatotv\.info/[a-z0-9]{32}.js/$script,1p,domain=gamatotv.info
+gamatotv.info###ads5
+||zqvee2re50mr.com^$all
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -19249,9 +19261,6 @@ filemoon.*##+js(aopr, FMPoopS)
 filemooon.top##+js(noeval-if, popunder)
 embedmoon.*,filemoon.*,kerapoxy.*##+js(acs, document.querySelectorAll, popMagic)
 embedmoon.*,filemoon.*,kerapoxy.*##+js(acs, Math, /window\['(?:\\x[0-9a-f]{2}){2}/)
-/^filemoon-.*\.xyz$/##+js(nowoif)
-/^filemoon-.*\.xyz$/##+js(acs, Math, localStorage['\x)
-*$xhr,1p,redirect-rule=nooptext,domain=/^filemoon-.*\.xyz$/
 filemoon-59t9ep5j.xyz,filemoon-nv2xl8an.xyz##+js(acs, Math.floor, urls.length)
 *$script,3p,denyallow=gstatic.com,domain=filemoon-59t9ep5j.xyz|filemoon-nv2xl8an.xyz 
 ||filemoon.nl/ad/imp?$xhr,redirect-rule=nooptext
@@ -20474,6 +20483,7 @@ tvtv.ca,tvtv.us##.css-laxwha:style(height: 2400px !important;)
 tvtv.ca,tvtv.us##.css-3vwr5v:style(height: 2400px !important;)
 tvtv.ca,tvtv.us##.css-1j9nufa:style(height: 1560px !important;)
 !#endif
+ipalibrary.me##+js(aost, fetch, checkDomain)
 ipalibrary.me##+js(nosiif, _0x)
 igay69.com##+js(nosiif, show)
 ! ads https://swisscows. com/en/web?query=running+shoes
@@ -21702,7 +21712,7 @@ jackofalltradesmasterofsome.com,jaktsidan.se,japannihon.com,javboys.*,javcock.co
 kacikcelebrytow.com,kagohara.net,kakiagune.com,kali.wiki,kana-mari-shokudo.com,kanaeblog.net,kandisvarlden.com,karaoke4download.com,kawaguchimaeda.com,kaystls.site,kenkou-maintenance.com,kenta2222.com,keroseed.*,kgs-invest.com,kh-pokemon-mc.com,khabarbyte.com,khabardinbhar.net,khohieu.com,kickcharm.com,kinisuru.com,kits4beats.com,kllproject.lv,knowstuff.in,know-how-tree.com,kobitacocktail.com,kodaika.com,kodewebsite.com,kokosovoulje.com,kolcars.shop,kolnovel.online,kompiko.pl,koreanbeauty.club,korogashi-san.org,korsrt.eu.org,kotanopan.com,koume-in-huistenbosch.net,krx18.com,kukni.to,kupiiline.com,kurosuen.live##+js(noeval-if, /chp_?ad/)
 labstory.in,ladypopularblog.com,lamorgues.com,lampungkerja.com,lapaginadealberto.com,lascelebrite.com,latinlucha.es,law101.org.za,lawweekcolorado.com,learnedclub.com,learnmany.in,learnchannel-tv.com,learnodo-newtonic.com,learnospot.com,learnslovak.online,lebois-racing.com,lectormh.com,leechyscripts.net,leeapk.com,legendaryrttextures.com,lendrive.web.id,letrasgratis.com.ar,levismodding.co.uk,lgcnews.com,lglbmm.com,lheritierblog.com,ligaset.com,limcasports.xyz,limontorrent.com,limontorrents.com,linkskibe.com,linkvoom.com,linkz.wiki,linux-talks.com,linuxexplain.com,lionsfan.net,literarysomnia.com,littlepandatranslations.com,livefootballempire.com,lk21org.com,loanpapa.in,locurainformaticadigital.com,logofootball.net,lookism.me,lordfix.xyz,lotus-tours.com.hk,ltpcalculator.in,luchaonline.com,luciferdonghua.in,luckymood777.com,lucrebem.com.br,lustesthd.cloud,lustesthd.lat,lycee-maroc.com##+js(noeval-if, /chp_?ad/)
 m4u.*,macrocreator.com,madevarquitectos.com,magesypro.*,maisondeas.com,maketoss.com,makeupguide.net,makotoichikawa.net,malluporno.com,mamtamusic.in,mangcapquangvnpt.com,manhastro.com,mantrazscan.com,marketedgeofficial.com,marketing-business-revenus-internet.fr,marketrevolution.eu,masashi-blog418.com,mastakongo.info,masterpctutoriales.com,maths101.co.za,matomeiru.com,matshortener.xyz,mcrypto.*,mdn.lol,medeberiya1.com,mediascelebres.com,medytour.com,meilblog.com,memorialnotice.com,mentalhealthcoaching.org,meteoregioneabruzzo.it,mhscans.com,michiganrugcleaning.cleaning,midis.com.ar,minddesignclub.org,minecraftwild.com,minhasdelicias.com,mitaku.net,mitsmits.com,mixmods.com.br,mm-scans.org,mmorpgplay.com.br,mockupcity.com,mockupgratis.com,modele-facture.com,modyster.com,monaco.co.il,morinaga-office.net,mosttechs.com,moto-station.com,motofan-r.com,moviemod.online,movierr.site,movieping.com,movies4u.*,moviesnipipay.me,mrfreemium.blogspot.com,mscdroidlabs.es,msonglyrics.com,mtech4you.com,multimovies.tech,mundovideoshd.com,murtonroofing.com,musicforchoir.com,musictip.net,mxcity.mx,mxpacgroup.com,my-ford-focus.de,myglamwish.com,myicloud.info,mylinkat.com,mylivewallpapers.com,mypace.sasapurin.com,myqqjd.com,mytectutor.com,myunity.dev,myviptuto.com##+js(noeval-if, /chp_?ad/)
-nagpurupdates.com,naijagists.com,naijdate.com,najboljicajevi.com,nakiny.com,nameart.in,nartag.com,naturalmentesalute.org,naturomicsworld.com,naveedplace.com,navinsamachar.com,neet.wasa6.com,neifredomar.com,nekoscans.com,nemumemo.com,nepaljobvacancy.com,neservicee.com,netsentertainment.net,neuna.net,newbookmarkingsite.com,newfreelancespot.com,newlifefuneralhomes.com,news-geinou100.com,newscard24.com,newstechone.com,nghetruyenma.net,nhvnovels.com,nichetechy.com,nin10news.com,nicetube.one,ninjanovel.com,nishankhatri.*,niteshyadav.in,nknews.jp,nkreport.jp,noanyi.com,nobodycancool.com,noblessetranslations.com,nocfsb.com,nocsummer.com.br,nodenspace.com,notandor.cn,note1s.com,notesformsc.org,noteshacker.com,novel-gate.com,novelbob.com,novelread.co,nsfwr34.com,nsw2u.*,nswdownload.com,nswrom.com,ntucgm.com,nudeslegion.com,nukedfans.com,nukedpacks.site,nulledmug.com,nxbrew.com,nyangames.altervista.org,nylonstockingsex.net##+js(noeval-if, /chp_?ad/)
+nagpurupdates.com,naijagists.com,naijdate.com,najboljicajevi.com,nakiny.com,nameart.in,nartag.com,naturalmentesalute.org,naturomicsworld.com,naveedplace.com,navinsamachar.com,neet.wasa6.com,neifredomar.com,nekoscans.com,nemumemo.com,nepaljobvacancy.com,neservicee.com,netsentertainment.net,neuna.net,newbookmarkingsite.com,newfreelancespot.com,newlifefuneralhomes.com,news-geinou100.com,newscard24.com,newstechone.com,nghetruyenma.net,nhvnovels.com,nichetechy.com,nin10news.com,nicetube.one,ninjanovel.com,nishankhatri.*,niteshyadav.in,nknews.jp,nkreport.jp,noanyi.com,nobodycancool.com,noblessetranslations.com,nocfsb.com,nocsummer.com.br,nodenspace.com,noikiiki.info,notandor.cn,note1s.com,notesformsc.org,noteshacker.com,novel-gate.com,novelbob.com,novelread.co,nsfwr34.com,nsw2u.*,nswdownload.com,nswrom.com,ntucgm.com,nudeslegion.com,nukedfans.com,nukedpacks.site,nulledmug.com,nxbrew.com,nyangames.altervista.org,nylonstockingsex.net##+js(noeval-if, /chp_?ad/)
 oatuu.org,oberschwaben-tipps.de,obituary-deathnews.com,obituaryupdates.com,odekake-spots.com,officialpanda.com,ofppt.net,ofwork.net,okblaz.me,olamovies.store,omeuemprego.online,omusubi-56rin.com,onehack.us,onestringlab.com,onlinetechsamadhan.com,onneddy.com,onyxfeed.com,openstartup.tm,opiniones-empresas.com,oracleerpappsguide.com,orenoraresne.com,oromedicine.com,orunk.com,osteusfilmestuga.online,otakuliah.com,oteknologi.com,otokukensaku.jp,ottrelease247.com,ovnihoje.com##+js(noeval-if, /chp_?ad/)
 pabryyt.one,palofw-lab.com,paminy.com,pandaatlanta.com,pantube.top,paolo9785.com,papafoot.click,papahd.club,paris-tabi.com,parisporn.org,parking-map.info,pasokau.com,passionatecarbloggers.com,passportaction.com,pc-guru.it,pc-hobby.com,pc-spiele-wiese.de,pcgamedownload.net,pcgameszone.com,pdfstandards.net,pedalpower.online,pepar.net,personefamose.it,petitestef.com,pflege-info.net,phoenix-manga.com,phonefirmware.com,physics101.co.za,picgiraffe.com,pilsner.nu,piratemods.com,piximfix.com,plantatreenow.com,plc4free.com,pliroforiki-edu.gr,plutoscripts.xyz,poapan.xyz,pogga.org,pondit.xyz,ponsel4g.com,poplinks.*,porlalibreportal.com,pornfeel.com,porninblack.com,portaldoaz.org,portaldosreceptores.org,postazap.com,postblog.xyz,posturecorrectorshop-online.com,prague-blog.co.il,praveeneditz.com,premierftp.com,prensa.click,pressemedie.dk,pressurewasherpumpdiagram.com,pricemint.in,primemovies.pl,prismmarketingco.com,proapkdown.com,projuktirkotha.com,promiblogs.de,promimedien.com,promisingapps.com,protestia.com,psicotestuned.info,psychology-spot.com,publicdomainq.net,publicdomainr.net,publicidadtulua.com,pupuweb.com,putlog.net,pynck.com##+js(noeval-if, /chp_?ad/)
 quatvn.club,questionprimordiale.fr,quicktelecast.com##+js(noeval-if, /chp_?ad/)
@@ -21881,7 +21891,7 @@ wp.pl,money.pl,o2.pl,pudelek.pl,gadzetomania.pl,polygamia.pl,dobreprogramy.pl,au
 pysznosci.pl,fotoblogia.pl,komorkomania.pl,dobreprogramy.pl,autokult.pl,genialne.pl,gadzetomania.pl,polygamia.pl,jastrzabpost.pl##div[class]:has(> style:first-child:has-text(flex: 0 0 100%) + div > div > style:first-child:has-text(flex: 0 0 100%) + div):not(:has([data-st-area^="czyt_dalej"]))
 autokult.pl,komorkomania.pl,fotoblogia.pl,kafeteria.pl,smaczneblogi.pl##div[class]:has(> div[class]:empty + img[src^="https://i.wpimg.pl/"])
 autokult.pl,money.pl##body > div > div[style^="height: "]:has(> a)
-!kobieta.wp.pl,abczdrowie.pl##body > div > div:has(> div:only-child > div:only-child > a:first-child + div:empty:last-child)
+kobieta.wp.pl,abczdrowie.pl,money.pl##div:has(> div:only-child > div:only-child > a:first-child + div:empty:last-child)
 sportowefakty.wp.pl,kafeteria.pl,fitness.wp.pl,o2.pl,abczdrowie.pl##div[class*=" "]:has(> div:first-child > div:first-child:empty):matches-css(z-index: 0):matches-css(position: relative)
 pogoda.wp.pl,sportowefakty.wp.pl,kafeteria.pl,fitness.wp.pl,smaczneblogi.pl,o2.pl,forum.kardiolo.pl##div[class*=" "]:has(> div:empty):matches-css(z-index: 0):matches-css(position: relative)
 o2.pl,horoskop.wp.pl,pysznosci.pl,www.wp.pl,genialne.pl,abczdrowie.pl,autocentrum.pl,jastrzabpost.pl##div[class]:has(> img[src] ~ div:empty):matches-css(z-index: 0):matches-css(position: relative)

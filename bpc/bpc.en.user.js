@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.5.8
+// @version         3.8.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -24,6 +24,8 @@
 // @match           *://*.epoch.org.il/*
 // @match           *://*.europower.no/*
 // @match           *://*.fiskeribladet.no/*
+// @match           *://*.forbes.ua/*
+// @match           *://*.gitflic.ru/*
 // @match           *://*.haaretz.co.il/*
 // @match           *://*.independent.ie/*
 // @match           *://*.indiatoday.in/*
@@ -169,26 +171,16 @@ var usa_nymag_domains = ['curbed.com', 'grubstreet.com', 'nymag.com', 'thecut.co
 var usa_outside_mag_domains = ["backpacker.com", "betamtb.com", "betternutrition.com", "cleaneatingmag.com", "climbing.com", "outsideonline.com", "oxygenmag.com", "skimag.com", "trailrunnermag.com", "triathlete.com", "vegetariantimes.com", "womensrunning.com", "yogajournal.com"];
 var usa_tribune_domains = ['baltimoresun.com', 'capitalgazette.com', 'chicagotribune.com', 'courant.com', 'dailypress.com', 'mcall.com', 'nydailynews.com', 'orlandosentinel.com', 'pilotonline.com', 'sun-sentinel.com'];
 
-if (matchDomain('gitlab.com') && window.location.pathname.startsWith('/magnolia1234')) {
-  let bio = document.querySelector('p.profile-user-bio');
-  if (bio) {
-    let split = bio.innerText.split(/(https:[\w\-/.]+)|\|/g).filter(x => x && x.trim());
-    bio.innerText = '';
-    for (let part of split) {
-      let elem;
-      if (part.startsWith('https')) {
-        elem = document.createElement('a');
-        elem.innerText = part;
-        elem.href = part;
-        elem.appendChild(document.createElement('br'));
-      } else {
-        elem = document.createElement('b');
-        elem.appendChild(document.createTextNode(part));
-        if (!part.includes(':'))
-          elem.appendChild(document.createElement('br'));
-      }
-      bio.appendChild(elem);
-    }
+if (matchDomain('gitflic.ru')) {
+  if (window.location.pathname.startsWith('/project/magnolia1234/bpc_uploads') && document.head) {
+    let sheet = document.createElement('style');
+    let path_short = window.location.pathname.replace('/project/magnolia1234/bpc_uploads', '');
+    if (!path_short)
+      sheet.innerText = 'div[data-cell-type="commit"], div[data-cell-type="date"] {display: none !important;} div[data-cell-type="filename"] {flex: 0 0 100% !important;}';
+    else if (path_short.match(/^\/(blob|file)/))
+      sheet.innerText = 'div.project-files-tree, div.project-files-list {flex: 0 0 50% !important; max-width: 50% !important;}';
+    if (sheet.innerText)
+      document.head.appendChild(sheet);
   }
 }
 
@@ -1889,6 +1881,23 @@ else if (matchDomain('forbes.com')) {
   hideDOMStyle(ads);
 }
 
+else if (matchDomain('forbes.ua')) {
+  let paywall = document.querySelector('div.js-closed-part');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = parseHtmlEntities(json.articleBody).replace(/\n/g, "$&\r\n");
+        let article = document.querySelector('div.c-post-text');
+        if (json_text && article)
+          article.innerText = json_text;
+      }
+    }
+  }
+}
+
 else if (matchDomain('foreignaffairs.com')) {
   let paywall = document.querySelector('.paywall');
   let loading_indicator = document.querySelector('.loading-indicator');
@@ -2303,6 +2312,24 @@ else if (matchDomain('nationalgeographic.com')) {
   }, 2000);
   let ads = 'div.ad-slot, div.InsertedAd, div.natgeo-ad';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('nationalreview.com')) {
+  if (!window.location.pathname.endsWith('/amp/')) {
+    let paywall_sel = 'div.continue-reading';
+    let paywall = document.querySelector(paywall_sel);
+    if (paywall) {
+      let amphtml = document.querySelector('head > link[rel="amphtml"][href]');
+      if (amphtml && !amphtml.href.includes(window.location.pathname)) {
+        removeDOMElement(paywall);
+        refreshCurrentTab();
+      } else if (true)
+        getJsonUrl(paywall_sel, '', 'div.article-content', {art_class: 'article-content article-content--headless'});
+    }
+  }
+  let banners = 'div.zephr-wrapper, div#bc-root, div.cookie-text';
+  let ads = 'amp-ad, .ad-unit, .ad-skeleton, amp-connatix-player, div[class*="-connatix-"]';
+  hideDOMStyle(banners + ', ' + ads);
 }
 
 else if (matchDomain('nautil.us')) {
