@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Sat, 05 Oct 2024 16:26:46 +0000
-! Diff-Path: ../patches/2024.10.5.989.patch#ublock-filters
+! Last modified: Sun, 06 Oct 2024 16:54:41 +0000
+! Diff-Path: ../patches/2024.10.6.1044.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -9853,9 +9853,9 @@ zee5.com##+js(json-prune-fetch-response, adDetails, , propsToMatch, /secure?)
 zee5.com##.vjs-control-bar:style(display: flex !important;)
 thejakartapost.com##.tjp-single__content-ads:remove()
 ||adconfig.ster.nl/adurl$xhr,3p,domain=nos.nl
-$frame,csp=sandbox allow-downloads allow-forms allow-modals allow-same-origin allow-scripts,to=~buymeacoffee.com|~cbox.ws|~chatango.com|~cloudflare.com|~dailymotion.com|~discord.com|~disqus.com|~edgecastcdn.net|~emturbovid.com|~facebook.com|~frembed.*|~google.*|~hcaptcha.com|~mixdrop.*|~ok.ru|~recaptcha.net|~twitter.com|~vidmoly.*|~vixcloud.co|~youtu.be|~youtube.com|~x.com,from=1jour1film.*|animefever.cc|animeunity.to|bluphim.*|dailypudding.com|detodopeliculas.nu|hianime.to|kaas.ro|kickassanime.*|kipflix.vercel.app|kissanime.*|phimmoifhd.com|seriescultes.store|soccerinhd.com|visualnewshub.com|xsportbox.com
+$frame,csp=sandbox allow-downloads allow-forms allow-modals allow-same-origin allow-scripts,to=~buymeacoffee.com|~cbox.ws|~chatango.com|~cloudflare.com|~dailymotion.com|~discord.com|~disqus.com|~edgecastcdn.net|~emturbovid.com|~facebook.com|~frembed.*|~google.*|~hcaptcha.com|~mixdrop.*|~ok.ru|~recaptcha.net|~strcdn.org|~twitter.com|~vidmoly.*|~vixcloud.co|~youtu.be|~youtube.com|~x.com,from=1jour1film.*|animefever.cc|animeunity.to|bluphim.*|dailypudding.com|detodopeliculas.nu|hianime.to|kaas.ro|kickassanime.*|kipflix.vercel.app|kissanime.*|phimmoifhd.com|seriescultes.store|soccerinhd.com|visualnewshub.com|xsportbox.com
 !#if env_firefox
-$frame,csp=sandbox allow-downloads allow-forms allow-modals allow-same-origin allow-scripts,to=~buymeacoffee.com|~cbox.ws|~chatango.com|~cloudflare.com|~dailymotion.com|~discord.com|~disqus.com|~edgecastcdn.net|~emturbovid.com|~facebook.com|~frembed.*|~google.*|~hcaptcha.com|~mixdrop.*|~ok.ru|~recaptcha.net|~twitter.com|~vidmoly.*|~vixcloud.co|~youtu.be|~youtube.com|~x.com,from=antennasports.ru|dlhd.so|euro2024direct.ru|putlockers.*|roselife.site|roshy.tv
+$frame,csp=sandbox allow-downloads allow-forms allow-modals allow-same-origin allow-scripts,to=~buymeacoffee.com|~cbox.ws|~chatango.com|~cloudflare.com|~dailymotion.com|~discord.com|~disqus.com|~edgecastcdn.net|~emturbovid.com|~facebook.com|~frembed.*|~google.*|~hcaptcha.com|~mixdrop.*|~ok.ru|~recaptcha.net|~strcdn.org|~twitter.com|~vidmoly.*|~vixcloud.co|~youtu.be|~youtube.com|~x.com,from=antennasports.ru|dlhd.so|euro2024direct.ru|hurawatch.art|putlockers.*|roselife.site|roshy.tv
 !#endif
 euro2024direct.ru##+js(acs, document.createElement, break;case)
 ###video_player ~ div[id] div[style^="position:fixed;inset:0px;z-index:"]
@@ -10555,7 +10555,7 @@ redgifs.com##+js(json-prune, gifs.[-].cta)
 smailpro.com##+js(set, adsbygoogle_ama_fc_has_run, true)
 autopareri.com##+js(acs, jQuery, adblock)
 koramaup.com##+js(no-xhr-if, pagead2.googlesyndication.com)
-!#if !env_devbuild
+!#if !ext_devbuild
 koramaup.com##+js(rpnt, script, 200===r.status, 0===r.status, condition, getNextDownloadPageLink)
 !#endif
 koramaup.com##+js(rpnt, script, return r.responseText, return `a.getAttribute("data-ad-client")||""`, condition, getNextDownloadPageLink)
@@ -10579,8 +10579,8 @@ javfc2.xyz##+js(aost, document.createElement, yes.onclick)
 ruidrive.com##+js(no-fetch-if, method:GET)
 ! xcinema. ro => embed.hideiframe. com player popups
 embed.hideiframe.com##+js(nowoif)
-/gamatotv\.info/[a-z0-9]{32}.js/$script,1p,domain=gamatotv.info
-gamatotv.info###ads5
+/\bgamatotv\.info\/[a-z0-9]{32}\.js\b/$script,domain=gamatotv.info|gmtcloud.best
+gamatotv.info,gmtcloud.best###ads5
 ||zqvee2re50mr.com^$all
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
@@ -15291,6 +15291,11 @@ tekfiz.com##ins.adsbygoogle
 files.fm##+js(aopr, canRunAds)
 ||cdn.flashtalking.com^$media,redirect=noopmp3-0.1s,domain=app.plex.tv
 app.plex.tv##+js(json-prune, MediaContainer.Metadata.[].Ad)
+!#if env_firefox
+imasdk.googleapis.com##+js(no-xhr-if, vod.provider.plex.tv/ad?, war:noop-vast3.xml)
+!#else
+||vod.provider.plex.tv/ad?$xhr,redirect=noopvast-3.0
+!#endif
 ||neonime.*/wp-content/themes/grifus/images/donate/yunita/
 discoveryplus.in##+js(no-fetch-if, ads)
 ! androidhexzone.blogspot.com anti-adb
@@ -16647,7 +16652,7 @@ ustream.click##+js(acs, RegExp, 'shift')
 ustream.click##^script:has-text('shift')
 ustream.click##^script:has-text(\'shift\')
 1cloudfile.com##+js(no-xhr-if, pagead2.googlesyndication.com)
-!#if !env_devbuild
+!#if !ext_devbuild
 1cloudfile.com##+js(rpnt, script, 200===r.status, 0===r.status, condition, getNextDownloadPageLink)
 !#endif
 1cloudfile.com##+js(rpnt, script, return r.responseText, return `a.getAttribute("data-ad-client")||""`, condition, getNextDownloadPageLink)
@@ -19145,6 +19150,7 @@ utopiascans.com##+js(ra, href, [href*="discord"])
 @@||streamingcommunity.*/$xhr,1p
 @@/popup*$script,1p,domain=streamingcommunity.*
 streamingcommunity.*##+js(no-xhr-if, /thaudray\.com|putchumt\.com/)
+streamingcommunity.*##+js(set, adBlockDetected, noopFunc)
 !#if env_firefox
 @@||googletagmanager.com/gtag/js$xhr,domain=streamingcommunity.*
 !#endif
@@ -21890,8 +21896,6 @@ wp.pl,money.pl,o2.pl,parenting.pl,pudelek.pl,autokult.pl,gadzetomania.pl,fotoblo
 wp.pl,money.pl,o2.pl,pudelek.pl,gadzetomania.pl,polygamia.pl,dobreprogramy.pl,autokult.pl,fotoblogia.pl,komorkomania.pl,abczdrowie.pl,pysznosci.pl,money.pl,genialne.pl,deliciousmagazine.pl,jastrzabpost.pl,vibez.pl##div[class]:has(> img[src] + div > style:has-text(flex: 0 0 100%))
 pysznosci.pl,fotoblogia.pl,komorkomania.pl,dobreprogramy.pl,autokult.pl,genialne.pl,gadzetomania.pl,polygamia.pl,jastrzabpost.pl##div[class]:has(> style:first-child:has-text(flex: 0 0 100%) + div > div > style:first-child:has-text(flex: 0 0 100%) + div):not(:has([data-st-area^="czyt_dalej"]))
 autokult.pl,komorkomania.pl,fotoblogia.pl,kafeteria.pl,smaczneblogi.pl##div[class]:has(> div[class]:empty + img[src^="https://i.wpimg.pl/"])
-autokult.pl,money.pl##body > div > div[style^="height: "]:has(> a)
-kobieta.wp.pl,abczdrowie.pl,money.pl##div:has(> div:only-child > div:only-child > a:first-child + div:empty:last-child)
 sportowefakty.wp.pl,kafeteria.pl,fitness.wp.pl,o2.pl,abczdrowie.pl##div[class*=" "]:has(> div:first-child > div:first-child:empty):matches-css(z-index: 0):matches-css(position: relative)
 pogoda.wp.pl,sportowefakty.wp.pl,kafeteria.pl,fitness.wp.pl,smaczneblogi.pl,o2.pl,forum.kardiolo.pl##div[class*=" "]:has(> div:empty):matches-css(z-index: 0):matches-css(position: relative)
 o2.pl,horoskop.wp.pl,pysznosci.pl,www.wp.pl,genialne.pl,abczdrowie.pl,autocentrum.pl,jastrzabpost.pl##div[class]:has(> img[src] ~ div:empty):matches-css(z-index: 0):matches-css(position: relative)
@@ -21925,7 +21929,7 @@ www.wp.pl##div[data-bdc="section-celebrities"] > .wp-inner-content > div:has(> d
 www.wp.pl##div[class*=" "]:has(> div > div:first-child > div:first-child > a[href^="https://www.wp.pl/"]:first-child):matches-css(max-width: 420px):remove()
 www.wp.pl##.app-container > div:has(> div > div > div + img[src^="https://v.wpimg.pl/"] + div:empty)
 www.wp.pl##div:has(> div:first-child:empty + div:empty)
-money.pl##div:has-text(> style:has-text(flex: 0 0 100%))
+money.pl##div:has(> style:first-child:has-text(flex: 0 0 100%) + div)
 wiadomosci.wp.pl##div:has(> div[data-native-adv] > a[href*="utm_"])
 !#endif
 ~www.wp.pl,wp.pl##header + div[data-reactid]:has(> div:only-child > div:first-child > div:only-child > a > div:only-child:empty)
@@ -21939,11 +21943,11 @@ money.pl##div[data-breakpoint] > div > div > main > div:first-child:has(a[href="
 money.pl##div:not([class], [id]):has(> div:not([class], [id]) > div:first-child > div:first-child > iframe[scrolling="no"][frameborder="0"])
 money.pl###app > div:first-child > div:not([class], [id]):has(> div:not([class^="sc-"]))
 money.pl##.adsize_content > div + div:has(> div > a img[loading="lazy"])
+money.pl###app > div:first-child > div:has(> div:only-child:empty)
 genialne.pl,jastrzabpost.pl##div[style="background: #ddd9d9; margin-bottom: 10px; width: 100%;"]
 wiadomosci.wp.pl##div:has(> div:first-child > img[src^="https://v.wpimg.pl/"][height="45"][width="56"])
 pysznosci.pl###bottom-sticky-container > div:matches-attr(class=/^[a-zA-Z]{2}$/):not([id])
-parenting.pl,abczdrowie.pl##main + div:has(> div > a img[src^="https://v.wpimg.pl/"])
-kobieta.wp.pl,wiadomosci.wp.pl##div[data-alternative-wrapper]:has(> div > div > a > img[src^="https://v.wpimg.pl/"])
+parenting.pl##div[data-element="wide-placeholder"][style]
 deliciousmagazine.pl##div[style="min-height: 400px; height: auto;"]:has([class^="cdc-products"])
 turystyka.wp.pl##[data-reactid]:has(> div > div > span > div > .border > .container > .w_boxContent > a.w_contentLink[target="_blank"][rel="noreferrer noopener"] > img[width="100%"])
 abczdrowie.pl,domodi.pl,forum.kardiolo.pl##*:has(> div:first-child:has(> div:first-child > a > img[src^="https://v.wpimg.pl/"]):not([alt], [id], [width], [data-src]) + div:empty)
@@ -21951,13 +21955,15 @@ abczdrowie.pl,domodi.pl,forum.kardiolo.pl##*:has(> div:first-child:has(> div:fir
 sportowefakty.wp.pl##.article > .article__top + div:has(> div:last-child > div > div > div[id^="div-gpt-ad-"])
 sportowefakty.wp.pl##.article-footer + div:has(> div:last-child > div > div > div > div[id^="div-gpt-ad-"])
 abczdrowie.pl##div[data-element="s3-placeholder"]
+turystyka.wp.pl##div[style="min-height: 400px; height: auto;"]:has(> div > div > div > .border > .container > .labelCopy:has-text(REKLAMA))
 wp.pl##body > [data-container] > div[class]:empty
+wp.pl###comments > div > div > div:has(> div:first-child > div:only-child > div:only-child > div:last-child > div:first-child > div > a > img[src^="https://v.wpimg.pl/"][alt="null"])
+abczdrowie.pl##
 ! against blinking ads
-kobieta.wp.pl,wiadomosci.wp.pl,film.wp.pl##header + [data-alternative-wrapper]:has(> div > div > a > img[src^="https://v.wpimg.pl/"])
 ~www.wp.pl,wp.pl#@#div:matches-css-after(content:/R.*E.*K.*L.*A.*M.*A/):upward(1)
-~www.wp.pl,wp.pl##div:has(> a:first-child:has(> div:empty:only-child) + div:empty:last-child)
+~www.wp.pl,wp.pl,money.pl##div:has(> a:first-child:has(> div:empty:only-child) + div:empty:last-child):remove()
 ~www.wp.pl,wp.pl##div:has(> div:first-child:has(> div:only-child > a > div:empty:only-child) + div:last-child:empty)
-~www.wp.pl,wp.pl##div:has(> div:first-child:has(> a:only-child > img[src^="https://v.wpimg.pl/"]) + div:empty:last-child)
+~www.wp.pl,wp.pl,abczdrowie.pl,parenting.pl##div:has(> div:first-child:has(> a:first-child > img[src^="https://v.wpimg.pl/"]) + div:empty:last-child)
 @@||googletagmanager.com/gtm.js$script,domain=abczdrowie.pl
 ||imasdk.googleapis.com/js/sdkloader/ima3_debug.js$script,redirect=google-ima.js,domain=vibez.pl
 tralhasvarias.blogspot.com##+js(nano-stb, decodeURL, *)
