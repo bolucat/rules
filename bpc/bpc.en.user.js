@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.6.2
+// @version         3.8.6.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1138,12 +1138,31 @@ else if (matchDomain('artnet.com')) {
 }
 
 else if (matchDomain('asia.nikkei.com')) {
-  setCookie('xbc', '', 'nikkei.com', '/', 0);
-  waitDOMElement('div.tp-modal', 'DIV', removeDOMElement, true);
-  waitDOMElement('div.tp-backdrop', 'DIV', removeDOMElement, true);
-  let body = document.querySelector('body');
-  if (body)
-    body.style = 'height: auto !important; overflow: auto !important';
+  let paywall = document.querySelector('div#paywall-offer');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div#article-body-preview > div');
+    if (article) {
+      let json_script = document.querySelector('script#__NEXT_DATA__');
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text);
+          if (json && json.props.pageProps.data.body) {
+            let json_text = json.props.pageProps.data.body;
+            if (!json_text.includes('<div>'))
+              json_text = '<div>' + json_text + '</div>';
+            let parser = new DOMParser();
+            let doc = parser.parseFromString(json_text, 'text/html');
+            let article_new = doc.querySelector('div');
+            article.parentNode.replaceChild(article_new, article);
+          } else
+            refreshCurrentTab();
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  }
   let banners = 'div#pianoj_ribbon, div#paywall-offer';
   hideDOMStyle(banners);
 }
@@ -1427,6 +1446,8 @@ else if (matchDomain('cnbc.com')) {
     for (let elem of span_hidden) {
       elem.removeAttribute('hidden');
       elem.removeAttribute('class');
+      if (elem.innerText)
+        elem.innerText = elem.innerText.split('DISCLOSURES: (None)')[0];
     }
   }
 }
@@ -3678,7 +3699,10 @@ else if (matchDomain(no_dn_media_domains)) {
 }
 
 else if (matchDomain(usa_conde_nast_domains)) {
-  let banners = 'aside.paywall-bar, div[class^="MessageBannerWrapper-"], div.ad-stickyhero';
+  let maps = document.querySelectorAll('div.map_wrapper');
+  for (let elem of maps)
+    elem.style.visibility = 'visible';
+  let banners = 'aside.paywall-bar, div[class^="MessageBannerWrapper-"], div.ad-stickyhero, div.ad_wrapper';
   hideDOMStyle(banners);
 }
 

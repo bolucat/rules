@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.5.4
+// @version         3.8.5.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -956,13 +956,13 @@ else if (matchDomain('wiwo.de')) {
       for (let elem of lazy_images)
         elem.style = 'width: 95%;';
     }
-    let paywall = document.querySelector('wiwo-paywall-ftc');
+    let paywall = document.querySelector('wiwo-paywall-ftc, wiwoplus-paywall');
     if (paywall) {
-      removeDOMElement(paywall);
+      let archive_links = document.querySelectorAll('div#bpc_archive');
+      removeDOMElement(paywall, ...archive_links);
       let article = document.querySelector(article_sel);
       if (article)
         article.before(googleSearchToolLink(url));
-      header_nofix(article_sel, '', 'BPC > no archive-fix');
     }
   }
   let article_sel = 'article';

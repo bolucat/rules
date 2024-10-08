@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 7iRSWYsBBksib/eHTA5sBQ
-! Diff-Path: ../patches/7/7-s-1728315374-3600.patch
+! Checksum: bzrOzC2aJtSVeUyo+5iLoQ
+! Diff-Path: ../patches/7/7-s-1728408992-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.57.54
-! TimeUpdated: 2024-10-07T15:32:12+00:00
+! Version: 2.0.57.60
+! TimeUpdated: 2024-10-08T17:32:33+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -492,8 +492,7 @@ yourfones.net##+js(spoof-css, ins.adsbygoogle, display, block)
 mytry.jp#@#.ad_box
 mytry.jp#$#body > #container { display: block !important; }
 ! anti-adb
-wiki.yjsnpi.nu#$#.ad { height: 0 !important; }
-@@||wiki.yjsnpi.nu/plugins/betube-ads/$xmlhttprequest,domain=wiki.yjsnpi.nu
+@@||wiki.yjsnpi.nu^$image,xmlhttprequest,~third-party
 @@||wiki.yjsnpi.nu^$generichide
 ! https://github.com/AdguardTeam/AdguardFilters/issues/190069
 gunauc.net##+js(no-fetch-if, pagead2.googlesyndication.com)
@@ -852,6 +851,7 @@ nasubiblog.com,kyukyoku-matome.com##.widget_pc_ad
 ! Bad: example.org##.adv (should be in specific.txt)
 !
 !
+##iframe[src^="https://gallerieshub.com/"]
 ##.full-tab > div.full-right-col
 ##.__isboostReturnAd
 ##.__uz__third_party_ad
@@ -1515,6 +1515,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/uploads/2024/09/fanza_ad$image
 !
 ! Malware/Phishing
+/M0cSmwEr00JP1/*$document
 .cn/bot/bot.php|$document
 ://jap.*/?cep=$document
 ://s3.*.amazonaws.com/*.*.*.*.*.*.*/index.html$document
@@ -1671,8 +1672,8 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 .com/regist.php?*/1|$document
 /ap/signin/openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.co.jp$document,domain=cn|top|xyz
 /index.php?route=product/product&product_id=$document,domain=cyou|life|live|shop|xyz|~ocam.live
-/index.php?main_page=product_info*&cPath=$document,domain=asia|bar|beauty|best|bond|buzz|cam|cfd|click|cloud|cyou|fit|fun|homes|icu|ink|life|live|ltd|me|monster|online|pics|quest|ru.com|sa.com|sbs|shop|site|space|store|tokyo|top|website|work|xyz|za.com
-/index.php?main_page=product_info&products_id=$document,domain=asia|bar|beauty|best|bond|buzz|cam|cfd|click|cloud|cyou|fit|fun|homes|icu|ink|life|live|ltd|me|monster|online|pics|quest|ru.com|sa.com|sbs|shop|site|space|store|tokyo|top|website|work|xyz|za.com
+/index.php?main_page=product_info*&cPath=$document,domain=asia|bar|beauty|best|bond|buzz|cam|cfd|click|cloud|cyou|fit|fun|homes|icu|ink|life|live|ltd|me|monster|one|online|pics|quest|ru.com|sa.com|sbs|shop|site|space|store|tokyo|top|website|work|xyz|za.com
+/index.php?main_page=product_info&products_id=$document,domain=asia|bar|beauty|best|bond|buzz|cam|cfd|click|cloud|cyou|fit|fun|homes|icu|ink|life|live|ltd|me|monster|one|online|pics|quest|ru.com|sa.com|sbs|shop|site|space|store|tokyo|top|website|work|xyz|za.com
 ://eki*.*.com/Personal/member/Login/index.php?oneTimeAccessID=$document
 /\.(?:club|cn|icu|top|pro|site|work)\/Personal\/member\/Login\/index\.php\?oneTimeAccessID=/$document,domain=club|cn|icu|top|pro|site|work
 !
@@ -1744,9 +1745,12 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+deneblog.jp#?#.plugin1_outline:contains(スポンサーバナー)
+||kaigai-antenna.com/ads/
+kaigai-antenna.com##.posts > div[id]:not([class])
 overjoyed.info##.dfad:has(> ins.adsbygoogle)
 ||kijonotakuhaibin.com/ads/
-kijonotakuhaibin.com##div[id^="articleAd"]
+kijyomita.com,kijonotakuhaibin.com##div[id^="articleAd"]
 kyoiku.pref.ibaraki.jp###banner-area
 pref.yamaguchi.lg.jp##.footer_banner_box
 city.ibaraki-koga.lg.jp##.adv-area-wrapper
@@ -5276,7 +5280,6 @@ thetv.jp###rewardModal
 city.matsuyama.ehime.jp###lokokoku
 web.pref.hyogo.lg.jp,city.koriyama.lg.jp##.footer_banner
 ||d20aeo683mqd6t.cloudfront.net/*/banner/becos/becos-tj-banner
-deneblog.jp#?##first > div.plugin1_outline > div.plugin1_outline:contains(スポンサーバナー)
 deneblog.jp###eqlast
 deneblog.jp###shadowv
 deneblog.jp##.page_navi > center > a:not([href^="https://deneblog.jp"]):not([href^="/blog-entry-"]):not([href*="fc2.com"]) > img
@@ -5562,8 +5565,6 @@ virtualgorillaplus.com##li[class="type2 border_radius"]
 virtualgorillaplus.com###single_banner_area
 nkskad.com,ogurigo.jp,life-alright.com,asianews2ch.jp,gri.jp,bigyond2.com,otonarisoku.com,haru-journal.com###widget-tracking
 phuot.site##p > a[target="_blank"] > img
-myjitsu.jp##article[id^="related-post-ad"]
-myjitsu.jp##.ad-footer-box
 aidoly.net##div[class^="ad-list"]
 cybersyndrome.net##.noIE6
 gamepedia.jp##.ad-toc-bottom
@@ -10644,7 +10645,7 @@ blog.livedoor.jp#?#.first-article > div[align="center"] > p:contains(/^スポン
 blog.livedoor.jp#?#.plugin-memo > div#gad-fixed-r2:upward(1)
 blog.livedoor.jp#?#.plugin-memo > div.side > #mgs_Widget:upward(2)
 cafeblog.jp,youblog.jp,ldblog.jp,blog.livedoor.jp,blogo.jp#?#.plugin-memo:has(> div.side > a[href*="dmm.co"]:not([href*="/mono/dvd/"]))
-blog.livedoor.jp#?#.plugin-memo > div.side > center > a[href^="http://amzn.to"]:upward(3)
+livejupiter2.blog.jp,blog.livedoor.jp##.plugin-memo:has(> div.side > center > a[href*="://amzn.to"])
 blog.livedoor.jp#?#.plugin-memo > div.side > center > ins.adsbygoogle:upward(3)
 blog.livedoor.jp#?#.plugin-memo > div.side > div > ins.dmm-widget-placement:upward(3)
 blog.livedoor.jp#?#.plugin-memo > div.side > div.amazon_tool:upward(2)
