@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.6.3
+// @version         3.8.6.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -80,6 +80,7 @@
 // @exclude         *://*.expansion.com/*
 // @exclude         *://*.faz.net/*
 // @exclude         *://*.globo.com/*
+// @exclude         *://*.handelsblatt.com/*
 // @exclude         *://*.journaldunet.com/*
 // @exclude         *://*.la-croix.com/*
 // @exclude         *://*.larioja.com/*
@@ -2449,22 +2450,6 @@ else if (matchDomain('nytimes.com')) {
     waitDOMElement('div#dock-container', 'DIV', removeDOMElement, false);
     let banners = 'div[data-testid="inline-message"], div[id^="ad-"], div.pz-ad-box';
     hideDOMStyle(banners);
-  } else {
-    function theathletic_func(node) {
-      removeDOMElement(node);
-      let overlays = 'div[id*="overlay"], div#article-container-grid div:empty:not([data-rjs])';
-      hideDOMStyle(overlays);
-      let body = document.querySelector('body');
-      if (body) {
-        body.style.overflow = 'visible';
-        body.style.position = 'relative';
-        window.scrollTo(0, 1000);
-      }
-    }
-    waitDOMElement('div[id^="slideup-"]', 'DIV', theathletic_func);
-    waitDOMElement('iframe[src*="regwall"]', 'IFRAME', removeDOMElement);
-    let apron = document.querySelector('div#free-apron-cta, div.slideup-free-apron-container');
-    removeDOMElement(apron);
   }
 }
 

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.5.5
+// @version         3.8.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -11,6 +11,7 @@
 // @match           *://*.de/*
 // @match           *://*.beobachter.ch/*
 // @match           *://*.faz.net/*
+// @match           *://*.handelsblatt.com/*
 // @match           *://*.handelszeitung.ch/*
 // @match           *://*.kurier.at/*
 // @match           *://*.nzz.ch/*
@@ -477,6 +478,25 @@ else if (matchDomain('golem.de')) {
   }
   getOchToUnlock(url, 'div.paywall-wrapper', '', 'article');
   let ads = 'div[id^="iqadtile"]';
+}
+
+else if (matchDomain('handelsblatt.com')) {
+  let paywall = document.querySelector('app-paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('article');
+    if (article) {
+      let url = window.location.href;
+      article.after(googleSearchToolLink(url));
+      header_nofix('article', '', 'BPC > refresh page');
+    }
+  }
+  window.localStorage.removeItem('HB.METERING');
+  let overlay = document.querySelector('div[id^="sp_message_container_"]');
+  removeDOMElement(overlay);
+  let noscroll = document.querySelector('html[class]');
+  if (noscroll)
+    noscroll.removeAttribute('class');
 }
 
 else if (matchDomain('heise.de')) {
