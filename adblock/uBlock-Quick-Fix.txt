@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Wed, 09 Oct 2024 14:33:12 +0000
-! Diff-Path: ../patches/2024.10.9.926.patch#ublock-quick-fixes
+! Last modified: Thu, 10 Oct 2024 14:22:23 +0000
+! Diff-Path: ../patches/2024.10.10.991.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -83,8 +83,9 @@ japscan.lol#@#+js(aeld, DOMContentLoaded, /^[-$0-9A-Z_a-z]+=>\{var .{400\,500}\)
 japscan.lol#@#+js(aeld, DOMContentLoaded, /^[-$0-9A-Z_a-z]+=>\{[a-z]{3\,5} .{400\,500}\);\}$/)
 japscan.lol##+js(aeld, DOMContentLoaded, (e)=>)
 japscan.lol#@#+js(rmnt, script, =document[\'createElement\'](\'img\');)
-japscan.lol##+js(acs, document.querySelectorAll, ('img)
-japscan.lol##+js(rmnt, script, un'+'de)
+japscan.lol#@#+js(rmnt, script, un\'+\'de)
+japscan.lol#@#+js(acs, document.querySelectorAll, (\'img)
+japscan.lol##+js(rmnt, script, ;}else{if(typeof )
 /^https?:\/\/[-a-z]{8,15}\.(?:com|net)\/401\/\d{7}(?:\?v=\d+)?$/$script,3p,domain=japscan.lol,important
 /^https?:\/\/[a-z]{8,15}\.xyz\/$/$xhr,3p,to=xyz,method=head,header=x-traceid2,domain=japscan.lol,important
 /^https?:\/\/[a-z]{8,15}\.com\/$/$xhr,3p,to=com,method=head,header=x-traceid2,domain=japscan.lol,important
@@ -119,7 +120,7 @@ poophq.com,veev.to##+js(set, fapit.check, noopFunc)
 !poophq.com,veev.to##+js(no-xhr-if, url:!/cdn\.plyr\.io|veev\.to|\/dl\?op=player_api/ method:GET)
 poophq.com,veev.to##+js(no-xhr-if, /vast.php?)
 poophq.com,veev.to##+js(no-xhr-if, adsbygoogle, length:35000-55000)
-poophq.com,veev.to##+js(no-xhr-if, /\/ad-provider\.js$/, length:35000-200000)
+poophq.com,veev.to##+js(trusted-set, __abburim, {"value": "import"})
 poophq.com,veev.to##+js(no-xhr-if, /\/preroll\.engine$/)
 *$script,3p,domain=poophq.com|veev.to,redirect-rule=noopjs
 *$other,3p,denyallow=veevcdn.co,domain=poophq.com|veev.to
@@ -156,6 +157,7 @@ gunauc.net#@#+js(prevent-fetch, pagead2.googlesyndication.com)
 wiki.yjsnpi.nu#@#.ad:style(height: 0 !important;)
 @@||wiki.yjsnpi.nu^$image,xhr,1p
 @@||wiki.yjsnpi.nu^$ghide
+wiki.yjsnpi.nu##.mw-file-element, .lazy-image-placeholder:style(visibility: visible !important;)
 adacomi.com#@#body > div[style^="text-align:center;"]
 ibarakinews.jp#@#.l-grid-banner
 ibarakinews.jp#@#div[class^="l-ad"]
@@ -164,3 +166,4 @@ kahoku.news#@#.vr2_pickup-main
 yahoo.com#@#+js(set, rapidInstance, {})
 yahoo.com#@#+js(set, rapidInstance.beaconLinkViews, noopFunc)
 yahoo.com#@#+js(set, rapidInstance.beaconClick, noopFunc)
+iwb.jp##+js(nostif, getComputedStyle(a).height)
