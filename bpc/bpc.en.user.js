@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.6.5
+// @version         3.8.6.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -538,7 +538,7 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'motorsportmagazine.com', 'scotsman.com', 'tes.com', 'thelawyer.com', 'thetimes.com', 'unherd.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'thelawyer.com', 'thetimes.com', 'unherd.com'])) {//united kingdom/ireland
 
 if (matchDomain('apollo-magazine.com')) {
   setCookie('blaize_session', '', 'apollo-magazine.com', '/', 0);
@@ -743,6 +743,11 @@ else if (matchDomain('motorsportmagazine.com')) {
   let banner = document.querySelector('div[data-behaviour="react-paywall-threshold"]');
   removeDOMElement(banner);
   let ads = 'aside.ad-space';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('newstatesman.com')) {
+  let ads = 'div.ad';
   hideDOMStyle(ads);
 }
 

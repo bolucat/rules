@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Unbreak
 ! Expires: 5 days
-! Last modified: Thu, 10 Oct 2024 12:19:57 +0000
-! Diff-Path: ../patches/2024.10.10.991.patch#ublock-unbreak
+! Last modified: Fri, 11 Oct 2024 12:25:00 +0000
+! Diff-Path: ../patches/2024.10.11.1044.patch#ublock-unbreak
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/unbreak.txt ***
@@ -10,7 +10,7 @@
 @@||awstrack.me/*auth.coindesk.com$doc,popup
 ! swagbucks.com - restore inactive
 @@||awstrack.me/*cmd=ac-inactive-restore$doc,popup
-@@||track.adtraction.com/*&url=https://www.gog.com/$popup,domain=gamingonlinux.com|isthereanydeal.com|rpgcodex.net
+@@||track.adtraction.com/*&url=https://www.gog.com/$popup
 ||track.adtraction.com/*&url=https://www.gog.com/$urlskip=?url
 ! END: Click trackings
 ||2mdn.net/instream/video/client.js$script,redirect=noopjs,domain=video.foxnews.com
@@ -1880,7 +1880,8 @@ gloucestershirelive.co.uk##+js(set, chameleonVideo.adDisabledRequested, true)
 @@||google.com/adsense/search/ads.js$script,domain=diigo.com
 ||join.megaphonetv.com^$3p,badfilter
 @@||video.qq.com/getvinfo$script,1p
-||arcgis.com/apps/instant/node_modules/templates-common-library/structuralFunctionality/telemetry/AppMeasurement.js$script,1p,redirect-rule=noopjs
+||arcgis.com/apps/instant/node_modules/templates-common-library/structuralFunctionality/telemetry/AppMeasurement.js^$script,1p,redirect=noopjs
+||noaa.maps.arcgis.com/apps/instant/*/AppMeasurement.js$1p,important
 /google-tag-manager.min.js$script,domain=511tactical.com,redirect-rule=googletagmanager_gtm.js
 ! herz-fuer-tiere.de images hidden
 @@||herz-fuer-tiere.de^$cname
@@ -2698,3 +2699,5 @@ standard.co.uk##+js(nano-stb, 'i||(e(),i=!0)', 2500, 0.001)
 ||pruefernavi.de/vendor/elasticsearch/elastic-apm-rum.umd.min.js$1p,important
 pruefernavi.de##+js(set, elasticApm, {})
 pruefernavi.de##+js(set, elasticApm.init, noopFunc)
+/analytics/analytics.js^$1p,script,redirect=noop.js
+||assets.fyers.in/Lib/analytics/Analytics.js$1p,important
