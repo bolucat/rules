@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.6.6
+// @version         3.8.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -33,6 +33,7 @@
 // @match           *://*.ipolitics.ca/*
 // @match           *://*.japantimes.co.jp/*
 // @match           *://*.livelaw.in/*
+// @match           *://*.magazyn-kuchnia.pl/*
 // @match           *://*.nation.africa/*
 // @match           *://*.nautil.us/*
 // @match           *://*.niagarafallsreview.ca/*
@@ -45,7 +46,9 @@
 // @match           *://*.stcatharinesstandard.ca/*
 // @match           *://*.uxdesign.cc/*
 // @match           *://*.wellandtribune.ca/*
+// @match           *://*.wyborcza.biz/*
 // @match           *://*.wyborcza.pl/*
+// @match           *://*.wysokieobcasy.pl/*
 // @connect         archive.fo
 // @connect         archive.is
 // @connect         archive.li
@@ -4046,13 +4049,18 @@ else if (matchDomain('wsj.com')) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('wyborcza.pl')) {
+else if (matchDomain(['wyborcza.biz', 'wyborcza.pl', 'wysokieobcasy.pl', 'magazyn-kuchnia.pl'])) {
   let url = window.location.href;
   func_post = function () {
     let empty_spans = document.querySelectorAll('figure > a > span:empty');
     removeDOMElement(...empty_spans);
   }
-  getArchive(url, 'div.article--content-fadeout', '', 'div.container[class*="pt"]', '', 'div.body > div:not([style*="background-color:"]):not([old-position])');
+  if (matchDomain(['wyborcza.biz', 'wyborcza.pl']))
+    getArchive(url, 'div.article--content-fadeout', {rm_attrib: 'class'}, 'div.container[class*="pt"]', '', 'div.body > div:not([style*="background-color:"]):not([old-position])');
+  else
+    getArchive(url, 'section.fade-out-article', {rm_attrib: 'class'}, 'article');
+  let ads = 'div[id^="adUnit"], div[id^="ads-"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('zerohedge.com')) {

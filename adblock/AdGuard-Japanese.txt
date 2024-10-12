@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: bjUr/tUpQwVXa1L/VCmeUw
-! Diff-Path: ../patches/7/7-s-1728650193-3600.patch
+! Checksum: yopn7d7NcVx7CG02yeyPEw
+! Diff-Path: ../patches/7/7-s-1728747375-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.57.68
-! TimeUpdated: 2024-10-11T12:32:36+00:00
+! Version: 2.0.57.72
+! TimeUpdated: 2024-10-12T15:32:30+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -494,7 +494,7 @@ yourfones.net##+js(spoof-css, ins.adsbygoogle, display, block)
 mytry.jp#@#.ad_box
 mytry.jp#$#body > #container { display: block !important; }
 ! anti-adb
-wiki.yjsnpi.nu#$#.mw-file-element, .lazy-image-placeholder { visibility: visible !important; }
+wiki.yjsnpi.nu##+js(abort-on-stack-trace, document.querySelectorAll, yjsnpi.js)
 @@||wiki.yjsnpi.nu^$image,xmlhttprequest,~third-party
 @@||wiki.yjsnpi.nu^$generichide
 ! https://github.com/AdguardTeam/AdguardFilters/issues/190069
@@ -1748,7 +1748,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
-pashplus.jp#?#div[style="clear: both"] > span:contains(あわせて読みたい)
+||eroitaiken.blog.jp/banner/denshoba.png
+pashplus.jp##.content_right > div > span[style^="display: block; font-size: 30px"]:has(+ div#taboola-below-article-thumbnails)
 deneblog.jp#?#.plugin1_outline:contains(スポンサーバナー)
 ||kaigai-antenna.com/ads/
 kaigai-antenna.com##.posts > div[id]:not([class])
@@ -4273,6 +4274,7 @@ idkeijiban.com,kakaoid.com,deai.twitterid.net,leaked.jp,2ch-c.net,the-3rd.net,ha
 kodate-ru.com,sumu-lab.com,sumu-log.com##.respnsvad
 520call.me,video.520cc.cc###inplayer
 sutekicookan.com##.e-wiki_middle_responsive_kk_conf
+||doujinnomori.com/*.php$script
 doujinnomori.com##.wrap > a.site-link-box
 ||shinshi-manga.net/ad/
 ddd-smart.net##iframe[src*="/www/delivery/"]
@@ -6900,6 +6902,7 @@ chimolog.co##.adsbox
 sbapp.net##div[class^="gads-space"]
 hkokuhaku.com###ad_234x
 hkokuhaku.com##.syosai
+maidonanews.jp##.jobs-section
 maidonanews.jp##.layout-main > div.module-ad
 maidonanews.jp##.module-ad__item
 yorozoonews.jp#$?#.module-list-articles__item[style="padding:0px"] { remove: true; }
@@ -10916,6 +10919,8 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_japanese
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/190666#issuecomment-2408330385
+||taboola.com^$domain=pashplus.jp
 ! https://github.com/AdguardTeam/AdguardFilters/issues/184080
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,domain=tver.jp,important
 ! https://gd.gesoten.com/m/ap-ecnavi-games/mypage
