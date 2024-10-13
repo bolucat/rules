@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: yopn7d7NcVx7CG02yeyPEw
-! Diff-Path: ../patches/7/7-s-1728747375-3600.patch
+! Checksum: f1+OelgtGiTddxzb+CdDrw
+! Diff-Path: ../patches/7/7-s-1728840971-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.57.72
-! TimeUpdated: 2024-10-12T15:32:30+00:00
+! Version: 2.0.57.77
+! TimeUpdated: 2024-10-13T17:32:32+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -494,7 +494,8 @@ yourfones.net##+js(spoof-css, ins.adsbygoogle, display, block)
 mytry.jp#@#.ad_box
 mytry.jp#$#body > #container { display: block !important; }
 ! anti-adb
-wiki.yjsnpi.nu##+js(abort-on-stack-trace, document.querySelectorAll, yjsnpi.js)
+$subdocument,redirect-rule=noop.html,domain=wiki.yjsnpi.nu
+wiki.yjsnpi.nu##+js(abort-on-stack-trace, HTMLElement.prototype.remove, yjsnpi)
 @@||wiki.yjsnpi.nu^$image,xmlhttprequest,~third-party
 @@||wiki.yjsnpi.nu^$generichide
 ! https://github.com/AdguardTeam/AdguardFilters/issues/190069
@@ -1518,6 +1519,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/uploads/2024/09/fanza_ad$image
 !
 ! Malware/Phishing
+/?p=(0101)-$document
 /M0cSmwEr00JP1/*$document
 .cn/bot/bot.php|$document
 ://jap.*/?cep=$document
@@ -1681,7 +1683,7 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 /\.(?:club|cn|icu|top|pro|site|work)\/Personal\/member\/Login\/index\.php\?oneTimeAccessID=/$document,domain=club|cn|icu|top|pro|site|work
 !
 /^https:\/\/[a-z]{4,8}\.[a-z]{7,10}\.shop\/product\/\d{4,7}$/$document,match-case
-/^https:\/\/[a-z]{6,8}\.com\/item-[0-9a-z]{10}\.html$/$document,match-case
+/^https:\/\/[-0-9a-z]{6,20}\.com\/item-[0-9a-z]{10}\.html$/$document,match-case
 /^https?:\/\/([-0-9a-z]{3,}\.)?[a-z]{8,}\.[a-z]{3,6}\/product\/\d{6,}(\.html)?$/$document,domain=online|top
 !---------------------------------------------------------------------------!
 !-------------- Rules for specific websites --------------------------------!
@@ -1748,6 +1750,10 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+ciatr.jp##.article-body > div.ArticleComponentButton[id]
+ciatr.jp##.article-body > div.ArticleComponentHtml > div.ach-btn-balloon
+beikokukabu-etf-matome.com##.dividerBottom > aside.widget-main.widget_custom_html
+beikokukabu-etf-matome.com##.widget-side.widget_custom_html
 ||eroitaiken.blog.jp/banner/denshoba.png
 pashplus.jp##.content_right > div > span[style^="display: block; font-size: 30px"]:has(+ div#taboola-below-article-thumbnails)
 deneblog.jp#?#.plugin1_outline:contains(スポンサーバナー)
@@ -1860,7 +1866,6 @@ koe-koe.com##.rss_c
 ||pixel-vault.com^$domain=wiki.yjsnpi.nu
 ||gallerieshub.com^$subdocument,third-party
 wiki.yjsnpi.nu##a[href*="?affid="]
-wiki.yjsnpi.nu##iframe[src*="?affid="]
 j-cast.com##.entry_under_adunit
 j-cast.com##.entry-header__ad-bottom
 j-cast.com##.under_featured_info_job_box
@@ -6150,7 +6155,7 @@ storia.takeshobo.co.jp###r-googleads
 ||mangalifewin.takeshobo.co.jp/usr-data/units/bJava/disp.php
 news.nicovideo.jp##div[style="width:auto;height:90px;margin:0 0 15px 0"]
 news.nicovideo.jp###billboard_container
-financial-field.com,umamusume.net,kyobun.co.jp,thenewslens.com,huffingtonpost.jp,gqjapan.jp,news.nicovideo.jp,peing.net##.ad-container
+news.infoseek.co.jp,financial-field.com,umamusume.net,kyobun.co.jp,thenewslens.com,huffingtonpost.jp,gqjapan.jp,news.nicovideo.jp,peing.net##.ad-container
 media.moneyforward.com##.mp-recommends-text
 media.moneyforward.com##div[class^="mp-fixed-ads"]
 saruwakakun.com##.ct

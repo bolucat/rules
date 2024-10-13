@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.8.4.2
+// @version         3.8.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -53,6 +53,7 @@
 // @match           *://*.levante-emv.com/*
 // @match           *://*.losandes.com.ar/*
 // @match           *://*.marca.com/*
+// @match           *://*.observador.pt/*
 // @match           *://*.politicaexterior.com/*
 // @match           *://*.record.pt/*
 // @match           *://*.regio7.cat/*
@@ -602,6 +603,18 @@ else if (matchDomain('revistaoeste.com')) {
   }
 }
 
+}
+
+if (document.querySelector('head > link[href*="/leaky-paywall"], script[src*="/leaky-paywall"], div[id^="issuem-leaky-paywall-"]')) {
+  let js_cookie = document.querySelector('script#leaky_paywall_cookie_js-js-extra');
+  if (js_cookie && js_cookie.text.includes('"post_container":"')) {
+    let post_sel = js_cookie.text.split('"post_container":"')[1].split('"')[0];
+    if (post_sel) {
+      let post = document.querySelector(post_sel);
+      if (post)
+        post.removeAttribute('class');
+    }
+  }
 }
 
 }, 1000);
