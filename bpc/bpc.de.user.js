@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.7.0
+// @version         3.8.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -790,6 +790,8 @@ else if (matchDomain('tagesspiegel.de')) {
         article.firstChild.before(archiveLink(url));
     }
   }
+  let ads = 'div.iqdcontainer';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('tt.com')) {
@@ -1055,6 +1057,10 @@ else if (matchDomain(de_motor_presse_domains)) {
 }
 
 else if (matchDomain(de_rp_medien_domains)) {
+  func_post = function () {
+    let videos = 'glomex-player';
+    hideDOMStyle(videos, 5);
+  }
   let url = window.location.href;
   getArchive(url, 'div.park-paywall-content', '', 'article');
   let ads = 'div.portal-slot';
