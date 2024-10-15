@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.7.1
+// @version         3.8.7.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3979,7 +3979,7 @@ else if (matchDomain('wsj.com')) {
     }, 1000);
   } else {
     let url_article = window.location.pathname.includes('/articles/');
-    let path_article = window.location.pathname.match(/((\w)+(\-)+){3,}\w+/);
+    let path_article = window.location.pathname.match(/(\w+-){3,}\w+/);
     if (url_article || path_article) {
       if (true) {
         let paywall_sel = '.snippet-promotion, div[id^="cx-snippet-overlay"]';
@@ -4093,12 +4093,16 @@ else if (matchDomain(ke_nation_media_domains)) {
   let paywall = document.querySelectorAll('div.modal, [id*="wall"], section.wall-guard');
   if (paywall.length) {
     removeDOMElement(...paywall);
-    let div_hidden = document.querySelectorAll('div.article-page .nmgp');
-    for (let elem of div_hidden)
-      elem.classList.remove('nmgp');
-    let page_hidden = document.querySelector('div.article-page .hidden');
-    if (page_hidden)
-      page_hidden.classList.remove('hidden');
+    func_post = function () {
+      let div_hidden = document.querySelectorAll('div.article-page .nmgp');
+      for (let elem of div_hidden)
+        elem.classList.remove('nmgp');
+      let page_hidden = document.querySelector('div.article-page .hidden');
+      if (page_hidden)
+        page_hidden.classList.remove('hidden');
+    }
+    let url = window.location.href;
+    replaceDomElementExt(url, false, false, 'div.text-block');
   }
   let banners = 'div.banner, div.spinner';
   hideDOMStyle(banners);
