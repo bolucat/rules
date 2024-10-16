@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.8.7.0
+// @version         3.8.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -53,7 +53,9 @@
 // @match           *://*.levante-emv.com/*
 // @match           *://*.losandes.com.ar/*
 // @match           *://*.marca.com/*
+// @match           *://*.nsctotal.com.br/*
 // @match           *://*.observador.pt/*
+// @match           *://*.ole.com.ar/*
 // @match           *://*.politicaexterior.com/*
 // @match           *://*.record.pt/*
 // @match           *://*.regio7.cat/*
@@ -77,7 +79,7 @@ if (overlay)
 var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"]';
 hideDOMStyle(ads, 10);
 
-var ar_grupo_clarin_domains =['clarin.com', 'lavoz.com.ar', 'losandes.com.ar'];
+var ar_grupo_clarin_domains =['clarin.com', 'lavoz.com.ar', 'losandes.com.ar', 'ole.com.ar'];
 var es_epiberica_domains = ['diariodemallorca.es', 'eldia.es', 'elperiodico.com', 'epe.es', 'farodevigo.es', 'informacion.es', 'laprovincia.es', 'levante-emv.com', 'lne.es', 'mallorcazeitung.es', 'superdeporte.es'];
 var es_epiberica_custom_domains = ['diaridegirona.cat', 'diariocordoba.com', 'diariodeibiza.es', 'elcorreogallego.es', 'elperiodicodearagon.com', 'elperiodicoextremadura.com', 'elperiodicomediterraneo.com', 'emporda.info', 'laopinioncoruna.es', 'laopiniondemalaga.es', 'laopiniondemurcia.es', 'laopiniondezamora.es', 'regio7.cat'];
 var es_grupo_vocento_domains = ['abc.es', 'canarias7.es', 'diariosur.es', 'diariovasco.com', 'elcomercio.es', 'elcorreo.com', 'eldiariomontanes.es', 'elnortedecastilla.es', 'hoy.es', 'ideal.es', 'larioja.com', 'lasprovincias.es', 'laverdad.es', 'lavozdigital.es'];
@@ -357,7 +359,7 @@ if (matchDomain('abril.com.br')) {
 else if (matchDomain(ar_grupo_clarin_domains)) {
   let ads = 'div.ad-slot, div.box-adv, div.wrapperblock, div.banner, div[id^="div-gpt-ad-flotante"]';
   hideDOMStyle(ads);
-  let ads_inline = document.querySelectorAll('div > div.sticky, div > div[id^="div-gpt-ad-inread"], div > div[id^="div-gpt-ad-caja"], div > div[id^="div-gpt-ad-horizontal"]');
+  let ads_inline = document.querySelectorAll('div > div.sticky, div > div.SRA, div > div[id^="div-gpt-ad-inread"], div > div[id^="div-gpt-ad-caja"], div > div[id^="div-gpt-ad-horizontal"]');
   for (let ad of ads_inline)
     hideDOMElement(ad.parentNode);
 }
@@ -581,6 +583,11 @@ else if (matchDomain('latercera.com')) {
   if (paywall)
     removeDOMElement(paywall);
   let ads = 'div.spm';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('nsctotal.com.br')) {
+  let ads = 'div.ad, div[id^="floater"]';
   hideDOMStyle(ads);
 }
 

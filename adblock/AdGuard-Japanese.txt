@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: msU9P1T0G7Ao3QZNkYPBMw
-! Diff-Path: ../patches/7/7-s-1729010241-3600.patch
+! Checksum: Yf99xpdFzao6Il44zaY5mg
+! Diff-Path: ../patches/7/7-s-1729096655-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.57.86
-! TimeUpdated: 2024-10-15T16:33:18+00:00
+! Version: 2.0.57.92
+! TimeUpdated: 2024-10-16T16:33:18+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -495,8 +495,12 @@ mytry.jp#@#.ad_box
 mytry.jp#$#body > #container { display: block !important; }
 ! anti-adb
 $subdocument,redirect-rule=noop.html,domain=wiki.yjsnpi.nu
-wiki.yjsnpi.nu##+js(remove-attr, id, #bodyContent)
-wiki.yjsnpi.nu#$#body span:has(>img), body a:has(>img), body img { height: auto !important; opacity: 1 !important; visibility: visible !important; display: block !important; }
+wiki.yjsnpi.nu##+js(addEventListener-defuser, load, getDate)
+wiki.yjsnpi.nu##+js(abort-on-property-read, HTMLElement.prototype.style)
+wiki.yjsnpi.nu##+js(set-constant, DOMTokenList.prototype.remove, noopFunc)
+wiki.yjsnpi.nu##+js(set-constant, HTMLElement.prototype.remove, noopFunc)
+wiki.yjsnpi.nu#$#body img, body .Inmbox, body .lazy-image-placeholder { width: auto !important; height: auto !important; opacity: 1 !important; visibility: visible !important; display: block !important; color: unset !important; background: none !important; }
+wiki.yjsnpi.nu#$##comments-loading { display: none !important; }
 @@||wiki.yjsnpi.nu^$image,xmlhttprequest,~third-party
 @@||wiki.yjsnpi.nu^$generichide
 ! https://github.com/AdguardTeam/AdguardFilters/issues/190069
@@ -508,9 +512,6 @@ gunauc.net##+js(no-fetch-if, pagead2.googlesyndication.com)
 @@||j-basketball.club^$generichide
 j-basketball.club##ins.adsbygoogle[data-ad-slot]
 h178.com,j-baseball.club,j-basketball.club###gStickyAd
-! https://github.com/AdguardTeam/AdguardFilters/issues/189208
-0115765.com##+js(set-constant, use, false)
-@@||0115765.com/assets/ads/main.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/188965
 ||kuji.xth.jp/ad-x-check.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183252
@@ -1751,6 +1752,7 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+rawkuma.com##.kln > a > img
 geinoukame.com##.left_outline
 ciatr.jp##.article-body > div.ArticleComponentButton[id]
 ciatr.jp##.article-body > div.ArticleComponentHtml > div.ach-btn-balloon
@@ -1938,7 +1940,7 @@ ekme-pk2.hateblo.jp##.entry-content > div[align="center"] > p:has(> script[src^=
 ekme-pk2.hateblo.jp##.entry-content > div[align="center"] > p:has(> script[src^="//xml.affiliate.rakuten.co.jp/"]) ~ p
 skypenguin.net##.entry-content > div.block-box:has(> div.wp-block-columns > div.wp-block-column div.wp-block-button > a[href^="https://amzn.to/"])
 joshi-spa.jp##.csw-content-box:has(> div.csw-content-footer > span.csw-ad-icon)
-qiita.com##div[data-testid="popup-lapras-signup"]
+qiita.com##div[id^="PersonalArticlePage-react-component-"] > div[data-testid^="popup-"][data-testid$="-signup"]
 himanatokiniyaruo.com##div[id^="sponsor"]
 himanatokiniyaruo.com###footer > div:has(> iframe[style*="300px"][style*="250px"])
 weblio.jp###rightMiddleBnrId
@@ -6962,6 +6964,7 @@ connpass.com##.side_ads_area
 doujin-rpgfan.com##.AdsArea
 doujin-rpgfan.com##.AdsArea + table + table
 doujin-rpgfan.com##.right-column-inner > div.plugin-memo
+wiki.yjsnpi.nu###mw-content-text > div[style*="min-height:"]:has(> a[rel*="sponsored"][target="_blank"] > img)
 wiki.yjsnpi.nu###mw-content-text > div[style*="min-height:"]:has(> div[id^="im-"] > script)
 wiki.yjsnpi.nu###mw-content-text > div[style*="min-height:"]:has(> div[style] > div[id^="im-"] > script)
 wiki.yjsnpi.nu##iframe[src*="?affid="]
