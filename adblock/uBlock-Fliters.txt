@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Wed, 16 Oct 2024 15:04:21 +0000
-! Diff-Path: ../patches/2024.10.16.1047.patch#ublock-filters
+! Last modified: Thu, 17 Oct 2024 12:22:30 +0000
+! Diff-Path: ../patches/2024.10.17.811.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -57,7 +57,7 @@ paradisi.de,pc-magazin.de,pcgames.de,pcgameshardware.de,pcwelt.de,pcworld.es,pei
 quoka.de##+js(nostif, .call(null), 10)
 radio.at,radio.de,radio.dk,radio.es,radio.fr,radio.it,radio.net,radio.pl,radio.pt,radio.se,ran.de,readmore.de,rechtslupe.de,recording.de,rennrad-news.de,reuters.com,reviersport.de,rhein-main-presse.de,rheinische-anzeigenblaetter.de,rimondo.com,roadbike.de,roemische-zahlen.net,rollingstone.de,rot-blau.com,rp-online.de,rtl.de,rtv.de,rugby365.fr,ruhr24.de,rundschau-online.de,runnersworld.de##+js(nostif, .call(null), 10)
 safelist.eu,salzgitter-zeitung.de,sat1.de,sat1gold.de,schoener-wohnen.de,schwaebische-post.de,schwarzwaelder-bote.de,serienjunkies.de,shz.de,sixx.de,skodacommunity.de,smart-wohnen.net,sn.at,sozialversicherung-kompetent.de,spiegel.de,spielen.de,spieletipps.de,spielfilm.de,sport.de,sport1.de,sport365.fr,sportal.de,spox.com,stern.de,stuttgarter-nachrichten.de,stuttgarter-zeitung.de,sueddeutsche.de,svz.de,szene1.at,szene38.de##+js(nostif, .call(null), 10)
-t-online.de,tagesspiegel.de,taschenhirn.de,techadvisor.co.uk,techstage.de,tele5.de,testedich.*,the-voice-of-germany.de,thueringen24.de,tichyseinblick.de,tierfreund.co,tiervermittlung.de,torgranate.de,transfermarkt.*,trend.at,truckscout24.*,tv-media.at,tvdigital.de,tvinfo.de,tvspielfilm.de,tvtoday.de,tvtv.*,tz.de##+js(nostif, .call(null), 10)
+t-online.de,tagesspiegel.de,taschenhirn.de,techadvisor.co.uk,techstage.de,tele5.de,teltarif.de,testedich.*,the-voice-of-germany.de,thueringen24.de,tichyseinblick.de,tierfreund.co,tiervermittlung.de,torgranate.de,transfermarkt.*,trend.at,truckscout24.*,tv-media.at,tvdigital.de,tvinfo.de,tvspielfilm.de,tvtoday.de,tvtv.*,tz.de##+js(nostif, .call(null), 10)
 unicum.de,unnuetzes.com,unsere-helden.com,unterhalt.net,usinger-anzeiger.de,usp-forum.de##+js(nostif, .call(null), 10)
 videogameszone.de,vienna.at,vip.de,virtualnights.com,vox.de##+js(nostif, .call(null), 10)
 wa.de,wallstreet-online.de,waz.de,weather.us,webfail.com,weihnachten.me,weihnachts-bilder.org,weihnachts-filme.com,welt.de,weltfussball.at,weristdeinfreund.de,werkzeug-news.de,werra-rundschau.de,wetterauer-zeitung.de,wetteronline.*,wieistmeineip.*,wiesbadener-kurier.de,wiesbadener-tagblatt.de,winboard.org,windows-7-forum.net,winfuture.de,wintotal.de,wlz-online.de,wn.de,wohngeld.org,wolfenbuetteler-zeitung.de,wolfsburger-nachrichten.de,woman.at,womenshealth.de,wormser-zeitung.de,woxikon.de,wp.de,wr.de##+js(nostif, .call(null), 10)
@@ -10548,6 +10548,12 @@ stream4free.*###promo
 ||shebudriftaiter.net^
 ||audiencegarret.com^
 nudezzers.org##+js(rmnt, script, adBlockNotice)
+funnywifiname.net###clickfakeplayer[href]:remove-attr(href)
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,domain=rumble.com,important
+lover937.net##+js(acs, document.write)
+lover937.net##+js(set, checkerimg, noopFunc)
+lover937.net##+js(acs, setTimeout, document.getElementById)
+@@||tpc.googlesyndication.com/daca_images/simgad/$domain=lover937.net
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -11362,6 +11368,7 @@ djpunjab2.in,djqunjab.in,foodxor.com,geniussolutions.co,mealcold.com,mixrootmods
 djqunjab.in,geniussolutions.co###interstitial-container
 geniussolutions.co##+js(aost, document.getElementById, adsBlocked)
 djqunjab.in##+js(rmnt, script, deblocker)
+skillheadlines.in##+js(aost, document.getElementById, adsBlocked)
 hosty.uprwssp.org###btnfianl:style(display: block !important;)
 lootdest.com##+js(nowoif, , 5)
 @@||0.entlysearchin.info^$ping,domain=lootdest.com
@@ -11564,6 +11571,9 @@ ikingfile.mooo.com##+js(nowoif)
 fuckingfast.co##+js(rpnt, script, !seen && ad, false)
 ||fuckingfast.co/f/*/dl^$xhr,1p
 ||senditfast.cloud^$doc
+streamelements.com##+js(set, google_srt, 0)
+streamelements.com##+js(set, sensorsDataAnalytic201505, {})
+||validate.strms.net/*adblock%3Dtrue$doc,uritransform=/adblock%3Dtrue/adblock%3Dfalse/
 !#if env_mobile
 ! *** filters/filters-mobile.txt ***
 !----- 2020 -----
@@ -17045,7 +17055,7 @@ boainformacao.com.br##+js(no-xhr-if, adsbygoogle)
 pinterest.*##a[href*="&epik="]:upward([data-grid-item])
 !pinterest.*##[data-grid-item]:has([aria-label]:not([aria-label*="pinterest"])[href^="http"])
 !#if !env_mobile
-pinterest.*##[data-grid-item]:has([data-test-pin-id] [data-test-id^="one-tap-desktop"] > a[href^="http"][rel="nofollow"])
+! pinterest.*##[data-grid-item]:has([data-test-pin-id] [data-test-id^="one-tap-desktop"] > a[href^="http"][rel="nofollow"])
 !#else
 pinterest.*##[data-grid-item]:has([data-test-pin-id] a[href^="http"][rel] [data-test-id="pincard-oneTap-with-link"])
 !#endif
@@ -17475,7 +17485,7 @@ fitnakedgirls.com##+js(nowoif)
 javporn.tv##.floating-banner
 javporn.tv###text-6
 bunkr.*##+js(aopr, popMagic.init)
-bunkr.*##+js(acs, String.fromCharCode, /btoa|break;case/)
+bunkr.*,bunkr-albums.io##+js(acs, WebAssembly, Promise)
 bunkr.*##^script:has-text(WebAssembly)
 ||bunkr-cache.se/js/script.js$script,domain=bunkr.*
 ||qakzfubfozaj.com^
@@ -19452,7 +19462,7 @@ dogdrip.net,infinityfree.com##ins.adsbygoogle:style(height: 1px !important; visi
 ||html-load.com/report?$xhr
 ||html-load.cc^$font,ping,media
 ||html-load.cc/report?$xhr
-||html-load.com^$script,xhr,domain=blog.esuteru.com|blog.livedoor.jp|itainews.com|hoyme.jp|jin115.com|lamire.jp|picrew.me|ndtvprofit.com|crosswordsolver.com|cruciverba.it|gloria.hr|heureka.cz|javatpoint.com|laleggepertutti.it|m.economictimes.com|meeco.kr|motscroises.fr|oeffnungszeitenbuch.de|ondemandkorea.com|oraridiapertura24.it|palabr.as|rabitsokuhou.2chblog.jp|suzusoku.blog.jp|the-crossword-solver.com|thestockmarketwatch.com|word-grabber.com|wort-suchen.de|woxikon.*|golf-live.at|motherlyvisions.com|kreuzwortraetsel.de|raetsel-hilfe.de|verkaufsoffener-sonntag.com|horairesdouverture24.fr|nyitvatartas24.hu|modhub.us|ff14net.2chblog.jp|news4vip.livedoor.biz|onecall2ch.com|yugioh-starlight.com|winfuture.de
+||html-load.com^$script,xhr,domain=blog.esuteru.com|blog.livedoor.jp|itainews.com|hoyme.jp|jin115.com|lamire.jp|picrew.me|ndtvprofit.com|crosswordsolver.com|cruciverba.it|gloria.hr|heureka.cz|javatpoint.com|laleggepertutti.it|m.economictimes.com|meeco.kr|motscroises.fr|oeffnungszeitenbuch.de|ondemandkorea.com|oraridiapertura24.it|palabr.as|rabitsokuhou.2chblog.jp|suzusoku.blog.jp|the-crossword-solver.com|thestockmarketwatch.com|word-grabber.com|wort-suchen.de|woxikon.*|golf-live.at|motherlyvisions.com|kreuzwortraetsel.de|raetsel-hilfe.de|verkaufsoffener-sonntag.com|horairesdouverture24.fr|nyitvatartas24.hu|modhub.us|ff14net.2chblog.jp|news4vip.livedoor.biz|onecall2ch.com|yugioh-starlight.com|winfuture.de|automobile-catalog.com|motorbikecatalog.com
 .live/fl1hrrg/$doc,popup,domain=live
 .xyz/fl1hrrg/$doc,popup,domain=xyz
 .site/fl1hrrg/$doc,popup,domain=site
@@ -19483,13 +19493,13 @@ a-ha.io,cboard.net,joongdo.co.kr,viva100.com,gamingdeputy.com,alle-tests.nl##+js
 !#if cap_html_filtering
 interfootball.co.kr,a-ha.io,cboard.net,jjang0u.com,joongdo.co.kr,viva100.com,gamingdeputy.com,thesaurus.net,alle-tests.nl,maketecheasier.com,automobile-catalog.com,allthekingz.com,motorbikecatalog.com,tweaksforgeeks.com,m.inven.co.kr,mlbpark.donga.com##^script:has-text(KCgpPT57bGV0IGU)
 badmouth1.com,blog.esuteru.com,blog.livedoor.jp,dziennik.pl,etnews.com,eurointegration.com.ua,flatpanelshd.com,fourfourtwo.co.kr,gadgets360.com,hoyme.jp,itainews.com,iusm.co.kr,jin115.com,lamire.jp,logicieleducatif.fr,missyusa.com,mydaily.co.kr,ndtvprofit.com,picrew.me,taxguru.in,text-compare.com,tweaksforgeeks.com,reportera.co.kr,sportsrec.com,sportsseoul.com,videogamemods.com,wfmz.com,worldhistory.org,onlinegdb.com,winfuture.de,issuya.com,pravda.com.ua,wort-suchen.de,word-grabber.com,palabr.as,motscroises.fr,cruciverba.it,oradesibiu.ro,freemcserver.net,w.grapps.me,gazetaprawna.pl,pressian.com##^script[onload*="error-report.com"]
-automobile-catalog.com,blog.esuteru.com,blog.livedoor.jp,itainews.com,jin115.com,allthetests.com,javatpoint.com,globalrph.com,carscoops.com,crosswordsolver.com,cruciverba.it,ff14net.2chblog.jp,heureka.cz,indiatimes.com,laleggepertutti.it,meeco.kr,motscroises.fr,news4vip.livedoor.biz,oeffnungszeitenbuch.de,onecall2ch.com,oraridiapertura24.it,palabr.as,rabitsokuhou.2chblog.jp,suzusoku.blog.jp,the-crossword-solver.com,thestockmarketwatch.com,word-grabber.com,wort-suchen.de,woxikon.*,freemcserver.net,golf-live.at,kreuzwortraetsel.de,raetsel-hilfe.de,verkaufsoffener-sonntag.com,horairesdouverture24.fr,nyitvatartas24.hu,modhub.us,yugioh-starlight.com,winfuture.de##^script:has-text(error-report.com)
+automobile-catalog.com,motorbikecatalog.com,blog.esuteru.com,blog.livedoor.jp,itainews.com,jin115.com,allthetests.com,javatpoint.com,globalrph.com,carscoops.com,crosswordsolver.com,cruciverba.it,ff14net.2chblog.jp,heureka.cz,indiatimes.com,laleggepertutti.it,meeco.kr,motscroises.fr,news4vip.livedoor.biz,oeffnungszeitenbuch.de,onecall2ch.com,oraridiapertura24.it,palabr.as,rabitsokuhou.2chblog.jp,suzusoku.blog.jp,the-crossword-solver.com,thestockmarketwatch.com,word-grabber.com,wort-suchen.de,woxikon.*,freemcserver.net,golf-live.at,kreuzwortraetsel.de,raetsel-hilfe.de,verkaufsoffener-sonntag.com,horairesdouverture24.fr,nyitvatartas24.hu,modhub.us,yugioh-starlight.com,winfuture.de##^script:has-text(error-report.com)
 worldhistory.org##^script:has-text(adShield)
 pravda.com.ua##^script:has-text(Ad-Shield)
 slobodnadalmacija.hr##^script:has-text(adrecover.com)
 !#else
 interfootball.co.kr,a-ha.io,cboard.net,jjang0u.com,joongdo.co.kr,viva100.com,gamingdeputy.com,thesaurus.net,alle-tests.nl,maketecheasier.com,automobile-catalog.com,allthekingz.com,motorbikecatalog.com,tweaksforgeeks.com,m.inven.co.kr,mlbpark.donga.com##+js(rmnt, script, KCgpPT57bGV0IGU)
-automobile-catalog.com,blog.esuteru.com,blog.livedoor.jp,itainews.com,jin115.com,allthetests.com,javatpoint.com,globalrph.com,carscoops.com,crosswordsolver.com,cruciverba.it,ff14net.2chblog.jp,heureka.cz,indiatimes.com,laleggepertutti.it,meeco.kr,motscroises.fr,news4vip.livedoor.biz,oeffnungszeitenbuch.de,onecall2ch.com,oraridiapertura24.it,palabr.as,rabitsokuhou.2chblog.jp,suzusoku.blog.jp,the-crossword-solver.com,thestockmarketwatch.com,word-grabber.com,wort-suchen.de,woxikon.*,freemcserver.net,golf-live.at,kreuzwortraetsel.de,raetsel-hilfe.de,verkaufsoffener-sonntag.com,horairesdouverture24.fr,nyitvatartas24.hu,modhub.us,yugioh-starlight.com,winfuture.de##+js(rmnt, script, error-report.com)
+automobile-catalog.com,motorbikecatalog.com,blog.esuteru.com,blog.livedoor.jp,itainews.com,jin115.com,allthetests.com,javatpoint.com,globalrph.com,carscoops.com,crosswordsolver.com,cruciverba.it,ff14net.2chblog.jp,heureka.cz,indiatimes.com,laleggepertutti.it,meeco.kr,motscroises.fr,news4vip.livedoor.biz,oeffnungszeitenbuch.de,onecall2ch.com,oraridiapertura24.it,palabr.as,rabitsokuhou.2chblog.jp,suzusoku.blog.jp,the-crossword-solver.com,thestockmarketwatch.com,word-grabber.com,wort-suchen.de,woxikon.*,freemcserver.net,golf-live.at,kreuzwortraetsel.de,raetsel-hilfe.de,verkaufsoffener-sonntag.com,horairesdouverture24.fr,nyitvatartas24.hu,modhub.us,yugioh-starlight.com,winfuture.de##+js(rmnt, script, error-report.com)
 worldhistory.org##+js(rmnt, script, adShield)
 pravda.com.ua##+js(rmnt, script, Ad-Shield)
 slobodnadalmacija.hr##+js(rmnt, script, adrecover.com)
@@ -23420,6 +23430,7 @@ cl1ca.com,4br.me,fir3.net,seulink.*,encurtalink.*##+js(aopr, mm)
 cl1ca.com,4br.me,fir3.net,seulink.*,encurtalink.*##+js(set, blurred, false)
 cl1ca.com,4br.me,fir3.net,seulink.*,encurtalink.*##+js(refresh-defuser, 12)
 *$xhr,3p,domain=app.axenthost.com,redirect-rule=nooptext
+*$image,3p,domain=app.axenthost.com,redirect-rule=1x1.gif
 @@*$xhr,method=head|get,domain=app.axenthost.com,3p
 @@||s.nitropay.com/ads-$script,3p,domain=app.axenthost.com
 @@||axenthost.com^$ghide
@@ -23433,14 +23444,6 @@ freewsad.com##+js(set-local-storage-item, email, true)
 karaoketexty.cz##+js(nostif, /native|\{n\(\)/)
 karaoketexty.cz##+js(ra, style, [style^="background"], stay)
 karaoketexty.cz##+js(ra, href, [target^="_"], stay)
-*.gif$domain=lk21official.*|nontondrama.*,image
-lk21official.*,nontondrama.*##+js(rmnt, script, adsPlay)
-nontondrama.*,playeriframe.*###admad
-lapakbuah.site##.content
-lapakbuah.site##.bg-dark.bottom
-lk21static.xyz##+js(nano-sib)
-lk21official.*###overlay
-stream.hownetwork.xyz###donate
 tucinehd.com##+js(nostif, nextFunction, 2000)
 tucinehd.com##+js(rmnt, script, pop1stp)
 senda.pl##+js(no-fetch-if, googletagmanager)

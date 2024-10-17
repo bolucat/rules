@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.8.4.0
+// @version         3.8.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -253,26 +253,28 @@ else if (matchDomain('sport.sky.it')) {
 
 else if (matchDomain('tuttosport.com')) {
   if (!window.location.pathname.startsWith('/amp/')) {
-    let article_images = document.querySelectorAll('div > img[data-src]:not([src])');
-    for (let elem of article_images) {
-      elem.src = elem.getAttribute('data-src');
-      elem.removeAttribute('class');
-      elem.parentNode.removeAttribute('style');
-    }
-    let main_images = document.querySelectorAll('div > img[class*="ArticleImage_image__"][src]');
-    for (let elem of main_images) {
-      elem.removeAttribute('class');
-    }
-    let video = document.querySelector('div[class^="VideoFloat_videoFloatCont__"]');
-    if (video) {
-      let og_image = document.querySelector('head > meta[property="og:image"][content]');
-      if (og_image) {
-        let og_image_url = og_image.getAttribute('content');
-        if (og_image_url) {
-          let elem = document.createElement('img');
-          elem.src = og_image_url;
-          elem.style = 'width: 95%;';
-          video.parentNode.replaceChild(elem, video);
+    let paywall = document.querySelector('div[class^="MainTextTruncated_premium"]');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let article = document.querySelector('div > div[class^="MainTextTruncated_truncatedContent"]');
+      if (article) {
+        let json_script = document.querySelector('script#__NEXT_DATA__');
+        if (json_script) {
+          try {
+            let json = JSON.parse(json_script.text);
+            if (json && json.props.pageProps.news && json.props.pageProps.news.content) {
+              let url_next = json.props.pageProps.news.href;
+              if (url_next && !window.location.pathname.includes(url_next))
+                window.location.href = window.location.pathname;
+              let parser = new DOMParser();
+              let doc = parser.parseFromString('<div>' + json.props.pageProps.news.content + '</div>', 'text/html');
+              let article_new = doc.querySelector('div');
+              article.parentNode.replaceChild(article_new, article);
+            } else
+              refreshCurrentTab();
+          } catch (err) {
+            console.log(err);
+          }
         }
       }
     }
