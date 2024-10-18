@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.7.2
+// @version         3.8.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1377,6 +1377,27 @@ else if (matchDomain('business-standard.com')) {
 }
 
 else if (matchDomain('businessinsider.com')) {
+  if (window.location.search !== '?rel=plus') {
+    if (window.location.hostname.startsWith('www.')) {
+      let video_section = document.querySelector('section.video-hero-section');
+      if (!video_section) {
+        let paywall = document.querySelector('div.pw-modal-entry');
+        if (paywall) {
+          removeDOMElement(paywall);
+          window.location.href = window.location.pathname + '?rel=plus';
+        }
+      }
+    }
+  } else {
+    let lazy_images = document.querySelectorAll('article div.lazy-holder > img.lazy-image[src^="data:image/"]');
+    for (let elem of lazy_images) {
+      let meta = elem.parentNode.querySelector('meta[itemprop="contentUrl"][content]');
+      if (meta) {
+        elem.src = meta.content;
+        elem.style = 'opacity: 1 !important;';
+      }
+    }
+  }
   let ads = 'div.l-ad, div.in-post-sticky, aside.has-video-ad, div.ad-callout-wrapper';
   hideDOMStyle(ads);
 }
@@ -2822,7 +2843,7 @@ else if (matchDomain('scmp.com')) {
 }
 
 else if (matchDomain('seattletimes.com')) {
-  let ads = '.top-ad-wrapper';
+  let ads = 'div.top-ad-wrapper, div.ad, div.native-ad-article';
   hideDOMStyle(ads);
 }
 
@@ -4212,6 +4233,14 @@ else if ((domain = matchDomain(usa_mcc_domains)) ||
       img.style = 'width: 100%;';
       elem.parentNode.replaceChild(img, elem);
     }
+  } else {
+    let paywall = document.querySelector('p#yzwall');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let pars_hidden = document.querySelectorAll('.yzfade, .yzarret');
+      for (let elem of pars_hidden)
+        elem.removeAttribute('class');
+    }
   }
   let premium_svgs = document.querySelectorAll('h3 > a > svg');
   let premium_link;
@@ -4220,8 +4249,8 @@ else if ((domain = matchDomain(usa_mcc_domains)) ||
     if (premium_link.href.includes('www.'))
       premium_link.href = premium_link.href.replace('www.', 'amp.');
   }
-  let ads = 'div[id^="zone-el-"]';
-  hideDOMStyle(ads);
+  let ads = document.querySelectorAll('div[data-type="ad"]');
+  removeDOMElement(...ads);
 }
 
 else if (matchDomain(usa_mng_domains) || document.querySelector('head > link[rel="stylesheet"][id^="dfm-accuweather-"], footer li > a[href^="https://www.medianewsgroup.com"]')) {

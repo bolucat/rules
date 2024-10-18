@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.7.1
+// @version         3.8.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -10,7 +10,6 @@
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
 // @match           *://*.de/*
 // @match           *://*.beobachter.ch/*
-// @match           *://*.faz.net/*
 // @match           *://*.handelsblatt.com/*
 // @match           *://*.handelszeitung.ch/*
 // @match           *://*.kurier.at/*
@@ -268,150 +267,6 @@ else if (matchDomain('cicero.de')) {
   }
   let urban_ad_sign = document.querySelectorAll('.urban-ad-sign');
   removeDOMElement(...urban_ad_sign);
-}
-
-else if (matchDomain('faz.net')) {
-  if (matchDomain('zeitung.faz.net')) { // legacy
-    let paywall_z = document.querySelector('div.c-red-carpet');
-    if (paywall_z) {
-      removeDOMElement(paywall_z);
-      let og_url = document.querySelector('head > meta[property="og:url"][content]');
-      if (og_url)
-        window.location.href = og_url.content;
-      else
-        header_nofix('div.article__text');
-    }
-    let sticky_advt = document.querySelector('div.sticky-advt');
-    removeDOMElement(sticky_advt);
-  } else {
-    window.setTimeout(function () {
-      let paywall = document.querySelector('div.paywall, div.wall__wrapper');
-      if (paywall) {
-        removeDOMElement(paywall);
-        let fade = document.querySelector('div.regwall');
-        if (fade)
-          fade.removeAttribute('class');
-        let article = document.querySelector('div.body-elements');
-        let article_story_sel = 'div.storyContainer';
-        let article_story = document.querySelector(article_story_sel);
-        if (article || article_story) {
-          let json_script = document.querySelector('script#__NUXT_DATA__');
-          if (json_script) {
-            try {
-              let pars = JSON.parse(json_script.text);
-              let par_index = pars.indexOf('paragraph');
-              if (article && par_index) {
-                let intro_par = document.querySelector('.body-elements__paragraph');
-                if (intro_par && (!pars[par_index + 1] || !pars[par_index + 1].startsWith(intro_par.innerHTML.substring(0, 25))))
-                  refreshCurrentTab();
-                article.innerHTML = '';
-                let sheet = document.createElement('style');
-                sheet.innerText = 'div.body-elements {margin: 0px 50px;} div.body-elements > div {font-family: "Source Serif 4", serif; font-size: 1.25rem; font-weight: 400; line-height: 1.8; padding-bottom: 1.25rem; & a {text-decoration: underline !important;} & em {font-style: italic;} & strong {font-weight: bold;}}';
-                document.head.appendChild(sheet);
-                let parser = new DOMParser();
-                for (let i = par_index - 1; i < pars.length; i++) {
-                  let par = pars[i];
-                  if (par) {
-                    if (par === 'artikel_wall')
-                      break;
-                    let elem;
-                    let type_id = par.bodyElementType;
-                    if (type_id) {
-                      let type = pars[type_id];
-                      if (par.content) {
-                        if (['paragraph', 'heading', 'html'].includes(type)) {
-                          let doc = parser.parseFromString('<div>' + pars[par.content] + '</div>', 'text/html');
-                          elem = doc.querySelector('div');
-                          if (type === 'heading')
-                            elem.style = 'font-weight: 700';
-                        } else
-                          console.log(type);
-                      } else if (type === 'image') {
-                        if (par.imageId) {
-                          let url_id = pars[par.imageId];
-                          let url = pars.find(x => typeof x === 'string' && x.includes('/' + url_id + '/'));
-                          if (url) {
-                            let caption_text = '';
-                            let url_index = pars.indexOf(url);
-                            if (url_index) {
-                              if (typeof pars[url_index - 2] === 'string')
-                                caption_text += pars[url_index - 2];
-                              if (typeof pars[url_index - 1] === 'string')
-                                caption_text += ' ' + pars[url_index - 1];
-                            }
-                            elem = makeFigure(url, caption_text);
-                            elem.appendChild(document.createElement('br'));
-                          }
-                        }
-                      } else if (type === 'relatedArticles') {
-                        let rel_index = pars.indexOf(type);
-                        if (rel_index) {
-                          elem = document.createElement('div');
-                          elem.appendChild(document.createTextNode('MEHR ZUM THEMA'));
-                          elem.appendChild(document.createElement('br'));
-                          let rel_art = pars.find(x => x && x[type]);
-                          if (rel_art) {
-                            let rel_art_index = rel_art[type];
-                            let rel_articles = pars[rel_art_index];
-                            for (let art_id of rel_articles) {
-                              let art = pars[pars[art_id].link];
-                              let art_label = pars[pars[art_id].label];
-                              if (art.canonicalPath && art.title) {
-                                let art_link = document.createElement('a');
-                                art_link.href = pars[art.canonicalPath];
-                                art_link.innerText = art_label + ' - ' + pars[art.title];
-                                elem.appendChild(art_link);
-                                elem.appendChild(document.createElement('br'));
-                              }
-                            }
-                          }
-                        }
-                      }
-                      if (elem)
-                        article.appendChild(elem);
-                    }
-                  }
-                }
-                let iframes = document.querySelectorAll('div.body-elements iframe[id][scrolling="no"]');
-                for (let elem of iframes) {
-                  elem.height = '400';
-                  elem.scrolling = 'yes';
-                }
-              } else if (article_story) {
-                let par_body = pars.find(x => x && x.fullBody);
-                if (par_body && pars[par_body.fullBody]) {
-                  let parser = new DOMParser();
-                  let doc = parser.parseFromString(pars[par_body.fullBody], 'text/html');
-                  let article_new = doc.querySelector(article_story_sel);
-                  let par_sel = 'div.story-content, div.story-full:not([data-module="scrollytelling"])';
-                  if (article_new) {
-                    let article_pars = article_story.querySelectorAll(par_sel);
-                    removeDOMElement(...article_pars);
-                    let article_new_pars = article_new.querySelectorAll(par_sel);
-                    for (let par_new of article_new_pars)
-                      article_story.appendChild(par_new);
-                  }
-                }
-              }
-            } catch (err) {
-              console.log(err);
-            }
-          } else {
-            let json_script = getArticleJsonScript();
-            if (json_script) {
-              let json = JSON.parse(json_script.text);
-              if (json) {
-                let json_text = json.articleBody;
-                article.innerText = json_text;
-              }
-            }
-          }
-        }
-      }
-    }, 1000);
-    let ads = 'div.lay-PaySocial, div.iqadtile_wrapper, div.iqdcontainer';
-    hideDOMStyle(ads);
-  }
 }
 
 else if (matchDomain('freitag.de')) {
