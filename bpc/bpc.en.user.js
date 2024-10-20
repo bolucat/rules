@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.8.1
+// @version         3.8.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1527,9 +1527,15 @@ else if (matchDomain('cyclingnews.com')) {
 }
 
 else if (matchDomain('dailywire.com')) {
-  let paywall = document.querySelector('#post-body-text > div > div[class]');
-  if (paywall)
-    paywall.removeAttribute('class');
+  let paywall = document.querySelector('div#payed-article-paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let div_hidden = document.querySelector('#post-body-text > div > div[class]');
+    if (div_hidden)
+      div_hidden.removeAttribute('class');
+  }
+  let ads = 'div.ad-wrapper';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('dallasnews.com')) {
@@ -2236,14 +2242,25 @@ else if (matchDomain('jpost.com')) {
 }
 
 else if (matchDomain('kompas.id')) {
-  let paywall = document.querySelector('kompasid-paywall');
-  if (paywall) {
-    let intro = document.querySelector('div.paywall.block');
-    removeDOMElement(paywall, intro);
-    let div_hidden = document.querySelector('[class*="paywall"].hidden');
-    if (div_hidden)
-      div_hidden.classList.remove('hidden');
-  }
+  let url_artikel = window.location.pathname.startsWith('/artikel/');
+  let delay = url_artikel ? 2500 : 0;
+  window.setTimeout(function () {
+    let paywall = document.querySelector('kompasid-paywall');
+    if (paywall) {
+      removeDOMElement(paywall);
+      if (url_artikel) {
+        let intro = document.querySelector('div.paywall');
+        removeDOMElement(intro);
+        let art_hidden = document.querySelector('div.non-paywall[style]');
+        if (art_hidden)
+          art_hidden.removeAttribute('style');
+      } else {
+        let art_hidden = document.querySelector('section.paywall.hidden');
+        if (art_hidden)
+          art_hidden.classList.remove('hidden');
+      }
+    }
+  }, delay);
 }
 
 else if (matchDomain('latimes.com')) {

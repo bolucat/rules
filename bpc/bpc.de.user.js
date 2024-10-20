@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.8.0
+// @version         3.8.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -10,6 +10,7 @@
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
 // @match           *://*.de/*
 // @match           *://*.beobachter.ch/*
+// @match           *://*.faz.net/*
 // @match           *://*.handelsblatt.com/*
 // @match           *://*.handelszeitung.ch/*
 // @match           *://*.kurier.at/*
@@ -267,6 +268,27 @@ else if (matchDomain('cicero.de')) {
   }
   let urban_ad_sign = document.querySelectorAll('.urban-ad-sign');
   removeDOMElement(...urban_ad_sign);
+}
+
+else if (matchDomain('faz.net')) {
+  if (matchDomain('zeitung.faz.net')) { // legacy
+    let paywall_z = document.querySelector('div.c-red-carpet');
+    if (paywall_z) {
+      removeDOMElement(paywall_z);
+      let og_url = document.querySelector('head > meta[property="og:url"][content]');
+      if (og_url)
+        window.location.href = og_url.content;
+      else
+        header_nofix('div.article__text');
+    }
+    let sticky_advt = document.querySelector('div.sticky-advt');
+    removeDOMElement(sticky_advt);
+  } else {
+    let url = window.location.href;
+    getArchive(url, 'div.paywall, div.wall__wrapper', '', 'article');
+    let ads = 'div.lay-PaySocial, div.iqadtile_wrapper, div.iqdcontainer';
+    hideDOMStyle(ads);
+  }
 }
 
 else if (matchDomain('freitag.de')) {
