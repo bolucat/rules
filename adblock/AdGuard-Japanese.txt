@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: l0kfHsgB4fe0XftVdWDJEg
-! Diff-Path: ../patches/7/7-s-1729435019-3600.patch
+! Checksum: 6fUAoVmGf8i+O/K+1pwAJg
+! Diff-Path: ../patches/7/7-s-1729532206-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.58.9
-! TimeUpdated: 2024-10-20T14:33:03+00:00
+! Version: 2.0.58.17
+! TimeUpdated: 2024-10-21T17:32:53+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -494,6 +494,10 @@ yourfones.net##+js(spoof-css, ins.adsbygoogle, display, block)
 mytry.jp#@#.ad_box
 mytry.jp#$#body > #container { display: block !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/190943
+||wiki.yjsnpi.nu^$script
+@@||wiki.yjsnpi.nu/yjsnpi.js$script,~third-party
+@@||wiki.yjsnpi.nu/comments/comments.js$script,~third-party
+@@||wiki.yjsnpi.nu/w/load.php?$script,~third-party
 $subdocument,redirect-rule=noop.html,domain=wiki.yjsnpi.nu
 wiki.yjsnpi.nu#$#body img, body .Inmbox, body .lazy-image-placeholder { width: auto !important; height: auto !important; opacity: 1 !important; visibility: visible !important; display: block !important; color: unset !important; background: none !important; }
 wiki.yjsnpi.nu#$##comments-loading { display: none !important; }
@@ -1517,6 +1521,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/uploads/2024/09/fanza_ad$image
 !
 ! Malware/Phishing
+/jp-mason-goo-dynamic/?$document
 /?p=(0101)-$document
 /M0cSmwEr00JP1/*$document
 .cn/bot/bot.php|$document
@@ -1696,7 +1701,7 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 !
 ! For URL shorteners or simple sites with frequently changed ad servers.
 ! Incorrectly blocked domains can be excluded using regex(synchronize this regexp in all filters)
-/^(?!.*(authkong.com|rsc.cdn77.org|linkvertise.com|fastly.net|statically.io|sharecast.ws|b-cdn.net|bunnycdn.ru|bootstrapcdn.com|cdn.ampproject.org|cloudflare.com|cdn.staticfile.org|disqus.com|disquscdn.com|dmca.com|ebacdn.com|facebook.net|fastlylb.net|fbcdn.net|fluidplayer.com|fontawesome.com|github.io|google.com|googleapis.com|googletagmanager.com|gstatic.com|jquery.com|jsdelivr.net|jwpcdn.com|jwplatform.com|polyfill.io|recaptcha.net|shrink.pe|twitter.com|ulogin.ru|unpkg.com|userapi.com|vidazoo.com|(\/\/|\.)vk\.com|yandex.|yastatic.net|ytimg.com|zencdn.net|player|youtube.com|cackle.me|googleoptimize.com|vuukle.com|chatango.com|twimg.com|google-analytics.com|hcaptcha.com|raincaptcha.com|media-imdb.com|blogger.com|hwcdn.net|instagram.com|wp.com|imgsmail.ru|cloudflare.net|(\/\/|\.)x\.com)).*$/$third-party,script,_____,domain=viki.ja-jp.nina.az|uraaka-joshi.com
+/^(?!.*(cdn.plyr.io|authkong.com|rsc.cdn77.org|linkvertise.com|fastly.net|statically.io|sharecast.ws|b-cdn.net|bunnycdn.ru|bootstrapcdn.com|cdn.ampproject.org|cloudflare.com|cdn.staticfile.org|disqus.com|disquscdn.com|dmca.com|ebacdn.com|facebook.net|fastlylb.net|fbcdn.net|fluidplayer.com|fontawesome.com|github.io|google.com|googleapis.com|googletagmanager.com|gstatic.com|jquery.com|jsdelivr.net|jwpcdn.com|jwplatform.com|polyfill.io|recaptcha.net|shrink.pe|twitter.com|ulogin.ru|unpkg.com|userapi.com|vidazoo.com|(\/\/|\.)vk\.com|yandex.|yastatic.net|ytimg.com|zencdn.net|player|youtube.com|cackle.me|googleoptimize.com|vuukle.com|chatango.com|twimg.com|google-analytics.com|hcaptcha.com|raincaptcha.com|media-imdb.com|blogger.com|hwcdn.net|instagram.com|wp.com|imgsmail.ru|cloudflare.net|(\/\/|\.)x\.com)).*$/$third-party,script,_____,domain=viki.ja-jp.nina.az|uraaka-joshi.com
 !
 ! ###banner
 nanbbs.jp,eroita.net,city.hirosaki.aomori.jp,iyasiya.com,adacomi.com,pref.shimane.lg.jp,pref.osaka.lg.jp,illust-ai.com,nan-net.com,radiolife.com,keimei.ne.jp,5ch.net,bbspink.com,crank-in.net###banner
@@ -1748,6 +1753,16 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+alfalfalfa.com##div[style="text-align:center;margin-bottom:15px;height:250px;"]
+||sutekinakijo.com/ads/
+geinoutopics-plus.blog.jp##img[src^="https://www19.a8.net/"]
+||city.bunkyo.lg.jp/banner/
+chocotabi-saitama.jp###banner_area > h3
+chocotabi-saitama.jp##.banner_a
+pref.yamaguchi.lg.jp###police_banner_kokoku_list_wrap
+||minkara.carview.co.jp/include_api/yahoo/
+||city.tsuchiura.lg.jp/data/banner/
+omosoku-r.com##.left-container > .left-column-inner
 gundamlog.com##.res_body:has(.amazon)
 peing.net#$#div[id^="ad-in"] { display: none !important; }
 peing.net#$#body[style="overflow: hidden;"] { overflow: auto !important; }
@@ -5015,7 +5030,7 @@ ske48matome.net###sub div.column-inner-2 > br
 ske48matome.net###sub div.column-inner-2 > table[border="0"]
 fc2.com,nicovideo.jp###ad-footer
 becoolusers.com,moneyforward.com###ad-header
-city.tsukubamirai.lg.jp,city.ohtawara.tochigi.jp###adBanner
+city.tsuchiura.lg.jp,city.tsukubamirai.lg.jp,city.ohtawara.tochigi.jp###adBanner
 yawarakai.com##.hentry > div.center
 e-venz.com##.kijishita_ranking
 techinsight.jp##.rectangle-images
@@ -5403,7 +5418,7 @@ city.koshu.yamanashi.jp##.template-top__aside__ad
 city.yatsushiro.lg.jp,city.kumamoto.jp###adinfo
 city.kure.lg.jp###float_banner
 city.kurume.fukuoka.jp,city.fukuoka.lg.jp##.advertising-list
-city.nagano.nagano.jp,pref.toyama.jp,city.kuwana.lg.jp###tmp_banner
+city.bunkyo.lg.jp,city.nagano.nagano.jp,pref.toyama.jp,city.kuwana.lg.jp###tmp_banner
 city.marugame.lg.jp##.under-banner
 city.matsusaka.mie.jp##.p-toppage__koukoku
 city.mishima.shizuoka.jp###sponsor-banner
@@ -6668,6 +6683,7 @@ tipstour.net###custom_html-65
 newbalance-days.com,japan-railway.com###custom_html-70
 gadgets.evolves.biz###custom_html-71
 japan-railway.com###custom_html-72
+lovelive-petitsoku.com###custom_html-74
 erostopics.net###custom_html-78
 smartasw.com###custom_html-95
 erostopics.net,clicccar.com,moez-m.com###custom_html-100
@@ -6675,7 +6691,9 @@ erostopics.net###custom_html-102
 sorae.info###custom_html-110
 idle-girl.com###custom_html-124
 erostopics.net###custom_html-135
-||lv73.net/wordpress/wp-content/themes/*/library/js/ko-ko-ku/ko-ko-ku.js
+lv73.net###広告-ad
+lv73.net##.amazon-ko-ko-ku
+lv73.net##.ko-ko-ku-area
 ||rakuten-bank.co.jp/shared/js/ad.js
 ygokamo.com##div[style] > a[target="_break"] > img
 ||ygokamo.com/wp-content/uploads/mercard1200.jpg
