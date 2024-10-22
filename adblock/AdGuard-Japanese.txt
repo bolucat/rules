@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 6fUAoVmGf8i+O/K+1pwAJg
-! Diff-Path: ../patches/7/7-s-1729532206-3600.patch
+! Checksum: DWQjc6Puj4Hmct1YgdSwPg
+! Diff-Path: ../patches/7/7-s-1729618639-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.58.17
-! TimeUpdated: 2024-10-21T17:32:53+00:00
+! Version: 2.0.58.27
+! TimeUpdated: 2024-10-22T17:33:17+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -494,10 +494,7 @@ yourfones.net##+js(spoof-css, ins.adsbygoogle, display, block)
 mytry.jp#@#.ad_box
 mytry.jp#$#body > #container { display: block !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/190943
-||wiki.yjsnpi.nu^$script
-@@||wiki.yjsnpi.nu/yjsnpi.js$script,~third-party
-@@||wiki.yjsnpi.nu/comments/comments.js$script,~third-party
-@@||wiki.yjsnpi.nu/w/load.php?$script,~third-party
+wiki.yjsnpi.nu##+js(no-setTimeout-if, /^\(\)=>\{function .+0x/)
 $subdocument,redirect-rule=noop.html,domain=wiki.yjsnpi.nu
 wiki.yjsnpi.nu#$#body img, body .Inmbox, body .lazy-image-placeholder { width: auto !important; height: auto !important; opacity: 1 !important; visibility: visible !important; display: block !important; color: unset !important; background: none !important; }
 wiki.yjsnpi.nu#$##comments-loading { display: none !important; }
@@ -1753,6 +1750,9 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+||gakufu.gakki.me/banner/banner_guitar_feat_oda_big_
+gakufu.gakki.me###main center > a[href^="https://www.amazon.co.jp/dp/"]
+onecall2ch.com##.selector00
 alfalfalfa.com##div[style="text-align:center;margin-bottom:15px;height:250px;"]
 ||sutekinakijo.com/ads/
 geinoutopics-plus.blog.jp##img[src^="https://www19.a8.net/"]
@@ -1856,7 +1856,7 @@ croissant-online.jp##.single-infeed
 ||tsumanne.net/getchu.js
 ||tsumanne.net/imobile.php
 tsumanne.net##.thre > object[data="/imobile.php"]
-j-basketball.club,j-baseball.club##a[style^="box-sizing:border-box;"]
+best-hit.tv,j-basketball.club,j-baseball.club##a[style^="box-sizing:border-box;"]
 xn--gck1f423k.xn--1bvt37a.tools##div[class^="amazonHomeAd_"]
 xn--gck1f423k.xn--1bvt37a.tools##.fresnel-greaterThanOrEqual-maxContent
 adult-machiko.com##.entry_detail > a[onclick^="_gaq.push"] > img
@@ -5486,7 +5486,7 @@ resemom.jp##.sidebox[style*="1000px; margin-top"]
 manetatsu.com###browsi-wrec1ad
 mhmatome.com###text-23 > div.textwidget > div.wd_title_rss + p
 ani-chat.net,2ji.pink,glamoroustube.com,mhmatome.com##.post-title-upper
-vtubernews.jp##.g-ad250
+jyoseisama.com,vtubernews.jp##.g-ad250
 joqr.co.jp##.ad_full
 joqr.co.jp##.panel_kv > li[style="display:flex; justify-content: center; flex-wrap: wrap;"]:not([class])
 hint-pot.jp##.box-header
@@ -6640,7 +6640,7 @@ romptn.com,48idol.*,genshin-matomech.umadacchi.net,rond8.com,sekamaji-blog.com,b
 towatowa.net,nomadoma-daisen.com,48idol.tv,ero-info-antena.site,sanabo.com,sekamaji-blog.com,anabundantlife.site,happy-to-know.com,waction.org,nuki-dokoro.com,pocketwifi-hikaku.info,xn--eckybzahmsm43ab5g5336c9iug.com,otonarisoku.com,fnjpnews.com,fpsjp.net,tokyolucci.jp,namatamago.net###custom_html-8
 fashion-news.net,ero-info-antena.site,bestrank.tv,kana-mari-shokudo.com,cinema-sketch.com,daij1n.info,throwsmallstone.com,wholenotism.com,xn--eckybzahmsm43ab5g5336c9iug.com,ichimanabiblog.com,detail-infomation.com,talking-english.net,ssaits.jp,larksan.wp.xdomain.jp,dq.h1g.jp,otakaranet.com,macha795.com,namatamago.net,chem-station.com###custom_html-9
 gazlog.com,masaralog.com,nufufu.com,fgsk8.com,videogakuen.com,kbn48.com,a-da-co-da.com,macha795.com,namatamago.net###custom_html-10
-spulse.info,news2019.biz,yokohama-sports.com,mettyaeeyan.com,pinapopo.com,mobile.inest-inc.co.jp,growrichslowly.net,larksan.wp.xdomain.jp,saitoshika-west.com,sukesuke-mile-kojiki.net,videogakuen.com###custom_html-11
+yamiisoku.com,spulse.info,news2019.biz,yokohama-sports.com,mettyaeeyan.com,pinapopo.com,mobile.inest-inc.co.jp,growrichslowly.net,larksan.wp.xdomain.jp,saitoshika-west.com,sukesuke-mile-kojiki.net,videogakuen.com###custom_html-11
 nichepcgamer.com,pocketwifi-hikaku.info,sanabo.com,videogakuen.com###custom_html-12
 uma-log.net,tech-biz-eng.com,55paradise.com,blogging-life.com,dietmiler.com,sanabo.com,mhw-blog.com,talking-english.net,4thsight.xyz,cardfreaks.jp,financial-c.net###custom_html-13
 dennosokuho.com,ichimame.com,karatedo.co.jp,sanabo.com,masaralog.com,tech-biz-eng.com,moqlog.jp,column.ifis.co.jp,erogamemod.com###custom_html-14
@@ -7813,7 +7813,7 @@ kisspress.jp##.adLandscape
 ||vcomi.jp/page_ad/
 l-media.tokyo##.post > .section-in > div[align=center]
 l-media.tokyo##.post > .section-in > table
-twittrend.jp##.ad_pc
+valorantns.com,twittrend.jp##.ad_pc
 pointi.jp##.ad_730_90
 pointi.jp##.pr_300_250
 ameba.jp##div[class^="MainAdModule"]

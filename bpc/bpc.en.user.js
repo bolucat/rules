@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.8.3
+// @version         3.8.8.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2945,9 +2945,11 @@ else if (matchDomain('slideshare.net')) {
 
 else if (matchDomain('sloanreview.mit.edu')) {
   if (window.location.pathname.startsWith('/article/')) {
-    let pars = document.querySelectorAll('div.article-content > p');
-    if (pars.length && pars.length < 7)
-      refreshCurrentTab();
+    window.setTimeout(function () {
+      let pars = document.querySelectorAll('div.article-content > p');
+      if (pars.length && pars.length < 7)
+        refreshCurrentTab_bg();
+    }, 1000);
   }
 }
 
