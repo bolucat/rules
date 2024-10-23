@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.8.8.1
+// @version         3.8.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -574,7 +574,7 @@ else if (matchDomain('globo.com')) {
 
 else if (matchDomain('lanacion.com.ar')) {
   setCookie(/^metering_arc/, '', 'lanacion.com.ar', '/', 0);
-  let ads = 'div.mod-banner';
+  let ads = 'div.ln-banner-container';
   hideDOMStyle(ads);
 }
 

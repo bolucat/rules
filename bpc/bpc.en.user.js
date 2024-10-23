@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.8.4
+// @version         3.8.9.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1262,7 +1262,7 @@ else if (matchDomain('billboard.com')) {
 
 else if (matchDomain('bizjournals.com')) {
   if (window.location.pathname.includes('/subscriber-only/')) {
-    header_nofix('div.article__head');
+    header_nofix('div.primary');
   } else {
     let paywall = document.querySelector('div[data-dev="CxWidget_article:wall"]');
     if (paywall) {
@@ -4551,7 +4551,8 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
   }
 }
 
-function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector, selector_level = false) {
+var selector_level = false;
+function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let article = document.querySelector(selector);
   let article_link = document.querySelector(selector_archive);
   let no_content_msg = '&nbsp;| no article content found! | :';
@@ -4792,7 +4793,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = tru
     elem.removeAttribute('subscriptions-section');
   hideDOMStyle(amp_ads_sel, 5);
   if (replace_iframes)
-    amp_iframes_replace(amp_iframe_link, source, false);
+    amp_iframes_replace(amp_iframe_link, source);
 }
 
 function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {

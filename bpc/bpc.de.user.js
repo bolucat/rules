@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.8.1
+// @version         3.8.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -573,6 +573,9 @@ else if (matchDomain(['spiegel.de', 'manager-magazin.de'])) {
     let body_dark = document.querySelector('body[class*="dark:"]');
     if (body_dark)
       removeClassesByPrefix(body_dark, 'dark:');
+    let charts = document.querySelectorAll('section div[x-data*="{isLoaded:"]');
+    for (let elem of charts)
+      elem.style.height = elem.offsetHeight + 'px';
     if (mobile) {
       let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
       for (let elem of lazy_images)
@@ -604,8 +607,13 @@ else if (matchDomain('springermedizin.de')) {
 }
 
 else if (matchDomain('stern.de')) {
+  func_post = function () {
+    header_nofix(article_sel + ' p', paywall_sel, 'BPC > no external site-fix');
+  }
+  let paywall_sel = 'section.paid-barrier';
+  let article_sel = 'div.article__body';
   let url = window.location.href;
-  getOchToUnlock(url, 'section.paid-barrier', '', 'div.article__body');
+  getOchToUnlock(url, paywall_sel, '', article_sel);
 }
 
 else if (matchDomain('sueddeutsche.de')) {
@@ -1201,7 +1209,8 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
   }
 }
 
-function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector, selector_level = false) {
+var selector_level = false;
+function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let article = document.querySelector(selector);
   let article_link = document.querySelector(selector_archive);
   let no_content_msg = '&nbsp;| no article content found! | :';
