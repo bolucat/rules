@@ -1,0 +1,36 @@
+name: Dualsub-流媒体App字幕脚本
+desc: 支持YouTube,Netflix,Disney+等流媒体双语字幕/翻译.⚠️初次使用需配合快捷指令设置翻译语言,查看覆写内容中的Github链接去阅读手册并安装相关快捷指令
+
+# 进入此链接查看README安装快捷指令:https://github.com/Infatuation-Fei/rule/tree/main/Stash/Override/Script/流媒体字幕翻译脚本
+
+http:
+  mitm:
+    - "*.media.dssott.com"
+    - "*.media.starott.com"
+    - "*.api.hbo.com"
+    - "*.hbomaxcdn.com"
+    - "*.huluim.com"
+    - "*.nflxvideo.net"
+    - "*.cbsaavideo.com"
+    - "*.cbsivideo.com"
+    - "*.cloudfront.net"
+    - "*.akamaihd.net"
+    - "*.avi-cdn.net"
+    - "*.youtube.com"
+  script:
+    - match: ^http.+(media.(dss|star)ott|manifests.v2.api.hbo|hbomaxcdn|nflxvideo|cbs(aa|i)video|cloudfront|akamaihd|avi-cdn|huluim|youtube).(com|net)\/(.+\.vtt($|\?m=\d+)|.+-all-.+\.m3u8.*|hls\.m3u8.+|\?o=\d+&v=\d+&e=.+|\w+\/2\$.+\/[a-zA-Z0-9-]+\.m3u8|api\/timedtext.+)
+      name: Dualsub
+      type: response
+      require-body: true
+      timeout: 30
+
+    - match: ^http.+(setting|general).(media.dssott|hbomaxcdn|nflxvideo|youtube|cbsivideo|cloudfront|huluim).(com|net)\/\?action=(g|s)et
+      name: Dualsub
+      type: request
+      require-body: true
+      timeout: 10
+      
+script-providers:
+  Dualsub:
+    url: https://raw.githubusercontent.com/Neurogram-R/Surge/master/Dualsub.js
+    interval: 86400
