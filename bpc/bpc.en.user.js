@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.9.0
+// @version         3.8.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2178,6 +2178,16 @@ else if (matchDomain('inkl.com')) {
 else if (matchDomain('insidehighered.com')) {
   let ads = 'div[id^="block-dfptag"], div.wp-block-ihe-ad, section.section-ad_slot, div#roadblock';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('interestingengineering.com')) {
+  let paywall = document.querySelector('div.paywall-main-wrapper');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let blurred = document.querySelectorAll('.blurFilter');
+    for (let elem of blurred)
+      elem.classList.remove('blurFilter');
+  }
 }
 
 else if (matchDomain('ipolitics.ca')) {

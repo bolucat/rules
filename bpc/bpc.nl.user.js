@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.8.8.1
+// @version         3.8.9.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -368,20 +368,22 @@ else if (matchDomain('linda.nl')) {
 }
 
 else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
+  let sub_sel = 'article[id^="PURCHASE"]';
+  let sub = document.querySelector(sub_sel + ' > button');
+  if (sub)
+    sub.click();
   func_post = function () {
-    let noscroll = document.querySelectorAll('html[style], body[style]');
-    for (let elem of noscroll)
-      elem.removeAttribute('style');
     let shades = document.querySelectorAll('div[style*="background-color"][style*=";width"]');
     for (let elem of shades)
       elem.style.width = '85%';
     let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
     for (let elem of lazy_images)
       elem.style = 'width: 95%;';
-    header_nofix('footer', 'article[id^="PURCHASE"]', 'BPC > no archive-fix');
+    header_nofix('footer', sub_sel, 'BPC > no archive-fix');
   }
+  let article_sel = 'div#remaining-paid-content';
   let url = window.location.href;
-  getArchive(url, 'div#remaining-paid-content[data-reduced="true"]', '', 'div.article__body', '', 'div#remaining-paid-content');
+  getArchive(url, article_sel + '[data-reduced="true"]', {rm_attrib: 'data-reduced'}, article_sel);
 }
 
 else if (matchDomain(nl_dpg_media_domains)) {
@@ -633,7 +635,8 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
   }
 }
 
-function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector, selector_level = false) {
+var selector_level = false;
+function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let article = document.querySelector(selector);
   let article_link = document.querySelector(selector_archive);
   let no_content_msg = '&nbsp;| no article content found! | :';
