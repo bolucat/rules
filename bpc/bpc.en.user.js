@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.9.1
+// @version         3.8.9.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4239,19 +4239,8 @@ else if ((domain = matchDomain(usa_lee_ent_domains)) || matchDomain(ca_torstar_d
   }
 }
 
-else if ((domain = matchDomain(usa_mcc_domains)) ||
-  (window.location.hostname.startsWith('account.') && document.querySelector('script[src*=".mcclatchyinteractive.com/"]')) ||
-  (window.location.href.match(/\/\/amp\..+\.com\/(.+\/)?article(\d){8,}\.html/) && document.querySelector('a[href^="https://classifieds.mcclatchy.com/"]'))) {
-  let url = window.location.href;
-  let hostname = window.location.hostname;
-  if (!domain)
-    domain = hostname.replace(/^(www|account|amp)\./, '');
-  setCookie('sessionz', '', domain, '/', 0);
-  if (hostname.startsWith('account.') && window.location.search.startsWith('?resume=')) {
-    window.setTimeout(function () {
-      window.location.href = 'https://amp.' + domain + '/article' + url.split('resume=')[1].split(/[#&]/)[0] + '.html';
-    }, 500);
-  } else if (hostname.startsWith('amp.')) {
+else if (matchDomain(usa_mcc_domains) || document.querySelector('section.bottom-nav > a[href^="https://www.mcclatchy.com/privacy-policy"]')) {
+  if (window.location.hostname.startsWith('amp.')) {
     amp_unhide_subscr_section('amp-ad, amp-embed');
     let subscriptions_action = document.querySelector('div[subscriptions-action][subscriptions-display="NOT data.hasError"]');
     if (subscriptions_action)

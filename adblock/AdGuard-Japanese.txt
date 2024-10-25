@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: NijzQzr2q5izclIK6jP0Sg
-! Diff-Path: ../patches/7/7-s-1729773477-3600.patch
+! Checksum: UeNjfDEaEryet191/MKTbg
+! Diff-Path: ../patches/7/7-s-1729860019-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.58.34
-! TimeUpdated: 2024-10-24T12:33:16+00:00
+! Version: 2.0.58.39
+! TimeUpdated: 2024-10-25T12:35:59+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -497,7 +497,7 @@ yourfones.net##+js(spoof-css, ins.adsbygoogle, display, block)
 mytry.jp#@#.ad_box
 mytry.jp#$#body > #container { display: block !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/190943
-wiki.yjsnpi.nu##+js(no-setTimeout-if, /^\(\)=>\{const .{2000\,2500}/)
+wiki.yjsnpi.nu##+js(abort-on-stack-trace, Function.prototype.toString, ar)
 $subdocument,redirect-rule=noop.html,domain=wiki.yjsnpi.nu
 wiki.yjsnpi.nu#$##comments-loading { display: none !important; }
 @@||wiki.yjsnpi.nu^$image,xmlhttprequest,~third-party
@@ -1752,6 +1752,10 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+txbiz.tv-tokyo.co.jp##.MuiGrid-container[class*="jss"]:has(> div.MuiGrid-item[style="margin:0 auto"] > div#ad1)
+gensin.blog.jp###lite_link
+||favry.app/ad-sp.png
+dissoku.net##.v-row:has(> div.v-col > div > a[href="https://favry.app"])
 best-hit.tv##div[style="margin-top:10px; margin-bottom:10px; text-align:center;"]
 contents-group.work#?#div[align="center"][style="margin: 20px 0px;"]:contains(/^- PR -$/)
 contents-group.work###interstitial
@@ -8159,7 +8163,7 @@ pcrecommend.com,ryusoku.com##div[style^="height:250px"]
 ||chixi.jp/img.php?filename=b_
 ||pics.dmm.co.jp/digital/$domain=chat.shalove.net|urapic.com|roshutu-shuuti.net|i-bbs.sijex.net|opantsu.fun|ukemi-no-kiwami.work|m.erosoku.biz|yaruo18book.com|2ji.pink|tifer2.jp
 /PrintAd?$domain=3751chat.com|chat.shalove.net|chat.luvul.net|skypemeet.net
-front-row.jp###floating-banner
+aiacademy.jp,front-row.jp###floating-banner
 front-row.jp##.after-btn-fb-nice-ad-pc
 theriver.jp##.related-posts
 alphapolis.co.jp##.ad-long
