@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Fri, 25 Oct 2024 14:19:50 +0000
-! Diff-Path: ../patches/2024.10.25.991.patch#ublock-quick-fixes
+! Last modified: Sat, 26 Oct 2024 16:14:55 +0000
+! Diff-Path: ../patches/2024.10.26.1044.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -19,26 +19,20 @@ youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAd
 !#endif
 !#endif
 ||googlevideo.com/videoplayback*&ctier=L&*%2Cctier%2C$xhr,3p,domain=m.youtube.com|music.youtube.com|www.youtube.com
-www.youtube.com##+js(trusted-rpnt, script, (function serverContract(), "YOUTUBE_PREMIUM_LOGO"!==ytInitialData?.topbar?.desktopTopbarRenderer?.logo?.topbarLogoRenderer?.iconImage?.iconType&&(location.href.startsWith("https://www.youtube.com/tv#/")||location.href.startsWith("https://www.youtube.com/embed/")||document.addEventListener("DOMContentLoaded"\,(function(){const t=()=>{const t=document.getElementById("movie_player");if(!t)return;if(!t.getStatsForNerds?.()?.debug_info?.startsWith?.("SSAP\, AD"))return;const e=t.getProgressState?.();e&&e.duration>0&&(e.loaded<e.duration||e.duration-e.current>1)&&t.seekTo?.(e.duration)};t()\,new MutationObserver((()=>{t()})).observe(document\,{childList:!0\,subtree:!0})})));(function serverContract(), sedCount, 1)
+www.youtube.com##+js(trusted-rpnt, script, (function serverContract(), /*START*/"YOUTUBE_PREMIUM_LOGO"!==ytInitialData?.topbar?.desktopTopbarRenderer?.logo?.topbarLogoRenderer?.iconImage?.iconType&&(location.href.startsWith("https://www.youtube.com/tv#/")||location.href.startsWith("https://www.youtube.com/embed/")||document.addEventListener("DOMContentLoaded"\,(function(){const t=()=>{const t=document.getElementById("movie_player");if(!t)return;if(!t.getStatsForNerds?.()?.debug_info?.startsWith?.("SSAP\, AD"))return;const e=t.getProgressState?.();e&&e.duration>0&&(e.loaded<e.duration||e.duration-e.current>1)&&t.seekTo?.(e.duration)};t()\,new MutationObserver((()=>{t()})).observe(document\,{childList:!0\,subtree:!0})})));(function serverContract(), sedCount, 1)
 www.youtube.com##+js(nano-stb, [native code], 17000, 0.001)
 !#if cap_html_filtering
 ||www.youtube.com/s/player/*/base.js$script,xhr,replace=/if\(e===""\)/if(0)/
 !#endif
 www.youtube.com##+js(json-prune-fetch-response, playerAds adPlacements adSlots playerResponse.playerAds playerResponse.adPlacements playerResponse.adSlots [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots, , propsToMatch, /player?)
-!www.youtube.com#@#+js(json-prune-xhr-response, playerAds adPlacements adSlots playerResponse.playerAds playerResponse.adPlacements playerResponse.adSlots [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots, , propsToMatch, /player?)
-!www.youtube.com#@#+js(json-prune-xhr-response, playerAds adPlacements adSlots playerResponse.playerAds playerResponse.adPlacements playerResponse.adSlots [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots, , propsToMatch, /player)
 !tv.youtube.com#@#+js(trusted-replace-xhr-response, '"adPlacements"', '"no_ads"', /playlist\?list=|player\?|watch\?[tv]=|youtubei\/v1\/player/)
 www.youtube.com##+js(json-prune-xhr-response, playerAds adPlacements adSlots playerResponse.playerAds playerResponse.adPlacements playerResponse.adSlots [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots, , propsToMatch, /\/player(?:\?.+)?$/)
 tv.youtube.com##+js(trusted-replace-xhr-response, '"adPlacements"', '"no_ads"', /playlist\?list=|\/player(?:\?.+)?$|watch\?[tv]=/)
 !#if !cap_html_filtering
-!www.youtube.com#@#+js(trusted-replace-xhr-response, /"adPlacements.*?([A-Z]"\}|"\}{2\,4})\}\]\,/, , /playlist\?list=|player\?|watch\?[tv]=|youtubei\/v1\/player/)
-!www.youtube.com#@#+js(trusted-replace-xhr-response, /"adPlacements.*?("adSlots"|"adBreakHeartbeatParams")/gms, $1, youtubei/v1/player)
 www.youtube.com##+js(trusted-replace-xhr-response, /"adPlacements.*?([A-Z]"\}|"\}{2\,4})\}\]\,/, , /playlist\?list=|\/player(?:\?.+)?$|watch\?[tv]=/)
 www.youtube.com##+js(trusted-replace-xhr-response, /"adPlacements.*?("adSlots"|"adBreakHeartbeatParams")/gms, $1, /\/player(?:\?.+)?$/)
 !#endif
 www.youtube.com##+js(set, yt.config_.EXPERIMENT_FLAGS.web_bind_fetch, false)
-||www.youtube-nocookie.com/youtubei/v1/player?$xhr,1p,replace=/"adPlacements.*?([A-Z]"\}|"\}{2\,4})\}\]\,//
-||www.youtube-nocookie.com/youtubei/v1/player?$xhr,1p,replace=/"adSlots.*?\}\}\]\,"adBreakHeartbeatParams/"adBreakHeartbeatParams/
 web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.node.sponsored_data.id_for_advertisement)
 web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.sponsored_auction_distance)
 !#if cap_html_filtering
@@ -49,9 +43,9 @@ web.facebook.com,www.facebook.com##+js(trusted-replace-xhr-response, '/null,"cat
 web.facebook.com,www.facebook.com##+js(rpnt, script, '/null,"category_sensitive"[^\n]+?,"__typename":"SponsoredData"[^\n]+"cursor":"[^"]+"\}/g', null})
 !#endif
 ! VOE sites
-||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=evelynthankregion.com|lorimuchbenefit.com|richardstorehalf.com|susanhavekeep.com|thomasalthoughhear.com|zacharycollectionmight.com,important
-evelynthankregion.com,lorimuchbenefit.com,richardstorehalf.com,susanhavekeep.com,thomasalthoughhear.com,zacharycollectionmight.com##+js(nowoif)
-evelynthankregion.com,lorimuchbenefit.com,richardstorehalf.com,susanhavekeep.com,thomasalthoughhear.com,zacharycollectionmight.com##+js(set, console.clear, undefined)
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=evelynthankregion.com|kimberlyonlocal.com|lorimuchbenefit.com|richardstorehalf.com|susanhavekeep.com|thomasalthoughhear.com|zacharycollectionmight.com,important
+evelynthankregion.com,kimberlyonlocal.com,lorimuchbenefit.com,richardstorehalf.com,susanhavekeep.com,thomasalthoughhear.com,zacharycollectionmight.com##+js(nowoif)
+evelynthankregion.com,kimberlyonlocal.com,lorimuchbenefit.com,richardstorehalf.com,susanhavekeep.com,thomasalthoughhear.com,zacharycollectionmight.com##+js(set, console.clear, undefined)
 ! next-episode .net
 !next-episode.net##+js(rmnt, script, '/[\s\S]{0,}head[\s\S]{1900,}/')
 !next-episode.net##+js(rpnt, script, '/.then[\s\S]{0,}?;/g')
@@ -60,24 +54,13 @@ evelynthankregion.com,lorimuchbenefit.com,richardstorehalf.com,susanhavekeep.com
 download.megaup.net##+js(rpnt, script, /for\s*\(\s*(const|let|var).*?;return;\}\}.*?;return;.*?;return;\}/g, , condition, attribute)
 japscan.lol##+js(aost, onload, inlineScript)
 *$image,redirect-rule=1x1.gif,domain=japscan.lol
-japscan.lol#@#+js(rmnt, script, nApB!)
-japscan.lol#@#+js(rmnt, script, oDD+lDC+lDA+lDD)
-japscan.lol#@#+js(rmnt, script, nApB)
-japscan.lol#@#+js(rmnt, script, \'n.{0\,3}A.{0\,3}p.{0\,3}B\')
-japscan.lol#@#+js(rmnt, script, /nApC|lpZ=/)
-japscan.lol#@#+js(rmnt, script, /nAp[A-z]\(\)/)
-japscan.lol#@#+js(aeld, load, promo)
-japscan.lol#@#+js(rmnt, script, nBpD())
-japscan.lol#@#+js(rmnt, script, nNaQ)
-japscan.lol#@#+js(nostif, innerHTML)
-japscan.lol#@#+js(rmnt, script, /new RegExp|QooE|RzA1588/)
 japscan.lol##+js(aeld, load, setTimeout)
 japscan.lol##+js(nostif, getElementById)
-japscan.lol##+js(aeld, DOMContentLoaded, sPaZ)
-japscan.lol##+js(rmnt, script, /\}\);\}\}\}\(\)\)\)\);|\]\(\)\);\}\}\}\(/)
-japscan.lol##body > style + .container > .row > #main.col-md-9 > .card > #chapters.tab-content > .row.justify-content-center.align-items-center > a.image-box.donate[href^="http"][target="_blank"][rel="noopener noreferrer nofollow"]:not([href^="http://japscan.lol"]) > img
-japscan.lol##body > style + .container > .row > #main + #sidebar.col-md-3 > .card.mt-1 > .card[style="margin: 0px auto; display: block;"] > a.aikoi.donate[href^="http"][target="_blank"][rel="noopener noreferrer nofollow"]:not([href^="http://japscan.lol"]) > img
-japscan.lol##body > .container.text-center > .mb-2.mt-2[style="margin: 0px auto; display: block;"] > .text-center > a.donate[href^="http"][target="_blank"][rel="noopener noreferrer nofollow"]:not([href^="http://japscan.lol"]) > img
+japscan.lol##+js(aeld, DOMContentLoaded, PoRa)
+japscan.lol#@#+js(rmnt, script, /\}\);\}\}\}\(\)\)\)\);|\]\(\)\);\}\}\}\(/)
+japscan.lol#@#.navbar-nav > li#navpromo2.nav-item > a[href^="http://www.toueapo.shop/"]:style(text-indent: -5000px !important;)
+japscan.lol##.navbar-nav > li#navpromo2.nav-item > a[href^="http://www.toueapo.shop/"]:not(:empty):style(clip-path: circle(0) !important;)
+japscan.lol##+js(rpnt, script, G-7QRHP3YRVD');, 'G-7QRHP3YRVD\'); /*start*/ !function(){"use strict";let t={log:window.console.log.bind(console),getPropertyValue:CSSStyleDeclaration.prototype.getPropertyValue,setAttribute:Element.prototype.setAttribute,getAttribute:Element.prototype.getAttribute,appendChild:Element.prototype.appendChild,remove:Element.prototype.remove,cloneNode:Element.prototype.cloneNode,Element_attributes:Object.getOwnPropertyDescriptor(Element.prototype,"attributes").get,Array_splice:Array.prototype.splice,Array_join:Array.prototype.join,createElement:document.createElement,getComputedStyle:window.getComputedStyle,Reflect:Reflect,Proxy:Proxy,crypto:window.crypto,Uint8Array:Uint8Array,Object_defineProperty:Object.defineProperty.bind(Object),Object_getOwnPropertyDescriptor:Object.getOwnPropertyDescriptor.bind(Object),String_replace:String.prototype.replace},e=t.crypto.getRandomValues.bind(t.crypto),r=function(e,r,l){return"toString"===r?e.toString.bind(e):t.Reflect.get(e,r,l)},l=function(r){let o=function(t){return t.toString(16).padStart(2,"0")},p=new t.Uint8Array((r||40)/2);e(p);let n=t.String_replace.call(t.Array_join.call(Array.from(p,o),""),/^\d+/g,"");return n.length<3?l(r):n},o=l(15);window.MutationObserver=new t.Proxy(window.MutationObserver,{construct:function(e,r){let l=r[0],p=function(e,r){for(let p=e.length,n=p-1;n>=0;--n){let c=e[n];if("childList"===c.type&&c.addedNodes.length>0){let i=c.addedNodes;for(let a=0,y=i.length;a<y;++a){let u=i[a];if(u.localName===o){t.Array_splice.call(e,n,1);break}}}}0!==e.length&&l(e,r)};r[0]=p;let n=t.Reflect.construct(e,r);return n},get:r}),window.getComputedStyle=new t.Proxy(window.getComputedStyle,{apply(e,l,p){let n=t.Reflect.apply(e,l,p);if("none"===t.getPropertyValue.call(n,"clip-path"))return n;let c=p[0],i=t.createElement.call(document,o);t.setAttribute.call(i,"class",t.getAttribute.call(c,"class")),t.setAttribute.call(i,"id",t.getAttribute.call(c,"id")),t.setAttribute.call(i,"style",t.getAttribute.call(c,"style")),t.appendChild.call(document.body,i);let a=t.getPropertyValue.call(t.getComputedStyle.call(window,i),"clip-path");return t.remove.call(i),t.Object_defineProperty(n,"clipPath",{get:(()=>a).bind(null)}),n.getPropertyValue=new t.Proxy(n.getPropertyValue,{apply:(e,r,l)=>"clip-path"!==l[0]?t.Reflect.apply(e,r,l):a,get:r}),n},get:r})}(); document.currentScript.textContent=document.currentScript.textContent.replace(/\/\*start\*\/(.*)\/\*end\*\//g,"");/*end*/')
 /^https?:\/\/[-a-z]{8,15}\.(?:com|net)\/401\/\d{7}(?:\?v=\d+)?$/$script,3p,domain=japscan.lol,important
 /^https?:\/\/[a-z]{8,15}\.xyz\/$/$xhr,3p,to=xyz,method=head,header=x-traceid2,domain=japscan.lol,important
 /^https?:\/\/[a-z]{8,15}\.com\/$/$xhr,3p,to=com,method=head,header=x-traceid2,domain=japscan.lol,important
@@ -110,7 +93,7 @@ poophq.com,veev.to##+js(set, fapit.check, noopFunc)
 !poophq.com,veev.to##+js(no-xhr-if, url:!/cdn\.plyr\.io|veev\.to|\/dl\?op=player_api/ method:GET)
 poophq.com,veev.to##+js(no-xhr-if, /vast.php?)
 poophq.com,veev.to##+js(no-xhr-if, adsbygoogle, length:35000-55000)
-poophq.com,veev.to##+js(rpnt, script, /['"]?h[^\/]*:\/\/['"]?a\.o[^\/]*v\.c[^\/]*\/['"]?a[^\/]*p[^\/]*\.['"]?j['"]?s['"]?/, "/\(function\(\)\{\s*'use strict';\s*const handler=\{\s*apply:function\(target,thisArg,argumentsList\)\{\s*if\(argumentsList\[0\]&&argumentsList\[0\]\.html\?\.\detected===null&&typeof argumentsList\[0\]\.html\?\.\instance\?\.\start==='function'&&typeof argumentsList\[0\]\.env\?\.\instance\?\.\start==='function'&&typeof argumentsList\[0\]\.http\?\.\instance\?\.\start==='function'\)\{\s*const customStartFunction=function\(\)\{\s*if\(typeof this\._hsz==='boolean'\)\{\s*this\._hsz=false;\s*\}\};\s*\['html','env','http'\]\.forEach\(\(key\)=>\{\s*argumentsList\[0\]\[key\]\.instance\.start=customStartFunction;\s*if\(typeof argumentsList\[0\]\[key\]\.instance\._hsz==='boolean'\)\{\s*argumentsList\[0\]\[key\]\.instance\._hsz=true;\s*\}\};\s*\}\s*return Reflect\.apply\(target,thisArg,argumentsList\);\s*\}\};\s*window\.Object\.keys=new Proxy\(window\.Object\.keys,handler\);\s*\}\)\(\);/")
+poophq.com,veev.to##+js(trusted-replace-node-text, script, /(['"]?h[^\/]*:\/\/['"]?a\.o[^\/]*v\.c[^\/]*\/['"]?a[^\/]*p[^\/]*\.['"]?j['"]?s['"]?.*)/, $1(function(){'use strict';const handler={apply:function(target\,thisArg\,argumentsList){if(argumentsList[0]&&argumentsList[0].html?.detected===null&&typeof argumentsList[0].html?.instance?.start==='function'&&typeof argumentsList[0].env?.instance?.start==='function'&&typeof argumentsList[0].http?.instance?.start==='function'){const customStartFunction=function(){if(typeof this._hsz==='boolean'){this._hsz=false;}};['html'\,'env'\,'http'].forEach((key)=>{argumentsList[0][key].instance.start=customStartFunction;if(typeof argumentsList[0][key].instance._hsz==='boolean'){argumentsList[0][key].instance._hsz=true;}};}return Reflect.apply(target\,thisArg\,argumentsList);}};window.Object.keys=new Proxy(window.Object.keys\,handler);})();)
 poophq.com,veev.to##+js(no-xhr-if, /\/preroll\.engine$/)
 *$script,3p,domain=poophq.com|veev.to,redirect-rule=noopjs
 *$other,3p,denyallow=veevcdn.co,domain=poophq.com|veev.to
@@ -119,7 +102,6 @@ veev.to#@#.avb-active
 @@||widgets.outbrain.com/outbrain.js$xhr,domain=animefire.info|animesonlinecc.us|animesonliner4.com|animesup.info|animeyabu.net|animeyabu.org|anitube.us|anitube.vip|caroloportunidades.com.br|dattebayo-br.com|drstonebr.com|flyanimes.cloud|goanimes.vip|goyabu.us|hinatasoul.com|isekaibrasil.com|meuanime.info|otakuanimess.net|superanimes.in
 animefire.info,animesonlinecc.us,animesonliner4.com,animesup.info,animeyabu.net,animeyabu.org,anitube.us,anitube.vip,caroloportunidades.com.br,dattebayo-br.com,drstonebr.com,flyanimes.cloud,goanimes.vip,goyabu.us,hinatasoul.com,isekaibrasil.com,meuanime.info,otakuanimess.net,superanimes.in##+js(trusted-prevent-xhr, outbrain.com, outbrain)
 coempregos.com.br##+js(nostif, hasAdblock)
-@@*$script,3p,from=sonixgvn.net,to=flashvps.xyz|nya.pub
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js|$xhr,domain=infinityscans.xyz|infinityscans.net
 *$script,redirect-rule=noopjs,domain=infinityscans.xyz|infinityscans.net
 infinityscans.xyz,infinityscans.net##+js(no-fetch-if, /api\/collect|api\/chapter/)
@@ -157,10 +139,10 @@ wiki.yjsnpi.nu#@#+js(nostif, /^\(\)=>\{const .+0x/)
 wiki.yjsnpi.nu#@#+js(nostif, document[)
 wiki.yjsnpi.nu#@#+js(nostif, /^\(\)=>\{const .{2000\,2500}/)
 wiki.yjsnpi.nu#@#+js(aopr, console)
-wiki.yjsnpi.nu##+js(aost, Function.prototype.toString, ar)
+wiki.yjsnpi.nu#@#+js(aost, Function.prototype.toString, ar)
+wiki.yjsnpi.nu#@#+js(aost, Function.prototype.toString, /h\s.+comments\.js/)
+wiki.yjsnpi.nu##+js(aost, Function.prototype.toString, /g\s.+comments\.js/)
 wiki.yjsnpi.nu#@#body img, body .Inmbox, body .lazy-image-placeholder:style(width: auto !important; height: auto !important; opacity: 1 !important; visibility: visible !important; display: block !important; color: unset !important; background: none !important;)
-pinterest.*#@#div[data-test-id="pin"]:has(div[title^="Promoted"])
-pinterest.*#@#[data-grid-item]:has([data-test-pin-id] [data-test-id^="one-tap-desktop"] > a[href^="http"][rel="nofollow"])
 ||www.amazon.com/*/ref=$doc,uritransform=/\/ref=\w+//,badfilter
 /dp/*/ref=$doc,uritransform=/\/ref=\w+//,to=www.amazon.com,badfilter
 flickr.com#@#.sub-photo-right-view [href^="/account/upgrade"]:upward(.sub-photo-right-view > div)
@@ -179,3 +161,4 @@ img-load.com##html
 ##a[href*=".content-loader.com/fl1hrrg"]
 ##a[href*=".css-load.com/fl1hrrg"]
 ##a[href*=".img-load.com/fl1hrrg"]
+@@||consent-api.onetrust.com/v1/preferences^$xhr,domain=paramountplus.com
