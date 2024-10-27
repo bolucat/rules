@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.9.2
+// @version         3.8.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1456,12 +1456,9 @@ else if (matchDomain(['chronicle.com', 'philanthropy.com'])) {
   removeDOMElement(preview);
   let article_hidden = document.querySelector('div.contentBody[hidden]');
   if (article_hidden) {
-    let attributes = article_hidden.attributes;
-    for (let elem of attributes) {
-      let name = elem.name;
-      if (name !== 'class')
-        article_hidden.removeAttribute(name);
-    }
+    let attributes = [...article_hidden.attributes].filter(x => x.name !== 'class');
+    for (let elem of attributes)
+      article_hidden.removeAttribute(elem.name);
   }
 }
 
@@ -2786,7 +2783,7 @@ else if (matchDomain('scmp.com')) {
                   if (sub_elem.type === 'text') {
                     if (sub_elem.data)
                       elem.appendChild(document.createTextNode(sub_elem.data));
-                  } else if (['a', 'em'].includes(sub_elem.type)) {
+                  } else if (['a', 'em', 'span'].includes(sub_elem.type)) {
                     let first_child = sub_elem.children ? sub_elem.children[0] : '';
                     if (first_child) {
                       if (first_child.type === 'text') {
@@ -2798,7 +2795,7 @@ else if (matchDomain('scmp.com')) {
                             a_link.href = sub_elem.attribs.href;
                             if (!matchUrlDomain(window.location.hostname, sub_elem.attribs.href))
                               a_link.target = '_blank';
-                          } else
+                          } else if (sub_elem.type === 'em')
                             a_link.style = 'font-style: italic;';
                           a_link.innerText = first_child.data;
                           elem.appendChild(a_link);
@@ -4245,6 +4242,9 @@ else if (matchDomain(usa_mcc_domains) || document.querySelector('section.bottom-
     let subscriptions_action = document.querySelector('div[subscriptions-action][subscriptions-display="NOT data.hasError"]');
     if (subscriptions_action)
       subscriptions_action.removeAttribute('subscriptions-action');
+    let art_cropped = document.querySelector('div.article-body.cropped');
+    if (art_cropped)
+      art_cropped.classList.remove('cropped');
     let subscr_tag = document.querySelector('div#subscriber-exclusive-tag');
     let amp_players = document.querySelectorAll('amp-connatix-player, amp-iframe.trinity-player');
     removeDOMElement(subscr_tag, ...amp_players);
@@ -4264,13 +4264,6 @@ else if (matchDomain(usa_mcc_domains) || document.querySelector('section.bottom-
       for (let elem of pars_hidden)
         elem.removeAttribute('class');
     }
-  }
-  let premium_svgs = document.querySelectorAll('h3 > a > svg');
-  let premium_link;
-  for (let premium_svg of premium_svgs) {
-    premium_link = premium_svg.parentElement;
-    if (premium_link.href.includes('www.'))
-      premium_link.href = premium_link.href.replace('www.', 'amp.');
   }
   let ads = document.querySelectorAll('div[data-type="ad"]');
   removeDOMElement(...ads);
@@ -5003,6 +4996,8 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
     article.appendChild(article_new);
   } else
     article.parentNode.replaceChild(article_new, article);
+  if (func_post)
+    func_post();
 }
 
 function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_slash = false) {
