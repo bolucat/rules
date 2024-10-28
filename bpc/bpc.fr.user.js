@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.8.5.5
+// @version         3.9.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -259,13 +259,18 @@ else if (matchDomain(fr_groupe_la_depeche_domains)) {
 
 else if (matchDomain(fr_groupe_nice_matin_domains)) {
   if (window.location.pathname.startsWith('/amp/')) {
-    amp_unhide_access_hide('="access"', '="NOT access"', 'amp-ad, amp-embed');
-  } else {
-    let paywall = document.querySelector('div#article-teaser');
-    if (paywall)
-      paywall.removeAttribute('id');
+    amp_iframes_replace();
+    let qiota_script = document.querySelector('amp-script.i-amphtml-layout-size-defined[src$="/qiota-amp.js"]');
+    if (qiota_script) {
+      qiota_script.classList.remove('i-amphtml-layout-size-defined');
+      let amp_images = document.querySelectorAll('amp-img > img.i-amphtml-fill-content');
+      for (let elem of amp_images)
+        elem.removeAttribute('class');
+      let sizers = document.querySelectorAll('i-amphtml-sizer');
+      removeDOMElement(...sizers);
+    }
   }
-  let ads = 'div[class^="ad-slot-"], div[class*="Rhoo"]';
+  let ads = 'div[class^="ad-slot-"]';
   hideDOMStyle(ads);
 }
 
@@ -948,7 +953,8 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
   }
 }
 
-function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector, selector_level = false) {
+var selector_level = false;
+function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let article = document.querySelector(selector);
   let article_link = document.querySelector(selector_archive);
   let no_content_msg = '&nbsp;| no article content found! | :';
@@ -1096,7 +1102,7 @@ function amp_iframes_replace(weblink = false, source = '') {
     if (!weblink) {
       if (amp_iframe.offsetHeight > 10) {
         elem = document.createElement('iframe');
-        elem.src = amp_iframe.getAttribute('src'),
+        elem.src = amp_iframe.getAttribute('src').replace(/^http:/, 'https:');
         elem.style = 'height: ' + amp_iframe.offsetHeight + 'px; width: 100%; border: 0px;';
         if (amp_iframe.getAttribute('sandbox'))
           elem.sandbox = amp_iframe.getAttribute('sandbox');

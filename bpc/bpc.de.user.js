@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.9.1
+// @version         3.8.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -610,7 +610,7 @@ else if (matchDomain('stern.de')) {
   func_post = function () {
     header_nofix(article_sel + ' p', paywall_sel, 'BPC > no external site-fix');
   }
-  let paywall_sel = 'section.paid-barrier';
+  let paywall_sel = 'div.paid-barrier';
   let article_sel = 'div.article__body';
   let url = window.location.href;
   getOchToUnlock(url, paywall_sel, '', article_sel);
@@ -863,7 +863,7 @@ else if (matchDomain('wiwo.de')) {
       for (let elem of lazy_images)
         elem.style = 'width: 95%;';
     }
-    let paywall = document.querySelector('wiwo-paywall-ftc, wiwoplus-paywall');
+    let paywall = document.querySelector(paywall_sel);
     if (paywall) {
       let archive_links = document.querySelectorAll('div#bpc_archive');
       removeDOMElement(paywall, ...archive_links);
@@ -872,9 +872,14 @@ else if (matchDomain('wiwo.de')) {
         article.before(googleSearchToolLink(url));
     }
   }
+  let paywall_sel = 'app-paywall';
   let article_sel = 'article';
   let url = window.location.href;
-  getArchive(url, 'div.o-paywall', '', article_sel);
+  let paywall = document.querySelector(paywall_sel);
+  if (paywall) {
+    getArchive(url, paywall_sel, '', article_sel);
+    waitDOMElement(paywall_sel, paywall_sel.toUpperCase(), node => getArchive(url, paywall_sel, '', article_sel), true);
+  }
   if (!mobile) {
     let banner = 'div.c-overscroller';
     hideDOMStyle(banner, 5);
@@ -1366,7 +1371,7 @@ function amp_iframes_replace(weblink = false, source = '') {
     if (!weblink) {
       if (amp_iframe.offsetHeight > 10) {
         elem = document.createElement('iframe');
-        elem.src = amp_iframe.getAttribute('src'),
+        elem.src = amp_iframe.getAttribute('src').replace(/^http:/, 'https:');
         elem.style = 'height: ' + amp_iframe.offsetHeight + 'px; width: 100%; border: 0px;';
         if (amp_iframe.getAttribute('sandbox'))
           elem.sandbox = amp_iframe.getAttribute('sandbox');
@@ -1563,6 +1568,8 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
     article.appendChild(article_new);
   } else
     article.parentNode.replaceChild(article_new, article);
+  if (func_post)
+    func_post();
 }
 
 function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_slash = false) {
