@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.8.9.3
+// @version         3.9.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -211,9 +211,14 @@ if (matchDomain('afr.com')) {
   if (article) {
     window.setTimeout(function () {
       let pars = article.querySelectorAll('p:not([class]), figure:not(:empty)');
-      if (pars.length && pars.length < 5) {
-        let loading = pageContains(article_sel + ' > div', 'Loading...');
-        removeDOMElement(...pars, ...loading);
+      let pagination = document.querySelector('div > span#pagination-top');
+      if ((pars.length && pars.length < 5) || pagination) {
+        if (pagination) {
+          removeDOMElement(pagination.parentNode);
+        } else {
+          let loading = pageContains(article_sel + ' > div', 'Loading...');
+          removeDOMElement(...pars, ...loading);
+        }
         let url = window.location.href.split(/[#\?]/)[0];
         fetch(url)
         .then(response => {
@@ -223,55 +228,93 @@ if (matchDomain('afr.com')) {
                 try {
                   let json = JSON.parse(html.split('__REDUX_STATE__=')[1].split('};')[0].replace(/:undefined([,}])/g, ':"undefined"$1') + '}');
                   if (json) {
+                    let placeholders;
+                    function find_item(match, p1, offset, string) {
+                      let placeholder_id = p1;
+                      let result = '';
+                      if (placeholder_id && placeholders[placeholder_id]) {
+                        let item = placeholders[placeholder_id];
+                        if (item.data) {
+                          if (['linkArticle', 'linkExternal'].includes(item.type)) {
+                            if (item.data.text) {
+                              if (item.data.url)
+                                result = '<a href="' + item.data.url + '"' + (item.data.newTab ? 'target="_blank"' : '') + '>' + item.data.text + '</a>';
+                              else
+                                result = item.data.text;
+                            }
+                          } else if (item.type === 'image') {
+                            if (item.data.fileName)
+                              result = '<figure><img src="https://static.ffx.io/images/w_960/' + item.data.fileName + '" style="width: 100%;"><figcaption>' + (item.data.caption ? item.data.caption : '') + (item.data.source ? '<span style="font-weight: bold;">&nbsp;' + item.data.source + '</span>' : '') + '</figcaption></figure>';
+                          } else if (item.type === 'youtube') {
+                            if (item.data.url) {
+                              if (item.data.url.includes('watch?v='))
+                                result = '<iframe src="' + item.data.url.replace('watch?v=', 'embed/') + '" style="width: 100%; height: 400px;"></iframe>';
+                              else
+                                result = '<a href="' + item.data.url + '" target="_blank">' + item.data.url + '</a>';
+                            }
+                          } else if (item.type === 'twitter') {
+                            if (item.data.url)
+                              result = '<a href="' + item.data.url + '" target="_blank">' + item.data.url + '</a>';
+                          } else if (item.type === 'iframe') {
+                            if (item.data.url)
+                              result = '<iframe src="' + item.data.url + '" style="width: 100%; height: 200px; border: none;"></iframe>';
+                          } else if (!['callout', 'quote', 'relatedStory', 'video'].includes(item.type)) {
+                            console.log(item);
+                          }
+                        }
+                      }
+                      return result;
+                    }
                     let json_text = json.page.content.asset.body;
                     if (json_text) {
-                      let placeholders = json.page.content.asset.bodyPlaceholders;
-                      if (placeholders) {
-                        function find_item(match, p1, offset, string) {
-                          let placeholder_id = p1;
-                          let result = '';
-                          if (placeholder_id && placeholders[placeholder_id]) {
-                            let item = placeholders[placeholder_id];
-                            if (item.data) {
-                              if (['linkArticle', 'linkExternal'].includes(item.type)) {
-                                if (item.data.text) {
-                                  if (item.data.url)
-                                    result = '<a href="' + item.data.url + '"' + (item.data.newTab ? 'target="_blank"' : '') + '>' + item.data.text + '</a>';
-                                  else
-                                    result = item.data.text;
-                                }
-                              } else if (item.type === 'image') {
-                                if (item.data.fileName)
-                                  result = '<figure><img src="https://static.ffx.io/images/w_960/' + item.data.fileName + '" style="width: 100%;"><figcaption>' + (item.data.caption ? item.data.caption : '') + (item.data.source ? '<span style="font-weight: bold;">&nbsp;' + item.data.source + '</span>' : '') + '</figcaption></figure>';
-                              } else if (item.type === 'youtube') {
-                                if (item.data.url) {
-                                  if (item.data.url.includes('watch?v='))
-                                    result = '<iframe src="' + item.data.url.replace('watch?v=', 'embed/') + '" style="width: 100%; height: 400px;"></iframe>';
-                                  else
-                                    result = '<a href="' + item.data.url + '" target="_blank">' + item.data.url + '</a>';
-                                }
-                              } else if (item.type === 'twitter') {
-                                if (item.data.url)
-                                  result = '<a href="' + item.data.url + '" target="_blank">' + item.data.url + '</a>';
-                              } else if (item.type === 'iframe') {
-                                if (item.data.url)
-                                  result = '<iframe src="' + item.data.url + '" style="width: 100%; height: 200px; border: none;"></iframe>';
-                              } else if (!['callout', 'quote', 'relatedStory', 'video'].includes(item.type)) {
-                                console.log(item);
-                              }
-                            }
-                          }
-                          return result;
-                        }
+                      placeholders = json.page.content.asset.bodyPlaceholders;
+                      if (placeholders)
                         json_text = json_text.replace(/<x-placeholder id="(\w+)"><\/x-placeholder>/g, find_item);
-                      }
                       let parser = new DOMParser();
                       let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
                       let content_new = doc.querySelector('div');
                       article.appendChild(content_new);
                       let sheet = document.createElement('style');
-                      sheet.innerText = article_sel + ' p {margin: 20px 0px;}}';
+                      sheet.innerText = article_sel + ' p {margin: 20px 0px;}';
                       document.head.appendChild(sheet);
+                    } else if (window.location.pathname.startsWith('/markets/')) {
+                      let parser = new DOMParser();
+                      let first = true;
+                      let posts = json.page.content.asset.posts;
+                      for (let post of posts) {
+                        if (first) {
+                          first = false;
+                          continue;
+                        }
+                        let asset = post.asset;
+                        if (asset && asset.body) {
+                          let json_text = asset.body;
+                          placeholders = asset.bodyPlaceholders;
+                          if (placeholders)
+                            json_text = json_text.replace(/<x-placeholder id="(\w+)"><\/x-placeholder>/g, find_item);
+                          let doc = parser.parseFromString('<section>' + json_text + '</section>', 'text/html');
+                          let par = doc.querySelector('section');
+                          let header;
+                          if (asset.headlines && asset.headlines.headline) {
+                            header = document.createElement('h2');
+                            header.innerText = asset.headlines.headline;
+                            header.id = post.id;
+                          }
+                          let byline;
+                          if (asset.byline) {
+                            byline = document.createElement('p');
+                            byline.innerText = asset.byline;
+                            byline.style = 'margin-bottom: 24px;'
+                          }
+                          article.append(header, byline, par);
+                        }
+                      }
+                      let sheet = document.createElement('style');
+                      sheet.innerText = 'section:not([class]) > p {margin: 24px 0px;}';
+                      document.head.appendChild(sheet);
+                      let key_posts = document.querySelectorAll('li > a[href*="?post="]');
+                      for (let elem of key_posts)
+                        elem.href = elem.href.replace('?post=', '#');
                     }
                   }
                 } catch (err) {
@@ -4736,7 +4779,7 @@ function amp_iframes_replace(weblink = false, source = '') {
     if (!weblink) {
       if (amp_iframe.offsetHeight > 10) {
         elem = document.createElement('iframe');
-        elem.src = amp_iframe.getAttribute('src'),
+        elem.src = amp_iframe.getAttribute('src').replace(/^http:/, 'https:');
         elem.style = 'height: ' + amp_iframe.offsetHeight + 'px; width: 100%; border: 0px;';
         if (amp_iframe.getAttribute('sandbox'))
           elem.sandbox = amp_iframe.getAttribute('sandbox');
