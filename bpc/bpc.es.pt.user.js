@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.8.8.2
+// @version         3.9.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -433,7 +433,7 @@ else if (matchDomain(pe_grupo_elcomercio_domains)) {
 
 else if (matchDomain('elespectador.com')) {
   if (window.location.search.match(/(\?|&)outputType=amp/)) {
-    amp_unhide_subscr_section('amp-ad, amp-embed, [class^="Widget"], amp-fx-flying-carpet');
+    amp_unhide_subscr_section('amp-ad, amp-embed, [class^="Widget"], amp-fx-flying-carpet', false);
   } else {
     amp_redirect('div.exclusive_validation');
   }
@@ -758,7 +758,7 @@ function amp_iframes_replace(weblink = false, source = '') {
     if (!weblink) {
       if (amp_iframe.offsetHeight > 10) {
         elem = document.createElement('iframe');
-        elem.src = amp_iframe.getAttribute('src'),
+        elem.src = amp_iframe.getAttribute('src').replace(/^http:/, 'https:');
         elem.style = 'height: ' + amp_iframe.offsetHeight + 'px; width: 100%; border: 0px;';
         if (amp_iframe.getAttribute('sandbox'))
           elem.sandbox = amp_iframe.getAttribute('sandbox');

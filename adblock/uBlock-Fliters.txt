@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Wed, 30 Oct 2024 15:03:32 +0000
-! Diff-Path: ../patches/2024.10.30.992.patch#ublock-filters
+! Last modified: Thu, 31 Oct 2024 14:38:33 +0000
+! Diff-Path: ../patches/2024.10.31.1046.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -10088,6 +10088,7 @@ admiregirls.su##+js(acs, $, btoa)
 service.webgoto.net##:not(:matches-path(/amafav/)) .image_box[style*="amazon.co"]:style(background: none !important;)
 service.webgoto.net##:not(:matches-path(/amafav/)) a[href^="https://www.amazon.co.jp"][target="_blank"]
 dreamdth.com,freemodsapp.in,onlytech.com##+js(acs, eval, replace)
+dreamdth.com,freemodsapp.in,onlytech.com##+js(nostif, document.createElement)
 freemodsapp.in##^script:has-text(/eval\(.+?decodeURIComponent/)
 tokuzilla.net##.btn-warning[href="#watch"]:remove-attr(onclick)
 javball.com##+js(no-fetch-if, adsbygoogle)
@@ -10581,6 +10582,7 @@ hiddenleaf.to##+js(aeld, click, openDirectLinkAd)
 ###adyes
 nikaplayer.com##+js(nowoif, !nikaplayer.com)
 lk21official.my##[id^="btop-"] > [href^="https://kredit-mobil-dp-murah.pages.dev/"]
+play1.kirastream.my.id#@#.dwnLink
 play1.kirastream.my.id##[href="https://t.me/Crypto_Journey_WITH_DOGS"]
 ||cank.xyz^
 ronorp.net##+js(aeld, load, detect)
@@ -10638,6 +10640,25 @@ xxxbfvideo.net##+js(rmnt, script, document.cookie)
 xxxbfvideo.net##+js(nowoif)
 ||xxxbfvideo.net/assetsv3/wa.js^
 ||cdnflex.me^
+||headerbidding.ai^$script,domain=hegra.cam,redirect=noopjs
+filespayout.com##[href="javascript:void(0);"]
+filmy4wap.co.in##[href^="https://www.highcpmrevenuegate.com/"]
+filmy4wap.co.in##+js(nowoif)
+!#if cap_html_filtering
+filmy4wap.co.in##^meta[http-equiv="refresh"]
+filmy4wap.co.in##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
+filmy4wap.co.in##^script:has-text(/window\.open|\.createElement/)
+!#else
+filmy4wap.co.in##+js(refresh-defuser)
+filmy4wap.co.in##+js(rpnt, script, window.dataLayer =, '(()=>{const time=parseInt(document.querySelector("meta[http-equiv=\"refresh\"]").content.split(";")[0])*1000+1000;setTimeout(()=>{document.body.innerHTML=document.body.innerHTML},time)})();window.dataLayer =', sedCount, 1)
+filmy4wap.co.in##+js(rmnt, script, /h=decodeURIComponent|popundersPerIP|window\.open|\.createElement/)
+!#endif
+||amusementchillyforce.com^$all
+||nextmeon.com^
+||traffprogo20.com^
+||hollow-love.com^
+||brightcriticism.com^
+||slight-tooth.com^
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -11502,7 +11523,8 @@ jeuxenligne.xyz##form > [id][style="display: none;"]:style(display:block !import
 ||earnbitmoon.xyz/multiads/multiads.php
 edukaroo.com##+js(nano-sib, count, *, 0.001)
 blogesque.net,bookbucketlyst.com,explorosity.net,optimizepics.com,stfly.*,stly.*,torovalley.net,explorosity.net,travize.net,trekcheck.net,metoza.net,techlike.net,snaplessons.net,atravan.net,transoa.net,techmize.net,crenue.net##+js(rmnt, script, justDetectAdblock)
-blogesque.net,bookbucketlyst.com,explorosity.net,optimizepics.com,stfly.*,stly.*,torovalley.net,explorosity.net,travize.net,trekcheck.net,metoza.net,techlike.net,snaplessons.net,atravan.net,transoa.net,techmize.net,crenue.net##+js(acs, document.documentElement, break;case $.)
+airevue.net,atravan.net,blogesque.net,bookbucketlyst.com,crenue.net,explorosity.net,explorosity.net,metoza.net,optimizepics.com,snaplessons.net,stfly.*,stly.*,techlike.net,techmize.net,torovalley.net,transoa.net,travize.net,trekcheck.net##+js(acs, EventTarget.prototype.addEventListener, delete window)
+airevue.net##+js(no-xhr-if, ads)
 apkmodvn.com,mod1s.com##+js(nostif, adsPost)
 apkmodvn.com##+js(set-cookie, _ckLV1, 1)
 apkmoddone.com##+js(nostif, 1e3*)
@@ -11661,6 +11683,9 @@ streamelements.com##+js(set, sensorsDataAnalytic201505, {})
 ||validate.strms.net/*adblock%3Dtrue$doc,uritransform=/adblock%3Dtrue/adblock%3Dfalse/
 ! shortylink. store popup
 shortylink.store##+js(aopr, open)
+encurtads.net,financacerta.com,shrtbr.com###adblock-message
+encurtads.net,financacerta.com##.wpsafe-top > div > center > a[href][target="_blank"]
+||encurtads.net/scriptencurmontag.js$script
 !#if env_mobile
 ! *** filters/filters-mobile.txt ***
 !----- 2020 -----
@@ -11676,8 +11701,9 @@ shortylink.store##+js(aopr, open)
 *##.top-ad-container
 *##AMP-AD
 *##div[id*="ScriptRoot"]
+*##ins.adsbygoogle[data-ad-client]
 *##ins.adsbygoogle[data-ad-slot]
-~cinelatino.net,*##[id^="div-gpt-ad"]:not([style^="width: 1px; height: 1px; position: absolute; left: -10000px; top: -"])
+~cinelatino.net,*##[id^="div-gpt-ad"]:not([style^="width: 1px; height: 1px; position: absolute; left: -10000px; top: -"]):not([style="pointer-events: none; height: 1px; width: 0px; opacity: 0; visibility: hidden; position: fixed; bottom: 0px;"])
 xnxx.com,xvideos.com###ad-header-mobile
 jprime.jp##.ad-overlay
 apkdone.com##.adplaceholder-top
@@ -17230,7 +17256,6 @@ mangastream.mobi###myModal
 ||doubleclickbygoogle.com/favicon.ico$image,3p,redirect-rule=32x32.png
 ||google.com/adsense/start/images/favicon.ico$image,3p,redirect-rule=32x32.png
 ||gstatic.com/adx/doubleclick.ico$image,3p,redirect-rule=32x32.png
-#@##AdLayer1
 #@##ad_300
 #@##ad_728
 #@##ad_area
@@ -17248,7 +17273,6 @@ mangastream.mobi###myModal
 #@##adsquare
 #@##banner468
 #@##banner728x90
-###AdLayer1:not([style^="position: absolute; left: -5000px"])
 ###ad_300:not([style^="position: absolute; left: -5000px"])
 ###ad_728:not([style^="position: absolute; left: -5000px"])
 ###ad_area:not([style^="position: absolute; left: -5000px"])

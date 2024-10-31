@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Wed, 30 Oct 2024 13:18:21 +0000
-! Diff-Path: ../patches/2024.10.30.992.patch#ublock-badware
+! Last modified: Thu, 31 Oct 2024 12:24:43 +0000
+! Diff-Path: ../patches/2024.10.31.1046.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -2925,7 +2925,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||re-captha-version-$all
 ||valid-check-tl-$all
 ! http://teluguodu.com/om-bheem-bush-movie-review/ - example site
-||check-tl-ver-$all
+||psh-static.b-cdn.net^
+||check-tl-$all
 ||tech4u.app^$all
 .com/?news&s|$popup
 ||cloud.tnewstraffic.com^$all
@@ -3041,6 +3042,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 /^https:\/\/ourtime\.[a-z]+-[a-z]+\.workers\.dev\//$doc,to=workers.dev|~ourtime.com
 ! tiktok
 /\/wap\/api\/(?:activity\/)?[a-zA-Z]+![-_a-zA-Z]+\.action\?/$xhr,1p,strict1p,match-case
+||wetching.ru^$doc,frame
 ! made-in-china.com
 ||griffithdds.com/*/madeinchina.com/$all,to=~made-in-china.com
 ||oortech.com/mic.shtml^$doc,to=~made-in-china.com
@@ -3268,7 +3270,6 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||bmoreferral.com^$all,to=~bmo.com
 ||personas.devbam.com^$all,to=~bam.com.gt
 ||negociebra.com.br^$all,to=~banco.bradesco
-||lloyd-group.com^$all,to=~lloydsbank.com
 ||itaconsorciodigital.com.br^$all,to=~itau.com.br
 ||wizardpayroll.com.ar^$all,to=~hsbc.com
 ||spareb1.com^$all,to=~sparebank1.no
@@ -3279,6 +3280,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||pncexc.com^$all,to=~pnc.com
 ||moonlightproshop.com^$all,to=~volksbank.at
 ||nbtbank.architect-cert.fiservapps.com^$all,to=~nbtbank.com
+||douroweb.eu^$all,to=~bankofamerica.com
 /^https:\/\/tpbank\.[-a-z0-9]{5,}\.[a-z]{3}(?:\.vn)?\//$doc,to=~edu|~gov|~gov.vn|~tpb.vn
 ||mybluehost.me/service/*/nkl-log.php$doc,to=~nickel.eu
 ||turkiyecumhuriyetiziraatbankasi.com^$all,to=~ziraatbank.com.tr
@@ -3303,6 +3305,9 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||codeanyapp.com/*/DKB_new/$doc,to=~dkb.de
 ||correopackvia.freewebhostmost.com^$all,to=~hype.it
 ||freewebhostmost.com/DARKSIDE/hype/$doc,to=~hype.it
+! Lloyds Bank
+||lloyd-group.com^$all,to=~lloydsbank.com
+||lbg-calcs.vercel.app^$all,to=~lloydsbank.com
 ! hypovereinsbank.de
 ||gohvb-d634f.web.app^$all,to=~hypovereinsbank.de
 ||gohvb-*.web.app^$doc,to=~hypovereinsbank.de
@@ -3602,6 +3607,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||rr.nu^$doc
 /^https:\/\/ht[a-z]\d{2}\.vip\//$doc,to=vip
 ||recouphh.top^$all
+||recovery-cr.top^$all
+/^https:\/\/xy[a-z]\d{2}\.cc\//$doc,to=cc
 ! usps
 ||uspsparcels.net^$all,to=~usps.com
 ||freeusps.com^$all,to=~usps.com
@@ -3662,8 +3669,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||codeanyapp.com/Sus/*/sign.php^$doc,to=~swisspass.ch
 ||verwalten-sbb-informationen-managecff-kundenportal-online.codeanyapp.com^$all,to=~swisspass.ch
 ||codeanyapp.com/manage-SBB/$doc,to=~swisspass.ch
-||cffsbbhost-aniamaria*.codeanyapp.com^$all,to=~swisspass.ch
 ||codeanyapp.com/*/SWISSPASSC/$doc,to=~swisspass.ch
+||cffsbbhost-aniamaria*.codeanyapp.com^$all
 ||manage-administrere-swisspass-*.codeanyapp.com^$doc,to=~swisspass.ch
 ||romacsystems.com/*/CHFINAL/$doc,to=~swisspass.ch
 ||valuge.com.ar/sbb/$doc,to=~swisspass.ch

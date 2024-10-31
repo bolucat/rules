@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: f4wPoC4shkVXqdjWyMn0YQ
-! Diff-Path: ../patches/7/7-s-1730302677-3600.patch
+! Checksum: gMHkl2wfwr4aS2VFoWu/Mw
+! Diff-Path: ../patches/7/7-s-1730392602-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.58.62
-! TimeUpdated: 2024-10-30T15:33:21+00:00
+! Version: 2.0.58.68
+! TimeUpdated: 2024-10-31T16:32:42+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -497,6 +497,7 @@ yourfones.net##+js(spoof-css, ins.adsbygoogle, display, block)
 mytry.jp#@#.ad_box
 mytry.jp#$#body > #container { display: block !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/190943
+$subdocument,redirect-rule=noop.html,domain=wiki.yjsnpi.nu
 wiki.yjsnpi.nu#$##comments-loading { display: none !important; }
 @@||wiki.yjsnpi.nu^$image,xmlhttprequest,~third-party
 @@||wiki.yjsnpi.nu^$generichide
@@ -551,8 +552,9 @@ blog.2nt.com#@#.AdSense
 pvpoke-re.com##body > div[id][style*="9999"][style*="fixed"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/166650
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167434
-bm.best-hit.tv,h178.com,jukenbbs.com##.substitute-area-middle-on
-bm.best-hit.tv,h178.com,jukenbbs.com##.substitute-show-area-on
+best-hit.tv,h178.com,jukenbbs.com,j-baseball.club,j-basketball.club##.substitute-area-footer-on
+best-hit.tv,h178.com,jukenbbs.com,j-baseball.club,j-basketball.club##.substitute-area-middle-on
+best-hit.tv,h178.com,jukenbbs.com,j-baseball.club,j-basketball.club##.substitute-show-area-on
 bm.best-hit.tv,h178.com,jukenbbs.com###gStickyAd
 @@||bm.best-hit.tv^$generichide
 @@||h178.com^$generichide
@@ -1753,6 +1755,7 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 !
 !
+chaos2ch.com##a[rel="noopener sponsored"]
 jumpmatome2ch.biz###sidebar > aside#text-12:has(> .textwidget > p > a[target="_blank"] > img[src*="bnr_"])
 ||city.musashino.lg.jp/_res/projects/default_project/_project_/ads/
 city.musashino.lg.jp##.sadbg
@@ -7014,7 +7017,7 @@ wiki.yjsnpi.nu###mw-content-text > div[style*="min-height:"]:has(> div[style] > 
 wiki.yjsnpi.nu##iframe[src*="?affid="]
 wiki.yjsnpi.nu###mw-content-text > div.im[style^="min-height:"]
 wiki.yjsnpi.nu###mw-content-text > div[style*="min-height:"]:has(> div.im > div[id^="im-"] > script)
-adacomi.com,numan.tokyo,news.denfaminicogamer.jp##div[style$="min-height:250px;"]
+number.bunshun.jp,adacomi.com,numan.tokyo,news.denfaminicogamer.jp##div[style$="min-height:250px;"]
 oshiete-kun.net##.goods
 michaelsan.livedoor.biz##.main > div > a[style][href*="amazon.co.jp/"]
 dragonquestwalk.blog.jp##.l-sidebar-b > div.plugin-memo:last-of-type
@@ -10679,7 +10682,7 @@ blog.livedoor.jp##div[class^="article-body"] > dt.net[id] > span[style="backgrou
 blog.livedoor.jp##.fluct-2ad
 blog.livedoor.jp###pickrightcon > .right-container-ads
 blog.livedoor.jp##.kiziue > div[style^="width:600px; font-family:"][style$="text-align: center;"]
-blog.livedoor.jp##.ads_more ~ .article-main2 > div[style^="margin: 60px"][style*="#fff"]
+blog.livedoor.jp##.ads_more ~ .article-main2 > div[style^="margin: 60px"][style*="#"]
 javtheater.com##div[class^="chatbanner"]
 mensnonno.jp##.inarticle-ad
 blog.livedoor.jp#?##sidebar > div.scroll > div.side-ad:upward(1)

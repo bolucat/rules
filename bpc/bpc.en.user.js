@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.0.0
+// @version         3.9.0.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2747,8 +2747,11 @@ else if (matchDomain('reuters.com')) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('rp.pl')) {
-  setCookie('blaize_session', '', 'rp.pl', '/', 0);
+else if (matchDomain(['rp.pl', 'parkiet.com'])) {
+  if (matchDomain('rp.pl'))
+    setCookie('blaize_session', '', 'rp.pl', '/', 0);
+  else if (matchDomain('parkiet.com'))
+    setCookie('__rppl_uid', '', 'parkiet.com', '/', 0);
   let paywall = document.querySelector('div.paywallComp');
   if (paywall) {
     removeDOMElement(paywall);
@@ -3591,6 +3594,13 @@ else if (matchDomain('thewrap.com')) {
 }
 
 else if (matchDomain('timeshighereducation.com')) {
+  let paywall = document.querySelector('div.paywall-active');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let fade = document.querySelectorAll('div.paywall-fade');
+    for (let elem of fade)
+      elem.classList.remove('paywall-fade');
+  }
   let hidden_images = document.querySelectorAll('img.b-lazy[src^="data:image/"][data-src]');
   for (let hidden_image of hidden_images) {
     hidden_image.setAttribute('src', hidden_image.getAttribute('data-src'));
