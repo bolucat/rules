@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.0.3
+// @version         3.9.0.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1222,9 +1222,12 @@ else if (matchDomain('asia.nikkei.com')) {
 else if (matchDomain('axios.com')) {
   function axios_noscroll(node) {
     node.removeAttribute('style');
-    let overlay = 'div[class^="Modal_paywallContainer"]';
+    let overlay = 'div[class^="Modal_"]';
     hideDOMStyle(overlay, 2);
   }
+  let noscroll = document.querySelector('html[style]');
+  if (noscroll)
+    axios_noscroll(noscroll);
   waitDOMAttribute('html', 'HTML', 'style', axios_noscroll, true);
   let banners = 'div[data-cy="pro-paywall"], div.apexAd, div[class*="NativeAd"], span[data-ad-type]';
   hideDOMStyle(banners);
