@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.0.4
+// @version         3.9.0.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3536,7 +3536,7 @@ else if (matchDomain('theverge.com')) {
                   if (par.image.credit && par.image.credit.html)
                     caption_text += ' - ' + par.image.credit.html;
                 }
-                let figure = makefigure(par.image.url, caption_text);
+                let figure = makeFigure(par.image.url, caption_text);
                 if (par.image.asset && par.image.asset.title)
                   figure.firstChild.before(document.createTextNode(par.image.asset.title));
                 elem.appendChild(figure);
