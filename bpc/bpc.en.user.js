@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.0.5
+// @version         3.9.0.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4203,6 +4203,12 @@ else if (matchDomain(ke_nation_media_domains)) {
       let page_hidden = document.querySelector('div.article-page .hidden');
       if (page_hidden)
         page_hidden.classList.remove('hidden');
+      let lazy_images = document.querySelectorAll('img.lazy-img[data-srcset]:not([src])');
+      for (let elem of lazy_images) {
+        elem.src = elem.getAttribute('data-srcset').split(',').pop().split(' ')[0];
+        elem.classList.remove('lazy-img');
+        elem.style = 'margin: 0px 20px';
+      }
       let videos = document.querySelectorAll('iframe.lazy-iframe_iframe[data-src]:not([src])');
       for (let elem of videos) {
         elem.src = elem.getAttribute('data-src');
