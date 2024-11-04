@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.0.6
+// @version         3.9.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -277,7 +277,7 @@ if (matchDomain('afr.com')) {
                       let sheet = document.createElement('style');
                       sheet.innerText = article_sel + ' p {margin: 20px 0px;}';
                       document.head.appendChild(sheet);
-                    } else if (window.location.pathname.startsWith('/markets/')) {
+                    } else {
                       let parser = new DOMParser();
                       let first = true;
                       let posts = json.page.content.asset.posts;
@@ -1617,68 +1617,6 @@ else if (matchDomain('discovermagazine.com')) {
       body.style = 'overflow: auto !important;';
     let banners = 'div.fIkXwQ, div[style*="fadeIn"], div[role="button"][aria-label="Dismiss Dialog"]';
     hideDOMStyle(banners);
-  }, 1000);
-}
-
-else if (matchDomain('dnevnik.bg')) {
-  window.setTimeout(function () {
-    let article_lock = document.querySelector('div.article-lock');
-    if (article_lock) {
-      let scripts = document.querySelectorAll('script:not([src], [type])');
-      let json_script;
-      for (let script of scripts) {
-        if (script.text.startsWith('self.__next_f') && script.text.includes('articleBody')) {
-          json_script = script;
-          break;
-        }
-      }
-      if (json_script) {
-        article_lock.classList.remove('article-lock');
-        let img_main = document.querySelector('div.story-gallery-main figure > img[src]');
-        let links;
-        if (json_script.text.includes('significantLink\\":'))
-          links = json_script.text.split('significantLink\\":[')[1].split('\\"],')[0].replace(/\\"/g, '').split(',');
-        let json_pars = json_script.text.split('articleBody\\":\\"')[1].split('\\",\\"')[0].replace(/\\u003c/g, '<').replace(/\\u003e/g, '>').replace(/\\\\\\"/g, '"').split(/[\[\]]{2}/);
-        if (json_pars.length)
-          article_lock.innerHTML = '';
-        let parser = new DOMParser();
-        for (let elem of json_pars) {
-          let par;
-          if (!elem.match(/[\[\]]{2}/)) {
-            if (elem.match(/img:\d+/)) {
-              if (img_main) {
-                let img_new_id = elem.split('img:')[1];
-                if (img_new_id) {
-                  par = document.createElement('img');
-                  par.src = img_main.src.replace(/_\d+\./, '_' + img_new_id + '.').split('?')[0];
-                  par.style = 'margin: 20px; width: 90%;';
-                }
-              }
-            } else if (elem.match(/storyid:\d+/)) {
-              if (links) {
-                let story_id = elem.split('storyid:')[1];
-                if (story_id) {
-                  let story = links.find(x => x.includes(story_id + '_'));
-                  if (story) {
-                    par = document.createElement('a');
-                    par.href = story;
-                    par.innerText = story.split(story_id + '_')[1].replace(/_/g, ' ').replace('/', '');
-                    par.className = 'story-related';
-                    if (!matchUrlDomain(window.location.hostname, story))
-                      par.target = '_blank';
-                  }
-                }
-              }
-            } else if (!elem.match(/quote:\d+/)) {
-              let doc = parser.parseFromString('<p>' + elem + '</p>', 'text/html');
-              par = doc.querySelector('p');
-            }
-            if (par)
-              article_lock.appendChild(par);
-          }
-        }
-      }
-    }
   }, 1000);
 }
 

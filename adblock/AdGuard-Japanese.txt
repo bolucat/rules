@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: QXva34FNp/eRoeW4bapDVg
-! Diff-Path: ../patches/7/7-s-1730655404-3600.patch
+! Checksum: trm93/kbA3FQz7KzcpPWrw
+! Diff-Path: ../patches/7/7-s-1730741909-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.58.84
-! TimeUpdated: 2024-11-03T17:32:47+00:00
+! Version: 2.0.58.87
+! TimeUpdated: 2024-11-04T17:33:01+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -498,9 +498,8 @@ yourfones.net##+js(spoof-css, ins.adsbygoogle, display, block)
 mytry.jp#@#.ad_box
 mytry.jp#$#body > #container { display: block !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/190943
-wiki.yjsnpi.nu##+js(noeval-if, /g('\,')?e('\,')?t('\,')?U('\,')?T('\,')?C/)
-!+ NOT_PLATFORM(ext_ff)
-$subdocument,redirect-rule=noop.html,domain=wiki.yjsnpi.nu
+!+ NOT_PLATFORM(ext_ff,ext_chromium_mv3)
+!+ NOT_PLATFORM(ext_ff,ext_chromium_mv3)
 wiki.yjsnpi.nu#$##comments-loading { display: none !important; }
 @@||wiki.yjsnpi.nu^$image,xmlhttprequest,~third-party
 @@||wiki.yjsnpi.nu^$generichide
@@ -1758,6 +1757,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+repsoku.net##.thumb:has(> a[target="_blank"]:only-child)
+rawinu.com###adModal
 city.natori.miyagi.jp##.footer_banner_wrap
 my-best.com##div[data-testid^="advertisement-"]
 appget.com#$#.pc_block[style^="position: sticky"] { margin-bottom: 0 !important; }
