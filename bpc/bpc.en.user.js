@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.1.0
+// @version         3.9.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4273,7 +4273,29 @@ else if (matchDomain(usa_mng_domains) || document.querySelector('head > link[rel
   if (window.location.pathname.endsWith('/amp/'))
     amp_unhide_subscr_section('amp-ad, amp-embed, div.ampWrapperInside, div#paywall');
   else if (true) {
-    getJsonUrl('#server-paywall', '', 'div.body-copy', {art_append: 1});
+    let paywall_sel = '#server-paywall';
+    let paywall = document.querySelector(paywall_sel);
+    let article_sel = 'div.body-copy';
+    let article = document.querySelector(article_sel);
+    if (paywall && article) {
+      func_post = function () {
+        let slideshow = article.querySelector('div.article-slideshow');
+        if (slideshow) {
+          slideshow.removeAttribute('class');
+          let image_wrappers = slideshow.querySelectorAll('div.image-wrapper');
+          for (let elem of image_wrappers) {
+            elem.removeAttribute('class');
+            elem.style = 'margin: 20px 0px;';
+          }
+          let caption = 'div.mng-gallery-information-container, button.icon-close';
+          hideDOMStyle(caption, 2);
+        }
+        if (iframe)
+          article.appendChild(iframe);
+      }
+      let iframe = article.querySelector('iframe');
+      getJsonUrl(paywall_sel, '', article_sel, {art_append:1, art_class: 'body-copy'});
+    }
     let ads = 'div.dfp-ad';
     hideDOMStyle(ads);
   }
