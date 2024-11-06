@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 6qTHiVAEizfkrFI8EPzEuQ
-! Diff-Path: ../patches/7/7-s-1730828223-3600.patch
+! Checksum: V/th1wtjb75pAI4CO5MO5w
+! Diff-Path: ../patches/7/7-s-1730914675-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.58.92
-! TimeUpdated: 2024-11-05T17:33:16+00:00
+! Version: 2.0.58.97
+! TimeUpdated: 2024-11-06T17:33:47+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -498,7 +498,7 @@ yourfones.net##+js(spoof-css, ins.adsbygoogle, display, block)
 mytry.jp#@#.ad_box
 mytry.jp#$#body > #container { display: block !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/190943
-!+ NOT_PLATFORM(ext_ff,ext_chromium_mv3)
+!+ NOT_PLATFORM(windows, mac, android, ext_ff, ext_chromium_mv3)
 $subdocument,redirect-rule=noop.html,domain=wiki.yjsnpi.nu
 wiki.yjsnpi.nu#$##comments-loading { display: none !important; }
 @@||wiki.yjsnpi.nu^$image,xmlhttprequest,~third-party
@@ -836,16 +836,13 @@ video.tv-tokyo.co.jp#@#.ad-placeholder
 380cc.cc#$##playertopads { height: 51px!important; position: absolute!important; left: -3000px!important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/20703
 ! https://github.com/AdguardTeam/AdguardFilters/issues/20116
-! https://github.com/AdguardTeam/AdguardFilters/issues/9094
-!+ PLATFORM(ext_ff, ext_opera, ios, ext_android_cb, ext_ublock)
-@@||nasubiblog.com^$generichide
 ! https://github.com/AdguardTeam/AdguardFilters/issues/9085
 !+ PLATFORM(ext_ff, ext_opera, ios, ext_android_cb, ext_ublock)
 @@||repeat-drama.info^$generichide
 ! https://github.com/AdguardTeam/AdguardFilters/issues/9082
 !+ PLATFORM(ext_ff, ext_opera, ios, ext_android_cb, ext_ublock)
 @@||kyukyoku-matome.com^$generichide
-nasubiblog.com,kyukyoku-matome.com##.widget_pc_ad
+kyukyoku-matome.com##.widget_pc_ad
 ! https://github.com/AdguardTeam/AdguardFilters/issues/9068
 @@||mushinavi.com^$generichide
 !---------------------------------------------------------------------------!
@@ -1029,8 +1026,9 @@ kasegeru.blog.jp##+js(remove-node-text, #text, /スポンサードリンク：?|
 blog.livedoor.jp##+js(abort-current-script, Array.prototype.join, amazon)
 ! overlay
 erommd-street.com##+js(abort-current-script, document.createElement, overview)
-! https://github.com/uBlockOrigin/uAssets/issues/23285
-twivideo.net##+js(addEventListener-defuser, load, /interstitialAd|videoInstArea/)
+! https://github.com/AdguardTeam/AdguardFilters/issues/192076
+twivideo.net##+js(abort-current-script, document.getElementById, imageUrls)
+twivideo.net##+js(addEventListener-defuser, load, videoInstArea)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/176598
 ac-illust.com,photo-ac.com##+js(abort-current-script, $, google_ads_iframe_)
 ! ad-leftover on click
@@ -1757,6 +1755,9 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+||twivideo.net/templates/images/ad/
+twivideo.net##a[id^="randomImageLink"]
+twivideo.net#$#div[style^="max-width: 1000px; width: 100%; height: 150px; margin: 0 auto 50px auto;"] { height: 0 !important; }
 repsoku.net##.thumb:has(> a[target="_blank"]:only-child)
 city.natori.miyagi.jp##.footer_banner_wrap
 my-best.com##div[data-testid^="advertisement-"]
@@ -3325,8 +3326,8 @@ eorzean.info###sidebar-inner > div > a[href^="http://amazon.co.jp"]
 bakufu.jp##.entry-content > table[width="100%"]
 tabanavi.com##.widget_st_custom_html_ad_widget
 tabanavi.com##.entry-content > p.h4modoki
-tabanavi.com##.yyi-rinker-contents + p:not([id],[class],[style])
-tabanavi.com##.yyi-rinker-contents + p:not([id],[class],[style]) + p:not([id],[class],[style])
+dq10.news,tabanavi.com##.yyi-rinker-contents + p:not([id],[class],[style])
+dq10.news,tabanavi.com##.yyi-rinker-contents + p:not([id],[class],[style]) + p:not([id],[class],[style])
 gameguide.tech###block-6
 pc-bto.net##.link_asp
 umamusume-pakamusu.blog.jp##.article-body-inner > div[style="text-align: center;"] ~ center
@@ -7187,7 +7188,7 @@ photo-tea.com###r-fix
 photo-tea.com##.ad-footer-related
 photo-tea.com##.googleAdPost
 photo-tea.com##.googleAdSide
-karatedo.co.jp,murasan-net.com,tabanavi.com,umaroidblog.com,agemasen.com,lifematome.blog,entameclip.com,cyapu.com,studiosero.net,xn--eckybzahmsm43ab5g5336c9iug.com,androplus.org,gadget-log.com,naga-ken.info,smartasw.com,2chmeshi.net,akirarok.com,akkinews.net,color-variations.com,jbjbgame.com,nonde-tabete.com,salary-saver.com,switchsoku.com,uzurea.net,wpteq.org,kowakunotsubo.com,gekibuzz.com,tikitengo.com,animanch.com,trovivo.com,umamusumelabo.com##.yyi-rinker-contents
+dq10.news,karatedo.co.jp,murasan-net.com,tabanavi.com,umaroidblog.com,agemasen.com,lifematome.blog,entameclip.com,cyapu.com,studiosero.net,xn--eckybzahmsm43ab5g5336c9iug.com,androplus.org,gadget-log.com,naga-ken.info,smartasw.com,2chmeshi.net,akirarok.com,akkinews.net,color-variations.com,jbjbgame.com,nonde-tabete.com,salary-saver.com,switchsoku.com,uzurea.net,wpteq.org,kowakunotsubo.com,gekibuzz.com,tikitengo.com,animanch.com,trovivo.com,umamusumelabo.com##.yyi-rinker-contents
 ||yoyaku-top10.jp/uploads/rectangle_banner/
 yoyaku-top10.jp##.p-rectangle_banner_box
 ||amazonaws.com/adv-img.zucks.jp/$third-party
@@ -10451,8 +10452,8 @@ jigen.net#?#.section > div.clear:has(> a[href^="https://amazon.co.jp/"])
 uraaka-joshi.com#?##pickup-block > .grid:has(iframe[src*="/ad-d/"])
 uraaka-joshi.com#?##main-block > .grid > div[class^="grid-cell"]:has(iframe[src*="/ad-d/"])
 famitsu.com#?#.search-box ~ div.l-contents-block:has(.card-game-sale-rank--amazon)
-haijin-boys.com#?#.widget > div:contains(/^スポンサーリンク$/):upward(1)
-haijin-boys.com#?#.widget > div:contains(おすすめ):upward(1)
+haijin-boys.com##.widget:has(> div.adsense)
+haijin-boys.com##.widget:has(> ul > li > a[href^="https://www.amazon.co.jp"])
 gigafree.net#?#.sentence > p + div.width75:has(> div[align="center"]:contains(/^スポンサード リンク$/))
 gigafree.net#?#.bottombox > div > span[class="accent"]:upward(2)
 gigafree.net#?#.related-cate:has(> ins.adsbygoogle)
