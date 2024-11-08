@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 5pYySIzTmZIPmzRVoE0FLw
-! Diff-Path: ../patches/7/7-s-1731001063-3600.patch
+! Checksum: 0jFJIYKeuQJ0xf5TU5TsLQ
+! Diff-Path: ../patches/7/7-s-1731080341-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.59.0
-! TimeUpdated: 2024-11-07T17:33:12+00:00
+! Version: 2.0.59.5
+! TimeUpdated: 2024-11-08T15:34:37+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -499,7 +499,7 @@ mytry.jp#@#.ad_box
 mytry.jp#$#body > #container { display: block !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/190943
 !+ NOT_PLATFORM(windows, mac, android, ext_ff, ext_chromium_mv3)
-wiki.yjsnpi.nu##+js(no-setTimeout-if, /\(\)=>\{[0-9A-z]+=[0-9A-z]+/)
+wiki.yjsnpi.nu##+js(no-setTimeout-if, /\(\)=>\{.+catch/)
 $subdocument,redirect-rule=noop.html,domain=wiki.yjsnpi.nu
 wiki.yjsnpi.nu#$##comments-loading { display: none !important; }
 @@||wiki.yjsnpi.nu^$image,xmlhttprequest,~third-party
@@ -1728,7 +1728,7 @@ apexlegends-leaksnews.com,gameisbest.jp,news.duanlibera.com,news.vietdiscovery36
 ! ##.amazon
 gundamlog.com,bipblog.com,geinoutopics-plus.blog.jp,karukantimes.com,hosyusokuhou.jp,vtuber-matomeruyon.blog.jp,gensin.blog.jp,newser.cc,kitizawa.com,pokebrary.blog.jp,i2chmeijin.com,oryouri.2chblog.jp,usi32.com,arrowknee-livedoor.blog.jp,itainews.com,syurabahazard.com,honwaka2ch.livedoor.biz,lovelivematocha.com,ysokuhou.blog.jp,carrot.dreamlog.jp,grasoku.com,ikarishintou.com,dark-soku.blog.jp,onihimechan.com,kinsoku.blog.jp,nandemo-uketori.com,jumpsokuhou.com,birthofblues.livedoor.biz,moeplus.com,copysoku.com,onecall2ch.com,getnews.jp,ebitsu.net,news.2chblog.jp,chomagireko.blog.jp,tarosoku.com,0taku.livedoor.biz,haijin-boys.com,hamusoku.com,ascii2d.net##.amazon
 ! ##.adsense
-starblog.jp,uma-x.jp,motivation-up.com,cobwebs.jp,dacelo.space,gurum.biz,office-hack.com,haijin-boys.com,anke.jp,shin-shouhin.com,news.biglobe.ne.jp,4ka.net,natsukimemo.com,travelbook.co.jp,cat.sc,battle-one.com,otonasalone.jp##.adsense
+starblog.jp,uma-x.jp,motivation-up.com,cobwebs.jp,dacelo.space,gurum.biz,office-hack.com,haijin-boys.com,anke.jp,shin-shouhin.com,news.biglobe.ne.jp,4ka.net,natsukimemo.com,travelbook.co.jp,cat.sc,otonasalone.jp##.adsense
 ! ##.banner
 money.smt.docomo.ne.jp,supari.jp,adaman-ero.com,city.muroran.lg.jp,storie.jp,city.yokkaichi.lg.jp,kabuyoho.jp,ichi-up.net,hayamimi-hobby.com,getchu.com,kitimama-matome.net,terakoya.asahi.com,russianbeauties.jp,newswitch.jp,demonition.com,fantage.co.jp,classmethod.jp,city.unnan.shimane.jp,pref.shiga.lg.jp,asajikan.jp,tanoshiiosake.jp,library.mitaka.tokyo.jp,climbing-net.com,tripnote.jp,allreviews.jp,smart-flash.jp,news.fresheye.com,pakutaso.com,gaydebulog.com,qoly.jp,ascii2d.net,hoikuen-ranking.com,wiki.seesaa.jp##.banner
 ! ##.ads
@@ -1756,6 +1756,10 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+j-baseball.club,j-basketball.club##a[style*="width:728px; height:90px;"]
+yaruobook.com##.widget:has(> div.textwidget > table > tbody > tr > td > script[src^="https://effulgent-stroopwafel-efb9ce.netlify.app/"])
+yaruobook.com##.krb-amzlt-box
+yaruobook.com##div[style="margin:0;padding:5px;font-size:12px;word-break: break-all;"]
 ||twivideo.net/templates/images/ad/
 twivideo.net##a[id^="randomImageLink"]
 twivideo.net#$#div[style^="max-width: 1000px; width: 100%; height: 150px; margin: 0 auto 50px auto;"] { height: 0 !important; }
@@ -5439,7 +5443,7 @@ city.fujinomiya.lg.jp##.rs_skip
 city.habikino.lg.jp##.advertising-area
 city.hokuto.yamanashi.jp###bnrLink
 city.ichinoseki.iwate.jp##.aBnr
-city.ichinomiya.aichi.jp,city.takarazuka.hyogo.jp,city.inazawa.aichi.jp###sadfloat
+aichi.jp,hyogo.jp###sadfloat
 city.kai.yamanashi.jp##.top-kokoku
 city.kofu.yamanashi.jp###tmp_wrap_pr
 city.chichibu.lg.jp,city.koka.lg.jp,city.kurashiki.okayama.jp##.ItemList_Banner
