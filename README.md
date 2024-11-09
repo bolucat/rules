@@ -160,9 +160,7 @@
 - [openclash_custom_overwrite.sh](https://rules.neuq.de/clash/openclash/openclash_custom_overwrite.sh)
 - [openclash_custom_rules.list](https://rules.neuq.de/clash/openclash/openclash_custom_rules.list)
 - [openclash_custom_rules_2.list](https://rules.neuq.de/clash/openclash/openclash_custom_rules_2.list)
-- [openclash_force_sniffing_domain.yaml](https://rules.neuq.de/clash/openclash/openclash_force_sniffing_domain.yaml)
-- [openclash_sniffing_domain_filter.yaml](https://rules.neuq.de/clash/openclash/openclash_sniffing_domain_filter.yaml)
-- [openclash_sniffing_ports_filter.yaml](https://rules.neuq.de/clash/openclash/openclash_sniffing_ports_filter.yaml)
+- [openclash_custom_sniffer.yaml](https://rules.neuq.de/clash/openclash/openclash_custom_sniffer.yaml)
 # clash/cf-ip
 - [CF.bat](https://rules.neuq.de/clash/cf-ip/CF.bat)
 - [CR2CRLF.exe](https://rules.neuq.de/clash/cf-ip/CR2CRLF.exe)

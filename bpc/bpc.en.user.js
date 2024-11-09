@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.1.2
+// @version         3.9.1.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1813,11 +1813,7 @@ else if (matchDomain('epoch.org.il')) {
 
 else if (matchDomain('espn.com')) {
   let url = window.location.href;
-  let paywall = document.querySelector('aside.espn-plus-container-wrapper');
-  if (paywall) {
-    removeDOMElement(paywall);
-    replaceDomElementExt(url, false, false, 'div.article-body');
-  }
+  getArchive(url, 'aside.espn-plus-container-wrapper', '', 'section#article-feed > article');
 }
 
 else if (matchDomain('euobserver.com')) {
@@ -2856,65 +2852,6 @@ else if (matchDomain('scmp.com')) {
 else if (matchDomain('seattletimes.com')) {
   let ads = 'div.top-ad-wrapper, div.ad, div.native-ad-article';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('seekingalpha.com')) {
-  if (window.location.pathname.match(/^\/(article|news)\//)) {
-    window.setTimeout(function () {
-      let article_sel = 'article div > section[data-test-id="card-container"]';
-      let article = document.querySelector(article_sel);
-      if (article) {
-        function sa_main(node) {
-          function enable_links() {
-            let inert_links = document.querySelectorAll('[inert]');
-            for (let elem of inert_links)
-              elem.removeAttribute('inert');
-          }
-          let url = window.location.href;
-          func_post = function () {
-            if (mobile) {
-              let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
-              for (let elem of lazy_images)
-                elem.style = 'width: 95%;';
-            }
-            enable_links();
-            let empty_sections = document.querySelectorAll('section:not([data-test-id])');
-            removeDOMElement(...[].slice.call(empty_sections, 1));
-          }
-          getArchive(url, paywall_sel, {}, article_sel, '', 'article div[style*="grid-column"]');
-          hideDOMStyle(paywall_sel);
-          let overlays = document.querySelectorAll('div[class*="bg-black\\/"]');
-          removeDOMElement(...overlays);
-          enable_links();
-        }
-        let read_more = document.querySelector('button[id^="continueReadingButton"]');
-        if (read_more)
-          read_more.click();
-        let paywall_sel = 'div[role="dialog"], div.overflow-auto.bg-share-card-bg, div[data-test-id="modal-content"]';
-        let paywall = document.querySelector(paywall_sel);
-        if (paywall) {
-          sa_main(paywall);
-        } else {
-          waitDOMElement(paywall_sel, 'DIV', sa_main, true);
-        }
-        function sa_noscroll(node) {
-          node.removeAttribute('style');
-          node.removeAttribute('class');
-        }
-        let body = document.querySelector('body');
-        if (body)
-          sa_noscroll(body);
-        waitDOMAttribute('body', 'BODY', 'style', sa_noscroll, true);
-        waitDOMAttribute('body', 'BODY', 'class', sa_noscroll, true);
-        let html = document.querySelector('html[style]');
-        if (html)
-          html.style.overflow = 'visible';
-        waitDOMAttribute('html', 'HTML', 'style', node => node.style.overflow = 'visible', true);
-        waitDOMAttribute('main', 'MAIN', 'inert', node => node.removeAttribute('inert'), true);
-        waitDOMAttribute('footer', 'FOOTER', 'inert', node => node.removeAttribute('inert'), true);
-      }
-    }, 2000);
-  }
 }
 
 else if (matchDomain(sg_sph_media_domains)) {
@@ -4556,10 +4493,6 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     getArticleSrc(url, '', proxy, base64, selector, text_fail, selector_source, selector_archive);
   } else {
     let options = {};
-    if (matchUrlDomain('espn.com', url))
-      options.headers = {
-        'X-Forwarded-For': randomIP(185, 185)
-      };
     fetch(url, options)
     .then(response => {
       let article = document.querySelector(selector);
