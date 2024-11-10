@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.9.1.0
+// @version         3.9.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -124,7 +124,6 @@ var be_mediahuis_domains = ['gva.be', 'hbvl.be', 'nieuwsblad.be', 'standaard.be'
 var be_roularta_domains = ['artsenkrant.com', 'beleggersbelangen.nl', 'flair.be', 'knack.be', 'kw.be', 'libelle.be'];
 var nl_dpg_adr_domains = ['ad.nl', 'bd.nl', 'bndestem.nl', 'destentor.nl', 'ed.nl', 'gelderlander.nl', 'pzc.nl', 'tubantia.nl'];
 var nl_dpg_media_domains = ['demorgen.be', 'flair.nl', 'humo.be', 'libelle.nl', 'margriet.nl', 'parool.nl', 'trouw.nl', 'volkskrant.nl'];
-var nl_mediahuis_region_domains = ['gooieneemlander.nl', 'haarlemsdagblad.nl', 'ijmuidercourant.nl', 'leidschdagblad.nl', 'noordhollandsdagblad.nl'];
 
 if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
   window.setTimeout(function () {
@@ -224,30 +223,6 @@ else if (matchDomain('doorbraak.be')) {
         console.log(err);
       }
     }
-  }
-}
-
-else if (matchDomain('fd.nl')) {
-  if (window.location.hostname === 'specials.fd.nl') {
-    let img_text = document.querySelectorAll('div[class^="Opening_contentContainer"], section[class^="ScrollyText_"]');
-    for (let elem of img_text)
-      elem.style = 'color: white;';
-  } else {
-    func_post = function () {
-      if (mobile) {
-        let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
-        for (let elem of lazy_images)
-          elem.style = 'width: 95%;';
-      }
-      let paywall = pageContains('section > h1', 'Lees direct het artikel');
-      if (paywall.length) {
-        let div_empty = document.querySelectorAll('div:empty');
-        removeDOMElement(paywall[0].parentNode.parentNode, ...div_empty);
-        header_nofix('main header', '', 'BPC > no archive-fix');
-      }
-    }
-    let url = window.location.href;
-    getArchive(url, 'section.upsell, div.upsell-modal-background', '', 'main');
   }
 }
 
@@ -399,29 +374,6 @@ else if (matchDomain(nl_dpg_media_domains)) {
     for (let elem of elem_hidden)
       elem.removeAttribute('style');
   }, 500);
-}
-
-else if (matchDomain(nl_mediahuis_region_domains)) {
-  let paywall_sel = 'div[class*="style_popover"]';
-  let paywall = document.querySelector(paywall_sel);
-  if (paywall) {
-    let article_sel = 'div > article';
-    func_post = function () {
-      let article = document.querySelector(article_sel);
-      if (article && article.innerText.length < 1000)
-        header_nofix('hgroup', '', 'BPC > no archive-fix');
-    }
-    let url = window.location.href;
-    getArchive(url, paywall_sel, '', 'article.premium-content', '', article_sel);
-    window.setTimeout(function () {
-      let overlay = document.querySelector('div.paywalled-article');
-      if (overlay)
-        overlay.classList.remove('paywalled-article');
-      let noscroll = document.querySelector('body[class*="style_disable-scroll-popup"]');
-      if (noscroll)
-        noscroll.removeAttribute('class');
-    }, 500);
-  }
 }
 
 else if (matchDomain('nrc.nl')) {
@@ -619,10 +571,6 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     getArticleSrc(url, '', proxy, base64, selector, text_fail, selector_source, selector_archive);
   } else {
     let options = {};
-    if (matchUrlDomain('espn.com', url))
-      options.headers = {
-        'X-Forwarded-For': randomIP(185, 185)
-      };
     fetch(url, options)
     .then(response => {
       let article = document.querySelector(selector);

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.8.9.3
+// @version         3.9.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -179,46 +179,6 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
   }
   let ads = 'div.ad-wrapper, div[id^="apn-ad-slot-"]';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('bild.de')) {
-  func_post = function () {
-    if (mobile) {
-      let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
-      for (let elem of lazy_images) {
-        elem.style = 'width: 95%; margin: 10px;';
-        elem.parentNode.removeAttribute('style');
-      }
-      let header = document.querySelector('article > h2 > span:last-child');
-      if (header)
-        header.style = 'margin: 10px;';
-      let content = document.querySelector('article time ~ div');
-      if (content)
-        content.style = 'margin: 10px;';
-    }
-    let div_empty = document.querySelectorAll('div[style]');
-    for (let elem of div_empty)
-      if (!elem.innerText.length)
-        removeDOMElement(elem);
-    let article = document.querySelector('main > article');
-    if (article && article.innerText.length < 1000)
-      header_nofix('h2', '', 'BPC > no archive-fix');
-  }
-  let url = window.location.href;
-  getArchive(url, 'div.offer-module', '', 'article');
-}
-
-else if (matchDomain('bnn.de')) {
-  func_post = function () {
-    if (mobile) {
-      let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
-      for (let elem of lazy_images)
-        elem.style = 'width: 95%;';
-    }
-    header_nofix('article section', 'section > span[style*="filter:blur"]', 'BPC > no archive-fix');
-  }
-  let url = window.location.href;
-  getArchive(url, 'section.paywall', '', 'article');
 }
 
 else if (matchDomain('boersen-zeitung.de')) {
@@ -564,26 +524,14 @@ else if (matchDomain('spektrum.de')) {
     paywall.classList.remove('pw-premium');
 }
 
-else if (matchDomain(['spiegel.de', 'manager-magazin.de'])) {
+else if (matchDomain('spiegel.de')) {
   let url = window.location.href;
   func_post = function () {
-    let failed_iframes = document.querySelectorAll('div > div[x-show="!iframeIsLoaded"]');
-    for (let elem of failed_iframes)
-      hideDOMElement(elem.parentNode);
-    let body_dark = document.querySelector('body[class*="dark:"]');
-    if (body_dark)
-      removeClassesByPrefix(body_dark, 'dark:');
-    let charts = document.querySelectorAll('section div[x-data*="{isLoaded:"]');
-    for (let elem of charts)
-      elem.style.height = elem.offsetHeight + 'px';
-    if (mobile) {
-      let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
-      for (let elem of lazy_images)
-        elem.style = 'width: 95%;';
-    }
-    header_nofix('article', 'svg[id*="-plus-paywall-"]', 'BPC > no archive-fix');
+    let lazy_images = document.querySelectorAll('picture img.lazyload[src^="data:image"][data-src]');
+    for (let elem of lazy_images)
+      elem.src = elem.getAttribute('data-src');
   }
-  getArchive(url, 'div[data-area="paywall"]', '', 'article');
+  getOchToUnlock(url, 'div[data-area="paywall"]', '', 'article');
 }
 
 else if (matchDomain('springermedizin.de')) {
@@ -1194,10 +1142,6 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     getArticleSrc(url, '', proxy, base64, selector, text_fail, selector_source, selector_archive);
   } else {
     let options = {};
-    if (matchUrlDomain('espn.com', url))
-      options.headers = {
-        'X-Forwarded-For': randomIP(185, 185)
-      };
     fetch(url, options)
     .then(response => {
       let article = document.querySelector(selector);
