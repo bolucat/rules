@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.1.1
+// @version         3.9.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -459,7 +459,7 @@ else if (matchDomain('nw.de')) {
     if (json_script) {
       let json = JSON.parse(json_script.text);
       if (json) {
-        let json_text = parseHtmlEntities(json.articleBody.replace(/\n/g, '\n\n'));
+        let json_text = parseHtmlEntities(json.articleBody.replace(/\n/g, '\n\n').replace(/\.responsive[-@%{}()\.:;\w\s]+}\s?}/g, ''));
         let article = paywall.querySelector('div[class*="paywall-overlay"]');
         if (json_text && article)
           article.innerText = json_text;
@@ -527,11 +527,36 @@ else if (matchDomain('spektrum.de')) {
 else if (matchDomain('spiegel.de')) {
   let url = window.location.href;
   func_post = function () {
-    let lazy_images = document.querySelectorAll('picture img.lazyload[src^="data:image"][data-src]');
-    for (let elem of lazy_images)
-      elem.src = elem.getAttribute('data-src');
+    let failed_iframes = document.querySelectorAll('div > div[x-show="!iframeIsLoaded"]');
+    for (let elem of failed_iframes)
+      hideDOMElement(elem.parentNode);
+    let body_dark = document.querySelector('body[class*="dark:"]');
+    if (body_dark)
+      removeClassesByPrefix(body_dark, 'dark:');
+    let charts = document.querySelectorAll('section div[x-data*="{isLoaded:"]');
+    for (let elem of charts)
+      elem.style.height = elem.offsetHeight + 'px';
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 95%;';
+    }
+    let article = document.querySelector('article');
+    if (article) {
+      let paywall = document.querySelector('svg[id*="-plus-paywall-"]');
+      if (paywall) {
+        let archive_link = document.querySelector('div#bpc_archive > a:not([href*="/again?"])');
+        if (archive_link)
+          removeDOMElement(archive_link.parentNode);
+        article.firstChild.before(ochToUnlockLink(url));
+      } else {
+        let hidden_media = document.querySelector('svelte-scroller-outer');
+        if (hidden_media)
+          article.firstChild.before(document.createTextNode('For hidden media:'), ochToUnlockLink(url));
+      }
+    }
   }
-  getOchToUnlock(url, 'div[data-area="paywall"]', '', 'article');
+  getArchive(url, 'div[data-area="paywall"]', '', 'article');
 }
 
 else if (matchDomain('springermedizin.de')) {
@@ -811,10 +836,11 @@ else if (matchDomain('wiwo.de')) {
       for (let elem of lazy_images)
         elem.style = 'width: 95%;';
     }
-    let paywall = document.querySelector(paywall_sel);
     if (paywall) {
-      let archive_links = document.querySelectorAll('div#bpc_archive');
-      removeDOMElement(paywall, ...archive_links);
+      removeDOMElement(paywall);
+      let archive_link = document.querySelector('div#bpc_archive > a:not([href*="/again?"])');
+      if (archive_link)
+        removeDOMElement(archive_link.parentNode);
       let article = document.querySelector(article_sel);
       if (article)
         article.before(googleSearchToolLink(url));
@@ -1267,6 +1293,10 @@ function archiveLink(url, text_fail = 'BPC > Try for full article text (no need 
 
 function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
   return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href, url, text_fail);
+}
+
+function ochToUnlockLink(url, text_fail = 'BPC > Try for full article content (no need to report issue for external site):\r\n') {
+  return externalLink(['och.to'], 'https://{domain}/unlock/{url}', url, text_fail);
 }
 
 function googleSearchToolLink(url, text_fail = 'BPC > Try for full article text (test url & copy html (tab) code to [https://codebeautify.org/htmlviewer]):\r\n') {

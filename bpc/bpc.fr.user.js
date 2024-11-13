@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.9.0.0
+// @version         3.9.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -342,7 +342,7 @@ else if (matchDomain('legrandcontinent.eu')) {
 
 else if (matchDomain(['lejdd.fr', 'parismatch.com', 'public.fr'])) {
   let banners = '.forbidden';
-  let ads = 'div[class^="lmn-"], div.premium-hidden, div.p-aside--placeholder';
+  let ads = 'div[class^="lmn-"], div.premium-hidden, div.p-aside--placeholder, section.outbrain-container';
   hideDOMStyle(banners + ', ' + ads);
   let bottom_hide = document.querySelector('.cnt[data-poool-mode="hide"]');
   if (bottom_hide) {
@@ -933,10 +933,6 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     getArticleSrc(url, '', proxy, base64, selector, text_fail, selector_source, selector_archive);
   } else {
     let options = {};
-    if (matchUrlDomain('espn.com', url))
-      options.headers = {
-        'X-Forwarded-For': randomIP(185, 185)
-      };
     fetch(url, options)
     .then(response => {
       let article = document.querySelector(selector);

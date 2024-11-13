@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.1.5
+// @version         3.9.1.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2438,7 +2438,7 @@ else if (matchDomain('newslaundry.com')) {
     if (json_script) {
       let json = JSON.parse(json_script.text);
       if (json) {
-        let json_text = parseHtmlEntities(json.articleBody);
+        let json_text = parseHtmlEntities(json.articleBody).replace(/<\/p>\./g, '</p>');
         let article = document.querySelector('div.story-element-text');
         if (json_text && article) {
           let parser = new DOMParser();
