@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.1.6
+// @version         3.9.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -584,7 +584,7 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'thelawyer.com', 'thetimes.com', 'unherd.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'decanter.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'thelawyer.com', 'thetimes.com', 'unherd.com'])) {//united kingdom/ireland
 
 if (matchDomain('apollo-magazine.com')) {
   setCookie('blaize_session', '', 'apollo-magazine.com', '/', 0);
@@ -716,6 +716,31 @@ else if (matchDomain('businesspost.ie')) {
       insert_script(bpie_main);
     }
   }, 500);
+}
+
+else if (matchDomain('decanter.com')) {
+  let paywall = document.querySelector('div[id^="react_subscriber_content_"]');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let data = document.querySelector('div[data-dom-id^="react_subscriber_content_"][data-props]');
+    if (data) {
+      try {
+        let json = JSON.parse(data.getAttribute('data-props'));
+        if (json && json.content) {
+          let content = decode_utf8(atob(json.content));
+          let parser = new DOMParser();
+          let doc = parser.parseFromString('<div>' + content + '</div>', 'text/html');
+          let content_new = doc.querySelector('div');
+          data.before(content_new);
+          header_nofix('div.collection-wrapper', '', 'BPC > no fix for reviews');
+          let fade = 'div.piano-container-fade';
+          hideDOMStyle(fade);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
 }
 
 else if (matchDomain('fnlondon.com')) {
