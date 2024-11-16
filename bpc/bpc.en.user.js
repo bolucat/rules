@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.2.3
+// @version         3.9.2.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -980,6 +980,32 @@ else if (matchDomain('theneweuropean.co.uk')) {
   removeDOMElement(...banners);
 }
 
+else if (matchDomain('thenewslens.com')) {
+  let paywall = document.querySelector('div.article-mask-box');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = json.articleBody;
+        let article = document.querySelector('section.article-body');
+        if (json_text && article) {
+          let article_text = article.innerText.replace(/\n/g, '');
+          let split = json_text.split('。');
+          for (let elem of split) {
+            if (!elem.includes('(function(') && !article_text.includes(elem)) {
+              let par_new = document.createElement('p');
+              par_new.innerText = elem + '。';
+              article.append(par_new);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 else if (matchDomain('thestage.co.uk')) {
   let url = window.location.href;
   getArchive(url, 'div#ao-MeteringDNAllow', '', 'div[id^="aos-FeatureArticle2Col-"], div[id^="aos-ReviewArticle-"]');
@@ -1523,7 +1549,7 @@ else if (matchDomain('capital.bg')) {
 else if (matchDomain(['chronicle.com', 'philanthropy.com'])) {
   let preview = document.querySelector('div[data-content-summary]');
   removeDOMElement(preview);
-  let article_hidden = document.querySelector('div.contentBody[hidden]');
+  let article_hidden = document.querySelector('div.ArticlePage-articleBody[hidden]');
   if (article_hidden) {
     let attributes = [...article_hidden.attributes].filter(x => x.name !== 'class');
     for (let elem of attributes)
