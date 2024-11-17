@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.1.2
+// @version         3.9.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -638,7 +638,16 @@ else if (matchDomain('tagesspiegel.de')) {
   let paywall_sel = 'div#paywall';
   let url = window.location.href;
   if (matchDomain('www.tagesspiegel.de')) {
-    getOchToUnlock(url, paywall_sel, '', 'div#story-elements');
+    func_post = function () {
+      let opinionary = document.querySelector('div > div#opinary-automation-placeholder');
+      hideDOMElement(opinionary.parentNode);
+      if (mobile) {
+        let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
+        for (let elem of lazy_images)
+          elem.style = 'width: 95%;';
+      }
+    }
+    getArchive(url, paywall_sel, '', 'div#story-elements');
   } else if (matchDomain('interaktiv.tagesspiegel.de')) {
     let paywall = document.querySelector(paywall_sel);
     if (paywall) {

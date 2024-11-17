@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.9.0.1
+// @version         3.9.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -29,6 +29,7 @@
 // @match           *://*.levif.be/*
 // @match           *://*.loeildelaphotographie.com/*
 // @match           *://*.monacomatin.mc/*
+// @match           *://*.next.ink/*
 // @match           *://*.parismatch.com/*
 // @match           *://*.pourleco.com/*
 // @match           *://*.science-et-vie.com/*
@@ -621,6 +622,17 @@ else if (matchDomain('loeildelaphotographie.com')) {
     blurred_image.removeAttribute('style');
 }
 
+else if (matchDomain('next.ink')) {
+  if (true) {
+    func_post = function () {
+      let lazy_images = document.querySelectorAll('figure > img[src^="data:image/"][fifu-data-src]');
+      for (let elem of lazy_images)
+        elem.src = elem.getAttribute('fifu-data-src')
+    }
+    getJsonUrl('div#next-paywall-separator', '', 'div#next-single-post', {art_append: 1});
+  }
+}
+
 else if (matchDomain('pourleco.com')) {
   let paywall = document.querySelector('div[data-pleco-poool^="paywall"]');
   if (paywall) {
@@ -856,6 +868,86 @@ function getArticleJsonScript() {
     }
   }
   return json_script;
+}
+
+function getNestedKeys(obj, key) {
+  if (key in obj)
+    return obj[key];
+  let keys = key.split('.');
+  let value = obj;
+  for (let i = 0; i < keys.length; i++) {
+    value = value[keys[i]];
+    if (value === undefined)
+      break;
+  }
+  return value;
+}
+
+function getJsonUrlText(article, callback, article_id = '', key = '', url_slash = false) {
+  let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
+  let json_url;
+  if (json_url_dom) {
+    json_url = json_url_dom.href;
+    if (url_slash)
+      json_url = json_url.replace('/wp-json/', '//wp-json/');
+  }
+  if (!json_url && article_id)
+    json_url = window.location.origin + '/wp-json/wp/v2/posts/' + article_id;
+  if (json_url) {
+    fetch(json_url)
+    .then(response => {
+      if (response.ok) {
+        response.json().then(json => {
+          try {
+            let json_text = parseHtmlEntities(!key ? json.content.rendered : getNestedKeys(json, key));
+            callback(json_text, article);
+          } catch (err) {
+            console.log(err);
+          }
+        });
+      }
+    });
+  }
+}
+
+function getJsonUrlAdd(json_text, article, art_options = {}) {
+  let art_type = 'div';
+  let art_attrib = '';
+  if (Object.keys(art_options).length) {
+    if (art_options.art_type)
+      art_type = art_options.art_type;
+    if (art_options.art_class)
+      art_attrib += ' class="' + art_options.art_class + '"';
+    if (art_options.art_id)
+      art_attrib += ' id="' + art_options.art_id + '"';
+    if (art_options.art_style)
+      art_attrib += ' style="' + art_options.art_style + '"';
+    if (art_options.func_text)
+      json_text = art_options.func_text(json_text);
+  }
+  let parser = new DOMParser();
+  let doc = parser.parseFromString('<' + art_type + art_attrib + '>' + json_text + '</' + art_type + '>', 'text/html');
+  let article_new = doc.querySelector(art_type);
+  if (art_options.art_append || !article.parentNode) {
+    if (!art_options.art_hold)
+      article.innerHTML = '';
+    article.appendChild(article_new);
+  } else
+    article.parentNode.replaceChild(article_new, article);
+  if (func_post)
+    func_post();
+}
+
+function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_slash = false) {
+  let paywall = document.querySelectorAll(paywall_sel);
+  let article = document.querySelector(article_sel);
+  if (paywall.length && article) {
+    clearPaywall(paywall, paywall_action);
+    getJsonUrlText(article, (json_text, article) => {
+      if (json_text && article)
+        getJsonUrlAdd(json_text, article, art_options);
+    }, article_id, key, url_slash);
+  }
 }
 
 function parseHtmlEntities(encodedString) {
