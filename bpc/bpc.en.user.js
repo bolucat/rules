@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.2.5
+// @version         3.9.2.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2625,7 +2625,7 @@ else if (matchDomain('rivals.com')) {
 }
 
 else if (matchDomain('rugbypass.com')) {
-  if (window.location.pathname.startsWith('/plus/')) {
+  if (window.location.pathname.match(/^\/plus\/\w/)) {
     let paywall = document.querySelector('.premium-fold-bottom');
     if (paywall) {
       paywall.classList.remove('premium-fold-bottom');
@@ -2634,6 +2634,11 @@ else if (matchDomain('rugbypass.com')) {
       let fade = document.querySelector('.fade');
       if (fade)
         fade.classList.remove('fade');
+    }
+    let lazy_images = document.querySelectorAll('figure > img.lazy[data-src]:not([src])');
+    for (let elem of lazy_images) {
+      elem.src = elem.getAttribute('data-src');
+      elem.removeAttribute('class');
     }
   }
 }
@@ -2766,65 +2771,6 @@ else if (matchDomain('seattletimes.com')) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('seekingalpha.com')) {
-  if (window.location.pathname.match(/^\/(article|news)\//)) {
-    window.setTimeout(function () {
-      let article_sel = 'article div > section[data-test-id="card-container"]';
-      let article = document.querySelector(article_sel);
-      if (article) {
-        function sa_main(node) {
-          function enable_links() {
-            let inert_links = document.querySelectorAll('[inert]');
-            for (let elem of inert_links)
-              elem.removeAttribute('inert');
-          }
-          let url = window.location.href;
-          func_post = function () {
-            if (mobile) {
-              let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
-              for (let elem of lazy_images)
-                elem.style = 'width: 95%;';
-            }
-            enable_links();
-            let empty_sections = document.querySelectorAll('section:not([data-test-id])');
-            removeDOMElement(...[].slice.call(empty_sections, 1));
-          }
-          getArchive(url, paywall_sel, {}, article_sel, '', 'article div[style*="grid-column"]');
-          hideDOMStyle(paywall_sel);
-          let overlays = document.querySelectorAll('div[class*="bg-black\\/"]');
-          removeDOMElement(...overlays);
-          enable_links();
-        }
-        let read_more = document.querySelector('button[id^="continueReadingButton"]');
-        if (read_more)
-          read_more.click();
-        let paywall_sel = 'div[role="dialog"], div.overflow-auto.bg-share-card-bg, div[data-test-id="modal-content"]';
-        let paywall = document.querySelector(paywall_sel);
-        if (paywall) {
-          sa_main(paywall);
-        } else {
-          waitDOMElement(paywall_sel, 'DIV', sa_main, true);
-        }
-        function sa_noscroll(node) {
-          node.removeAttribute('style');
-          node.removeAttribute('class');
-        }
-        let body = document.querySelector('body');
-        if (body)
-          sa_noscroll(body);
-        waitDOMAttribute('body', 'BODY', 'style', sa_noscroll, true);
-        waitDOMAttribute('body', 'BODY', 'class', sa_noscroll, true);
-        let html = document.querySelector('html[style]');
-        if (html)
-          html.style.overflow = 'visible';
-        waitDOMAttribute('html', 'HTML', 'style', node => node.style.overflow = 'visible', true);
-        waitDOMAttribute('main', 'MAIN', 'inert', node => node.removeAttribute('inert'), true);
-        waitDOMAttribute('footer', 'FOOTER', 'inert', node => node.removeAttribute('inert'), true);
-      }
-    }, 2000);
-  }
-}
-
 else if (matchDomain(sg_sph_media_domains)) {
   let url = window.location.href;
   getArchive(url, 'div#nocx_paywall_area', '', 'main#content');
@@ -2897,11 +2843,8 @@ else if (matchDomain('staradvertiser.com')) {
 }
 
 else if (matchDomain('startribune.com')) {
-  let noscroll = document.querySelector('body[class]');
-  if (noscroll)
-    noscroll.style = 'overflow: auto !important; position: static !important;';
-  let modal = document.querySelector('div.modal-backdrop');
-  removeDOMElement(modal);
+  let ads = 'div[data-testid$="-ad"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('stereogum.com')) {
