@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.2.0
+// @version         3.9.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -252,15 +252,14 @@ else if (matchDomain('faz.net')) {
 }
 
 else if (matchDomain('freitag.de')) {
-  let paywall = document.querySelector('div.qa-paywall');
+  let paywall = document.querySelector('aside.qa-paywall');
   if (paywall) {
     removeDOMElement(paywall);
     let related = document.querySelector('div.c-teaser-plus-related--paywall');
     if (related)
       related.classList.remove('c-teaser-plus-related--paywall');
-    let article = document.querySelector('div#x-article-text');
+    let article = document.querySelector('div.bo-article-text');
     if (article) {
-      let intro = article.querySelectorAll('p');
       let json_script = getArticleJsonScript();
       if (json_script) {
         let json = JSON.parse(json_script.text);
@@ -268,16 +267,14 @@ else if (matchDomain('freitag.de')) {
           let json_text = breakText_headers(json.articleBody);
           let pars = json_text.split(/\n\n/g);
           if (json_text) {
-            removeDOMElement(...intro);
-            let article_new = document.createElement('div');
+            article.innerHTML = '';
             for (let par of pars) {
               if (!par.startsWith('Placeholder ')) {
                 let par_new = document.createElement('p');
                 par_new.innerText = par;
-                article_new.appendChild(par_new);
+                article.appendChild(par_new);
               }
             }
-            article.appendChild(article_new);
           }
         }
       } else {
@@ -289,6 +286,7 @@ else if (matchDomain('freitag.de')) {
             let par_new = document.createElement('p');
             let overlap = '';
             if (par_first) {
+              let intro = article.querySelectorAll('p');
               let intro_last = intro[intro.length - 1];
               par = par.trim();
               overlap = findOverlap(intro_last.innerText, par);
@@ -296,7 +294,7 @@ else if (matchDomain('freitag.de')) {
                 intro_last.innerText = intro_last.innerText.replace(new RegExp(overlap + '$'), '') + par;
               par_first = false;
             }
-            if (!overlap) {
+            if (!overlap && !par.startsWith('Placeholder ')) {
               par_new.innerText = par;
               article.appendChild(par_new);
             }
@@ -524,7 +522,7 @@ else if (matchDomain('spektrum.de')) {
     paywall.classList.remove('pw-premium');
 }
 
-else if (matchDomain('spiegel.de')) {
+else if (matchDomain(['spiegel.de', 'manager-magazin.de'])) {
   let url = window.location.href;
   func_post = function () {
     let failed_iframes = document.querySelectorAll('div > div[x-show="!iframeIsLoaded"]');
@@ -543,12 +541,16 @@ else if (matchDomain('spiegel.de')) {
     }
     let article = document.querySelector('article');
     if (article) {
-      let paywall = document.querySelector('svg[id*="-plus-paywall-"]');
+      let paywall_sel = 'svg[id*="-plus-paywall-"]';
+      let paywall = document.querySelector(paywall_sel);
       if (paywall) {
-        let archive_link = document.querySelector('div#bpc_archive > a:not([href*="/again?"])');
-        if (archive_link)
-          removeDOMElement(archive_link.parentNode);
-        article.firstChild.before(ochToUnlockLink(url));
+        if (matchDomain('spiegel.de')) {
+          let archive_link = document.querySelector('div#bpc_archive > a:not([href*="/again?"])');
+          if (archive_link)
+            removeDOMElement(archive_link.parentNode);
+          article.firstChild.before(ochToUnlockLink(url));
+        } else
+          header_nofix('article', paywall_sel, 'BPC > no archive-fix');
       } else {
         let hidden_media = document.querySelector('svelte-scroller-outer');
         if (hidden_media)

@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Mon, 18 Nov 2024 13:28:14 +0000
-! Diff-Path: ../patches/2024.11.18.928.patch#ublock-badware
+! Last modified: Tue, 19 Nov 2024 15:31:55 +0000
+! Diff-Path: ../patches/2024.11.19.991.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -627,6 +627,8 @@ tech4yougadgets.com##+js(aopr, Notification)
 ||sweet-hot-lady.top^$all
 ||ntfck.com^$all
 ||malenirt.site^$all
+||repostponing.cfd^$all
+/post/FileRotator_ID*/download.php?subid=$xhr
 ||mikkim.top^$all
 ||discordvip.createsocialcard.top^$all
 ||whatsapp-32w.pages.dev^$all
@@ -643,8 +645,8 @@ tech4yougadgets.com##+js(aopr, Notification)
 /^https:\/\/[0-9a-z]{3,}\.[-a-z]{10,}\.(?:li[fv]e|top|xyz)\/[a-z]{8}\/(?:article\d{4}\.doc)?\?utm_campaign=\w{40,}/$doc,match-case,to=life|live|top|xyz
 /^https:\/\/[a-z]{2,3}\d\.biz\/go\/[0-9a-z]{15,18}$/$doc,to=biz
 ! fake dating/prize/video sites
-/^https?:\/\/[0-9a-z]*\.?[-0-9a-z]{4,}\.[a-z]{2,11}\.?[a-z]{0,7}\/(?:[0-9a-z]{6,10}\/)?\/?(?:article\d{4}\.doc)?\?(?:cid=[0-9a-z]+&)?u=[0-9a-z]{7}(?:&t=\d+)?&o=[0-9a-z]{7}/$doc,frame,match-case
-/^https?:\/\/[0-9a-z]*\.?[-0-9a-z]{4,}\.[a-z]{2,11}\.?[a-z]{0,7}\/(?:[0-9a-z]{6,10}\/)?\/?(?:article\d{4}\.doc)?\?(?:cid=[0-9a-z]+&)?o=[0-9a-z]{7}(?:&t=\d+)?&u=[0-9a-z]{7}/$doc,frame,match-case
+/^https?:\/\/[0-9a-z]*\.?[-0-9a-z]{3,}\.[a-z]{2,11}\.?[a-z]{0,7}\/(?:[0-9a-z]{6,10}\/)?\/?(?:article\d{4}\.doc)?\?(?:cid=[0-9a-z]+&)?u=[0-9a-z]{7}(?:&t=\d+)?&o=[0-9a-z]{7}/$doc,frame,match-case
+/^https?:\/\/[0-9a-z]*\.?[-0-9a-z]{3,}\.[a-z]{2,11}\.?[a-z]{0,7}\/(?:[0-9a-z]{6,10}\/)?\/?(?:article\d{4}\.doc)?\?(?:cid=[0-9a-z]+&)?o=[0-9a-z]{7}(?:&t=\d+)?&u=[0-9a-z]{7}/$doc,frame,match-case
 .live/web/?sid=t*~$doc
 /?u1=*&o1=*&sid=t*~$doc
 ! push notification scam
@@ -895,7 +897,7 @@ origincrack.com##center > button
 ||smartklick.biz^$all
 ||zoosk.online^$all
 ||fulptube.org^$all
-*/bouncy.php?*&inPopUp=$all
+/bouncy.php?*&inPopUp=$all
 ||onpharmvermen.com^$doc
 ||sale24-pills.com^$doc
 ||hdvideosnet.com^
@@ -909,7 +911,6 @@ origincrack.com##center > button
 /?c=propeller&lpid=$all
 ||geoflix.me^$all
 ||skymods.net^$all
-||hypixelstorexyz.pages.dev^$all
 ! torrdroidforpc. com 
 ||slugmefilehos.xyz^$all
 ||tinyurl.com/setup-full-version$doc
@@ -2412,6 +2413,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||e95nfjld.com^$doc
 ||orga29.com^$doc
 ||the-latest-version.com^$doc
+||book234h.fun^$doc
+||litlink.site^$doc
 ||apkmirror.co^$all
 ||webogram.org^$all
 ||webogram.ru^$all
@@ -2815,6 +2818,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||user.fm/files/*/ProofOfPayment.HTML^$doc
 ||rampostsouthafrican-*.codeanyapp.com^$all,to=~ram.co.za
 ||codeanyapp.com/southafrica/*/PAYU^$doc,to=~ram.co.za
+||ntriela-solar65.line.pm^$doc,to=~ameli.fr
+||line.pm/*/SNF-GKFF.FR/$doc,to=~ameli.fr
 ! wetransfer
 ||vercel.app/magi/olde/saac-wetr-magi.html^$doc,to=~wetransfer.com
 ||download-wetransfer-*.vercel.app^$doc,to=~wetransfer.com
@@ -2825,9 +2830,6 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ! leboncoin.fr
 ||auth-llbc.elementfx.com^$all,to=~leboncoin.fr
 ||epayln.site.tb-hosting.com^$all,to=~leboncoin.fr
-! webmail.shaw.ca
-||shawupdatingservic.wixstudio.io^$all,to=~webmail.shaw.ca
-||shawmailboxservice4.wixsite.com^$all,to=~webmail.shaw.ca
 ! linkedin
 ||faran.ac.ir/wp-content/$all,to=~linkedin.com
 ||lnkdeka.standard.*.oortech.com^$doc,to=~linkedin.com
@@ -2842,15 +2844,23 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ! webmail
 ||formspark.rongviet.com.vn^$all
 ||webmailrupdatekorea.firebaseapp.com^$all
+||benpsignin-portal.webflow.io^$all
 ||mail-cytanet.pages.dev^$all,to=~mail.cytanet.com.cy
+||serviceteasfreem.weebly.com^$all
 ||jhwbcvkjkshaw.weebly.com^$all,to=~webmail.shaw.ca
-||hootbio.com/bellmail$all,to=~webmail.bell.net
 ||phoenixvilla.rw/wp-about/*.html^$doc
 ||moonworks.in/jpcpanel/$all
 ||bequettehomes.com/ahost/$all
 /^https://[a-z]{40,}\.pages\.dev\//$doc,to=pages.dev
 ||resisted-amusing-driver.glitch.me^$all
 ||glitch.me/public/index_CNC.html^$doc
+||emaildomains.ezzomatic.online^$all
+! webmail.bell.net
+||bellsecuredloginfom-net.vercel.app^$all,to=~webmail.bell.net
+||hootbio.com/bellmail$all,to=~webmail.bell.net
+! webmail.shaw.ca
+||shawupdatingservic.wixstudio.io^$all,to=~webmail.shaw.ca
+||shawmailboxservice4.wixsite.com^$all,to=~webmail.shaw.ca
 ! ups.com
 ||mybluehost.me/Versan/UPS/$doc,to=~ups.com
 ||preprod.exclusifparis.com/modules/deleteordersfree/$all,to=~ups.com
@@ -2895,6 +2905,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ! ourtime
 ||login-ourtime.members-datings.workers.dev^$all,to=~ourtime.com
 ||ourtime-assist.members-authenticated.workers.dev^$all,to=~ourtime.com
+||chat.voice-datings.workers.dev^$all,to=~ourtime.com
 ||profile-ourtime.*.workers.dev^$doc,to=~ourtime.com
 /^https:\/\/ourtime\.[a-z]+-[a-z]+\.workers\.dev\//$doc,to=workers.dev|~ourtime.com
 /\/wap\/api\/(?:activity\/)?[a-zA-Z]+![-_a-zA-Z]+\.action\?/$xhr,1p,strict1p,match-case
@@ -2999,6 +3010,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||messagerie*.yolasite.com^$doc
 ||disponible.temp.swtest.ru/*/login.php^$all,to=~orange.fr
 ||app.vision6.com/em/message/email/$all,to=~orange.fr
+||svropeauthentificatid.run.place^$all,to=~orange.fr
 ! tiktok shop
 ||tiktikshopvn.com^$doc
 ||perazxcs.com^$all
@@ -3013,6 +3025,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||dalobatter.com^$all
 ||skae3299.top^$all
 ||yenrtonm3367.top^$all
+||signup-amazon.com^$all
 ||ecommrce-web-amazon.netlify.app^$all
 ||etisalat-amazonprime.com^$all,to=~etisalat.ae
 ||mybluehost.me/wp-admin/amz/$doc
@@ -3022,6 +3035,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||cs-portalintranet.com/pf/$doc
 ||amazonway.co^$all
 ||sites.google.com/mwhite55.appquestss.com/$doc
+||orders-processed.com^$all
 ! ebay
 ||c.vn-ebayn.vip^$all
 ||vn-ebay.quxlpuj.cn^$all
@@ -3047,6 +3061,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||topmarifle.life^$all,to=~alibaba.com
 ||jybelinda.com^$all,to=~alibaba.com
 ||vetsinthecity.me/*/Alibaba/$doc,to=~alibaba.com
+||sanpelmaquinas.com.br^$all,to=~alibaba.com
 ! aliexpress
 ||airpsite.club^$all,to=~aliexpress.com
 ! AT&T
@@ -3102,10 +3117,15 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||casadosvidrosmt.com.br/wp-admin/csii/$all,to=~gov.uk
 ||smartaromas.com/income-individual_service_tax-gg-check-hm/$all,to=~gov.uk
 ||insolvency-development.co.uk^$all,to=~gov.uk
-! gouv.fr
-||antai-gouv-fr.troliga.sk^$all,to=~amendes.gouv.fr
+! impots.gouv.fr
 ||mybluehost.me/*/impo/$doc,to=~impots.gouv.fr
 ||isz.bqv.mybluehost.me^$doc,to=~impots.gouv.fr
+||polufredsoa.2mydns.net^$all,to=~impots.gouv.fr
+||2mydns.net/fr-impot-gouv^$doc,to=~impots.gouv.fr
+/\.temporary\.site\/service\/[a-f0-9]{32}\//$doc,to=temporary.site|~impots.gouv.fr
+||kkg.yaf.temporary.site^$doc,to=~impots.gouv.fr
+! amendes.gouv.fr
+||antai-gouv-fr.troliga.sk^$all,to=~amendes.gouv.fr
 ||mybluehost.me/wp-content/12/*.php^$doc,to=~amendes.gouv.fr
 ||mybluehost.me/*/amendes.org/$doc,to=~amendes.gouv.fr
 ||amz.boy.mybluehost.me^$doc,to=~amendes.gouv.fr
@@ -3133,8 +3153,6 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||antaidossiersuivamendimpayeer*.zynekcctv.com^$all,to=~amendes.gouv.fr
 ||zynekcctv.com/amandes/$doc,to=~amendes.gouv.fr
 /amandes/infospage.php^$doc,to=~amendes.gouv.fr
-||polufredsoa.2mydns.net^$all,to=~amendes.gouv.fr
-||2mydns.net/fr-impot-gouv^$doc,to=~amendes.gouv.fr
 ! bank
 ||chamsocthekhachhang-$doc,to=~edu|~gov|~edu.vn|~gov.vn
 ||uudaikhachhangthe-$doc,to=~edu|~gov|~edu.vn|~gov.vn
@@ -3157,6 +3175,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||douroweb.eu^$all,to=~bankofamerica.com
 ||gaoyinjiao.com^$all,to=~jabank.jp
 ||activatecustomerduesupportdillegence.com^$all,to=~asb.co.nz
+||nyfinance.ru^$all,to=~nykredit.com
 /^https:\/\/tpbank\.[-a-z0-9]{5,}\.[a-z]{3}(?:\.vn)?\//$doc,to=~edu|~gov|~gov.vn|~tpb.vn
 ||mybluehost.me/service/*/nkl-log.php$doc,to=~nickel.eu
 ||turkiyecumhuriyetiziraatbankasi.com^$all,to=~ziraatbank.com.tr
@@ -3218,6 +3237,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||santanderstaging.interviewtoolkit.io^$all
 ||recompensaszurichsantander.com.mx^$all
 ||santander.cf.sandbox.motrada.ch^$all,to=~santanderbank.com|~santander.co.uk
+||santanderpod.*.co.uk^$all
 ! DHL
 ||dhl.*.potabox.com^$doc,to=~dhl.com
 ||dhl-event.app^$all,to=~dhl.com
@@ -3257,6 +3277,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||fr-instagram.com^$all
 ||igleak.info^$all
 ||instagram.irancell-10g-free.rf.gd^$all
+||facebook-login.mobiletracker.pk^$all
 ! facebook
 ||slimhealth.us^$all
 ||mait.inhhome.top^$all
@@ -3339,6 +3360,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||atplink.com/responseandresolutioncenter$all
 /^https:\/\/h5\.[a-z0-9]{4}\.com\//$doc,to=com
 ||vercel.app/mixcc.html/$doc,to=~facebook.com
+||live-metasupport.com^$all,to=~facebook.com
 ! shopping sites
 /api/user/do_login|$xhr,1p,to=com|info,method=post,header=access-control-allow-headers:/authorization\,content-type\,if-match\,if-modified-since\,if-none-match\,if-unmodified-since\,x-requested-with/i
 /api/user/do_login|$xhr,1p,to=com|info,method=post,header=Access-Control-Allow-Headers:/authorization\,content-type\,if-match\,if-modified-since\,if-none-match\,if-unmodified-since\,x-requested-with/i
@@ -3415,6 +3437,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||activarhotmail.weebly.com^$all
 ||hab-sharepoint.weebly.com^$all
 ||servicewebformoes.weebly.com^$all
+||microsoft-verify.glitch.me^$all
+||validacionesoutlookmailwebadmin.glitch.me^$all
 ||whfdny.org^$all
 ||infos4.yolasite.com^$all
 ||microsoftupdate67.wixsite.com^$all
@@ -3430,7 +3454,6 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||e-outlook-online.com^$all
 ||serverdata.ch^$all
 ||nilousplaypen.com^$all
-||microsoft-verify.glitch.me^$all
 ||cashum.unam.mx/wp-content/backups-dup-pro/imports/index.htm$all
 ||od.atami.no/one_drive.html$all
 ||thermovitraffic.com.mx/SharepointFileProject/$all
@@ -3489,6 +3512,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||alnobala.ae/owasetup/$all
 ||authsignonstaff*.softr.app^$all
 ||facture-pdf-secure-*.vercel.app^$all
+||hkwordpress.com/public/export/SM-ORDER/excelz/$doc
 ! telegram
 ||telegramhcn.com^$all
 ||newappmssg.ru^$all
@@ -3688,6 +3712,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||e-stata.ru/track/1/$all,to=~coinbase.com
 /^https:\/\/\d{6}-coinbase\.com\//$doc,to=~coinbase.com
 ||178368-coinbase.com^$all,to=~coinbase.com
+||llq.rsq.mybluehost.me^$all,to=~coinbase.com
+||mybluehost.me/wp-admin/maajoun/$doc,to=~coinbase.com
 ! imtoken
 ||imtoken.org.cn^$all,to=~token.im
 ||imcosom.com^$all,to=~token.im
@@ -4410,7 +4436,7 @@ webflow.io##html.w-mod-js:not(.wf-active) > body:not([class]):not([id]) > a[clas
 ||noticesgove.top^$all,to=~gov.uk
 /^https:\/\/winterpaymen[a-z]{2,5}\.top\//$doc,to=top|~gov.uk
 ||securevault.top^$all
-||usps.com-$doc,to=live|vip|~usps.com
+/^https:\/\/usps\.com-(?:\w+\.){1,2}[a-z]{2,4}\//$doc,to=~com|~net|~org|~edu|~gov
 ||orcaslicer.info^$doc
 ||marabase-bi.com^$doc,to=~mara.com
 ||ev.ri-7a5935gb.com^$all,to=~evri.com
