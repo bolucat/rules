@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Tue, 19 Nov 2024 15:31:55 +0000
-! Diff-Path: ../patches/2024.11.19.991.patch#ublock-badware
+! Last modified: Wed, 20 Nov 2024 09:47:43 +0000
+! Diff-Path: ../patches/2024.11.20.1045.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -2686,29 +2686,39 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||stalkforx.ru^$all
 ! Cryptocurrency Scams
 ||mevtime.com^$all
-||musk-project.com^$doc
-||muskusa.com^$doc
+||musk-project.com^$all
+||muskusa.com^$all
 ||cealits.com^$all
 ||pepzk-community.xyz^$all
-||earth-ling.org^$doc
-||muskevent.info^$doc
+||earth-ling.org^$all
+||muskevent.info^$all
 ||teslamaked.com^$all
 ||cryptomusk.io^$all
 ||youtube.com/@Tesla.debate_live2024^$doc
-||teslafond.io^$doc
-||teslacore.io^$doc
+||teslafond.io^$all
+||teslacore.io^$all
 ||btc24.info^$all
 ||youtube.com/@tesla24official^$doc
-||usmusk.net^$doc
+||usmusk.net^$all
 ||foundations-x2024.*^$doc,to=foundations-x2024.*
-||foundations-x2024.cloud^$doc
-||foundations-x2024.sbs^$doc
+||foundations-x2024.cloud^$all
+||foundations-x2024.sbs^$all
 ||trump-drop.org^$all
 ||youtube.com/@tesla.Iive.officiaI.24^$doc
 ||elondonald.com^$all
 ||musktrump.io^$all
 ||stage3-last.$doc,to=~edu|~gov
 ||stage2024.$doc,to=~edu|~gov
+! xai scams
+/^https:\/\/xai\w+(?:\.\w+)?\.[a-z]{3,}\/presale\b/$doc,match-case,to=~edu|~gov
+||xaitoken.live^$all
+||investxai.pro^$all
+||xai85s.com^$all
+||xaitokensale.net^$all
+||xaitoken.$all,to=xaitoken.app|xaitoken.page.link|xaitoken.net
+||xaiofficial.com^$all
+||xaipresales.org^$all
+||xai19k.com^$all
 ||arbitragebot.team^$all
 ||arbitrageinstruction.media^$all
 ||arbitrageproject.blog^$all
@@ -4452,3 +4462,23 @@ webflow.io##html.w-mod-js:not(.wf-active) > body:not([class]):not([id]) > a[clas
 ||geekupdates.notion.site/Ultra-Security$doc
 ||uobretailcreditmanagement.$doc
 ||blockfiupdates.$doc
+||uploadfox.net^$inline-script
+uploadfox.net###ad-gs-05
+||allinoursite.com^$doc
+||bteux.com^$doc
+||doorsstormsy.shop^$doc
+||emailservicesnetau.com^$doc
+||euromaillinnk.com^$doc
+||findthorman.shop^$doc
+||glaters.com^$doc
+||keydoordasher.shop^$doc
+||makitfornows.com^$doc
+||mybach.xyz^$doc
+||threeneptuneboot.com^$doc
+/unsub/unsub^$doc
+/unsub_sent.php|$doc,method=post
+##html > body.hold-transition.theme-primary.bg-img[style^="background-image"][style*="wallpaperaccess.com"][style*="background-repeat"][style*="background-size"]
+##html > body > div.container > form#unsubscribe-form[onsubmit="submitUnsubscribeForm(event)"]
+! Pretending to be a government service
+||detranrapido.co^$all
+||pagamentocnh.com^$all
