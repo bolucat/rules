@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Wed, 20 Nov 2024 15:31:43 +0000
-! Diff-Path: ../patches/2024.11.20.1045.patch#ublock-filters
+! Last modified: Thu, 21 Nov 2024 12:47:22 +0000
+! Diff-Path: ../patches/2024.11.21.813.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -10707,7 +10707,7 @@ alocdnnetu.xyz##+js(set, Blob, noopFunc)
 ! flix-wave.lol antiadb
 flix-wave.lol##+js(nostif, offsetHeight)
 flix-wave.lol##+js(aopr, Adcash)
-@@||edumail.icu/storage/js/frontend_loader.js^$script,1p
+@@||edumail.icu/storage/js/*.js^$script,1p
 live-sport.duktek.pro##+js(nowoif)
 live-sport.duktek.pro##+js(aopr, AaDetector)
 live-sport.duktek.pro###banner
@@ -10735,6 +10735,18 @@ canela.tv##+js(json-prune-fetch-response, data.custom.bcAdMetadataUrl, , propsTo
 canela.tv##+js(trusted-replace-fetch-response, /#EXT-X-KEY:METHOD=NONE\n#EXT(?:INF:[^\n]+|-X-DISCONTINUITY)\n.+?(?=#EXT-X-KEY)/gms, , /media.m3u8)
 ! viprow.nu => reliabletv.me frame => allow brave browser
 reliabletv.me##+js(set, window.navigator.brave, undefined)
+viralxxxporn.com##+js(set, flashvars.adv_pre_src, '')
+viralxxxporn.com##+js(set, flashvars.mlogo, '')
+@@*$ghide,to=activo.mx|dynamicsupply.net|foroactivo.com|zdsports.org|~www.activo.mx|~www.foroactivo.com
+@@||blogspot.com^$ghide,to=zscnl.blogspot.com|zsnls.blogspot.com
+!#if cap_html_filtering
+zdsptv.com##^script:has-text(/h=decodeURIComponent|popundersPerIP/)
+!#else
+zdsptv.com##+js(rmnt, script, /h=decodeURIComponent|popundersPerIP/)
+!#endif
+tarjetarojaenvivo.lat##^script#aclib
+||tarjetarojaenvivo.lat/lib.js^
+dailyrevs.com##+js(no-xhr-if, adsbygoogle)
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -16199,6 +16211,7 @@ send-anywhere.com##+js(nano-sib, skipOptions)
 send-anywhere.com###transfer-reward-ad
 ||brightcove.com/playback/*/*?ad_config_id$removeparam=ad_config_id,xhr,domain=tvnz.co.nz
 ||brightcovecdn.com/playback/*/*?ad_config_id$removeparam=ad_config_id,xhr,domain=tvnz.co.nz
+tvnz.co.nz##+js(no-fetch-if, method:HEAD url:doubleclick.net)
 @@||pharmacyreviewer.com^$ghide
 @@||pharmacyreviewer.com/forum/js/$script,1p
 247sports.com##body:not(.skybox-loaded) .topnav:style(margin-top:0px !important)
@@ -17933,8 +17946,6 @@ rule34porn.net##+js(aopr, decodeURI)
 rule34porn.net##+js(nostif, showModal)
 rule34porn.net##+js(no-fetch-if, /ad-provider)
 largescaleforums.com##+js(nostif, ).show())
-crunchyscan.fr##+js(acs, document.write, detect)
-crunchyscan.fr##+js(acs, eval, replace)
 crunchyscan.fr##.col-sm-8.col-md-8.main-col > .c-sidebar
 crunchyscan.fr##.widget_custom_html
 *$script,redirect-rule=noopjs,domain=crunchyscan.fr
@@ -19626,14 +19637,14 @@ badmouth1.com,blog.esuteru.com,blog.livedoor.jp,dziennik.pl,etnews.com,eurointeg
 apkmirror.com,automobile-catalog.com,motorbikecatalog.com,blog.esuteru.com,blog.livedoor.jp,itainews.com,jin115.com,allthetests.com,javatpoint.com,globalrph.com,carscoops.com,crosswordsolver.com,cruciverba.it,dnevno.hr,ff14net.2chblog.jp,heureka.cz,indiatimes.com,laleggepertutti.it,meeco.kr,mirrored.to,motscroises.fr,news4vip.livedoor.biz,oeffnungszeitenbuch.de,onecall2ch.com,oraridiapertura24.it,palabr.as,petitfute.com,rabitsokuhou.2chblog.jp,rostercon.com,sourceforge.net,suzusoku.blog.jp,the-crossword-solver.com,thestockmarketwatch.com,wfmz.com,word-grabber.com,wort-suchen.de,woxikon.*,yutura.net,zagreb.info,freemcserver.net,golf-live.at,kreuzwortraetsel.de,raetsel-hilfe.de,verkaufsoffener-sonntag.com,horairesdouverture24.fr,nyitvatartas24.hu,modhub.us,yugioh-starlight.com,winfuture.de,talkwithstranger.com##^script:has-text(error-report.com)
 worldhistory.org##^script:has-text(adShield)
 lovelive-petitsoku.com,pravda.com.ua##^script:has-text(Ad-Shield)
-slobodnadalmacija.hr##^script:has-text(adrecover.com)
+jutarnji.hr,slobodnadalmacija.hr##^script:has-text(adrecover.com)
 persoenlich.com##^script:has-text(html-load.com)
 !#else
 interfootball.co.kr,a-ha.io,cboard.net,jjang0u.com,joongdo.co.kr,viva100.com,gamingdeputy.com,thesaurus.net,alle-tests.nl,maketecheasier.com,automobile-catalog.com,allthekingz.com,motorbikecatalog.com,tweaksforgeeks.com,m.inven.co.kr,mlbpark.donga.com##+js(rmnt, script, KCgpPT57bGV0IGU)
 apkmirror.com,automobile-catalog.com,motorbikecatalog.com,blog.esuteru.com,blog.livedoor.jp,itainews.com,jin115.com,allthetests.com,javatpoint.com,globalrph.com,carscoops.com,crosswordsolver.com,cruciverba.it,dnevno.hr,ff14net.2chblog.jp,heureka.cz,indiatimes.com,laleggepertutti.it,meeco.kr,mirrored.to,motscroises.fr,news4vip.livedoor.biz,oeffnungszeitenbuch.de,onecall2ch.com,oraridiapertura24.it,palabr.as,petitfute.com,rabitsokuhou.2chblog.jp,rostercon.com,sourceforge.net,suzusoku.blog.jp,the-crossword-solver.com,thestockmarketwatch.com,wfmz.com,word-grabber.com,wort-suchen.de,woxikon.*,yutura.net,zagreb.info,freemcserver.net,golf-live.at,kreuzwortraetsel.de,raetsel-hilfe.de,verkaufsoffener-sonntag.com,horairesdouverture24.fr,nyitvatartas24.hu,modhub.us,yugioh-starlight.com,winfuture.de,talkwithstranger.com##+js(rmnt, script, error-report.com)
 worldhistory.org##+js(rmnt, script, adShield)
 lovelive-petitsoku.com,pravda.com.ua##+js(rmnt, script, Ad-Shield)
-slobodnadalmacija.hr##+js(rmnt, script, adrecover.com)
+jutarnji.hr,slobodnadalmacija.hr##+js(rmnt, script, adrecover.com)
 persoenlich.com##+js(rmnt, script, html-load.com)
 winfuture.de##+js(aeld, load, error-report.com)
 !#endif
@@ -23581,10 +23592,9 @@ redd.tube##+js(aopr, config)
 announcedcatchix1t.shop,brotherfox91.shop,currentcolorq2dv.shop,customsfencei3.shop,fencethoughgdrt.shop,fencethroughout642.shop,foxwent6ot.shop,havingmovementu8x.shop,homebasis4d.shop,includingbreath5ku.shop,ironwinter6m.shop,leadmorning4ivn.shop,linelocatemfsn.shop,littlesound6c.shop,mindmotion93y8.shop,mightbadly4f.shop,monkeynecktj4w.shop,neighbormajorkex.shop,nervousdoctor9bx.shop,pantogether6jpi.shop,quietlywheat23.shop,saddletopg3tk.shop,soldrubber5xrp.shop,somehowrockyng.shop,strangernervousql.shop,superabbit.shop,supportrightufd.shop,studyinghuman6js.shop,wholecommonrrvp.shop,wintertold7nq.shop##+js(nano-sib, countDown)
 @@*$xhr,script,3p,from=announcedcatchix1t.shop|brotherfox91.shop|currentcolorq2dv.shop|customsfencei3.shop|determinemousecshe.shop|fencethoughgdrt.shop|fencethroughout642.shop|foxwent6ot.shop|havingmovementu8x.shop|homebasis4d.shop|includingbreath5ku.shop|ironwinter6m.shop|leadmorning4ivn.shop|limiteddollqjc.shop|linelocatemfsn.shop|littlesound6c.shop|mindmotion93y8.shop|mightbadly4f.shop|monkeynecktj4w.shop|neighbormajorkex.shop|nervousdoctor9bx.shop|pantogether6jpi.shop|publicspeed5c.shop|quietlywheat23.shop|saddletopg3tk.shop|soldrubber5xrp.shop|somehowrockyng.shop|strangernervousql.shop|superabbit.shop|supportrightufd.shop|studyinghuman6js.shop|wholecommonrrvp.shop|wintertold7nq.shop,to=autos|sbs|shop
 ggjav.com,ggjav.tv##+js(acs, $, popunder)
-ecamrips.com,showcamrips.com##+js(rmnt, script, document.head.appendChild)
+ecamrips.com,showcamrips.com##+js(rmnt, script, /document\.head\.appendChild|window\.open/)
 ecamrips.com,showcamrips.com##+js(acs, document.cookie, document.head.appendChild)
 ecamrips.com,showcamrips.com##+js(acs, OpenInNewTab_Over)
-ecamrips.com,showcamrips.com##+js(aeld, load, puURLstrpcht)
 ecamrips.com,showcamrips.com##[href*="ads"]
 bizdustry.com##+js(nostif, show)
 cl1ca.com,4br.me,fir3.net,seulink.*,encurtalink.*##+js(aopr, mm)
@@ -23728,7 +23738,6 @@ dirtyvideo.fun##+js(set, arrvast, [])
 tronxminer.com##+js(aeld, load, htmls)
 @@||cursomecanet.com^$ghide
 cursomecanet.com##[id^="div-gpt-ad"]:not([style^="width: 1px; height: 1px; position: absolute; left: -10000px; top: -"])
-cursomecanet.com##+js(nostif, document.write)
 sousou-no-frieren.com##+js(rmnt, script, pop.doEvent)
 tikmate.app##+js(set, powerAPITag, emptyObj)
 tikmate.app##+js(set, detectAdBlock, noopFunc)

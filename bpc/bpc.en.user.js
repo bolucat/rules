@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.2.7
+// @version         3.9.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1265,7 +1265,7 @@ else if (matchDomain('asia.nikkei.com')) {
 else if (matchDomain('axios.com')) {
   function axios_noscroll(node) {
     node.removeAttribute('style');
-    let overlay = 'div[class^="Modal_"]';
+    let overlay = 'div[class^="Modal_paywall"], div[class^="Modal_cta"]';
     hideDOMStyle(overlay, 2);
   }
   let noscroll = document.querySelector('html[style]');
@@ -3046,10 +3046,14 @@ else if (matchDomain('thedailybeast.com')) {
 
 else if (matchDomain('thediplomat.com')) {
   if (matchDomain('magazine.thediplomat.com')) {
-    let preview = document.querySelector('article.dpl-preview');
-    if (preview)
-      preview.classList.remove('dpl-preview');
+    let article = document.querySelector('article > section.h-96');
+    if (article)
+      article.classList.remove('h-96');
+    let fade = 'aside.bg-gradient-to-b';
+    hideDOMStyle(fade, 2);
   }
+  let ads = 'aside.td-ad-container--labeled, div[data-actirise]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('theglobeandmail.com')) {
