@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Thu, 21 Nov 2024 12:47:22 +0000
-! Diff-Path: ../patches/2024.11.21.813.patch#ublock-filters
+! Last modified: Fri, 22 Nov 2024 14:05:01 +0000
+! Diff-Path: ../patches/2024.11.22.867.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -10702,6 +10702,7 @@ superflixapi.dev##.sflix_space
 ! goflix. sbs popups
 ||goflix.sbs^$csp=sandbox allow-same-origin allow-scripts allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-top-navigation allow-popups
 ||google.com/adsense/domains/caf.js^$script,redirect=noopjs
+##html[lang][style^="--main-bg-color"] > body:not([class]):not([id]) > div#container[style="visibility: visible;"] > div#banner[style="opacity:0"] ~ main:not([class]):not([id]) > div#message
 ! filmeserialetv.org => player alocdnnetu.xyz => popups
 alocdnnetu.xyz##+js(set, Blob, noopFunc)
 ! flix-wave.lol antiadb
@@ -10747,6 +10748,17 @@ zdsptv.com##+js(rmnt, script, /h=decodeURIComponent|popundersPerIP/)
 tarjetarojaenvivo.lat##^script#aclib
 ||tarjetarojaenvivo.lat/lib.js^
 dailyrevs.com##+js(no-xhr-if, adsbygoogle)
+lista.mercadolivre.com.br##.brand-wrapper-desktop-new
+lista.mercadolivre.com.br##.ui-search-layout__item:nth-child(-n+3):has(.poly-component__ads-promotions)
+jobfound.org##+js(no-fetch-if, doubleclick)
+jakondo.ru##+js(set, HTMLScriptElement.prototype.onerror, undefined)
+||fmovies.co/sw.js
+fileplanet.com##+js(acs, showTav)
+fileplanet.com##.opera-banner
+fileplanet.com##.trs-ader
+fileplanet.com##a[href^="https://url.totaladblock.com/"]
+handirect.fr##body::before:style(background-image: unset !important;)
+handirect.fr##+js(rmnt, script, kmtAdsData)
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -14283,7 +14295,7 @@ cablegratis.online,filmypur.*,kmo.to,nuroflix.*,onifile.com,oxanime.com,pelis28.
 ! ##+js(acs, JSON.parse, Promise)
 adblockstreamtape.*,adblockstrtape.*,adblockstrtech.*,komikcast.*,mavanimes.*,stape.*,streamadblockplus.*,streamta.*,streamtape.*,streamtapeadblock.*,strtape.*,strtapeadblock.*,strtpe.*,vanime.*##+js(acs, JSON.parse, Promise)
 ! ##+js(acs, navigator, break;case $.)
-123moviesonline.*,2embed.*,adblockeronstape.*,brbushare.*,cuatrolatastv.blogspot.com,cue-vana.com,direct-cloud.me,driveup.in,filmeseries.*,goved.org,hdmovies2.org,hdmovies50.*,letsupload.io,seriezloaded.com.ng,skymovieshd.*,slink.bid,stapewithadblock.*,streamers.watch,upbam.org,uplinkto.*,uppit.com,vadbam.com,vadbom.com,vedbam.*,vidbam.org,vidshar.org##+js(acs, navigator, break;case $.)
+123moviesonline.*,2embed.*,adblockeronstape.*,brbushare.*,cuatrolatastv.blogspot.com,cue-vana.com,direct-cloud.me,driveup.in,filmeseries.*,goved.org,hdmovies2.org,hdmovies50.*,seriezloaded.com.ng,skymovieshd.*,slink.bid,stapewithadblock.*,streamers.watch,upbam.org,uplinkto.*,uppit.com,vadbam.com,vadbom.com,vedbam.*,vidbam.org,vidshar.org##+js(acs, navigator, break;case $.)
 ! ##+js(aost, Object, /(?=^(?!.*(https)))/)
 songspk.*##+js(aost, Object, /(?=^(?!.*(https)))/)
 ! ##+js(acs, document.documentElement, break;case $.) including FingerprintJS variant
@@ -21768,9 +21780,9 @@ meilblog.com##.adblock_title
 enryumanga.com,varnascan.com###close-teaser
 enryumanga.com,varnascan.com###floatcenter
 !#if cap_html_filtering
-ftuapps.*,hentaiseason.com,showflix.*,twobluescans.com##^script:has-text('decodeURIComponent(escape')
+ftuapps.*,hentaiseason.com,hoodtrendspredict.com,showflix.*,twobluescans.com##^script:has-text('decodeURIComponent(escape')
 !#else
-ftuapps.*,hentaiseason.com,showflix.*,twobluescans.com##+js(rmnt, script, 'decodeURIComponent(escape')
+ftuapps.*,hentaiseason.com,hoodtrendspredict.com,showflix.*,twobluescans.com##+js(rmnt, script, 'decodeURIComponent(escape')
 hentaiseason.com,showflix.*##+js(aost, document.getElementById, fairAdblock)
 !#endif
 ftuapps.*##body > div:has(.adblock_title)
@@ -23056,7 +23068,8 @@ eu-proxy.startpage.com##+js(json-prune, playerResponse.adPlacements playerRespon
 eu-proxy.startpage.com##+js(set, ytInitialPlayerResponse.playerAds, undefined)
 eu-proxy.startpage.com##+js(set, ytInitialPlayerResponse.adPlacements, undefined)
 eu-proxy.startpage.com##+js(set, playerResponse.adPlacements, undefined)
-www.startpage.com##+js(trusted-replace-argument, Array.prototype.find, 0, undefined, condition, affinity-qi)
+startpage.com###main > div[style]:not([class]):has(path)
+startpage.com##+js(trusted-replace-argument, Array.prototype.find, 0, undefined, condition, affinity-qi)
 gktech.uk##+js(no-fetch-if, ads)
 gktech.uk##+js(aopr, onscroll)
 gktech.uk###overlay-ad

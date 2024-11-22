@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: DbGHrIAW5Gy6xv+n0tDCsg
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1732210727-3600.patch
+! Checksum: /cLywKYiLYlqPwTWmsntOw
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1732297064-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.61.53
-! TimeUpdated: 2024-11-21T17:31:26+00:00
+! Version: 2.3.61.65
+! TimeUpdated: 2024-11-22T17:31:24+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -78,6 +78,8 @@
 !
 !
 !
+||legiblyosmols.top^
+||medbroadcast.com^
 ||trusting-produce.com^
 ||piotyo.xyz^
 ||lanky-bar.com^
@@ -8385,6 +8387,9 @@ youporn.com##+js(remove-node-text, script, /window\.[\s\S]*?_zone_[\s\S]*?{"zone
 ! NOTE: Regular rules
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/193437
+||ffmovies.lol/jss/dectector-2025.js
+yts-official.org##+js(set-constant, AB_Detector, noopFunc)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/193098
 aznude.com##+js(no-fetch-if, /magsrv\.com|\/ad-provider\.js/)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/193068
@@ -9656,8 +9661,9 @@ uptoearn.xyz##+js(no-fetch-if, pagead2.googlesyndication.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/164439
 infinityscans.net,infinityscans.xyz#?#.user-select-none > .alert:has(> .p-3:contains(/^Advertisement blockers/))
 infinityscans.net,infinityscans.xyz##+js(window.open-defuser, /quackupsilon\.com|sunnshele\.com|pubadx\.one|psegeevalrat\.net/)
+infinityscans.net,infinityscans.xyz##+js(abort-current-script, $, ['html'])
 infinityscans.net,infinityscans.xyz##+js(abort-current-script, document.getElementById, innerHTML)
-@@||infinityscans.*/adsAPI.js$domain=infinityscans.xyz|infinityscans.net
+@@||infinityscans.*/*.js$script,domain=infinityscans.xyz|infinityscans.net
 ! https://github.com/AdguardTeam/AdguardFilters/issues/164348
 porn4f.com##+js(no-fetch-if, pagead2.googlesyndication.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/164148
@@ -20157,6 +20163,8 @@ kikar.co.il##div[class^="MuiBox-root css-"] > script[type="application/ld+json"]
 ! tejtime24.com
 tejtime24.com##+js(no-fetch-if, pagead2.googlesyndication.com)
 tejtime24.com##+js(abort-on-property-write, checkAdBlock)
+tejtime24.com#@#div[id^="div-gpt-"]
+tejtime24.com#@#[id^="div-gpt-ad"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/152782
 ||kutchuday.in/wp-content/uploads/*/add-$image
 ! https://github.com/AdguardTeam/AdguardFilters/issues/97659
@@ -20872,6 +20880,10 @@ shinigami06.com##.lepopup-animated
 176.119.30.88###tv-play
 176.119.30.88##.footer1
 duniaku.idntimes.com##amp-script[script="parallax-script"]
+! https://github.com/AdguardTeam/AdguardFilters/issues/193238
+||cfcdn.apcqwd.com/prod/svimg/*.gif|
+||cfcdn.apcqwd.com/prod/svimg/a70d3146-abd5-4790-b1c8-a5854c7e7006.jpeg
+[$domain=/tigoals\d+\.com/]##.banner
 ! https://github.com/AdguardTeam/AdguardFilters/issues/192859
 ||cosmic*.co/wp-content/uploads/*.gif|
 [$domain=/cosmic\d+\.co/]###floatcenter
@@ -21055,6 +21067,9 @@ bacakomik.co##.form-contoler > a > img
 bacakomik.co##.chapter-content > a > img
 ! https://github.com/AdguardTeam/AdguardFilters/issues/142383
 komikindo.id##.gambar_pemanis
+! https://github.com/AdguardTeam/AdguardFilters/issues/193377
+samehadaku.*#$#a[target="_blank"] ~ .naveps { display: inline !important; }
+samehadaku.*#$#a[target="_blank"] ~ .pencenter { display: inline-block !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/148054
 ! https://github.com/AdguardTeam/AdguardFilters/issues/141525
 samehadaku.*###overplay
@@ -21543,15 +21558,16 @@ smellyfisher.com##.providers
 bestmovie.it,treccani.it##.gmp
 forum.fibra.click##.FibraClickAds-fake-poststream-item
 open.online##a[rel="sponsored"]
+! https://github.com/AdguardTeam/AdguardFilters/issues/193408
 ! https://github.com/AdguardTeam/AdguardFilters/issues/193330
-hdblog.it###newslist > div[style^="margin:"][style*="height:"][style*="background:"]:empty
-hdblog.it###newslist > div[style^="margin:"][style*="height:"][style*="background:"]:not(:has(>*))
-hdblog.it###newslist > div[style^="margin:"][style*="height:"][style*="background:"]:has(> iframe[src*="/new_files/ajax/bf_new.php"])
-hdblog.it###main_container > div[style^="width:"][style*="height:"][style*="background:"]:empty
-hdblog.it###main_container > div[style^="width:"][style*="height:"][style*="background:"]:not(:has(>*))
-hdblog.it###main_container > div[style^="width:"][style*="height:"][style*="background:"]:has(> iframe[src*="/new_files/ajax/bf_new.php"])
+hdmotori.it,hdblog.it###newslist > div[style^="margin:"][style*="height:"][style*="background:"]:empty
+hdmotori.it,hdblog.it###newslist > div[style^="margin:"][style*="height:"][style*="background:"]:not(:has(>*))
+hdmotori.it,hdblog.it###newslist > div[style^="margin:"][style*="height:"][style*="background:"]:has(> iframe[src*="/new_files/ajax/bf_new.php"])
+hdmotori.it,hdblog.it###main_container > div[style^="width:"][style*="height:"][style*="background:"]:empty
+hdmotori.it,hdblog.it###main_container > div[style^="width:"][style*="height:"][style*="background:"]:not(:has(>*))
+hdmotori.it,hdblog.it###main_container > div[style^="width:"][style*="height:"][style*="background:"]:has(> iframe[src*="/new_files/ajax/bf_new.php"])
 ! https://github.com/AdguardTeam/AdguardFilters/issues/193182
-cursomecanet.com##+js(noeval-if, detectado)
+cursomecanet.com##+js(no-fetch-if, adligature.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/191419
 afdigitale.it##.herald-da > a[target="_blank"] > img
 afdigitale.it##.herald-below-header:has(> a[target="_blank"])
@@ -23127,6 +23143,8 @@ gospodarkamorska.pl##.Home_categories_box > div.polecamy-slider > div[class*="po
 instalki.pl##center > a.gofollow > img
 onet.pl##a[href^="https://milionymonet.onet.pl/"]
 pograne.eu###custom_html-8
+! https://github.com/AdguardTeam/AdguardFilters/issues/193396
+wszystkiegoslodkiego.pl###billboard-addesktop
 ! https://github.com/AdguardTeam/AdguardFilters/issues/192925
 managerplus.pl##a[rel^="sponsored"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/192924
@@ -32587,14 +32605,10 @@ userscloud.com##+js(remove-attr, onclick, a[href*='usercdn.com'][onclick*='windo
 israelnationalnews.com##+js(abort-current-script, Math.random, new RegExp)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/11692
 ! https://github.com/AdguardTeam/AdguardFilters/issues/4874
-! qz.com header glitch
 ! https://forum.adguard.com/index.php?threads/19046/
 ! https://github.com/AdguardTeam/AdguardFilters/issues/75252
 ! https://forum.adguard.com/index.php?threads/19043/
 uppit.com##+js(adjust-setTimeout, #countdown, , 0.02)
-! https://forum.adguard.com/index.php?threads/18968/
-! https://forum.adguard.com/index.php?threads/18216/
-! https://forum.adguard.com/index.php?threads/18584/
 ! https://forum.adguard.com/index.php?threads/9895/
 motherless.com##+js(abort-current-script, jQuery, secondPop)
 ! https://forum.adguard.com/index.php?threads/hqporner-com-nsfw.16107/
@@ -34688,6 +34702,9 @@ $subdocument,third-party,denyallow=disqus.com,domain=welovemanga.one
 !
 ! NOTE: Specific rules
 !
+calcbasic.com##.sidebar:has(> .ad)
+king5.com##.grid__main > div.grid__cell:has(> div[data-analytics-name^="Just a Pinch"])
+newsmemory.com##div[id^="contArea"][id*="Ads"]
 ||onscreens.me/js/ca.*.js
 onscreens.me##.mx-auto:has(> div[class*="250px"][class*="300px"])
 onscreens.me##aside > h1:contains(See more here)

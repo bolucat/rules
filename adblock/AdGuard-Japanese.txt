@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: YFyqrmeT204lXnjJoM8iVg
-! Diff-Path: ../patches/7/7-s-1732200078-3600.patch
+! Checksum: odXTcrR8ShqSbJ/R2sMkPw
+! Diff-Path: ../patches/7/7-s-1732286272-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.59.48
-! TimeUpdated: 2024-11-21T14:36:28+00:00
+! Version: 2.0.59.53
+! TimeUpdated: 2024-11-22T14:33:43+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -491,6 +491,7 @@ pixnest.pipio.site##+js(abort-on-property-write, checkAdIframe)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/193339
 lv73.net##div[id^="ad-blocker-"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/193283
+rxlife.net##+js(remove-node-text, script, detectAdBlock)
 rxlife.net##+js(no-fetch-if, adsbygoogle)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/191181
 bm.best-hit.tv##+js(addEventListener-defuser, load, delayCheckAB)
@@ -1766,6 +1767,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+otakuma.net##div[class*="ad_side_widget"]
+tsuisoku.com##img[src^="https://livedoor.blogimg.jp/ld_manga/imgs/"]
 pixnest.pipio.site#$##videoDiv:has(> #addiv) { display: none !important; }
 pixnest.pipio.site#$##video-container[style*="display: none;"] { display: block !important; }
 haijin-boys.com##.widget:has(> ins.adsbygoogle)
@@ -5464,7 +5467,7 @@ city.chita.lg.jp###fixedAdv
 city.fuji.shizuoka.jp###containerBottom
 city.komaki.aichi.jp,city.fujieda.shizuoka.jp###kokoku-area
 city.ueda.nagano.jp,city.ome.tokyo.jp,lg.jp,city.kochi.kochi.jp###top_banner_koukoku
-city.goshogawara.lg.jp,city.mutsu.lg.jp,city.koshigaya.saitama.jp###koukoku
+town.fukushima.hokkaido.jp,city.goshogawara.lg.jp,city.mutsu.lg.jp,city.koshigaya.saitama.jp###koukoku
 city.fujinomiya.lg.jp##.rs_skip
 city.habikino.lg.jp##.advertising-area
 city.hokuto.yamanashi.jp###bnrLink
@@ -9933,7 +9936,7 @@ blogspot.com#?#.HTML > div.widget-content > ins.adsbygoogle:upward(2)
 cybersocean.net#?#.textwidget > p:has(> a[href^="https://amzn.to/"])
 w.atwiki.jp#$?##atwiki-ads-overlay { remove: true; }
 reikawatanabe.com,taisy0.com#?#.c_linkto:has(> .adsbygoogle)
-lions-matome.com,gensin.blog.jp##.plugin-memo:has(> div.side > div.amazon)
+mhw.2chblog.jp,lions-matome.com,gensin.blog.jp##.plugin-memo:has(> div.side > div.amazon)
 thetv.jp#?#.sidebarcontents:has(> ul.affiliatelist)
 moqlog.jp#?#.widget-sidebar-standard:has(> div > div.squareb)
 blog.fc2.com#?##main_contents > div.entry > div.entry_body > div[style="text-align:center;margin-bottom:10px;"] + div[style="font-size:8px;"]:upward(2)
@@ -10953,6 +10956,7 @@ itest.5ch.net#?#.ad_nth_li
 itest.5ch.net#$#div[itemprop="itemListElement"][style="margin-top: 100px;"] { margin-top: 0 !important; }
 ||itest.5ch.net/assets/img/*-300x250.png
 itest.5ch.net##.ad_5th_300x250
+itest.5ch.net#$#div[id$="AdsMain"] { position: absolute !important; left: -3000px !important; }
 itest.5ch.net,itest.bbspink.com##div[id$="AdsMain"]
 itest.5ch.net##div[id^="topAdheader-"]
 itest.5ch.net###subback > li[id][class*="_"]
