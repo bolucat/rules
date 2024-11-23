@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.3.0
+// @version         3.9.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -266,9 +266,7 @@ if (matchDomain('afr.com')) {
                       let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
                       let content_new = doc.querySelector('div');
                       article.appendChild(content_new);
-                      let sheet = document.createElement('style');
-                      sheet.innerText = article_sel + ' p {margin: 20px 0px;}';
-                      document.head.appendChild(sheet);
+                      addStyle(article_sel + ' p {margin: 20px 0px;}');
                     } else {
                       let parser = new DOMParser();
                       let first = true;
@@ -301,9 +299,7 @@ if (matchDomain('afr.com')) {
                           article.append(header, byline, par);
                         }
                       }
-                      let sheet = document.createElement('style');
-                      sheet.innerText = 'section:not([class]) > p {margin: 24px 0px;}';
-                      document.head.appendChild(sheet);
+                      addStyle('section:not([class]) > p {margin: 24px 0px;}');
                       let key_posts = document.querySelectorAll('li > a[href*="?post="]');
                       for (let elem of key_posts)
                         elem.href = elem.href.replace('?post=', '#');
@@ -965,7 +961,24 @@ else if (matchDomain('the-tls.co.uk')) {
 }
 
 else if (matchDomain('thelawyer.com')) {
-  getJsonUrl('div.registered-content-box', '', 'article#content', {art_append: 1, art_hold: 1, art_class: 'article-body'}, '', '', true);
+  if (window.location.pathname.startsWith('/mda/')) {
+    header_nofix('div.sf-content__post', 'div.sf-login-form', 'BPC > no fix');
+  } else if (true) {
+    let body = document.querySelector('body[class*="postid-"]');
+    if (body) {
+      let article_id = body.className.split('postid-')[1].split(' ')[0];
+      if (article_id) {
+        func_post = function () {
+          let lazy_images = document.querySelectorAll('img.lazy[data-src]:not([src])');
+          for (let elem of lazy_images) {
+            elem.src = elem.getAttribute('data-src');
+            elem.removeAttribute('class');
+          }
+        }
+        getJsonUrl('div.sf-login-form', '', 'div.sf-content-body__text', {art_append: 1}, article_id, '', true);
+      }
+    }
+  }
 }
 
 else if (matchDomain('theneweuropean.co.uk')) {
@@ -1549,12 +1562,14 @@ else if (matchDomain('capital.bg')) {
 else if (matchDomain(['chronicle.com', 'philanthropy.com'])) {
   let preview = document.querySelector('div[data-content-summary]');
   removeDOMElement(preview);
-  let article_hidden = document.querySelector('div.ArticlePage-articleBody[hidden]');
+  let article_hidden = document.querySelector('div[class*="Page-articleBody"][hidden]');
   if (article_hidden) {
     let attributes = [...article_hidden.attributes].filter(x => x.name !== 'class');
     for (let elem of attributes)
       article_hidden.removeAttribute(elem.name);
   }
+  let ads = 'div.GoogleDfpAd-container';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('cnbc.com')) {
@@ -3426,9 +3441,7 @@ else if (matchDomain(timesofindia_domains)) {
               let article_new = document.createElement('p');
               article_new.innerText = breakText(json_text);
               content.innerHTML = '';
-              let sheet = document.createElement('style');
-              sheet.innerText = '[type="synopsis"]::after {background: none !important;}';
-              document.head.appendChild(sheet);
+              addStyle('[type="synopsis"]::after {background: none !important;}');
               content.appendChild(article_new);
             }
           }
@@ -3467,9 +3480,7 @@ else if (matchDomain(timesofindia_domains)) {
                     article.appendChild(article_new);
                   }
                 }, 1500);
-                let sheet = document.createElement('style');
-                sheet.innerText = 'div.paywall::after {background-image: none !important;}';
-                document.head.appendChild(sheet);
+                addStyle('div.paywall::after {background-image: none !important;}');
               }
             }
           } catch (err) {
@@ -4257,6 +4268,16 @@ function hideDOMStyle(selector, id = 1) {
   }
 }
 
+function addStyle(css, id = 1) {
+  let style = document.querySelector('head > style#add'+ id);
+  if (!style && document.head) {
+    let sheet = document.createElement('style');
+    sheet.id = 'add' + id;
+    sheet.innerText = css;
+    document.head.appendChild(sheet);
+  }
+}
+
 function clearPaywall(paywall, paywall_action) {
   if (paywall) {
     if (!paywall_action)
@@ -4818,13 +4839,12 @@ function getNestedKeys(obj, key) {
 function getJsonUrlText(article, callback, article_id = '', key = '', url_slash = false) {
   let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
   let json_url;
-  if (json_url_dom) {
+  if (json_url_dom)
     json_url = json_url_dom.href;
-    if (url_slash)
-      json_url = json_url.replace('/wp-json/', '//wp-json/');
-  }
   if (!json_url && article_id)
     json_url = window.location.origin + '/wp-json/wp/v2/posts/' + article_id;
+  if (url_slash)
+    json_url = json_url.replace('/wp-json/', '//wp-json/');
   if (json_url) {
     fetch(json_url)
     .then(response => {
