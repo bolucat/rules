@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.9.2.1
+// @version         3.9.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -446,13 +446,16 @@ else if (matchDomain('lesechos.fr')) {
             if (url_loaded && (!url_loaded.slice(-7).match(/\d+/) || !url.includes(url_loaded.slice(-7))))
               refreshCurrentTab();
             else {
-              let json_text = data_article.data.stripes[0].mainContent[0].data.description.replace(/allowfullscreen='(true)?'/g, '');
+              let json_text = data_article.data.stripes[0].mainContent[0].data.description;
               let article = document.querySelector('div.post-paywall');
               if (article) {
                 let contentNode = document.createElement('div');
                 let parser = new DOMParser();
                 let doc = parser.parseFromString('<div class="' + article.className + '">' + json_text + '</div>', 'text/html');
                 let article_new = doc.querySelector('div');
+                let error_iframes = article_new.querySelectorAll('iframe[allow*="fullscreen"][allowfullscreen]');
+                for (let iframe of error_iframes)
+                  iframe.removeAttribute('allowfullscreen');
                 if (article.parentNode && article_new) {
                   article.parentNode.replaceChild(article_new, article);
                   let article_lastnode = document.querySelector('.post-paywall  > :last-child');

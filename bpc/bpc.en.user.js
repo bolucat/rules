@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.3.2
+// @version         3.9.3.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -35,6 +35,7 @@
 // @match           *://*.nation.africa/*
 // @match           *://*.nautil.us/*
 // @match           *://*.niagarafallsreview.ca/*
+// @match           *://*.nv.ua/*
 // @match           *://*.nzherald.co.nz/*
 // @match           *://*.puck.news/*
 // @match           *://*.sloanreview.mit.edu/*
@@ -640,6 +641,9 @@ else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
                   } else if (!['ad', 'quote', 'streamone'].includes(type)) {
                     let html = parser.parseFromString('<p class="' + intro_par_class + '">' + item + '</p>', 'text/html');
                     elem = html.querySelector('p');
+                    let error_iframes = elem.querySelectorAll('iframe[allow*="fullscreen"][allowfullscreen]');
+                    for (let iframe of error_iframes)
+                      iframe.removeAttribute('allowfullscreen');
                     if (!['p', 'subhead', 'legacy-ml'].includes(type)) {
                       console.log(type);
                       console.log(item);
@@ -1562,7 +1566,7 @@ else if (matchDomain('capital.bg')) {
 else if (matchDomain(['chronicle.com', 'philanthropy.com'])) {
   let preview = document.querySelector('div[data-content-summary]');
   removeDOMElement(preview);
-  let article_hidden = document.querySelector('div[class*="Page-articleBody"][hidden]');
+  let article_hidden = document.querySelector('div[class~="contentBody" i][hidden]');
   if (article_hidden) {
     let attributes = [...article_hidden.attributes].filter(x => x.name !== 'class');
     for (let elem of attributes)
@@ -2531,6 +2535,22 @@ else if (matchDomain(['nola.com', 'theadvocate.com'])) {
   } else {
     let ads = 'div.tnt-ads-container, div.asset-breakout-ads';
     hideDOMStyle(ads);
+  }
+}
+
+else if (matchDomain('nv.ua')) {
+  if (!window.location.pathname.includes('/amp/')) {
+    amp_redirect('div[id^="media_paywall"]');
+  } else {
+    let paywall = document.querySelector('div.paywall-area');
+    if (paywall) {
+      paywall.removeAttribute('class');
+      let subscr = paywall.querySelector('div.make-subscription');
+      removeDOMElement(subscr);
+    }
+    let article = document.querySelector('div.article__content');
+    if (article)
+      article.removeAttribute('class');
   }
 }
 
