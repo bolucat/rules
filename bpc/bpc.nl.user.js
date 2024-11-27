@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.9.1.1
+// @version         3.9.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -44,73 +44,6 @@ var domain;
 var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce = true;
 var func_post;
-
-if (matchDomain('telegraaf.nl')) {
-  setCookie('tlgClientId', '', '', '/', 0);
-  let premium = document.querySelector('div[class^="Article__premium"] > label');
-  let paywall = document.querySelector('data-hydrate[data-name="PaywallHandler"]');
-  let article = document.querySelector('section > div.DetailArticleImage') || document.querySelector('section > p.Article__intro');
-  if (paywall && window.location.pathname.startsWith('/video/'))
-    removeDOMElement(paywall);
-  if (premium && paywall && article) {
-    let div_main = document.createElement('div');
-    div_main.style = 'margin: 20px 0px;';
-    let div_elem = document.createElement('div');
-    let par_style = 'font-weight: normal; font-size: 16px; line-height: 1.5;';
-    function show_text(window_text, div_main) {
-      window_text = window_text.split('window.telegraaf.')[0].replace(/(^\s?=\s?"|";$|\\")/gm, '').replace(/\\\\u003c/gm, '<');
-      let parser = new DOMParser();
-      let doc = parser.parseFromString('<div>' + window_text + '</div>', 'text/html');
-      let article_new = doc.querySelector('div');
-      let pars = article_new.querySelectorAll('p');
-      for (let par of pars)
-        par.style = 'margin: 10px 0px;';
-      let placeholders = article_new.querySelectorAll('div.TeaserImage__placeholder');
-      for (let elem of placeholders)
-        elem.removeAttribute('class');
-      let media = article_new.querySelectorAll('div.NewsletterForm, div.DetailArticleVideo');
-      removeDOMElement(...media);
-      let twitter_quotes = article_new.querySelectorAll('blockquote.twitter-tweet > a[href]');
-      for (let elem of twitter_quotes) {
-        if (!elem.innerText) {
-          elem.innerText = elem.href;
-          elem.target = '_blank';
-        }
-      }
-      if (mobile) {
-        let art_images = article_new.querySelectorAll('div.DetailArticleImage > div > img');
-        for (let elem of art_images)
-          elem.style.width = '95%';
-      }
-      div_main.appendChild(article_new);
-    }
-    let window_script = document.querySelector('script#scr-tlg-body');
-    if (window_script && window_script.text.includes('window.telegraaf.articleBodyBlocks')) {
-      removeDOMElement(paywall);
-      let window_text = window_script.text.split('window.telegraaf.articleBodyBlocks')[1];
-      if (window_text)
-        show_text(window_text, div_main);
-    } else {
-      removeDOMElement(paywall);
-      let url = window.location.href.split(/[#\?]/)[0];
-      fetch(url)
-      .then(response => {
-        if (response.ok) {
-          response.text().then(html => {
-            if (html.includes('window.telegraaf.articleBodyBlocks')) {
-              let window_text = html.split('window.telegraaf.articleBodyBlocks')[1].split('</script>')[0];
-              if (window_text)
-                show_text(window_text, div_main);
-            }
-          })
-        }
-      })
-    }
-    article.after(div_main);
-  }
-  let ads = 'div.WebpushOptin, div[data-ad-position]';
-  hideDOMStyle(ads);
-}
 
 window.setTimeout(function () {
 
@@ -382,6 +315,72 @@ else if (matchDomain('nrc.nl')) {
   removeDOMElement(...banners);
 }
 
+else if (matchDomain('telegraaf.nl')) {
+  let premium = document.querySelector('div[class^="Article__premium"] > label, div.PopupWrapper__paywall');
+  let paywall = document.querySelector('data-hydrate[data-name="PaywallHandler"]');
+  let article = document.querySelector('section > div.DetailArticleImage') || document.querySelector('section > p.Article__intro');
+  if (paywall && window.location.pathname.startsWith('/video/'))
+    removeDOMElement(paywall);
+  if (premium && paywall && article) {
+    let div_main = document.createElement('div');
+    div_main.style = 'margin: 20px 0px;';
+    let div_elem = document.createElement('div');
+    let par_style = 'font-weight: normal; font-size: 16px; line-height: 1.5;';
+    function show_text(window_text, div_main) {
+      window_text = window_text.split('window.telegraaf.')[0].replace(/(^\s?=\s?"|";$|\\")/gm, '').replace(/\\\\u003c/gm, '<');
+      let parser = new DOMParser();
+      let doc = parser.parseFromString('<div>' + window_text + '</div>', 'text/html');
+      let article_new = doc.querySelector('div');
+      let pars = article_new.querySelectorAll('p');
+      for (let par of pars)
+        par.style = 'margin: 10px 0px;';
+      let placeholders = article_new.querySelectorAll('div.TeaserImage__placeholder');
+      for (let elem of placeholders)
+        elem.removeAttribute('class');
+      let media = article_new.querySelectorAll('div.NewsletterForm, div.DetailArticleVideo');
+      removeDOMElement(...media);
+      let twitter_quotes = article_new.querySelectorAll('blockquote.twitter-tweet > a[href]');
+      for (let elem of twitter_quotes) {
+        if (!elem.innerText) {
+          elem.innerText = elem.href;
+          elem.target = '_blank';
+        }
+      }
+      if (mobile) {
+        let art_images = article_new.querySelectorAll('div.DetailArticleImage > div > img');
+        for (let elem of art_images)
+          elem.style.width = '95%';
+      }
+      div_main.appendChild(article_new);
+    }
+    let window_script = document.querySelector('script#scr-tlg-body');
+    if (window_script && window_script.text.includes('window.telegraaf.articleBodyBlocks')) {
+      removeDOMElement(paywall);
+      let window_text = window_script.text.split('window.telegraaf.articleBodyBlocks')[1];
+      if (window_text)
+        show_text(window_text, div_main);
+    } else {
+      removeDOMElement(paywall);
+      let url = window.location.href.split(/[#\?]/)[0];
+      fetch(url)
+      .then(response => {
+        if (response.ok) {
+          response.text().then(html => {
+            if (html.includes('window.telegraaf.articleBodyBlocks')) {
+              let window_text = html.split('window.telegraaf.articleBodyBlocks')[1].split('</script>')[0];
+              if (window_text)
+                show_text(window_text, div_main);
+            }
+          })
+        }
+      })
+    }
+    article.after(div_main);
+  }
+  let ads = 'div.WebpushOptin, div[data-ad-position]';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('vn.nl')) {
     let paywall = document.querySelectorAll('section[class^="c-paywall"]');
     if (paywall.length) {
@@ -467,6 +466,16 @@ function hideDOMStyle(selector, id = 1) {
     let sheet = document.createElement('style');
     sheet.id = 'ext' + id;
     sheet.innerText = selector + ' {display: none !important;}';
+    document.head.appendChild(sheet);
+  }
+}
+
+function addStyle(css, id = 1) {
+  let style = document.querySelector('head > style#add'+ id);
+  if (!style && document.head) {
+    let sheet = document.createElement('style');
+    sheet.id = 'add' + id;
+    sheet.innerText = css;
     document.head.appendChild(sheet);
   }
 }
@@ -749,13 +758,12 @@ function getNestedKeys(obj, key) {
 function getJsonUrlText(article, callback, article_id = '', key = '', url_slash = false) {
   let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
   let json_url;
-  if (json_url_dom) {
+  if (json_url_dom)
     json_url = json_url_dom.href;
-    if (url_slash)
-      json_url = json_url.replace('/wp-json/', '//wp-json/');
-  }
   if (!json_url && article_id)
     json_url = window.location.origin + '/wp-json/wp/v2/posts/' + article_id;
+  if (url_slash)
+    json_url = json_url.replace('/wp-json/', '//wp-json/');
   if (json_url) {
     fetch(json_url)
     .then(response => {
