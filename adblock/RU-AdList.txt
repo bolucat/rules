@@ -1,8 +1,8 @@
 [Adblock Plus 2.0]
-! Checksum: BGI9Ot2J7FYGwLbuCyMzEw
-! Version: 202411271811
+! Checksum: aANjcJ8jLX+jger6XU9Kmw
+! Version: 202411281811
 ! Title: RU, UA, UZ, KZ
-! Last modified: 27 Nov 2024 18:11 UTC
+! Last modified: 28 Nov 2024 18:11 UTC
 ! Expires: 1 days (фильтр обновляется автоматически каждые 2 дня)
 ! Homepage: https://forums.lanik.us/viewforum.php?f=102
 !
@@ -11850,6 +11850,7 @@ bitcryptonews.ru###faq-index
 turmush.kg###fb_bottom_like
 myparcels.ru###featured-wants
 vk.com,vk.ru#?##feed_rows > div[class^="feed_row"]:-abp-has(> .page_block .mads_noClickarea)
+vk.com,vk.ru#?##feed_rows > div[class^="feed_row"]:-abp-has(> .page_block .mkit_noClickArea)
 vk.com,vk.ru#?##feed_rows > div[class^="feed_row"]:-abp-has(> .page_block .mkit_noClickarea)
 vk.com,vk.ru#?##feed_rows > div[class^="feed_row"]:-abp-has(> .page_block [data-role="adChoicesMenu"])
 vk.com,vk.ru#?##feed_rows > div[class^="feed_row"]:-abp-has(> .page_block div[data-role="advertisinglabel"])
@@ -17115,7 +17116,7 @@ onliner.by##a[href*=".betera.by"]
 creativportal.ru##a[href*=".creativportal.ru"]
 fishingsib.ru,hunting.ru##a[href*=".fhserv.ru"]:not([href^="https://image.fhserv.ru"])
 2baksa.ws##a[href*=".htm"] > img
-onlineplayer.rudub.today##a[href*=".li"]
+rudub.today##a[href*=".li"]
 texnic.ru##a[href*=".php?ad="]
 onliner.by##a[href*=".pm.by"]
 sport.tut.by##a[href*=".pm.by/"]
@@ -19469,7 +19470,7 @@ forum.zoneofgames.ru#?#p:-abp-has(> [src*="trk.mail.ru/"]) + p[style]
 nashe.ru,radiojazzfm.ru,radioultra.ru,rockfm.ru#?#p:-abp-has(> a[href*="yandex."][href*="news"][href*="favid"])
 sm.news#?#p:-abp-has(> script:-abp-contains(smi2))
 new-magazine.ru#?#p:-abp-has(> strong > a[href*="//dzen.ru/"])
-onlineplayer.rudub.today#?#p:-abp-has(> strong a[href*=".li"])
+rudub.today#?#p:-abp-has(> strong a[href*=".li"])
 prsport.net#?#p:-abp-has(> strong:-abp-contains(/париматч/i))
 frenglish.ru##p[align="center"] > a[href] > img
 www.ruhim.ru##p[align="center"] > noindex > a[href][target="_blank"] > img
@@ -23057,6 +23058,9 @@ igdz1.ru^$script,domain=igdz.ru
 ! Правила для ресурсов, которые их создатели сделали несовместимыми с адблоком
 !#if ext_abp
 ! запросы
+! ловушка для обфускации, новости дзена
+||dzen.ru/news$csp=script-src 'unsafe-inline' 'unsafe-eval' data: static.dzeninfra.ru yandex.ru/ads/ vk.com/dist/ vk.com/js/api/videoplayer.js
+!
 $csp=script-src-attr 'none',domain=eurointegration.com.ua|pravda.com.ua
 /^https?://24smi\.org/*[/]*[/][^\s]{8,}/$xmlhttprequest,domain=24smi.org
 ://mail.ru$csp=img-src 'self' https:
@@ -23071,7 +23075,7 @@ $csp=script-src-attr 'none',domain=eurointegration.com.ua|pravda.com.ua
 @@||ssp.rambler.ru/capirs_async.js|$script,domain=www.championat.com
 https://*adtech_uid=$~third-party,xmlhttprequest,domain=lena-miro.ru|levik.blog|livejournal.com|olegmakarenko.ru|periskop.su|shakko.ru|shiro-kino.ru|vadimrazumov.ru
 ||imgfrost.net^$third-party
-||pikabu.ru/ajax/kiyaaazur1l8Ehgc.$xmlhttprequest
+||pikabu.ru/ajax/cdma7azurdaAshcg.$xmlhttprequest
 ||ritsatv.ru^$csp=script-src
 ||ritsatv.ru^$popup
 ||ritsatv.ru^$~document
@@ -23088,7 +23092,6 @@ e.mail.ru##.layout__column_right-indented
 anidub.vip,anidubonline.com##.plyr__menu
 anidub.vip,anidubonline.com##.plyr__progress__buffer
 pikabu.ru#?#.stories-feed__container > .story:-abp-has(div:-abp-properties(/min-height: 20.px|min-height: 29.px|min-height: 30.px|min-height: 300./))
-howdyho.net,howdyho.pro##:not(my-obnaruzhili-adblock)
 fonmod.com,ritsatv.ru##:not(my-obnaruzhili-blokirovshchik)
 android-mafia.com,game4you.top,games-pc.top,rustorka.com,rustorka.net,rustorka.top,rustorkacom.lib##:not(this-site-promotes-malware)
 @@||ozon.ru/highlight/kursk-$elemhide
@@ -23136,6 +23139,7 @@ rg.ru##div[id][class*="__"]:empty
 sdamgia.ru##div[id^="yandex_vario"]
 liveinternet.ru##div[style*="!important; "]
 sdamgia.ru##div[style*="important;"][style*="width:"][style*="height:"] *
+howdyho.net,howdyho.pro##html[lang="ru"] :not(my-obnaruzhili-adblock)
 www.drive2.ru##iframe[style="display: block; border-width: 0px;"]
 www.drive2.ru##iframe[style="opacity: 1;"]
 liveinternet.ru##style + div > div > div > div > div a
@@ -23398,6 +23402,9 @@ e.mail.ru,octavius.mail.ru##.letter-list-item-adv
 news.mail.ru##.m-fixed-panel
 news.mail.ru##.r-source
 news.mail.ru##.reference-page__card ~ span:last-child
+dzen.ru##[id*="_tsar"]
+dzen.ru##div[class*=" news-site--"][class*="__desktop"]
+dzen.ru##div[class*="news-advert"]
 ! Дзен новости Mail-edition
 dzen.ru##[aria-label="Таб категорий"][href^="/floors-promo/"]
 dzen.ru##[id*="_R-A-"]
@@ -23409,7 +23416,6 @@ dzen.ru,sportsdzen.ru##div[class^="news-"][class*="Branding"]
 dzen.ru##div[class^="news-"][class*="_banner"]
 dzen.ru##div[class^="news-"][class*="banger"]
 dzen.ru##div[class^="news-"][class*="tsar"]
-dzen.ru##div[class^="news-advert"]
 dzen.ru,sportsdzen.ru##div[class^="news-mt-advert"]
 ! Спорт
 sportmail.ru##.sidebar_video:empty
@@ -24221,7 +24227,7 @@ turbopages.org##.advert
 disk.yandex.by,disk.yandex.kz,disk.yandex.ru,disk.yandex.uz##.awaps__banner
 yandex.by,yandex.kz,yandex.ru,yandex.uz##.b-direct
 docviewer.yandex.by,docviewer.yandex.kz,docviewer.yandex.ru,docviewer.yandex.uz##.js-doc-html > div[class^="pages_"] > div[class]:empty
-mail.yandex.by,mail.yandex.com,mail.yandex.kz,mail.yandex.ru,mail.yandex.uz#?#.js-scroller-right:-abp-has(> div:only-child > div:only-child > a[href*="/premium-"])
+mail.yandex.by,mail.yandex.com,mail.yandex.kz,mail.yandex.ru,mail.yandex.uz#?#.js-scroller-right:-abp-has(> div:only-child)
 yandex.by,yandex.kz,yandex.ru,yandex.uz#?#.page__result .typo:-abp-contains(/^новости партн/i)
 translate.yandex.by,translate.yandex.kz,translate.yandex.ru,translate.yandex.uz##.sidebar-direct
 disk.yandex.by,disk.yandex.kz,disk.yandex.ru,disk.yandex.uz##.software-header-promo
