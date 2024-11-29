@@ -170,6 +170,14 @@
 - [ips-v4.txt](https://rules.neuq.de/clash/cf-ip/ips-v4.txt)
 - [ips-v6.txt](https://rules.neuq.de/clash/cf-ip/ips-v6.txt)
 - [url.txt](https://rules.neuq.de/clash/cf-ip/url.txt)
+# clash/a-dove-is-dumb
+- [127.txt](https://rules.neuq.de/clash/a-dove-is-dumb/127.txt)
+- [LICENSE](https://rules.neuq.de/clash/a-dove-is-dumb/LICENSE)
+- [README.md](https://rules.neuq.de/clash/a-dove-is-dumb/README.md)
+- [clash.yaml](https://rules.neuq.de/clash/a-dove-is-dumb/clash.yaml)
+- [list.txt](https://rules.neuq.de/clash/a-dove-is-dumb/list.txt)
+- [pihole.txt](https://rules.neuq.de/clash/a-dove-is-dumb/pihole.txt)
+- [winhosts.txt](https://rules.neuq.de/clash/a-dove-is-dumb/winhosts.txt)
 # seo
 - [no-other-search-in-google.txt](https://rules.neuq.de/seo/no-other-search-in-google.txt)
 - [seo.txt](https://rules.neuq.de/seo/seo.txt)
