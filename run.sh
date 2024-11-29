@@ -339,6 +339,13 @@ list() {
       		echo "- [${file}](https://rules.neuq.de/clash/cf-ip/${file})" >> ${CUR}/README.md
     	done
     	popd || exit 1
+     	# clash/a-dove-is-dumb
+    	pushd clash/a-dove-is-dumb || exit 1
+	echo "# clash/a-dove-is-dumb" >> ${CUR}/README.md
+    	for file in $(ls); do
+      		echo "- [${file}](https://rules.neuq.de/clash/a-dove-is-dumb/${file})" >> ${CUR}/README.md
+    	done
+    	popd || exit 1
 	# seo
     	pushd seo || exit 1
 	echo "# seo" >> ${CUR}/README.md
@@ -430,6 +437,12 @@ purge() {
     	pushd clash/cf-ip || exit 1
     	for file in $(ls); do
       		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/cf-ip/${file}"
+    	done
+    	popd || exit 1
+     	# clash/a-dove-is-dumb
+    	pushd clash/a-dove-is-dumb || exit 1
+    	for file in $(ls); do
+      		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/a-dove-is-dumb/${file}"
     	done
     	popd || exit 1
 	# seo
