@@ -176,6 +176,8 @@ clash() {
 	rm -rf fei-rules/.git
 	git clone --depth 1 https://github.com/blackmatrix7/ios_rule_script ios-rule-script
 	rm -rf ios-rule-script/.git
+ 	git clone --depth 1 https://github.com/ignaciocastro/a-dove-is-dumb a-dove-is-dumb
+	rm -rf a-dove-is-dumb/.git
 	popd || exit 1
 }
 
