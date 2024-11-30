@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.4.1
+// @version         3.9.4.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -80,7 +80,6 @@
 // @exclude         *://*.journaldunet.com/*
 // @exclude         *://*.la-croix.com/*
 // @exclude         *://*.larioja.com/*
-// @exclude         *://*.lasegunda.com/*
 // @exclude         *://*.latercera.com/*
 // @exclude         *://*.lavenir.net/*
 // @exclude         *://*.ledevoir.com/*
@@ -1814,16 +1813,9 @@ else if (matchDomain('economictimes.indiatimes.com')) {
 }
 
 else if (matchDomain('economist.com')) {
-  let url = window.location.href;
-  if (window.location.pathname.startsWith('/interactive/')) {
-    let paywall = document.querySelector('div.paywall');
-    if (paywall) {
-      let hide_style = document.querySelector('body > style');
-      removeDOMElement(paywall, hide_style);
-    }
-  } else if (window.location.pathname.includes('/podcasts/')) {
+  if (window.location.pathname.includes('/podcasts/')) {
     header_nofix('section[data-body-id]', 'div[aria-labelledby="paywall-heading"]');
-  } else {
+  } else if (!window.location.pathname.startsWith('/interactive/')) {
     let paywall_sel = 'div#tp-regwall';
     let article_sel = 'main';
     let video = document.querySelector('iframe[src^="https://www.youtube.com/"]');
@@ -1842,6 +1834,7 @@ else if (matchDomain('economist.com')) {
           elem.style = 'width: 95%;';
       }
     }
+    let url = window.location.href;
     getArchive(url, paywall_sel, '', 'main');
   }
   let ads = 'div[class*="adComponent"]';

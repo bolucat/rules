@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.9.4.0
+// @version         3.9.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -47,7 +47,6 @@
 // @match           *://*.globo.com/*
 // @match           *://*.lanacion.com.ar/*
 // @match           *://*.larioja.com/*
-// @match           *://*.lasegunda.com/*
 // @match           *://*.latercera.com/*
 // @match           *://*.lavoz.com.ar/*
 // @match           *://*.levante-emv.com/*
@@ -342,7 +341,7 @@ else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
   }
 }
 
-} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['cambiocolombia.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'exame.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com'])) {//south america
+} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['cambiocolombia.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'exame.com', 'globo.com', 'latercera.com', 'revistaoeste.com'])) {//south america
 
 if (matchDomain('abril.com.br')) {
   if (window.location.pathname.endsWith('/amp/')) {
@@ -436,34 +435,6 @@ else if (matchDomain('elespectador.com')) {
     amp_unhide_subscr_section('amp-ad, amp-embed, [class^="Widget"], amp-fx-flying-carpet', false);
   } else {
     amp_redirect('div.exclusive_validation');
-  }
-}
-
-else if (matchDomain(['elmercurio.com', 'lasegunda.com'])) {
-  if (window.location.hostname.startsWith('digital.')) {
-    window.setTimeout(function () {
-      let elem_hidden = document.querySelectorAll('[style="visibility:hidden"]');
-      for (let elem of elem_hidden)
-        elem.removeAttribute('style');
-      let page_pdf_content = document.querySelector('div.page_pdf_content');
-      let close_html = document.querySelector('div.close_html');
-      let cont_page_full = document.querySelector('div.cont_page_full');
-      removeDOMElement(page_pdf_content, close_html, cont_page_full);
-    }, 1000);
-    window.setTimeout(function () {
-      let cont_articlelight = document.querySelector('div.cont_articlelight');
-      if (cont_articlelight)
-        cont_articlelight.setAttribute('style', 'height: 100% !important; width: 90% !important');
-    }, 3000);
-    if (window.location.pathname.startsWith('/mobile')) {
-      let lessreadmore = document.querySelectorAll('article.lessreadmore');
-      for (let article of lessreadmore)
-        article.classList.remove('lessreadmore');
-      let bt_readmore = document.querySelectorAll('div[id*="bt_readmore_"]');
-      removeDOMElement(...bt_readmore);
-    }
-  } else if (window.location.pathname.endsWith('/Registro/Login.aspx')) {
-    header_nofix('body');
   }
 }
 
