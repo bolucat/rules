@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.2.3
+// @version         3.9.2.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -97,8 +97,21 @@ else if (matchDomain('augsburger-allgemeine.de')) {
       let article = document.querySelector('div#page-body');
       if (article)
         article.before(googleSearchToolLink(url));
-    } else
-      getOchToUnlock(url, paywall_sel, '', 'div#article-body-paid-content');
+    } else {
+      func_post = function () {
+        let paywall = document.querySelector(paywall_sel);
+        if (paywall) {
+          removeDOMElement(paywall);
+          let article = document.querySelector(article_sel);
+          if (article && article.parentNode) {
+            let url = window.location.href;
+            article.parentNode.before(googleSearchToolLink(url));
+          }
+        }
+      }
+      let article_sel = 'div#article-body-paid-content';
+      getOchToUnlock(url, paywall_sel, '', article_sel);
+    }
   }
   let ads = 'div[data-slot-name^="banner"], div[id^="taboola-"], div#piano-inline-offer';
   hideDOMStyle(ads);
@@ -552,7 +565,7 @@ else if (matchDomain(['spiegel.de', 'manager-magazin.de'])) {
         } else
           header_nofix('article', paywall_sel, 'BPC > no archive-fix');
       } else {
-        let hidden_media = document.querySelector('svelte-scroller-outer');
+        let hidden_media = document.querySelector('svelte-scroller-outer, div[aria-label="Videoplayer"]');
         if (hidden_media)
           article.firstChild.before(document.createTextNode('For hidden media:'), ochToUnlockLink(url));
       }
@@ -642,7 +655,8 @@ else if (matchDomain('tagesspiegel.de')) {
   if (matchDomain('www.tagesspiegel.de')) {
     func_post = function () {
       let opinionary = document.querySelector('div > div#opinary-automation-placeholder');
-      hideDOMElement(opinionary.parentNode);
+      if (opinionary)
+        hideDOMElement(opinionary.parentNode);
       if (mobile) {
         let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
         for (let elem of lazy_images)
@@ -1026,6 +1040,16 @@ function hideDOMStyle(selector, id = 1) {
     let sheet = document.createElement('style');
     sheet.id = 'ext' + id;
     sheet.innerText = selector + ' {display: none !important;}';
+    document.head.appendChild(sheet);
+  }
+}
+
+function addStyle(css, id = 1) {
+  let style = document.querySelector('head > style#add'+ id);
+  if (!style && document.head) {
+    let sheet = document.createElement('style');
+    sheet.id = 'add' + id;
+    sheet.innerText = css;
     document.head.appendChild(sheet);
   }
 }
@@ -1502,16 +1526,17 @@ function getNestedKeys(obj, key) {
   return value;
 }
 
-function getJsonUrlText(article, callback, article_id = '', key = '', url_slash = false) {
+function getJsonUrlText(article, callback, article_id = '', key = '', url_rest = false, url_slash = false) {
   let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
   let json_url;
-  if (json_url_dom) {
+  if (json_url_dom)
     json_url = json_url_dom.href;
-    if (url_slash)
-      json_url = json_url.replace('/wp-json/', '//wp-json/');
-  }
   if (!json_url && article_id)
     json_url = window.location.origin + '/wp-json/wp/v2/posts/' + article_id;
+  if (url_rest)
+    json_url = json_url.replace('/wp-json/', '/?rest_route=/');
+  else if (url_slash)
+    json_url = json_url.replace('/wp-json/', '//wp-json/');
   if (json_url) {
     fetch(json_url)
     .then(response => {
@@ -1557,7 +1582,7 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
     func_post();
 }
 
-function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_slash = false) {
+function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_rest = false, url_slash = false) {
   let paywall = document.querySelectorAll(paywall_sel);
   let article = document.querySelector(article_sel);
   if (paywall.length && article) {
@@ -1565,7 +1590,7 @@ function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options =
     getJsonUrlText(article, (json_text, article) => {
       if (json_text && article)
         getJsonUrlAdd(json_text, article, art_options);
-    }, article_id, key, url_slash);
+    }, article_id, key, url_rest, url_slash);
   }
 }
 
