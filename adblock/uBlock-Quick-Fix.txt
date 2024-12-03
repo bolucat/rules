@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Mon, 02 Dec 2024 12:38:30 +0000
-! Diff-Path: ../patches/2024.12.2.869.patch#ublock-quick-fixes
+! Last modified: Tue, 03 Dec 2024 05:52:39 +0000
+! Diff-Path: ../patches/2024.12.3.928.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -133,8 +133,7 @@ infinityscans.xyz,infinityscans.net##+js(nowoif, _blank)
 infinityscans.xyz,infinityscans.net##div[class="alert alert-danger alert-dismissible fade show m-0 p-0"]:has-text(uBlock Origin)
 @@*$script,1p,domain=infinityscans.xyz|infinityscans.net
 @@/gh/*$script,3p,domain=infinityscans.xyz|infinityscans.net
-@@*$script,to=hopto.org|vexby.xyz,from=infinityscans.xyz|infinityscans.net
-@@||infinityscans.xyz^$script,domain=infinityscans.xyz|infinityscans.net
+@@*$script,to=hopto.org|vexby.xyz|zapto.org|infinityscans.xyz,from=infinityscans.xyz|infinityscans.net
 sportnews.to,soccershoes.blog##+js(aeld, DOMContentLoaded, adsSrc)
 *$script,redirect-rule=noopjs,domain=sportnews.to|sportshub.to
 1001tracklists.com##[target="_blank"][rel$=" noopener noreferrer"]:has(> img[src^="/"][src*="_"]), [target="_blank"][rel^="noopener noreferrer"]:has(> img[src^="/"][src*="_"])
@@ -169,11 +168,12 @@ wiki.yjsnpi.nu##+js(spoof-css, #mw-content-text div[style] a:is([href*="contents
 wiki.yjsnpi.nu##+js(spoof-css, #mw-content-text div[style] a:is([href*="contents.fc2.com"],[href*="dmm.co.jp"]) img, height, 128px)
 wiki.yjsnpi.nu#@#+js(nostif, /\+['"].+catch/)
 wiki.yjsnpi.nu#@#+js(aost, Function.prototype.toString, /[A-z]+\/[A-z]\/[A-z].+comments\.js/)
-wiki.yjsnpi.nu##+js(nostif, ()=>l(X)
+wiki.yjsnpi.nu##+js(nostif, ()=>k(V)
 wiki.yjsnpi.nu##+js(aost, Function.prototype.toString, /[A-Za-z]+ https:\/\/wiki\.yjsnpi\.nu\/w\/load\.php\?lang=ja&modules=codex-search-styles%2Cjquery%2Coojs%2C&skin=vector-2022&version=\w+:1:1/)
 *$script,1p,redirect-rule=noop.js,domain=wiki.yjsnpi.nu
 !#if cap_html_filtering
-||wiki.yjsnpi.nu/comments/$script,replace=/(\}\s*function [A-Za-z]+\([0-9A-Z-a-z]?\))\{const [A-Za-z]+=[A-Za-z]+\,.{50\,100}\+.{50\,100}\)\);?\}\s*function/\$1{}function/
+||wiki.yjsnpi.nu/comments/$script,replace=/(;function [A-Za-z]+\([A-Za-z]?\)\{const [a-z]+=[A-Z]\,[a-z]+=[A-Z]).+?\)\]\);\}\}/\$1}/
+||wiki.yjsnpi.nu/comments/$script,replace=/(;\}\}function [A-Za-z]+\([A-Za-z]?\)\{const [a-z]+=[A-Z]\,const [a-z]+=[A-Z]).+?\]\(\);\}\}/\$1}/
 ||wiki.yjsnpi.nu/yjsnpi.js$replace=/^[\S\s]*(\,)[\S\s]*/function copyToClipboad(e){navigator.clipboard.writeText(this.caller.dataset.text).then((()=>{mw.notify("クリップボードにコピーしました")\$1gtag("event"\$1"clipboard"\$1{wgTitle:RLCONF.wgTitle\$1clipboard_status:"done"})})\$1(()=>{mw.notify("クリップボードにコピーできませんでした…")\$1gtag("event"\$1"clipboard"\$1{wgTitle:RLCONF.wgTitle\$1clipboard_status:"failed"})}))}function searchProduct(e){var t="";if("FANZA"===this.caller.dataset.asp){{const e="https:\/\/www.dmm.co.jp\/digital\/videoa\/-\/list\/search\/=\/?searchstr="+encodeURI(RLCONF.wgPageName);t="https:\/\/al.dmm.co.jp\/?lurl="+encodeURI(e)+"&af_id=takayama-001&ch=toolbar&ch_id=link"}window.open(t\$1"_blank")\$1gtag("event"\$1"search_products"\$1{wgTitle:RLCONF.wgTitle\$1asp:this.caller.dataset.asp})}}function sfw(e){this.caller.classList.remove("nsfw")\$1gtag("event"\$1"nsfw"\$1{wgTitle:RLCONF.wgTitle})}function getAbsolutePath(e){const t=location.href;return new URL(e\$1t).href}document.querySelectorAll(".copy_to_clipboard").forEach((e=>{e.addEventListener("click"\$1{caller:e\$1handleEvent:copyToClipboad})}))\$1document.querySelectorAll(".search_products").forEach((e=>{e.addEventListener("click"\$1{caller:e\$1handleEvent:searchProduct})}))\$1document.querySelectorAll(".share_button").forEach((e=>{e.addEventListener("click"\$1(async e=>{const t={title:RLCONF.wgTitle+" - 真夏の夜の淫夢Wiki"\$1text:RLCONF.wgTitle+" - 真夏の夜の淫夢Wiki"\$1url:getAbsolutePath("\/wiki\/"+encodeURI(RLCONF.wgPageName))};if(navigator.canShare&&navigator.canShare(t))try{await navigator.share(t)\$1mw.notify("シェアしました")\$1gtag("event"\$1"share"\$1{wgTitle:RLCONF.wgTitle\$1share_type:"share"\$1share_status:"done"})}catch(e){mw.notify("シェアできませんでした…")\$1gtag("event"\$1"share"\$1{wgTitle:RLCONF.wgTitle\$1share_type:"share"\$1share_status:"cancelled"})}else navigator.clipboard.writeText(t.text+" "+t.url).then((()=>{mw.notify("クリップボードにコピーしました")\$1gtag("event"\$1"share"\$1{wgTitle:RLCONF.wgTitle\$1share_type:"clipboard"\$1share_status:"done"})})\$1(()=>{mw.notify("クリップボードにコピーできませんでした…")\$1gtag("event"\$1"share"\$1{wgTitle:RLCONF.wgTitle\$1share_type:"clipboard"\$1share_status:"failed"})}))}))}))\$1document.querySelectorAll(".nsfw").forEach((e=>{e.addEventListener("click"\$1{caller:e\$1handleEvent:sfw})}));/
 wiki.yjsnpi.nu##^script:has-text(/catch.+catch/)
 wiki.yjsnpi.nu##^script[src^="/w/load.php?lang=ja&modules="][defer]:not(async)
@@ -188,9 +188,8 @@ img-load.com##html,body:style(height: 0 !important; overflow: hidden !important;
 ||karistudio.com/wp-content/themes/blogarise-child/check2.js$important
 karistudio.com##p.chapter_content:style(display: block !important; visibility: visible !important; opacity: 1 !important; transform: none !important;)
 !cursomecanet.com##+js(nostif, /document\.write|Math\.floor/)
-cursomecanet.com##+js(no-fetch-if, https, , {"statusText": ""})
-!||cursomecanet.com^$inline-script,script,1p
-cursomecanet.com##+js(aopr, document.body.innerHTML)
+cursomecanet.com##+js(no-fetch-if, https, , '{"statusText": "", "type": "cors"}')
+cursomecanet.com##+js(aost, fetch, .js?)
 ||cursomecanet.com/registro$xhr,1p
 startpage.com#@#[style]:has(path):has([href*="aff"])
 /gdpr-appliance.js$badfilter
@@ -203,5 +202,6 @@ nicovideo.jp#@#div[class*="anim-n_slideFadeInFromBottom"]
 ! unbreak video
 watchadsontape.com#@#+js(trusted-suppress-native-method, Function.prototype.constructor, '"debugger"', abort)
 bing.com##.b_algo:has(p[class^="b_lineclamp2 b_algoSlug "])
+bing.com##li.b_algo:has(img.cico.siteicon.rms_img[src^="https://www.bing.com/th?id=O"])
 exploader.net##+js(spoof-css, article > div[style="margin-left: -63px;width: 1120px;height: 450px;margin-bottom: 5px;display: flex;align-items: center;"], clip, auto)
 ||d1wix2gc2cgqis.cloudfront.net^$badfilter
