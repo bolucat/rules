@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.4.2
+// @version         3.9.4.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -578,6 +578,32 @@ if (matchDomain('apollo-magazine.com')) {
   setCookie('blaize_session', '', 'apollo-magazine.com', '/', 0);
   let banner = document.querySelector('#subscribe-ribbon');
   removeDOMElement(banner);
+}
+
+else if (matchDomain('autocar.co.uk')) {
+  let paywall = document.querySelector('div.ms-block, div.register-block');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = json.articleBody;
+        let article = document.querySelector('div.block-node');
+        if (json_text && article) {
+          article.innerHTML = '';
+          let article_new = document.createElement('p');
+          article_new.innerText = json_text;
+          let fade = document.querySelector('div.article-section > div[style*="max-height"]');
+          removeDOMElement(fade);
+          let url = window.location.href;
+          article.append(article_new, 'Text-only > for missing media/links: ', googleSearchToolLink(url));
+        }
+      }
+    }
+  }
+  let ads = 'div[class*="-ads-"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('autosport.com')) {
@@ -3311,85 +3337,6 @@ else if (matchDomain('thequint.com')) {
   }, 4000);
 }
 
-else if (matchDomain('theverge.com')) {
-  let paywall = document.querySelector('div.bg-paywall-fade');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_script = document.querySelector('script#__NEXT_DATA__');
-    if (json_script) {
-      try {
-        let json = JSON.parse(json_script.text);
-        let article = document.querySelector('div.duet--article--article-body-component-container');
-        if (json && article) {
-          let json_pars = json.props.pageProps.hydration.responses[0].data.entryRevision.body.components;
-          article.innerHTML = '';
-          let parser = new DOMParser();
-          for (let par of json_pars) {
-            let elem = document.createElement('p');
-            elem.style = 'margin: 20px 0px;';
-            let type = par.__typename;
-            if (['EntryBodyParagraph', 'EntryBodyHeading'].includes(type)) {
-              if (par.contents && par.contents.html) {
-                if (type === 'EntryBodyHeading')
-                  elem.style = 'font-weight: bold;';
-                let doc = parser.parseFromString('<div>' + par.contents.html + '</div>', 'text/html');
-                elem.appendChild(doc.querySelector('div'));
-              }
-            } else if (type === 'EntryBodyHorizontalRule') {
-              elem.appendChild(document.createElement('hr'));
-            } else if (type === 'EntryBodyImage') {
-              if (par.image && par.image.url) {
-                let caption_text;
-                if (par.image.caption && par.image.caption.html) {
-                  caption_text = par.image.caption.html;
-                  if (par.image.credit && par.image.credit.html)
-                    caption_text += ' - ' + par.image.credit.html;
-                }
-                let figure = makeFigure(par.image.url, caption_text);
-                if (par.image.asset && par.image.asset.title)
-                  figure.firstChild.before(document.createTextNode(par.image.asset.title));
-                elem.appendChild(figure);
-              }
-            } else if (type === 'EntryBodyPullquote') {
-              if (par.quote && par.quote.html) {
-                let doc = parser.parseFromString('<div>' + par.quote.html + '</div>', 'text/html');
-                elem.appendChild(doc.querySelector('div'));
-              }
-            } else if (type === 'EntryBodyBlockquote') {
-              if (par.paragraphs) {
-                for (let quote_par of par.paragraphs) {
-                  if (quote_par.contents && quote_par.contents.html) {
-                    let doc = parser.parseFromString('<div>' + quote_par.contents.html + '</div>', 'text/html');
-                    elem.appendChild(doc.querySelector('div'));
-                  }
-                }
-              }
-            } else if (type === 'EntryBodyList') {
-              if (par.items) {
-                let ul = document.createElement('ul');
-                for (let item of par.items) {
-                  if (item.line && item.line.html) {
-                    let li = document.createElement('li');
-                    let doc = parser.parseFromString('<div>' + item.line.html + '</div>', 'text/html');
-                    li.appendChild(doc.querySelector('div'));
-                    ul.appendChild(li);
-                  }
-                }
-                elem.appendChild(ul);
-              }
-            } else
-              console.log(par);
-            if (elem.hasChildNodes())
-              article.appendChild(elem);
-          }
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }
-}
-
 else if (matchDomain('theweek.com')) {
   let paywall = document.querySelector('div.kiosq-main-layer');
   removeDOMElement(paywall);
@@ -4822,6 +4769,37 @@ function getArticleQuintype() {
     }
   }
   return article_new;
+}
+
+function matchKeyJson(key, keys) {
+  let match = false;
+  if (typeof keys === 'string')
+    match = (key === keys);
+  else if (Array.isArray(keys))
+    match = keys.includes(key);
+  else if (keys instanceof RegExp)
+    match = keys.test(key);
+  return match;
+}
+
+function findKeyJson(json, keys, min_val_len = 0) {
+  let source = '';
+  if (Array.isArray(json)) {
+    for (let elem of json)
+      source = source || findKeyJson(elem, keys, min_val_len);
+  } else if (typeof json === 'object') {
+    for (let elem in json) {
+      let json_elem = json[elem];
+      if (typeof json_elem === 'string' && matchKeyJson(elem, keys)) {
+        if (json_elem.length > min_val_len)
+          return json_elem;
+      } else if (Array.isArray(json_elem) && json_elem.length > 1 && matchKeyJson(elem, keys)) {
+        return json_elem;
+      } else
+        source = source || findKeyJson(json_elem, keys, min_val_len);
+    }
+  }
+  return source;
 }
 
 function getNestedKeys(obj, key) {

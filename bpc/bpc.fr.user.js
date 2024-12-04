@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.9.4.0
+// @version         3.9.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -29,7 +29,6 @@
 // @match           *://*.levif.be/*
 // @match           *://*.loeildelaphotographie.com/*
 // @match           *://*.monacomatin.mc/*
-// @match           *://*.next.ink/*
 // @match           *://*.parismatch.com/*
 // @match           *://*.pourleco.com/*
 // @match           *://*.science-et-vie.com/*
@@ -623,25 +622,6 @@ else if (matchDomain('loeildelaphotographie.com')) {
   let blurred_images = document.querySelectorAll('img[style*="blur"]');
   for (let blurred_image of blurred_images)
     blurred_image.removeAttribute('style');
-}
-
-else if (matchDomain('next.ink')) {
-  if (true) {
-    func_post = function () {
-      let intro = document.querySelector(art_sel + ' > p');
-      if (intro && intro.querySelector('strong'))
-        removeDOMElement(intro);
-      let lazy_images = document.querySelectorAll('figure > img[src^="data:image/"][fifu-data-src]');
-      for (let elem of lazy_images)
-        elem.src = elem.getAttribute('fifu-data-src')
-    }
-    let art_sel = 'div#next-single-post';
-    let art = document.querySelector(art_sel + '[class]');
-    let art_class;
-    if (art)
-      art_class = art.className.split(' ')[0];
-    getJsonUrl('div#next-paywall-separator', '', art_sel, {art_id: 'next-single-post', art_class: art_class}, '', '', true);
-  }
 }
 
 else if (matchDomain('pourleco.com')) {
