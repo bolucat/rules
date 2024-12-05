@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: yEXTnbbMhq48eEdX3Ong4w
-! Diff-Path: ../patches/7/7-s-1733327146-3600.patch
+! Checksum: 6hKYfje4DZmPZzVNA9d59g
+! Diff-Path: ../patches/7/7-s-1733408219-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.59.94
-! TimeUpdated: 2024-12-04T15:40:52+00:00
+! Version: 2.0.60.1
+! TimeUpdated: 2024-12-05T14:12:01+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -522,8 +522,7 @@ h178.com,j-baseball.club,j-basketball.club###gStickyAd
 ! https://github.com/AdguardTeam/AdguardFilters/issues/188965
 ||kuji.xth.jp/ad-x-check.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183252
-exploader.net##+js(spoof-css, article > div[style="margin-left: -63px;width: 1120px;height: 450px;margin-bottom: 5px;display: flex;align-items: center;"], clip, auto)
-exploader.net#$#article > div[style="margin-left: -63px;width: 1120px;height: 450px;margin-bottom: 5px;display: flex;align-items: center;"] { position: absolute !important; clip:rect(1px,1px,1px,1px) !important; }
+exploader.net##+js(spoof-css, a[href^="https://al.dmm.co"], display, block)
 @@||daotag.com/tag/$script,domain=exploader.net
 ! https://github.com/AdguardTeam/AdguardFilters/issues/181591
 iwb.jp##+js(no-setTimeout-if, getComputedStyle(a).height)
@@ -1722,7 +1721,7 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 ! ###banner
 nanbbs.jp,eroita.net,city.hirosaki.aomori.jp,iyasiya.com,adacomi.com,pref.shimane.lg.jp,pref.osaka.lg.jp,illust-ai.com,nan-net.com,radiolife.com,keimei.ne.jp,5ch.net,bbspink.com,crank-in.net###banner
 ! ##.pr
-atodeyo.com,minyu-net.com,cyclesports.jp,precious.jp,creatorzine.jp,pointi.jp,townnews.co.jp,point-game.jp,azby.fmworld.net,adult-machiko.com,newsoku.blog,nikkan-gendai.com,ceron.jp,kids.gakken.co.jp,5chan.jp,toyokeizai.net,twpf.jp,chunichi.co.jp,tokyo-np.co.jp,db.msin.jp,minpo.jp##.pr
+reibun.biz,atodeyo.com,minyu-net.com,cyclesports.jp,precious.jp,creatorzine.jp,pointi.jp,townnews.co.jp,point-game.jp,azby.fmworld.net,adult-machiko.com,newsoku.blog,nikkan-gendai.com,ceron.jp,kids.gakken.co.jp,5chan.jp,toyokeizai.net,twpf.jp,chunichi.co.jp,tokyo-np.co.jp,db.msin.jp,minpo.jp##.pr
 ! ##.bnr
 e-mansion.co.jp,baby-calendar.jp,npn.co.jp,afpbb.com,hamakei.com,keizai.biz,minkei.net,shibukei.com##.bnr
 ! ###ad
@@ -1761,7 +1760,7 @@ city.tokai.aichi.jp,city.noda.chiba.jp,city.suginami.tokyo.jp,city.toyooka.lg.jp
 ! ##.bana
 city.inazawa.aichi.jp,city.kawasaki.jp,city.nagoya.jp,city.yao.osaka.jp,city.ikoma.lg.jp,city.higashiosaka.lg.jp,city.higashiomi.shiga.jp,city.ogaki.lg.jp,city.tama.lg.jp,city.inzai.lg.jp,city.kyotanabe.lg.jp,city.himeji.lg.jp,city.hirakata.osaka.jp,city.osaka.lg.jp,city.kyoto.lg.jp,city.maizuru.kyoto.jp,city.iga.lg.jp##.bana
 ! ###banner_footer1 Don't generalize to lg.jp (false positive on city.awaji.lg.jp)
-city.sanyo-onoda.lg.jp,pref.hiroshima.lg.jp,city.fukuyama.hiroshima.jp,city.niiza.lg.jp,city.kure.lg.jp,city.hatsukaichi.hiroshima.jp,city.ebetsu.hokkaido.jp,city.shunan.lg.jp,city.tondabayashi.lg.jp,city.miki.lg.jp,city.ozu.ehime.jp,city.toda.saitama.jp,city.ageo.lg.jp,pref.fukushima.lg.jp,pref.okayama.jp,city.oyama.tochigi.jp,city.kimitsu.lg.jp,city.ishikari.hokkaido.jp,city.minamiawaji.hyogo.jp,city.yamaguchi.lg.jp###banner_footer1
+city.motomiya.lg.jp,city.sanyo-onoda.lg.jp,pref.hiroshima.lg.jp,city.fukuyama.hiroshima.jp,city.niiza.lg.jp,city.kure.lg.jp,city.hatsukaichi.hiroshima.jp,city.ebetsu.hokkaido.jp,city.shunan.lg.jp,city.tondabayashi.lg.jp,city.miki.lg.jp,city.ozu.ehime.jp,city.toda.saitama.jp,city.ageo.lg.jp,pref.fukushima.lg.jp,pref.okayama.jp,city.oyama.tochigi.jp,city.kimitsu.lg.jp,city.ishikari.hokkaido.jp,city.minamiawaji.hyogo.jp,city.yamaguchi.lg.jp###banner_footer1
 ! Don't make generic - FP ex. tamasiiconnect.com
 okashimart.com###js-advertisingHeader
 ! check carefully if you are to block richlink.blogsys.jp, it's likely to be blockable only on some pages
@@ -1769,6 +1768,12 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+nicomanga.com##div[class^="col-"] > center:has(> div > div[style] > iframe[name="myiFrame"])
+moeasia.net###leftside > div.sidewrapper:has(> div.execphpwidget > div > ins.adsbygoogle)
+moeasia.net##.amazon-container
+||city.motomiya.lg.jp/uploaded/banner/
+||cloudfront.net/ads.html$domain=m-apps.qoo-app.com
+m-apps.qoo-app.com##.tpa-box
 rawlazy.is##.br-content
 ||mangajikan.com/ad/
 trucknews.biz##.header-main-banner
@@ -1784,7 +1789,6 @@ ribbon.to##a[href^="http://www.woopie.jp/"]
 pref.aomori.lg.jp##.gallery3:has(img[alt="広告"])
 pref.aomori.lg.jp##.title05:has(+ .gallery3 img[alt="広告"])
 5ch.net###longtwo
-bookmyname.com##+js(set-cookie-reload, _scw_rgpd_analytics, false)
 ||city.sakuragawa.lg.jp/data/banner/
 minkabu.jp##div[data-controller="footer-overlay"]
 dee-okinawa.com##.footerAD
@@ -2612,7 +2616,6 @@ funny-ai.com##.main-header-ads
 funny-ai.com##.main-frp-ads
 ||korewaeroi.com/i2i.html
 korewaeroi.com##.l-sidebar > aside.widget_custom_html
-moeasia.net##.bam-card
 nekochan.jp##.detail_footer_ad
 nekochan.jp##.detail_header_ad
 wanchan.jp##.detail_header__ad
@@ -7704,7 +7707,7 @@ colombiacolom.net##.insentence-adsense3
 natsukimemo.com##div[style="text-align:center;margin-bottom:50px;color:#999;"]
 telnavi.jp##.google_adsense_placeholder
 sekainorekisi.com##.sekai-adlabel
-irasutoya.com##.splink
+reibun.biz,irasutoya.com##.splink
 nengaya.net,irasutoya.com##div[class^="entryadwrapper"]
 talknews.net##p[style*="color:#333; text-align:center;"]
 axismag.jp##.pr_posts

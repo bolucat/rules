@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.9.4.1
+// @version         3.9.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -15,7 +15,6 @@
 // @match           *://*.cambiocolombia.com/*
 // @match           *://*.cartacapital.com.br/*
 // @match           *://*.clarin.com/*
-// @match           *://*.cmjornal.pt/*
 // @match           *://*.correiodopovo.com.br/*
 // @match           *://*.cronista.com/*
 // @match           *://*.diaridegirona.cat/*
@@ -92,19 +91,6 @@ if (matchDomain(['ara.cat', 'arabalears.cat'])) {
     amp_redirect('div.paywall');
     let ads = 'div.advertising';
     hideDOMStyle(ads);
-  }
-}
-
-else if (matchDomain(['cmjornal.pt', 'record.pt', 'sabado.pt'])) {
-  if (!window.location.pathname.includes('/amp/')) {
-    amp_redirect('.bloqueio_exclusivos, .container_assinatura, .bloco_bloqueio', '', window.location.href.replace('/detalhe/', '/amp/'));
-  } else {
-    amp_unhide_access_hide('="subscriber"', '="NOT subscriber"', 'amp-ad, amp-embed, amp-consent, .detalheAds, .exclusivos_bar');
-    if (matchDomain('cmjornal.pt')) {
-      let amp_links = document.querySelectorAll('a[href^="https://www-cmjornal-pt.cdn.ampproject.org/c/s/"]');
-      for (let amp_link of amp_links)
-        amp_link.href = amp_link.href.replace('www-cmjornal-pt.cdn.ampproject.org/c/s/', '');
-    }
   }
 }
 
@@ -322,6 +308,13 @@ else if (matchDomain('politicaexterior.com')) {
 else if (matchDomain('publico.es')) {
   let ads = 'div.pb-ads';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain(['record.pt', 'sabado.pt'])) {
+  if (!window.location.pathname.includes('/amp/'))
+    amp_redirect('.bloqueio_exclusivos, .container_assinatura, .bloco_bloqueio', '', window.location.href.replace('/detalhe/', '/amp/'));
+  else
+    amp_unhide_access_hide('="subscriber"', '="NOT subscriber"', 'amp-ad, amp-embed, amp-consent, .detalheAds, .exclusivos_bar');
 }
 
 else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
