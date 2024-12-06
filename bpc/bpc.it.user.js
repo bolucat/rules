@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.8.8.1
+// @version         3.9.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -135,6 +135,37 @@ else if (matchDomain('ilfoglio.it')) {
     amp_redirect('div.paywall');
     let ads = '.advertisement';
     hideDOMStyle(ads);
+  }
+}
+
+else if (matchDomain('ilmanifesto.it')) {
+  let paywall = document.querySelector('div[class*="before:bg-gradient-to-t"]');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('article div.prose');
+    if (article) {
+      let filter = /^self\.__next_f\.push\(\[1,"/;
+      let scripts = document.querySelectorAll('script:not([src], [type])');
+      for (let script of scripts) {
+        if (script.text.match(filter) && script.text.includes('canonical_url')) {
+          if (!script.text.includes(window.location.href))
+            refreshCurrentTab();
+          break;
+        }
+      }
+      let source_script = getSourceJsonScript(/^self\.__next_f\.push\(\[1,"\\u003c/);
+      if (source_script) {
+        let source_text = source_script.text.split(filter)[1].split('"])')[0].replace(/\\u003c/g, '<').replace(/\\u003e/g, '>').replace(/\\"/g, '"').replace(/\\n/g, '');
+        let parser = new DOMParser();
+        let doc = parser.parseFromString('<div>' + source_text + '</div>', 'text/html');
+        let article_new = doc.querySelector('div');
+        let figures = article_new.querySelectorAll('figure[style]');
+        for (let elem of figures)
+          elem.removeAttribute('style');
+        article.innerHTML = '';
+        article.appendChild(article_new);
+      }
+    }
   }
 }
 
@@ -341,6 +372,16 @@ function hideDOMStyle(selector, id = 1) {
   }
 }
 
+function addStyle(css, id = 1) {
+  let style = document.querySelector('head > style#add'+ id);
+  if (!style && document.head) {
+    let sheet = document.createElement('style');
+    sheet.id = 'add' + id;
+    sheet.innerText = css;
+    document.head.appendChild(sheet);
+  }
+}
+
 function clearPaywall(paywall, paywall_action) {
   if (paywall) {
     if (!paywall_action)
@@ -457,6 +498,17 @@ function ampToHtml() {
 
 function refreshCurrentTab() {
   window.location.reload(true);
+}
+
+function getSourceJsonScript(filter, attributes = ':not([src], [type])') {
+  if (typeof filter === 'string')
+    filter = new RegExp(filter);
+  let scripts = document.querySelectorAll('script' + attributes);
+  for (let script of scripts) {
+    if (script.text.match(filter))
+      return script;
+  }
+  return false;
 }
 
 function getArticleJsonScript() {

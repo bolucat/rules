@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Thu, 05 Dec 2024 17:01:16 +0000
-! Diff-Path: ../patches/2024.12.5.1047.patch#ublock-filters
+! Last modified: Fri, 06 Dec 2024 12:49:40 +0000
+! Diff-Path: ../patches/2024.12.6.814.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -10851,6 +10851,13 @@ tptvencore.co.uk##+js(no-xhr-if, springserve.com)
 poophd.cc##+js(rmnt, script, wpadmngr.com)
 ||insurecarrot.com^
 animelatinohd.com##+js(aeld, load, popMagic)
+rjno1.com##+js(aopr, document.documentElement.clientWidth)
+rjno1.com##body > style + div div[id][style]
+||bp.blogspot.com^$image,redirect=1x1.gif,domain=moappmovies.blogspot.com
+moappmovies.blogspot.com##.sy-adblock
+||googlesyndication.com^$image,redirect=1x1.gif,domain=minenode.fr
+animefire.info,animesonlinecc.us,animesonliner4.com,animesup.info,animeyabu.net,animeyabu.org,anitube.us,anitube.vip,caroloportunidades.com.br,dattebayo-br.com,drstonebr.com,flyanimes.cloud,goanimes.vip,goyabu.us,hinatasoul.com,isekaibrasil.com,meuanime.info,otakuanimess.net,superanimes.in##+js(trusted-prevent-xhr, outbrain.com, outbrain)
+caroloportunidades.com.br,coempregos.com.br,foodiesgallery.com##+js(nostif, hasAdblock)
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -12169,6 +12176,7 @@ manytoon.com##+js(aopr, decodeURI)
 *$script,3p,denyallow=cloudflare.net|disqus.com|disquscdn.com|fastlylb.net,domain=manytoon.com
 ||fzj3v7sch2xg5gosh60vpkrth5c6cngvj5ivd9kg5ajcdl2vlp2ocj5fjbto.me^
 manytoon.com##.ad
+||freecomiconline.me/*.gif^$image
 compsmag.com##+js(nostif, jQuery)
 vulture.com##+js(aeld, /^(?:click|mousedown)$/, latest!==)
 ilmeteo.it##+js(nostif, google_jobrunner)
@@ -14363,6 +14371,7 @@ $script,3p,denyallow=translate.google.com|googleapis.com,domain=lrepacks.net
 moviezwap.*##+js(nowoif)
 moviezwap.*##[style^=" width: 305px;"][type^="button"][onclick^="window.location.href"]
 xcloud.*##+js(rpnt, script, /window.open.*/gms, window.open(url\, "_self");})
+xfile.*##+js(rpnt, script, /window\.location\.href.*?;/)
 xcloud.*##+js(noeval-if, window.open)
 xcloud.*##^script:has-text(/eval\(.+?RegExp/)
 *$script,3p,denyallow=accounts.google.com|cloudflare.net|fastly.net|jsdelivr.net,from=xfile.*
@@ -16930,9 +16939,10 @@ kinas.tv##+js(nowoif)
 1stream.*##^script[type]:has-text(c=document.createElement)
 stocktwits.com##div[class*="AdBanner_"]
 stocktwits.com##.LazyLoad.is-visible:has([data-aa-adunit])
-stocktwits.com##p[class^="Disclosure_disclosure"]:has(a[href="https://stocktwits.com/about/legal/disclosures/3rd-party-ads/"])
+stocktwits.com##p[class^="Disclosure_disclosure"]:has([class^="Disclosure_removeAdsLink"])
 stocktwits.com##[class^="FooterAd_container"]
 stocktwits.com##[class^="Primis_container"]
+stocktwits.com###ad_sidebar_top_offset
 ! genius.com PH
 genius.com##div:has(> div[class^="TopContentdesktop__PromoContainer-"])
 xxxdl.net##.banners
@@ -17259,7 +17269,8 @@ pinterest.*##a[href*="&epik="]:upward([data-grid-item])
 !#else
 pinterest.*##[data-grid-item]:has([data-test-pin-id] a[href^="http"][rel] [data-test-id="pincard-oneTap-with-link"])
 !#endif
-pinterest.*##+js(json-prune, resource_response.data.[-].pin_promotion_id)
+pinterest.*##+js(json-prune, resource_response.data.[-].pin_promotion_id resource_response.data.results.[-].pin_promotion_id)
+pinterest.*##+js(json-prune, initialReduxState.pins.{-}.pin_promotion_id initialReduxState.resources.UserHomefeedResource.*.data.[-].pin_promotion_id)
 @@*$ghide,domain=pinterest.*
 distrowatch.org##[href*="3cx"]:upward(tbody)
 distrowatch.org##[href^="https://pbxinaflash.com/"]
@@ -19308,7 +19319,7 @@ filemoon-59t9ep5j.xyz,filemoon-nv2xl8an.xyz##+js(acs, Math.floor, urls.length)
 ||selfservesenpai.*^$all
 ||traffmgnt.com^
 ! nosteam popup
-nosteam.ro,nosteamgames.ro##+js(nowoif)
+nosteam.ro,nosteamgames.ro,nosteam.com.ro##+js(nowoif)
 nosteam.ro##+js(acs, jQuery, click)
 @@||nosteam.ro/notcaptcha/adheader.js$domain=nosteamgames.ro
 nosteamgames.ro##+js(aopr, _wm)
@@ -19656,18 +19667,19 @@ badmouth1.com,blog.esuteru.com,blog.livedoor.jp,dziennik.pl,etnews.com,eurointeg
 apkmirror.com,automobile-catalog.com,motorbikecatalog.com,blog.esuteru.com,blog.livedoor.jp,itainews.com,jin115.com,allthetests.com,javatpoint.com,globalrph.com,carscoops.com,crosswordsolver.com,cruciverba.it,dnevno.hr,ff14net.2chblog.jp,heureka.cz,indiatimes.com,laleggepertutti.it,meeco.kr,mirrored.to,motscroises.fr,news4vip.livedoor.biz,oeffnungszeitenbuch.de,onecall2ch.com,oraridiapertura24.it,palabr.as,petitfute.com,rabitsokuhou.2chblog.jp,rostercon.com,slashdot.org,sourceforge.net,suzusoku.blog.jp,the-crossword-solver.com,thestockmarketwatch.com,wfmz.com,word-grabber.com,wort-suchen.de,woxikon.*,yutura.net,zagreb.info,freemcserver.net,golf-live.at,kreuzwortraetsel.de,raetsel-hilfe.de,verkaufsoffener-sonntag.com,horairesdouverture24.fr,nyitvatartas24.hu,modhub.us,yugioh-starlight.com,winfuture.de,talkwithstranger.com##^script:has-text(error-report.com)
 worldhistory.org##^script:has-text(adShield)
 lovelive-petitsoku.com,pravda.com.ua##^script:has-text(Ad-Shield)
-jutarnji.hr,slobodnadalmacija.hr##^script:has-text(adrecover.com)
+cinema.com.my,dolldivine.com,jutarnji.hr,slobodnadalmacija.hr##^script:has-text(adrecover.com)
 persoenlich.com##^script:has-text(html-load.com)
-powerpyx.com##^script:has-text(.slice(-2);return decodeURIComponent)
+powerpyx.com,webdesignledger.com##^script:has-text(.slice(-2);return decodeURIComponent)
 !#else
 interfootball.co.kr,a-ha.io,cboard.net,jjang0u.com,joongdo.co.kr,viva100.com,gamingdeputy.com,thesaurus.net,alle-tests.nl,maketecheasier.com,automobile-catalog.com,allthekingz.com,motorbikecatalog.com,tweaksforgeeks.com,m.inven.co.kr,mlbpark.donga.com##+js(rmnt, script, KCgpPT57bGV0IGU)
 apkmirror.com,automobile-catalog.com,motorbikecatalog.com,blog.esuteru.com,blog.livedoor.jp,itainews.com,jin115.com,allthetests.com,javatpoint.com,globalrph.com,carscoops.com,crosswordsolver.com,cruciverba.it,dnevno.hr,ff14net.2chblog.jp,heureka.cz,indiatimes.com,laleggepertutti.it,meeco.kr,mirrored.to,motscroises.fr,news4vip.livedoor.biz,oeffnungszeitenbuch.de,onecall2ch.com,oraridiapertura24.it,palabr.as,petitfute.com,rabitsokuhou.2chblog.jp,rostercon.com,slashdot.org,sourceforge.net,suzusoku.blog.jp,the-crossword-solver.com,thestockmarketwatch.com,wfmz.com,word-grabber.com,wort-suchen.de,woxikon.*,yutura.net,zagreb.info,freemcserver.net,golf-live.at,kreuzwortraetsel.de,raetsel-hilfe.de,verkaufsoffener-sonntag.com,horairesdouverture24.fr,nyitvatartas24.hu,modhub.us,yugioh-starlight.com,winfuture.de,talkwithstranger.com##+js(rmnt, script, error-report.com)
 worldhistory.org##+js(rmnt, script, adShield)
 lovelive-petitsoku.com,pravda.com.ua##+js(rmnt, script, Ad-Shield)
-jutarnji.hr,slobodnadalmacija.hr##+js(rmnt, script, adrecover.com)
+cinema.com.my,dolldivine.com,jutarnji.hr,slobodnadalmacija.hr##+js(rmnt, script, adrecover.com)
+cinema.com.my##+js(trusted-suppress-native-method, HTMLScriptElement.prototype.setAttribute, '"data-sdk"', abort)
 persoenlich.com##+js(rmnt, script, html-load.com)
 winfuture.de##+js(aeld, load, error-report.com)
-powerpyx.com##+js(rmnt, script, .slice(-2);return decodeURIComponent)
+powerpyx.com,webdesignledger.com##+js(rmnt, script, .slice(-2);return decodeURIComponent)
 !#endif
 ||asset.ad-shield.cc/images$image,3p,redirect=32x32.png
 ||thesaurus.net/public/desktop/images/*grammarly$image,1p

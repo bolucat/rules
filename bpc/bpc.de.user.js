@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.2.5
+// @version         3.9.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -649,6 +649,25 @@ else if (matchDomain('suedkurier.de')) {
   getArchive(url, 'aside.article-paywall', '', 'main > article');
 }
 
+else if (matchDomain('t3n.de')) {
+  let paywall = document.querySelector('div.c-paywall__wrapper');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = json.articleBody;
+        let article = document.querySelector('div.paywall-blur > p');
+        if (json_text && article) {
+          article.innerText = parseHtmlEntities(json_text);
+          article.parentNode.removeAttribute('class');
+        }
+      }
+    }
+  }
+}
+
 else if (matchDomain('tagesspiegel.de')) {
   let paywall_sel = 'div#paywall';
   let url = window.location.href;
@@ -800,23 +819,6 @@ else if (matchDomain('vol.at')) {
     ampToHtml();
 }
 
-else if (matchDomain('welt.de')) {
-  func_post = function () {
-    if (mobile) {
-      let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
-      for (let elem of lazy_images)
-        elem.style = 'width: 95%;';
-    }
-    header_nofix('main header', 'img[alt="WELTplus"][loading]', 'BPC > no archive-fix');
-    let ads = pageContains('span', 'Anzeige');
-    removeDOMElement(...ads);
-  }
-  let url = window.location.href;
-  getArchive(url, 'div.contains_walled_content, div.c-article-paywall', '', 'main');
-  let ads = 'div[data-component="Outbrain"], div[class*="c-ad"]';
-  hideDOMStyle(ads);
-}
-
 else if (matchDomain('weltkunst.de')) {
   let paywall = document.querySelector('section.paywall');
   if (paywall) {
@@ -851,39 +853,6 @@ else if (matchDomain('weltkunst.de')) {
 
 else if (matchDomain('weser-kurier.de')) {
   let ads = 'div.ad-wrapper, div.anyad';
-  hideDOMStyle(ads);
-}
-
-else if (matchDomain('wiwo.de')) {
-  func_post = function () {
-    if (mobile) {
-      let lazy_images = document.querySelectorAll('article img[loading="lazy"][style]');
-      for (let elem of lazy_images)
-        elem.style = 'width: 95%;';
-    }
-    if (paywall) {
-      removeDOMElement(paywall);
-      let archive_link = document.querySelector('div#bpc_archive > a:not([href*="/again?"])');
-      if (archive_link)
-        removeDOMElement(archive_link.parentNode);
-      let article = document.querySelector(article_sel);
-      if (article)
-        article.before(googleSearchToolLink(url));
-    }
-  }
-  let paywall_sel = 'app-paywall';
-  let article_sel = 'article';
-  let url = window.location.href;
-  let paywall = document.querySelector(paywall_sel);
-  if (paywall) {
-    getArchive(url, paywall_sel, '', article_sel);
-    waitDOMElement(paywall_sel, paywall_sel.toUpperCase(), node => getArchive(url, paywall_sel, '', article_sel), true);
-  }
-  if (!mobile) {
-    let banner = 'div.c-overscroller';
-    hideDOMStyle(banner, 5);
-  }
-  let ads = 'div.iqadtile';
   hideDOMStyle(ads);
 }
 
