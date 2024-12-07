@@ -755,14 +755,16 @@ function getNestedKeys(obj, key) {
   return value;
 }
 
-function getJsonUrlText(article, callback, article_id = '', key = '', url_slash = false) {
+function getJsonUrlText(article, callback, article_id = '', key = '', url_rest = false, url_slash = false) {
   let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
   let json_url;
   if (json_url_dom)
     json_url = json_url_dom.href;
   if (!json_url && article_id)
     json_url = window.location.origin + '/wp-json/wp/v2/posts/' + article_id;
-  if (url_slash)
+  if (url_rest)
+    json_url = json_url.replace('/wp-json/', '/?rest_route=/');
+  else if (url_slash)
     json_url = json_url.replace('/wp-json/', '//wp-json/');
   if (json_url) {
     fetch(json_url)
@@ -809,7 +811,7 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
     func_post();
 }
 
-function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_slash = false) {
+function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_rest = false, url_slash = false) {
   let paywall = document.querySelectorAll(paywall_sel);
   let article = document.querySelector(article_sel);
   if (paywall.length && article) {
@@ -817,7 +819,7 @@ function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options =
     getJsonUrlText(article, (json_text, article) => {
       if (json_text && article)
         getJsonUrlAdd(json_text, article, art_options);
-    }, article_id, key, url_slash);
+    }, article_id, key, url_rest, url_slash);
   }
 }
 

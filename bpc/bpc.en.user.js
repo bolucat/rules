@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.4.4
+// @version         3.9.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2044,8 +2044,8 @@ else if (matchDomain('fortune.com')) {
   } else {
     if (paywall)
       paywall.removeAttribute('class');
-    let banner = document.querySelector('div#__next > div:empty');
-    removeDOMElement(banner);
+    let banners = 'div.daBnAu, div.trinity-player, div:empty';
+    hideDOMStyle(banners);
   }
 }
 

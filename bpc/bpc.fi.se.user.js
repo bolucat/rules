@@ -94,6 +94,16 @@ function hideDOMStyle(selector, id = 1) {
   }
 }
 
+function addStyle(css, id = 1) {
+  let style = document.querySelector('head > style#add'+ id);
+  if (!style && document.head) {
+    let sheet = document.createElement('style');
+    sheet.id = 'add' + id;
+    sheet.innerText = css;
+    document.head.appendChild(sheet);
+  }
+}
+
 function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
   return externalLink(['archive.today', 'archive.is'], 'https://{domain}?run=1&url={url}', url, text_fail);
 }
