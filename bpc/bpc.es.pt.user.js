@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.9.5.0
+// @version         3.9.5.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -21,6 +21,7 @@
 // @match           *://*.diariocordoba.com/*
 // @match           *://*.diariocorreo.pe/*
 // @match           *://*.diariovasco.com/*
+// @match           *://*.dn.pt/*
 // @match           *://*.elcomercio.pe/*
 // @match           *://*.elconfidencial.com/*
 // @match           *://*.elcorreo.com/*
@@ -91,6 +92,33 @@ if (matchDomain(['ara.cat', 'arabalears.cat'])) {
     amp_redirect('div.paywall');
     let ads = 'div.advertising';
     hideDOMStyle(ads);
+  }
+}
+
+else if (matchDomain('diariodenavarra.es')) {
+  let paywall = document.querySelector('div#paywall_message');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = json.articleBody;
+        let article = document.querySelector('div.free-html');
+        if (json_text && article)
+          article.innerText = parseHtmlEntities(json_text);
+      }
+    }
+  }
+}
+
+else if (matchDomain('dn.pt')) {
+  if (window.location.pathname.endsWith('/amp/')) {
+    let amp_list = 'amp-list';
+    hideDOMStyle(amp_list);
+  } else {
+    let ads = document.querySelectorAll('div.sk-pub');
+    removeDOMElement(...ads);
   }
 }
 
@@ -815,6 +843,13 @@ function getArticleJsonScript() {
     }
   }
   return json_script;
+}
+
+function parseHtmlEntities(encodedString) {
+  let parser = new DOMParser();
+  let doc = parser.parseFromString('<textarea>' + encodedString + '</textarea>', 'text/html');
+  let dom = doc.querySelector('textarea');
+  return dom.value;
 }
 
 })();
