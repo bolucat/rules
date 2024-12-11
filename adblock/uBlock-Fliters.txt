@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Tue, 10 Dec 2024 16:45:35 +0000
-! Diff-Path: ../patches/2024.12.10.1047.patch#ublock-filters
+! Last modified: Wed, 11 Dec 2024 13:17:25 +0000
+! Diff-Path: ../patches/2024.12.11.814.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -366,8 +366,6 @@ m.aajtak.in##body > .pubTime:style(display: block !important)
 m.aajtak.in##body > .secArticleImage:style(display: block !important)
 m.aajtak.in##body > .storyBody:style(display: block !important)
 /amazon_products_prod.js$script,domain=aajtak.in
-gadgets.ndtv.com##.adblockerContent:style(display: initial !important;)
-gadgets.ndtv.com###ndtv-message-userss
 amazon.*###s-results-list-atf > .s-result-item:has(> .s-item-container h5.s-sponsored-list-header)
 amazon.*###s-results-list-atf > .s-result-item:has(.s-item-container h5.s-sponsored-header)
 amazon.*##.s-result-item:has(> .s-item-container > h5 .s-sponsored-info-icon)
@@ -10824,9 +10822,14 @@ animedao.com.ru##+js(no-xhr-if, googlesyndication)
 abs-cbn.com##div[style*="999999"]:has(div[style^="background-color:#ECEDEF;"] > p)
 abs-cbn.com##div[style*="2147483647"]:has(.imp-adSlot-0)
 abs-cbn.com##div[id^="div-articleOOP"] ~ div:has(.imp-adSlot-0)
-abs-cbn.com##.css-168qn5i, .css-1slfery, .css-xcd31q, .css-4dbdht:has(div[class^="imp-adSlot"])
+abs-cbn.com##:is(.css-168qn5i, .css-1slfery, .css-xcd31q, .css-4dbdht):has(div[class^="imp-adSlot"])
+abs-cbn.com##.MuiGrid-root.MuiGrid-item:not([data-testid="test-grid-item"]):has(> div.MuiBox-root > div[style] > div > div[style] > div[class^="imp-adSlot"])
 gmanetwork.com###leaderboard
+gmanetwork.com###mrect
+gmanetwork.com###theater_mobile_mrec
+gmanetwork.com##.grid_extras_holder
 gmanetwork.com##.mrec_ad
+gmanetwork.com##.mrec-add-container
 gmanetwork.com##.latest_mrec_ad
 !#if cap_html_filtering
 atlasstudiousa.com##^script:has-text(WebAssembly)
@@ -10887,6 +10890,10 @@ ebook-hell.to##+js(nowoif)
 ibooks.to##+js(rmnt, script, ai_adb)
 ||atf-tagmanager.de^$script,redirect=noopjs,domain=bike-magazin.de
 gpldose.com##+js(aopr, Dataffcecd)
+##.sharethis-inline-share-buttons.st-hidden
+peachprintable.com##+js(nostif, chkADB)
+peachprintable.com###popID
+gputrends.net##+js(set-local-storage-item, adWatched, true)
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
@@ -11338,7 +11345,9 @@ cety.app,exego.app,cutlink.net,cutsy.net,cutyurls.com,cutty.app,cutnet.net##^scr
 !#else
 cety.app,exego.app,cutlink.net,cutsy.net,cutyurls.com,cutty.app,cutnet.net##+js(rmnt, script, /popup/i)
 !#endif
-cety.app##+js(aeld, click, open)
+cety.app,cuty.me##+js(trusted-override-element-method, HTMLAnchorElement.prototype.click, a[target="_blank"][style])
+cety.app,cuty.me##+js(aeld, DOMContentLoaded, history.go)
+||datadropspot.pro^$all
 adcrypto.net,admediaflex.com,aduzz.com,bitcrypto.info,cdrab.com,datacheap.io,hbz.us,savego.org,owsafe.com,sportweb.info###wpsafe-link:style(display: block !important;)
 adcrypto.net,admediaflex.com,aduzz.com,bitcrypto.info,cdrab.com,datacheap.io,hbz.us,savego.org,owsafe.com,sportweb.info##+js(no-fetch-if, ads)
 adcrypto.net,admediaflex.com,aduzz.com,bitcrypto.info,cdrab.com,datacheap.io,hbz.us,savego.org,owsafe.com,sportweb.info##+js(aeld, load, bypass)
@@ -11941,6 +11950,12 @@ khaddavi.net,lokerwfh.net##+js(nano-sib)
 khaddavi.net,lokerwfh.net##+js(no-xhr-if, adsbygoogle)
 khaddavi.net,lokerwfh.net##+js(nowoif, _blank)
 driveup.sbs##+js(rpnt, script, window.location.href, temp, includes, startDownloads)
+upfiles-urls.com##+js(aeld, DOMContentLoaded, history.go)
+upfiles-urls.com##+js(aeld, click, shouldOpenPopUp)
+upfiles-urls.com##+js(set, blurred, false)
+rentry.co##article:has(#download-your-archive-file)
+||sharecube.pro^$all
+||flyshare.cfd^$all
 !#if env_mobile
 ! *** filters/filters-mobile.txt ***
 !----- 2020 -----
@@ -12031,6 +12046,9 @@ yahoo.com##.native-ad-item
 ! timeanddate.com ad leftover
 timeanddate.com###ad-wrap
 twivideo.net##^script:has-text(/videoInstArea|randomImageUrl/)
+wetter.com##[class*="adSlot"]
+wetter.com##.layout:has(.advert-notice)
+wetter.com##[style="display: block !important; bottom: 0px; top: unset !important;"]
 !#endif
 ! *** uAssets:filters/filters-2020.txt ***
 *$script,redirect-rule=noopjs,domain=arcai.com
@@ -14458,9 +14476,9 @@ moviesnation.*##+js(acs, document.createElement, ;}}};break;case $.)
 10hitmovies.com,11xmovies.*,1tamilprint.art,2024tv.ru,720pflix.*,9animetv.to,9xmoovies.com,advertisertape.com,alphatron.tv,andyday.tv,animeflv.*,animeunity.to,animeyabu.org,anitube.*,apkship.shop,arc018.to,ask4movie.*,ate60vs7zcjhsjo5qgv8.com,avjosa.com,buffshub.stream,capo4play.com,checklinks.online,clickndownload.*,cookiewebplay.xyz,crackstreamsfree.com,daddylive1.ru,dlolcast.pro,embasic.pro,engstreams.shop,enorme.tv,fastdokan.*,file4go.*,flostreams.xyz,footballstreams.lol,footybite.to,foreverquote.xyz,freetvsports.com,freshwaterdell.com,fsportshd.net,gdflix.*,gdriveplayer.*,gdtot.*,hdfilme.*,hdhub4u.*,hdstream.one,hdstream.one,hexload.com,hoca2.com,hoca4u.xyz,joyousplay.xyz,jpopsingles.eu,kingstreamz.site,lato.sx,linkz.wiki,lulu.st,lulustream.com,luluvdo.com,messitv.org,movies4u.*,movieshubweb.com,moviezwap.*,nbabite.to,nexdrive.*,neymartv.net,nflbite.to,pkembed.*,player.smashy.stream,pahe.*,poscitechs.lol,putlocker.*,reddit-streams.online,ripplestream4u.*,rojadirectaenhd.net,rojadirectaenvivo.la,rubyvid.com,s2watch.link,sflix.*,shazysport.pro,showflix.*,soap2day.*,soccerstreams.best,sportsgames.today,sportshub.stream,sportsloverz.xyz,sportsurge.best,sportzlive.shop,storynavigation.com,streamblasters.*,streameast.*,streamed.su,streamlivetv.site,streamruby.com,streamtape.*,subtitlecat.com,swiftload.io,tamilprint29.*,tamilprint30.*,tamilprint31.*,tarjetarojaenvivo.lat,thedaddy.to,thehesgoal.com,toonstream.*,topembed.pw,totalsportek.*,tvsportslive.fr,usgate.xyz,uqload.*,vidsrc.*,viprow.*,vixcloud.co,vodkapr3mium.com,volokit2.com,watchadsontape.com,weakstreams.online,worldstreamz.shop,xcloud.*,ythd.org##+js(acs, EventTarget.prototype.addEventListener, delete window)
 ! ##^script:has-text('{delete window[')
 !#if cap_html_filtering
-11xmovies.*,2024tv.ru,9xmoovies.com,1tamilprint.art,apkship.shop,ask4movie.*,avjosa.com,buffshub.stream,capo4play.com,checklinks.online,cinego.tv,clickndownload.*,cookiewebplay.xyz,crackstreamsfree.com,cricstream.me,dlolcast.pro,embasic.pro,engstreams.shop,footballstreams.lol,footybite.to,foreverquote.xyz,freetvsports.com,fstream365.com,fzmovies.*,gdtot.*,hdstream.one,hoca2.com,hoca4u.xyz,kingstreamz.site,lulustream.com,luluvdo.com,messitv.org,minoplres.xyz,mostream.us,movies4u.*,nbabite.to,nexdrive.*,neymartv.net,nflbite.to,pahe.*,pkembed.*,poscitechs.lol,prmovies.*,reddit-streams.online,ripplestream4u.*,rojadirectaenhd.net,rojadirectaenvivo.la,rubyvid.com,s2watch.link,s3embtaku.pro,shazysport.pro,showflix.*,soccerstreams.best,sportshub.stream,sportsloverz.xyz,sportsurge.best,sportzlive.shop,streamblasters.*,streameast.*,streamed.su,streamingcommunity.*,streamlivetv.site,tarjetarojaenvivo.lat,thehesgoal.com,topcinema.cam,topembed.pw,totalsportek.*,usgate.xyz,uqload.*,vixcloud.co,weakstreams.online,worldstreamz.shop,xcloud.*##^script:has-text('{delete window[')
+11xmovies.*,2024tv.ru,9xmoovies.com,1tamilprint.art,apkship.shop,ask4movie.*,avjosa.com,buffshub.stream,capo4play.com,checklinks.online,cinego.tv,clickndownload.*,cookiewebplay.xyz,crackstreamsfree.com,cricstream.me,dlolcast.pro,embasic.pro,engstreams.shop,ev01.to,footballstreams.lol,footybite.to,foreverquote.xyz,freetvsports.com,fstream365.com,fzmovies.*,gdtot.*,hdstream.one,hoca2.com,hoca4u.xyz,kingstreamz.site,lulustream.com,luluvdo.com,messitv.org,minoplres.xyz,mostream.us,movies4u.*,nbabite.to,nexdrive.*,neymartv.net,nflbite.to,pahe.*,pkembed.*,poscitechs.lol,prmovies.*,reddit-streams.online,ripplestream4u.*,rojadirectaenhd.net,rojadirectaenvivo.la,rubyvid.com,s2watch.link,s3embtaku.pro,shazysport.pro,showflix.*,soccerstreams.best,sportshub.stream,sportsloverz.xyz,sportsurge.best,sportzlive.shop,streamblasters.*,streameast.*,streamed.su,streamingcommunity.*,streamlivetv.site,tarjetarojaenvivo.lat,thehesgoal.com,topcinema.cam,topembed.pw,totalsportek.*,usgate.xyz,uqload.*,vixcloud.co,weakstreams.online,worldstreamz.shop,xcloud.*##^script:has-text('{delete window[')
 !#else
-11xmovies.*,buffshub.stream,cinego.tv,fstream365.com,fzmovies.*,lulustream.com,minoplres.xyz,mostream.us,prmovies.*,s3embtaku.pro,sportshub.stream,streamblasters.*,streamingcommunity.*,topcinema.cam,topembed.pw##+js(rmnt, script, '{delete window[')
+11xmovies.*,buffshub.stream,cinego.tv,ev01.to,fstream365.com,fzmovies.*,lulustream.com,minoplres.xyz,mostream.us,prmovies.*,s3embtaku.pro,sportshub.stream,streamblasters.*,streamingcommunity.*,topcinema.cam,topembed.pw##+js(rmnt, script, '{delete window[')
 !#endif
 atlaq.com,bolly4umovies.*,douploads.net,moalm-qudwa.blogspot.com,shurt.pw##+js(aopr, zfgformats)
 123movieshub.*,animeunity.*,bflix.*,cima-club.*,flixhq.*,hindilinks4u.*,mcloud.bz,t7meel.*,theflixer.tv,vidstream.pro##+js(aopr, zfgstorage)
@@ -15403,7 +15421,8 @@ uploadshare.net##ins.adsbygoogle
 uploadshare.net##.advert-wrapper
 /js/static/header/sda/ppsuma*.js$script
 xnxx.com##.videoad-title
-xnxx.com##+js(aeld, DOMContentLoaded, /dyn\.ads|loadAdsDelayed/)
+xnxx.com,xvideos.*##+js(aeld, DOMContentLoaded, /dyn\.ads|loadAdsDelayed/)
+xnxx.com,xvideos.*##+js(set, xv.sda.pp.init, noopFunc)
 @@||cache.marieclaire.fr/media/videojs/videojs.ads.min.js$script,domain=marieclaire.fr
 @@||imasdk.googleapis.com/js/sdkloader/ima3.js$script,domain=marieclaire.fr
 *$script,3p,denyallow=arc.io|cloudflare.com|cloudflare.net|disqus.com|disquscdn.com|fastlylb.net|unpkg.com,domain=hatsukimanga.com
@@ -20502,15 +20521,15 @@ www.chip.de###CR[class="Downloads-Select"] > #G32 > #M1 > [class="wrapper-safe"]
 www.chip.de###CR[class="Downloads-Select"] > #G32 > #M1 > [class="wrapper-safe"] > .mt-md > section [class]:has(> div > ul.is-separated a img[src^="data:image"])
 www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > [class="wrapper-safe"] > [class="fb mt-lg"] > [class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > *:has(img[src*="https://im.chip.de/ii/"]):not(section[class="mt-md"]:has(> h3:first-child + table:last-child))
 www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > [class="wrapper-safe"] > [class="fb mt-lg"] > [class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > section[class="mt-md"] > h3 + table:has(img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > div[class] [class="ar-1-1 bg-gray-l"]:has(> a[title] > img[src*="https://im.chip.de/ii/"])
+www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > div[class] [class="ar-1-1 bg-gray-l"]:has(> a[href*="https://www.chip.de/downloads/"] > img[src*="https://im.chip.de/ii/"])
 www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > div:not([class], [id]):has(> [class] > [class] > .bg-gray-l a img[src*="https://im.chip.de/ii/"])
 www.chip.de###CR[class="Downloads-Detail"] > #G32 > #M1 > div[class]:has(> div[class][style="min-height: 250px;"] > ul.is-separated a img[src*="https://im.chip.de/ii/"])
 www.chip.de###CR[class="Downloads-Getfile"] > #G32 > #M1 > *:not(section[class="wrapper-safe mt-md ft-alts"]) a[href^="https://www.chip.de/downloads/"][title]:has(img[src*="https://im.chip.de/ii/"][alt][width][data-was-processed])
 www.chip.de###CR[class="Downloads-Select"] > #G32 > #M1 > div:not([class], [id]):has(> [class] > .bg-gray-l a img[src*="https://im.chip.de/ii/"])
 www.chip.de###CR[class="Downloads-Select"] > #G32 > #M1 > [class="wrapper-safe"] > [class="fb mt-md"] > [class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > [class]:has(img[src*="https://im.chip.de/ii/"] + div > span[style^="width: "])
 www.chip.de###CR[class="Downloads-Getfile"] > #G32 > #M1 > [class="wrapper-safe"] > [class="fb mt-lg"] > [class="fb-col-lg-4 is-hidden-sm is-hidden-md"] > [class]:has(img[src*="https://im.chip.de/ii/"] + div > span[style^="width: "])
-www.chip.de###CR[class="Downloads-Select"] > #G32 > #M1 > div:not([class="wrapper-safe"]) [class="ar-1-1 bg-gray-l"]:has(> a[title] > img[src*="https://im.chip.de/ii/"])
-www.chip.de###CR[class="Downloads-Getfile"] > #G32 > #M1 > div:not([class="wrapper-safe"]) [class="ar-1-1 bg-gray-l"]:has(> a[title] > img[src*="https://im.chip.de/ii/"])
+www.chip.de###CR[class="Downloads-Select"] > #G32 > #M1 > div:not([class="wrapper-safe"]) [class="ar-1-1 bg-gray-l"]:has(> a[href*="https://www.chip.de/downloads/"] > img[src*="https://im.chip.de/ii/"])
+www.chip.de###CR[class="Downloads-Getfile"] > #G32 > #M1 > div:not([class="wrapper-safe"]) [class="ar-1-1 bg-gray-l"]:has(> a[href*="https://www.chip.de/downloads/"] > img[src*="https://im.chip.de/ii/"])
 ! restore speed (the anti adblock script causing lag spikes)
 !#if cap_html_filtering
 www.chip.de##^script:has-text(/ \= false\; \} else \{ /)
@@ -22271,7 +22290,6 @@ fakaza.*,fakaza2018.com,fakazahouse.com,fakazamusic.co,samsonghiphop.org,zamusic
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,domain=rtl.be,redirect=google-ima.js
 reshare.pm#@#.showads
 reshare.pm##+js(nowoif)
-@@||a.magsrv.com/ad-provider.js$script,domain=reshare.pm
 ||googlesyndication.com^$script,redirect=noopjs,domain=flysas.com
 maxt.church##+js(no-xhr-if, googletagmanager)
 gamedrive.org##+js(aost, document.querySelector, /showModal|chooseAction|doAction|callbackAdsBlocked/)
