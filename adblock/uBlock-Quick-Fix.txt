@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Wed, 11 Dec 2024 13:27:03 +0000
-! Diff-Path: ../patches/2024.12.11.814.patch#ublock-quick-fixes
+! Last modified: Thu, 12 Dec 2024 11:00:05 +0000
+! Diff-Path: ../patches/2024.12.12.869.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -54,25 +54,11 @@ sandratableother.com##+js(set, console.clear, undefined)
 @@||pagead2.googlesyndication.com^$script,domain=next-episode.net
 japscan.lol##+js(aost, onload, inlineScript)
 *$image,redirect-rule=1x1.gif,domain=japscan.lol
-japscan.lol#@#+js(nostif, /function\(\)\{var|getPropertyValue|fontSize|0px|\/00/)
-japscan.lol#@#.nav ~ div[id] + div[id][class][style]:remove()
-japscan.lol#@#.nav ~ div[id][class]:has(+ div[id]:not(#chapters)):remove-attr(class)
-japscan.lol#@#.w-100 > [class]:has(+ div[id]):remove()
-japscan.lol#@#.justify-content-center div[id] + div[id][class][style]:remove()
-japscan.lol#@#+js(aeld, DOMContentLoaded, /=>\s*\{\s*function|^.{600\,700}$|PrimeVideo|Macbook|\+'ined'|t'\+'y|setTimeout\(function/)
-japscan.lol#@#+js(rmnt, script, navpromo2)
-japscan.lol#@#+js(aeld, DOMContentLoaded, /clipPath|0p'\+|typeof kDo|Niger|Charger|GoodDay|funct'|t'\+'y|setTimeout\(function/)
 japscan.lol##+js(aeld, load, /navpromo|clipPath|0p'\+/)
-japscan.lol#@#+js(nostif, /function\(\s*\)\{var|getProp|font|Size|\+'px|\/0'\+/)
-japscan.lol#@#+js(rmnt, script, navpr)
-japscan.lol#@#+js(aeld, DOMContentLoaded, /TikAm|pointerEvents|\/110\.|NeSi|Niger|Charger|GoodDay|funct'|t'\+'y/)
-japscan.lol#@#+js(rmnt, script, /'vpr|navp'|function Ti|\}{4}\(\)/)
-japscan.lol#@#+js(aeld, DOMContentLoaded, /TikBm|terEvents|ont'\+|'\/11|Ne'|Niger|Charger|GoodDay|funct'|t'\+'y/)
-japscan.lol##+js(rmnt, script, /navpr'|function Tc|(?:\}\s*){4}\(\s*\)/)
-japscan.lol##+js(aeld, DOMContentLoaded, /\({2}=>\{|TcUAm|\+'vp|text-indent|\/1'|NeSi|Niger|Charger|GoodDay|funct'|t'\+'y/)
+japscan.lol##+js(aeld, DOMContentLoaded, /\(\s*\)\s*=>\s*\{\s*[$\w]+\s*\(\s*\(\s*\)\s*=>\s*\{\s*const|PikAk|'N'\+|Niger|Charger|GoodDay|funct'|t'\+'y/)
+japscan.lol##.navbar-nav > li#navpromo2.nav-item:style(height: 0 !important; overflow: hidden !important;)
 ||japscan.lol/zjs/$script,replace=/function GoodDay\(\)\{.+?\}\}\}//
-japscan.lol#@#.navbar-nav > li#navpromo2.nav-item > a[href^="http://www.toueapo.shop/"]:style(text-indent: -5000px !important;)
-japscan.lol##.navbar-nav > li#navpromo2.nav-item
+japscan.lol#@#.navbar-nav > li#navpromo2.nav-item
 japscan.lol##body > style + .container > .row > #main + #sidebar.col-md-3 > .card.mt-1 > .card[style="margin: 0px auto; display: block;"] > iframe[id^="__clb-"][id$="_container"][style^="display: inline-block; width: 300px; height: 250px;"][sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-scripts allow-top-navigation-to-custom-protocols"][scrolling="no"]
 japscan.lol##body > style + .container > .row > #main.col-md-9 > .card > .card-body[style="margin: 0px auto; display: block;"] > iframe[id^="__clb-"][id$="_container"][style^="display: inline-block; width: 300px; height: 100px;"][sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-scripts allow-top-navigation-to-custom-protocols"][scrolling="no"]
 japscan.lol##body > .container.text-center > .mb-2.mt-2[style="margin: 0px auto; display: block;"] > iframe[id^="__clb-"][id$="_container"][style^="display: inline-block; width: 300px; height: 100px;"][sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-scripts allow-top-navigation-to-custom-protocols"][scrolling="no"]
@@ -121,17 +107,17 @@ poophq.com,veev.to##+js(no-xhr-if, /\/preroll\.engine$/)
 *$other,3p,denyallow=veevcdn.co,domain=poophq.com|veev.to
 @@*$ghide,domain=poophq.com|veev.to
 veev.to#@#.avb-active
-infinityscans.xyz,infinityscans.org##+js(no-fetch-if, infinityscans.net)
+infinityscans.xyz,infinityscans.org##+js(no-fetch-if, .infinityscans.net)
 infinityscans.xyz,infinityscans.net,infinityscans.org##+js(rpnt, script, /\}\)\;\s+\(function\(\)\{.*?\)\;\}\)\(\)\;\s+\$\.ajax\(\{/s, }); $.ajax({)
+infinityscans.xyz,infinityscans.net,infinityscans.org##+js(rpnt, script, /async function \(xhr\) \{\s+\(function\(\){var.*?\)\;\}\)\(\)\; /s, async function (xhr) {)
 infinityscans.xyz,infinityscans.net,infinityscans.org##+js(trusted-replace-outbound-text, atob, window.matchMedia('(display-mode: standalone)').matches, true)
 infinityscans.xyz,infinityscans.net,infinityscans.org##+js(nowoif, _blank)
-infinityscans.xyz,infinityscans.net,infinityscans.org##div[class="alert alert-danger fade show m-0 p-0"]:has-text(uBlock Origin)
+infinityscans.xyz,infinityscans.net,infinityscans.org##div[class="alert alert-danger fade show m-0 p-0"]:has-text(/uBlock|AdGuard|advertisments/i)
 @@*$script,denyallow=googletagmanager.com|bidgear.com|googlesyndication.com,domain=infinityscans.xyz|infinityscans.net|infinityscans.org
 ||b5rh0rt.infinityscans.net^$xhr,important
-1001tracklists.com##a[href^="https://"][target="_blank"][onclick*="challenge"]:has(> img[src*="/"][src*="_"][alt][title]):remove()
-1001tracklists.com###head + [id] > div:first-child > div:first-child:has(a img[src*="/"][src*="_"][alt][title])
-1001tracklists.com###head + [id] > div:first-child > [style]:has(a img[src*="/"][src*="_"][alt][title])
-1001tracklists.com##div[style^="margin: 10px 0;"]:has(a img[src*="/"][src*="_"])
+1001tracklists.com##a[href^="https://"][target="_blank"][onclick*="challenge"]:has(> img[src*="/"][src*="_"][alt]):remove()
+1001tracklists.com###head + [id] > div:first-child > div:first-child:has(a img[src*="/"][src*="_"][alt])
+1001tracklists.com###head + [id] > div:first-child > div:not([id="topLogo"], [id="pageTitle"], [id="hInfo"]):has(> a > img[src*="/"][src*="_"][alt])
 1001tracklists.com##div[id]:has(> [data-freestar-ad]):remove()
 ! filemoon
 file-1bl9ruic-moon.com,file-kg88oaak-embed.com,file-mi11ljwj-embed.com,file-sp32aoh8-moon.com,file-zz40pd56-embed.com,filemoon-j0l2wxjk.com,filemoon-t8c715ke.com,fle-2ggdmu8q-moo.com,fle-5r8dchma-moo.com,fle-rvd0i9o8-moo.com,moon-3uykdl2w-embed.com,moon-4uemks89-embed.com,moon-fm43w1qv.com,moon-kg83docx.com,moon-n9hp2onm-embed.com,moonfile-62es3l9z.com,moonfile-paxadnae.com##+js(nowoif)
@@ -154,7 +140,7 @@ wiki.yjsnpi.nu###mw-content-text div[style] a:is([href*="contents.fc2.com"],[hre
 wiki.yjsnpi.nu###mw-content-text div[style] a:is([href*="contents.fc2.com"],[href*="dmm.co.jp"]) img:style(height: 0 !important;)
 wiki.yjsnpi.nu##+js(spoof-css, #mw-content-text div[style] a:is([href*="contents.fc2.com"],[href*="dmm.co.jp"]), font-size, 14px)
 wiki.yjsnpi.nu##+js(spoof-css, #mw-content-text div[style] a:is([href*="contents.fc2.com"],[href*="dmm.co.jp"]) img, height, 128px)
-wiki.yjsnpi.nu##+js(aost, Function.prototype.toString, /[A-Za-z]+ https:\/\/wiki\.yjsnpi\.nu\/w\/load\.php\?lang=ja&modules=codex-search-styles%2Cjquery%2Coojs%2C&skin=vector-2022&version=\w+:1:1/)
+wiki.yjsnpi.nu##+js(aost, Function.prototype.toString, /w/load.php?lang=ja&modules=codex-search-styles%2Cjquery%2Coojs%2C&skin=vector-2022&version=L58hf)
 wiki.yjsnpi.nu##+js(nostif, ()=>k(S(4)
 *$script,1p,redirect-rule=noop.js,domain=wiki.yjsnpi.nu
 !#if cap_html_filtering
@@ -163,28 +149,25 @@ wiki.yjsnpi.nu##+js(nostif, ()=>k(S(4)
 wiki.yjsnpi.nu##^script[src^="/w/load.php?lang=ja&modules="][defer]:not(async)
 !#endif
 ! Ad-Shield
-html-load.com##html,body:style(height: 1px !important; overflow: hidden !important;)
-content-loader.com##html,body:style(height: 1px !important; overflow: hidden !important;)
-css-load.com##html,body:style(height: 1px !important; overflow: hidden !important;)
-img-load.com##html,body:style(height: 1px !important; overflow: hidden !important;)
-*##span[id^="img_"][class^="img_"] > div[style$="align-items: center; position: relative;"] > iframe[src][marginwidth][width][style]:style(height: 1px !important; overflow: hidden !important;)
+*##span[id^="img_"][class^="img_"] > div[style*="display: flex;"][style*="align-items: center;"][style*="position: relative;"] > iframe[src][marginwidth][width][style]:style(width: 0 !important; overflow: hidden !important;)
+||07c225f3.online^$media,redirect=noop-1s.mp4
+||content-loader.com^$media,redirect=noop-1s.mp4
+||css-load.com^$media,redirect=noop-1s.mp4
+||img-load.com^$media,redirect=noop-1s.mp4
+||html-load.com^$media,redirect=noop-1s.mp4
 ||karistudio.com/wp-content/themes/blogarise-child/check2.js$important
 karistudio.com##p.chapter_content:style(display: block !important; visibility: visible !important; opacity: 1 !important; transform: none !important;)
 cursomecanet.com##+js(no-fetch-if, https, , '{"statusText": "", "type": "cors"}')
 cursomecanet.com##+js(aost, fetch, .js?)
-cursomecanet.com##a[href][target="_blank"]:upward(div[id][style]):style(display: block !important;)
+cursomecanet.com##a[href][target="_blank"]:upward(div[style]):style(display: block !important;)
 bing.com##+js(trusted-replace-argument, HTMLLIElement.prototype.querySelector, 0, undefined, condition, /^a\.tilk$/)
 bing.com##li.b_algo:has(> :is(.b_tpcn, .b_title, h2) a[href^="https://www.bing.com/aclk?"])
-exploader.net#@#article > div[style="margin-left: -63px;width: 1120px;height: 450px;margin-bottom: 5px;display: flex;align-items: center;"]:style(position: absolute !important; clip:rect(1px,1px,1px,1px) !important;)
-exploader.net#@#+js(spoof-css, article > div[style="margin-left: -63px;width: 1120px;height: 450px;margin-bottom: 5px;display: flex;align-items: center;"], clip, auto)
-exploader.net#@#+js(spoof-css, a[href^="https://al.dmm.co"], display, block)
-exploader.net#@#a[href^="https://al.dmm.co"]
 exploader.net#@#a[style*="display:"][href^="https://al.dmm.co.jp"]
 exploader.net#@#+js(spoof-css, a[style*="display:"][href^="https://al.dmm.co.jp"], display, flex !important)
 exploader.net##+js(spoof-css, a[style*="display:"][href^="https://al.dmm.co.jp"] img, height, 20px)
 exploader.net##+js(spoof-css, a[style*="display:"][href^="https://al.dmm.co.jp"] img, display, block)
 exploader.net##a[style*="display:"][href^="https://al.dmm.co.jp"] img
-exploader.net##a[style*="display:"][href^="https://al.dmm.co.jp"] > div:has(img):style(height: 20px !important;)
+exploader.net##a[style*="display:"][href^="https://al.dmm.co.jp"] > div:has(img):style(height: 0 !important;)
 exploader.net##a[style*="display:"][href^="https://al.dmm.co.jp"] span
 exploader.net##+js(aost, Element.prototype.getBoundingClientRect, /[0-9a-z]{20\,}\s.+daotag/)
 ||daotag.com/tag/$script,replace=/if\(images\[i_key\]\.parentNode\.offsetHeight<rand\)/if(0)/,domain=exploader.net
@@ -194,3 +177,4 @@ entra.news,microsoftsecurityinsights.com,substack.com#@#+js(trusted-set-cookie, 
 #@##__next > div[style="position:fixed;z-index:9999;top:16px;left:16px;right:16px;bottom:16px;pointer-events:none"]
 #@##__next > div.absolute.inset-0.w-full.h-screen.z-\[99999\]
 ||city.onomichi.hiroshima.jp/uploaded/banner/$badfilter
+pixiv.net#@#+js(set-cookie-reload, privacy_policy_agreement, 6)

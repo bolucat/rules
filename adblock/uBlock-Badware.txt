@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Wed, 11 Dec 2024 09:37:19 +0000
-! Diff-Path: ../patches/2024.12.11.814.patch#ublock-badware
+! Last modified: Thu, 12 Dec 2024 11:14:04 +0000
+! Diff-Path: ../patches/2024.12.12.869.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -1020,6 +1020,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||btemgb.com^$all
 ||amaeex.one^$all
 ||ec2-13-230-253-66.ap-northeast-1.compute.amazonaws.com^$all
+||77jjxx.com^$all
+||my-bitbank.cc^$all
 ! scam sites
 ||webuzz.me^$doc
 ||coup-ling.net^$all
@@ -3180,6 +3182,8 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||antaidossiersuivamendimpayeer*.zynekcctv.com^$all,to=~amendes.gouv.fr
 ||zynekcctv.com/amandes/$doc,to=~amendes.gouv.fr
 /amandes/infospage.php^$doc,to=~amendes.gouv.fr
+/\.codeanyapp\.com\/.+\/(?:3dsece?|infospage|paiement)\.php\b/$doc,match-case,to=codeanyapp.com|~amendes.gouv.fr
+||codeanyapp.com/pr/rue/$doc,to=~amendes.gouv.fr
 ! bank
 ||chamsocthekhachhang-$doc,to=~edu|~gov|~edu.vn|~gov.vn
 ||uudaikhachhangthe-$doc,to=~edu|~gov|~edu.vn|~gov.vn
@@ -3441,10 +3445,12 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||stemcommunty.com^$all
 ||staemcommunnitty.com^$all
 ||staemcomunnutty.com^$all
+||scearmcommnymnlty.com^$all
 ||workshop-users.com^$all
 ||cn-steam.com^$all
 ||com/p/jcod-ppsr/huasdirjdo^$doc,to=~steamcommunity.com
 ||usersworkshoparts.com^$all
+||communitystudionart.com^$all
 ! garena
 /^https:\/\/(?:www\.)?(?:ff[-.])?member[-.]gare[a-z]+a(?:\.pro)?\.vn\//$doc,to=vn|~garena.vn
 /^https:\/\/(?:www\.)?(?:ff[-.])?men?mber[-.]garena\.vn\//$doc,to=vn|~garena.vn
@@ -3591,6 +3597,7 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 ||telegram-*.com/login/index.html^$all
 ||d*wsapp.icu^$doc
 ||telezelm-*.icu^$doc
+||whatsapp*.icu^$doc
 ! usps
 ||uspsparcels.net^$all,to=~usps.com
 ||freeusps.com^$all,to=~usps.com
@@ -3611,11 +3618,16 @@ torrdroidforpc.com##[href^="http://slugmefilehos.xyz/"]
 /^https:\/\/[a-z]\.[a-z]{10,}\.top\/l(?:\/|$)/$doc,to=top|~usps.com
 ||usps.*.top^$doc,to=top|~usps.com
 ||wpenginepowered.com/usps/$doc,to=~usps.com
+||usps.*.sbs^$doc,to=~usps.com
+||uspac.sbs^$all,to=~usps.com
+||informed.delivery*.top^$all,to=~usps.com
+||info-tracking*.cc^$all,to=~usps.com
 ! weebly/square phishing
 /^https:\/\/(?:[a-z0-9]{2,}-)+10\d{4}\.weeblysite\.com\//$doc,to=weeblysite.com
 /^https:\/\/(?:[a-z0-9]{2,}-)+10\d{4}\.square\.site\//$doc,to=square.site
 ! spotify
 ||upgradeyourspotify.cc^$all
+||keepo.io/opddater-spotifykonto-informas/$all
 /^https:\/\/[^.]+\.codeanyapp\.com\/wp-content\/.+\/spo[a-z]{2}i\//$doc,to=codeanyapp.com
 ||codeanyapp.com/*/spotii/$all
 ||codeanyapp.com/*/spoofi/$all
@@ -4514,7 +4526,8 @@ webflow.io##html.w-mod-js:not(.wf-active) > body:not([class]):not([id]) > a[clas
 ||noticesgove.top^$all,to=~gov.uk
 /^https:\/\/winterpaymen[a-z]{2,5}\.top\//$doc,to=top|~gov.uk
 ||securevault.top^$all
-/^https:\/\/usps\.com-(?:\w+\.){1,2}[a-z]{2,4}\//$doc,to=~com|~net|~org|~edu|~gov
+/^https:\/\/usps\.com-(?:[-\w]+\.){1,2}[a-z]{2,4}\//$doc,to=~com|~net|~org|~edu|~gov
+/^https:\/\/amazon\.com-(?:[-\w]+\.){1,2}[a-z]{2,4}\//$doc,to=~com|~net|~org|~edu|~gov
 ||orcaslicer.info^$doc
 ||marabase-bi.com^$doc,to=~mara.com
 /^https:\/\/www\.air-?up-?[a-z]{2,}\.com\//$doc,to=com|~air-up.com

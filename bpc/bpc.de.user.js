@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.5.3
+// @version         3.9.5.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -431,7 +431,8 @@ else if (matchDomain('krautreporter.de')) {
   }
 }
 
-else if (matchDomain(['ksta.de', 'rundschau-online.de'])) {
+else if (domain = matchDomain(['ksta.de', 'rundschau-online.de'])) {
+  setCookie('anon_cookie', '', domain, '/', 0);
   function unhide_article(node) {
     removeDOMElement(node);
     let article = document.querySelector('div[data-article-content][style]');
