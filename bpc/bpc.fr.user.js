@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.9.4.1
+// @version         3.9.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -525,89 +525,6 @@ else if (matchDomain(be_roularta_domains)) {
 
 else if (matchDomain('lexpress.fr')) {
   let ads = 'div[class^="block_pub"], div[class^="bottom-bar"], div.teads__block, div.ban-bottom, div[class^="placeholder--ban-atf"]';
-  hideDOMStyle(ads);
-}
-
-else if (matchDomain('liberation.fr')) {
-  let paywall = document.querySelector('div.article-body-paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('article.article-body-wrapper');
-    if (article) {
-      let fusion_script = document.querySelector('script#fusion-metadata');
-      if (fusion_script && fusion_script.text.includes('Fusion.contentCache=')) {
-        try {
-          let json = JSON.parse(fusion_script.text.split('Fusion.contentCache=')[1].split('};')[0] + '}');
-          if (json && json['site-story-feed-sections']) {
-            let sections = json['site-story-feed-sections'];
-            let content_key = Object.keys(sections).find(x => sections[x].data.content_elements[0].website_url === window.location.pathname);
-            if (content_key) {
-              let pars = sections[content_key].data.content_elements[0].content_elements;
-              if (pars.length)
-                article.innerHTML = '';
-              let parser = new DOMParser();
-              for (let par of pars) {
-                let elem = document.createElement('p');
-                let sub_elem;
-                if (['header', 'raw_html', 'text'].includes(par.type)) {
-                  if (par.content) {
-                    let doc = parser.parseFromString('<div>' + par.content + '</div>', 'text/html');
-                    sub_elem = doc.querySelector('div');
-                    if (par.type === 'header')
-                      sub_elem.style = 'font-weight: bold; font-size: 1.85rem;';
-                  }
-                } else if (par.type === 'image') {
-                  if (par.url) {
-                    sub_elem = document.createElement('img');
-                    sub_elem.src = par.url;
-                  }
-                } else if (par.type === 'oembed_response') {
-                  if (par.raw_oembed && par.raw_oembed.html) {
-                    if (!par.subtype === 'twitter') {
-                      let doc = parser.parseFromString('<div>' + par.raw_oembed.html + '</div>', 'text/html');
-                      sub_elem = doc.querySelector('div');
-                    } else if (par.raw_oembed.url) {
-                      sub_elem = document.createElement('a');
-                      sub_elem.href = sub_elem.innerText = par.raw_oembed.url;
-                      sub_elem.target = '_blank';
-                    }
-                  }
-                } else if (par.type === 'link_list') {
-                  if (par.items) {
-                    sub_elem = document.createElement('p');
-                    sub_elem.appendChild(document.createElement('hr'));
-                    sub_elem.appendChild(document.createTextNode('Lire aussi'));
-                    sub_elem.appendChild(document.createElement('br'));
-                    for (let item of par.items) {
-                      if (item.content && item.url) {
-                        let item_link = document.createElement('a');
-                        item_link.href = item.url;
-                        item_link.innerText = item.content;
-                        sub_elem.appendChild(item_link);
-                        sub_elem.appendChild(document.createElement('br'));
-                      }
-                    }
-                    sub_elem.appendChild(document.createElement('hr'));
-                  }
-                } else if (!['quote'].includes(par.type)) {
-                  console.log(par.type);
-                  console.log(par);
-                }
-                if (sub_elem) {
-                  elem.appendChild(sub_elem);
-                  article.appendChild(elem);
-                }
-              }
-            } else
-              header_nofix(article);
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    }
-  }
-  let ads = 'div[class^="StickyAd"], div[class^="default__OutbrainWrapper"]';
   hideDOMStyle(ads);
 }
 
