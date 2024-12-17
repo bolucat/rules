@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.9.6.0
+// @version         3.9.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -439,7 +439,7 @@ else if (matchDomain('lesechos.fr')) {
         if (json_script) {
           try {
             let json = JSON.parse(json_script.text.split(filter)[1].split('};')[0] + '}');
-            let data_article = json.queries[1].state;
+            let data_article = json.queries.filter(x => x.state.data.stripes)[0].state;
             let url = window.location.href;
             let url_loaded = data_article.data.path;
             if (url_loaded && (!url_loaded.slice(-7).match(/\d+/) || !url.includes(url_loaded.slice(-7))))

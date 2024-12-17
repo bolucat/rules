@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.5.0
+// @version         3.9.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2867,6 +2867,14 @@ else if (matchDomain('spglobal.com')) {
 else if (matchDomain('sportico.com')) {
   if (window.location.pathname.endsWith('/amp/'))
     amp_unhide_subscr_section('amp-ad, amp-embed');
+}
+
+else if (matchDomain('standardmedia.co.ke')) {
+  let js_disabled = document.querySelector('div#js-disabled');
+  removeDOMElement(js_disabled);
+  let js_enabled = document.querySelector('div#js-enabled');
+  if (js_enabled)
+    js_enabled.removeAttribute('id');
 }
 
 else if (matchDomain('staradvertiser.com')) {
