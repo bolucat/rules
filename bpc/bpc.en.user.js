@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.6.0
+// @version         3.9.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3443,6 +3443,13 @@ else if (matchDomain(timesofindia_domains)) {
             console.log(err);
           }
         }
+        window.setTimeout(function () {
+          let popup_button = document.querySelector('div.primeshow button:not([data-type])');
+          if (popup_button)
+            popup_button.click();
+        }, 1000);
+        let banners = 'div.bannerBenefitsWrapper';
+        hideDOMStyle(banners);
       }
     } else {
       ampToHtml();
@@ -4649,7 +4656,7 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
 }
 
 function breakText(str, headers = false) {
-  str = str.replace(/(?:^|[A-Za-z\"\“\)])(\.+|\?|!)(?=[A-ZÖÜ\„\d][A-Za-zÀ-ÿ\„\d]{1,})/gm, "$&\n\n");
+  str = str.replace(/(?:^|[A-Za-z\"\“\”\)])(\.+|\?|!)(?=[A-ZÖÜ\„\”\d][A-Za-zÀ-ÿ\„\d]{1,})/gm, "$&\n\n");
   if (headers)
     str = str.replace(/(([a-z]{2,}|[\"\“]))(?=[A-Z](?=[A-Za-zÀ-ÿ]+))/gm, "$&\n\n");
   return str;

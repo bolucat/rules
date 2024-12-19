@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.9.5.1
+// @version         3.9.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -135,7 +135,7 @@ else if (matchDomain('eldiario.es')) {
     amp_unhide_access_hide('^="access"', '="NOT access"');
   } else {
     amp_redirect('aside.paywall');
-    let ads = 'div.edi-advertising, div.header-ad';
+    let ads = 'div.edi-advertising, div.header-ad, aside.news-sponsored-content, div.report__wrapper';
     hideDOMStyle(ads);
   }
 }
