@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.6.1
+// @version         3.9.6.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -40,6 +40,7 @@
 // @match           *://*.puck.news/*
 // @match           *://*.sloanreview.mit.edu/*
 // @match           *://*.stcatharinesstandard.ca/*
+// @match           *://*.tempo.co/*
 // @match           *://*.uxdesign.cc/*
 // @match           *://*.wellandtribune.ca/*
 // @connect         archive.fo
@@ -2971,6 +2972,12 @@ else if (matchDomain(['techtarget.com', 'computerweekly.com'])) {
     let banners = document.querySelectorAll('p#firstP, div#inlineRegistrationWrapper');
     removeDOMElement(...banners);
   }
+}
+
+else if (matchDomain('tempo.co')) {
+  let article_hidden = document.querySelector('article > div:not([class]) div.overflow-hidden');
+  if (article_hidden)
+    article_hidden.removeAttribute('class');
 }
 
 else if (matchDomain('the-american-interest.com')) {
