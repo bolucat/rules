@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.6.6
+// @version         3.9.6.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -41,6 +41,7 @@
 // @match           *://*.sloanreview.mit.edu/*
 // @match           *://*.stcatharinesstandard.ca/*
 // @match           *://*.tempo.co/*
+// @match           *://*.theleaflet.in/*
 // @match           *://*.uxdesign.cc/*
 // @match           *://*.wellandtribune.ca/*
 // @connect         archive.fo
@@ -1318,7 +1319,7 @@ else if (matchDomain('balkaninsight.com')) {
   getJsonUrl('div.subscribeWrapper', '', 'div.post_teaser', {art_append: 1, art_hold: 1});
 }
 
-else if (matchDomain(['barandbench.com', 'thenewsminute.com'])) {
+else if (matchDomain(['barandbench.com', 'theleaflet.in', 'thenewsminute.com'])) {
   let paywall = document.querySelector('div[id*="paywall-banner"]');
   if (paywall) {
     removeDOMElement(paywall);

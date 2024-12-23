@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Privacy
 ! Expires: 7 days
-! Last modified: Sun, 22 Dec 2024 09:18:59 +0000
-! Diff-Path: ../patches/2024.12.22.863.patch#ublock-privacy
+! Last modified: Mon, 23 Dec 2024 13:10:21 +0000
+! Diff-Path: ../patches/2024.12.23.925.patch#ublock-privacy
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/privacy.txt ***
@@ -688,7 +688,7 @@ www.lenovo.com##+js(trusted-replace-argument, history.replaceState, 2, "''", con
 !#endif
 ||upera.shop/ref/$doc,uritransform=/^\/ref\/[^\/]+//
 androidpolice.com,makeuseof.com,movieweb.com,xda-developers.com##+js(cookie-remover, /articlesRead|previousPage/) 
-/^https?:\/\/chatgpt\.com\/ces\/v1\/[a-z]$/$xhr,domain=chatgpt.com|openai.com,method=post
+/^https?:\/\/chatgpt\.com\/ces\/v1\/[a-z]$/$xhr,domain=chatgpt.com|openai.com|sora.com,method=post
 airtel.in##+js(no-xhr-if, analytics/bulk-pixel)
 elevenlabs.io##+js(set-local-storage-item, IIElevenLabsDubbingResult, $remove$)
 ! Pepper redirection - pepper.ru/deals/post-428233 | pepper.pl/promocje/post-750379 | dealabs.com/bons-plans/post-2674687
@@ -820,6 +820,8 @@ discord.com##+js(no-xhr-if, discord.com/api/v9/science)
 ! beacons.ai analytics
 ||beacons.ai/api/rtanalytics/
 ||beacons.ai/api/public_actions
+||store.steampowered.com/app/usabilitytracking/
+||joinhoney.com/evs
 ! Merge in resource-abuse.txt
 ! *** uAssets:filters/resource-abuse.txt ***
 /edgemesh.*.js$script,domain=~edgemesh.com|~edgeno.de

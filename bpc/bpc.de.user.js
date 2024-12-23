@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.6.0
+// @version         3.9.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -458,6 +458,11 @@ else if (matchDomain('kurier.at')) {
   hideDOMStyle(ads);
 }
 
+else if (matchDomain('merkur.de')) {
+  let ads = 'div[class^="id-TBeepSlot-"]';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('mopo.de')) {
   getJsonUrl('div#paywall', '', 'div.paywall-fade');
 }
@@ -857,6 +862,23 @@ else if (matchDomain('weltkunst.de')) {
   }
   let par_initial = document.querySelector('p.initial');
   removeDOMElement(par_initial);
+}
+
+else if (matchDomain('welt.de')) {
+  func_post = function () {
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('main img[loading="lazy"][style]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 95%;';
+    }
+    header_nofix('main header', 'img[alt="WELTplus"][loading]', 'BPC > no archive-fix');
+    let ads = pageContains('span', 'Anzeige');
+    removeDOMElement(...ads);
+  }
+  let url = window.location.href;
+  getArchive(url, 'div.contains_walled_content, div.c-article-paywall', '', 'main');
+  let ads = 'div[data-component="Outbrain"], div[class*="c-ad"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('weser-kurier.de')) {
