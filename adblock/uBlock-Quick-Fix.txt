@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Mon, 23 Dec 2024 14:43:29 +0000
-! Diff-Path: ../patches/2024.12.23.925.patch#ublock-quick-fixes
+! Last modified: Tue, 24 Dec 2024 15:10:34 +0000
+! Diff-Path: ../patches/2024.12.24.989.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -56,11 +56,11 @@ sandratableother.com##+js(set, console.clear, undefined)
 japscan.lol##+js(aost, onload, inlineScript)
 *$image,redirect-rule=1x1.gif,domain=japscan.lol
 japscan.lol##+js(aeld, DOMContentLoaded, /Niger|Charger|GoodDay|funct'|t'\+'y/)
-japscan.lol##+js(aeld, /DOMContentLoaded|load/, /function\s*\(\s*\)\s*\{\s*[a-z]+\s+[$\w]+\s*=\s*['"`]|LetsGo|toString'\]\(\s*\)|top'\]|==='0'/)
-japscan.lol##+js(spoof-css, .navbar-nav > li#navpromo2.nav-item, display, block)
+japscan.lol##+js(aeld, /DOMContentLoaded|load/, /function\s*\(\s*\)\s*\{\s*[^s]["'\,;=`\s\w]*[^s][$\w]+\s*\(\s*function\s*\(\s*\)\s*\{\s*[a-z]+\s|Hobaba|na'\+|clip-path'|='\/'\+/)
+japscan.lol##+js(trusted-set-attr, .navbar-nav > li#navpromo2.nav-item > a, href, " ")
+japscan.lol##.navbar-nav > li#navpromo2.nav-item:style(opacity: 0.1 !important;)
 japscan.lol#@#+js(rmnt, script, Roiyehe)
 ||japscan.lol/zjs/$script,replace=/function GoodDay\(\)\{.+?\}\}\}//
-japscan.lol##.navbar-nav > li#navpromo2.nav-item
 japscan.lol##body > style + .container > .row > #main + #sidebar.col-md-3 > .card.mt-1 > .card[style="margin: 0px auto; display: block;"] > iframe[id^="__clb-"][id$="_container"][style^="display: inline-block; width: 300px; height: 250px;"][sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-scripts allow-top-navigation-to-custom-protocols"][scrolling="no"]
 japscan.lol##body > style + .container > .row > #main.col-md-9 > .card > .card-body[style="margin: 0px auto; display: block;"] > iframe[id^="__clb-"][id$="_container"][style^="display: inline-block; width: 300px; height: 100px;"][sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-scripts allow-top-navigation-to-custom-protocols"][scrolling="no"]
 japscan.lol##body > .container.text-center > .mb-2.mt-2[style="margin: 0px auto; display: block;"] > iframe[id^="__clb-"][id$="_container"][style^="display: inline-block; width: 300px; height: 100px;"][sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-scripts allow-top-navigation-to-custom-protocols"][scrolling="no"]
@@ -131,7 +131,7 @@ file-1bl9ruic-moon.com,file-kg88oaak-embed.com,file-mi11ljwj-embed.com,file-sp32
 ||op3xdork.xyz^
 ||skvxbool.xyz^
 ! Ad-Shield
-*##span[id^="img_"][class^="img_"] > style:first-child + div[style*="align-items"][style*="relative"][style*="center"] > iframe[src][marginwidth][width][style]:style(transform: translateX(-10000px) !important;)
+*##span[id^="img_"][class^="img_"] > style:first-child + div[style*="flex"][style*="relative"] > iframe[src][marginwidth][width][style]:style(content-visibility: hidden !important;)
 dogdrip.net,infinityfree.com,smsonline.cloud,webdesignledger.com##+js(trusted-replace-outbound-text, decodeURIComponent, /^(Chrome|Firefox)\/$/, $1/1)
 ||karistudio.com/wp-content/themes/blogarise-child/check2.js$important
 karistudio.com##p.chapter_content:style(display: block !important; visibility: visible !important; opacity: 1 !important; transform: none !important;)
@@ -147,7 +147,8 @@ www.chip.de##^script:has-text(/ \=\=\= [0-9]{1,2}\) \{ \}/)
 !#else
 www.chip.de##+js(rmnt, script, / \=\=\= [0-9]{1,2}\) \{ \}/)
 !#endif
-||business-center-$doc,badfilter
 @@||c-web.cedyna.co.jp/customer/img/spacer.gif?$1p
 @@||res.ads.nicovideo.jp/assets/js/ads2.js$domain=sp.nicovideo.jp
 9db.jp#@##footer
+altema.jp###sidebar-in > div.widget_text:has(.tuika-widget > a[href*="utm_"])
+altema.jp##.koukoku_common_tag
