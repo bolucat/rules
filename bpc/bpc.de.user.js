@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.7.0
+// @version         3.9.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -649,10 +649,16 @@ else if (matchDomain('sueddeutsche.de')) {
     getOchToUnlock(url, 'div.offer-page', '', 'main');
   } else {
     func_post = function () {
-      header_nofix(document.querySelector(article_sel), 'div#sz-paywall:not(:empty)', 'BPC > no archive-fix');
+      let paywall = document.querySelector('div#sz-paywall:not(:empty)');
+      if (paywall) {
+        removeDOMElement(paywall);
+        let article = document.querySelector(article_sel);
+        if (article)
+          article.firstChild.before(archiveLink(url));
+      }
     }
     let article_sel = 'div[itemprop="articleBody"]';
-    getArchive(url, 'head > meta[content="locked"]', '', article_sel);
+    getOchToUnlock(url, 'head > meta[content="locked"]', '', article_sel);
   }
   let ads = 'er-ad-slot, div.iqdcontainer';
   hideDOMStyle(ads);

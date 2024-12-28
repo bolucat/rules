@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.6.7
+// @version         3.9.6.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4533,7 +4533,7 @@ function nftLink(url, text_fail = 'BPC > Full article text:\r\n') {
 }
 
 function freediumLink(url, text_fail = 'BPC > Try for full article text:\r\n') {
-  return externalLink(['www.freedium.cfd'], 'https://{domain}/{url}', url, text_fail);
+  return externalLink(['freedium.cfd'], 'https://{domain}/{url}', url, text_fail);
 }
 
 function readMediumLink(url, text_fail = 'BPC > Try for full article text:\r\n') {

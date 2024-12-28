@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: NnAI2QzUp0KVEnydeNushw
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1735313957-3600.patch
+! Checksum: roKqfEcRwGMaB4dE1Asl/g
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1735407511-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.65.88
-! TimeUpdated: 2024-12-27T15:31:22+00:00
+! Version: 2.3.65.98
+! TimeUpdated: 2024-12-28T17:31:22+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -78,6 +78,12 @@
 !
 !
 !
+||hellerraucous.top^
+||pm.chetahtalc.com^
+||jhu8u9.pro^$all
+||fdolspwa.my^$all
+||loftersvisaya.com^
+||chimneydicier.com^
 ||gsrgjsmymkwt.com^
 ||zeecajichaiw.net^
 ||server.megabrain.co^
@@ -10036,8 +10042,10 @@ ontools.net##+js(no-fetch-if, /google-analytics\.com|adblockanalytics\.com/)
 canirunthegame.com##div[class^="blocker-"]
 canirunthegame.com##+js(no-fetch-if, pagead2.googlesyndication.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/153796
-rekidai-info.github.io##+js(no-setInterval-if, /loc|about:blank/)
-rekidai-info.github.io##+js(no-setTimeout-if, /loc|about:blank/)
+rekidai-info.github.io##+js(no-setInterval-if, /loc|about:blank|href|window/)
+rekidai-info.github.io##+js(no-setTimeout-if, /loc|about:blank|href|window/)
+rekidai-info.github.io##+js(no-setInterval-if, /\(\s*\)\s*=>\s*\{/, !20)
+rekidai-info.github.io##+js(no-setTimeout-if, /\(\s*\)\s*=>\s*\{/, !20)
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$domain=rekidai-info.github.io
 @@||pagead2.googlesyndication.com^$xmlhttprequest,domain=rekidai-info.github.io
 @@||pagead2.googlesyndication.com/pagead/managed/js/adsense/*/show_ads_impl_$script,domain=rekidai-info.github.io
@@ -17058,23 +17066,17 @@ th2plant.com#$#body ins.AdSense#vicDom { display: block !important; }
 th2plant.com##+js(abort-current-script, document.getElementById, innerHTML)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/192622
 ! https://github.com/AdguardTeam/AdguardFilters/issues/192136
-! https://github.com/AdguardTeam/AdguardFilters/issues/190502
-egyfalcons.com##.popSc
-egyfalcons.com##+js(abort-on-property-write, checkAdsStatus)
+! checkAdsStatus
+cinema-3d.xyz,androidonepro.com,almafhm.online,egyfalcons.com##.popSc
+cinema-3d.xyz,androidonepro.com,almafhm.online,egyfalcons.com##+js(abort-on-property-write, checkAdsStatus)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/190373
 wecima.click##a[href*="&utm_medium=banner"] > img
 ||wecima.click/static/js/adBlock.js
-! https://github.com/AdguardTeam/AdguardFilters/issues/189206
-cinema-3d.xyz##.popSc
-cinema-3d.xyz##+js(abort-on-property-write, checkAdsStatus)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183251
 shamra.sy#@#.AdsBox
 shamra.sy##+js(no-setTimeout-if, .offsetHeight)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/182298
 ||rolpenszimocca.com^
-! https://github.com/AdguardTeam/AdguardFilters/issues/181020
-androidonepro.com##.popSc
-androidonepro.com##+js(abort-on-property-write, checkAdsStatus)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/180572
 flixscans.net##.adblock
 ! https://github.com/AdguardTeam/AdguardFilters/issues/180552
@@ -34330,6 +34332,14 @@ $subdocument,third-party,denyallow=disqus.com,domain=welovemanga.one
 ! NOTE: Specific rules
 !
 !
+foreignaffairs.com##div[data-once="fa-message-dismissable"]
+weloma.art###welcome-bar > a[target="_blank"]
+91mobiles.com##+js(addEventListener-defuser, DOMContentLoaded, hubads_ext)
+91mobiles.com##div[class*="webcast"] > a[onclick^="sendGATracking"]
+play-games.com##.game-ad-container
+cars.com###primary-hero
+go.zovo.ink#$#center > a[target="_blank"] { display: none !important; }
+go.zovo.ink#$##continue-button { display: block !important; }
 cartometro.com##div[class^="cmad"]
 thetvdb.com###ATF
 euronews.com##.tp-outbrain
