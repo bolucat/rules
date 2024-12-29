@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.9.5.0
+// @version         3.9.5.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -120,11 +120,7 @@ else if (matchDomain('ilfattoquotidiano.it')) {
       logo.parentNode.replaceChild(logo_new, logo);
     }
   } else if (window.location.pathname.match(/\/\d{4}\/\d{2}\/\d{2}\//)) {
-    let paywall = document.querySelector('div.read-more');
-    if (paywall) {
-      removeDOMElement(paywall);
-      window.location.href = window.location.pathname + 'amp';
-    }
+    amp_redirect('div.read-more', '', window.location.pathname + 'amp');
   }
 }
 
@@ -443,9 +439,7 @@ function amp_iframes_replace(weblink = false, source = '') {
 }
 
 function amp_redirect_not_loop(amphtml) {
-  let amp_redirect_date = Number(sessionStorage.getItem('###_amp_redirect'));
-  if (!(amp_redirect_date && Date.now() - amp_redirect_date < 2000)) {
-    sessionStorage.setItem('###_amp_redirect', Date.now());
+  if (!check_loop()) {
     window.location.href = amphtml.href;
   } else {
     let header = (document.body && document.body.firstChild) || document.documentElement;
@@ -496,8 +490,25 @@ function ampToHtml() {
   }, 1000);
 }
 
-function refreshCurrentTab() {
-  window.location.reload(true);
+function check_loop(interval = 2000) {
+  let loop = true;
+  let loop_date = Number(sessionStorage.getItem('###_loop'));
+  if (!(loop_date && (Date.now() - loop_date < interval))) {
+    sessionStorage.setItem('###_loop', Date.now());
+    loop = false;
+  }
+  return loop;
+}
+
+function refreshCurrentTab(not_loop = true) {
+  if (!not_loop || !check_loop(5000)) {
+    window.setTimeout(function () {
+      window.location.reload(true);
+    }, 500);
+  } else {
+    let header = (document.body && document.body.firstChild) || document.documentElement;
+    header_nofix(header, '', 'BPC > refresh loop stopped');
+  }
 }
 
 function getSourceJsonScript(filter, attributes = ':not([src], [type])') {

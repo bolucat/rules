@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.9.6.0
+// @version         3.9.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -386,11 +386,7 @@ else if (matchDomain(ar_grupo_clarin_domains)) {
 
 else if (matchDomain('cambiocolombia.com')) {
   if (!window.location.pathname.startsWith('/amp/')) {
-    let paywall = document.querySelector('div#require-access');
-    if (paywall) {
-      removeDOMElement(paywall);
-      window.location.href = '/amp' + window.location.pathname;
-    }
+    amp_redirect('div#require-access', '', '/amp' + window.location.pathname);
   } else {
     amp_unhide_subscr_section('amp-ad, amp-embed');
   }
@@ -473,11 +469,7 @@ else if (matchDomain('elobservador.com.uy')) {
       amp_image.parentNode.replaceChild(elem, amp_image);
     }
   } else {
-    let paywall = document.querySelector('div.mensaje_member');
-    if (paywall) {
-      removeDOMElement(paywall);
-      window.location.href = window.location.pathname + '/amp';
-    }
+    amp_redirect('div.mensaje_member', '', window.location.pathname + '/amp');
   }
 }
 
@@ -780,9 +772,7 @@ function amp_iframes_replace(weblink = false, source = '') {
 }
 
 function amp_redirect_not_loop(amphtml) {
-  let amp_redirect_date = Number(sessionStorage.getItem('###_amp_redirect'));
-  if (!(amp_redirect_date && Date.now() - amp_redirect_date < 2000)) {
-    sessionStorage.setItem('###_amp_redirect', Date.now());
+  if (!check_loop()) {
     window.location.href = amphtml.href;
   } else {
     let header = (document.body && document.body.firstChild) || document.documentElement;
@@ -831,6 +821,27 @@ function ampToHtml() {
     if (canonical)
       window.location.href = canonical.href;
   }, 1000);
+}
+
+function check_loop(interval = 2000) {
+  let loop = true;
+  let loop_date = Number(sessionStorage.getItem('###_loop'));
+  if (!(loop_date && (Date.now() - loop_date < interval))) {
+    sessionStorage.setItem('###_loop', Date.now());
+    loop = false;
+  }
+  return loop;
+}
+
+function refreshCurrentTab(not_loop = true) {
+  if (!not_loop || !check_loop(5000)) {
+    window.setTimeout(function () {
+      window.location.reload(true);
+    }, 500);
+  } else {
+    let header = (document.body && document.body.firstChild) || document.documentElement;
+    header_nofix(header, '', 'BPC > refresh loop stopped');
+  }
 }
 
 function getArticleJsonScript() {

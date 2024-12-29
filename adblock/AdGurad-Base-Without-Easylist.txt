@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: roKqfEcRwGMaB4dE1Asl/g
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1735407511-3600.patch
+! Checksum: pPNrRtX/zjvFrXunlxLPIQ
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1735493922-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.65.98
-! TimeUpdated: 2024-12-28T17:31:22+00:00
+! Version: 2.3.66.13
+! TimeUpdated: 2024-12-29T17:31:22+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -10042,10 +10042,6 @@ ontools.net##+js(no-fetch-if, /google-analytics\.com|adblockanalytics\.com/)
 canirunthegame.com##div[class^="blocker-"]
 canirunthegame.com##+js(no-fetch-if, pagead2.googlesyndication.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/153796
-rekidai-info.github.io##+js(no-setInterval-if, /loc|about:blank|href|window/)
-rekidai-info.github.io##+js(no-setTimeout-if, /loc|about:blank|href|window/)
-rekidai-info.github.io##+js(no-setInterval-if, /\(\s*\)\s*=>\s*\{/, !20)
-rekidai-info.github.io##+js(no-setTimeout-if, /\(\s*\)\s*=>\s*\{/, !20)
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$domain=rekidai-info.github.io
 @@||pagead2.googlesyndication.com^$xmlhttprequest,domain=rekidai-info.github.io
 @@||pagead2.googlesyndication.com/pagead/managed/js/adsense/*/show_ads_impl_$script,domain=rekidai-info.github.io
@@ -28025,8 +28021,9 @@ asilmedia.org###banner
 !
 ! NOTE: Vietnamese
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/195410
 ! https://github.com/AdguardTeam/AdguardFilters/issues/194923
-animevietsub.info,animevietsub.video##center > a[target="_blank"] > img
+animevietsub.biz,animevietsub.info,animevietsub.video,animevietsub.*##center > a[target="_blank"] > img
 !
 cliphotnews.com###vl-underplayer-adx
 cliphotnews.com##.ads-catfish-desktop
@@ -34332,6 +34329,9 @@ $subdocument,third-party,denyallow=disqus.com,domain=welovemanga.one
 ! NOTE: Specific rules
 !
 !
+disboards.com##div[align="center"]:has(> div[id^="div-gpt-ad-"])
+disboards.com##div[align="center"]:has(> div[class*="_Ad"])
+disboards.com##.p-body-inner > div[align="center"]:has(> div[class^="column"] > div[id^="div-gpt-ad-"])
 foreignaffairs.com##div[data-once="fa-message-dismissable"]
 weloma.art###welcome-bar > a[target="_blank"]
 91mobiles.com##+js(addEventListener-defuser, DOMContentLoaded, hubads_ext)
@@ -47677,7 +47677,7 @@ mma-core.com###rsky
 /camwhoreshd.com\/[a-z]{1,2}[0-9]{1,2}[a-z]{1,2}[0-9]{1,2}[\S\s]*.js/$domain=camwhoreshd.com
 4tube.com###listingBanner
 ||static.sportsbar.pw/scripts.js
-lostarkcodex.com,regular-expressions.info,vibraporn.com,newsindiatimes.com,forum.sbenny.com,darkcapture.app,sportslens.com##.topad
+disboards.com,lostarkcodex.com,regular-expressions.info,vibraporn.com,newsindiatimes.com,forum.sbenny.com,darkcapture.app,sportslens.com##.topad
 ||sportslens.com/files1^
 sportslens.com###sidebar > div[id^="text-"]:not(#text-34):not(#text-42)
 sportslens.com##div[id^="FMAds"]

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.9.6.1
+// @version         3.9.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -882,8 +882,25 @@ function ampToHtml() {
   }, 1000);
 }
 
-function refreshCurrentTab() {
-  window.location.reload(true);
+function check_loop(interval = 2000) {
+  let loop = true;
+  let loop_date = Number(sessionStorage.getItem('###_loop'));
+  if (!(loop_date && (Date.now() - loop_date < interval))) {
+    sessionStorage.setItem('###_loop', Date.now());
+    loop = false;
+  }
+  return loop;
+}
+
+function refreshCurrentTab(not_loop = true) {
+  if (!not_loop || !check_loop(5000)) {
+    window.setTimeout(function () {
+      window.location.reload(true);
+    }, 500);
+  } else {
+    let header = (document.body && document.body.firstChild) || document.documentElement;
+    header_nofix(header, '', 'BPC > refresh loop stopped');
+  }
 }
 
 function getSelectorLevel(selector) {
@@ -1118,10 +1135,18 @@ function amp_iframes_replace(weblink = false, source = '') {
   }
 }
 
+function check_loop(interval = 2000) {
+  let loop = true;
+  let loop_date = Number(sessionStorage.getItem('###_loop'));
+  if (!(loop_date && (Date.now() - loop_date < interval))) {
+    sessionStorage.setItem('###_loop', Date.now());
+    loop = false;
+  }
+  return loop;
+}
+
 function amp_redirect_not_loop(amphtml) {
-  let amp_redirect_date = Number(sessionStorage.getItem('###_amp_redirect'));
-  if (!(amp_redirect_date && Date.now() - amp_redirect_date < 2000)) {
-    sessionStorage.setItem('###_amp_redirect', Date.now());
+  if (!check_loop()) {
     window.location.href = amphtml.href;
   } else {
     let header = (document.body && document.body.firstChild) || document.documentElement;

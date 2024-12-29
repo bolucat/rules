@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.9.7.0
+// @version         3.9.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -884,8 +884,25 @@ function ampToHtml() {
   }, 1000);
 }
 
-function refreshCurrentTab() {
-  window.location.reload(true);
+function check_loop(interval = 2000) {
+  let loop = true;
+  let loop_date = Number(sessionStorage.getItem('###_loop'));
+  if (!(loop_date && (Date.now() - loop_date < interval))) {
+    sessionStorage.setItem('###_loop', Date.now());
+    loop = false;
+  }
+  return loop;
+}
+
+function refreshCurrentTab(not_loop = true) {
+  if (!not_loop || !check_loop(5000)) {
+    window.setTimeout(function () {
+      window.location.reload(true);
+    }, 500);
+  } else {
+    let header = (document.body && document.body.firstChild) || document.documentElement;
+    header_nofix(header, '', 'BPC > refresh loop stopped');
+  }
 }
 
 })();
