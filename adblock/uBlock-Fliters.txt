@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Sun, 29 Dec 2024 13:11:54 +0000
-! Diff-Path: ../patches/2024.12.29.987.patch#ublock-filters
+! Last modified: Mon, 30 Dec 2024 14:29:11 +0000
+! Diff-Path: ../patches/2024.12.30.1044.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -3210,8 +3210,6 @@ hiddenobjectgames.com##.banner
 files-save.com##+js(popads-dummy)
 @@||files-save.com/Assets/Addon/Css/ads.css$css,1p
 @@||fordclub.eu^$ghide
-tetris.com##.horizontalAxContainer
-tetris.com##div[class^="verticalAxContainer"]
 girlsgogames.co.uk##+js(aopr, googletag)
 ||cdn.witchhut.com^$script,domain=ejocuri.ro|gamesheep.com|girlg.com|girlsplay.com|jocurifete.ro|playpod.com
 ! added sites using the same ad-reinsertion script
@@ -10478,6 +10476,8 @@ dcode.fr##div[id^="div-gpt-ad"]
 *$xhr,redirect-rule=nooptext,domain=ctrlv.*
 ctrlv.*##a.download[target="_blank"]:not(a[href*="ctrlv."]):remove()
 ctrlv.*##+js(set, uBlockOriginDetected, false)
+||protagcdn.com/s/ctrlv.cz/site.js$script,redirect=noopjs,domain=ctrlv.*
+ctrlv.*##+js(no-fetch-if, doubleclick)
 fikiri.net##+js(nostif, mdp)
 @@||librevpn.org^$script,1p
 @@||mhktricks.org^$ghide
@@ -19312,9 +19312,9 @@ meilblog.com##.adblock_title
 enryumanga.com,varnascan.com###close-teaser
 enryumanga.com,varnascan.com###floatcenter
 !#if cap_html_filtering
-celebzcircle.com,bi-girl.net,ftuapps.*,hentaiseason.com,hoodtrendspredict.com,osteusfilmestuga.online,ragnarokscanlation.opchapters.com,sampledrive.org,showflix.*,tojimangas.com,tvappapk.com,twobluescans.com,varnascan.xyz##^script:has-text(/decodeURIComponent\(escape|fairAdblock/)
+celebzcircle.com,bi-girl.net,ftuapps.*,hentaiseason.com,hoodtrendspredict.com,marcialhub.xyz,osteusfilmestuga.online,ragnarokscanlation.opchapters.com,sampledrive.org,showflix.*,tojimangas.com,tvappapk.com,twobluescans.com,varnascan.xyz##^script:has-text(/decodeURIComponent\(escape|fairAdblock/)
 !#else
-celebzcircle.com,bi-girl.net,ftuapps.*,hentaiseason.com,hoodtrendspredict.com,osteusfilmestuga.online,ragnarokscanlation.opchapters.com,sampledrive.org,showflix.*,tojimangas.com,tvappapk.com,twobluescans.com,varnascan.xyz##+js(rmnt, script, /decodeURIComponent\(escape|fairAdblock/)
+celebzcircle.com,bi-girl.net,ftuapps.*,hentaiseason.com,hoodtrendspredict.com,marcialhub.xyz,osteusfilmestuga.online,ragnarokscanlation.opchapters.com,sampledrive.org,showflix.*,tojimangas.com,tvappapk.com,twobluescans.com,varnascan.xyz##+js(rmnt, script, /decodeURIComponent\(escape|fairAdblock/)
 hentaiseason.com,showflix.*##+js(aost, document.getElementById, fairAdblock)
 !#endif
 ftuapps.*##body > div:has(.adblock_title)
@@ -21107,7 +21107,7 @@ sshkit.com,fastssh.com,howdy.id##+js(no-fetch-if, adsbygoogle)
 @@*$ghide,domain=sshkit.com|fastssh.com|howdy.id
 av-cdn.xyz##+js(nowoif)
 av-cdn.xyz##body > div ~ script + div[class]:last-child
-pluto.tv##+js(no-xhr-if, /_Ad_|_ad/)
+pluto.tv##+js(json-prune-fetch-response, adBreaks.[].startingOffset adBreaks.[].adBreakDuration adBreaks.[].ads adBreaks.[].startTime adBreak adBreakLocations, , propsToMatch, /session.json)
 @@||a-fds.youborafds01.com/data?$xhr,domain=pluto.tv
 @@||imasdk.googleapis.com^$script,domain=oqee.tv
 ymovies.vip##+js(aopr, mm)
@@ -21224,7 +21224,7 @@ cimanow.cc##+js(aopr, navigator.brave)
 @@||cimanow.cc^$script,1p
 @@||deva.cnvids.com/dwcn/Assets/js/openads.js$script,domain=deva.cnvids.com
 cimanow.cc###ad1
-cimanow.cc##section[aria-label="details"] > a[target="_blank"]
+cimanow.cc##section[aria-label="details"] a[id][target="_blank"]
 ||loijtoottuleringv.info^
 qiwi.gg##+js(aeld, , sessionStorage)
 qiwi.gg##+js(nowoif, , 10)
@@ -22397,8 +22397,8 @@ plc4me.com##+js(rmnt, script, deblocker)
 krx18.com##center > [src*="/ads/"]
 playerwatch.xyz##+js(nowoif, , 10)
 ||ezodn.com^$redirect-rule=noopjs,domain=tv.bdix.app
-*$xhr,3p,redirect-rule=noop.txt,domain=tv.bdix.live
-tv.bdix.live##+js(no-fetch-if, outbrain.com)
+tv.bdix.app##+js(acs, document.readyState, initializeChecks)
+tv.bdix.app##+js(nowoif, _blank)
 dagensnytt.com##+js(aeld, load, doTest)
 blisseyhusbands.com##+js(rmnt, script, deblocker)
 @@*$ghide,domain=countrychord.com|wazzuptechph.com|bigbrothergisthub.com|news9.co.ke|techprice.pk|scopenew.com|rokuguru.com|guided.news|techfinancials.co.za|scholarshipexpo.com|dailyparliamenttimes.com|theexchange.africa|thedailyhoosier.com|subhashyadav.org|thenews-chronicle.com|diyprojectslab.com
@@ -24217,5 +24217,7 @@ fearmp4.ru##+js(rmnt, script, ads_block)
 fmovies0.cc##+js(nowoif)
 fmovies0.cc##+js(nostif, offsetHeight)
 fmovies0.cc##+js(no-fetch-if, /googlesyndication|googletagservices/)
+chat.deepseek.com##+js(no-xhr-if, /api/v0/events)
+flatai.org##+js(aeld, DOMContentLoaded, adblock)
 ! *** uAssets:filters/filters-2025.txt ***
 ! GitHub pull requests: https://github.com/uBlockOrigin/uAssets/pulls

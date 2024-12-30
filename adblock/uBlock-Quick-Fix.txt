@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sun, 29 Dec 2024 16:23:33 +0000
-! Diff-Path: ../patches/2024.12.29.987.patch#ublock-quick-fixes
+! Last modified: Mon, 30 Dec 2024 14:40:53 +0000
+! Diff-Path: ../patches/2024.12.30.1044.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -56,7 +56,7 @@ sandratableother.com##+js(set, console.clear, undefined)
 japscan.lol##+js(aost, onload, inlineScript)
 *$image,redirect-rule=1x1.gif,domain=japscan.lol
 japscan.lol##+js(aeld, DOMContentLoaded, /Niger|Charger|GoodDay|funct'|t'\+'y/)
-japscan.lol##.navbar-nav > li#navpromo2.nav-item:style(height: 0 !important;)
+japscan.lol##.navbar-nav > li#navpromo2.nav-item > a:style(height: 0 !important;)
 japscan.lol##+js(norafif, /^/)
 ||japscan.lol/zjs/$script,replace=/function GoodDay\(\)\{.+?\}\}\}//
 japscan.lol##body > style + .container > .row > #main + #sidebar.col-md-3 > .card.mt-1 > .card[style="margin: 0px auto; display: block;"] > iframe[id^="__clb-"][id$="_container"][style^="display: inline-block; width: 300px; height: 250px;"][sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-scripts allow-top-navigation-to-custom-protocols"][scrolling="no"]
@@ -87,18 +87,18 @@ poophq.com,veev.to##+js(set, fapit.check, noopFunc)
 !poophq.com,veev.to##+js(no-xhr-if, url:!/cdn\.plyr\.io|veev\.to|\/dl\?op=player_api/ method:GET)
 poophq.com,veev.to##+js(no-xhr-if, /vast.php?)
 poophq.com,veev.to##+js(no-xhr-if, adsbygoogle, length:35000-55000)
-poophq.com,veev.to##+js(rpnt, script, /['"]h.*?o.*?c.*?a.*?js/, "$1(function() {'use strict'; const handler = {apply: (target, thisArg, argumentsList) => {const e = argumentsList; if (e[0] && e[0].html?.detected === null && typeof e[0].html?.instance?.start === 'function' && typeof e[0].env?.instance?.start === 'function' && typeof e[0].http?.instance?.start === 'function') {const resetBooleans = function() {Object.keys(this).forEach(key => {if (typeof this[key] === 'boolean') {this[key] = false;}});}; ['html', 'env', 'http'].forEach(name => {e[0][name].instance.start = resetBooleans;});} return Reflect.apply(target, thisArg, argumentsList);}}; window.Object.keys = new Proxy(Object.keys, handler);})();", includes, break;else)
+poophq.com,veev.to##+js(rpnt, script, /['"]h.*?o.*?c.*?a.*?s/, "$1(function() {'use strict'; const handler = {apply: (target, thisArg, argumentsList) => {const e = argumentsList; if (e[0] && e[0].html?.detected === null && typeof e[0].html?.instance?.start === 'function' && typeof e[0].env?.instance?.start === 'function' && typeof e[0].http?.instance?.start === 'function') {const resetBooleans = function() {Object.keys(this).forEach(key => {if (typeof this[key] === 'boolean') {this[key] = false;}});}; ['html', 'env', 'http'].forEach(name => {e[0][name].instance.start = resetBooleans;});} return Reflect.apply(target, thisArg, argumentsList);}}; window.Object.keys = new Proxy(Object.keys, handler);})();", includes, break;else)
 poophq.com,veev.to##+js(no-xhr-if, /\/preroll\.engine$/)
 *$script,3p,domain=poophq.com|veev.to,redirect-rule=noopjs
 *$other,3p,denyallow=veevcdn.co,domain=poophq.com|veev.to
 @@*$ghide,domain=poophq.com|veev.to
 veev.to#@#.avb-active
+infinityscans.xyz,infinityscans.net,infinityscans.org##+js(rpnt, script, /async function \(xhr\) \{\s+\(function\(\){var .*?\;\}\)\(\)\; /s, async function (xhr) {)
 infinityscans.xyz,infinityscans.net,infinityscans.org##+js(rpnt, script, /\}\)\;\s+\(function\(\)\{var .*?\)\;\}\)\(\)\;\s+\$\.ajax\(\{/s, }); $.ajax({)
 infinityscans.xyz,infinityscans.net,infinityscans.org##+js(trusted-replace-outbound-text, atob, window.matchMedia('(display-mode: standalone)').matches, true)
 infinityscans.xyz,infinityscans.net,infinityscans.org##+js(nowoif, _blank)
 infinityscans.xyz,infinityscans.net,infinityscans.org##div[class="alert alert-info m-0 p-0"]:has-text(/uBlock|AdGuard|advertisments/i)
 @@*$script,denyallow=googletagmanager.com|bidgear.com|googlesyndication.com|a.magsrv.com|fstatic.netpub.media,domain=infinityscans.xyz|infinityscans.net|infinityscans.org
-||b5rh0rt.infinityscans.net^$xhr,important
 !#if cap_html_filtering
 infinityscans.xyz,infinityscans.net,infinityscans.org##^script:has-text(/b5rh0rt|\;\}\}catch\(_/)
 !#else
@@ -135,7 +135,6 @@ bing.com##ol#b_results > li:has(> :is(.b_tpcn, .b_title, h2) a[href^="https://ww
 exploader.net##+js(trusted-replace-argument, window.addEventListener, 0, json:"DOMContentLoaded", condition, /^load$/)
 exploader.net##article div:not(article>div[style="width: 750px;margin-left: auto;margin-right: auto;"],article>div[style="width: 750px;margin-left: auto;margin-right: auto;"]>div[style="float: right;width: 180px;"],[class="information"],[class="information"]+[class="thumbnail"],[class="information"]>[class="warning"],[class="information"]>[class="d_"]):watch-attr(style,class):has(div:not([style]):not([class]) div a[href^="https://al.dmm.co.jp"],article>#freefiles>#sort,article>#freefiles>[class="list"])
 exploader.net##+js(ra, class|style, article div:not(article>div[style="width: 750px;margin-left: auto;margin-right: auto;"]\,article>div[style="width: 750px;margin-left: auto;margin-right: auto;"]>div[style="float: right;width: 180px;"]\,[class="information"]\,[class="information"]+[class="thumbnail"]\,[class="information"]>[class="warning"]\,[class="information"]>[class="d_"]\,article>#freefiles>#sort\,article>#freefiles>[class="list"]), complete)
-exploader.net##+js(trusted-rpnt, script, /window\.addEventListener\('load'\,\s*function\(\)\s*\{\s*(if\(!window\.[0-9a-z]{20\,}\)window\.[0-9a-z]{20\,}\.innerHTML=[0-9a-z]{20\,}\('[0-9a-z]{20\,}'\))\}\);/, $1)
 exploader.net##+js(trusted-set, document.readyState, json:"complete", runAt, 2)
 *$image,redirect-rule=32x32.png,domain=exploader.net
 !#if cap_html_filtering
@@ -145,11 +144,8 @@ www.chip.de##+js(rmnt, script, / \=\=\= [0-9]{1,2}\) \{ \}/)
 !#endif
 altema.jp###sidebar-in > div.widget_text:has(.tuika-widget > a[href*="utm_"])
 altema.jp##.koukoku_common_tag
-rekidai-info.github.io##+js(nostif, /^\(\s*\)\s*=>\s*\{.+&&/, !20)
-rekidai-info.github.io##+js(nosiif, /^\(\s*\)\s*=>\s*\{.+&&/, !20)
-rekidai-info.github.io##+js(nostif, /&&.+href\s*=\s*"about:blank"\s*\)\s*\}\s*$/, !300)
-rekidai-info.github.io##+js(nosiif, /&&.+href\s*=\s*"about:blank"\s*\)\s*\}\s*$/, !300)
-rekidai-info.github.io##+js(trusted-replace-argument, setTimeout, 1, json:"300", condition, /^\d+\.\d+$/)
+rekidai-info.github.io##+js(nostif, /location\[.+\]\s*=\s*[$\w]+\(\d+\)\s*\)\s*\}/)
+rekidai-info.github.io##+js(nosiif, /location\[.+\]\s*=\s*[$\w]+\(\d+\)\s*\)\s*\}/)
 ||status.techtarget.itmedia.co.jp^$badfilter
 indiatimes.com#@#.adhide
 @@||toweroffantasy-global.com/events/accounttransfer/public/js/fingerprint.js$1p

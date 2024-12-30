@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         3.9.7.1
+// @version         3.9.7.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -58,7 +58,7 @@ var be_roularta_domains = ['artsenkrant.com', 'beleggersbelangen.nl', 'flair.be'
 var nl_dpg_adr_domains = ['ad.nl', 'bd.nl', 'bndestem.nl', 'destentor.nl', 'ed.nl', 'gelderlander.nl', 'pzc.nl', 'tubantia.nl'];
 var nl_dpg_media_domains = ['demorgen.be', 'flair.nl', 'humo.be', 'libelle.nl', 'margriet.nl', 'parool.nl', 'trouw.nl', 'volkskrant.nl'];
 
-if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
+if (matchDomain(be_mediahuis_domains)) {
   window.setTimeout(function () {
     let video = document.querySelector('div.video');
     func_post = function () {
@@ -87,7 +87,7 @@ if (matchDomain(be_mediahuis_domains.concat(['limburger.nl']))) {
       if (article) {
         let pars = article.querySelectorAll('div[style*="font-size"]');
         if (pars.length < 5)
-          header_nofix(article.querySelector('header'), '', 'BPC > no archive-fix');
+          article.before(googleSearchToolLink(url));
       }
     }
     let url = window.location.href;
