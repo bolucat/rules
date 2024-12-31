@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.7.2
+// @version         3.9.7.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -192,6 +192,33 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
   }
   let ads = 'div.ad-wrapper, div[id^="apn-ad-slot-"]';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('bild.de')) {
+  func_post = function () {
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
+      for (let elem of lazy_images) {
+        elem.style = 'width: 95%; margin: 10px;';
+        elem.parentNode.removeAttribute('style');
+      }
+      let header = document.querySelector('article > h2 > span:last-child');
+      if (header)
+        header.style = 'margin: 10px;';
+      let content = document.querySelector('article time ~ div');
+      if (content)
+        content.style = 'margin: 10px;';
+    }
+    let div_empty = document.querySelectorAll('div[style]');
+    for (let elem of div_empty)
+      if (!elem.innerText.length)
+        removeDOMElement(elem);
+    let article = document.querySelector('main > article');
+    if (article && article.innerText.length < 1000)
+      header_nofix('h2', '', 'BPC > no archive-fix');
+  }
+  let url = window.location.href;
+  getArchive(url, 'div.offer-module', '', 'article');
 }
 
 else if (matchDomain('boersen-zeitung.de')) {
