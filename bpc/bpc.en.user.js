@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.7.0
+// @version         3.9.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -79,6 +79,7 @@
 // @exclude         *://*.faz.net/*
 // @exclude         *://*.globo.com/*
 // @exclude         *://*.handelsblatt.com/*
+// @exclude         *://*.ilsole24ore.com/*
 // @exclude         *://*.journaldunet.com/*
 // @exclude         *://*.la-croix.com/*
 // @exclude         *://*.larioja.com/*

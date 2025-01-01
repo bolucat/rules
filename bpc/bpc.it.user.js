@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.9.5.1
+// @version         3.9.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -10,6 +10,7 @@
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
 // @match           *://*.it/*
 // @match           *://*.eastwest.eu/*
+// @match           *://*.ilsole24ore.com/*
 // @match           *://*.italian.tech/*
 // @match           *://*.quotidiano.net/*
 // @match           *://*.tuttosport.com/*
@@ -163,6 +164,13 @@ else if (matchDomain('ilmanifesto.it')) {
       }
     }
   }
+}
+
+else if (matchDomain('ilsole24ore.com')) {
+  header_nofix('div.paywalltext', 'div.lock');
+  waitDOMAttribute('body', 'BODY', 'style', node => node.removeAttribute('style'), true);
+  let ads = 'div.background-adv, div.abox, div.ob-smartfeed-wrapper, div.s24_adb';
+  hideDOMStyle(ads);
 }
 
 else if (domain = matchDomain(['iltirreno.it', 'lanuovasardegna.it']) || matchDomain(['gazzettadimodena.it', 'gazzettadireggio.it', 'lanuovaferrara.it'])) {
@@ -376,6 +384,24 @@ function addStyle(css, id = 1) {
     sheet.innerText = css;
     document.head.appendChild(sheet);
   }
+}
+
+function waitDOMAttribute(selector, tagName = '', attributeName = '', callback, multiple = false) {
+  let targetNode = document.querySelector(selector);
+  if (!targetNode)
+    return;
+  new window.MutationObserver(function (mutations) {
+    for (let mutation of mutations) {
+      if (mutation.target.attributes[attributeName]) {
+        callback(mutation.target);
+        if (!multiple)
+          this.disconnect();
+      }
+    }
+  }).observe(targetNode, {
+    attributes: true,
+    attributeFilter: [attributeName]
+  });
 }
 
 function clearPaywall(paywall, paywall_action) {
