@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.7.1
+// @version         3.9.7.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2654,10 +2654,11 @@ else if (matchDomain('reuters.com')) {
 
 else if (matchDomain('rivals.com')) {
   func_post = function () {
-    let lazy_images = document.querySelectorAll('div img[loading="lazy"][src$=".webp"]');
-    for (let elem of lazy_images) {
-      if (elem.src.match(/\/\w{5}\//))
-        elem.src = 'https://archive.ph' + elem.src;
+    let paywall = pageContains('div[style]', 'Subscribe to read more');
+    if (paywall.length) {
+      let banner = paywall.pop().parentNode;
+      header_nofix(banner, '', 'BPC > no archive-fix');
+      removeDOMElement(banner);
     }
   }
   let url = window.location.href;
