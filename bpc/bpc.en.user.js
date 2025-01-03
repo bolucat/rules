@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.7.2
+// @version         3.9.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3031,13 +3031,6 @@ else if (matchDomain('theamericanscholar.org')) {
 }
 
 else if (matchDomain('theatlantic.com')) {
-  setCookie('articleViews', '', 'theatlantic.com', '/', 0);
-  let lazy_images = document.querySelectorAll('img[class*="Image_lazy__"]');
-  for (let elem of lazy_images)
-    removeClassesByPrefix(elem, 'Image_lazy__');
-  let videos = document.querySelectorAll('iframe[data-src]:not([src])');
-  for (let video of videos)
-    video.src = video.getAttribute('data-src');
   let banners = 'aside#paywall, div[class^="LostInventoryMessage_"]';
   hideDOMStyle(banners);
 }
