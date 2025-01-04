@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.9.6.1
+// @version         3.9.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -17,10 +17,12 @@
 // @match           *://*.clarin.com/*
 // @match           *://*.correiodopovo.com.br/*
 // @match           *://*.cronista.com/*
+// @match           *://*.crusoe.com.br/*
 // @match           *://*.diaridegirona.cat/*
 // @match           *://*.diariocordoba.com/*
 // @match           *://*.diariocorreo.pe/*
 // @match           *://*.diariovasco.com/*
+// @match           *://*.diplomatique.org.br/*
 // @match           *://*.dn.pt/*
 // @match           *://*.elcomercio.pe/*
 // @match           *://*.elconfidencial.com/*
@@ -432,6 +434,16 @@ else if (matchDomain('cartacapital.com.br')) {
 else if (matchDomain('cronista.com')) {
   let ads = 'div#ad-slot-header, div.ad-slot-intext, div#selectMediaNota, div.b-suscription-container';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('crusoe.com.br')) {
+  getJsonUrl('section.paywall', '', 'div#content_post', {art_append: 1});
+  let ads = 'div#gpt-leaderboard, div.ads_desktop, div[class^="container-banner-"], div.catchment-box';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('diplomatique.org.br')) {
+  getJsonUrl('div.entry-content div.module_row', '', 'div.entry-content');
 }
 
 else if (matchDomain(pe_grupo_elcomercio_domains)) {
@@ -854,6 +866,88 @@ function getArticleJsonScript() {
     }
   }
   return json_script;
+}
+
+function getNestedKeys(obj, key) {
+  if (key in obj)
+    return obj[key];
+  let keys = key.split('.');
+  let value = obj;
+  for (let i = 0; i < keys.length; i++) {
+    value = value[keys[i]];
+    if (value === undefined)
+      break;
+  }
+  return value;
+}
+
+function getJsonUrlText(article, callback, article_id = '', key = '', url_rest = false, url_slash = false) {
+  let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
+  let json_url;
+  if (json_url_dom)
+    json_url = json_url_dom.href;
+  if (!json_url && article_id)
+    json_url = window.location.origin + '/wp-json/wp/v2/posts/' + article_id;
+  if (url_rest)
+    json_url = json_url.replace('/wp-json/', '/?rest_route=/');
+  else if (url_slash)
+    json_url = json_url.replace('/wp-json/', '//wp-json/');
+  if (json_url) {
+    fetch(json_url)
+    .then(response => {
+      if (response.ok) {
+        response.json().then(json => {
+          try {
+            let json_text = parseHtmlEntities(!key ? json.content.rendered : getNestedKeys(json, key));
+            if (json_text && json_text !== 'undefined')
+              callback(json_text, article);
+          } catch (err) {
+            console.log(err);
+          }
+        });
+      }
+    });
+  }
+}
+
+function getJsonUrlAdd(json_text, article, art_options = {}) {
+  let art_type = 'div';
+  let art_attrib = '';
+  if (Object.keys(art_options).length) {
+    if (art_options.art_type)
+      art_type = art_options.art_type;
+    if (art_options.art_class)
+      art_attrib += ' class="' + art_options.art_class + '"';
+    if (art_options.art_id)
+      art_attrib += ' id="' + art_options.art_id + '"';
+    if (art_options.art_style)
+      art_attrib += ' style="' + art_options.art_style + '"';
+    if (art_options.func_text)
+      json_text = art_options.func_text(json_text);
+  }
+  let parser = new DOMParser();
+  let doc = parser.parseFromString('<' + art_type + art_attrib + '>' + DOMPurify.sanitize(json_text, dompurify_options) + '</' + art_type + '>', 'text/html');
+  let article_new = doc.querySelector(art_type);
+  if (art_options.art_append || !article.parentNode) {
+    if (!art_options.art_hold)
+      article.innerHTML = '';
+    article.appendChild(article_new);
+  } else
+    article.parentNode.replaceChild(article_new, article);
+  if (func_post)
+    func_post();
+}
+
+function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_rest = false, url_slash = false) {
+  let paywall = document.querySelectorAll(paywall_sel);
+  let article = document.querySelector(article_sel);
+  if (paywall.length && article && dompurify_loaded) {
+    clearPaywall(paywall, paywall_action);
+    getJsonUrlText(article, (json_text, article) => {
+      if (json_text && article)
+        getJsonUrlAdd(json_text, article, art_options);
+    }, article_id, key, url_rest, url_slash);
+  }
 }
 
 function parseHtmlEntities(encodedString) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.8.0
+// @version         3.9.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1494,27 +1494,6 @@ else if (matchDomain('business-standard.com')) {
 }
 
 else if (matchDomain('businessinsider.com')) {
-  if (window.location.search !== '?rel=plus') {
-    if (window.location.hostname.startsWith('www.')) {
-      let video_section = document.querySelector('section.video-hero-section');
-      if (!video_section) {
-        let paywall = document.querySelector('div.pw-modal-entry');
-        if (paywall) {
-          removeDOMElement(paywall);
-          window.location.href = window.location.pathname + '?rel=plus';
-        }
-      }
-    }
-  } else {
-    let lazy_images = document.querySelectorAll('article div.lazy-holder > img.lazy-image[src^="data:image/"]');
-    for (let elem of lazy_images) {
-      let meta = elem.parentNode.querySelector('meta[itemprop="contentUrl"][content]');
-      if (meta) {
-        elem.src = meta.content;
-        elem.style = 'opacity: 1 !important;';
-      }
-    }
-  }
   let ads = 'div.l-ad, div.in-post-sticky, aside.has-video-ad, div.ad-callout-wrapper';
   hideDOMStyle(ads);
 }
