@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Sat, 04 Jan 2025 17:20:46 +0000
-! Diff-Path: ../patches/2025.1.4.1042.patch#ublock-filters
+! Last modified: Sun, 05 Jan 2025 08:16:35 +0000
+! Diff-Path: ../patches/2025.1.5.805.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -735,8 +735,6 @@ marketrealist.com##.gXgoom > div
 @@||myreadingmanga.disqus.com^$script
 myreadingmanga.info##.imgtop
 myreadingmanga.info##center
-##[href*="www.gaming-adult.com/"]
-alibaba.com##.m-product-item:has-text(Sponsored Listing)
 ||msn.com/advertisement.ad.js$script,1p,important
 ||aolcdn.com/ads/adswrappermsni.js$script,domain=msn.com,important
 msn.com##.extnativeaditem, .serversidenativead > h3
@@ -5967,9 +5965,10 @@ firefaucet.win##[class^="sticky-ad"]
 ||cpx-research.com^$3p
 ||adservice.google.*/adsid/integrator.js$xhr,redirect=nooptext,domain=tubia.com
 odkrywamyzakryte.com##+js(nofab)
-xtapes.to##+js(acs, jQuery, popunder)
-xtapes.to##+js(aopw, open)
+xtapes.to##+js(acs, document.write, unescape)
 74k.io##+js(set, cRAds, true)
+74k.io##+js(set, uas, [])
+88z.io##body > iframe[style^="left: 0px; bottom:"]
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,domain=88z.io
 0xxx.ws##+js(acs, decodeURI, decodeURIComponent)
 0xxx.ws##+js(nowoif)
@@ -9419,6 +9418,7 @@ filespayout.com###normal-box
 filespayout.com##center > a[rel]
 ||boarfishesquandangsunderdried.com^
 ||anylinks.in/full*^url=aHR0c$doc,urlskip=?url -base64
+updown.fun##+js(no-fetch-if, googlesyndication)
 !#if env_mobile
 ! *** filters/filters-mobile.txt ***
 !----- 2020 -----
@@ -14430,7 +14430,7 @@ calculator-online.net##+js(no-fetch-if, ads)
 calculator-online.net##+js(set, load_ads, trueFunc)
 calculator-online.net##.sticky_ad
 calculator-online.net##.related_box:has(.adds):style(height: 1px !important;)
-onionplay.*##+js(ra, href, a#clickfkplayer)
+onionplay.*###clickfkplayer[href]:remove-attr(href)
 ! afScript popups
 iguarras.com,iputitas.net##+js(aopr, afScript)
 messitv.net##+js(aopw, atOptions)
@@ -24059,6 +24059,7 @@ filecrypt.*##+js(rmnt, script, '{delete window[')
 filecrypt.*##+js(set, isAdblock, false)
 ! ||filecrypt.*^$popunder
 @@||cutcaptcha.com/captcha/*$script,domain=filecrypt.cc|filecrypt.co
+@@||filecrypt.co/captcha/captcha.php$image,1p
 filecrypt.*##div:has(> [href*=".html"])
 filecrypt.*##+js(ra, onclick, button[id][onclick*=".html"])
 sharer.pw###overlay
@@ -24084,3 +24085,8 @@ siamblockchain.com##.ai-viewport-1
 dotycat.com##+js(set, runCheck, noopFunc)
 arcaxbydz.id##+js(set, detectAdBlock, noopFunc)
 rateyourmusic.com##+js(set, adsSlotRenderEndSeen, true)
+ytapi.cc##+js(no-fetch-if, googlesyndication)
+streamingnow.mov##+js(rmnt, script, popundersPerIP)
+streamingnow.mov##+js(rmnt, script, adserverDomain)
+player.vidbinge.com##+js(rmnt, script, HTMLAllCollection)
+*$script,3p,denyallow=gstatic.com,domain=vidbinge.com

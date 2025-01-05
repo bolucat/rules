@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: vdGhh6VGMEI+53OOCaRg+w
-! Diff-Path: ../patches/7/7-s-1735929853-3600.patch
+! Checksum: +6XoCj0evUvGcUw5RTvb8w
+! Diff-Path: ../patches/7/7-s-1736088236-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.60.84
-! TimeUpdated: 2025-01-03T18:39:56+00:00
+! Version: 2.0.60.86
+! TimeUpdated: 2025-01-05T14:39:37+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1777,6 +1777,7 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+dic.pixiv.net##div[class*="h-["]:has(> div[id^="adsdk-"])
 ||caloo.jp/js/pc/sticky-ads.js
 anige-sokuhouvip.com###entry_outline:has(> a[href=""])
 doujinantena.top##div[style]:has(> div[id^="bnc_ad_"])
@@ -8198,6 +8199,7 @@ fx-koryaku.com##.textwidget > center > a[target="_blank"]
 ||dmm.co.jp^$domain=exploader.net
 ||exploader.net/d/$image
 ||dmm.co.jp^$popup,domain=exploader.net
+exploader.net##:matches-path(/(^\/$|\/free|\/search|\/preview|\/tag)/)a[target="_blank"][style*="display"] img
 exploader.net##:matches-path(/(^\/$|\/free|\/search|\/preview|\/tag)/)a[href^="https://al.dmm.co.jp"]
 exploader.net##article > div:not([class]):not([id]):not([style]) > div[style*="305px"][div*="750px"]
 exploader.net##article > div[style="display: flex; align-items: center; margin-bottom: 5px;"]
@@ -10813,6 +10815,7 @@ youpouch.com##.widget_text:first-child
 /^https?:\/\/[0-9a-z]{5,10}\.duckdns/$document,domain=duckdns.org
 !
 !
+blog.livedoor.jp##div[class^="amastep0"]
 blog.livedoor.jp##div[class^="article-body"] > div[style="border-top:1px dashed #c0c0c0; margin-top:30px; padding:10px;"] ~ a[href^="http://www.amazon.co.jp/exec/"][target="_blank"][rel="nofollow"]
 blog.livedoor.jp##.plugin-memo:has(> div.side > p > a[href^="http://www.amazon.co.jp/exec/"][target="_blank"][rel="nofollow"] > img)
 blog.livedoor.jp##.kiji > .article_main > div.krb-amzlt-box
