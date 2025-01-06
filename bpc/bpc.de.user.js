@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.7.3
+// @version         3.9.9.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -51,7 +51,7 @@ hideDOMStyle(ads, 10);
 
 var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'ikz-online.de', 'morgenpost.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
 var de_lv_domains = ['profi.de', 'wochenblatt.com'];
-var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de'];
+var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de', 'saechsische.de'];
 var de_motor_presse_domains = ['aerokurier.de', 'auto-motor-und-sport.de', 'flugrevue.de', 'motorradonline.de', 'womenshealth.de'];
 var de_rp_medien_domains = ['ga.de', 'rp-online.de', 'saarbruecker-zeitung.de', 'volksfreund.de'];
 
@@ -1001,7 +1001,7 @@ else if (matchDomain(de_rp_medien_domains)) {
 }
 
 else if (matchDomain(de_madsack_domains) || document.querySelector('head > link[href*=".rndtech.de/"]')) {
-  if (!window.location.search.startsWith('?outputType=valid_amp')) {
+  if (!window.location.search.includes('outputType=valid_amp')) {
     let ads = 'div[class^="Adstyled__AdWrapper"]';
     hideDOMStyle(ads);
   } else {
@@ -1010,7 +1010,7 @@ else if (matchDomain(de_madsack_domains) || document.querySelector('head > link[
 }
 
 else if (matchDomain('ovb-online.de') || matchDomain(['bgland24.de', 'chiemgau24.de', 'innsalzach24.de', 'mangfall24.de', 'rosenheim24.de', 'wasserburg24.de'])) {
-  let ads = 'div.id-TBeepSlot, div[data-id-advertdfpconf]';
+  let ads = 'div[class^="id-TBeepSlot-"], div[data-id-advertdfpconf]';
   hideDOMStyle(ads);
 }
 

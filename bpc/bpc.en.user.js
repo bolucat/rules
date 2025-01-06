@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.8.2
+// @version         3.9.8.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2823,11 +2823,7 @@ else if (matchDomain('sofrep.com')) {
 }
 
 else if (matchDomain('spglobal.com')) {
-  let overlay = document.querySelector('.article__overlay');
-  removeDOMElement(overlay);
-  let html_noscroll = document.querySelector('html[class]');
-  if (html_noscroll)
-    html_noscroll.removeAttribute('class');
+  setCookie('count', '', 'spglobal.com', '/', 0);
 }
 
 else if (matchDomain('sportico.com')) {
