@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.9.8.1
+// @version         3.9.8.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -67,6 +67,8 @@
 
 (function() {
   'use strict';
+
+var func_post;
 
 window.setTimeout(function () {
 
@@ -460,8 +462,17 @@ else if (matchDomain(pe_grupo_elcomercio_domains)) {
 }
 
 else if (matchDomain('elespectador.com')) {
-  if (window.location.search.match(/(\?|&)outputType=amp/)) {
+  if (window.location.search.includes('outputType=amp')) {
     amp_unhide_subscr_section('amp-ad, amp-embed, [class^="Widget"], amp-fx-flying-carpet', false);
+    let googledoc_iframes = document.querySelectorAll('div > amp-iframe[src^="https://docs.google.com/viewer"][class]');
+    for (let elem of googledoc_iframes) {
+      let a_link = document.createElement('a');
+      a_link.href = elem.getAttribute('src');
+      a_link.innerText = 'pdf-link';
+      a_link.target = '_blank';
+      elem.removeAttribute('class');
+      elem.parentNode.before(a_link);
+    }
   } else {
     amp_redirect('div.exclusive_validation');
   }
@@ -856,6 +867,47 @@ function refreshCurrentTab(not_loop = true) {
   }
 }
 
+function randomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+function archiveRandomDomain() {
+  let tld_array = ['fo', 'is', 'li', 'md', 'ph', 'vn'];
+  let tld = tld_array[randomInt(6)];
+  return 'archive.' + tld;
+}
+
+function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
+  return externalLink(['archive.today', archiveRandomDomain()], 'https://{domain}?run=1&url={url}', url, text_fail);
+}
+
+function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
+  return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href, url, text_fail);
+}
+
+function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full article text:\r\n') {
+  let text_fail_div = document.createElement('div');
+  text_fail_div.id = 'bpc_archive';
+  text_fail_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
+  let parser = new DOMParser();
+  text_fail = text_fail.replace(/\[(?<url>[^\]]+)\]/g, function (match, url) {
+    return "<a href='" + url + "' target='_blank' style='color: red'>" + new URL(url).hostname + "</a>";
+  });
+  let doc = parser.parseFromString('<span>' + text_fail + '</span>', 'text/html');
+  let elem = doc.querySelector('span');
+  text_fail_div.appendChild(elem);
+  for (let domain of domains) {
+    let ext_url = ext_url_templ.replace('{domain}', domain).replace('{url}', url.split('?')[0]);
+    let a_link = document.createElement('a');
+    a_link.innerText = domain;
+    a_link.href = ext_url;
+    a_link.target = '_blank';
+    text_fail_div.appendChild(document.createTextNode(' | '));
+    text_fail_div.appendChild(a_link);
+  }
+  return text_fail_div;
+}
+
 function getArticleJsonScript() {
   let scripts = document.querySelectorAll('script[type="application/ld+json"]');
   let json_script;
@@ -926,7 +978,7 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
       json_text = art_options.func_text(json_text);
   }
   let parser = new DOMParser();
-  let doc = parser.parseFromString('<' + art_type + art_attrib + '>' + DOMPurify.sanitize(json_text, dompurify_options) + '</' + art_type + '>', 'text/html');
+  let doc = parser.parseFromString('<' + art_type + art_attrib + '>' + json_text + '</' + art_type + '>', 'text/html');
   let article_new = doc.querySelector(art_type);
   if (art_options.art_append || !article.parentNode) {
     if (!art_options.art_hold)
@@ -941,7 +993,7 @@ function getJsonUrlAdd(json_text, article, art_options = {}) {
 function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_rest = false, url_slash = false) {
   let paywall = document.querySelectorAll(paywall_sel);
   let article = document.querySelector(article_sel);
-  if (paywall.length && article && dompurify_loaded) {
+  if (paywall.length && article) {
     clearPaywall(paywall, paywall_action);
     getJsonUrlText(article, (json_text, article) => {
       if (json_text && article)

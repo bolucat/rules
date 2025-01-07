@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 9uQhLQbgS6YQBK8ZVnzB7Q
-! Diff-Path: ../patches/7/7-s-1736178225-3600.patch
+! Checksum: tS/C6bvLSr5REQRUXgC4Rw
+! Diff-Path: ../patches/7/7-s-1736264627-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.60.92
-! TimeUpdated: 2025-01-06T15:39:15+00:00
+! Version: 2.0.60.99
+! TimeUpdated: 2025-01-07T15:39:06+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1090,7 +1090,7 @@ nan-net.com##+js(no-setTimeout-if, movie_cnt, 300)
 ! popup
 kokeshi-doll.com##+js(window.open-defuser)
 ! popstate overlay
-engineweb.jp,kenshonavi.com,maidonanews.jp,nkreport.jp,riajo.com,searchkoreanews.jp,shiori-tabi.jp,trafficnews.jp,yougakumap.com,encount.press,realsound.jp,h1g.jp##+js(abort-current-script, document.referrer, gmo_bb)
+chibanippo.co.jp,engineweb.jp,kenshonavi.com,maidonanews.jp,nkreport.jp,riajo.com,searchkoreanews.jp,shiori-tabi.jp,trafficnews.jp,yougakumap.com,encount.press,realsound.jp,h1g.jp##+js(abort-current-script, document.referrer, gmo_bb)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/128686
 uraaka-joshi.com##+js(window.open-defuser)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/146129
@@ -1298,8 +1298,8 @@ games.yahoo.co.jp#$#.isJack { margin-top: 0!important; }
 ! placeholder
 lesson.golfdigest.co.jp,score.golfdigest.co.jp#$##wholeHeaderPane { height: auto !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/132595
-9db.jp#$?##container > div#footer:has(> div > ins.adsbygoogle) { display: none !important; }
-9db.jp#$##contents { margin-bottom: 0 !important; }
+9db.jp##:matches-path(/\/.+\/map/)#container > div#footer
+9db.jp#$?#:matches-path(/\/.+\/map/)body > div#container > div#contents { margin-bottom: 0 !important; }
 ! https://twitter.com/Wataru_Nanase/status/1578703643767083008
 dq-dai.com#$##lower section.character ul.character_list li.standby { opacity: 1 !important; }
 ! https://egg.5ch.net/test/read.cgi/software/1659969958/142
@@ -1779,6 +1779,13 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+chunichi.co.jp##div[class^="cmp-lst"] > div[class^="l-artlst"] > ul.list > li.item:has(div[id^="div-gpt-"])
+chunichi.co.jp#?#.sub-container > div[class^="cmp-hdg"]:has(> h2:contains(【PR】))
+tumadouga.jp##.container > div.index_banner_space[style="margin-top:0.5rem; margin-bottom:-1rem;"]
+squallchannel.com##.linkwithin_div
+qiita.com##div[id^="ArticleSearchSearchPage-"] > main > div[class^="style-"] > div[class^="style-"]:has(> div[id^="div-gpt-ad-"])
+suki-kira.com###comment-top-ad
+suki-kira.com###vote-bottom-ad
 picky-s.jp###menu-sticky_ad
 lettuceclub.net###pro-message ~ div.section:has(> div[id^="logly-"])
 lettuceclub.net#?##pro-message ~ div.section:has(> div.w-full > h2:contains(PR))
@@ -11149,8 +11156,6 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_japanese
 !
 !
 !
-! https://github.com/AdguardTeam/AdguardFilters/issues/195541
-@@||hbb.afl.rakuten.co.jp/hgb/*%3A%2F%2Fthumbnail.$domain=plaza.rakuten.co.jp
 ! https://hoyme.jp/shindan/94283
 @@||cpt.geniee.jp/hb/*/wrapper.min.js$domain=hoyme.jp
 @@||yads.c.yimg.jp/js/yads-async.js$domain=hoyme.jp

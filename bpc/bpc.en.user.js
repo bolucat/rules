@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.8.3
+// @version         3.9.8.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2031,7 +2031,7 @@ else if (matchDomain('foxnews.com')) {
 }
 
 else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
-  if (window.location.pathname.match(/\/(.|ty-article-magazine\/)/)) {
+  if (window.location.pathname.match(/\/ty-article/)) {
     let body_wrapper_sel = 'section[data-testid="article-body-wrapper"]';
     let paywall_sel = 'div[data-test="paywallMidpage"], ' + body_wrapper_sel + ' div[data-testid="logo-loading-indicator"]';
     let article_sel = 'main';
@@ -2293,16 +2293,14 @@ else if (matchDomain('latimes.com')) {
 }
 
 else if (matchDomain('livelaw.in')) {
-  let paywall = document.querySelector('div#subscription_paid_message, div.subscribeNow');
+  let amp = window.location.pathname.startsWith('/amp/');
+  let paywall = document.querySelector(amp ? 'div.subscribeNow' : 'div#subscription_paid_message');
   if (paywall) {
-    let intro = document.querySelector('div.story');
+    let intro = document.querySelector(amp ? 'div.story'; 'div.details-story-wrapper');
     removeDOMElement(paywall, intro);
-    let restricted_message = document.querySelector('div.restricted_message');
-    if (restricted_message)
-      restricted_message.classList.remove('restricted_message');
     let paywall_content = document.querySelector('div.paywall-content.hide');
     if (paywall_content)
-      paywall_content.classList.remove('hide');
+      paywall_content.className = amp ? '' : 'news_details_page_row2 details-story-wrapper';
   }
   let ads = 'inside-post-ad, amp-ad';
   hideDOMStyle(ads);
