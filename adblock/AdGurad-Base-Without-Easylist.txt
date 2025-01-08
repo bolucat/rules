@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: q0LAxCFcIBw2xlL/OVbvIQ
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1736271782-3600.patch
+! Checksum: 4HYbZIS66q79PKwVt3d1XA
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1736358151-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.67.4
-! TimeUpdated: 2025-01-07T17:31:30+00:00
+! Version: 2.3.67.16
+! TimeUpdated: 2025-01-08T17:31:26+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -78,6 +78,8 @@
 !
 !
 !
+||mqprzapns.com^
+||dzeaqmeuaql.com^
 ||bjjky.cfd^$all
 ||dsfvmx.click^
 ||mentionideablit.com^
@@ -16312,6 +16314,8 @@ youporn.com##+js(remove-node-text, script, /window\.[\s\S]*?_zone_[\s\S]*?{"zone
 !
 ! NOTE: Regular rules
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/195978
+woiden.id##+js(no-fetch-if, www3.doubleclick.net)
 ! https://github.com/AdguardTeam/AdguardBrowserExtension/issues/3089
 leakedpacks.com#@#.sidebar-ad
 leakedpacks.com#@#.Ad-Container
@@ -27536,6 +27540,7 @@ autopapa.ge##.top-rek
 !
 ! NOTE: Greek
 !
+newsit.gr##div[style="min-height: 620px;"]
 newsauto.gr##div[class^="ad-"]
 ipaidia.gr##.inarticle-add
 mononews.gr##.header-banner
@@ -28059,6 +28064,12 @@ patrika.com##.google-ads-full
 !
 ! NOTE: Hungarian
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/195685
+filmvilag.me##a > img[src*="filmvilag.me/style/"]
+! https://github.com/AdguardTeam/AdguardFilters/issues/195690
+||vadaszapro.net/banners/
+||z-shops.eu/banner
+vadaszapro.net##iframe[src*="z-shops.eu/banner"] + div[style]:empty
 ! https://github.com/AdguardTeam/AdguardFilters/issues/195552
 mozinet.me##div[class^="container_"] > div[class]:has(> a[href] > img[src])
 ! https://github.com/AdguardTeam/AdguardFilters/issues/195251
@@ -30513,6 +30524,8 @@ dap-news.com##.ads
 !
 ! NOTE: Korean
 !
+||nooo.tv/theme/basic/img/banner
+||tvwiki*.com/AD
 kybkhy.tistory.com##div[class^="anyBannerArea"]
 tvroom4.org##[class*="banner"]
 web.humoruniv.com###naver_adpost_wrap
@@ -42256,8 +42269,10 @@ triblive.com###storyContent > div[data-type="float"][data-stn-player]
 !
 !
 ! Common rules, which partially hide banners
-#$?#body > div[id^="img_"][class^="img_"][style^="width"]:first-child { visibility: hidden !important; }
-#$?#body > a:only-child > div[id^="img_"][class^="img_"] { visibility: hidden !important; }
+#$?#body > div[id^="img_"][class^="img_"][style^="width"]:first-child { position: absolute !important; top: -100000px !important; }
+#$?#body > div:first-child > script + div[id^="img_"][class^="img_"] { position: absolute !important; top: -100000px !important; }
+#$?#body > a:only-child > div[id^="img_"][class^="img_"] { max-width: 0px !important; max-height: 0px !important; opacity: 0 !important; }
+07c225f3.online,content-loader.com,css-load.com,html-load.com,img-load.com#$?#body > *:not(pre) { filter: opacity(0) !important; pointer-events: none !important; }
 ! END: Ad-Shield ad reinsertion
 !
 ! ExoClick
@@ -42472,6 +42487,8 @@ $subdocument,third-party,denyallow=disqus.com,domain=welovemanga.one
 ! NOTE: Specific rules
 !
 !
+tft.op.gg##div[class$="-wing"]:has(> div[style*="min-height:"] > div[data-ad])
+tft.op.gg##main > div[class] > div[class]:has(> div[style*="min-height:"] > div[data-ad])
 klto9.com###aigirlfriendad
 klto9.com#$#div[id^="myCarousel"] { margin-top: 0 !important; }
 axios.com###main-content > .hp-margins > .block > .hidden > .flex > .pb-40:has(> .sticky > .border-t > .sideRailAd)
@@ -44111,6 +44128,7 @@ uflix.cc###wrn
 uflix.cc##div[style]:has(> #iploc)
 ||batery.win/promo/*/?affijet-click=*popunder$popup
 ddproperty.com##.container-dfp
+icons8.com##.by-sell
 icons8.com##.carbon-card-ad
 icons8.com##.by-sell-ads-large
 icons8.com##.addon-shutterstock
