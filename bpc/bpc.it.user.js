@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.9.8.1
+// @version         3.9.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -31,7 +31,7 @@ if (overlay)
 var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad';
 hideDOMStyle(ads, 10);
 
-var it_gedi_domains = ['huffingtonpost.it', 'italian.tech', 'lastampa.it', 'lescienze.it', 'moda.it'];
+var it_gedi_domains = ['huffingtonpost.it', 'italian.tech', 'lastampa.it', 'lescienze.it', 'moda.it', 'repubblica.it'];
 var it_ilmessaggero_domains = ['corriereadriatico.it', 'ilgazzettino.it', 'ilmattino.it', 'ilmessaggero.it', 'quotidianodipuglia.it'];
 var it_quotidiano_domains = ['ilgiorno.it', 'ilrestodelcarlino.it', 'iltelegrafolivorno.it', 'lanazione.it', 'quotidiano.net'];
 
@@ -226,13 +226,11 @@ else if (matchDomain('italiaoggi.it')) {
           let json_text = json.articleBody;
           let content = article_locked.querySelector('section');
           if (json_text && content) {
-            if (json_text && content) {
-              let parser = new DOMParser();
-              json_text = json_text.replace(/&amp;apos;/g, "'").replace(/;/g, '');
-              let doc = parser.parseFromString('<div><section>' + json_text + '</section></div>', 'text/html');
-              let content_new = doc.querySelector('div');
-              content.parentNode.replaceChild(content_new, content);
-            }
+            let parser = new DOMParser();
+            json_text = json_text.replace(/&amp;apos;/g, "'").replace(/;/g, '');
+            let doc = parser.parseFromString('<div><section>' + json_text + '</section></div>', 'text/html');
+            let content_new = doc.querySelector('div');
+            content.parentNode.replaceChild(content_new, content);
           }
         }
       }
@@ -241,21 +239,30 @@ else if (matchDomain('italiaoggi.it')) {
 }
 
 else if (domain = matchDomain(it_gedi_domains)) {
+  let amp = window.location.pathname.match(/\amp(\/)?$/);
   if (matchDomain(['huffingtonpost.it', 'lastampa.it'])) {
     if (window.location.pathname.includes('/news/')) {
-      if (!window.location.pathname.match(/\amp(\/)?$/)) {
+      if (!amp) {
         let paywall = document.querySelector('iframe#__limio_frame');
         if (paywall) {
           setCookie(/blaize_session/, '', domain, '/', 0);
-          refreshCurrentTab();
+          refreshCurrentTab(false);
         }
         let modal = document.querySelector('aside#widgetDP');
         removeDOMElement(modal);
       } else
         ampToHtml();
     }
+  } else if (matchDomain('repubblica.it')) {
+    if (!amp)
+      amp_redirect('iframe#__limio_frame', '', window.location.pathname + 'amp/');
+    else {
+      amp_unhide_subscr_section('amp-ad, amp-embed');
+      if (!mobile)
+        addStyle('img.i-amphtml-fill-content {min-height: 50% !important; min-width: 50% !important;}');
+    }
   } else {
-    if (!window.location.pathname.match(/\amp(\/)?$/)) {
+    if (!amp) {
       let paywall = document.querySelector('div#ph-paywall');
       removeDOMElement(paywall);
       setCookie(/blaize_session/, '', domain, '/', 0);
