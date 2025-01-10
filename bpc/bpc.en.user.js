@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.8.5
+// @version         3.9.8.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2296,7 +2296,7 @@ else if (matchDomain('livelaw.in')) {
   let amp = window.location.pathname.startsWith('/amp/');
   let paywall = document.querySelector(amp ? 'div.subscribeNow' : 'div#subscription_paid_message');
   if (paywall) {
-    let intro = document.querySelector(amp ? 'div.story'; 'div.details-story-wrapper');
+    let intro = document.querySelector(amp ? 'div.story' : 'div.details-story-wrapper');
     removeDOMElement(paywall, intro);
     let paywall_content = document.querySelector('div.paywall-content.hide');
     if (paywall_content)
