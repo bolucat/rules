@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.9.6.2
+// @version         3.9.9.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -42,7 +42,7 @@
 // ==/UserScript==
 
 (function() {
-  'use strict';
+  //'use strict';
 
 var func_post;
 
@@ -137,10 +137,8 @@ else if (matchDomain('atlantico.fr')) {
 }
 
 else if (matchDomain('autohebdo.fr')) {
-  if (window.location.hostname.startsWith('www.') && window.location.pathname.endsWith('.html')) {
-    if (true)
-      getJsonUrl('div.box-info.yellow', '', 'div.editor', {art_append: 1});
-  }
+  if (window.location.hostname.startsWith('www.') && window.location.pathname.endsWith('.html'))
+    getJsonUrl('div.box-info.yellow', '', 'div.editor', {art_append: 1});
 }
 
 else if (matchDomain(be_groupe_ipm_domains)) {
@@ -421,6 +419,60 @@ else if (matchDomain('lepoint.fr')) {
   }
 }
 
+else if (matchDomain('lequipe.fr')) {
+  let paywall = document.querySelector('div.Article__paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article_id = window.location.pathname.match(/\d+$/)[0];
+    let article = document.querySelector('div.article__body');
+    if (article_id && article) {
+      let url_src = 'https://dwh.lequipe.fr/api/v4/efr/news/' + article_id;
+      fetch(url_src)
+      .then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            try {
+              let pars = json.items.filter(x => x.layout === 'article_body')[0].objet.paragraphs;
+              pars.shift();
+              article.innerHTML = '';
+              article.className += ' Article__paragraph';
+              article.appendChild(document.createElement('br'));
+              addStyle('div.article__body > p.Paragraph {font-family: "DINNextLTPro-Regular", sans-serif; font-size: 18px; font-weight: 400; line-height: 26px;}');
+              let parser = new DOMParser();
+              for (let par of pars) {
+                let elem = '';
+                if (par.content) {
+                  if (par.content) {
+                    let doc = parser.parseFromString('<p class="Paragraph">' + par.content + '</p>', 'text/html');
+                    elem = doc.querySelector('p');
+                  }
+                } else if (par.title) {
+                  elem = document.createElement('h2');
+                  elem.innerText = par.title;
+                } else if (par.media && par.media.url && par.media.ratio) {
+                  let ratio = par.media.ratio;
+                  if (!parseInt(ratio))
+                    ratio = 1.5;
+                  let url = par.media.url.replace(/\\u002F/g, '/').replace('{width}', '400').replace('{height}', parseInt(400 / ratio)).replace('{quality}', '75');
+                  let caption = par.media.legende && par.media.legende.length > 2 ? par.media.legende : ''
+                    elem = makeFigure(url, caption, {}, {'style': 'font-weight: bold;'});
+                } else if (!['article_paragraph_pub'].includes(par.__type))
+                  console.log(par);
+                if (elem)
+                  article.appendChild(elem);
+              }
+            } catch (err) {
+              console.log(err);
+            }
+          });
+        }
+      });
+    }
+  }
+  let ads = 'div.AmPlaceholder';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('lerevenu.com')) {
   let ads = 'div.wrapperAd';
   hideDOMStyle(ads);
@@ -553,10 +605,8 @@ else if (matchDomain('pourleco.com')) {
 }
 
 else if (matchDomain('reforme.net')) {
-  if (true) {
-    let article_sel = 'div.elementor-widget-theme-post-content';
-    getJsonUrl(article_sel + ' section', '', article_sel);
-  }
+  let article_sel = 'div.elementor-widget-theme-post-content';
+  getJsonUrl(article_sel + ' section', '', article_sel);
   let banner = 'div.free-access-banner';
   hideDOMStyle(banner);
 }
@@ -686,6 +736,27 @@ function clearPaywall(paywall, paywall_action) {
       }
     }
   }
+}
+
+function makeFigure(url, caption_text, img_attrib = {}, caption_attrib = {}) {
+  let elem = document.createElement('figure');
+  let img = document.createElement('img');
+  img.src = url;
+  for (let attrib in img_attrib)
+    if (img_attrib[attrib])
+      img.setAttribute(attrib, img_attrib[attrib]);
+  elem.appendChild(img);
+  if (caption_text) {
+    let caption = document.createElement('figcaption');
+    for (let attrib in caption_attrib)
+      if (caption_attrib[attrib])
+        caption.setAttribute(attrib, caption_attrib[attrib]);
+    let cap_par = document.createElement('p');
+    cap_par.innerText = caption_text;
+    caption.appendChild(cap_par);
+    elem.appendChild(caption);
+  }
+  return elem;
 }
 
 function header_nofix(header, cond_sel = '', msg = 'BPC > no fix') {
