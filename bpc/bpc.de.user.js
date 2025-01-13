@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.9.0
+// @version         3.9.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -33,7 +33,7 @@
 // ==/UserScript==
 
 (function() {
-  'use strict';
+  //'use strict';
 
 var func_post;
 
@@ -775,8 +775,8 @@ else if (matchDomain('tt.com')) {
                 elem = document.createElement('p');
                 for (let item of par.elements) {
                   if (item.content) {
-                    let sub_elem = document.createElement('p');
-                    sub_elem.innerText = parseHtmlEntities(item.content);
+                    let doc = parser.parseFromString('<p>' + item.content + '</p>', 'text/html');
+                    sub_elem = doc.querySelector('p');
                     elem.appendChild(sub_elem);
                   }
                 }

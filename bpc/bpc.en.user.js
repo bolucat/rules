@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.9.0
+// @version         3.9.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -17,6 +17,7 @@
 // @match           *://*.net.au/*
 // @match           *://*.org/*
 // @match           *://*.pub/*
+// @match           *://*.businessdesk.co.nz/*
 // @match           *://*.businesspost.ie/*
 // @match           *://*.capital.bg/*
 // @match           *://*.dnevnik.bg/*
@@ -198,7 +199,7 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || document.
   }, 1000);
 }
 
-else if (window.location.hostname.match(/\.(com|net)\.au$/) || matchDomain(['afr.com', 'inc-aus.com'])) {//australia
+else if (window.location.hostname.match(/\.(au|nz)$/) || matchDomain(['afr.com', 'inc-aus.com'])) {//australia & new zealand
 
 if (matchDomain('afr.com')) {
   let article_sel = '#endOfArticle';
@@ -322,6 +323,32 @@ if (matchDomain('afr.com')) {
   }
 }
 
+else if (matchDomain('businessdesk.co.nz')) {
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    paywall.classList.remove('paywall');
+    let signup_box = document.querySelector('div.signup-box-container');
+    removeDOMElement(signup_box);
+    let url = window.location.href.split(/[#\?]/)[0];
+    fetch(url)
+    .then(response => {
+      if (response.ok) {
+        response.text().then(html => {
+          let match = html.match(/:query="'([^"]+)'"/);
+          if (match) {
+            let parser = new DOMParser();
+            let src_text = breakText(parseHtmlEntities(match[1])).replace(/\n\n/g, '<br><br>').replace(/\.([^\s\d]|&)/g, ". $1");
+            let doc = parser.parseFromString('<div>' + src_text + '</div>', 'text/html');
+            let content_new = doc.querySelector('div');
+            paywall.innerHTML = '';
+            paywall.appendChild(content_new);
+          }
+        })
+      }
+    })
+  }
+}
+
 else if (domain = matchDomain(['crikey.com.au', 'inc-aus.com', 'smartcompany.com.au', 'themandarin.com.au'])) {
   if (matchDomain('themandarin.com.au')) {
     getJsonUrl('div[data-enterprise-agreement-paywall="true"]', '', 'div.paywall-mandy');
@@ -362,6 +389,12 @@ else if (matchDomain('macrobusiness.com.au')) {
       }
     }
   }
+}
+
+else if (matchDomain('nzherald.co.nz')) {
+  // use bpc adblocker filter
+  let premium_toaster = '#premium-toaster';
+  hideDOMStyle(premium_toaster);
 }
 
 else if (matchDomain('spectator.com.au')) {
@@ -2532,12 +2565,6 @@ else if (matchDomain('nytimes.com')) {
     let banners = 'div[data-testid="inline-message"], div[id^="ad-"], div.pz-ad-box';
     hideDOMStyle(banners);
   }
-}
-
-else if (matchDomain('nzherald.co.nz')) {
-  // use bpc adblocker filter
-  let premium_toaster = '#premium-toaster';
-  hideDOMStyle(premium_toaster);
 }
 
 else if (matchDomain('outlookbusiness.com')) {
