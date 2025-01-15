@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.9.2
+// @version         3.9.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -148,7 +148,7 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"]';
+var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"], amp-ad, amp-embed[type="mgid"], amp-embed[type="outbrain"], amp-embed[type="taboola"]';
 hideDOMStyle(ads, 10);
 
 var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 'thepeterboroughexaminer.com', 'therecord.com', 'thespec.com', 'thestar.com', 'wellandtribune.ca'];
@@ -330,7 +330,7 @@ else if (matchDomain('businessdesk.co.nz')) {
     let signup_box = document.querySelector('div.signup-box-container');
     removeDOMElement(signup_box);
     let url = window.location.href.split(/[#\?]/)[0];
-    fetch(url)
+    fetch(url, {headers: {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"}})
     .then(response => {
       if (response.ok) {
         response.text().then(html => {
@@ -457,7 +457,7 @@ else {
           }, 500);
         }
       } else if (window.location.search.match(/[&\?]amp/)) {
-        amp_unhide_subscr_section('amp-ad, amp-embed, [id^="ad-mrec-"]', false);
+        amp_unhide_subscr_section('[id^="ad-mrec-"]', false);
         let figure_stretch = document.querySelectorAll('figure.stretch');
         for (let elem of figure_stretch)
           elem.classList.remove('stretch');
@@ -992,21 +992,9 @@ else if (matchDomain('stylist.co.uk')) {
 }
 
 else if (matchDomain('telegraph.co.uk')) {
-  if (window.location.pathname.endsWith('/amp/')) {
-    let paywall = document.querySelectorAll('.premium-paywall');
-    if (paywall.length) {
-      let truncated_content = document.querySelector('.truncated-content');
-      removeDOMElement(...paywall, truncated_content);
-      amp_unhide_access_hide('="c.result=\'ALLOW_ACCESS\'"', '', 'amp-ad, amp-embed', false);
-    } else {
-      let ads = 'amp-ad, amp-embed';
-      hideDOMStyle(ads);
-    }
-  } else {
-    let subwall = '[class^="subwall"]';
-    let ads = '.advert, .commercial-unit';
-    hideDOMStyle(subwall + ', ' + ads);
-  }
+  let subwall = '[class^="subwall"]';
+  let ads = '.advert, .commercial-unit';
+  hideDOMStyle(subwall + ', ' + ads);
 }
 
 else if (matchDomain('tes.com')) {
@@ -1150,10 +1138,7 @@ else if (matchDomain(uk_nat_world_domains) || document.querySelector('footer > d
 } else {
 
 if (matchDomain(usa_adv_local_domains)) {
-  if (window.location.search.startsWith('?outputType=amp')) {
-    let ads = 'amp-embed';
-    hideDOMStyle(ads);
-  } else {
+  if (!window.location.search.startsWith('?outputType=amp')) {
     let paywall_sel = 'div.paywall';
     let paywall = document.querySelector(paywall_sel);
     let article = document.querySelector('div.entry-content');
@@ -1414,7 +1399,7 @@ else if (matchDomain('benzinga.com')) {
 
 else if (matchDomain('billboard.com')) {
   if (window.location.pathname.endsWith('/amp/')) {
-    amp_unhide_subscr_section('amp-ad, amp-embed');
+    amp_unhide_subscr_section();
   }
 }
 
@@ -1670,7 +1655,7 @@ else if (matchDomain('dailywire.com')) {
 
 else if (matchDomain('dallasnews.com')) {
   if (window.location.search.startsWith('?outputType=amp')) {
-    amp_unhide_subscr_section('amp-ad, amp-embed');
+    amp_unhide_subscr_section();
   }
 }
 
@@ -1978,7 +1963,7 @@ else if (matchDomain('financialexpress.com')) {
   if (paywall)
     paywall.classList.remove('paywall');
   let register = 'div.pcl-wrap';
-  let ads_selector = window.location.pathname.endsWith('/lite/') ? 'amp-ad, amp-embed, .ad-bg-container' : 'div[class*="-ads-blocks-ad-unit"]';
+  let ads_selector = window.location.pathname.endsWith('/lite/') ? '.ad-bg-container' : 'div[class*="-ads-blocks-ad-unit"]';
   hideDOMStyle(register + ', ' + ads_selector);
 }
 
@@ -2153,7 +2138,7 @@ else if (matchDomain('historyextra.com')) {
 
 else if (matchDomain('inc42.com')) {
   if (window.location.pathname.endsWith('/amp/')) {
-    amp_unhide_access_hide('="status"', '="NOT status"', 'amp-ad, amp-embed, div.wru-widget');
+    amp_unhide_access_hide('="status"', '="NOT status"', 'div.wru-widget');
   } else {
     let banner = document.querySelector('div[id*="_leaderboard_"]');
     removeDOMElement(banner);
@@ -2162,7 +2147,7 @@ else if (matchDomain('inc42.com')) {
 
 else if (matchDomain('indianexpress.com')) {
   if (window.location.pathname.endsWith('/lite/'))
-    amp_unhide_access_hide('="metering.result=\'ALLOW_ACCESS\'"', '', 'div.amp-ad, amp-embed');
+    amp_unhide_access_hide('="metering.result=\'ALLOW_ACCESS\'"');
   else {
     let ads = 'div[class^="adsbox"], div.adboxtop, div.add-first, div.osv-ad-class, div.ie-int-campign-ad';
     hideDOMStyle(ads);
@@ -2175,7 +2160,7 @@ else if (matchDomain('indiatoday.in')) {
     if (!url.includes('/amp/')) {
       amp_redirect('div#csc-paywall');
     } else {
-      amp_unhide_access_hide('="granted"', '="NOT NOT granted"', 'amp-ad, amp-embed');
+      amp_unhide_access_hide('="granted"', '="NOT NOT granted"');
     }
   }
 }
@@ -2396,7 +2381,7 @@ else if (matchDomain('mexiconewsdaily.com')) {
 
 else if (matchDomain('mid-day.com')) {
   if (window.location.pathname.startsWith('/amp/')) {
-    amp_unhide_access_hide('="granted"', '="NOT granted"', 'amp-ad, amp-embed, [class*="BannerAd"], div.midday-wrapper');
+    amp_unhide_access_hide('="granted"', '="NOT granted"', '[class*="BannerAd"], div.midday-wrapper');
   } else {
     amp_redirect('div#myModalFullscreen');
     let read_more = document.querySelector('#read-more-my');
@@ -2527,8 +2512,6 @@ else if (matchDomain(['nola.com', 'theadvocate.com'])) {
     let body_hidden = document.querySelector('.site-container');
     if (body_hidden)
       body_hidden.setAttribute('style', 'display:block;');
-    let ads = 'amp-ad, amp-embed';
-    hideDOMStyle(ads);
   } else {
     let ads = 'div.tnt-ads-container, div.asset-breakout-ads';
     hideDOMStyle(ads);
@@ -2854,7 +2837,7 @@ else if (matchDomain('spglobal.com')) {
 
 else if (matchDomain('sportico.com')) {
   if (window.location.pathname.endsWith('/amp/'))
-    amp_unhide_subscr_section('amp-ad, amp-embed');
+    amp_unhide_subscr_section();
 }
 
 else if (matchDomain('standardmedia.co.ke')) {
@@ -3107,7 +3090,7 @@ else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
     let ads = 'div.ad, div.article-ad, div.dfp-ad, div#paywallbox, div[id^="piano-art-"]';
     hideDOMStyle(counter + ', ' + ads);
   } else {
-    let ads = 'amp-ad, amp-embed, [class^="height"], [class^="advt"], [id^="piano"]';
+    let ads = '[class^="height"], [class^="advt"], [id^="piano"]';
     hideDOMStyle(ads);
   }
   function hindu_main() {
@@ -4004,7 +3987,7 @@ else if (matchDomain(usa_hearst_comm_domains) || document.querySelector('head > 
 
 else if ((domain = matchDomain(usa_lee_ent_domains)) || matchDomain(ca_torstar_domains.concat(['abqjournal.com'])) || document.querySelector('head > meta[name="tncms-access-version"]')) {
   if (window.location.pathname.endsWith('.amp.html')) {
-    amp_unhide_access_hide('="hasAccess"', '="NOT hasAccess"', 'amp-ad, amp-embed, .amp-ads-container');
+    amp_unhide_access_hide('="hasAccess"', '="NOT hasAccess"', '.amp-ads-container');
     let elem_hidden = document.querySelectorAll('html[class], body[class]');
     for (let elem of elem_hidden)
       elem.removeAttribute('class');
@@ -4051,7 +4034,7 @@ else if ((domain = matchDomain(usa_lee_ent_domains)) || matchDomain(ca_torstar_d
 
 else if (matchDomain(usa_mcc_domains) || document.querySelector('section.bottom-nav > a[href^="https://www.mcclatchy.com/privacy-policy"]')) {
   if (window.location.hostname.startsWith('amp.')) {
-    amp_unhide_subscr_section('amp-ad, amp-embed');
+    amp_unhide_subscr_section();
     let subscriptions_action = document.querySelector('div[subscriptions-action][subscriptions-display="NOT data.hasError"]');
     if (subscriptions_action)
       subscriptions_action.removeAttribute('subscriptions-action');
@@ -4084,7 +4067,7 @@ else if (matchDomain(usa_mcc_domains) || document.querySelector('section.bottom-
 
 else if (matchDomain(usa_mng_domains) || document.querySelector('head > link[rel="stylesheet"][id^="dfm-accuweather-"], footer li > a[href^="https://www.medianewsgroup.com"]')) {
   if (window.location.pathname.endsWith('/amp/'))
-    amp_unhide_subscr_section('amp-ad, amp-embed, div.ampWrapperInside, div#paywall');
+    amp_unhide_subscr_section('div.ampWrapperInside, div#paywall');
   else if (true) {
     let paywall_sel = '#server-paywall';
     let paywall = document.querySelector(paywall_sel);
@@ -4616,7 +4599,7 @@ function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
   }
 }
 
-function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_subscr_section(amp_ads_sel = '', replace_iframes = true, amp_iframe_link = false, source = '') {
   let preview = document.querySelectorAll('[subscriptions-section="content-not-granted"]');
   removeDOMElement(...preview);
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
@@ -4627,7 +4610,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = tru
     amp_iframes_replace(amp_iframe_link, source);
 }
 
-function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = '', replace_iframes = true, amp_iframe_link = false, source = '') {
   let access_hide = document.querySelectorAll('[amp-access' + amp_access + '][amp-access-hide]:not([amp-access="error"], [amp-access^="message"], .piano)');
   for (let elem of access_hide)
     elem.removeAttribute('amp-access-hide');

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.9.9.0
+// @version         3.9.9.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -38,6 +38,7 @@
 // @connect         archive.md
 // @connect         archive.ph
 // @connect         archive.vn
+// @connect         apps.lemonde.fr
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
 
@@ -55,7 +56,7 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"]';
+var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"], amp-ad, amp-embed[type="mgid"], amp-embed[type="outbrain"], amp-embed[type="taboola"]';
 hideDOMStyle(ads, 10);
 
 var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net'];
@@ -281,14 +282,12 @@ else if (matchDomain('journaldunet.com')) {
 }
 
 else if (matchDomain('la-croix.com')) {
-  let url = window.location.href;
-  if (!url.includes('la-croix.com/amp/')) {
+  if (!window.location.hostname.startsWith('amp')) {
     let ads = 'div[class^="ads-wrapper-"]';
     hideDOMStyle(ads);
   } else {
     let paywall_block = '#paywall_block';
-    let ads = 'amp-ad, amp-embed';
-    hideDOMStyle(paywall_block + ', ' + ads);
+    hideDOMStyle(paywall_block);
   }
 }
 
@@ -355,6 +354,72 @@ else if (matchDomain('lemagit.fr')) {
     paywall.classList.remove('paywall');
     let banners = document.querySelectorAll('p#firstP, div#inlineRegistrationWrapper');
     removeDOMElement(...banners);
+  }
+}
+
+else if (matchDomain('lemonde.fr')) {
+  let url = window.location.href.split(/[\?#]/)[0];
+  let paywall = document.querySelector('section.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let match = url.match(/article.*_(\d+)_/);
+    if (match) {
+      let id = match[1];
+      let url_base = "https://apps.lemonde.fr/aec/v1/premium-android-phone/article/";
+      let url_src = url_base + id;
+      let json_key = 'template_vars.content';
+      getExtFetch(url_src, json_key, {}, main_lemonde);
+      function main_lemonde(url, data) {
+        try {
+          if (data) {
+            let article = document.querySelector('.article__content');
+            if (article) {
+              let parser = new DOMParser();
+              let doc = parser.parseFromString(data, 'text/html');
+              let article_new = doc.querySelector('.article_content');
+              if (article_new) {
+                if (article.tagName === 'SECTION')
+                  article_new.style = 'width: 90% !important;';
+                article_new.querySelectorAll('p').forEach(e => e.className = 'article__paragraph');
+                article_new.querySelectorAll('h2').forEach(e => e.className = 'article__sub-title');
+                article_new.querySelectorAll('h3.question').forEach(e => e.className = 'article__question');
+                let image_divs = article_new.querySelectorAll('div.image');
+                for (let elem of image_divs) {
+                  elem.removeAttribute('style');
+                  let img = elem.querySelector('a > img[data-src]');
+                  if (img) {
+                    if (img.src.startsWith('data:image/'))
+                      img.src = img.getAttribute('data-src');
+                    img.parentNode.before(img);
+                  }
+                }
+                let inread = article_new.querySelectorAll('div.inread-container');
+                removeDOMElement(...inread);
+                let links = article_new.querySelectorAll('a[href^="lmfr://element/article/"]');
+                for (let elem of links) {
+                  let url_link = elem.href.split(/[\?#]/)[0];
+                  let url_match = url_link.match(/lmfr:\/\/element\/article\/(\d+)/);
+                  if (url_match) {
+                    let id = url_match[1];
+                    let url_src = url_base + id;
+                    let json_key = 'element.url';
+                    getExtFetch(url_src, json_key, {}, link_lemonde);
+                    function link_lemonde(url, data) {
+                      if (data)
+                        elem.href = data;
+                    }
+                  }
+                }
+                article.innerHTML = '';
+                article.parentNode.replaceChild(article_new, article);
+              }
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
   }
 }
 
@@ -577,6 +642,85 @@ else if (matchDomain(be_roularta_domains)) {
 
 else if (matchDomain('lexpress.fr')) {
   let ads = 'div[class^="block_pub"], div[class^="bottom-bar"], div.teads__block, div.ban-bottom, div[class^="placeholder--ban-atf"]';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('liberation.fr')) {
+  let paywall = document.querySelector('div.article-body-paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('article.article-body-wrapper');
+    if (article) {
+      let url_src = 'https://arc.api.liberation.fr/content/v4/?website=liberation&website_url=' + encodeURIComponent(window.location.pathname);
+      let x_api_key = 'ejeePeingeitaegho3weengeeyohpu';
+      fetch(url_src, {headers: {"x-api-key": x_api_key}})
+      .then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            if (json && json.content_elements) {
+              let pars = json.content_elements;
+              if (pars.length)
+                article.innerHTML = '';
+              let parser = new DOMParser();
+              for (let par of pars) {
+                let elem = document.createElement('p');
+                let sub_elem;
+                if (['header', 'raw_html', 'text'].includes(par.type)) {
+                  if (par.content) {
+                    let doc = parser.parseFromString('<div>' + par.content + '</div>', 'text/html');
+                    sub_elem = doc.querySelector('div');
+                    if (par.type === 'header')
+                      sub_elem.style = 'font-weight: bold; font-size: 1.85rem;';
+                  }
+                } else if (par.type === 'image') {
+                  if (par.url) {
+                    sub_elem = document.createElement('img');
+                    sub_elem.src = par.url;
+                  }
+                } else if (par.type === 'oembed_response') {
+                  if (par.raw_oembed && par.raw_oembed.html) {
+                    if (!par.subtype === 'twitter') {
+                      let doc = parser.parseFromString('<div>' + par.raw_oembed.html + '</div>', 'text/html');
+                      sub_elem = doc.querySelector('div');
+                    } else if (par.raw_oembed.url) {
+                      sub_elem = document.createElement('a');
+                      sub_elem.href = sub_elem.innerText = par.raw_oembed.url;
+                      sub_elem.target = '_blank';
+                    }
+                  }
+                } else if (par.type === 'link_list') {
+                  if (par.items) {
+                    sub_elem = document.createElement('p');
+                    sub_elem.appendChild(document.createElement('hr'));
+                    sub_elem.appendChild(document.createTextNode('Lire aussi'));
+                    sub_elem.appendChild(document.createElement('br'));
+                    for (let item of par.items) {
+                      if (item.content && item.url) {
+                        let item_link = document.createElement('a');
+                        item_link.href = item.url;
+                        item_link.innerText = item.content;
+                        sub_elem.appendChild(item_link);
+                        sub_elem.appendChild(document.createElement('br'));
+                      }
+                    }
+                    sub_elem.appendChild(document.createElement('hr'));
+                  }
+                } else if (!['quote'].includes(par.type)) {
+                  console.log(par.type);
+                  console.log(par);
+                }
+                if (sub_elem) {
+                  elem.appendChild(sub_elem);
+                  article.appendChild(elem);
+                }
+              }
+            }
+          })
+        }
+      })
+    }
+  }
+  let ads = 'div[class^="StickyAd"], div[class^="default__OutbrainWrapper"]';
   hideDOMStyle(ads);
 }
 
@@ -1118,6 +1262,27 @@ function replaceTextFail(url, article, proxy, text_fail) {
   }
 }
 
+function getExtFetch(url, json_key = '', headers = {}, callback = '') {
+  GM.xmlHttpRequest({
+    method: "GET",
+    url: url,
+    headers: headers,
+    onload: function (response) {
+      let html = response.responseText;
+      if (json_key) {
+        try {
+          let json = JSON.parse(html);
+          if (json)
+            html = getNestedKeys(json, json_key);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      callback(url, html);
+    }
+  });
+}
+
 function randomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
@@ -1236,7 +1401,7 @@ function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
   }
 }
 
-function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_subscr_section(amp_ads_sel = '', replace_iframes = true, amp_iframe_link = false, source = '') {
   let preview = document.querySelectorAll('[subscriptions-section="content-not-granted"]');
   removeDOMElement(...preview);
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
@@ -1247,7 +1412,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = tru
     amp_iframes_replace(amp_iframe_link, source);
 }
 
-function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = '', replace_iframes = true, amp_iframe_link = false, source = '') {
   let access_hide = document.querySelectorAll('[amp-access' + amp_access + '][amp-access-hide]:not([amp-access="error"], [amp-access^="message"], .piano)');
   for (let elem of access_hide)
     elem.removeAttribute('amp-access-hide');
