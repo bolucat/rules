@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         3.9.9.3
+// @version         4.0.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1586,7 +1586,7 @@ else if (matchDomain('cnbc.com')) {
     removeDOMElement(paywall);
     let article = document.querySelector('div.ArticleBody-articleBody');
     if (article)
-      article.style = "margin: 20px 0px; font-family: Lyon,Helvetica,Arial,sans-serif; font-size: 18px; line-height: 1.66";
+      article.style = "margin: 20px; font-family: Lyon,Helvetica,Arial,sans-serif; font-size: 18px; line-height: 1.66";
     let span_hidden = document.querySelectorAll('span[hidden]');
     for (let elem of span_hidden) {
       elem.removeAttribute('hidden');
@@ -2467,6 +2467,36 @@ else if (matchDomain('newrepublic.com')) {
   hideDOMStyle(ads);
 }
 
+else if (matchDomain('newscientist.com')) {
+  let paywall = document.querySelector('section#subscription-barrier');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = document.querySelector('script#ns-seo-schema');
+    if (json_script) {
+      try {
+        let json = JSON.parse(json_script.text);
+        if (json && json.datePublished) {
+          let date = json.datePublished.split(/T\d/)[0].replace(/-/g, '/');
+          let path_new = window.location.pathname.split(/\/article\/(mg)?[\d-]+/)[2];
+          if (path_new) {
+            let url = 'https://appan.newscientist.com/' + date + '/' + path_new + 'content.html';
+            func_post = function () {
+              let lazy_images = document.querySelectorAll('img[src^="../"][data-src]');
+              for (let elem of lazy_images)
+                elem.src = elem.getAttribute('data-src');
+            }
+            replaceDomElementExt(url, false, false, 'section.ArticleContent', '', 'section.pp-article__body');
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+  let ads = 'div[class*="Advert"]';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('newsday.com')) {
   if (window.location.pathname.startsWith('/amp/')) {
     amp_unhide_access_hide('="AccessLevel = \'Full Content Access\' OR Error = true"', '="Error != true AND UserState != \'Subscribed\'"');
@@ -2673,10 +2703,9 @@ else if (matchDomain('science.org')) {
 }
 
 else if (matchDomain('scmp.com')) {
-  let paywall = document.querySelector('div[data-qa$="-InlinePaywallOverlayer"]');
+  let paywall = document.querySelector('div[data-qa="GenericArticle-PaywallContainer"]');
   if (paywall) {
-    let offer = document.querySelector('div[data-qa="GenericArticle-PaywallContainer"]');
-    removeDOMElement(paywall, offer);
+    removeDOMElement(paywall);
     let article = document.querySelector('section[data-qa="ContentBody-ContentBodyContainer"]');
     if (article) {
       let json_script = document.querySelector('script#__NEXT_DATA__');
