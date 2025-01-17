@@ -1,69 +1,14 @@
 ![Adblock Plus 2.0]
-! Checksum: 67cAo7XQS+e4V17rvJ11SQ
-! Diff-Path: ../patches/7/7-s-1737038703-3600.patch
+! Checksum: ZWqhQg/Xgk8ssq3K6dJ88A
+! Diff-Path: ../patches/7/7-s-1737135786-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.61.36
-! TimeUpdated: 2025-01-16T14:39:54+00:00
+! Version: 2.0.61.40
+! TimeUpdated: 2025-01-17T17:38:44+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
 !
-!---------------------------------------------------------------------------!
-!-------------- General JS API ---------------------------------------------!
-!---------------------------------------------------------------------------!
-! JS API START
-!
-! AG_removeCookie
-! Examples: AG_removeCookie('/REGEX/') or AG_removeCookie('part of the cookie name')
-!
-!
-! AG_defineProperty
-! See https://github.com/AdguardTeam/deep-override
-!
-!
-! AG_abortOnPropertyWrite(property, debug)
-! Aborts execution of a script when it attempts to write the specified property.
-! Based on AG_defineProperty (https://github.com/AdguardTeam/deep-override)
-!
-! Examples:
-! AG_abortOnPropertyWrite('String.fromCharCode');
-!
-! @param property property or properties chain
-! @param debug optional, if true - we will print warning when script is aborted.
-!
-!
-! AG_abortOnPropertyRead(property, debug)
-! Aborts execution of a script when it attempts to read the specified property.
-! Based on AG_defineProperty (https://github.com/AdguardTeam/deep-override)
-!
-! Examples:
-! AG_abortOnPropertyRead('String.fromCharCode');
-!
-! @param property property or properties chain
-! @param debug optional, if true - we will print warning when script is aborted.
-!
-!
-! AG_abortInlineScript(regex, property, debug)
-! Aborts execution of an inline script when it attempts to access the specified property
-! AND content of the <script> element matches specified regular expression.
-! Based on AG_defineProperty (https://github.com/AdguardTeam/deep-override)
-!
-! Examples:
-! AG_abortInlineScript(/zfgloadedpopup|zfgloadedpushopt/, 'String.fromCharCode');
-!
-! @param regex regular expression that the inline script contents must match
-! @param property property or properties chain
-! @param debug optional, if true - we will print warning when script is aborted.
-!
-!
-! AG_setConstant('property.chain', 'true') // defines boolean (true), same for false;
-! AG_setConstant('property.chain', '123') // defines Number 123;
-! AG_setConstant('property.chain', 'noopFunc') // defines function(){};
-! AG_setConstant('property.chain', 'trueFunc') // defines function(){return true};
-! AG_setConstant('property.chain', 'falseFunc') // defines function(){return false};
-!
-! JS API FINISH
 !---------------------------------------------------------------------------!
 !-------------- Advertising networks ---------------------------------------!
 !---------------------------------------------------------------------------!
@@ -539,6 +484,8 @@ gunauc.net##+js(no-fetch-if, pagead2.googlesyndication.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/188965
 ||kuji.xth.jp/ad-x-check.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183252
+exploader.net##+js(abort-current-script, EventTarget.prototype.addEventListener, eval)
+exploader.net##article > div[style*="1120px"]
 $image,redirect-rule=32x32.png,domain=exploader.net
 ||daotag.com^$image,redirect=32x32.png,domain=exploader.net
 exploader.net##+js(remove-attr, href, a[style*="display:"][href^="https://al.dmm.co.jp"], stay)
@@ -1783,6 +1730,9 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+||alphapolis.co.jp/html/ad_
+||alphapolis.co.jp/ad/
+toushichannel.net##article div[style="margin:15px;height:280px;"]
 iko-yo.net##.l-sticky > div.l-side__container:has(> ul.c-side-list > li.c-ad--tieup)
 atodeyo.com##.banner_pc_side
 pex.jp##.campaign_area_fluct

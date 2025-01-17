@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.0.2
+// @version         4.0.0.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2477,15 +2477,18 @@ else if (matchDomain('newscientist.com')) {
         let json = JSON.parse(json_script.text);
         if (json && json.datePublished) {
           let date = json.datePublished.split(/T\d/)[0].replace(/-/g, '/');
-          let path_new = window.location.pathname.split(/\/article\/(mg)?[\d-]+/)[2];
+          let path_new = window.location.pathname.split(/\/article\/(\d+-|mg\d+-\d+-)/)[2];
           if (path_new) {
             let url = 'https://appan.newscientist.com/' + date + '/' + path_new + 'content.html';
             func_post = function () {
               let lazy_images = document.querySelectorAll('img[src^="../"][data-src]');
-              for (let elem of lazy_images)
+              for (let elem of lazy_images) {
                 elem.src = elem.getAttribute('data-src');
+                elem.removeAttribute('height');
+                elem.removeAttribute('width');
+              }
             }
-            replaceDomElementExt(url, false, false, 'section.ArticleContent', '', 'section.pp-article__body');
+            replaceDomElementExt(url, false, false, 'section.ArticleContent', '', 'section[class$="-article__body"]');
           }
         }
       } catch (err) {
