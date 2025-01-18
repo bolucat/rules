@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         3.9.9.2
+// @version         4.0.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -52,6 +52,7 @@ window.setTimeout(function () {
 var domain;
 var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce;
+var cs_param = {};
 
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
@@ -329,6 +330,75 @@ else if (matchDomain('ledevoir.com')) {
   removeDOMElement(counter);
 }
 
+else if (matchDomain('lefigaro.fr')) {
+  let paywall = document.querySelector('div#fig-premium-paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div[data-component="fig-content-body"]');
+    if (article) {
+      let resource_key = '34e68a3419a876e36729503e2107dfa556e1a105892e27010130a30018ccbe60';
+      let url = window.location.href.split([/\?#/])[0];
+      let url_src = 'https://api-graphql.lefigaro.fr/graphql?id=FigaroCoreMobile_resourceByUrl_persistent_' + resource_key + '&variables={%22url%22:%20%22' + url + '%22}';
+      fetch(url_src)
+      .then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            try {
+              let pars = json.data.resource.body.structured;
+              if (pars.length)
+                article.innerHTML = '';
+              let parser = new DOMParser();
+              for (let par of pars) {
+                let elem;
+                let sub_elem;
+                let par_type = par.__typename;
+                if (['Heading', 'Paragraph'].includes(par_type)) {
+                  if (par.text) {
+                    let doc = parser.parseFromString('<p class="fig-paragraph">' + par.text + '</p>', 'text/html');
+                    elem = doc.querySelector('p');
+                    if (par_type === 'Heading')
+                      elem.style = 'font-weight: bold; font-size: 1.85rem;';
+                  }
+                } else if (['Photo', 'VideoFigaro'].includes(par_type)) {
+                  if (par.thumbnail)
+                    par = par.thumbnail;
+                  if (par.image) {
+                    elem = makeFigure(par.image.url, par.caption + ' ' + par.credit, '', {class: 'fig-media__legend'});
+                  }
+                } else if (par_type === 'Link') {
+                    elem = document.createElement('p');
+                    let prefix = document.createElement('span');
+                    prefix.innerText = par.prefix + ' ';
+                    let link_elem = document.createElement('a');
+                    link_elem.href = par.url;
+                    link_elem.innerText = par.title;
+                    link_elem.target = '_blank';
+                    elem.append(prefix, link_elem);
+                } else if (par_type === 'Quote') {
+                  elem = document.createElement('blockquote');
+                  elem.style = 'margin: 30px;';
+                  let qtext = document.createElement('p');
+                  qtext.innerText = parseHtmlEntities(par.text);
+                  qtext.style = 'font-weight: bold; font-size: 28px; margin: 15px 0px;';
+                  let qcredit = document.createElement('p');
+                  qcredit.innerText = parseHtmlEntities(par.credit);
+                  elem.append(qtext, qcredit);
+                } else {
+                  console.log(par);
+                }
+                if (elem)
+                  article.appendChild(elem);
+              }
+            } catch (err) {
+              console.log(err);
+            }
+          })
+        }
+      }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
+    }
+  }
+}
+
 else if (matchDomain('legrandcontinent.eu')) {
   let paywall = document.querySelector('body.paywall, body.pw, body.softwall');
   if (paywall)
@@ -529,9 +599,9 @@ else if (matchDomain('lequipe.fr')) {
             } catch (err) {
               console.log(err);
             }
-          });
+          })
         }
-      });
+      }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
     }
   }
   let ads = 'div.AmPlaceholder';
@@ -717,7 +787,7 @@ else if (matchDomain('liberation.fr')) {
             }
           })
         }
-      })
+      }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
     }
   }
   let ads = 'div[class^="StickyAd"], div[class^="default__OutbrainWrapper"]';
@@ -1177,7 +1247,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
         replaceTextFail(url, article, proxy, text_fail);
       }
     }).catch(function (err) {
-      false;
+      replaceTextFail(url, article, proxy, text_fail);
     });
   }
 }
@@ -1280,7 +1350,7 @@ function getExtFetch(url, json_key = '', headers = {}, callback = '') {
       }
       callback(url, html);
     }
-  });
+  })
 }
 
 function randomInt(max) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.9.9.1
+// @version         3.9.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -17,7 +17,7 @@
 // ==/UserScript==
 
 (function() {
-  'use strict';
+  //'use strict';
 
 window.setTimeout(function () {
 
@@ -28,7 +28,7 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad, div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad';
+var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"], amp-ad, amp-embed[type="mgid"], amp-embed[type="outbrain"], amp-embed[type="taboola"]';
 hideDOMStyle(ads, 10);
 
 var it_gedi_domains = ['huffingtonpost.it', 'italian.tech', 'lastampa.it', 'lescienze.it', 'moda.it', 'repubblica.it'];
@@ -37,7 +37,7 @@ var it_quotidiano_domains = ['ilgiorno.it', 'ilrestodelcarlino.it', 'iltelegrafo
 
 if (matchDomain('corriere.it')) {
   if (window.location.pathname.endsWith('_amp.html')) {
-    amp_unhide_subscr_section('amp-ad, amp-embed');
+    amp_unhide_subscr_section('');
   } else {
     if (window.location.pathname.includes('_preview.shtml') && !window.location.pathname.startsWith('/podcast/')) {
       window.setTimeout(function () {
@@ -51,9 +51,6 @@ else if (matchDomain('corrieredellosport.it')) {
   if (!window.location.pathname.startsWith('/amp/')) {
     amp_redirect('div[class^="MainTextTruncated_paragraph__"]');
     let ads = 'div[class^="AdUnit_placeholder"]';
-    hideDOMStyle(ads);
-  } else {
-    let ads = 'amp-ad, amp-embed';
     hideDOMStyle(ads);
   }
 }
@@ -109,7 +106,7 @@ else if (matchDomain('gazzetta.it')) {
 
 else if (matchDomain('ilfattoquotidiano.it')) {
   if (window.location.pathname.endsWith('/amp/')) {
-    amp_unhide_subscr_section('amp-ad, amp-embed, div#_4sVideoContainer, div#post-consent-ui');
+    amp_unhide_subscr_section('div#_4sVideoContainer, div#post-consent-ui');
     let comments = document.querySelector('div.content.comments');
     removeDOMElement(comments);
     let logo = document.querySelector('a > amp-img[src$="/logo-tablet.svg"]');
@@ -191,7 +188,7 @@ else if (domain = matchDomain(['iltirreno.it', 'lanuovasardegna.it']) || matchDo
 
 else if (matchDomain(it_ilmessaggero_domains)) {
   if (window.location.pathname.toLowerCase().includes('/amp/')) {
-    amp_unhide_subscr_section('amp-ad, amp-embed');
+    amp_unhide_subscr_section();
   } else {
     let noscroll = document.querySelector('html[style]');
     if (noscroll)
@@ -203,7 +200,7 @@ else if (matchDomain(it_ilmessaggero_domains)) {
 
 else if (matchDomain(it_quotidiano_domains)) {
   if (window.location.pathname.endsWith('/amp') || window.location.search.startsWith('?amp')) {
-    amp_unhide_access_hide('="c.customGranted"', '="NOT c.customGranted"', 'amp-ad, amp-embed, amp-fx-flying-carpet, .watermark-adv, .amp__watermark');
+    amp_unhide_access_hide('="c.customGranted"', '="NOT c.customGranted"', 'amp-fx-flying-carpet, .watermark-adv, .amp__watermark');
   } else {
     amp_redirect('div[data-testid="paywall-container"], div[class^="Paywall_paywall_"]', '', window.location.pathname + '/amp');
     let ads = 'div[id^="div-gpt-ad"]';
@@ -257,7 +254,7 @@ else if (domain = matchDomain(it_gedi_domains)) {
     if (!amp)
       amp_redirect('iframe#__limio_frame', '', window.location.pathname + 'amp/');
     else {
-      amp_unhide_subscr_section('amp-ad, amp-embed');
+      amp_unhide_subscr_section();
       if (!mobile)
         addStyle('img.i-amphtml-fill-content {min-height: 50% !important; min-width: 50% !important;}');
     }
@@ -321,9 +318,6 @@ else if (matchDomain('tuttosport.com')) {
       }
     }
     let ads = 'div[class^="AdUnit_"]';
-    hideDOMStyle(ads);
-  } else {
-    let ads = 'amp-ad, amp-embed';
     hideDOMStyle(ads);
   }
 }
@@ -491,7 +485,7 @@ function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
   }
 }
 
-function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_subscr_section(amp_ads_sel = '', replace_iframes = true, amp_iframe_link = false, source = '') {
   let preview = document.querySelectorAll('[subscriptions-section="content-not-granted"]');
   removeDOMElement(...preview);
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
@@ -502,7 +496,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = tru
     amp_iframes_replace(amp_iframe_link, source);
 }
 
-function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = '', replace_iframes = true, amp_iframe_link = false, source = '') {
   let access_hide = document.querySelectorAll('[amp-access' + amp_access + '][amp-access-hide]:not([amp-access="error"], [amp-access^="message"], .piano)');
   for (let elem of access_hide)
     elem.removeAttribute('amp-access-hide');

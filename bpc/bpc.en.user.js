@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.0.3
+// @version         4.0.0.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2488,7 +2488,7 @@ else if (matchDomain('newscientist.com')) {
                 elem.removeAttribute('width');
               }
             }
-            replaceDomElementExt(url, false, false, 'section.ArticleContent', '', 'section[class$="-article__body"]');
+            replaceDomElementExt(url, false, false, 'section.ArticleContent', 'BPC > no fix (source file)', 'section[class$="-article__body"]');
           }
         }
       } catch (err) {
@@ -4394,7 +4394,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
         replaceTextFail(url, article, proxy, text_fail);
       }
     }).catch(function (err) {
-      false;
+      replaceTextFail(url, article, proxy, text_fail);
     });
   }
 }

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.9.1
+// @version         3.9.9.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -46,7 +46,7 @@ var csDoneOnce;
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"]';
+var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"], amp-ad, amp-embed[type="mgid"], amp-embed[type="outbrain"], amp-embed[type="taboola"]';
 hideDOMStyle(ads, 10);
 
 var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'ikz-online.de', 'morgenpost.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
@@ -661,6 +661,15 @@ else if (matchDomain('sueddeutsche.de')) {
             elem.style = 'width: ' + elem.width / ratio + 'px; height: ' + elem.height / ratio + 'px; margin: 20px;';
           }
         }
+        let containers = document.querySelectorAll('div[class*="ground-container"]');
+        for (let elem of containers)
+          elem.style = 'text-align: center;';
+        let sticky = document.querySelectorAll('div.blender-module-sticky');
+        for (let elem of sticky) {
+          let div_blenders = elem.querySelectorAll('div[class^="blender-"]');
+          if (div_blenders.length > 1)
+            removeDOMElement(div_blenders[1]);
+        }
       }
       if (intro) {
         let intro_old = document.querySelector(intro_sel);
@@ -1258,7 +1267,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
         replaceTextFail(url, article, proxy, text_fail);
       }
     }).catch(function (err) {
-      false;
+      replaceTextFail(url, article, proxy, text_fail);
     });
   }
 }
@@ -1463,7 +1472,7 @@ function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
   }
 }
 
-function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_subscr_section(amp_ads_sel = '', replace_iframes = true, amp_iframe_link = false, source = '') {
   let preview = document.querySelectorAll('[subscriptions-section="content-not-granted"]');
   removeDOMElement(...preview);
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
@@ -1474,7 +1483,7 @@ function amp_unhide_subscr_section(amp_ads_sel = 'amp-ad', replace_iframes = tru
     amp_iframes_replace(amp_iframe_link, source);
 }
 
-function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = 'amp-ad', replace_iframes = true, amp_iframe_link = false, source = '') {
+function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = '', replace_iframes = true, amp_iframe_link = false, source = '') {
   let access_hide = document.querySelectorAll('[amp-access' + amp_access + '][amp-access-hide]:not([amp-access="error"], [amp-access^="message"], .piano)');
   for (let elem of access_hide)
     elem.removeAttribute('amp-access-hide');
