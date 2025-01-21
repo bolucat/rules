@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         3.9.9.2
+// @version         4.0.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -57,7 +57,7 @@ var de_rp_medien_domains = ['ga.de', 'rp-online.de', 'saarbruecker-zeitung.de', 
 
 if (matchDomain('aachener-zeitung.de')) {
   let url = window.location.href;
-  getArchive(url, 'div[data-testid="paywall-container"]', '', 'article');
+  getArchive(url, 'div[data-testid="paywall-position-popover"]', '', 'article');
   let shade = document.querySelector('div.paywalled-article');
   if (shade)
     shade.classList.remove('paywalled-article');

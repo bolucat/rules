@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.0.1
+// @version         4.0.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -432,18 +432,18 @@ else if (matchDomain('lemonde.fr')) {
   let paywall = document.querySelector('section.paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    let match = url.match(/article.*_(\d+)_/);
-    if (match) {
-      let id = match[1];
-      let url_base = "https://apps.lemonde.fr/aec/v1/premium-android-phone/article/";
-      let url_src = url_base + id;
-      let json_key = 'template_vars.content';
-      getExtFetch(url_src, json_key, {}, main_lemonde);
-      function main_lemonde(url, data) {
-        try {
-          if (data) {
-            let article = document.querySelector('.article__content');
-            if (article) {
+    let article = document.querySelector('.article__content');
+    if (article) {
+      let match = url.match(/article.*_(\d+)_/);
+      if (match) {
+        let id = match[1];
+        let url_base = "https://apps.lemonde.fr/aec/v1/premium-android-phone/article/";
+        let url_src = url_base + id;
+        let json_key = 'template_vars.content';
+        getExtFetch(url_src, json_key, {}, main_lemonde);
+        function main_lemonde(url, data) {
+          try {
+            if (data) {
               let parser = new DOMParser();
               let doc = parser.parseFromString(data, 'text/html');
               let article_new = doc.querySelector('.article_content');
@@ -453,6 +453,8 @@ else if (matchDomain('lemonde.fr')) {
                 article_new.querySelectorAll('p').forEach(e => e.className = 'article__paragraph');
                 article_new.querySelectorAll('h2').forEach(e => e.className = 'article__sub-title');
                 article_new.querySelectorAll('h3.question').forEach(e => e.className = 'article__question');
+                article_new.querySelectorAll('figure').forEach(e => e.style = 'margin: 0px 10px;');
+                article_new.querySelectorAll('div.see-also-container, div.reference').forEach(e => e.style = 'margin: 20px 0px;');
                 let image_divs = article_new.querySelectorAll('div.image');
                 for (let elem of image_divs) {
                   elem.removeAttribute('style');
@@ -484,9 +486,9 @@ else if (matchDomain('lemonde.fr')) {
                 article.parentNode.replaceChild(article_new, article);
               }
             }
+          } catch (err) {
+            console.log(err);
           }
-        } catch (err) {
-          console.log(err);
         }
       }
     }
@@ -854,6 +856,38 @@ else if (matchDomain(['sudouest.fr', 'charentelibre.fr', 'larepubliquedespyrenee
   let footer_premium = '.footer-premium';
   let ads = 'div.pub, div.ph-easy-subscription';
   hideDOMStyle(footer_premium + ', ' + ads);
+}
+
+else if (matchDomain('telerama.fr')) {
+  let paywall = document.querySelector('section.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article_sel = 'article.article__page-content';
+    let article = document.querySelector(article_sel);
+    if (article) {
+      let url_src = 'https://apps.telerama.fr/tlr/v1/premium-android-tablet/element?id=' + encodeURIComponent(window.location.pathname);
+      let json_key = 'templates.raw_content.content';
+      getExtFetch(url_src, json_key, {}, main_telerama);
+      function main_telerama(url, data) {
+        try {
+          if (data) {
+            let parser = new DOMParser();
+            let doc = parser.parseFromString(data), 'text/html');
+            let article_new = doc.querySelector(article_sel);
+            if (article_new && article.parentNode) {
+              article_new.querySelectorAll('a[href^="tlrm://element?id="]').forEach(e => e.href = decodeURIComponent(e.href.split('tlrm://element?id=')[1]));
+              article_new.querySelectorAll('figure > img[data-src]:not([src])').forEach(e => e.src = e.getAttribute('data-src'));
+              article.parentNode.replaceChild(article_new, article);
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  }
+  let ads = 'div.dfp-slot';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('lamontagne.fr') || document.querySelector('head > meta[name="google-play-app"][content^="app-id=com.centrefrance"]')) {// Groupe Centre France
