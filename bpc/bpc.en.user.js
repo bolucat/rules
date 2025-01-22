@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.0.4
+// @version         4.0.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2136,6 +2136,26 @@ else if (matchDomain('historyextra.com')) {
   removeDOMElement(ad_banner);
 }
 
+else if (matchDomain('historytoday.com')) {
+  if (window.location.hostname.startsWith('app.')) {
+    restorePugpigPage();
+  } else {
+    let paywall = document.querySelector('div.nopremium-message');
+    if (paywall) {
+      let app_link = document.createElement('a');
+      let app_url = 'app.historytoday.com';
+      app_link.href = 'https://' + app_url;
+      app_link.innerText = 'BPC > no fix, search article on: ' + app_url;
+      app_link.style = 'color: red; font-weight: bold;';
+      let app_div = document.createElement('div');
+      app_div.style = 'margin: 20px;';
+      app_div.appendChild(app_link);
+      paywall.before(app_div);
+      removeDOMElement(paywall);
+    }
+  }
+}
+
 else if (matchDomain('inc42.com')) {
   if (window.location.pathname.endsWith('/amp/')) {
     amp_unhide_access_hide('="status"', '="NOT status"', 'div.wru-widget');
@@ -2468,36 +2488,40 @@ else if (matchDomain('newrepublic.com')) {
 }
 
 else if (matchDomain('newscientist.com')) {
-  let paywall = document.querySelector('section#subscription-barrier');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_script = document.querySelector('script#ns-seo-schema');
-    if (json_script) {
-      try {
-        let json = JSON.parse(json_script.text);
-        if (json && json.datePublished) {
-          let date = json.datePublished.split(/T\d/)[0].replace(/-/g, '/');
-          let path_new = window.location.pathname.split(/\/article\/(\d+-|mg\d+-\d+-)/)[2];
-          if (path_new) {
-            let url = 'https://appan.newscientist.com/' + date + '/' + path_new + 'content.html';
-            func_post = function () {
-              let lazy_images = document.querySelectorAll('img[src^="../"][data-src]');
-              for (let elem of lazy_images) {
-                elem.src = elem.getAttribute('data-src');
-                elem.removeAttribute('height');
-                elem.removeAttribute('width');
+  if (!window.location.hostname.startsWith('appan.')) {
+    let paywall = document.querySelector('section#subscription-barrier');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let json_script = document.querySelector('script#ns-seo-schema');
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text);
+          if (json && json.datePublished) {
+            let date = json.datePublished.split(/T\d/)[0].replace(/-/g, '/');
+            let path_new = window.location.pathname.split(/\/article\/(\d+-|mg\d+-\d+-)/)[2];
+            if (path_new) {
+              let url = 'https://appan.newscientist.com/' + date + '/' + path_new + 'content.html';
+              func_post = function () {
+                let lazy_images = document.querySelectorAll('img[src^="../"][data-src]');
+                for (let elem of lazy_images) {
+                  elem.src = elem.getAttribute('data-src');
+                  elem.removeAttribute('height');
+                  elem.removeAttribute('width');
+                }
               }
+              replaceDomElementExt(url, false, false, 'section.ArticleContent', 'BPC > no fix (source file)', 'section[class$="-article__body"]');
             }
-            replaceDomElementExt(url, false, false, 'section.ArticleContent', 'BPC > no fix (source file)', 'section[class$="-article__body"]');
           }
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
       }
     }
+    let ads = 'div[class*="Advert"]';
+    hideDOMStyle(ads);
+  } else {
+    restorePugpigPage();
   }
-  let ads = 'div[class*="Advert"]';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('newsday.com')) {
@@ -4738,6 +4762,24 @@ function getArticleJsonScript() {
     }
   }
   return json_script;
+}
+
+function restorePugpigLink(node, art_link_sel = '') {
+  let art_link = !art_link_sel ? node : node.querySelector(art_link_sel);
+  if (art_link)
+    art_link.onmousedown = x => window.location.href = art_link.href;
+}
+
+function restorePugpigPage() {
+  let art_link_sel = 'a.pp-widget-article, a.pp-related__link';
+  document.querySelectorAll(art_link_sel).forEach(e => restorePugpigLink(e));
+  waitDOMElement(art_link_sel, 'A', restorePugpigLink, true);
+  waitDOMElement('li[class^="collection_type-"]', 'LI', node => restorePugpigLink(node, art_link_sel), true);
+  let modal = 'section.modal';
+  hideDOMStyle(modal);
+  let paywall = document.querySelector('div.paywall');
+  if (paywall)
+    refreshCurrentTab();
 }
 
 function getArticleQuintype() {
