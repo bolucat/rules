@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.0.2
+// @version         4.0.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -352,7 +352,9 @@ else if (matchDomain('lefigaro.fr')) {
                 let elem;
                 let sub_elem;
                 let par_type = par.__typename;
-                if (['Heading', 'Paragraph'].includes(par_type)) {
+                if (['Heading', 'Paragraph', 'ParagraphWithPaywall'].includes(par_type)) {
+                  if (par.paywall)
+                    par = par.paywall;
                   if (par.text) {
                     let doc = parser.parseFromString('<p class="fig-paragraph">' + par.text + '</p>', 'text/html');
                     elem = doc.querySelector('p');
@@ -374,6 +376,24 @@ else if (matchDomain('lefigaro.fr')) {
                     link_elem.innerText = par.title;
                     link_elem.target = '_blank';
                     elem.append(prefix, link_elem);
+                } else if (par_type === 'FreeHtml') {
+                  if (par.sourceCode) {
+                    let doc = parser.parseFromString('<div>' + par.sourceCode + '</div>', 'text/html');
+                    elem = doc.querySelector('div');
+                  }
+                } else if (par_type === 'List') {
+                  if (par.list) {
+                    elem = document.createElement('ul');
+                    elem.style = 'list-style: inside;';
+                    for (let item of par.list) {
+                      let li = document.createElement('li');
+                      li.style = 'margin: 10px 0px;';
+                      let doc = parser.parseFromString('<span>' + item + '</span>', 'text/html');
+                      let span = doc.querySelector('span');
+                      li.appendChild(span);
+                      elem.appendChild(li);
+                    }
+                  }
                 } else if (par_type === 'Quote') {
                   elem = document.createElement('blockquote');
                   elem.style = 'margin: 30px;';
@@ -381,7 +401,7 @@ else if (matchDomain('lefigaro.fr')) {
                   qtext.innerText = parseHtmlEntities(par.text);
                   qtext.style = 'font-weight: bold; font-size: 28px; margin: 15px 0px;';
                   let qcredit = document.createElement('p');
-                  qcredit.innerText = parseHtmlEntities(par.credit);
+                  qcredit.innerText = par.credit ? parseHtmlEntities(par.credit) : '';
                   elem.append(qtext, qcredit);
                 } else {
                   console.log(par);
@@ -562,7 +582,10 @@ else if (matchDomain('lequipe.fr')) {
     removeDOMElement(paywall);
     let article_id = window.location.pathname.match(/\d+$/)[0];
     let article = document.querySelector('div.article__body');
-    if (article_id && article) {
+    let notes = window.location.pathname.includes('Article/Les-notes-');
+    if (notes)
+      header_nofix(article, '', 'BPC > no fix');
+    if (article_id && article && !notes) {
       let url_src = 'https://dwh.lequipe.fr/api/v4/efr/news/' + article_id;
       fetch(url_src)
       .then(response => {
@@ -579,10 +602,8 @@ else if (matchDomain('lequipe.fr')) {
               for (let par of pars) {
                 let elem = '';
                 if (par.content) {
-                  if (par.content) {
-                    let doc = parser.parseFromString('<p class="Paragraph">' + par.content + '</p>', 'text/html');
-                    elem = doc.querySelector('p');
-                  }
+                  let doc = parser.parseFromString('<p class="Paragraph">' + par.content + '</p>', 'text/html');
+                  elem = doc.querySelector('p');
                 } else if (par.title) {
                   elem = document.createElement('h2');
                   elem.innerText = par.title;
@@ -749,6 +770,25 @@ else if (matchDomain('liberation.fr')) {
                     sub_elem = document.createElement('img');
                     sub_elem.src = par.url;
                   }
+                } else if (par.type === 'custom_embed') {
+                  if (par.embed && par.embed.config) {
+                    let config = par.embed.config;
+                    sub_elem = document.createElement('div');
+                    sub_elem.style = 'border: 1px solid black;';
+                    if (config.title) {
+                      let sub_item = document.createElement('p');
+                      sub_item.innerText = config.title;
+                      sub_item.style = 'font-weight: bold; margin: 20px;';
+                      sub_elem.appendChild(sub_item);
+                    }
+                    if (config.content) {
+                      let sub_item = document.createElement('p');
+                      sub_item.innerText = config.content;
+                      sub_item.style = 'margin: 20px;';
+                      sub_elem.appendChild(sub_item);
+                    }
+                  } else
+                    console.log(par);
                 } else if (par.type === 'oembed_response') {
                   if (par.raw_oembed && par.raw_oembed.html) {
                     if (!par.subtype === 'twitter') {
