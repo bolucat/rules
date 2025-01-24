@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.1.0
+// @version         4.0.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -336,7 +336,7 @@ else if (matchDomain('lefigaro.fr')) {
     removeDOMElement(paywall);
     let article = document.querySelector('div[data-component="fig-content-body"]');
     if (article) {
-      let resource_key = '34e68a3419a876e36729503e2107dfa556e1a105892e27010130a30018ccbe60';
+      let resource_key = cs_param.resource_key || '34e68a3419a876e36729503e2107dfa556e1a105892e27010130a30018ccbe60';
       let url = window.location.href.split([/\?#/])[0];
       let url_src = 'https://api-graphql.lefigaro.fr/graphql?id=FigaroCoreMobile_resourceByUrl_persistent_' + resource_key + '&variables={%22url%22:%20%22' + url + '%22}';
       fetch(url_src)
@@ -355,7 +355,7 @@ else if (matchDomain('lefigaro.fr')) {
                 if (['Heading', 'Paragraph', 'ParagraphWithPaywall'].includes(par_type)) {
                   if (par.paywall)
                     par = par.paywall;
-                  if (par.text) {
+                  if (par.text.replace(/&nbsp;/g, '')) {
                     let doc = parser.parseFromString('<p class="fig-paragraph">' + par.text + '</p>', 'text/html');
                     elem = doc.querySelector('p');
                     if (par_type === 'Heading')
@@ -365,21 +365,35 @@ else if (matchDomain('lefigaro.fr')) {
                   if (par.thumbnail)
                     par = par.thumbnail;
                   if (par.image) {
-                    elem = makeFigure(par.image.url, par.caption + ' ' + par.credit, '', {class: 'fig-media__legend'});
+                    elem = document.createElement('p');
+                    elem.className = 'fig-paragraph';
+                    let img = makeFigure(par.image.url, par.caption.replace(/<[^<]*>/g, '') + ' ' + par.credit, '', {class: 'fig-media__legend'});
+                    elem.append(img, document.createElement('br'));
                   }
                 } else if (par_type === 'Link') {
-                    elem = document.createElement('p');
-                    let prefix = document.createElement('span');
-                    prefix.innerText = par.prefix + ' ';
-                    let link_elem = document.createElement('a');
-                    link_elem.href = par.url;
-                    link_elem.innerText = par.title;
-                    link_elem.target = '_blank';
-                    elem.append(prefix, link_elem);
-                } else if (par_type === 'FreeHtml') {
+                  elem = document.createElement('p');
+                  let prefix = document.createElement('span');
+                  prefix.innerText = par.prefix + ' ';
+                  let link_elem = document.createElement('a');
+                  link_elem.href = par.url;
+                  link_elem.innerText = par.title.replace(/<[^<]*>/g, '');
+                  link_elem.target = '_blank';
+                  elem.append(prefix, link_elem);
+                } else if (['FreeHtml', 'Tweet'].includes(par_type)) {
                   if (par.sourceCode) {
                     let doc = parser.parseFromString('<div>' + par.sourceCode + '</div>', 'text/html');
                     elem = doc.querySelector('div');
+                    let tweet_link = elem.querySelector('a[href^="https://twitter.com/"], a[href^="https://x.com/"]');
+                    if (tweet_link) {
+                      tweet_link.innerText = tweet_link.href;
+                      tweet_link.target = '_blank';
+                    }
+                  }
+                } else if (par_type === 'Youtube') {
+                  if (par.id) {
+                    elem = document.createElement('iframe');
+                    elem.src = 'https://www.youtube.com/embed/' + par.id;
+                    elem.style = 'width: 100%; height: 400px;';
                   }
                 } else if (par_type === 'List') {
                   if (par.list) {
@@ -394,6 +408,8 @@ else if (matchDomain('lefigaro.fr')) {
                       elem.appendChild(li);
                     }
                   }
+                } else if (par_type === 'HorizontalRule') {
+                  elem = document.createElement('hr');
                 } else if (par_type === 'Quote') {
                   elem = document.createElement('blockquote');
                   elem.style = 'margin: 30px;';
@@ -585,7 +601,7 @@ else if (matchDomain('lequipe.fr')) {
     let notes = window.location.pathname.includes('Article/Les-notes-');
     if (notes)
       header_nofix(article, '', 'BPC > no fix');
-    if (article_id && article && !notes) {
+    else if (article_id && article) {
       let url_src = 'https://dwh.lequipe.fr/api/v4/efr/news/' + article_id;
       fetch(url_src)
       .then(response => {
@@ -600,20 +616,33 @@ else if (matchDomain('lequipe.fr')) {
               addStyle('div.article__body > p.Paragraph {font-family: "DINNextLTPro-Regular", sans-serif; font-size: 18px; font-weight: 400; line-height: 26px;}');
               let parser = new DOMParser();
               for (let par of pars) {
-                let elem = '';
+                let elem;
                 if (par.content) {
-                  let doc = parser.parseFromString('<p class="Paragraph">' + par.content + '</p>', 'text/html');
-                  elem = doc.querySelector('p');
+                  if ((par.content.match(/(^<div|\/div>$)/g) || []).length !== 1) {
+                    let elem_type = par.content.includes('div>') ? 'div' : 'p';
+                    let doc = parser.parseFromString('<' + elem_type + ' class="Paragraph">' + par.content + '</' + elem_type + '>', 'text/html');
+                    elem = doc.querySelector(elem_type);
+                  }
                 } else if (par.title) {
                   elem = document.createElement('h2');
                   elem.innerText = par.title;
-                } else if (par.media && par.media.url && par.media.ratio) {
-                  let ratio = par.media.ratio;
-                  if (!parseInt(ratio))
-                    ratio = 1.5;
-                  let url = par.media.url.replace(/\\u002F/g, '/').replace('{width}', '400').replace('{height}', parseInt(400 / ratio)).replace('{quality}', '75');
-                  let caption = par.media.legende && par.media.legende.length > 2 ? par.media.legende : ''
+                } else if (par.media) {
+                  if (par.media.url && par.media.ratio) {
+                    let ratio = par.media.ratio;
+                    if (!parseInt(ratio))
+                      ratio = 1.5;
+                    let url = par.media.url.replace(/\\u002F/g, '/').replace('{width}', '400').replace('{height}', parseInt(400 / ratio)).replace('{quality}', '75');
+                    let caption = par.media.legende && par.media.legende.length > 2 ? par.media.legende : '';
                     elem = makeFigure(url, caption, {}, {'style': 'font-weight: bold;'});
+                  } else if (par.media.__type === 'video' && par.media.id) {
+                    let url = par.media.image.url.replace('{width}', '400').replace('{height}', 400).replace('{quality}', '75');
+                    elem = makeFigure(url, par.media.legend);
+                    let video_link = document.createElement('a');
+                    video_link.href = video_link.innerText = 'https://geo.dailymotion.com/player.html?video=' + par.media.id;
+                    video_link.style = 'text-decoration: underline;';
+                    video_link.target = '_blank';
+                    elem.appendChild(video_link);
+                  }
                 } else if (!['article_paragraph_pub'].includes(par.__type))
                   console.log(par);
                 if (elem)
@@ -818,7 +847,6 @@ else if (matchDomain('liberation.fr')) {
                     sub_elem.appendChild(document.createElement('hr'));
                   }
                 } else if (!['quote'].includes(par.type)) {
-                  console.log(par.type);
                   console.log(par);
                 }
                 if (sub_elem) {
