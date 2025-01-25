@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.1.1
+// @version         4.0.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1395,6 +1395,23 @@ else if (matchDomain('benzinga.com')) {
     }
   }
   waitDOMElement('div.paywall-content', 'DIV', benz_main, false);
+}
+
+else if (matchDomain('bhaskar.com')) {
+  if (!window.location.pathname.startsWith('/amp/')) {
+    let paywall_sel = 'div.paywallBlockedContent';
+    let paywall = document.querySelector(paywall_sel);
+    if (paywall) {
+      let banner = document.querySelector(paywall_sel + ' ~ div');
+      if (banner)
+        removeDOMElement(banner);
+      paywall.removeAttribute('class');
+    }
+    let ads = document.querySelectorAll('div[style*="overflow:hidden"][style*="max-height:"], div[id^="Ad--"], article  div:empty');
+    if (ads)
+      removeDOMElement(...ads);
+  } else
+    ampToHtml();
 }
 
 else if (matchDomain('billboard.com')) {
