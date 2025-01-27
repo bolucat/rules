@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.0.0.0
+// @version         4.0.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -645,9 +645,14 @@ else if (matchDomain('sueddeutsche.de')) {
   let url = window.location.href;
   if (matchDomain('sz-magazin.sueddeutsche.de')) {
     func_post = function () {
-      let hidden_images = document.querySelectorAll('img[src^="data:image/"][data-src]');
-      for (let hidden_image of hidden_images)
-        hidden_image.setAttribute('src', hidden_image.getAttribute('data-src'));
+      let pars = document.querySelectorAll('div.articlemain__content > p');
+      if (pars.length && pars.length < 3) {
+        pars[0].before(archiveLink(url));
+      } else {
+        let hidden_images = document.querySelectorAll('img[src^="data:image/"][data-src]');
+        for (let hidden_image of hidden_images)
+          hidden_image.setAttribute('src', hidden_image.getAttribute('data-src'));
+      }
     }
     getOchToUnlock(url, 'p.paragraph--reduced', {rm_class: 'paragraph--reduced'}, 'main');
   } else if (window.location.pathname.startsWith('/projekte/artikel/')) {
@@ -679,22 +684,65 @@ else if (matchDomain('sueddeutsche.de')) {
       let paywalled_slide = document.querySelectorAll('div.paywalled-slide');
       for (let elem of paywalled_slide)
         elem.removeAttribute('class');
+      let article = document.querySelector('section[id^="module-0"]');
+      if (article)
+        article.before(archiveLink(url));
     }
     let intro_sel = 'section#module-0';
     let intro = document.querySelector(intro_sel);
     getOchToUnlock(url, 'div.offer-page', '', 'main');
   } else {
-    func_post = function () {
-      let paywall = document.querySelector('div#sz-paywall:not(:empty)');
-      if (paywall) {
-        removeDOMElement(paywall);
-        let article = document.querySelector(article_sel);
-        if (article)
-          article.firstChild.before(archiveLink(url));
+    let paywall = document.querySelector('head > meta[content="locked"]');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let article_sel = 'div[itemprop="articleBody"]';
+      let article = document.querySelector(article_sel);
+      if (article) {
+        let json_script = document.querySelector('script[data-hydration-props-component-name="ArticleBodyDDRum"]');
+        if (json_script) {
+          try {
+            let json = JSON.parse(decodeURIComponent(json_script.text));
+            if (json) {
+              let pars = json.uiArticleContent;
+              if (pars.length) {
+                article.innerHTML = '';
+                addStyle(article_sel + ' p {margin-bottom: 32px;}');
+              }
+              let parser = new DOMParser();
+              for (let par of pars) {
+                let elem = document.createElement('p');
+                if (['paragraph', 'datawrapper', 'youtube'].includes(par.component)) {
+                  if (par.content && par.content.html) {
+                    let elem_type = par.content.html.startsWith('<div>') ? 'div' : 'p';
+                    let content_new = parser.parseFromString('<' + elem_type + '>' + parseHtmlEntities(par.content.html) + '</' + elem_type + '>', 'text/html');
+                    let iframe = content_new.querySelector('iframe');
+                    if (iframe)
+                      iframe.style = 'width: 100%; height: 400px; margin-bottom: 32px;';
+                    elem = content_new.querySelector(elem_type);
+                  }
+                } else if (par.component === 'subheading') {
+                  if (par.content && par.content.text) {
+                    elem.innerText = par.content.text;
+                    elem.style = 'font-weight: bold;';
+                  }
+                } else if (par.component === 'image') {
+                  if (par.content && par.content.image) {
+                    let caption = par.content.caption ? par.content.caption.html + ' (Foto: ' + par.content.imageSource + ')' : '';
+                    let sub_elem = makeFigure(par.content.image.url, caption);
+                    elem.appendChild(sub_elem);
+                  }
+                } else if (!(['articleHeader', 'articleTeaserM', 'newsletterEmbed'].includes(par.component) || par.component.startsWith('iqadtile')))
+                  console.log(par);
+                if (elem.hasChildNodes())
+                  article.appendChild(elem);
+              }
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
       }
     }
-    let article_sel = 'div[itemprop="articleBody"]';
-    getOchToUnlock(url, 'head > meta[content="locked"]', '', article_sel);
   }
   let ads = 'er-ad-slot, div.iqdcontainer';
   hideDOMStyle(ads);

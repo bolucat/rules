@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.1.2
+// @version         4.0.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2725,6 +2725,10 @@ else if (matchDomain('rugbypass.com')) {
       elem.removeAttribute('class');
     }
   }
+}
+
+else if (matchDomain('scientificamerican.com')) {
+  setCookie('article_meter', '', 'scientificamerican.com', '/', 0);
 }
 
 else if (matchDomain('scholastic.com')) {
