@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.0.2.0
+// @version         4.0.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -28,6 +28,7 @@
 // @connect         archive.md
 // @connect         archive.ph
 // @connect         archive.vn
+// @connect         funkemedien.de
 // @connect         och.to
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
@@ -49,7 +50,7 @@ if (overlay)
 var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"], amp-ad, amp-embed[type="mgid"], amp-embed[type="outbrain"], amp-embed[type="taboola"]';
 hideDOMStyle(ads, 10);
 
-var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'ikz-online.de', 'morgenpost.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
+var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'harzkurier.de', 'ikz-online.de', 'morgenpost.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
 var de_lv_domains = ['profi.de', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de', 'saechsische.de'];
 var de_motor_presse_domains = ['aerokurier.de', 'auto-motor-und-sport.de', 'flugrevue.de', 'motorradonline.de', 'womenshealth.de'];
@@ -1011,17 +1012,21 @@ else if (matchDomain('zeit.de')) {
 
 else if (matchDomain(de_funke_medien_domains)) {
   func_post = function () {
-    if (mobile) {
-      let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
-      for (let elem of lazy_images)
-        elem.style = 'width: 95%;';
-    }
-    header_nofix(article_sel, paywall_sel, 'BPC > no archive-fix');
+    document.querySelectorAll('div[data-carousel-id-slider]').forEach(x => x.removeAttribute('class'));
   }
-  let paywall_sel = 'div#paywall-container';
-  let article_sel = 'article';
-  let url = window.location.href;
-  getArchive(url, paywall_sel, '', article_sel);
+  let paywall = document.querySelector('div#paywall-container');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let spark_script = document.querySelector('script#__SPARK__');
+    if (spark_script) {
+      let match = spark_script.text.match(/PUBLICATION:\s?'([\w-]+)',/);
+      if (match) {
+        let spark_domain = match[1];
+        let url_src = 'https://app-webview.sparknews.funkemedien.de/' + spark_domain + window.location.pathname;
+        replaceDomElementExt(url_src, true, false, 'div.article-body');
+      }
+    }
+  }
   let ads = 'aside.ad-slot-wrapper';
   hideDOMStyle(ads);
 }
