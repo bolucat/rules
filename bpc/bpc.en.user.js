@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.1.3
+// @version         4.0.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1131,7 +1131,7 @@ else if (matchDomain('unherd.com')) {
 }
 
 else if (matchDomain(uk_nat_world_domains) || document.querySelector('footer > div a[href^="https://www.nationalworldplc.com"]')) {
-  let ads = 'div[class^="MarkupAds__Container-"], div[class*="_AdContainer-"], div[class^="Dailymotion__Wrapper-"]';
+  let ads = 'div[class^="MarkupAds__Container-"], div[class*="_AdContainer-"], div[class^="Dailymotion__Wrapper-"], div.banner';
   hideDOMStyle(ads);
 }
 
@@ -2771,7 +2771,7 @@ else if (matchDomain('scmp.com')) {
                   if (sub_elem.type === 'text') {
                     if (sub_elem.data)
                       elem.appendChild(document.createTextNode(sub_elem.data));
-                  } else if (['a', 'em', 'span'].includes(sub_elem.type)) {
+                  } else if (['a', 'em', 'span', 'strong'].includes(sub_elem.type)) {
                     let first_child = sub_elem.children ? sub_elem.children[0] : '';
                     if (first_child) {
                       if (first_child.type === 'text') {
@@ -2785,6 +2785,8 @@ else if (matchDomain('scmp.com')) {
                               a_link.target = '_blank';
                           } else if (sub_elem.type === 'em')
                             a_link.style = 'font-style: italic;';
+                          else if (sub_elem.type === 'strong')
+                            a_link.style = 'font-weight: bold;';
                           a_link.innerText = first_child.data;
                           elem.appendChild(a_link);
                         }

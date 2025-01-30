@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.2.0
+// @version         4.0.2.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -28,6 +28,7 @@
 // @match           *://*.lesinrocks.com/*
 // @match           *://*.levif.be/*
 // @match           *://*.loeildelaphotographie.com/*
+// @match           *://*.marianne.net/*
 // @match           *://*.monacomatin.mc/*
 // @match           *://*.parismatch.com/*
 // @match           *://*.pourleco.com/*
@@ -222,6 +223,11 @@ else if (matchDomain('charliehebdo.fr')) {
     if (paywalled_content)
       paywalled_content.removeAttribute('style');
   }, 500);
+}
+
+else if (matchDomain('connaissancedesarts.com')) {
+  let ads = 'div[class*="banniere"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('courrierinternational.com')) {
@@ -875,6 +881,91 @@ else if (matchDomain('loeildelaphotographie.com')) {
   let blurred_images = document.querySelectorAll('img[style*="blur"]');
   for (let blurred_image of blurred_images)
     blurred_image.removeAttribute('style');
+}
+
+else if (matchDomain('marianne.net')) {
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div > div.js-poool-wrapper');
+    if (article) {
+      let limit_low = 50;
+      let limit_high = 400;
+      function show_data(article, body) {
+        let parser = new DOMParser();
+        let doc = parser.parseFromString('<div>' + body + '</div>', 'text/html');
+        let article_new = doc.querySelector('div');
+        let lazy_images = article_new.querySelectorAll('img.lazyload[data-src]:not([src])');
+        for (let elem of lazy_images) {
+          elem.src = elem.getAttribute('data-src');
+          elem.classList.remove('lazyload');
+        }
+        article.innerHTML = '';
+        article.parentNode.replaceChild(article_new, article);
+      }
+      function fetch_data(limit, offset = 0) {
+        let url_src = 'https://mobile.marianne.net/premium?limit=' + limit + '&offset=' + offset;
+        fetch(url_src)
+        .then(response => {
+          if (response.ok) {
+            response.json().then(json => {
+              try {
+                let src_articles = json.feed_auto;
+                if (src_articles) {
+                  let src_article = src_articles.filter(x => x.urlWeb === url)[0];
+                  let ls_update = true;
+                  if (src_article)
+                    show_data(article, src_article.body);
+                  else if (limit === limit_low) {
+                    ls_update = false;
+                    fetch_data(limit_high);
+                  } else
+                    header_nofix(article, '', 'BPC > no fix (source file)');
+                  if (ls_update) {
+                    let now_date = (new Date()).toISOString().split('T')[0];
+                    if (!ls_date || limit > limit_low || now_date > ls_date)
+                      ls_json_articles = {};
+                    for (let art of src_articles)
+                      ls_json_articles[art.urlWeb] = art.body;
+                    localStorage.setItem('###_json_date', now_date);
+                    localStorage.setItem('###_json', JSON.stringify(ls_json_articles));
+                  }
+                }
+              } catch (err) {
+                console.log(err);
+              }
+            })
+          }
+        }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
+      }
+      let url = window.location.href.split(/[#\?]/)[0];
+      let meta_date = document.querySelector('head > meta[property="article:published_time"][content]');
+      let art_date = '';
+      if (meta_date)
+        art_date = meta_date.content.split('T')[0];
+      let ls_date = localStorage.getItem('###_json_date') || '';
+      let ls_json_articles = {};
+      if (ls_date) {
+        let ls_articles = localStorage.getItem('###_json');
+        ls_json_articles = JSON.parse(ls_articles);
+        if (ls_date <= art_date)
+          fetch_data(limit_low);
+        else {
+          let art_data = ls_json_articles[url];
+          if (art_data)
+            show_data(article, art_data);
+          else if (Object.keys(ls_json_articles).length < limit_high)
+            fetch_data(limit_high);
+          else
+            header_nofix(article, '', 'BPC > no fix (source file)')
+        }
+      } else {
+        fetch_data(limit_low);
+      }
+    }
+  }
+  let ads = 'div[class*="--placeholder"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('pourleco.com')) {

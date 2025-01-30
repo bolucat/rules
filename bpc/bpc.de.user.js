@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.0.2.1
+// @version         4.0.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -634,7 +634,7 @@ else if (matchDomain('springermedizin.de')) {
 
 else if (matchDomain('stern.de')) {
   func_post = function () {
-    header_nofix(article_sel + ' p', paywall_sel, 'BPC > no external site-fix');
+    header_nofix(article_sel + ' div.intro', paywall_sel, 'BPC > no external site-fix');
   }
   let paywall_sel = 'div.paid-barrier';
   let article_sel = 'div.article__body';
@@ -1006,7 +1006,7 @@ else if (matchDomain('zeit.de')) {
   if (document.querySelector('head > link[rel="next"]'))
     url += '/komplettansicht';
   getArchive(url, 'aside#paywall', '', 'article', '', 'article', 'article > div');
-  let ads = 'div[id^="iqadtile"]';
+  let ads = 'div[id^="iqadtile"], .iqdcontainer';
   hideDOMStyle(ads);
 }
 
