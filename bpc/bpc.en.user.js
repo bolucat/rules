@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.2.0
+// @version         4.0.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2581,7 +2581,7 @@ else if (matchDomain('newsweek.com')) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain(['nola.com', 'theadvocate.com'])) {
+else if (matchDomain(['nola.com', 'shreveportbossieradvocate.com', 'theadvocate.com'])) {
   if (window.location.pathname.endsWith('.amp.html')) {
     let body_hidden = document.querySelector('.site-container');
     if (body_hidden)
@@ -2892,7 +2892,7 @@ else if (matchDomain('sloanreview.mit.edu')) {
     window.setTimeout(function () {
       let pars = document.querySelectorAll('div.article-content > p');
       if (pars.length && pars.length < 7)
-        refreshCurrentTab_bg();
+        refreshCurrentTab();
     }, 1000);
   }
 }
@@ -4825,6 +4825,9 @@ function getArticleQuintype() {
       article_new = document.createElement('div');
       let parser = new DOMParser();
       let json = JSON.parse(json_script.text);
+      let slug = json.qt.data.story.slug;
+      if (slug && !window.location.pathname.includes(slug))
+        refreshCurrentTab();
       let pars = json.qt.data.story.cards;
       for (let par of pars) {
         let story_elements = par['story-elements'];
