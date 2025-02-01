@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.2.1
+// @version         4.0.2.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1985,7 +1985,8 @@ else if (matchDomain('financialexpress.com')) {
 }
 
 else if (matchDomain('forbes.com')) {
-  waitDOMAttribute('body', 'body', 'class', node => node.removeAttribute('class'), true);
+  waitDOMAttribute('html', 'HTML', 'class', node => node.removeAttribute('class'), true);
+  waitDOMAttribute('body', 'BODY', 'class', node => node.removeAttribute('class'), true);
   if (window.location.pathname.startsWith('/newsletters/')) {
     let paywall = document.querySelector('div > div.newsletter-teaser');
     if (paywall) {

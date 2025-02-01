@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.2.2
+// @version         4.0.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -375,6 +375,18 @@ else if (matchDomain('lefigaro.fr')) {
                     elem.className = 'fig-paragraph';
                     let img = makeFigure(par.image.url, par.caption.replace(/<[^<]*>/g, '') + ' ' + par.credit, '', {class: 'fig-media__legend'});
                     elem.append(img, document.createElement('br'));
+                  }
+                } else if (par_type === 'Frame') {
+                  if (par.text) {
+                    elem = document.createElement('p');
+                    elem.className = 'fig-paragraph';
+                    let title = document.createElement('p');
+                    title.innerText = par.title;
+                    title.className = 'fig-paragraph';
+                    title.style = 'font-weight: bold;';
+                    let doc = parser.parseFromString('<div>' + DOMPurify.sanitize(par.text, dompurify_options) + '</div>', 'text/html');
+                    let text = doc.querySelector('div');
+                    elem.append(title, text);
                   }
                 } else if (par_type === 'Link') {
                   elem = document.createElement('p');
