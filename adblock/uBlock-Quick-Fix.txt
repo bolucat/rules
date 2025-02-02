@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sat, 01 Feb 2025 14:24:22 +0000
-! Diff-Path: ../patches/2025.2.1.924.patch#ublock-quick-fixes
+! Last modified: Sun, 02 Feb 2025 11:26:44 +0000
+! Diff-Path: ../patches/2025.2.2.988.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -76,6 +76,7 @@ japscan.lol#@#body > style + .container > .row > #main.col-md-9 > .card > .card-
 japscan.lol#@#body > .container.text-center > .mb-2.mt-2[style="margin: 0px auto; display: block;"] > iframe[id^="__clb-"][id$="_container"][style^="display: inline-block; width: 300px; height: 100px;"][sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-scripts allow-top-navigation-to-custom-protocols"][scrolling="no"]
 japscan.lol#@#body > style + .container > .row > #main + #sidebar.col-md-3 > .card.mt-1 > .card[style="margin: 0px auto; display: block;"] > iframe[id^="__clb-"][id$="_container"][style^="display: inline-block; width: 300px; height: 250px;"][sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-scripts allow-top-navigation-to-custom-protocols"][scrolling="no"]
 japscan.lol#@#body > .container.text-center > .mb-2.mt-2[style="margin: 0px auto; display: block;"] > .text-center > a.donate[href^="http"][target="_blank"][rel="noopener noreferrer nofollow"]:not([href^="http://japscan.lol"]) > img
+japscan.lol#@#body > style + .container > .row > #main.col-md-9 > .card > #chapters.tab-content > .row.justify-content-center.align-items-center > a.image-box.donate[href^="http"][target="_blank"][rel="noopener noreferrer nofollow"]:not([href^="http://japscan.lol"]) > img
 ! START: Counter Liste FR rules
 japscan.lol#@##main > .card:has(a[href*="/manga/?type="][href*="&content="][target="_blank"])
 japscan.lol#@#div.container > [href]
@@ -110,6 +111,8 @@ poophq.com,veev.to##+js(no-xhr-if, /click\.com|preroll|native_render\.js|acscdn/
 @@*$ghide,domain=poophq.com|veev.to
 veev.to#@#.avb-active
 @@*$xhr,domain=poophq.com|veev.to
+poophq.com,veev.to##+js(nosiif, )===-0x)
+poophq.com,veev.to##+js(nosiif, Math.round(Math.pow()
 infinityscans.xyz,infinityscans.net,infinityscans.org##+js(rpnt, script, /async function \(xhr\) \{\s+\(function\(\){var .*?\;\}\)\(\)\; /s, async function (xhr) {)
 infinityscans.xyz,infinityscans.net,infinityscans.org##+js(rpnt, script, /\}\)\;\s+\(function\(\)\{var .*?\)\;\}\)\(\)\;\s+\$\.ajax\(\{/s, }); $.ajax({)
 infinityscans.xyz,infinityscans.net,infinityscans.org##+js(trusted-replace-outbound-text, atob, window.matchMedia('(display-mode: standalone)').matches, true)
@@ -183,3 +186,4 @@ ekitan.com,kissanadu.com#@#.sidebar-ad:not(.adsbygoogle)
 job.inshokuten.com,kurukura.jp,netmile.co.jp#@#.ad-area:not(.text-ad)
 myreadingmanga.info##+js(aopr, exoNoExternalUI38djdkjDDJsio96)
 ||myreadingmanga.info/vjs/mrm_
+@@/traffic.megaphone.fm/*.mp3^$media,domain=open.spotify.com

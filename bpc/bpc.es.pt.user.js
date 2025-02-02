@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         3.9.8.4
+// @version         4.0.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -9,6 +9,7 @@
 // @supportURL      https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
 // @match           *://*.es/*
+// @match           *://*.abcmais.com/*
 // @match           *://*.abril.com.br/*
 // @match           *://*.ara.cat/*
 // @match           *://*.arabalears.cat/*
@@ -367,9 +368,30 @@ else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
   }
 }
 
-} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['cambiocolombia.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'exame.com', 'globo.com', 'latercera.com', 'revistaoeste.com'])) {//south america
+} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['abcmais.com', 'cambiocolombia.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'exame.com', 'globo.com', 'latercera.com', 'revistaoeste.com'])) {//south america
 
-if (matchDomain('abril.com.br')) {
+if (matchDomain('abcmais.com')) {
+  if (!window.location.pathname.endsWith('/amp/')) {
+    getJsonUrl('section#section-iframe-assinante', '', 'div.degressing-opacity');
+  } else {
+    let paywall = document.querySelector('div.b-vindo');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let template = document.querySelector('template');
+      if (template) {
+        let article = document.querySelector('section > div.resumo');
+        if (article) {
+          let parser = new DOMParser();
+          let doc = parser.parseFromString('<div>' + template.innerHTML + '</div>', 'text/html');
+          let article_new = doc.querySelector('div');
+          article.parentNode.replaceChild(article_new, article);
+        }
+      }
+    }
+  }
+}
+
+else if (matchDomain('abril.com.br')) {
   if (window.location.pathname.endsWith('/amp/')) {
     let paywall = document.querySelector('.piano-modal');
     removeDOMElement(paywall);
