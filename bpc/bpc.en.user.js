@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.2.3
+// @version         4.0.2.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2864,8 +2864,11 @@ else if (matchDomain('sfstandard.com')) {
 }
 
 else if (matchDomain(sg_sph_media_domains)) {
+  func_post = function () {
+    header_nofix('main', 'div#sph_cdp_4', 'BPC > no archive-fix');
+  }
   let url = window.location.href;
-  getArchive(url, 'div#nocx_paywall_area', '', 'main#content');
+  getArchive(url, 'div[id][data-sdkids-campaignname^="OVR_Anon_Locked_"]', '', 'main');
   let ads = 'div.ads, div[id^="dfp-ad-"], div.cx_paywall_placeholder';
   hideDOMStyle(ads);
 }
