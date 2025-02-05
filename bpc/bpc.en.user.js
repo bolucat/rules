@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.2.4
+// @version         4.0.2.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -203,8 +203,15 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || document.
 else if (window.location.hostname.match(/\.(au|nz)$/) || matchDomain(['afr.com', 'inc-aus.com'])) {//australia & new zealand
 
 if (matchDomain('afr.com')) {
-  let article_sel = '#endOfArticle';
+  let error = document.querySelector('div[data-testid="DefaultError"]');
+  if (error)
+    refreshCurrentTab();
+  let article_sel = '#endOfArticle:not(:empty)';
   let article = document.querySelector(article_sel);
+  if (!article) {
+    article_sel = 'section#body-content';
+    article = document.querySelector(article_sel);
+  }
   if (article) {
     window.setTimeout(function () {
       let pars = article.querySelectorAll('p:not([class]), figure:not(:empty)');
@@ -213,7 +220,7 @@ if (matchDomain('afr.com')) {
         if (pagination) {
           removeDOMElement(pagination.parentNode);
         } else {
-          let loading = pageContains(article_sel + ' > div', 'Loading...');
+          let loading = pageContains(article_sel + ' div', 'Loading...');
           removeDOMElement(...pars, ...loading);
         }
         let url = window.location.href.split(/[#\?]/)[0];
@@ -249,7 +256,7 @@ if (matchDomain('afr.com')) {
                               else
                                 result = '<a href="' + item.data.url + '" target="_blank">' + item.data.url + '</a>';
                             }
-                          } else if (item.type === 'twitter') {
+                          } else if (['instagram', 'twitter'].includes(item.type)) {
                             if (item.data.url)
                               result = '<a href="' + item.data.url + '" target="_blank">' + item.data.url + '</a>';
                           } else if (item.type === 'iframe') {
@@ -268,9 +275,12 @@ if (matchDomain('afr.com')) {
                       if (placeholders)
                         json_text = json_text.replace(/<x-placeholder id="(\w+)"><\/x-placeholder>/g, find_item);
                       let parser = new DOMParser();
-                      let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+                      let doc = parser.parseFromString('<div id="endOfArticle">' + json_text + '</div>', 'text/html');
                       let content_new = doc.querySelector('div');
-                      article.appendChild(content_new);
+                      if (article_sel.startsWith('#endOfArticle'))
+                        article.parentNode.replaceChild(content_new, article);
+                      else
+                        article.firstChild.before(content_new);
                       addStyle(article_sel + ' p {margin: 20px 0px;}');
                     } else {
                       let parser = new DOMParser();
@@ -1520,7 +1530,7 @@ else if (matchDomain('business-standard.com')) {
 }
 
 else if (matchDomain('businessinsider.com')) {
-  let ads = 'div.l-ad, div.in-post-sticky, aside.has-video-ad, div.ad-callout-wrapper';
+  let ads = 'div.masthead-ad, div.l-ad, div.in-post-sticky, aside.has-video-ad, div.ad-callout-wrapper';
   hideDOMStyle(ads);
 }
 
