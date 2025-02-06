@@ -862,11 +862,6 @@ else if (matchDomain('granta.com')) {
   getJsonUrl('div.article-sign-up-container', '', 'div.article-excerpt');
 }
 
-else if (matchDomain('independent.co.uk')) {
-  let ads = 'div[id^="taboola-"]';
-  hideDOMStyle(ads);
-}
-
 else if (matchDomain('literaryreview.co.uk')) {
   getJsonUrl('p.subscribe-for-more', '', 'div#_articlereview');
 }

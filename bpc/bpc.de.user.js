@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.0.2.3
+// @version         4.0.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -85,37 +85,6 @@ else if (matchDomain('aerztezeitung.de')) {
       }
     }
   }
-}
-
-else if (matchDomain('augsburger-allgemeine.de')) {
-  let paywall_sel = 'div.piano-inline-paywall';
-  let paywall = document.querySelector(paywall_sel);
-  if (paywall) {
-    let url = window.location.href;
-    let plus = pageContains('span[class*="plusplus"]', 'Bildergalerie');
-    if (plus.length) {
-      removeDOMElement(paywall);
-      let article = document.querySelector('div#page-body');
-      if (article)
-        article.before(googleSearchToolLink(url));
-    } else {
-      func_post = function () {
-        let paywall = document.querySelector(paywall_sel);
-        if (paywall) {
-          removeDOMElement(paywall);
-          let article = document.querySelector(article_sel);
-          if (article && article.parentNode) {
-            let url = window.location.href;
-            article.parentNode.before(googleSearchToolLink(url));
-          }
-        }
-      }
-      let article_sel = 'div#article-body-paid-content';
-      getOchToUnlock(url, paywall_sel, '', article_sel);
-    }
-  }
-  let ads = 'div[data-slot-name^="banner"], div[id^="taboola-"], div#piano-inline-offer';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
@@ -346,16 +315,6 @@ else if (matchDomain('freitag.de')) {
   }
 }
 
-else if (matchDomain('golem.de')) {
-  let url = window.location.href;
-  func_post = function () {
-    let js_block = 'figure[id]:not([class])';
-    hideDOMStyle(js_block);
-  }
-  getOchToUnlock(url, 'div.paywall-wrapper', '', 'article');
-  let ads = 'div[id^="iqadtile"]';
-}
-
 else if (matchDomain('handelsblatt.com')) {
   let paywall = document.querySelector('app-paywall');
   if (paywall) {
@@ -377,15 +336,11 @@ else if (matchDomain('handelsblatt.com')) {
 
 else if (matchDomain('heise.de')) {
   func_post = function () {
-    let paywall = document.querySelector(paywall_sel);
-    if (paywall) {
-      paywall.before(archiveLink(url));
-      removeDOMElement(paywall);
-    }
+    header_nofix('article', paywall_sel, 'BPC > no archive-fix');
   }
   let paywall_sel = 'a-gift:not([has-access])';
   let url = window.location.href;
-  getOchToUnlock(url, paywall_sel, '', 'article');
+  getArchive(url, paywall_sel, '', 'article');
   let ads = 'div.ad-ldb-container, div.inread-cls-reduc';
   hideDOMStyle(ads);
 }
@@ -590,24 +545,7 @@ else if (matchDomain(['spiegel.de', 'manager-magazin.de'])) {
       for (let elem of lazy_images)
         elem.style = 'width: 95%;';
     }
-    let article = document.querySelector('article');
-    if (article) {
-      let paywall_sel = 'svg[id*="-plus-paywall-"]';
-      let paywall = document.querySelector(paywall_sel);
-      if (paywall) {
-        if (matchDomain('spiegel.de')) {
-          let archive_link = document.querySelector('div#bpc_archive > a:not([href*="/again?"])');
-          if (archive_link)
-            removeDOMElement(archive_link.parentNode);
-          article.firstChild.before(ochToUnlockLink(url));
-        } else
-          header_nofix('article', paywall_sel, 'BPC > no archive-fix');
-      } else {
-        let hidden_media = document.querySelector('svelte-scroller-outer, div[aria-label="Videoplayer"]');
-        if (hidden_media)
-          article.firstChild.before(document.createTextNode('For hidden media:'), ochToUnlockLink(url));
-      }
-    }
+    header_nofix('article', 'svg[id*="-plus-paywall-"]', 'BPC > no archive-fix');
   }
   getArchive(url, 'div[data-area="paywall"]', '', 'article');
 }
@@ -632,66 +570,31 @@ else if (matchDomain('springermedizin.de')) {
   }
 }
 
-else if (matchDomain('stern.de')) {
-  func_post = function () {
-    header_nofix(article_sel + ' div.intro', paywall_sel, 'BPC > no external site-fix');
-  }
-  let paywall_sel = 'div.paid-barrier';
-  let article_sel = 'div.article__body';
-  let url = window.location.href;
-  getOchToUnlock(url, paywall_sel, '', article_sel);
-}
-
 else if (matchDomain('sueddeutsche.de')) {
   let url = window.location.href;
   if (matchDomain('sz-magazin.sueddeutsche.de')) {
-    func_post = function () {
-      let pars = document.querySelectorAll('div.articlemain__content > p');
-      if (pars.length && pars.length < 3) {
-        pars[0].before(archiveLink(url));
-      } else {
-        let hidden_images = document.querySelectorAll('img[src^="data:image/"][data-src]');
-        for (let hidden_image of hidden_images)
-          hidden_image.setAttribute('src', hidden_image.getAttribute('data-src'));
-      }
-    }
-    getOchToUnlock(url, 'p.paragraph--reduced', {rm_class: 'paragraph--reduced'}, 'main');
+    getArchive(url, 'div.articlemain__inner--reduced', {rm_class: 'articlemain__inner--reduced'}, 'main');
   } else if (window.location.pathname.startsWith('/projekte/artikel/')) {
     func_post = function () {
-      let par = document.querySelector('div.publishdate');
-      if (par) {
-        let lazy_images = document.querySelectorAll('img[loading]');
-        for (let elem of lazy_images) {
-          if (elem.width) {
-            let ratio = elem.width / (par.offsetWidth);
-            elem.style = 'width: ' + elem.width / ratio + 'px; height: ' + elem.height / ratio + 'px; margin: 20px;';
-          }
-        }
-        let containers = document.querySelectorAll('div[class*="ground-container"]');
-        for (let elem of containers)
-          elem.style = 'text-align: center;';
-        let sticky = document.querySelectorAll('div.blender-module-sticky');
-        for (let elem of sticky) {
-          let div_blenders = elem.querySelectorAll('div[class^="blender-"]');
-          if (div_blenders.length > 1)
-            removeDOMElement(div_blenders[1]);
-        }
+      let lazy_images = document.querySelectorAll('img[loading="lazy"][style*="min-width:"]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 80%; margin: auto;';
+      let sticky = document.querySelectorAll('div > div > div[old-position="sticky"]');
+      for (let elem of sticky) {
+        let div_hidden = elem.parentNode.parentNode.querySelector('div[style^="display:none;"]');
+        if (div_hidden)
+          div_hidden.removeAttribute('style');
+        removeDOMElement(elem.parentNode);
       }
       if (intro) {
         let intro_old = document.querySelector(intro_sel);
         if (intro_old && intro_old.parentNode)
           intro_old.parentNode.replaceChild(intro, intro_old);
       }
-      let paywalled_slide = document.querySelectorAll('div.paywalled-slide');
-      for (let elem of paywalled_slide)
-        elem.removeAttribute('class');
-      let article = document.querySelector('section[id^="module-0"]');
-      if (article)
-        article.before(archiveLink(url));
     }
     let intro_sel = 'section#module-0';
     let intro = document.querySelector(intro_sel);
-    getOchToUnlock(url, 'div.offer-page', '', 'main');
+    getArchive(url, 'div.offer-page', '', 'main');
   } else {
     let paywall = document.querySelector('head > meta[content="locked"]');
     if (paywall) {
@@ -1286,15 +1189,6 @@ function getArticleSrc(url, url_src, proxy, base64, selector, text_fail = '', se
   });
 }
 
-function getOchToUnlock(url, paywall_sel, paywall_action = '', selector, selector_source = selector) {
-  let url_unlock = 'https://och.to/unlock/' + url.split(/[#\?]/)[0];
-  let paywall = document.querySelectorAll(paywall_sel);
-  if (paywall.length) {
-    clearPaywall(paywall, paywall_action);
-    replaceDomElementExt(url_unlock, true, false, selector, '', selector_source);
-  }
-}
-
 function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', selector_source = selector, selector_archive = selector) {
   let article = document.querySelector(selector);
   if (!article)
@@ -1364,10 +1258,6 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
               elem.removeAttribute('target');
             let invalid_links = article_new.querySelectorAll('link[rel*="preload"]:not([href])');
             removeDOMElement(...invalid_links);
-          } else if (url.startsWith('https://och.to/unlock/')) {
-            let unlock_links = article_new.querySelectorAll('a[href^="/unlock/"]');
-            for (let elem of unlock_links)
-              elem.href = elem.href.split('/unlock/')[1];
           }
           window.setTimeout(function () {
             if (article.parentNode) {
@@ -1434,10 +1324,6 @@ function archiveLink(url, text_fail = 'BPC > Try for full article text (no need 
 
 function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
   return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href, url, text_fail);
-}
-
-function ochToUnlockLink(url, text_fail = 'BPC > Try for full article content (no need to report issue for external site):\r\n') {
-  return externalLink(['och.to'], 'https://{domain}/unlock/{url}', url, text_fail);
 }
 
 function googleSearchToolLink(url, text_fail = 'BPC > Try for full article text (test url & copy html (tab) code to [https://codebeautify.org/htmlviewer]):\r\n') {
