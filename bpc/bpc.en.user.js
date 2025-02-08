@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.2.6
+// @version         4.0.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1350,22 +1350,6 @@ else if (matchDomain(['barandbench.com', 'theleaflet.in', 'thenewsminute.com']))
       if (article_new && article.parentNode)
         article.parentNode.replaceChild(article_new, article);
     }
-  }
-}
-
-else if (matchDomain('barrons.com')) {
-  if (!window.location.pathname.startsWith('/amp/')) {
-    amp_redirect('div#cx-interstitial-snippet', '', '/amp' + window.location.pathname);
-    let continue_buttons = document.querySelectorAll('button.snippet__buttons--continue');
-    for (let elem of continue_buttons)
-      elem.addEventListener('click', function () { window.location.reload(); });
-    let ads = 'div[class*="_AdWrapper-"], div[class*="-adWrapper-"]';
-    hideDOMStyle(ads);
-  } else {
-    amp_unhide_subscr_section('.wsj-ad, amp-ad');
-    amp_images_replace();
-    let login = document.querySelector('div.login-section-container');
-    removeDOMElement(login);
   }
 }
 
