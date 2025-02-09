@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.2.3
+// @version         4.0.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -31,6 +31,7 @@
 // @match           *://*.marianne.net/*
 // @match           *://*.monacomatin.mc/*
 // @match           *://*.parismatch.com/*
+// @match           *://*.philonomist.com/fr/*
 // @match           *://*.pourleco.com/*
 // @match           *://*.science-et-vie.com/*
 // @connect         archive.fo
@@ -978,6 +979,35 @@ else if (matchDomain('marianne.net')) {
   }
   let ads = 'div[class*="--placeholder"]';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('philonomist.com')) {
+  let paywall = document.querySelector('div.content-bandeau');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = parseHtmlEntities(findKeyJson(json, ['articleBody'])).replace(/\s{2,}/g, '\r\n\r\n');
+        let article = document.querySelector('div.main-body');
+        if (json_text && article) {
+          let par_last = article.querySelector('div > p:last-child');
+          if (par_last) {
+            let par_last_str = par_last.innerText.substring(0, 50);
+            if (json_text.replace(/<[^<]*>/g, '').includes(par_last_str)) {
+              par_last.innerText = json_text.substring(json_text.indexOf(par_last_str));
+            } else {
+              article.innerHTML = ' ';
+              let article_new = document.createElement('p');
+              article_new.innerText = json_text;
+              article.appendChild(article_new);
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 else if (matchDomain('pourleco.com')) {
