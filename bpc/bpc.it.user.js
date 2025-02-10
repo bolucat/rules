@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         3.9.9.3
+// @version         4.0.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -236,7 +236,7 @@ else if (matchDomain('italiaoggi.it')) {
 }
 
 else if (domain = matchDomain(it_gedi_domains)) {
-  let amp = window.location.pathname.match(/\amp(\/)?$/);
+  let amp = window.location.pathname.match(/\/amp(\/)?$/);
   if (matchDomain(['huffingtonpost.it', 'lastampa.it'])) {
     if (window.location.pathname.includes('/news/')) {
       if (!amp) {
@@ -257,6 +257,7 @@ else if (domain = matchDomain(it_gedi_domains)) {
       amp_unhide_subscr_section();
       if (!mobile)
         addStyle('img.i-amphtml-fill-content {min-height: 50% !important; min-width: 50% !important;}');
+      header_nofix('div.story__wrapper', 'div.not_granted__content');
     }
   } else {
     if (!amp) {
@@ -270,24 +271,30 @@ else if (domain = matchDomain(it_gedi_domains)) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('sport.sky.it')) {
+else if (matchDomain('sky.it')) {
   let paywall = document.querySelector('div.c-paywall');
-  if (paywall) {
-    paywall.removeAttribute('class');
+  if (paywall && window.location.hostname.match(/^(sport|tg24)\./)) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div > div.c-article-abstract');
     let json_script = getArticleJsonScript();
-    if (json_script) {
+    if (article && json_script) {
       try {
         let json = JSON.parse(json_script.text);
         if (json) {
           let json_text = json[0].articleBody;
-          if (json_text)
-            paywall.innerText = json_text;
+          if (json_text) {
+            let par_new = document.createElement('p');
+            par_new.innerText = json_text;
+            article.parentNode.appendChild(par_new);
+          }
         }
       } catch (err) {
         console.log(err);
       }
     }
   }
+  let ads = 'div.c-adv';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('tuttosport.com')) {
