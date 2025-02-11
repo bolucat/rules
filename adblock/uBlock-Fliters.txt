@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Mon, 10 Feb 2025 07:56:32 +0000
-! Diff-Path: ../patches/2025.2.10.867.patch#ublock-filters
+! Last modified: Tue, 11 Feb 2025 14:25:19 +0000
+! Diff-Path: ../patches/2025.2.11.927.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -6314,6 +6314,8 @@ checkz.net##ins.adsbygoogle
 @@||ff14angler.com^$ghide
 ff14angler.com###main > ins.adsbygoogle:style(position: absolute !important; left: -4000px !important;)
 ff14angler.com##.side_banner:style(position: absolute !important; left: -4000px !important;)
+ff14angler.com###sidebar > ins.adsbygoogle:style(position: absolute !important; left: -4000px !important;)
+ff14angler.com##ins.adsbygoogle-noablate:style(position: absolute !important; left: -4000px !important;)
 jaiefra.com##+js(aopr, adBlockDetected)
 ! hotpress.info anti adb
 hotpress.info##+js(nostif, nextFunction, 2000)
@@ -9259,6 +9261,7 @@ filespayout.com###normal-box
 filespayout.com##center > a[rel]
 ||boarfishesquandangsunderdried.com^
 ||anylinks.in/full*^url=aHR0c$doc,urlskip=?url -base64
+mastkhabre.com##+js(rmnt, script, /adsbygoogle|detectAdBlock/)
 updown.fun##+js(no-fetch-if, googlesyndication)
 qthang.net##+js(aopr, app_vars.force_disable_adblock)
 ! howblogs. xyz ad popups
@@ -15915,7 +15918,7 @@ hotabis.com##[href^="https://axiadata.co.id"]
 ||cxm-api.fifa.com/fifaplusweb/api/video/*$xhr,removeparam=adConfig
 fifa.com##.theoplayer-ad-overlay-component
 fifa.com##[href^="https://pubads.g.doubleclick.net/"]
-||imasdk.googleapis.com/js/sdkloader/ima3.js$redirect-rule=google-ima.js,domain=fifa.com
+||imasdk.googleapis.com/js/sdkloader/ima3.js$redirect=google-ima.js,domain=fifa.com
 ||fifa.com/api/v*/ad-manager/$redirect=nooptext
 66ccff.work##+js(alert-buster)
 ! popunder-sites
@@ -21527,9 +21530,6 @@ $popup,3p,domain=ds2play.com,badfilter
 hianime.to##[href="https://1flix.to/"]
 ###vidcloud-player > #overlay-container
 /embed-1/ajax/e-1/banners|$xhr,1p,strict1p
-/ajax/embed-4/banners|$xhr,1p,strict1p
-/ajax/banner/vpn|$xhr,1p,strict1p
-/ajax/banners?page=$xhr,1p,strict1p
 ||iili.io/JvfIu1a.gif$image
 ||i.ibb.co/wyDmK31/Banner.png^$image,3p
 winfuture.de##+js(json-prune, adtagparameter, enabled)
@@ -21878,12 +21878,6 @@ sunci.net,yoykp.com##+js(acs, navigator, FingerprintJS)
 trigonevo.com##+js(acs, eval, replace)
 trigonevo.com##+js(rmnt, script, deblocker)
 pastetot.com##+js(nowoif)
-xyzsports111.xyz,xyzsports112.xyz,xyzsports113.xyz,xyzsports114.xyz,xyzsprtsfrmr1.site,xyzsprtsfrmr2.site##+js(set, adsConfigs, {})
-xyzsports111.xyz,xyzsports112.xyz,xyzsports113.xyz,xyzsports114.xyz,xyzsprtsfrmr1.site,xyzsprtsfrmr2.site##+js(set, adsConfigs.0, {})
-xyzsports111.xyz,xyzsports112.xyz,xyzsports113.xyz,xyzsports114.xyz,xyzsprtsfrmr1.site,xyzsprtsfrmr2.site##+js(set, adsConfigs.0.enabled, 0)
-xyzsports111.xyz,xyzsports112.xyz,xyzsports113.xyz,xyzsports114.xyz,xyzsprtsfrmr1.site,xyzsprtsfrmr2.site###sticky-footer
-*/das/$image,domain=xyzsports111.xyz|xyzsports112.xyz|xyzsports113.xyz|xyzsports114.xyz|xyzsprtsfrmr1.site|xyzsprtsfrmr2.site
-.gif$image,domain=xyzsports111.xyz|xyzsports112.xyz|xyzsports113.xyz|xyzsports114.xyz|xyzsprtsfrmr1.site|xyzsprtsfrmr2.site
 @@||vectr.com^$ghide
 ! claimbits.net anti adblock after login
 claimbits.net##+js(set, NoAdBlock, noopFunc)
@@ -23727,6 +23721,7 @@ lewdzone.com###ad_vid
 ! <<<<< AG Chinese >>>>>
 m.shuhaige.net##+js(rmnt, script, return a.split)
 m.shuhaige.net##^script:has-text(return a.split)
+||2dingdian.com/static/idingdian/idd.js
 ! <<<<< AG Français - Liste FR >>>>>
 senpai-stream.net##div[x-show="!cf_turnstile_response"]
 senpai-stream.net##div[wire\:click="watching"]:style(display: flex !important;)
@@ -23734,6 +23729,12 @@ senpai-stream.net##div[wire\:click="watching"]:style(display: flex !important;)
 ||adsok.co^$3p
 ! <<<<< AG Turkish >>>>>
 /^dizipal\d+\.com$/##+js(trusted-rpnt, script, /manageAds\(video_urls\[activeItem\]\, video_seconds\[activeItem\]\, ad_urls\[activeItem]\,true\);/, playVideo();, condition, playAdd)
+.gif$image,domain=dizipal4.com
+/xslot-pageskin-reklam.png$image,domain=dizipal4.com
+dizipal4.com##.videoust
+dizipal4.com##.videoalt
+dizipal4.com##.body-clickable
+cehennemstream.click###adStop
  
 ! END: Regional lists
 opentunnel.net##+js(no-xhr-if, ad.plus)
@@ -24007,3 +24008,6 @@ fuckflix.click##+js(rmnt, script, wpadmngr.com)
 !#endif
 videezy.com##+js(acs, $, underpop)
 teracourses.com##+js(nostif, adBlockerModal)
+cmtracker.net##+js(no-xhr-if, adsbygoogle)
+! swiss-sport.tv anti adblock
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,domain=swiss-sport.tv
