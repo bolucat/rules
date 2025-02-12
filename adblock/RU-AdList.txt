@@ -1,8 +1,8 @@
 [Adblock Plus 2.0]
-! Checksum: PCk7NuWrb3vRlNqkQ/dPTg
-! Version: 202502111811
+! Checksum: gNhn7+6AhWZYOfYAzzvaLQ
+! Version: 202502121811
 ! Title: RU, UA, UZ, KZ
-! Last modified: 11 Feb 2025 18:11 UTC
+! Last modified: 12 Feb 2025 18:11 UTC
 ! Expires: 1 days (фильтр обновляется автоматически каждые 2 дня)
 ! Homepage: https://forums.lanik.us/viewforum.php?f=102
 !
@@ -1677,6 +1677,7 @@ me##td[background^="//cdn.livetv"] tr > td[valign="top"] + td[align="right"]
 .gold/next.html?$third-party,script
 .htm?href=*&tm_mode=
 .info/next.html?$third-party,script
+.mail.ru/pixel/$image
 .marketgid.com^$domain=~marketgid.com
 .md/ads/
 .php?idadv=
@@ -6893,6 +6894,7 @@ _tizers.
 ||jorjfix.ru^
 ||joubertymus.com^$third-party
 ||joulipodpodushkoy.ru^$third-party
+||journalrussia.ru^$third-party
 ||jouzeeps.click^$third-party
 ||joxar.ru^$third-party
 ||jpjgod.com^$third-party
@@ -7788,6 +7790,7 @@ _tizers.
 ||mqqrud.com^$third-party
 ||mquvqdhzgfyjl.com^$third-party
 ||mqwcuesny6.ru^
+||mradx.ru^$third-party
 ||mrakosy.ru^$third-party
 ||mrgreekroad.com^$third-party
 ||mromalt.ru^$third-party
@@ -8824,7 +8827,6 @@ _tizers.
 ||r.interakt.ru^$third-party
 ||r0.mail.ru^
 ||r0.mradx.net^
-||r0.mradx.ru^
 ||r01.website^$third-party
 ||r0tl.info^$third-party
 ||r0wa9z6t8t.ru^$third-party
@@ -10174,6 +10176,7 @@ _tizers.
 ||uehwxf.com^$third-party
 ||ueopf.com^$third-party
 ||uezbshzpdcbb.info^$third-party
+||ufcplayer.ru^$third-party
 ||ufuemi.com^$third-party
 ||ugadn39.ru^$third-party
 ||ughtedrab.ru^$third-party
@@ -17628,6 +17631,7 @@ mix.tj##a[href^="/engine/"]
 cyclone-soft.com,gameshake.ru,hide-info.pro##a[href^="/engine/dude/index/leech_out.php"]
 maw.ru##a[href^="/ent.php"]
 sportnet.live##a[href^="/fon"]
+knigiskachat.ru##a[href^="/get"]
 game-tournaments.com,gdetoedet.ru,uzum.tv##a[href^="/go"]
 poisk-ru.ru##a[href^="/go"][href*=".php"]
 cyberpedia.su,infopedia.su,lektsii.org,megaobuchalka.ru,studopedia.info,studopedia.net,studopedia.org,studopedia.ru,studopedia.su##a[href^="/go"][href*=".php"][target="_blank"]
@@ -21729,6 +21733,7 @@ igdz1.ru^$script,domain=igdz.ru
 ||mpclub.vip/files/*.js?$script
 ||mport.ua/?_tpl=r_banner
 ||mptron.com/img/
+||mradx.net^$image,domain=vk-apps.com|vk.com|vk.ru
 ||mrtranslate.ru/lorado.js
 ||mskd.ru/img/*x*_
 ||mskins.net/themes/mc/assets/promo/
@@ -23169,7 +23174,7 @@ https://*adtech_uid=$~third-party,xmlhttprequest,domain=lena-miro.ru|levik.blog|
 ||imgfrost.net^$third-party
 ||liveinternet.ru/utf/lici.js?
 ||news.mail.ru/-/*.js?
-||pikabu.ru/ajax/*?ZA1lk=$xmlhttprequest
+||pikabu.ru/ajax/*?ZA2lk=$xmlhttprequest
 ||ritsatv.ru^$csp=script-src
 ||ritsatv.ru^$popup
 ||ritsatv.ru^$~document
@@ -23182,16 +23187,16 @@ howdyho.net,howdyho.pro##.interesting_block_links::before
 howdyho.net,howdyho.pro##div[class^="csr-uniq"]
 howdyho.net,howdyho.pro#@#.g-ads
 howdyho.net,howdyho.pro#@#div[id^="yandex_rtb"]
+||vk-apps.com/*?type=leadform&d=
 ||yandex.$domain=howdyho.net|howdyho.pro
 ||yastatic.$domain=howdyho.net|howdyho.pro
 !
-vk.*##head > style:-abp-contains(/adchoice/i) {remove:true;}
+vk.*##head > style:-abp-contains(/adchoice|mkit_|outlineBanner/i) {remove:true;}
 ! селекторы
 growhow.in.ua###custom-background-css {remove:true;}
 playground.ru###dfpPrerollDelay {remove:true;}
 vk.com,vk.ru###feed_rows > .feed_row > div:not([id])
 vk.com,vk.ru###feed_rows > .feed_row ~ :not(.feed_row)
-vk.com,vk.ru#?##feed_rows > .feed_row:-abp-has(.PostHeaderSubtitle:-abp-contains(/[Реклама]/))
 vk.com,vk.ru###feed_rows > div[class="feed_row "] > div[id]:not([data-post-id])
 the-geek.ru###wp-custom-css {remove:true;}
 vk.com,vk.ru##._feed_rows > div:not([id]):not([class])
@@ -23199,11 +23204,13 @@ vk.com,vk.ru##._post_content > .post
 vk.com,vk.ru#?#._post_content:-abp-has(.Efxztiz1tCs6S5IDhTuN)
 vk.com,vk.ru#?#._post_content:-abp-has(.g03FJ4dTToqroympKAMc)
 vk.com,vk.ru#?#._post_content:-abp-has(.l2Q63U68RkAXQkXEoJnJ)
+vk.com,vk.ru#?#._post_content:-abp-has(.r4jouGh_Hfn9c5AzpbJg)
 vk.com,vk.ru#?#._post_content:-abp-has([src*="mradx."])
 vk.com,vk.ru##._post_content[style=""]
 vk.com,vk.ru##.feed_row > [data-post-id]:not([id^="post"])
 vk.com,vk.ru##.feed_row > [data-post-id][id^="post"] > :not([class="_post_content"])
 vk.com,vk.ru##.feed_row > [data-post-id][id^="post"]:not([post_view_hash])
+vk.com,vk.ru##.feed_row > [data-post-id][id^="post"][post_view_hash]:not([data-post-track-code])
 vk.com,vk.ru#?#.feed_row > [id^="post-"] > ._post_content:-abp-has(> :first-child:not(.PostHeader))
 vk.com,vk.ru##.feed_row > div[class$=" post"]
 e.mail.ru##.layout__column_right-indented
@@ -24228,14 +24235,16 @@ trackeroc.ga,trackeroc.info,trackeroc.ml,trackeroc.org,trackeroc.tk,ttrackeroc.r
 trackeroc.ga,trackeroc.info,trackeroc.ml,trackeroc.org,trackeroc.tk,ttrackeroc.ru##a[href*="sub/"] img
 !
 ! TurboBit и зеркала
-tourbobit.com,tourbobit.net,turbobeet.net,turbobi.pw,turbobif.com,turbobit.net,turbobita.net,turbobits.cc,turbobits.net,turboobit.com###window-body > #formula ~ p
-tourbobit.com,tourbobit.net,turbobeet.net,turbobi.pw,turbobif.com,turbobit.net,turbobita.net,turbobits.cc,turbobits.net,turboobit.com###window-body > :not(p)
-tourbobit.com,tourbobit.net,turbobeet.net,turbobi.pw,turbobif.com,turbobit.net,turbobita.net,turbobits.cc,turbobits.net,turboobit.com###window-body > a + p
-tourbobit.com,tourbobit.net,turbobeet.net,turbobi.pw,turbobif.com,turbobit.net,turbobita.net,turbobits.cc,turbobits.net,turboobit.com###window-frame > #window-title
-/brinpopup.js$script,domain=tourbobit.com|tourbobit.net|turbobeet.net|turbobi.pw|turbobif.com|turbobit.net|turbobita.net|turbobits.cc|turbobits.net|turboobit.com
-/pus/*$script,domain=tourbobit.com|tourbobit.net|turbobeet.net|turbobi.pw|turbobif.com|turbobit.net|turbobita.net|turbobits.cc|turbobits.net|turboobit.com
-/ybrowser/frame.png|$image,domain=tourbobit.com|tourbobit.net|turbobeet.net|turbobi.pw|turbobif.com|turbobit.net|turbobita.net|turbobits.cc|turbobits.net|turboobit.com
-tourbobit.com,tourbobit.net,turbobeet.net,turbobi.pw,turbobif.com,turbobit.net,turbobita.net,turbobits.cc,turbobits.net,turboobit.com##center > a > img
+.xyz/$script,domain=torbobit.net|tourbobit.com|tourbobit.net|turbobeet.net|turbobi.pw|turbobif.com|turbobit.net|turbobita.net|turbobits.cc|turbobits.net|turboobit.com
+/brinpopup.js$script,domain=torbobit.net|tourbobit.com|tourbobit.net|turbobeet.net|turbobi.pw|turbobif.com|turbobit.net|turbobita.net|turbobits.cc|turbobits.net|turboobit.com
+/custom_code/*$script,domain=torbobit.net|tourbobit.com|tourbobit.net|turbobeet.net|turbobi.pw|turbobif.com|turbobit.net|turbobita.net|turbobits.cc|turbobits.net|turboobit.com
+/pus/*$script,domain=torbobit.net|tourbobit.com|tourbobit.net|turbobeet.net|turbobi.pw|turbobif.com|turbobit.net|turbobita.net|turbobits.cc|turbobits.net|turboobit.com
+/ybrowser/frame.png|$image,domain=torbobit.net|tourbobit.com|tourbobit.net|turbobeet.net|turbobi.pw|turbobif.com|turbobit.net|turbobita.net|turbobits.cc|turbobits.net|turboobit.com
+torbobit.net,tourbobit.com,tourbobit.net,turbobeet.net,turbobi.pw,turbobif.com,turbobit.net,turbobita.net,turbobits.cc,turbobits.net,turboobit.com###window-body > #formula ~ p
+torbobit.net,tourbobit.com,tourbobit.net,turbobeet.net,turbobi.pw,turbobif.com,turbobit.net,turbobita.net,turbobits.cc,turbobits.net,turboobit.com###window-body > :not(p)
+torbobit.net,tourbobit.com,tourbobit.net,turbobeet.net,turbobi.pw,turbobif.com,turbobit.net,turbobita.net,turbobits.cc,turbobits.net,turboobit.com###window-body > a + p
+torbobit.net,tourbobit.com,tourbobit.net,turbobeet.net,turbobi.pw,turbobif.com,turbobit.net,turbobita.net,turbobits.cc,turbobits.net,turboobit.com###window-frame > #window-title
+torbobit.net,tourbobit.com,tourbobit.net,turbobeet.net,turbobi.pw,turbobif.com,turbobit.net,turbobita.net,turbobits.cc,turbobits.net,turboobit.com##center > a > img
 !
 ! Ukr.NET
 mail.ukr.net###left_banner
