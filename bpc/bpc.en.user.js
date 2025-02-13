@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.3.1
+// @version         4.0.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -116,6 +116,8 @@
 (function() {
   //'use strict';
 
+var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
+
 if (matchDomain('nzherald.co.nz')) {
   function nzherald_main() {
     if (window.Fusion)
@@ -135,6 +137,17 @@ else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
   }
   window.setTimeout(function () {
     insert_script(hindu_main);
+  }, 100);
+}
+
+else if (matchDomain(usa_adv_local_domains)) {
+  function adv_main() {
+    if (window.adiData) {
+      window.adiData.entryTags = 0;
+    }
+  }
+  window.setTimeout(function () {
+    insert_script(adv_main);
   }, 100);
 }
 
@@ -159,7 +172,6 @@ var no_dn_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'hydroge
 var sg_sph_media_domains = ['straitstimes.com'];
 var timesofindia_domains = ['epaper.indiatimes.com', 'timesofindia.indiatimes.com'];
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
-var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
 var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntraveler.com', 'epicurious.com', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.co.uk', 'vogue.com', 'wired.com'];
 var usa_craincomm_domains = ['360dx.com', 'adage.com', 'chicagobusiness.com', 'crainscleveland.com', 'crainsdetroit.com', 'crainsgrandrapids.com', 'crainsnewyork.com', 'european-rubber-journal.com', 'genomeweb.com', 'modernhealthcare.com', 'pionline.com', 'plasticsnews.com', 'precisionmedicineonline.com', 'rubbernews.com', 'sustainableplastics.com', 'tirebusiness.com', 'utech-polyurethane.com'];
@@ -1145,92 +1157,10 @@ else if (matchDomain(uk_nat_world_domains) || document.querySelector('footer > d
 
 if (matchDomain(usa_adv_local_domains)) {
   if (!window.location.search.startsWith('?outputType=amp')) {
-    let paywall_sel = 'div.paywall';
-    let paywall = document.querySelector(paywall_sel);
-    let article = document.querySelector('div.entry-content');
-    if (paywall && article) {
-      function fusionGetContent(fusion_text) {
-        try {
-          let json = JSON.parse(fusion_text.split('Fusion.globalContent=')[1].split(';Fusion.')[0]);
-          if (json) {
-            article.innerHTML = '';
-            let parser = new DOMParser();
-            let pars = json.content_elements;
-            for (let par of pars) {
-              let par_new;
-              if (['header', 'text'].includes(par.type)) {
-                if (par.content) {
-                  let doc = parser.parseFromString('<p class="article__paragraph">' + par.content + '</p>', 'text/html');
-                  par_new = doc.querySelector('p');
-                }
-              } else if (par.image_type) {
-                if (par.url) {
-                  let caption_text = par.caption;
-                  if (par.credits && par.credits.by && par.credits.by[0] && par.credits.by[0].byline)
-                    caption_text += ' - ' + par.credits.by[0].byline;
-                  par_new = makeFigure(par.url, caption_text, {alt: par.alt_text}, {'class': 'article__image-caption'});
-                  par_new.className = 'article__image';
-                  par_new.style = 'width: 75%; margin-left: auto; margin-right: auto;';
-                }
-              } else if (par.type === 'custom_embed') {
-                if (par.subtype === 'custom-image' && par.embed && par.embed.config) {
-                  let config = par.embed.config;
-                  if (config.image_src) {
-                    let caption_text = config.image_caption;
-                    if (config.image_credit)
-                      caption_text += ' ' + config.image_credit;
-                    par_new = makeFigure(config.image_src, caption_text, {}, {'class': 'article__image-caption'});
-                    par_new.className = 'article__image';
-                  }
-                }
-              } else if (par.raw_oembed) {
-                if (par.raw_oembed.html) {
-                  let doc = parser.parseFromString('<p>' + par.raw_oembed.html + '</p>', 'text/html');
-                  par_new = doc.querySelector('p');
-                }
-              } else if (par.type === 'list') {
-                if (par.items) {
-                  par_new = document.createElement('ul');
-                  for (let item of par.items) {
-                    let li = document.createElement('li');
-                    let doc = parser.parseFromString('<span>' + item.content + '</span>', 'text/html');
-                    let span = doc.querySelector('span');
-                    li.appendChild(span);
-                    par_new.appendChild(li);
-                  }
-                }
-              } else if (!['quote', 'raw_html'].includes(par.type)) {
-                console.log(par);
-              }
-              if (par_new)
-                article.appendChild(par_new);
-            }
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-      let fusion_script = document.querySelector('script#fusion-metadata');
-      if (fusion_script) {
-        paywall.classList.remove('paywall');
-        if (fusion_script.text.includes('Fusion.globalContent=')) {
-          fusionGetContent(fusion_script.text);
-        } else {
-          let url = window.location.href.split(/[#\?]/)[0];
-          fetch(url)
-          .then(response => {
-            if (response.ok) {
-              response.text().then(html => {
-                if (html.includes('Fusion.globalContent='))
-                  fusionGetContent(html);
-              });
-            }
-          });
-        }
-      } else
-        amp_redirect(paywall_sel, '', window.location.pathname + '?outputType=amp');
-    }
+   amp_redirect('div.paywall', '', window.location.pathname + '?outputType=amp');
   }
+  let ads = 'div.ad, div[id^="taboola"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('adweek.com')) {

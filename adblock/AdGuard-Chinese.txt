@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: vUsECSsKuj6PxE5yE3o0vA
-! Diff-Path: ../patches/224/224-s-1739367976-3600.patch
+! Checksum: +bjZF6CFssZaAOOVNj1IjA
+! Diff-Path: ../patches/224/224-s-1739468557-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.31.46
-! TimeUpdated: 2025-02-12T13:41:56+00:00
+! Version: 2.1.31.53
+! TimeUpdated: 2025-02-13T17:38:30+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -518,7 +518,8 @@ pansci.asia#@#.ad-container
 ! https://github.com/AdguardTeam/AdguardFilters/issues/26883
 linetv.tw##+js(no-xhr-if, pagead2.googlesyndication.com)
 linetv.tw##+js(no-fetch-if, pagead2.googlesyndication.com)
-linetv.tw##.aspect-ratio > img.object-cover + .aspect-ratio-content + div[class^="absolute inset-"][class*="bg-brand"]
+linetv.tw##+js(set-constant, google.ima.AdError, noopFunc)
+linetv.tw##.aspect-ratio > img.object-cover + .aspect-ratio-content + div[class^="absolute inset-"][class*="bg-linetv"][class*="-emphasis"]
 ||itad.linetv.tw/api/v2/vmap?ad_id=$xmlhttprequest,redirect=noop.txt
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,important,domain=linetv.tw
 @@||imasdk.googleapis.com/js/sdkloader/ima3.js$domain=linetv.tw
@@ -821,6 +822,12 @@ msn.cn##+js(json-prune, configs.*.properties.slideshowWCSettings.interstitialNat
 ! Removes ad placeholders in sliders
 ! Current path is "properties.componentConfigs.slideshowConfigs.slideshowSettings.interstitialNativeAds"
 ! Other rules probably can be removed, but keep them just in case for some time
+! https://github.com/AdguardTeam/AdguardFilters/issues/198422
+! Rule below is required in case if DNS filtering is enabled.
+! To play video website requires "cna" cookie (antiadblock/VPN message is displayed without this cookie)
+! which is set by "https://log.mmstat.com/eg.js" script, but it's blocked on DNS level, so we need to set cookie manually.
+! Original cookie value is the same as ETag value from "https://log.mmstat.com/eg.js" response, but it's not static.
+! So as a workaround we use hardcoded value from "https://g.alicdn.com/kplayer/kuplayer/4.5.26-xmedia/index.js" script.
 ! https://github.com/AdguardTeam/AdguardFilters/issues/34910
 goodav17.com##+js(abort-on-property-read, popunder)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/132934
@@ -1095,6 +1102,7 @@ $script,third-party,denyallow=fastlycdn.com|doodcdn.co|intensedebate.com|vixclou
 !
 ! NOTE: Specific rules
 !
+91porna.com##.dx-banner-item
 115cdn.com##a[href="https://vip.115.com/"] > img
 115cdn.com##.feature-float
 papalah.com##.sponsor-outer
@@ -4895,8 +4903,19 @@ newduba.cn###jq_youxi
 ||67.21.92.*.gif
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$third-party
+||saddarue.com^
+||scinmab.top^
+||stroveiks.com^
 ||strelgrell.com^
 ||h8ne.com^
+||jcinmaa.top^
+||uhi02130uik.xyz^
+||uhi02121uik.xyz^
+||bypllv.icu^
+||bhelzun.com^
+||fafvvt.icu^
+||gukviels.com^
+||kcinmad.top^
 ||traukvan.com^
 ||20wx.com^
 ||vitqzd.icu^
@@ -20759,6 +20778,7 @@ _rony.js$script,third-party
 /\.[a-z]yjqgp[a-z].top\//$script,third-party
 ||aoao1*iis.top/$script,third-party
 ||gmso1*oka.top/$script,third-party
+/\.[a-z]cinma[a-z].top\//$script,third-party
 /\.[a-z]dinma[a-z].top\//$script,third-party
 /\.[a-z]dinmi[a-z].top\//$script,third-party
 /\.[a-z]weisi[a-z].top\//$script,third-party
@@ -20773,6 +20793,7 @@ _rony.js$script,third-party
 .fun/by389.js
 .pw/TA390hz2.js
 .pw/by389.js
+.uhi*uik.xyz/$script,third-party
 .xxaks*sspao.xyz/$script,third-party
 .is0*qqp.xyz/$script,third-party
 .as0*kkp.xyz/$script,third-party
