@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.3.2
+// @version         4.0.3.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2013,15 +2013,29 @@ else if (matchDomain('harpers.org')) {
 }
 
 else if (matchDomain('hbr.org')) {
-  function hbr_main() {
-    window.top.postMessage({type: 'article-paywall:full-content'}, '*');
-  }
-  let popup = document.querySelector('.persistent-banner');
-  removeDOMElement(popup);
-  let paywall = document.querySelector('div#paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    insert_script(hbr_main);
+  if (window.location.pathname.startsWith('/data-visuals')) {
+    let feed_entries = document.querySelectorAll('li.feed-entry');
+    for (let feed_entry of feed_entries) {
+      let download = feed_entry.querySelector('span.entry-download > a[href*="/undefined/"]');
+      if (download) {
+        let figure = feed_entry.querySelector('figure.entry-image > img[src]');
+        if (figure) {
+          download.href = figure.src;
+          download.setAttribute('download', '');
+        }
+      }
+    }
+  } else {
+    function hbr_main() {
+      window.top.postMessage({type: 'article-paywall:full-content'}, '*');
+    }
+    let popup = document.querySelector('.persistent-banner');
+    removeDOMElement(popup);
+    let paywall = document.querySelector('div#paywall');
+    if (paywall) {
+      removeDOMElement(paywall);
+      insert_script(hbr_main);
+    }
   }
 }
 
@@ -4086,16 +4100,18 @@ else if (matchDomain(usa_mcc_domains) || document.querySelector('section.bottom-
       elem.parentNode.replaceChild(img, elem);
     }
   } else {
-    let paywall = document.querySelector('p#yzwall');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let pars_hidden = document.querySelectorAll('.yzfade, .yzarret');
-      for (let elem of pars_hidden)
-        elem.removeAttribute('class');
-    }
+    window.setTimeout(function () {
+      let paywall = document.querySelector('p#yzwall');
+      if (paywall) {
+        removeDOMElement(paywall);
+        let pars_hidden = document.querySelectorAll('.yzfade, .yzarret');
+        for (let elem of pars_hidden)
+          elem.removeAttribute('class');
+      }
+    }, 1000);
   }
-  let ads = document.querySelectorAll('div[data-type="ad"]');
-  removeDOMElement(...ads);
+  let ads = 'div[data-type="ad"], div.vf-promo, div#ymovrly';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(usa_mng_domains) || document.querySelector('head > link[rel="stylesheet"][id^="dfm-accuweather-"], footer li > a[href^="https://www.medianewsgroup.com"]')) {
