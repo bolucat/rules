@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.3.4
+// @version         4.0.3.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2322,15 +2322,8 @@ else if (matchDomain('manoramaonline.com')) {
 }
 
 else if (matchDomain('marketwatch.com')) {
-  if (!window.location.pathname.startsWith('/amp/')) {
-    amp_redirect('div#cx-snippet', '', '/amp' + window.location.pathname);
-  } else {
-    let meter = document.querySelector('div.meter');
-    let container_sponsored = document.querySelector('div.container--sponsored');
-    removeDOMElement(meter, container_sponsored);
-    amp_unhide_subscr_section('.display-ad');
-  }
-  let ads = 'div.element--ad, div.j-ad';
+  setCookie('cX_P', '', 'marketwatch.com', '/', 0);
+  let ads = 'div.element--ad, div.j-ad, div.adWrapper, div#cx-articlecover';
   hideDOMStyle(ads);
 }
 
@@ -3863,16 +3856,11 @@ else if (matchDomain('wsj.com')) {
   if (window.location.pathname.startsWith('/livecoverage/')) {
     window.setTimeout(function () {
       let paywall = document.querySelector('div#cx-lc-snippet');
-      let amphtml = document.querySelector('head > link[rel="amphtml"]');
       if (paywall) {
         removeDOMElement(paywall);
-        if (amphtml) {
-          amp_redirect_not_loop(amphtml);
-        } else {
-          let fade = document.querySelectorAll('div[class*="-CardWrapper"]');
-          for (let elem of fade)
-            elem.removeAttribute('class');
-        }
+        let fade = document.querySelectorAll('div[class*="-CardWrapper"]');
+        for (let elem of fade)
+          elem.removeAttribute('class');
       }
     }, 1000);
   } else {
