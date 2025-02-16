@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.0.3.0
+// @version         4.0.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -29,7 +29,6 @@
 // @connect         archive.ph
 // @connect         archive.vn
 // @connect         funkemedien.de
-// @connect         och.to
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
 

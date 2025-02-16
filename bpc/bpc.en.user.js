@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.3.5
+// @version         4.0.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -51,6 +51,7 @@
 // @connect         archive.md
 // @connect         archive.ph
 // @connect         archive.vn
+// @connect         djservices.io
 // @exclude         *://*.abcmais.com/*
 // @exclude         *://*.dwcdn.net/*
 // @exclude         *://*.google.com/*
@@ -1281,6 +1282,98 @@ else if (matchDomain(['barandbench.com', 'theleaflet.in', 'thenewsminute.com']))
         article.parentNode.replaceChild(article_new, article);
     }
   }
+}
+
+else if (matchDomain('barrons.com')) {
+  let paywall = document.querySelector('div#cx-interstitial-snippet, div[data-id^="ArticleRoadblock_"]');
+  if (paywall) {
+    removeDOMElement(paywall);
+    window.setTimeout(function () {
+      let articles = document.querySelectorAll('article > div.crawler');
+      let article;
+      for (let elem of articles) {
+        let paragraph = elem.querySelector('p[class*="Paragraph"]');
+        if (paragraph) {
+          article = elem;
+          break;
+        }
+      }
+      if (article) {
+        let article_id_dom = document.querySelector('head > meta[name="article.id"][content]');
+        if (article_id_dom) {
+          let article_id = article_id_dom.content;
+          let url_src = 'https://barrons.djmedia.djservices.io/apps/barrons/theaters/default-article?screen_ids=' + article_id;
+          let x_access_token = "eyJhbGciOiJSUzI1NiJ9.WFZsaHN3MXd3Smw0V3kwRXBzclQ.qwwBedAUNXHTQchowQZ5zMwmnXqDKeMhoRJlkB7drjWmb0ktZCScIhq5lpIiWaMyNJA_ODYgHAfIoi7DKWkS8g8GunFNAXpJDUOLdI2rtQkTEi_E3o90rdZHunPR7p0ULjRmHCnDofAdpTQdJtTXjQ9eEDZT2xoooVGdBpoVKhE";
+          getExtFetch(url_src, '', {headers: {"app-identifier": "http://com.news.screens", "device-type": "phone", "x-access-token": x_access_token}}, main_barrons);
+          function main_barrons(url_src, data) {
+            try {
+              if (data) {
+                let json = JSON.parse(data);
+                if (json && json.screens[0] && json.screens[0].frames) {
+                  let pars = json.screens[0].frames;
+                  let par_class;
+                  let intro = article.querySelector('p[class]');
+                  if (intro)
+                    par_class = intro.className;
+                  let body_first = true;
+                  article.innerHTML = '';
+                  for (let par of pars) {
+                    let elem = document.createElement('p');
+                    if (par_class)
+                      elem.className = par_class;
+                    if (par.type === 'body') {
+                      if (par.body && par.styleID !== 'article-summary-body') {
+                        if (body_first && intro) {
+                          elem = intro;
+                          body_first = false;
+                        } else
+                          elem.innerText = par.body.text.replace(/\s_/g, '');
+                      }
+                    } else if (par.type === 'listelement') {
+                      if (par.body)
+                        elem.innerText = ' • ' + par.body.text;
+                    } else if (par.type === 'image') {
+                      if (par.image && par.image.url) {
+                        let caption = (par.caption ? par.caption.text + ' - ' : '') + (par.credit ? par.credit.text : '');
+                        elem = makeFigure(par.image.url, caption, {style: 'width: 80%; margin: auto;'});
+                      }
+                    } else if (par.type === 'dynamicinset') {
+                      if (par.webview && par.webview.value) {
+                        let iframe = document.createElement('iframe');
+                        iframe.src = par.webview.value;
+                        iframe.style = 'height: 600px; width: 100%; border: none;';
+                        elem.appendChild(iframe);
+                      }
+                    } else if (par.type === 'video') {
+                      let video_thumbnail = makeFigure(par.thumbnail.url, par.description.text, {style: 'width: 80%; margin: auto;'});
+                      let video_link = document.createElement('a');
+                      video_link.href = par.url;
+                      video_link.innerText = 'Video-link (open in media player): ' + par.url;
+                      elem.append(video_thumbnail, video_link);
+                    } else if (!['ad', 'audioplayer', 'byline', 'caption', 'title'].includes(par.type)) {
+                      console.log(par);
+                    }
+                    if (elem.hasChildNodes())
+                      article.appendChild(elem);
+                  }
+                }
+              }
+            } catch (err) {
+              console.log(err);
+            }
+          }
+        }
+      }
+    }, 1000);
+  }
+  let signin_links = document.querySelectorAll('p > a[href^="https://www.barrons.com/client/login"][href*="target="]');
+  for (let elem of signin_links) {
+    elem.href = decodeURIComponent(elem.href.split('target=')[1].split('&')[0]);
+    elem.innerText = 'Open';
+    elem.target = '_top';
+  }
+  let ads = 'div[class^="adWrapper"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('benzinga.com')) {
@@ -4482,6 +4575,27 @@ function replaceTextFail(url, article, proxy, text_fail) {
     else
       article.appendChild(text_fail_div);
   }
+}
+
+function getExtFetch(url, json_key = '', headers = {}, callback = '') {
+  GM.xmlHttpRequest({
+    method: "GET",
+    url: url,
+    headers: headers,
+    onload: function (response) {
+      let html = response.responseText;
+      if (json_key) {
+        try {
+          let json = JSON.parse(html);
+          if (json)
+            html = getNestedKeys(json, json_key);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      callback(url, html);
+    }
+  })
 }
 
 function randomInt(max) {
