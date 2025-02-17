@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.4.0
+// @version         4.0.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1364,7 +1364,7 @@ else if (matchDomain('barrons.com')) {
           }
         }
       }
-    }, 1000);
+    }, 2000);
   }
   let signin_links = document.querySelectorAll('p > a[href^="https://www.barrons.com/client/login"][href*="target="]');
   for (let elem of signin_links) {
@@ -1372,8 +1372,9 @@ else if (matchDomain('barrons.com')) {
     elem.innerText = 'Open';
     elem.target = '_top';
   }
-  let ads = 'div[class^="adWrapper"]';
-  hideDOMStyle(ads);
+  let ads = document.querySelectorAll('div[class] > div.uds-ad-container');
+  for (let ad of ads)
+    hideDOMElement(ad.parentNode);
 }
 
 else if (matchDomain('benzinga.com')) {
