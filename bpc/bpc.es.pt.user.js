@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.0.2.1
+// @version         4.0.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -410,11 +410,11 @@ else if (matchDomain(ar_grupo_clarin_domains)) {
 }
 
 else if (matchDomain('cambiocolombia.com')) {
-  if (!window.location.pathname.startsWith('/amp/')) {
-    amp_redirect('div#require-access', '', '/amp' + window.location.pathname);
-  } else {
-    amp_unhide_subscr_section();
-  }
+  let author = document.querySelector('head > meta[name="author"]');
+  if (author && !document.querySelector('article section'))
+    refreshCurrentTab();
+  let ads = 'div[role="banner"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('cartacapital.com.br')) {

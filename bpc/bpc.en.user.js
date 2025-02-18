@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.4.1
+// @version         4.0.4.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -25,6 +25,7 @@
 // @match           *://*.europower.no/*
 // @match           *://*.fiskeribladet.no/*
 // @match           *://*.forbes.ua/*
+// @match           *://*.ftm.eu/*
 // @match           *://*.gitflic.ru/*
 // @match           *://*.haaretz.co.il/*
 // @match           *://*.independent.ie/*
@@ -2072,6 +2073,12 @@ else if (matchDomain('foxnews.com')) {
   let overlay = document.querySelector('div[class*="gated-overlay"]');
   if (overlay)
     overlay.removeAttribute('class');
+}
+
+else if (matchDomain('ftm.eu')) {
+  document.querySelectorAll('div.foldable').forEach(e => e.classList.remove('foldable'));
+  let banners = 'div.banner-pp';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
