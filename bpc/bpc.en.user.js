@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.4.2
+// @version         4.0.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -19,6 +19,7 @@
 // @match           *://*.pub/*
 // @match           *://*.businessdesk.co.nz/*
 // @match           *://*.businesspost.ie/*
+// @match           *://*.businesstimes.com.sg/*
 // @match           *://*.capital.bg/*
 // @match           *://*.dnevnik.bg/*
 // @match           *://*.epoch.org.il/*
@@ -171,7 +172,7 @@ var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 't
 var ke_nation_media_domains = ['businessdailyafrica.com', 'nation.africa'];
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
 var no_dn_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'hydrogeninsight.com', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
-var sg_sph_media_domains = ['straitstimes.com'];
+var sg_sph_media_domains = ['businesstimes.com.sg', 'straitstimes.com'];
 var timesofindia_domains = ['epaper.indiatimes.com', 'timesofindia.indiatimes.com'];
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
@@ -2920,12 +2921,27 @@ else if (matchDomain('sfstandard.com')) {
 }
 
 else if (matchDomain(sg_sph_media_domains)) {
-  func_post = function () {
-    header_nofix('main', 'div#sph_cdp_4', 'BPC > no archive-fix');
+  if (matchDomain('straitstimes.com')) {
+    func_post = function () {
+      header_nofix('main', 'div#sph_cdp_4:not(:empty)', 'BPC > no archive-fix');
+    }
+    let url = window.location.href;
+    getArchive(url, 'div[id][data-sdkids-campaignname^="OVR_Anon_Locked_"]', '', 'main');
+  } else if (matchDomain('businesstimes.com.sg')) {
+    let article = document.querySelector('div.body-content > div[class]');
+    if (article) {
+      let par_hidden = article.querySelectorAll('p.hidden');
+      if (par_hidden.length) {
+        par_hidden[0].parentNode.removeAttribute('class');
+        for (let elem of par_hidden)
+          elem.classList.remove('hidden');
+        let fade = article.querySelector('p[class*="bg-gradient-to-t"]');
+        if (fade)
+          fade.className = par_hidden[0].className;
+      }
+    }
   }
-  let url = window.location.href;
-  getArchive(url, 'div[id][data-sdkids-campaignname^="OVR_Anon_Locked_"]', '', 'main');
-  let ads = 'div.ads, div[id^="dfp-ad-"], div.cx_paywall_placeholder';
+  let ads = 'div.ads, div[id^="dfp-ad-"], div.cx_paywall_placeholder, div[data-testid="cas-block-component"]';
   hideDOMStyle(ads);
 }
 

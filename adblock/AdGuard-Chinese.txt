@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: jNnUCFQWDsvWdrT9EhgXvA
-! Diff-Path: ../patches/224/224-s-1739900614-3600.patch
+! Checksum: r6T3hkmXZBl5XqTZnPkQ2A
+! Diff-Path: ../patches/224/224-s-1739979926-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.31.76
-! TimeUpdated: 2025-02-18T17:39:31+00:00
+! Version: 2.1.31.83
+! TimeUpdated: 2025-02-19T15:40:33+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -784,7 +784,7 @@ m.91zww.com##+js(abort-on-property-write, delCookie)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/150387
 pornbest.org##+js(abort-current-script, jQuery, injectPops)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/141657
-axutongxue.com,axutongxue.net##+js(no-setTimeout-if, checkCookie)
+axutongxue.vip,axutongxue.com,axutongxue.net##+js(no-setTimeout-if, /getCookie|checkCK|checkCookie/)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/135612
 hamivideo.hinet.net##+js(set-constant, myPlayer.adDisplay, undefined)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/134441
@@ -1723,7 +1723,7 @@ wnflb2023.com##.GzList
 bdys03.com##.artplayer-plugin-ads
 ||u10*.com/*.gif$domain=bhuai.top
 ||ll.ibiqiuge.com/m.js
-axutongxue.com,axutongxue.net##body > div[id]:has(> ul[class] > li > img.icon + a[href])
+axutongxue.vip,axutongxue.com,axutongxue.net##body > :is(div, aside)[id]:has(> ul[class] > li > img.icon + a[href])
 sstv.pw##.container > a > img[style="width: 100%;"]
 cupfox.app##.t-img-box > a[target="_blank"] > img
 olevod.com##div[class^="ad"][style="margin-top: 0.05rem;"]
@@ -4919,6 +4919,14 @@ newduba.cn###jq_youxi
 ||67.21.92.*.gif
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$third-party
+||dhannaq.com^
+||xqrydt.icu^
+||rsohvot.xyz^
+||o4q.fun^
+||jshilr.icu^
+||hcinvdu.top^
+||fesnaed.com^
+||icinvdo.top^
 ||zavgrj.icu^
 ||stogmos.com^
 ||zooj.cn^$third-party
@@ -12829,6 +12837,8 @@ hxsame.hexun.com$domain=~quote.hexun.com
 ||ixkw3.cc/wp-content/themes/wpMyTube/assets/js/mobile.
 ||52xkdy.com/pmc/
 ||dfcfw.com/download/D25411840164398846730_w690h389.
+||178.com/misc/self/*_ads
+178.com,nga.cn,ngabbs.com##[style^="background"][style*="vertical-align"]
 eastmoney.com##div[style^="position: fixed; z-index:"]
 g-mh.org,godamh.com##.adshow
 nodejs.cn###pagead0
@@ -19993,7 +20003,7 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com##style[id^="s-"] + 
 ||rc.ie13.com^
 ||rdbd.xsread.com^
 ||redmx.cn^$third-party
-||res.pinpai8.cn^
+||res*.pinpai8.cn^
 ||retrieval-bd.duote.com^
 ||richh.cn^
 ||ruiwen.com/css_
@@ -20495,6 +20505,8 @@ _rony.js$script,third-party
 .012*sop.xyz/$script,third-party
 .apk0*oo.xyz/$script,third-party
 .okpp0*.xyz/$script,third-party
+.fun/nd389.js
+.fun/In390hG2.js
 .com:1*/static/lbsite/*/*.js?v=$script,third-party
 .com:2*/static/lbsite/*/*.js?v=$script,third-party
 .com:3*/static/lbsite/*/*.js?v=$script,third-party
