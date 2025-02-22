@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.5.2
+// @version         4.0.5.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2006,7 +2006,7 @@ else if (matchDomain('forbes.com')) {
       header_nofix(header);
     }
   }
-  let ads = 'fbs-ad';
+  let ads = 'fbs-ad, div.inlineAdContainer';
   hideDOMStyle(ads);
 }
 
@@ -3992,7 +3992,7 @@ else if (matchDomain('wsj.com')) {
         function main_wsj_pro(url_src, data) {
           try {
             if (data) {
-              let intro = article.querySelectorAll('p[class]');
+              let intro = article.querySelectorAll('p[class][data-type="paragraph"]');
               let par_class;
               if (intro[0]) {
                 par_class = intro[0].className;
