@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.5.3
+// @version         4.0.5.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3467,6 +3467,12 @@ else if (matchDomain('thequint.com')) {
       waitDOMAttribute('div#story-body-wrapper', 'DIV', 'style', thequint_unhide, true);
     }
   }, 4000);
+}
+
+else if (matchDomain('thespectator.com')) {
+  let div_hidden = document.querySelector('div.ev-meter-content-class');
+  if (div_hidden)
+    div_hidden.classList.remove('ev-meter-content-class');
 }
 
 else if (matchDomain('theweek.com')) {
