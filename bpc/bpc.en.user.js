@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.5.4
+// @version         4.0.5.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1629,10 +1629,11 @@ else if (matchDomain('cnn.com')) {
   let subwall = document.querySelector('div[data-component-id="subwall"]');
   if (subwall) {
     removeDOMElement(subwall);
-    let noscroll = document.querySelector('html[style]');
-    if (noscroll)
-      noscroll.removeAttribute('style');
+    let noscroll = document.querySelectorAll('html[style], body[style]');
+    for (let elem of noscroll)
+      elem.removeAttribute('style');
     waitDOMAttribute('html', 'HTML', 'style', node => node.removeAttribute('style'), true);
+    waitDOMAttribute('body', 'BODY', 'style', node => node.removeAttribute('style'), true);
   }
   let regwall_keys = Object.keys(window.localStorage).filter(x => x.match(/reg_?wall/i));
   for (let item of regwall_keys)
@@ -3214,8 +3215,9 @@ else if (matchDomain('thedailybeast.com')) {
       }
     }
   }
-  let ads = 'aside.AdSlot, div.FooterAd';
-  hideDOMStyle(ads);
+  let ads = document.querySelectorAll('div > div.tdb-ads-block');
+  for (let ad of ads)
+    hideDOMElement(ad.parentNode);
 }
 
 else if (matchDomain('thediplomat.com')) {

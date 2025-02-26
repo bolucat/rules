@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Tue, 25 Feb 2025 13:45:05 +0000
-! Diff-Path: ../patches/2025.2.25.867.patch#ublock-filters
+! Last modified: Wed, 26 Feb 2025 15:20:03 +0000
+! Diff-Path: ../patches/2025.2.26.928.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -8153,14 +8153,14 @@ techdracula.com##ins.adsbygoogle
 ! Link shortener filters go into their own dedicated list
 ! *** filters/ubo-link-shorteners.txt ***
 ! gplinks all domains (gplinks.co/EWu8)
-@@*$ghide,domain=gplinks.*|mastharyana.com|quickimageconverter.com|techipop.com|remixbass.com|techyember.com
-@@*$script,xhr,to=googlesyndication.com|doubleclick.net,from=mastharyana.com|quickimageconverter.com|techipop.com|remixbass.com|techyember.com
-@@||gplinks.in/track/$script,xhr,domain=gplinks.*|mastharyana.com|quickimageconverter.com|techipop.com|remixbass.com|techyember.com
-techyember.com,remixbass.com,techipop.com,quickimageconverter.com,mastharyana.com##center:others()
-techyember.com,remixbass.com,techipop.com,quickimageconverter.com,mastharyana.com###SmileyBanner:remove()
-techyember.com,remixbass.com,techipop.com,quickimageconverter.com,mastharyana.com##+js(aopw, AdBDetected)
+@@*$ghide,domain=gplinks.*|mastharyana.com|quickimageconverter.com|techipop.com|remixbass.com|techyember.com|studyfut.com
+@@*$script,xhr,to=googlesyndication.com|doubleclick.net,from=mastharyana.com|quickimageconverter.com|techipop.com|remixbass.com|techyember.com|studyfut.com
+@@||gplinks.in/track/$script,xhr,domain=gplinks.*|mastharyana.com|quickimageconverter.com|techipop.com|remixbass.com|techyember.com|studyfut.com
+techyember.com,remixbass.com,techipop.com,quickimageconverter.com,mastharyana.com,studyfut.com##center:others()
+techyember.com,remixbass.com,techipop.com,quickimageconverter.com,mastharyana.com,studyfut.com###SmileyBanner:remove()
+techyember.com,remixbass.com,techipop.com,quickimageconverter.com,mastharyana.com,studyfut.com##+js(aopw, AdBDetected)
 techyember.com,remixbass.com,techipop.com,quickimageconverter.com,mastharyana.com##+js(set, count, 0)
-techyember.com,remixbass.com,techipop.com,quickimageconverter.com,mastharyana.com##[id*="iframe"], [id*="gpt_unit"], [id*="div-gpt-"]:style(height:0.0001px !important;)
+techyember.com,remixbass.com,techipop.com,quickimageconverter.com,mastharyana.com,studyfut.com##[id*="iframe"], [id*="gpt_unit"], [id*="div-gpt-"]:style(height:0.0001px !important;)
 gplinks.*##a.exclude-pop.smartlink, .exclude-pop.quiz-container, #PlayQuiz, #quiz-frame, .exclude-popad
 ||gamezop.com^$domain=gplinks.*
 gplinks.*##+js(set, blurred, false)
@@ -8387,6 +8387,7 @@ fansonlinehub.com,hotmediahub.com,terabox.fun,teralink.me,terashare.me,teraearn.
 fansonlinehub.com,hotmediahub.com,terabox.fun,teralink.me,terashare.me,teraearn.com##+js(nano-sib, clearInterval, *)
 4funbox.com,nephobox.com,1024tera.com,terabox.*##+js(set, Object.prototype.isAllAdClose, true)
 4funbox.com,nephobox.com,1024tera.com,terabox.*##.ad-eggplant, .operate-box
+terabox.com##.shadow
 @@||linkvertise.com^$ghide
 linkvertise.com##+js(acs, addEventListener, DOMNodeRemoved)
 linkvertise.com##+js(acs, document.dispatchEvent, CustomEvent)
@@ -12974,7 +12975,6 @@ bollyholic.*##+js(nostif, mdpDeBlocker)
 bollyholic.*##+js(aopr, disableDeveloperTools)
 ! influencersgonewild.com popunder
 influencersgonewild.com##+js(aost, Math.round, onload)
-influencersgonewild.com##.g1-advertisement-inside-grid:upward(li)
 ! xxxwebdlxxx.top anti-adb, popup
 xxxwebdlxxx.top##a[href^="https://hotdating-near1.com/"]
 *$frame,script,3p,domain=xxxwebdlxxx.top
@@ -20679,6 +20679,8 @@ cimanow.cc###ad1
 cimanow.cc##section[aria-label="details"] a[id][target="_blank"]
 cimanow.cc,cimanow.online##+js(ra, href, [target="_blank"], stay)
 cimanow.cc,cimanow.online##+js(acs, document.createElement, MutationObserver)
+cimanow.cc,cimanow.online##+js(overlay-buster)
+||secure.flashtalking.com^$image,redirect=1x1.gif,domain=cimanow.cc|cimanow.online
 qiwi.gg##+js(aeld, , sessionStorage)
 qiwi.gg##+js(nowoif, , 10)
 qiwi.gg##+js(acs, globalThis, break;case)
@@ -21784,6 +21786,8 @@ timesnewsgroup.com.au##+js(acs, $, popup)
 ! romfree .net anti-adb
 romfree.net##+js(aost, setTimeout, adsBlocked)
 livecamrips.*##+js(rmnt, script, window.open)
+/ad?type=$badfilter
+5j386s9.sbs##+js(nowoif)
 ! exactlyhowlong. com detection
 exactlyhowlong.com##+js(noeval-if, ads)
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,domain=sportitalialive.com
@@ -23283,6 +23287,7 @@ faanproj.com##.gmr-bannerpopup
 flyplayer.xyz,blsplayer.com##.pppx
 flyplayer.xyz##+js(nowoif)
 ||blsplayer.com/player/assets/js/jquery.js
+||daftmovie.xyz/player/assets/js/jquery.js
 klyker.com##+js(noeval-if, adsbygoogle)
 a-lohas.jp##+js(aeld, load, puHref)
 kontenterabox.com##+js(noeval-if, adsbygoogle)
@@ -24122,3 +24127,7 @@ reviewdiv.com##^script:has-text(wpquads_adblocker_check)
 !#else
 reviewdiv.com##+js(rmnt, script, wpquads_adblocker_check)
 !#endif
+pvpoke-re.com##+js(set, myMessage, noopFunc)
+pvpoke-re.com##+js(set, browserMessage, noopFunc)
+||pvpoke-re.com/actpvpoke.min.js
+national-park.com##+js(aeld, click, window.open)
