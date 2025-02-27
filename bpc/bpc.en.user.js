@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.5.5
+// @version         4.0.5.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -216,7 +216,7 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || document.
   }, 1000);
 }
 
-else if (window.location.hostname.match(/\.(au|nz)$/) || matchDomain(['afr.com', 'inc-aus.com'])) {//australia & new zealand
+else if (window.location.hostname.match(/\.(au|nz)$/) || matchDomain(['afr.com'])) {//australia & new zealand
 
 if (matchDomain('afr.com')) {
   let error = document.querySelector('div[data-testid="DefaultError"]');
@@ -376,14 +376,9 @@ else if (matchDomain('businessdesk.co.nz')) {
   }
 }
 
-else if (domain = matchDomain(['crikey.com.au', 'inc-aus.com', 'smartcompany.com.au', 'themandarin.com.au'])) {
-  if (matchDomain('themandarin.com.au')) {
-    getJsonUrl('div[data-enterprise-agreement-paywall="true"]', '', 'div.paywall-mandy');
-  } else {
-    setCookie('blaize_session', '', domain, '/', 0);
-    let ads = '.advert';
-    hideDOMStyle(ads);
-  }
+else if (matchDomain(['crikey.com.au', 'smartcompany.com.au', 'themandarin.com.au'])) {
+  let ads = 'div.wp-block-pm-ad-placeholder-block';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('forbes.com.au')) {
@@ -1100,6 +1095,11 @@ else if (matchDomain('thenewslens.com')) {
 else if (matchDomain('thestage.co.uk')) {
   let url = window.location.href;
   getArchive(url, 'div#ao-MeteringDNAllow', '', 'div[id^="aos-FeatureArticle2Col-"], div[id^="aos-ReviewArticle-"]');
+}
+
+else if (matchDomain('thesun.co.uk')) {
+  let ads = 'div.billboard, div.advert-wrapper';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('thetimes.com')) {
@@ -2206,6 +2206,18 @@ else if (matchDomain('historytoday.com')) {
   }
 }
 
+else if (matchDomain('inc.com')) {
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let locked = document.querySelector('div.article-container--locked');
+    if (locked)
+      locked.className = 'article-container';
+  }
+  let ads = 'div.second-scroll-border';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('inc42.com')) {
   if (window.location.pathname.endsWith('/amp/')) {
     amp_unhide_access_hide('="status"', '="NOT status"', 'div.wru-widget');
@@ -2348,6 +2360,11 @@ else if (matchDomain('japantimes.co.jp')) {
 else if (matchDomain('jpost.com')) {
   let premium_banners = document.querySelectorAll('.hide-for-premium, #hiddenPremiumForm, #hiddenLink');
   removeDOMElement(...premium_banners);
+}
+
+else if (matchDomain('kathimerini.gr')) {
+  let ads = 'div.nx-billboard-ad-row';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('kompas.id')) {
