@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Fri, 28 Feb 2025 17:21:10 +0000
-! Diff-Path: ../patches/2025.2.28.1043.patch#ublock-quick-fixes
+! Last modified: Sat, 01 Mar 2025 12:18:07 +0000
+! Diff-Path: ../patches/2025.3.1.806.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -104,9 +104,10 @@ poophq.com,veev.to##+js(no-xhr-if, /click\.com|preroll|native_render\.js|acscdn/
 poophq.com,veev.to##+js(nosiif, ;!0x0===_0x)
 poophq.com,veev.to##+js(nosiif, )=== -0x)
 poophq.com,veev.to##+js(nostif, _detectLoop)
-poophq.com,veev.to##+js(trusted-set, window.__abburi, json:"https://poophq.com/favicon.ico")
 !#if cap_html_filtering
 ||static.veevcdn.co/assets/videoplayer/$script,3p,replace=/return new Promise\(function\(_0x[a-z0-9]+\){var _0x/return new Promise(function(a){return; var _0x/,domain=poophq.com|veev.to
+||static.veevcdn.co/assets/videoplayer/$script,3p,replace=/\(\{\'val\'\:\!0x0\}\)/({'val':false})/g,domain=poophq.com|veev.to
+||a.magsrv.com/ad-provider.js$xhr,important,domain=poophq.com|veev.to
 !#else
 !#if ext_ubol
 @@||c.adsco.re/|$script,domain=poophq.com|veev.to
@@ -181,7 +182,7 @@ smsonline.cloud##html[data-theme][lang] [id^="img_"][style]:has(iframe[framebord
 ~dogdrip.net,~infinityfree.com,~slashdot.org,~smsonline.cloud##div[id^="img_"][style*="z-index:2147483647;"][style*="display: flex;"]:style(visibility: hidden !important;)
 ~dogdrip.net,~infinityfree.com,~slashdot.org,~smsonline.cloud,*##div[id^="img_"] > div[id^="img_"][style="margin: 0px; padding: 0px; display: block; position: fixed; left: 0px; bottom: 0px; width: 100%; z-index: 2147483647; transition: 0.3s ease-in-out;"]:style(visibility: hidden !important;)
 07c225f3.online,content-loader.com,css-load.com,html-load.com,img-load.com##body:not(:has(> script:has-text(style.getPropertyValue))):style(filter: opacity(0) !important; pointer-events: none !important;)
-/^https:\/\/www\.[0-9a-f]{4,8}(?:-(?:\d{4}-){3}[0-9a-f]{12})?\.(?:live|site|xyz)\/script\/[.0-9A-Za-z]+\.js$/$script,3p,match-case,to=live|site|xyz,header=x-length
+/^https:\/\/www\.[0-9a-f]{4,8}(?:-(?:\d{4}-){3}[0-9a-f]{12})?\.(?:live|site|xyz)\/script\/[-.0-9A-Za-z]+\.[-A-Za-z]{2,30}\.js$/$script,3p,match-case,to=live|site|xyz,header=x-length
 dogdrip.net,infinityfree.com,slashdot.org,smsonline.cloud##+js(no-fetch-if, -load.com/script/, length:101)
 dogdrip.net,infinityfree.com,slashdot.org,smsonline.cloud##+js(nostif, )](this\,..., 3000-6000)
 slashdot.org##+js(aeld, , )](this\,...)

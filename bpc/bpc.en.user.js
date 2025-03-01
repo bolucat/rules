@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.5.6
+// @version         4.0.5.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1706,6 +1706,17 @@ else if (matchDomain('defector.com')) {
   }
 }
 
+else if (matchDomain('denik.cz')) {
+  let video_sources = document.querySelectorAll('video[id] > source[src]');
+  for (let elem of video_sources) {
+    let iframe = document.createElement('iframe');
+    iframe.src = elem.src;
+    iframe.style = 'width: 100%; height: 100%;';
+    let video = elem.parentNode;
+    video.parentNode.replaceChild(iframe, video);
+  }
+}
+
 else if (matchDomain(['digiday.com', 'glossy.co', 'modernretail.co'])) {
   let ads = 'div[class^="ad_"]';
   hideDOMStyle(ads);
@@ -2819,7 +2830,7 @@ else if (matchDomain('science.org')) {
 }
 
 else if (matchDomain('scmp.com')) {
-  let paywall = document.querySelector('div[data-qa="GenericArticle-PaywallContainer"]');
+  let paywall = document.querySelector('div[data-qa="GenericArticle-PaywallContainer"], div.js-reading-0-percent-completion-tracker');
   if (paywall) {
     removeDOMElement(paywall);
     let article = document.querySelector('section[data-qa="ContentBody-ContentBodyContainer"]');
@@ -2834,13 +2845,19 @@ else if (matchDomain('scmp.com')) {
               article.innerHTML = '';
             for (let par of pars) {
               let elem = document.createElement('p');
-              if (par.type === 'p') {
+              if (window.location.pathname.startsWith('/magazines/'))
+                elem.style = 'margin: 20px 0px;';
+              if (['p', 'h3'].includes(par.type)) {
                 for (let sub_elem of par.children) {
                   if (sub_elem.type === 'text') {
                     if (sub_elem.data)
                       elem.appendChild(document.createTextNode(sub_elem.data));
                   } else if (['a', 'em', 'span', 'strong'].includes(sub_elem.type)) {
-                    let first_child = sub_elem.children ? sub_elem.children[0] : '';
+                    let first_child = sub_elem.children && sub_elem.children[0];
+                    if (sub_elem.children && sub_elem.children.length > 1) {
+                      let elem_text = sub_elem.children.map(x => x.data || x.children[0].data).join('');
+                      first_child = {type: 'text', data: elem_text};
+                    }
                     if (first_child) {
                       if (first_child.type === 'text') {
                         if (first_child.data) {
@@ -2909,7 +2926,8 @@ else if (matchDomain('scmp.com')) {
                   } else if (par.attribs.class)
                     console.log(par);
                 }
-              }
+              } else if (!['blockquote-quote', 'inline-ad-slot', 'track-viewed-percentage'].includes(par.type))
+               console.log(par);
               if (elem.hasChildNodes())
                 article.appendChild(elem);
             }
