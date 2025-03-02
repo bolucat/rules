@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.0.3.1
+// @version         4.0.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -36,12 +36,14 @@
   //'use strict';
 
 var func_post;
+var fetch_headers = {};
 
 window.setTimeout(function () {
 
 var domain;
 var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
 var csDoneOnce;
+var cs_param = {};
 
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
@@ -925,7 +927,8 @@ else if (matchDomain(de_funke_medien_domains)) {
       if (match) {
         let spark_domain = match[1];
         let url_src = 'https://app-webview.sparknews.funkemedien.de/' + spark_domain + window.location.pathname;
-        replaceDomElementExt(url_src, true, false, 'div.article-body');
+        fetch_headers = {"Authorization": "Basic YXBpOkNTeGxxRG1YM2xCTmRsS1l6allRcWZqTnFZMkhQVUVm"};
+        replaceDomElementExt(url_src, true, false, 'div.article-body', 'BPC > no fix (source file)');
       }
     }
   }
@@ -1165,6 +1168,7 @@ function getArticleSrc(url, url_src, proxy, base64, selector, text_fail = '', se
   GM.xmlHttpRequest({
     method: "GET",
     url: url_fetch,
+    headers: fetch_headers,
     onload: function (response) {
       let html = response.responseText;
       if (proxy && base64) {
@@ -1201,8 +1205,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     }
     getArticleSrc(url, '', proxy, base64, selector, text_fail, selector_source, selector_archive);
   } else {
-    let options = {};
-    fetch(url, options)
+    fetch(url, {headers: fetch_headers})
     .then(response => {
       let article = document.querySelector(selector);
       if (response.ok) {
