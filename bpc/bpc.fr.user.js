@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.5.0
+// @version         4.0.5.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -48,6 +48,7 @@
   //'use strict';
 
 var func_post;
+var fetch_headers = {};
 
 window.setTimeout(function () {
 
@@ -343,7 +344,7 @@ else if (matchDomain('lefigaro.fr')) {
     removeDOMElement(paywall);
     let article = document.querySelector('div[data-component="fig-content-body"]');
     if (article) {
-      let resource_key = cs_param.resource_key || '34e68a3419a876e36729503e2107dfa556e1a105892e27010130a30018ccbe60';
+      let resource_key = '34e68a3419a876e36729503e2107dfa556e1a105892e27010130a30018ccbe60';
       let url = window.location.href.split([/\?#/])[0];
       let url_src = 'https://api-graphql.lefigaro.fr/graphql?id=FigaroCoreMobile_resourceByUrl_persistent_' + resource_key + '&variables={%22url%22:%20%22' + url + '%22}';
       fetch(url_src)
@@ -492,7 +493,7 @@ else if (matchDomain('lemonde.fr')) {
       let match = url.match(/article.*_(\d+)_/);
       if (match) {
         let id = match[1];
-        let url_base = "https://apps.lemonde.fr/aec/v1/premium-android-phone/article/";
+        let url_base = 'https://apps.lemonde.fr/aec/v1/' + (window.location.pathname.startsWith('/en/') ? 'en/' : '') + 'premium-android-phone/article/';
         let url_src = url_base + id;
         let json_key = 'template_vars.content';
         getExtFetch(url_src, json_key, {}, main_lemonde);
@@ -528,10 +529,10 @@ else if (matchDomain('lemonde.fr')) {
                 }
                 let inread = article_new.querySelectorAll('div.inread-container');
                 removeDOMElement(...inread);
-                let links = article_new.querySelectorAll('a[href^="lmfr://element/article/"]');
+                let links = article_new.querySelectorAll('a[href^="lmfr://"]');
                 for (let elem of links) {
                   let url_link = elem.href.split(/[\?#]/)[0];
-                  let url_match = url_link.match(/lmfr:\/\/element\/article\/(\d+)/);
+                  let url_match = url_link.match(/lmfr:\/\/.*element\/article\/(\d+)/);
                   if (url_match) {
                     let id = url_match[1];
                     let url_src = url_base + id;
@@ -554,6 +555,8 @@ else if (matchDomain('lemonde.fr')) {
       }
     }
   }
+  let ads = 'div.dfp-slot, div.dfp__container';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('leparisien.fr')) {
@@ -1440,6 +1443,7 @@ function getArticleSrc(url, url_src, proxy, base64, selector, text_fail = '', se
   GM.xmlHttpRequest({
     method: "GET",
     url: url_fetch,
+    headers: fetch_headers,
     onload: function (response) {
       let html = response.responseText;
       if (proxy && base64) {
@@ -1476,8 +1480,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     }
     getArticleSrc(url, '', proxy, base64, selector, text_fail, selector_source, selector_archive);
   } else {
-    let options = {};
-    fetch(url, options)
+    fetch(url, {headers: fetch_headers})
     .then(response => {
       let article = document.querySelector(selector);
       if (response.ok) {
