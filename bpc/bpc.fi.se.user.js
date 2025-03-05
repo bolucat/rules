@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         3.8.8.1
+// @version         4.0.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fi.se.user.js
@@ -8,6 +8,7 @@
 // @homepageURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
+// @match           *://*.berlingske.dk/*
 // @match           *://*.etc.se/*
 // @match           *://*.suomensotilas.fi/*
 // ==/UserScript==
@@ -27,7 +28,14 @@ if (overlay)
 var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"], amp-ad, amp-embed[type="mgid"], amp-embed[type="outbrain"], amp-embed[type="taboola"]';
 hideDOMStyle(ads, 10);
 
-if (matchDomain('etc.se')) {
+if (matchDomain('berlingske.dk')) {
+  let paywall = document.querySelector('div#paywall');
+  removeDOMElement(paywall);
+  let ads = 'div.advert-unit';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('etc.se')) {
   let paywall = document.querySelector('div.paywalled');
   if (paywall) {
     paywall.removeAttribute('class');
