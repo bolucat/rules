@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.5.1
+// @version         4.0.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -903,6 +903,11 @@ else if (matchDomain('loeildelaphotographie.com')) {
   let blurred_images = document.querySelectorAll('img[style*="blur"]');
   for (let blurred_image of blurred_images)
     blurred_image.removeAttribute('style');
+}
+
+else if (matchDomain('lopinion.fr')) {
+  let url = window.location.href;
+  getArchive(url, 'div.paywall-premium', '', 'div.mainBody', '', cs_param['article_src_sel'] || 'div[style*=";line-height:1.8;"] div[style*=";line-height:1.8;"]');
 }
 
 else if (matchDomain('marianne.net')) {
