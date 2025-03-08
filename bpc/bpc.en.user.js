@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.6.0
+// @version         4.0.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2099,6 +2099,19 @@ else if (matchDomain('foxnews.com')) {
 }
 
 else if (matchDomain('ftm.eu')) {
+  let videos = document.querySelectorAll('div.body > div.video-pp');
+  for (let video of videos) {
+    let video_id_dom = video.querySelector('a.video[data-youtube-id]');
+    if (video_id_dom) {
+      video_new = document.createElement('iframe');
+      video_new.src = 'https://www.youtube.com/embed/' + video_id_dom.getAttribute('data-youtube-id');
+      video_new.style = 'width: 95%; height: 400px; margin: 0px 20px;';
+      video.parentNode.replaceChild(video_new, video);
+    }
+  }
+  let audio_controls = document.querySelectorAll('audio[controls][style]');
+  for (let elem of audio_controls)
+    elem.removeAttribute('style');
   document.querySelectorAll('div.foldable').forEach(e => e.classList.remove('foldable'));
   let banners = 'div.banner-pp';
   hideDOMStyle(banners);
@@ -3144,9 +3157,43 @@ else if (matchDomain(['techtarget.com', 'computerweekly.com'])) {
 }
 
 else if (matchDomain('tempo.co')) {
-  let article_hidden = document.querySelector('article > div:not([class]) div.overflow-hidden');
-  if (article_hidden)
-    article_hidden.removeAttribute('class');
+  let paywall = document.querySelector('div.bg-black > div > img[src="/_ipx/_/icons/paywallatas.svg"]');
+  if (paywall) {
+    removeDOMElement(paywall.parentNode.parentNode);
+    let article_hidden = document.querySelector('article > div:not([class]) div.overflow-hidden');
+    if (article_hidden)
+      article_hidden.removeAttribute('class');
+    let article = document.querySelector('div#content-wrapper');
+    if (article) {
+      let json_script = document.querySelector('script#__NUXT_DATA__');
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text);
+          if (json) {
+            let article_index = json.indexOf('published') + 2;
+            if (article_index) {
+              let parser = new DOMParser();
+              for (let i = article_index; i < article_index + 50; i++) {
+                let par = json[i];
+                if (par && typeof par === 'string' && par.match(/^<(p|div)/)) {
+                  let doc = parser.parseFromString(par, 'text/html');
+                  let par_new = doc.querySelector('p, div');
+                  article.appendChild(par_new);
+                } else if (!Array.isArray(par))
+                  console.log(par);
+                else
+                  break;
+              }
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  }
+  let ads = 'div.ads';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('the-american-interest.com')) {

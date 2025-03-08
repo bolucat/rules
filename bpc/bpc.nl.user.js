@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.0.3.2
+// @version         4.0.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -41,12 +41,15 @@
 (function() {
   //'use strict';
 
-var domain;
-var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
-var csDoneOnce = true;
 var func_post;
+var fetch_headers = {};
 
 window.setTimeout(function () {
+
+var domain;
+var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
+var csDoneOnce;
+var cs_param = {};
 
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
@@ -215,6 +218,19 @@ else if (matchDomain(be_roularta_domains)) {
 }
 
 else if (matchDomain('ftm.nl')) {
+  let videos = document.querySelectorAll('div.body > div.video-pp');
+  for (let video of videos) {
+    let video_id_dom = video.querySelector('a.video[data-youtube-id]');
+    if (video_id_dom) {
+      video_new = document.createElement('iframe');
+      video_new.src = 'https://www.youtube.com/embed/' + video_id_dom.getAttribute('data-youtube-id');
+      video_new.style = 'width: 95%; height: 400px; margin: 0px 20px;';
+      video.parentNode.replaceChild(video_new, video);
+    }
+  }
+  let audio_controls = document.querySelectorAll('audio[controls][style]');
+  for (let elem of audio_controls)
+    elem.removeAttribute('style');
   document.querySelectorAll('div.foldable').forEach(e => e.classList.remove('foldable'));
   let banners = 'div.banner-pp';
   hideDOMStyle(banners);
@@ -573,6 +589,7 @@ function getArticleSrc(url, url_src, proxy, base64, selector, text_fail = '', se
   GM.xmlHttpRequest({
     method: "GET",
     url: url_fetch,
+    headers: fetch_headers,
     onload: function (response) {
       let html = response.responseText;
       if (proxy && base64) {
@@ -609,8 +626,7 @@ function replaceDomElementExt(url, proxy, base64, selector, text_fail = '', sele
     }
     getArticleSrc(url, '', proxy, base64, selector, text_fail, selector_source, selector_archive);
   } else {
-    let options = {};
-    fetch(url, options)
+    fetch(url, {headers: fetch_headers})
     .then(response => {
       let article = document.querySelector(selector);
       if (response.ok) {
