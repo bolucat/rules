@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.6.2
+// @version         4.0.6.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -868,7 +868,7 @@ else if (matchDomain('ft.com')) {
 }
 
 else if (matchDomain('gbnews.com')) {
-  let ads = 'div.ad--billboard, div.ad--placeholder';
+  let ads = 'div.ad--billboard, div.ad--placeholder, div.video-inbody';
   hideDOMStyle(ads);
 }
 
@@ -1166,7 +1166,7 @@ if (matchDomain(usa_adv_local_domains)) {
   if (!window.location.search.startsWith('?outputType=amp')) {
    amp_redirect('div.paywall', '', window.location.pathname + '?outputType=amp');
   }
-  let ads = 'div.ad, div[id^="taboola"]';
+  let ads = 'div.ad, div.ad-inner, div.ad-unit, div#below-toprail, div[id^="taboola"]';
   hideDOMStyle(ads);
 }
 
@@ -1631,6 +1631,9 @@ else if (matchDomain('cnbc.com')) {
       if (elem.innerText)
         elem.innerText = elem.innerText.split('DISCLOSURES: (None)')[0];
     }
+    let inline_image = document.querySelector('div[data-test="InlineImage"]');
+    if (inline_image)
+      article.firstChild.before(inline_image);
   }
 }
 
