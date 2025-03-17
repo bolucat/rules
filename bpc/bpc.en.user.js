@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.6.3
+// @version         4.0.6.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1100,7 +1100,7 @@ else if (matchDomain('thestage.co.uk')) {
   getArchive(url, 'div#ao-MeteringDNAllow', '', 'div[id^="aos-FeatureArticle2Col-"], div[id^="aos-ReviewArticle-"]');
 }
 
-else if (matchDomain('thesun.co.uk')) {
+else if (matchDomain(['thesun.co.uk', 'thescottishsun.co.uk'])) {
   let ads = 'div.billboard, div.advert-wrapper';
   hideDOMStyle(ads);
 }

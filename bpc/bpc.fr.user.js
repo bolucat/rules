@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.6.1
+// @version         4.0.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -439,7 +439,7 @@ else if (matchDomain('lefigaro.fr')) {
                   let qcredit = document.createElement('p');
                   qcredit.innerText = par.credit ? parseHtmlEntities(par.credit) : '';
                   elem.append(qtext, qcredit);
-                } else {
+                } else if (!['Brightcove'].includes(par_type)) {
                   console.log(par);
                 }
                 if (elem)
