@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.0.5.1
+// @version         4.0.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -442,8 +442,8 @@ else if (matchDomain('kurier.at')) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('merkur.de')) {
-  let ads = 'div[class^="id-TBeepSlot-"]';
+else if (matchDomain(['merkur.de', 'fr.de'])) {
+  let ads = 'div[class^="id-TBeepSlot-"], div[data-id-advertdfpconf]';
   hideDOMStyle(ads);
 }
 
