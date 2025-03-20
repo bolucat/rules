@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.0.4.1
+// @version         4.0.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -277,6 +277,27 @@ else if (domain = matchDomain(it_gedi_domains)) {
   }
   let ads = 'div[id^="adv"]';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('milanofinanza.it')) {
+  let paywall = document.querySelector('div.paywall-content');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      let json = JSON.parse(json_script.text);
+      if (json) {
+        let json_text = parseHtmlEntities(json.articleBody);
+        let article = document.querySelector('div.article-locked');
+        if (json_text && article) {
+          article.innerHTML = '';
+          let article_new = document.createElement('p');
+          article_new.innerText = json_text;
+          article.appendChild(article_new);
+        }
+      }
+    }
+  }
 }
 
 else if (matchDomain('sky.it')) {
@@ -574,6 +595,13 @@ function getArticleJsonScript() {
     }
   }
   return json_script;
+}
+
+function parseHtmlEntities(encodedString) {
+  let parser = new DOMParser();
+  let doc = parser.parseFromString('<textarea>' + encodedString + '</textarea>', 'text/html');
+  let dom = doc.querySelector('textarea');
+  return dom.value;
 }
 
 })();

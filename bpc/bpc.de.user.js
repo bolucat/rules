@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.0.5.2
+// @version         4.0.5.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -52,6 +52,7 @@ var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-
 hideDOMStyle(ads, 10);
 
 var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'harzkurier.de', 'ikz-online.de', 'morgenpost.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
+var de_ippen_media_domains = ['fr.de', 'merkur.de', 'ovb-online.de'];
 var de_lv_domains = ['profi.de', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de', 'saechsische.de'];
 var de_motor_presse_domains = ['aerokurier.de', 'auto-motor-und-sport.de', 'flugrevue.de', 'motorradonline.de', 'womenshealth.de'];
@@ -439,11 +440,6 @@ else if (matchDomain('kurier.at')) {
     }
   }
   let ads = 'div[data-ad], div[data-outbrain]';
-  hideDOMStyle(ads);
-}
-
-else if (matchDomain(['merkur.de', 'fr.de'])) {
-  let ads = 'div[class^="id-TBeepSlot-"], div[data-id-advertdfpconf]';
   hideDOMStyle(ads);
 }
 
@@ -977,7 +973,7 @@ else if (matchDomain(de_madsack_domains) || document.querySelector('head > link[
   }
 }
 
-else if (matchDomain('ovb-online.de') || matchDomain(['bgland24.de', 'chiemgau24.de', 'innsalzach24.de', 'mangfall24.de', 'rosenheim24.de', 'wasserburg24.de'])) {
+else if (matchDomain(de_ippen_media_domains) || document.querySelector('header a[href^="https://www.ippen.media"]')) {
   let ads = 'div[class^="id-TBeepSlot-"], div[data-id-advertdfpconf]';
   hideDOMStyle(ads);
 }
