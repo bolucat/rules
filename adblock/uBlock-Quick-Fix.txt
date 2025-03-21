@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Thu, 20 Mar 2025 11:18:55 +0000
-! Diff-Path: ../patches/2025.3.20.1046.patch#ublock-quick-fixes
+! Last modified: Fri, 21 Mar 2025 11:00:40 +0000
+! Diff-Path: ../patches/2025.3.21.812.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -47,17 +47,15 @@ www.youtube.com##+js(trusted-replace-fetch-response, '"adSlots"', '"no_ads"', /^
 www.youtube.com##+js(trusted-prevent-dom-bypass, Node.prototype.appendChild, fetch)
 www.youtube.com##+js(trusted-prevent-dom-bypass, Node.prototype.appendChild, Request)
 web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[-].3.1.__bbox.result.data.node.sponsored_data.ad_id)
-web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.node.*.ad_id)
-web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.sponsored_auction_distance)
 !#if cap_html_filtering
-||facebook.com/api/graphql/$xhr,replace=/null,"category_sensitive"[^\n]+?"__typename":"SponsoredData"[^\n]+"cursor":"[^"]+"\}/null}/g,domain=web.facebook.com|www.facebook.com
 ||facebook.com/api/graphql/$xhr,replace=/null,"category":"SPONSORED"[^\n]+?"__typename":"SponsoredData"[^\n]+"cursor":"[^"]+"\}/null}/g,domain=web.facebook.com|www.facebook.com
 !#else
-web.facebook.com,www.facebook.com##+js(trusted-replace-xhr-response, '/null,"category_sensitive"[^\n]+?"__typename":"SponsoredData"[^\n]+"cursor":"[^"]+"\}/g', null}, /api/graphql)
 web.facebook.com,www.facebook.com##+js(trusted-replace-xhr-response, '/null,"category":"SPONSORED"[^\n]+?"__typename":"SponsoredData"[^\n]+"cursor":"[^"]+"\}/g', null}, /api/graphql)
 !#endif
 web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.viewer.sideFeed.nodes.0.advertisements)
+web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.viewer.sideFeed.nodes.0.adverts)
 web.facebook.com,www.facebook.com##+js(json-prune-xhr-response, data.viewer.sideFeed.nodes.[].advertisements, , propsToMatch, /api/graphql)
+web.facebook.com,www.facebook.com##+js(json-prune-xhr-response, data.viewer.sideFeed.nodes.[].adverts, , propsToMatch, /api/graphql)
 ! VOE sites
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=alejandrocenturyoil.com,important
 alejandrocenturyoil.com##+js(nowoif)
@@ -169,7 +167,7 @@ dogdrip.net,infinityfree.com,smsonline.cloud##+js(nostif, )](this\,..., 3000-600
 -load.com/script/$xhr,domain=smsonline.cloud
 smsonline.cloud##+js(nostif, (new Error(, 3000-6000)
 smsonline.cloud##aside[class^="css-"]:has(> p:has-text(Advertisement) + ins.adsbygoogle)
-bing.com##+js(rpnt, script, '/(\(function\([a-z]\,[a-z]\)\{onload)/', '(()=>{const e={apply:(e,l,t)=>("a"===t[0]&&"b_algo"===l.classList.value&&(l.style.display="none"),Reflect.apply(e,l,t))};HTMLLIElement.prototype.getElementsByTagName=new Proxy(HTMLLIElement.prototype.getElementsByTagName,e)})();$1')
+bing.com##+js(rpnt, script, 'sa_loader=', '(()=>{const e={apply:(e,l,o)=>(console.log(l,o[0]),"a"===o[0]&&"b_algo"===l.classList.value&&setTimeout((()=>{l.style.display="none"}),100),Reflect.apply(e,l,o))};HTMLLIElement.prototype.querySelectorAll=new Proxy(HTMLLIElement.prototype.querySelectorAll,e)})();sa_loader=')
 bing.com##+js(no-xhr-if, /fd/ls/lsp.aspx)
 bing.com##ol#b_results > li:has(> :is(.b_tpcn, .b_title, h2) a[href^="https://www.bing.com/aclk?"])
 bg-gledai.*,gledaitv.*##+js(no-fetch-if, method:HEAD)

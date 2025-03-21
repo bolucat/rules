@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.7.0
+// @version         4.0.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -300,7 +300,7 @@ else if (matchDomain('jeuneafrique.com')) {
         article.parentNode.replaceChild(article_new, article);
       }
       function fetch_data(limit, offset = 0) {
-        let url_src = 'https://www.jeuneafrique.com/api/mobile/v6.0/featured/?&limit=' + limit;
+        let url_src = 'https://www.jeuneafrique.com/api/mobile/v6.0/featured/?limit=' + limit + '&offset=' + offset;
         fetch(url_src, {headers: {"x-exp": "1741079242710", "x-sig": "b431724e94023a6969c5427133e1614db2cbe90e"}})
         .then(response => {
           if (response.ok) {
