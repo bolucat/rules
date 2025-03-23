@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.7.1
+// @version         4.0.7.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -362,7 +362,7 @@ else if (matchDomain('jeuneafrique.com')) {
           let art_data = ls_json_articles[article_id];
           if (art_data)
             show_data(article, art_data);
-          else if (Object.keys(ls_json_articles).length < limit_high)
+          else if (Object.keys(ls_json_articles).length <= limit_low)
             fetch_data(limit_high);
           else
             header_nofix(article, '', 'BPC > no fix (source file)')
@@ -484,15 +484,22 @@ else if (matchDomain('lefigaro.fr')) {
                     let text = doc.querySelector('div');
                     elem.append(title, text);
                   }
-                } else if (par_type === 'Link') {
-                  elem = document.createElement('p');
-                  let prefix = document.createElement('span');
-                  prefix.innerText = par.prefix + ' ';
-                  let link_elem = document.createElement('a');
-                  link_elem.href = par.url;
-                  link_elem.innerText = par.title.replace(/<[^<]*>/g, '');
-                  link_elem.target = '_blank';
-                  elem.append(prefix, link_elem);
+                } else if (par_type.endsWith('Link')) {
+                  if (par.link)
+                    par = par.link;
+                  if (par.title && par.url) {
+                    elem = document.createElement('p');
+                    if (par.prefix) {
+                      let prefix = document.createElement('span');
+                      prefix.innerText = par.prefix + ' ';
+                      elem.append(prefix);
+                    }
+                    let link_elem = document.createElement('a');
+                    link_elem.href = par.url;
+                    link_elem.innerText = par.title.replace(/<[^<]*>/g, '');
+                    link_elem.target = '_blank';
+                    elem.append(link_elem);
+                  }
                 } else if (['FreeHtml', 'Tweet'].includes(par_type)) {
                   if (par.sourceCode) {
                     let doc = parser.parseFromString('<div>' + par.sourceCode + '</div>', 'text/html');
@@ -579,7 +586,7 @@ else if (matchDomain('lemagit.fr')) {
 
 else if (matchDomain('lemonde.fr')) {
   let url = window.location.href.split(/[\?#]/)[0];
-  let paywall = document.querySelector('section.paywall');
+  let paywall = document.querySelector('section.lmd-paywall');
   if (paywall) {
     removeDOMElement(paywall);
     let article = document.querySelector('.article__content');
@@ -778,8 +785,11 @@ else if (matchDomain('lequipe.fr')) {
       }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
     }
   }
-  let ads = 'div.AmPlaceholder';
+  let ads = 'div.AmPlaceholder, div.Modal';
   hideDOMStyle(ads);
+  let noscroll = document.querySelector('html.no-scroll');
+  if (noscroll)
+    noscroll.classList.remove('no-scroll');
 }
 
 else if (matchDomain('lerevenu.com')) {
@@ -1075,7 +1085,7 @@ else if (matchDomain('marianne.net')) {
           let art_data = ls_json_articles[url];
           if (art_data)
             show_data(article, art_data);
-          else if (Object.keys(ls_json_articles).length < limit_high)
+          else if (Object.keys(ls_json_articles).length <= limit_low)
             fetch_data(limit_high);
           else
             header_nofix(article, '', 'BPC > no fix (source file)')

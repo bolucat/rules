@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sat, 22 Mar 2025 12:13:12 +0000
-! Diff-Path: ../patches/2025.3.22.865.patch#ublock-quick-fixes
+! Last modified: Sun, 23 Mar 2025 11:40:05 +0000
+! Diff-Path: ../patches/2025.3.23.925.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -70,9 +70,9 @@ japscan.lol#@#div.container > [href]
 ! END
 ||japscan.lol/zjs/$script,replace=/function GoodDay\(\)\{.+?\}\}\}//
 @@*$image,xhr,script,domain=japscan.lol
-*$script,xhr,3p,denyallow=aozoiekopoaka.shop|base64easy.com|base64hub.com|challenges.cloudflare.com|cdn.jsdelivr.net|cdnjs.cloudflare.com|code.jquery.com|curltophp.com|ebooksmangaia.com|faireundon.vip|frjelsoieapoas.shop|regexgenius.com|tourpowouro.shop,domain=japscan.lol,important
-japscan.lol##.MNOpA:remove()
-japscan.lol###RLQZA:remove()
+*$script,xhr,3p,denyallow=aozoiekopoaka.shop|base64easy.com|base64hub.com|challenges.cloudflare.com|cdn.jsdelivr.net|cdnjs.cloudflare.com|code.jquery.com|curltophp.com|ebooksmangaia.com|faireundon.vip|frjelsoieapoas.shop|hakoroubita.shop|morinavotarius.top|regexgenius.com|tourpowouro.shop,domain=japscan.lol,important
+japscan.lol##.QNOpQ:remove()
+japscan.lol###WLQZQ:remove()
 poophq.com,veev.to,doods.to##+js(nowoif)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /vast.php?)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /click\.com|preroll|native_render\.js|acscdn/, length:10001)
@@ -153,15 +153,19 @@ smsonline.cloud##html[data-theme][lang] [id^="img_"][style]:has(iframe[framebord
 *$~script,~frame,~xhr,domain=07c225f3.online|content-loader.com|css-load.com|html-load.com|img-load.com
 @@/-1/*$domain=07c225f3.online|content-loader.com|css-load.com|html-load.com|img-load.com
 *$script,frame,xhr,domain=07c225f3.online|html-load.com
-@@/802/*$script,frame,xhr,domain=07c225f3.online
-@@/984/*$script,frame,xhr,domain=html-load.com
+||html-load.com/contents/$script,xhr,frame
+||07c225f3.online/contents/$script,xhr,frame
+@@||07c225f3.online/contents/*/-1/$script,xhr,frame
+@@||07c225f3.online/contents/*/802/$script,xhr,frame
+@@||html-load.com/contents/*/-1/$script,xhr,frame
+@@||html-load.com/contents/*/984/$script,xhr,frame
 /^https:\/\/www\.[0-9a-f]{4,8}(?:-(?:\d{4}-){3}[0-9a-f]{12})?\.(?:live|site|xyz)\/script\/[-.0-9A-Za-z]+\.[-A-Za-z]{2,30}\.js$/$script,3p,match-case,to=live|site|xyz,header=x-length
 dogdrip.net,infinityfree.com,smsonline.cloud##+js(no-fetch-if, -load.com/script/, length:101)
 dogdrip.net,infinityfree.com,smsonline.cloud##+js(nostif, )](this\,..., 3000-6000)
 -load.com/script/$xhr,domain=smsonline.cloud
 smsonline.cloud##+js(nostif, (new Error(, 3000-6000)
 smsonline.cloud##aside[class^="css-"]:has(> p:has-text(Advertisement) + ins.adsbygoogle)
-bing.com##+js(rpnt, script, 'sa_loader=', '(()=>{const e={apply:(e,l,o)=>(console.log(l,o[0]),"a"===o[0]&&"b_algo"===l.classList.value&&setTimeout((()=>{l.style.display="none"}),100),Reflect.apply(e,l,o))};HTMLLIElement.prototype.querySelectorAll=new Proxy(HTMLLIElement.prototype.querySelectorAll,e)})();sa_loader=')
+bing.com##+js(rpnt, script, 'sa_loader=', '(()=>{const e={apply:(e,t,o)=>("a"===o?.[0]&&"b_algo"===t?.classList?.value&&setTimeout((()=>{t.style.display="none"}),100),Reflect.apply(e,t,o))};HTMLLIElement.prototype.querySelectorAll=new Proxy(HTMLLIElement.prototype.querySelectorAll,e);const t={apply:(e,t,o)=>{if("b_algo"!==o?.[0]?.classList?.value)return Reflect.apply(e,t,o)}};MutationObserver.prototype.observe=new Proxy(MutationObserver.prototype.observe,t)})();sa_loader=')
 bing.com##+js(no-xhr-if, /fd/ls/lsp.aspx)
 bing.com##ol#b_results > li:has(> :is(.b_tpcn, .b_title, h2) a[href^="https://www.bing.com/aclk?"])
 bg-gledai.*,gledaitv.*##+js(no-fetch-if, method:HEAD)
@@ -179,3 +183,4 @@ faqwiki.us##+js(nostif, .offsetHeight>0)
 ||links.duckduckgo.com/d.js?q=$badfilter
 duckduckgo.com##ol.react-results--sidebar > li:has(.badge--ad-wrap)
 &mi_ecmp=$image,badfilter
+*$script,redirect-rule=prebid-ads.js,badfilter
