@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.7.2
+// @version         4.0.7.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1191,7 +1191,7 @@ else if (matchDomain('telerama.fr')) {
         try {
           if (data) {
             let parser = new DOMParser();
-            let doc = parser.parseFromString(data), 'text/html');
+            let doc = parser.parseFromString(data, 'text/html');
             let article_new = doc.querySelector(article_sel);
             if (article_new && article.parentNode) {
               article_new.querySelectorAll('a[href^="tlrm://element?id="]').forEach(e => e.href = decodeURIComponent(e.href.split('tlrm://element?id=')[1]));
@@ -1286,6 +1286,16 @@ function hideDOMStyle(selector, id = 1) {
     let sheet = document.createElement('style');
     sheet.id = 'ext' + id;
     sheet.innerText = selector + ' {display: none !important;}';
+    document.head.appendChild(sheet);
+  }
+}
+
+function addStyle(css, id = 1) {
+  let style = document.querySelector('head > style#add'+ id);
+  if (!style && document.head) {
+    let sheet = document.createElement('style');
+    sheet.id = 'add' + id;
+    sheet.innerText = css;
     document.head.appendChild(sheet);
   }
 }
