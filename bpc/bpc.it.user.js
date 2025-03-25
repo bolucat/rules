@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.0.7.0
+// @version         4.0.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -280,21 +280,26 @@ else if (domain = matchDomain(it_gedi_domains)) {
 }
 
 else if (matchDomain('milanofinanza.it')) {
-  let paywall = document.querySelector('div.paywall-content');
+  let paywall = document.querySelector('div.paywall-content, section.payment');
   if (paywall) {
     removeDOMElement(paywall);
     let json_script = getArticleJsonScript();
     if (json_script) {
-      let json = JSON.parse(json_script.text);
-      if (json) {
-        let json_text = parseHtmlEntities(json.articleBody);
-        let article = document.querySelector('div.article-locked');
-        if (json_text && article) {
-          article.innerHTML = '';
-          let article_new = document.createElement('p');
-          article_new.innerText = json_text;
-          article.appendChild(article_new);
+      try {
+        let json = JSON.parse(json_script.text.replace(/!=/g, '').replace(/!function\(\){[^!]+(\(\);|0;[a-z])/g, ''));
+        if (json) {
+          let json_text = parseHtmlEntities(json.articleBody);
+          let article = document.querySelector('div.article-locked');
+          if (json_text && article) {
+            article.innerHTML = '';
+            let article_new = document.createElement('p');
+            article_new.innerText = json_text;
+            article.appendChild(article_new);
+          }
         }
+      } catch (err) {
+        console.log(err);
+        header_nofix('div.article-locked', '', 'BPC > no fix (json-error)');
       }
     }
   }

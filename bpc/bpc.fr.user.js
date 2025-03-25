@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.7.3
+// @version         4.0.7.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -85,12 +85,12 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {// Group
     removeDOMElement(paywall);
     let url_id = window.location.pathname.match(/\d+$/).pop();
     let html = document.documentElement.outerHTML;
-    let og_url = document.querySelector('head > meta[name="og:url"][content]');
-    if (og_url && !og_url.content.endsWith(url_id))
-      refreshCurrentTab();
     let json;
-    if (html.includes('window.__NUXT__='))
+    if (html.includes('window.__NUXT__=')) {
       json = html.split('window.__NUXT__=')[1].split('</script>')[0].trim().replace(/blocs:\[\{.*?\}\],/g, '');
+      if (url_id && !json.includes('{"' + url_id + '":'))
+        refreshCurrentTab();
+    }
     let article = document.querySelector('div.html-content');
     let no_intro = false;
     if (!article) {
@@ -291,7 +291,7 @@ else if (matchDomain('jeuneafrique.com')) {
     let article_id = window.location.pathname.split('/')[1];
     if (article && article_id) {
       let limit_low = 50;
-      let limit_high = 500;
+      let limit_high = 600;
       function show_data(article, body) {
         let parser = new DOMParser();
         let doc = parser.parseFromString('<div>' + body + '</div>', 'text/html');
@@ -308,7 +308,7 @@ else if (matchDomain('jeuneafrique.com')) {
               try {
                 let src_articles = json.articles;
                 if (src_articles) {
-                  let src_article = src_articles.filter(x => x.id === article_id)[0];
+                  let src_article = src_articles.filter(x => x.id == article_id)[0];
                   let ls_update = true;
                   if (src_article)
                     show_data(article, src_article.content_full);
@@ -356,7 +356,7 @@ else if (matchDomain('jeuneafrique.com')) {
       if (ls_date) {
         let ls_articles = localStorage.getItem('###_json');
         ls_json_articles = JSON.parse(ls_articles);
-        if (ls_date <= art_date)
+        if (ls_date < art_date)
           fetch_data(limit_low);
         else {
           let art_data = ls_json_articles[article_id];
@@ -785,7 +785,7 @@ else if (matchDomain('lequipe.fr')) {
       }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
     }
   }
-  let ads = 'div.AmPlaceholder, div.Modal';
+  let ads = 'div.AmPlaceholder, div.Modal[data-modal="amsBlock"]';
   hideDOMStyle(ads);
   let noscroll = document.querySelector('html.no-scroll');
   if (noscroll)
