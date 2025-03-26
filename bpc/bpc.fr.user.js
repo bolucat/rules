@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.7.4
+// @version         4.0.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -605,8 +605,7 @@ else if (matchDomain('lemonde.fr')) {
               let doc = parser.parseFromString(data, 'text/html');
               let article_new = doc.querySelector('.article_content');
               if (article_new) {
-                if (article.tagName === 'SECTION')
-                  article_new.style = 'width: 90% !important;';
+                article_new.className = 'article__content';
                 article_new.querySelectorAll('p').forEach(e => e.className = 'article__paragraph');
                 article_new.querySelectorAll('h2').forEach(e => e.className = 'article__sub-title');
                 article_new.querySelectorAll('h3.question').forEach(e => e.className = 'article__question');
@@ -614,12 +613,22 @@ else if (matchDomain('lemonde.fr')) {
                 article_new.querySelectorAll('div.see-also-container, div.reference').forEach(e => e.style = 'margin: 20px 0px;');
                 let image_divs = article_new.querySelectorAll('div.image');
                 for (let elem of image_divs) {
-                  elem.removeAttribute('style');
+                  elem.style = 'margin: 20px 0px;';
                   let img = elem.querySelector('a > img[data-src]');
                   if (img) {
                     if (img.src.startsWith('data:image/'))
                       img.src = img.getAttribute('data-src');
                     img.parentNode.before(img);
+                  }
+                }
+                let videos = article_new.querySelectorAll('div.video-container');
+                for (let video of videos) {
+                  let video_id_dom = video.querySelector('div[data-provider="dailymotion"][data-id]');
+                  if (video_id_dom) {
+                    let iframe = document.createElement('iframe');
+                    iframe.src = 'https://www.dailymotion.com/embed/video/' + video_id_dom.getAttribute('data-id');
+                    iframe.style = 'height: 400px; width: 100%; margin: 20px 0px;';
+                    video.parentNode.replaceChild(iframe, video);
                   }
                 }
                 let cartes = article_new.querySelectorAll('div.cartes > div.carte > img[src_700][src_350]');
@@ -630,19 +639,22 @@ else if (matchDomain('lemonde.fr')) {
                 }
                 let inread = article_new.querySelectorAll('div.inread-container');
                 removeDOMElement(...inread);
-                let links = article_new.querySelectorAll('a[href^="lmfr://"]');
+                let links = article_new.querySelectorAll('div.link-container > a[href^="lmfr://"]');
+                function link_lemonde(url, data, elem) {
+                  if (data)
+                    elem.href = data;
+                }
                 for (let elem of links) {
-                  let url_link = elem.href.split(/[\?#]/)[0];
-                  let url_match = url_link.match(/lmfr:\/\/.*element\/article\/(\d+)/);
+                  let url_link = elem.href;
+                  let url_match = url_link.split(/[\?#]/)[0].match(/^lmfr:\/\/.*element\/article\/(\d+)/);
                   if (url_match) {
                     let id = url_match[1];
                     let url_src = url_base + id;
                     let json_key = 'element.url';
-                    getExtFetch(url_src, json_key, {}, link_lemonde);
-                    function link_lemonde(url, data) {
-                      if (data)
-                        elem.href = data;
-                    }
+                    getExtFetch(url_src, json_key, {}, link_lemonde, [elem]);
+                  } else if (url_link.match(/^lmfr:\/.*\/live\/\d+\?/) && url_link.includes('www.lemonde.fr')) {
+                    url_link = decodeURIComponent('https://www.lemonde.fr' + url_link.replace(/%25/g, '%').split('www.lemonde.fr')[1].split('.html')[0] + '.html');
+                    link_lemonde(url, url_link, elem);
                   }
                 }
                 article.innerHTML = '';
@@ -1695,7 +1707,7 @@ function replaceTextFail(url, article, proxy, text_fail) {
   }
 }
 
-function getExtFetch(url, json_key = '', headers = {}, callback = '') {
+function getExtFetch(url, json_key = '', headers = {}, callback = '', args = []) {
   GM.xmlHttpRequest({
     method: "GET",
     url: url,
@@ -1711,7 +1723,7 @@ function getExtFetch(url, json_key = '', headers = {}, callback = '') {
           console.log(err);
         }
       }
-      callback(url, html);
+      callback(url, html, ...args);
     }
   })
 }
