@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.7.2
+// @version         4.0.7.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3134,7 +3134,7 @@ else if (matchDomain('stocknews.com')) {
 
 else if (matchDomain('stratfor.com')) {
   let url = window.location.href;
-  getArchive(url, 'div#paywallCTAContainer', '', 'main', '', 'main', 'h1');
+  getArchive(url, 'div#paywallCTAContainer:not(:empty)', '', 'main', '', 'main', 'h1');
 }
 
 else if (matchDomain('study.com')) {
@@ -4726,7 +4726,7 @@ function replaceTextFail(url, article, proxy, text_fail) {
   }
 }
 
-function getExtFetch(url, json_key = '', headers = {}, callback = '') {
+function getExtFetch(url, json_key = '', headers = {}, callback = '', args = []) {
   GM.xmlHttpRequest({
     method: "GET",
     url: url,
@@ -4742,7 +4742,7 @@ function getExtFetch(url, json_key = '', headers = {}, callback = '') {
           console.log(err);
         }
       }
-      callback(url, html);
+      callback(url, html, ...args);
     }
   })
 }

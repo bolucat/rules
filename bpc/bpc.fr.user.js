@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.8.0
+// @version         4.0.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -937,6 +937,11 @@ else if (matchDomain('liberation.fr')) {
                     sub_elem = doc.querySelector('div');
                     if (par.type === 'header')
                       sub_elem.style = 'font-weight: bold; font-size: 1.85rem;';
+                  }
+                } else if (par.type === 'correction') {
+                  if (par.text) {
+                    sub_elem = document.createElement('span');
+                    elem.innerText = par.text;
                   }
                 } else if (par.type === 'image') {
                   if (par.url) {
