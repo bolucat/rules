@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.0.8.0
+// @version         4.0.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -273,19 +273,50 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
         if (!json_match)
           refreshCurrentTab();
         else if (json.includes(',body:')) {
+          let intro;
+          let intro_match = json.match(/,leadtext_raw:"([^"]+)",/);
+          if (intro_match) {
+            intro = document.createElement('p');
+            intro.innerText = intro_match[1];
+            intro.style = 'font-weight: bold;';
+          }
           let json_text = json.split(',body:')[1].split(/,(leadText|brand_key|tts|pianoKeywords):/)[0].replace(/([{,])(\w+)(?=:(["\{\[]|[\w$]{1,2}[,\}]))/g, "$1\"$2\"").replace(/(Image\\":)(\d)([,}])/g, '$1\\"$2\\"$3').replace(/\":(\[)?([\w\$\.]+)([\]},])/g, "\":$1\"$2\"$3");
           let article = document.querySelector('div.content');
           if (article) {
             article.innerHTML = '';
+            if (intro)
+              article.appendChild(intro);
             let pars = JSON.parse(json_text);
             function addParText(elem, par_text, add_br = false) {
-              if (par_text.length > 2) {
+              if (par_text) {
+                if (par_text.length <= 2)
+                  par_text = ' ... ';
                 let span = document.createElement('span');
                 span.innerText = par_text;
                 elem.appendChild(span);
                 if (add_br)
                   elem.appendChild(document.createElement('br'));
               }
+            }
+            function addLink(elem, link_text, href, add_br = false) {
+              let par_link = document.createElement('a');
+              par_link.href = href;
+              par_link.innerText = link_text;
+              elem.appendChild(par_link);
+              if (add_br)
+                elem.appendChild(document.createElement('br'));
+            }
+            function addImage(elem, child) {
+              let figure = document.createElement('figure');
+              let img = document.createElement('img');
+              img.src = child.relation.href;
+              figure.appendChild(img);
+              if (child.relation.caption && child.relation.caption.length > 2) {
+                let caption = document.createElement('figcaption');
+                caption.innerText = child.relation.caption;
+                figure.appendChild(caption);
+              }
+              elem.appendChild(figure);
             }
             for (let par of pars) {
               let elem = document.createElement('p');
@@ -294,26 +325,27 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
                 let doc = parser.parseFromString('<div>' + par.code + '</div>', 'text/html');
                 elem = doc.querySelector('div');
               } else if (par.insertbox_head || par.insertbox_text) {
-                if (par.insertbox_head && par.insertbox_head.length > 2) {
+                if (par.insertbox_head && par.insertbox_head.length > 2)
                   addParText(elem, par.insertbox_head, true);
-                }
                 if (par.insertbox_text) {
                   for (let item of par.insertbox_text) {
                     if (item.children) {
                       for (let child of item.children) {
                         if (child.text) {
                           addParText(elem, child.text, true);
+                        } else if (child.relation) {
+                          if ((child.type === 'img' || child.relation.caption) && child.relation.href) {
+                            let img_par = document.createElement('p');
+                            addImage(img_par, child);
+                            elem.appendChild(img_par);
+                          }
                         } else if (child.href && child.href.length > 2) {
-                          let par_link = document.createElement('a');
-                          par_link.href = child.href;
-                          par_link.innerText = child.children[0].text;
-                          elem.appendChild(par_link);
-                          elem.appendChild(document.createElement('br'));
+                          addLink(elem, child.children[0].text, child.href, true);
                         } else if (child.children) {
                           for (let sub_child of child.children) {
                             if (sub_child.text) {
                               addParText(elem, sub_child.text);
-                            } else if (sub_child.children && sub_child.children.length && sub_child.children[0].text) {
+                            } else if (sub_child.children && sub_child.children[0] && sub_child.children[0].text) {
                               addParText(elem, sub_child.children[0].text);
                             }
                           }
@@ -326,39 +358,21 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
                 addParText(elem, par.text);
               } else if (par.children) {
                 for (let child of par.children) {
-                  if (child.relation) {
-                    if (child.type === 'img' && child.relation.href) {
-                      let figure = document.createElement('figure');
-                      let img = document.createElement('img');
-                      img.src = child.relation.href;
-                      figure.appendChild(img);
-                      if (child.relation.caption && child.relation.caption.length > 2) {
-                        let caption = document.createElement('figcaption');
-                        caption.innerText = child.relation.caption;
-                        figure.appendChild(caption);
-                      }
-                      elem.appendChild(figure);
-                    } else if (child.relation.link && child.relation.link.length > 2 && ((child.relation.title && child.relation.title.length > 2) || child.relation.imageAlt)) {
-                      let par_link = document.createElement('a');
-                      par_link.href = child.relation.link;
-                      par_link.innerText = child.relation.title.length > 2 ? child.relation.title : (child.relation.imageAlt.length > 2 ? child.relation.imageAlt : child.relation.link);
-                      elem.appendChild(par_link);
-                    }
-                  } else if (child.text) {
-                    addParText(elem, child.text);
+                  if (child.relation && (child.type === 'img' || child.relation.caption) && child.relation.href) {
+                    addImage(elem, child);
+                  } else if (child.relation && child.relation.link && child.relation.link.length > 2) {
+                    addLink(elem, decodeURIComponent(child.relation.title.length > 2 ? child.relation.title : child.relation.link), child.relation.link);
                   } else if (child.children && child.children[0]) {
-                    if (child.children[0].text && child.children[0].text.length > 2) {
+                    if (child.children[0].text) {
                       if ((child.href && child.href.length > 2) || (child.relation && child.relation.follow && child.relation.follow.url)) {
-                        let par_link = document.createElement('a');
-                        par_link.href = child.href || child.relation.follow.url;
-                        par_link.innerText = child.children[0].text;
-                        elem.appendChild(par_link);
-                      } else {
+                        if (child.children[0].text.length > 2)
+                          addLink(elem, child.children[0].text, child.href || child.relation.follow.url);
+                      } else
                         addParText(elem, child.children[0].text);
-                      }
-                    } else if (child.children[0].children && child.children[0].children[0] && child.children[0].children[0].text && child.children[0].children[0].text.length > 2)
+                    } else if (child.children[0].children && child.children[0].children[0] && child.children[0].children[0].text)
                       addParText(elem, child.children[0].children[0].text);
-                  }
+                  } else if (child.text)
+                    addParText(elem, child.text);
                 }
               } else if (par.typename.length > 2)
                 console.log(par);
