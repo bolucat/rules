@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.0.7.0
+// @version         4.0.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -450,6 +450,13 @@ else if (matchDomain('mopo.de')) {
 else if (matchDomain('motorradonline.de')) {
   if (window.location.pathname.endsWith('/amp/'))
     ampToHtml();
+}
+
+else if (matchDomain(['noz.de', 'shz.de'])) {
+  let url = window.location.href;
+  getArchive(url, 'div.paywall', '', 'article');
+  let ads = 'div.ad_label';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('nw.de')) {

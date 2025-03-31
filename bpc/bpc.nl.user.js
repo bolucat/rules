@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.0.8.1
+// @version         4.0.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -318,6 +318,28 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
               }
               elem.appendChild(figure);
             }
+            function addChildren(elem, children, add_br = false) {
+              for (let child of children) {
+                if (child.text) {
+                  addParText(elem, child.text, add_br);
+                } else if (child.relation && (child.type === 'img' || child.relation.caption) && child.relation.href) {
+                  let img_par = document.createElement('p');
+                  addImage(img_par, child);
+                  elem.appendChild(img_par);
+                } else if (child.relation && child.relation.link && child.relation.link.length > 2) {
+                  addLink(elem, decodeURIComponent(child.relation.title.length > 2 ? child.relation.title : child.relation.link), child.relation.link);
+                } else if (child.children && child.children[0]) {
+                  if (child.children[0].text) {
+                    if ((child.href && child.href.length > 2) || (child.relation && child.relation.follow && child.relation.follow.url)) {
+                      if (child.children[0].text.length > 2)
+                        addLink(elem, child.children[0].text, child.href || child.relation.follow.url, add_br);
+                    } else
+                      addParText(elem, child.children[0].text);
+                  } else
+                    addChildren(elem, child.children);
+                }
+              }
+            }
             for (let par of pars) {
               let elem = document.createElement('p');
               if (par.code) {
@@ -329,51 +351,14 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
                   addParText(elem, par.insertbox_head, true);
                 if (par.insertbox_text) {
                   for (let item of par.insertbox_text) {
-                    if (item.children) {
-                      for (let child of item.children) {
-                        if (child.text) {
-                          addParText(elem, child.text, true);
-                        } else if (child.relation) {
-                          if ((child.type === 'img' || child.relation.caption) && child.relation.href) {
-                            let img_par = document.createElement('p');
-                            addImage(img_par, child);
-                            elem.appendChild(img_par);
-                          }
-                        } else if (child.href && child.href.length > 2) {
-                          addLink(elem, child.children[0].text, child.href, true);
-                        } else if (child.children) {
-                          for (let sub_child of child.children) {
-                            if (sub_child.text) {
-                              addParText(elem, sub_child.text);
-                            } else if (sub_child.children && sub_child.children[0] && sub_child.children[0].text) {
-                              addParText(elem, sub_child.children[0].text);
-                            }
-                          }
-                        }
-                      }
-                    }
+                    if (item.children)
+                      addChildren(elem, item.children, true);
                   }
                 }
               } else if (par.text) {
                 addParText(elem, par.text);
               } else if (par.children) {
-                for (let child of par.children) {
-                  if (child.relation && (child.type === 'img' || child.relation.caption) && child.relation.href) {
-                    addImage(elem, child);
-                  } else if (child.relation && child.relation.link && child.relation.link.length > 2) {
-                    addLink(elem, decodeURIComponent(child.relation.title.length > 2 ? child.relation.title : child.relation.link), child.relation.link);
-                  } else if (child.children && child.children[0]) {
-                    if (child.children[0].text) {
-                      if ((child.href && child.href.length > 2) || (child.relation && child.relation.follow && child.relation.follow.url)) {
-                        if (child.children[0].text.length > 2)
-                          addLink(elem, child.children[0].text, child.href || child.relation.follow.url);
-                      } else
-                        addParText(elem, child.children[0].text);
-                    } else if (child.children[0].children && child.children[0].children[0] && child.children[0].children[0].text)
-                      addParText(elem, child.children[0].children[0].text);
-                  } else if (child.text)
-                    addParText(elem, child.text);
-                }
+                addChildren(elem, par.children);
               } else if (par.typename.length > 2)
                 console.log(par);
               if (elem.hasChildNodes()) {
