@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.7.3
+// @version         4.0.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -64,6 +64,7 @@
 // @exclude         *://*.googleapis.com/*
 // @exclude         *://*.googletagmanager.com/*
 // @exclude         *://*.instagram.com/*
+// @exclude         *://*.klarna.com/*
 // @exclude         *://*.mediafire.com/*
 // @exclude         *://*.outbrain.com/*
 // @exclude         *://*.pinterest.com/*
@@ -3869,6 +3870,14 @@ else if (matchDomain('usatoday.com')) {
       }
     }
   }
+}
+
+else if (matchDomain('vice.com')) {
+  let paywall = document.querySelectorAll('iframe.swg-dialog, swg-popup-background');
+  removeDOMElement(...paywall);
+  let noscroll = document.querySelector('body.swg-disable-scroll');
+  if (noscroll)
+    noscroll.classList.remove('swg-disable-scroll');
 }
 
 else if (matchDomain('vikatan.com')) {
