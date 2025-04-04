@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.8.0
+// @version         4.0.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -68,6 +68,7 @@
 // @exclude         *://*.mediafire.com/*
 // @exclude         *://*.outbrain.com/*
 // @exclude         *://*.pinterest.com/*
+// @exclude         *://*.tinypass.com/*
 // @exclude         *://*.twitter.com/*
 // @exclude         *://*.youtube.com/*
 // @exclude         *://*.abcmais.com/*
@@ -91,6 +92,7 @@
 // @exclude         *://*.elperiodicomediterraneo.com/*
 // @exclude         *://*.eltiempo.com/*
 // @exclude         *://*.eltribuno.com/*
+// @exclude         *://*.eluniverso.com/*
 // @exclude         *://*.exame.com/*
 // @exclude         *://*.expansion.com/*
 // @exclude         *://*.faz.net/*
@@ -99,7 +101,6 @@
 // @exclude         *://*.ilsole24ore.com/*
 // @exclude         *://*.jeuneafrique.com/*
 // @exclude         *://*.journaldunet.com/*
-// @exclude         *://*.la-croix.com/*
 // @exclude         *://*.larioja.com/*
 // @exclude         *://*.latercera.com/*
 // @exclude         *://*.lavenir.net/*

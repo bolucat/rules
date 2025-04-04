@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.8.1
+// @version         4.0.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -18,7 +18,6 @@
 // @match           *://*.flair.be/fr/*
 // @match           *://*.jeuneafrique.com/*
 // @match           *://*.journaldunet.com/*
-// @match           *://*.la-croix.com/*
 // @match           *://*.lacote.ch/*
 // @match           *://*.lalibre.be/*
 // @match           *://*.lavenir.net/*
@@ -382,16 +381,6 @@ else if (matchDomain('journaldunet.com')) {
   let entry_reg_wall = document.querySelector('div.entry_reg_wall[style]');
   if (entry_reg_wall)
     entry_reg_wall.removeAttribute('style');
-}
-
-else if (matchDomain('la-croix.com')) {
-  if (!window.location.hostname.startsWith('amp')) {
-    let ads = 'div[class^="ads-wrapper-"]';
-    hideDOMStyle(ads);
-  } else {
-    let paywall_block = '#paywall_block';
-    hideDOMStyle(paywall_block);
-  }
 }
 
 else if (matchDomain('lanouvellerepublique.fr')) {

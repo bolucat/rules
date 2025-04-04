@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.0.7.1
+// @version         4.0.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -240,7 +240,7 @@ else if (domain = matchDomain(it_gedi_domains)) {
   if (matchDomain(['huffingtonpost.it', 'lastampa.it'])) {
     if (window.location.pathname.includes('/news/')) {
       if (!amp) {
-        let paywall = document.querySelector('iframe#__limio_frame');
+        let paywall = document.querySelector('iframe[id^="__limio_frame"]');
         if (paywall) {
           setCookie(/blaize_session/, '', domain, '/', 0);
           refreshCurrentTab(false);
@@ -252,7 +252,7 @@ else if (domain = matchDomain(it_gedi_domains)) {
     }
   } else if (matchDomain('repubblica.it')) {
     if (!amp)
-      amp_redirect('iframe#__limio_frame', '', window.location.pathname + 'amp/');
+      amp_redirect('iframe[id^="__limio_frame"]', '', window.location.pathname + 'amp/');
     else {
       amp_unhide_subscr_section();
       if (!mobile)

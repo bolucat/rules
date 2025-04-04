@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.0.5.1
+// @version         4.0.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -39,6 +39,7 @@
 // @match           *://*.elperiodicomediterraneo.com/*
 // @match           *://*.eltiempo.com/*
 // @match           *://*.eltribuno.com/*
+// @match           *://*.eluniverso.com/*
 // @match           *://*.em.com.br/*
 // @match           *://*.emporda.info/*
 // @match           *://*.estadao.com.br/*
@@ -368,7 +369,7 @@ else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
   }
 }
 
-} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['abcmais.com', 'cambiocolombia.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'exame.com', 'globo.com', 'latercera.com', 'revistaoeste.com'])) {//south america
+} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['abcmais.com', 'cambiocolombia.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'eluniverso.com', 'exame.com', 'globo.com', 'latercera.com', 'revistaoeste.com'])) {//south america
 
 if (matchDomain('abcmais.com')) {
   if (!window.location.pathname.endsWith('/amp/')) {
@@ -531,6 +532,103 @@ else if (matchDomain('eltribuno.com')) {
     elem.src = elem.getAttribute('data-src');
     elem.classList.remove('lazyload');
   }
+}
+
+else if (matchDomain('eluniverso.com')) {
+  let paywall = document.querySelectorAll('head > meta[name][content="premium"]');
+  let article = document.querySelector('section.article-body');
+  if (paywall.length && article) {
+    removeDOMElement(...paywall);
+    let fusion_script = document.querySelector('script#fusion-metadata');
+    if (fusion_script && fusion_script.text.includes('Fusion.globalContent=')) {
+      try {
+        let json = JSON.parse(fusion_script.text.split('Fusion.globalContent=')[1].split(';Fusion.')[0]);
+        if (json) {
+          article.innerHTML = '';
+          let parser = new DOMParser();
+          let pars = json.content_elements;
+          for (let par of pars) {
+            let par_new;
+            if (['header', 'text'].includes(par.type)) {
+              if (par.content) {
+                let doc = parser.parseFromString('<p class="prose-text">' + par.content + '</p>', 'text/html');
+                par_new = doc.querySelector('p');
+              }
+            } else if (par.type === 'interstitial_link') {
+              if (par.url && par.content) {
+                par_new = document.createElement('p');
+                int_link = document.createElement('a');
+                int_link.href = par.url;
+                int_link.innerText = par.content;
+                par_new.appendChild(int_link);
+              }
+            } else if (par.type === 'image') {
+              if (par.url) {
+                let caption_text = par.caption;
+                if (par.credits && par.credits.by && par.credits.by[0] && par.credits.by[0].name)
+                  caption_text += ' - ' + par.credits.by[0].name;
+                par_new = makeFigure(par.url, caption_text);
+              }
+            } else if (par.type === 'raw_html') {
+              let doc = parser.parseFromString('<div>' + par.content + '</div>', 'text/html');
+              par_new = doc.querySelector('div');
+            } else if (par.raw_oembed) {
+              if (par.raw_oembed.html) {
+                let doc = parser.parseFromString('<div>' + par.raw_oembed.html + '</div>', 'text/html');
+                par_new = doc.querySelector('div');
+              }
+            } else if (par.type === 'list') {
+              if (par.items) {
+                par_new = document.createElement('ul');
+                for (let item of par.items) {
+                  let li = document.createElement('li');
+                  let doc = parser.parseFromString('<span>' + item.content + '</span>', 'text/html');
+                  let span = doc.querySelector('span');
+                  li.appendChild(span);
+                  par_new.appendChild(li);
+                }
+              }
+            } else if (par.type === 'table') {
+              if (par.header && par.rows) {
+                par_new = document.createElement('table');
+                let h_row = document.createElement('tr');
+                for (let item of par.header) {
+                  let th = document.createElement('th');
+                  let doc = parser.parseFromString('<span>' + item.content + '</span>', 'text/html');
+                  let span = doc.querySelector('span');
+                  th.appendChild(span);
+                  h_row.appendChild(th);
+                }
+                par_new.appendChild(h_row);
+                for (let row of par.rows) {
+                  let tr = document.createElement('tr');
+                  for (let item of row) {
+                    let td = document.createElement('td');
+                    let doc = parser.parseFromString('<span>' + item.content + '</span>', 'text/html');
+                    let span = doc.querySelector('span');
+                    td.appendChild(span);
+                    tr.appendChild(td);
+                  }
+                  par_new.appendChild(tr);
+                }
+              }
+            } else if (!['quote'].includes(par.type)) {
+              console.log(par);
+            }
+            if (par_new)
+              article.appendChild(par_new);
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    let banner = pageContains('div > span', /Contenido exclusivo para suscriptores/);
+    if (banner.length)
+      removeDOMElement(banner[0].parentNode);
+  }
+  let ads = 'div[id^="ad-"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('em.com.br')) {
@@ -1023,6 +1121,13 @@ function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options =
         getJsonUrlAdd(json_text, article, art_options);
     }, article_id, key, url_rest, url_slash);
   }
+}
+
+function pageContains(selector, text) {
+  let elements = document.querySelectorAll(selector);
+  return Array.prototype.filter.call(elements, function (element) {
+    return RegExp(text).test(element.textContent);
+  });
 }
 
 function parseHtmlEntities(encodedString) {
