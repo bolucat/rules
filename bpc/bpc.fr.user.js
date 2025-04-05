@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.8.2
+// @version         4.0.8.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -298,14 +298,14 @@ else if (matchDomain('jeuneafrique.com')) {
         article.innerHTML = '';
         article.parentNode.replaceChild(article_new, article);
       }
-      function fetch_data(limit, offset = 0) {
-        let url_src = 'https://www.jeuneafrique.com/api/mobile/v6.0/featured/?limit=' + limit + '&offset=' + offset;
-        fetch(url_src, {headers: {"x-exp": "1741079242710", "x-sig": "b431724e94023a6969c5427133e1614db2cbe90e"}})
+      function fetch_data(limit) {
+        let url_src = 'https://www.jeuneafrique.com/api/mobile/v6.0/featured/?limit=' + limit;
+        fetch(url_src, {headers: {"x-exp": "1741079242710", "x-sig": "b431724e94023a6969c5427133e1614db2cbe90e", "cache-control": "no-store"}})
         .then(response => {
           if (response.ok) {
             response.json().then(json => {
               try {
-                let src_articles = json.articles;
+                let src_articles = json.articles.filter(x => !x.content_status_open);
                 if (src_articles) {
                   let src_article = src_articles.filter(x => x.id == article_id)[0];
                   let ls_update = true;
@@ -333,29 +333,13 @@ else if (matchDomain('jeuneafrique.com')) {
           }
         }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
       }
-      let json_date;
-      let json_script = document.querySelector('script[type="application/ld+json"]');
-      if (json_script) {
-        try {
-          let json = JSON.parse(json_script.text);
-          if (json && json['@graph']) {
-            let date_arr = json['@graph'].filter(x => x.datePublished);
-            if (date_arr.length)
-              json_date = date_arr[0].datePublished;
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-      let art_date = '';
-      if (json_date)
-        art_date = json_date.split('T')[0];
+      let now_date = (new Date()).toISOString().split('T')[0];
       let ls_date = localStorage.getItem('###_json_date') || '';
       let ls_json_articles = {};
       if (ls_date) {
         let ls_articles = localStorage.getItem('###_json');
         ls_json_articles = JSON.parse(ls_articles);
-        if (ls_date < art_date)
+        if (ls_date < now_date)
           fetch_data(limit_low);
         else {
           let art_data = ls_json_articles[article_id];
@@ -904,7 +888,7 @@ else if (matchDomain('liberation.fr')) {
   let paywall = document.querySelector('div.article-body-paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    let article = document.querySelector('main > div > article');
+    let article = document.querySelector('article[data-datawall-status]');
     if (article) {
       let url_src = 'https://arc.api.liberation.fr/content/v4/?website=liberation&website_url=' + encodeURIComponent(window.location.pathname);
       let x_api_key = 'ejeePeingeitaegho3weengeeyohpu';
