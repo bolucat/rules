@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.8.2
+// @version         4.0.8.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2867,114 +2867,140 @@ else if (matchDomain('science.org')) {
 }
 
 else if (matchDomain('scmp.com')) {
-  let paywall = document.querySelector('div[data-qa="GenericArticle-PaywallContainer"], div.js-reading-0-percent-completion-tracker');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('section[data-qa="ContentBody-ContentBodyContainer"]');
-    if (article) {
-      let json_script = document.querySelector('script#__NEXT_DATA__');
-      if (json_script) {
-        try {
-          let json = JSON.parse(json_script.text);
-          if (json && json.props.pageProps.payload.data.article.body.json) {
-            let pars = json.props.pageProps.payload.data.article.body.json;
-            if (pars && pars.length)
-              article.innerHTML = '';
-            for (let par of pars) {
-              let elem = document.createElement('p');
-              if (window.location.pathname.startsWith('/magazines/'))
-                elem.style = 'margin: 20px 0px;';
-              if (['p', 'h3'].includes(par.type)) {
-                for (let sub_elem of par.children) {
-                  if (sub_elem.type === 'text') {
-                    if (sub_elem.data)
-                      elem.appendChild(document.createTextNode(sub_elem.data));
-                  } else if (['a', 'em', 'span', 'strong'].includes(sub_elem.type)) {
-                    let first_child = sub_elem.children && sub_elem.children[0];
-                    if (sub_elem.children && sub_elem.children.length > 1) {
-                      let elem_text = sub_elem.children.map(x => x.data || x.children[0].data).join('');
-                      first_child = {type: 'text', data: elem_text};
-                    }
-                    if (first_child) {
-                      if (first_child.type === 'text') {
-                        if (first_child.data) {
-                          let a_link = document.createElement('span');
-                          if (sub_elem.attribs && sub_elem.attribs.href) {
-                            a_link = document.createElement('a');
-                            a_link.style = 'text-decoration: underline;';
-                            a_link.href = sub_elem.attribs.href;
-                            if (!matchUrlDomain(window.location.hostname, sub_elem.attribs.href))
-                              a_link.target = '_blank';
-                          } else if (sub_elem.type === 'em')
-                            a_link.style = 'font-style: italic;';
-                          else if (sub_elem.type === 'strong')
-                            a_link.style = 'font-weight: bold;';
-                          a_link.innerText = first_child.data;
-                          elem.appendChild(a_link);
-                        }
-                      }
-                    }
-                  } else if (sub_elem.type === 'img') {
-                    if (sub_elem.attribs) {
-                      let attribs = sub_elem.attribs;
-                      if (attribs.src)
-                        elem = makeFigure(attribs.src, attribs.title, {alt: attribs.alt, style: 'width: 100%;'}, {style: 'font-size: 80%;'});
-                    }
-                  } else {
-                    console.log(sub_elem);
-                  }
-                }
-              } else if (par.type === 'div') {
-                if (par.attribs) {
-                  if (par.attribs.class === 'image-inline-container') {
-                    if (par.children && par.children[0]) {
-                      let attribs = par.children[0].attribs;
-                      if (attribs.src)
-                        elem = makeFigure(attribs.src, attribs.title, {alt: attribs.alt, style: 'width: 100%;'}, {style: 'font-size: 80%;'});
-                    }
-                  } else if (par.attribs.class.match(/(methode-html|oembed|video)-wrapper/)) {
+  window.setTimeout(function () {
+    if (matchDomain('amp.scmp.com')) {
+      amp_unhide_subscr_section('div.ad-banner, div.advert-fly-carpet-container, div.inline-advert');
+      let amp_images = document.querySelectorAll('section.article-body amp-img[src]');
+      for (let elem of amp_images) {
+        let img = document.createElement('img');
+        img.src = elem.getAttribute('src');
+        img.alt = elem.getAttribute('alt');
+        img.style = 'width: 90%;';
+        elem.parentNode.replaceChild(img, elem);
+      }
+      let default_meters = document.querySelectorAll('div[id^="default-meter-page-views"]');
+      removeDOMElement(...default_meters);
+    } else {
+      let paywall = document.querySelectorAll('div[data-qa="GenericArticle-PaywallContainer"], div.js-reading-0-percent-completion-tracker');
+      if (paywall.length) {
+        removeDOMElement(...paywall);
+        let article = document.querySelector('section[data-qa="ContentBody-ContentBodyContainer"]');
+        if (article) {
+          let json_script = document.querySelector('script#__NEXT_DATA__');
+          if (json_script) {
+            try {
+              let json = JSON.parse(json_script.text);
+              if (json && json.props.pageProps.payload.data.article.body.json) {
+                let pars = json.props.pageProps.payload.data.article.body.json;
+                if (pars && pars.length)
+                  article.innerHTML = '';
+                for (let par of pars) {
+                  let elem = document.createElement('p');
+                  if (window.location.pathname.startsWith('/magazines/'))
+                    elem.style = 'margin: 20px 0px;';
+                  if (['p', 'h3'].includes(par.type)) {
                     for (let sub_elem of par.children) {
-                      if (sub_elem.type === 'iframe') {
-                        let attribs = sub_elem.attribs;
-                        if (attribs.src) {
-                          let figure = document.createElement('figure');
-                          let iframe = document.createElement('iframe');
-                          iframe.src = attribs.src;
-                          if (attribs.width && attribs.height) {
-                            let ratio = attribs.width / (article.offsetWidth);
-                            iframe.width = attribs.width / ratio;
-                            iframe.height = attribs.height / ratio;
-                          } else if (attribs.style) {
-                            iframe.style = attribs.style;
-                            if (attribs.height)
-                              iframe.height = attribs.height;
-                          }
-                          figure.appendChild(iframe);
-                          if (attribs.title) {
-                            let iframe_title = document.createElement('figcaption');
-                            iframe_title.innerText = attribs.title;
-                            iframe_title.style = 'font-size: 80%;';
-                            figure.appendChild(iframe_title);
-                          }
-                          elem.appendChild(figure);
+                      if (sub_elem.type === 'text') {
+                        if (sub_elem.data)
+                          elem.appendChild(document.createTextNode(sub_elem.data));
+                      } else if (['a', 'em', 'span', 'strong'].includes(sub_elem.type)) {
+                        let first_child = sub_elem.children && sub_elem.children[0];
+                        if (sub_elem.children && sub_elem.children.length > 1) {
+                          let elem_text = sub_elem.children.map(x => x.data || x.children[0].data).join('');
+                          first_child = {type: 'text', data: elem_text};
                         }
+                        if (first_child) {
+                          if (first_child.type === 'text') {
+                            if (first_child.data) {
+                              let a_link = document.createElement('span');
+                              if (sub_elem.attribs && sub_elem.attribs.href) {
+                                a_link = document.createElement('a');
+                                a_link.style = 'text-decoration: underline;';
+                                a_link.href = sub_elem.attribs.href;
+                                if (!matchUrlDomain(window.location.hostname, sub_elem.attribs.href))
+                                  a_link.target = '_blank';
+                              } else if (sub_elem.type === 'em')
+                                a_link.style = 'font-style: italic;';
+                              else if (sub_elem.type === 'strong')
+                                a_link.style = 'font-weight: bold;';
+                              a_link.innerText = first_child.data;
+                              elem.appendChild(a_link);
+                            }
+                          }
+                        }
+                      } else if (sub_elem.type === 'img') {
+                        if (sub_elem.attribs) {
+                          let attribs = sub_elem.attribs;
+                          if (attribs.src)
+                            elem = makeFigure(attribs.src, attribs.title, {alt: attribs.alt, style: 'width: 100%;'}, {style: 'font-size: 80%;'});
+                        }
+                      } else {
+                        console.log(sub_elem);
                       }
                     }
-                  } else if (par.attribs.class)
+                  } else if (par.type === 'div') {
+                    if (par.attribs) {
+                      if (par.attribs.class === 'image-inline-container') {
+                        if (par.children && par.children[0]) {
+                          let attribs = par.children[0].attribs;
+                          if (attribs.src)
+                            elem = makeFigure(attribs.src, attribs.title, {alt: attribs.alt, style: 'width: 100%;'}, {style: 'font-size: 80%;'});
+                        }
+                      } else if (par.attribs.class.match(/(methode-html|oembed|video)-wrapper/) && par.children) {
+                        addIframe(par.children);
+                        function addIframe(par_children) {
+                          for (let sub_elem of par_children) {
+                            if (sub_elem.children)
+                              addIframe(sub_elem.children);
+                            if (sub_elem.type === 'iframe') {
+                              let attribs = sub_elem.attribs;
+                              if (attribs.src) {
+                                let figure = document.createElement('figure');
+                                let iframe = document.createElement('iframe');
+                                iframe.src = attribs.src;
+                                if (attribs.width && attribs.height) {
+                                  if (!attribs.width.includes('%')) {
+                                    let ratio = attribs.width / (article.offsetWidth);
+                                    iframe.width = attribs.width / ratio;
+                                    iframe.height = attribs.height / ratio;
+                                  } else {
+                                    iframe.width = attribs.width;
+                                    iframe.height = attribs.height;
+                                  }
+                                } else if (attribs.style) {
+                                  iframe.style = attribs.style;
+                                  if (attribs.height)
+                                    iframe.height = attribs.height;
+                                }
+                                figure.appendChild(iframe);
+                                if (attribs.title) {
+                                  let iframe_title = document.createElement('figcaption');
+                                  iframe_title.innerText = attribs.title;
+                                  iframe_title.style = 'font-size: 80%;';
+                                  figure.appendChild(iframe_title);
+                                }
+                                elem.appendChild(figure);
+                              }
+                            }
+                          }
+                        }
+                      } else if (par.attribs.class)
+                        console.log(par);
+                    }
+                  } else if (!['blockquote-quote', 'inline-ad-slot', 'track-viewed-percentage'].includes(par.type))
                     console.log(par);
+                  if (elem.hasChildNodes())
+                    article.appendChild(elem);
                 }
-              } else if (!['blockquote-quote', 'inline-ad-slot', 'track-viewed-percentage'].includes(par.type))
-               console.log(par);
-              if (elem.hasChildNodes())
-                article.appendChild(elem);
+              }
+            } catch (err) {
+              console.log(err);
             }
           }
-        } catch (err) {
-          console.log(err);
         }
       }
     }
-  }
+  }, 0);
   let ads = 'div[data-qa*="AdSlot"], div.adblock-message';
   hideDOMStyle(ads);
 }
@@ -3087,12 +3113,14 @@ else if (matchDomain('statnews.com')) {
   let paywall = document.querySelector('div.restricted-content-breaker');
   if (paywall) {
     removeDOMElement(paywall);
-    let article = document.querySelector('div.entry-content');
+    let article = document.querySelector('div.entry-content, section.the-content');
     if (article) {
       let url = window.location.href;
       article.before(googleSearchToolLink(url));
     }
   }
+  let ads = 'div.header-ad-wrap, div[class*="dfp-ad"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('stereogum.com')) {
@@ -3172,37 +3200,41 @@ else if (matchDomain(['techtarget.com', 'computerweekly.com'])) {
 }
 
 else if (matchDomain('tempo.co')) {
-  let paywall = document.querySelector('div.bg-black > div > img[src="/_ipx/_/icons/paywallatas.svg"]');
-  if (paywall) {
-    removeDOMElement(paywall.parentNode.parentNode);
-    let article_hidden = document.querySelector('article > div:not([class]) div.overflow-hidden');
-    if (article_hidden)
-      article_hidden.removeAttribute('class');
-    let article = document.querySelector('div#content-wrapper');
-    if (article) {
-      let json_script = document.querySelector('script#__NUXT_DATA__');
-      if (json_script) {
-        try {
-          let json = JSON.parse(json_script.text);
-          if (json) {
-            let article_index = json.indexOf('published') + 2;
-            if (article_index) {
-              let parser = new DOMParser();
-              for (let i = article_index; i < article_index + 50; i++) {
-                let par = json[i];
-                if (par && typeof par === 'string' && par.match(/^<(p|div)/)) {
-                  let doc = parser.parseFromString(par, 'text/html');
-                  let par_new = doc.querySelector('p, div');
-                  article.appendChild(par_new);
-                } else if (!Array.isArray(par))
-                  console.log(par);
-                else
-                  break;
+  if (matchDomain('magz.tempo.co')) {
+    header_nofix('article', 'div.pw-containers');
+  } else {
+    let paywall = document.querySelector('div.bg-black > div > img[src="/_ipx/_/icons/paywallatas.svg"]');
+    if (paywall) {
+      removeDOMElement(paywall.parentNode.parentNode);
+      let article_hidden = document.querySelector('article > div:not([class]) div.overflow-hidden');
+      if (article_hidden)
+        article_hidden.removeAttribute('class');
+      let article = document.querySelector('div#content-wrapper');
+      if (article) {
+        let json_script = document.querySelector('script#__NUXT_DATA__');
+        if (json_script) {
+          try {
+            let json = JSON.parse(json_script.text);
+            if (json) {
+              let article_index = json.indexOf('published') + 2;
+              if (article_index) {
+                let parser = new DOMParser();
+                for (let i = article_index; i < article_index + 50; i++) {
+                  let par = json[i];
+                  if (par && typeof par === 'string' && par.match(/^<(p|div)/)) {
+                    let doc = parser.parseFromString(par, 'text/html');
+                    let par_new = doc.querySelector('p, div');
+                    article.appendChild(par_new);
+                  } else if (!Array.isArray(par))
+                    console.log(par);
+                  else
+                    break;
+                }
               }
             }
+          } catch (err) {
+            console.log(err);
           }
-        } catch (err) {
-          console.log(err);
         }
       }
     }
@@ -3997,89 +4029,8 @@ else if (matchDomain('vox.com')) {
 }
 
 else if (matchDomain('washingtonpost.com')) {
-  if (window.location.pathname.startsWith('/comments') && window.location.search.startsWith('?storyUrl=')) {
-    let wrapper = document.querySelector('div#comments-wrapper');
-    if (wrapper) {
-      let com_link = document.createElement('a');
-      com_link.href = window.location.href.replace('https://www.washingtonpost.com/comments?storyUrl', 'https://talk.washingtonpost.com/embed/stream?storyURL');
-      com_link.innerText = 'BPC > open comments';
-      wrapper.appendChild(com_link);
-    }
-  } else if (window.location.hostname === 'talk.washingtonpost.com') {
-    let body = document.querySelector('body');
-    if (body)
-      body.style = 'margin: 10px;';
-    let nav = document.querySelector('main > nav');
-    if (nav && window.location.search.startsWith('?storyURL=')) {
-      let com_link = document.createElement('a');
-      com_link.href = decodeURIComponent(window.location.href.split('?storyURL=')[1]);
-      com_link.innerText = 'BPC > return to article';
-      nav.after(com_link);
-    }
-  } else {
-    let metered_sel = 'div.meteredContent';
-    let article = document.querySelector(metered_sel + ' > div.teaser-content');
-    let pars = document.querySelectorAll(metered_sel + ' div.article-body');
-    if (pars.length && pars.length < 5 && article) {
-      let json_script = document.querySelector('script#__NEXT_DATA__');
-      if (json_script) {
-        try {
-          let json = JSON.parse(json_script.text);
-          if (json && json.props.pageProps.globalContent.content_elements) {
-            let pars_new = json.props.pageProps.globalContent.content_elements;
-            let par_class;
-            let art_par = article.querySelector('p');
-            if (art_par)
-              par_class = art_par.className;
-            let par_first = true;
-            let parser = new DOMParser();
-            article.innerHTML = '';
-            for (let par of pars_new) {
-              let elem;
-              if (['header', 'text'].includes(par.type)) {
-                let doc = parser.parseFromString('<p class="' + par_class + '">' + par.content + '</p>', 'text/html');
-                elem = doc.querySelector('p');
-                if (par.type === 'header')
-                  elem.style = 'font-weight: bold;';
-              } else if (par.type === 'image') {
-                if (par.url && !par_first) {
-                  elem = document.createElement('p');
-                  elem.className = par_class;
-                  let sub_elem = document.createElement('figure');
-                  let img = document.createElement('img');
-                  img.src = 'https://www.washingtonpost.com/wp-apps/imrs.php?src=' + par.url + '&w=1200';
-                  img.style = 'width:100%';
-                  sub_elem.appendChild(img);
-                  if (par.credits_caption_display) {
-                    let caption = document.createElement('p');
-                    caption.innerText = par.credits_caption_display;
-                    sub_elem.appendChild(caption);
-                  }
-                  elem.appendChild(sub_elem);
-                }
-              } else if (par.type === 'custom_embed' && par.subtype) {
-                if (!['magnet'].includes(par.subtype) && par.embed && par.embed.url) {
-                  elem = document.createElement('iframe');
-                  elem.src = par.embed.url;
-                  elem.style = 'height: 400px; width: 100%';
-                }
-              } else if (!['divider'].includes(par.type))
-                console.log(par);
-              if (elem)
-                article.appendChild(elem);
-              if (par_first)
-                par_first = false;
-            }
-            window.scrollTo(0, 0);
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    }
-  }
   let leaderboard = '#leaderboard-wrapper';
-  let ads = 'div[data-qa$="-ad"]';
+  let ads = 'div[data-qa$="-ad"], div[data-qa="outbrain"]';
   hideDOMStyle(leaderboard + ', ' + ads);
 }
 
