@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.8.5
+// @version         4.0.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -58,6 +58,7 @@
 // @exclude         *://*.amazon-adsystem.com/*
 // @exclude         *://*.consentmanager.net/*
 // @exclude         *://*.dailymotion.com/*
+// @exclude         *://*.doubleclick.net/*
 // @exclude         *://*.dwcdn.net/*
 // @exclude         *://*.facebook.com/*
 // @exclude         *://*.google.com/*
@@ -66,8 +67,12 @@
 // @exclude         *://*.instagram.com/*
 // @exclude         *://*.klarna.com/*
 // @exclude         *://*.mediafire.com/*
+// @exclude         *://*.openx.net/*
 // @exclude         *://*.outbrain.com/*
 // @exclude         *://*.pinterest.com/*
+// @exclude         *://*.rubiconproject.com/*
+// @exclude         *://*.seedtag.com/*
+// @exclude         *://*.smartadserver.com/*
 // @exclude         *://*.tinypass.com/*
 // @exclude         *://*.twitter.com/*
 // @exclude         *://*.youtube.com/*
@@ -1568,12 +1573,8 @@ else if (matchDomain('businessinsider.jp')) {
 }
 
 else if (matchDomain('businessoffashion.com')) {
-  if (window.location.search.startsWith('?outputType=amp')) {
-    amp_unhide_access_hide();
-  } else {
-    let ads = 'div[class^="default__AdsBlockWrapper"]';
-    hideDOMStyle(ads);
-  }
+  let ads = 'div[class^="default__AdsBlockWrapper"], div[data-test="common-nbabanner"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('capital.bg')) {
@@ -2615,6 +2616,13 @@ else if (matchDomain('newscientist.com')) {
                   elem.src = elem.getAttribute('data-src');
                   elem.removeAttribute('height');
                   elem.removeAttribute('width');
+                }
+                let videos = document.querySelectorAll('figure > div.pugpig-video[data-video-url]');
+                for (let elem of videos) {
+                  let iframe = document.createElement('iframe');
+                  iframe.src = elem.getAttribute('data-video-url');
+                  iframe.style = 'width: 100%; height: 400px; margin: 20px 0px;';
+                  elem.parentNode.replaceChild(iframe, elem);
                 }
               }
               replaceDomElementExt(url, false, false, 'section.ArticleContent', 'BPC > no fix (source file)', 'section[class$="-article__body"]');
@@ -4030,7 +4038,7 @@ else if (matchDomain('vox.com')) {
 
 else if (matchDomain('washingtonpost.com')) {
   let leaderboard = '#leaderboard-wrapper';
-  let ads = 'div[data-qa$="-ad"], div[data-qa="outbrain"]';
+  let ads = 'div[data-qa$="-ad"], div[data-component="Ad"], div[data-qa="outbrain"]';
   hideDOMStyle(leaderboard + ', ' + ads);
 }
 

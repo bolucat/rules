@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.0.8.0
+// @version         4.0.9.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -107,19 +107,29 @@ else if (matchDomain('gazzetta.it')) {
 else if (matchDomain('ilfattoquotidiano.it')) {
   if (window.location.pathname.endsWith('/amp/')) {
     amp_unhide_subscr_section('div#_4sVideoContainer, div#post-consent-ui');
-    let comments = document.querySelector('div.content.comments');
-    removeDOMElement(comments);
-    let logo = document.querySelector('a > amp-img[src$="/logo-tablet.svg"]');
+    let logo = document.querySelector('a > amp-img[src$="/svg/logo-tablet.svg"]');
     if (logo) {
       let logo_new = document.createElement('img');
-      logo_new.src = logo.getAttribute('src').replace('logo-tablet.svg', 'logo-desktop.svg');
+      logo_new.src = logo.getAttribute('src').replace('/svg/logo-tablet.svg', '/fq-www/logo-ifq-it.svg');
       logo_new.height = logo.getAttribute('height');
       logo_new.width = logo.getAttribute('width');
       logo.parentNode.replaceChild(logo_new, logo);
     }
-  } else if (window.location.pathname.match(/\/\d{4}\/\d{2}\/\d{2}\//)) {
-    amp_redirect('div.read-more', '', window.location.pathname + 'amp');
+  } else {
+    let paywall = document.querySelector('div#ifq-paywall-metered');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let art_hidden = document.querySelector('article[id].cropped');
+      if (art_hidden)
+        art_hidden.classList.remove('cropped');
+    } else
+      header_nofix('div.ifq-post__content', 'div#ifq-paywall-hard');
   }
+  let ads = 'div.adv, div.st-adunit, div[id^="ifq-adv-"], div.mgbox';
+  hideDOMStyle(ads);
+  let ad_units = document.querySelectorAll('div[id^="div-flx-"] > div[data-adunit]');
+  for (let elem of ad_units)
+    hideDOMElement(elem.parentNode);
 }
 
 else if (matchDomain('ilfoglio.it')) {
