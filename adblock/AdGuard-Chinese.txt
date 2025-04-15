@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: AFvrmO6JCKerGrzutmgqVg
-! Diff-Path: ../patches/224/224-s-1744650632-3600.patch
+! Checksum: RettpFzMOpD/Uhre+HxPsA
+! Diff-Path: ../patches/224/224-s-1744737016-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.34.71
-! TimeUpdated: 2025-04-14T17:07:18+00:00
+! Version: 2.1.34.80
+! TimeUpdated: 2025-04-15T17:07:03+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1188,6 +1188,8 @@ $script,third-party,denyallow=ilfcdn.li|bytecdntp.com|fastlycdn.com|doodcdn.co|i
 !
 ! NOTE: Specific rules
 !
+biqgg.com##a[onclick="guangtui();"]
+||biqgg.com/w.js?v=
 sixyin.com##.custom-html-widget > a[target="_blank"] > img
 sixyin.com#?#.widget_custom_html:has(> h3:contains(赞助))
 ||banzhu*.com/js/cdn.js$~third-party
@@ -2959,11 +2961,13 @@ netfly.*,netfly.tv##.module-tg-box
 netfly.*,netfly.tv##div[class*="tt-"] > a[target="_blank"] > img
 netfly.*,netfly.tv##div[class*="tt-"] > a[target="_blank"] + span.tt-icon-close
 ! https://github.com/AdguardTeam/AdguardFilters/issues/177520
+! https://github.com/AdguardTeam/AdguardFilters/issues/202922
 ! https://github.com/AdguardTeam/AdguardFilters/issues/176103
 ! https://github.com/AdguardTeam/AdguardFilters/issues/134240
 ! Do not hide .bili-video-card container to not mess up content, related - https://github.com/AdguardTeam/AdguardFilters/issues/147194#issuecomment-1500803042
 ! https://user-images.githubusercontent.com/3976203/273172163-25ff30a0-c988-4ec3-9e51-cf4722a90976.jpg
 ! bilibili.com#?#.bili-video-card.is-rcmd > div > a[href*="cm.bilibili.com"][data-target-url]:not([data-target-url*=".bili"]) + .bili-video-card__info:upward(2)
+search.bilibili.com##.video-list > div:has(> .bili-video-card > .bili-video-card__wrap > .bili-video-card__info > .bili-video-card__info--right > .ad-feedback-entry)
 bilibili.com##.bili-video-card.is-rcmd:has(> div.bili-video-card__wrap div.bili-video-card__stats > div.bili-video-card__stats--left:empty + span.bili-video-card__stats--text)
 bilibili.com#$#.container > div[class*="-card"]:has(div[style="display: none !important;"]) { position: absolute !important; left: -3000px !important; }
 bilibili.com##+js(json-prune, data.cm_info.ads)
@@ -2972,6 +2976,9 @@ bilibili.com##.floor-single-card:has(.floor-skeleton):not(:has(> div.bili-video-
 bilibili.com#$?#.ex-card-common:has(.gg-icon) { remove: true; }
 bilibili.com#$?#.van-slide > .item:has(.bypb-icon) { remove: true; }
 ||api.live.bilibili.com/*/Banner
+! https://github.com/AdguardTeam/AdguardFilters/issues/200231#issuecomment-2798446587
+! The card with a rocket icon (CN IP)
+bilibili.com##.bili-video-card.is-rcmd:has(> div.bili-video-card__wrap .bili-video-card__stats--icon > path[d*="M16.9122 1.50323C17.4366 1.48358 17.99745 1.54938 18.4701 1.8207C18.9423 2.09168 19.28085"])
 ! bilibili.com#$?#.container > div.feed-card:not(:has(> div > *)) { remove: true; }
 ! bilibili.com##.container > div.feed-card:not(:has(> div > *))
 ! bilibili.com#$?#.container > div.floor-single-card:has(> div.skeleton) { remove: true; }
@@ -5040,6 +5047,13 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$third-party
+||thricrulnf.com^
+||rtfgvz.icu^
+||pekr.cn^
+||bhdnti.top^
+||bvcnmtv.top^
+||iiyurraeoh.com^
+||mnrz.cn^
 ||ergiekszra.com^
 ||txvq.cn^
 ||tqjojh.icu^
@@ -9036,7 +9050,6 @@ hxsame.hexun.com$domain=~quote.hexun.com
 ||6park.com/img/*0.gif
 ||6park.com/parks/$script
 ||6vhao.tv/d/
-||6yso.com/wp-content/uploads/*-300-x-
 ||70.86.24.120:8060/
 ||70822.com/agfile/
 ||7160.com/js/tiaozhuanquanju.js
@@ -12883,6 +12896,7 @@ hxsame.hexun.com$domain=~quote.hexun.com
 ||55kp.app/aini.
 ||xmcdn.com/storages/f651-customerservice/E3/40/GAqhntALzRUHAAJ3LgOTtToZ.
 sojson.com##.a-d-img
+sixyin.com##.widget_custom_html
 baidu.com##a[class*="fengchaoContainer"]
 hcbbs.com##.pcbanner
 yalishi.com##.ad

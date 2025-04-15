@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.0.9.2
+// @version         4.1.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1332,7 +1332,7 @@ else if (matchDomain('barrons.com')) {
             let article_id = article_id_dom.content;
             let url_src = 'https://barrons.djmedia.djservices.io/apps/barrons/theaters/default-article?screen_ids=' + article_id;
             let x_access_token = "eyJhbGciOiJSUzI1NiJ9.WFZsaHN3MXd3Smw0V3kwRXBzclQ.qwwBedAUNXHTQchowQZ5zMwmnXqDKeMhoRJlkB7drjWmb0ktZCScIhq5lpIiWaMyNJA_ODYgHAfIoi7DKWkS8g8GunFNAXpJDUOLdI2rtQkTEi_E3o90rdZHunPR7p0ULjRmHCnDofAdpTQdJtTXjQ9eEDZT2xoooVGdBpoVKhE";
-            getExtFetch(url_src, '', {headers: {"app-identifier": "http://com.news.screens", "device-type": "phone", "x-access-token": x_access_token}}, main_barrons);
+            getExtFetch(url_src, '', {"app-identifier": "http://com.news.screens", "device-type": "phone", "x-access-token": x_access_token}, main_barrons);
             function main_barrons(url_src, data) {
               try {
                 if (data) {
@@ -1483,10 +1483,9 @@ else if (matchDomain('bizjournals.com')) {
 
 else if (matchDomain('bloomberg.com')) {
   let paywall_sel = 'div[id^="fortress-"]';
-  let paywall = paywall_sel;
   let leaderboard = 'div[id^="leaderboard"], div[class^="leaderboard"], div.canopy-container';
   let ads = 'div[data-ad-status], div[data-ad-type], div[class*="FullWidthAd_"], div.adWrapper';
-  hideDOMStyle(paywall + ', ' + leaderboard + ', ' + ads);
+  hideDOMStyle(paywall_sel + ', ' + leaderboard + ', ' + ads);
   waitDOMElement(paywall_sel, 'DIV', removeDOMElement, true);
   waitDOMAttribute('body', 'BODY', 'data-paywall-overlay-status', node => node.removeAttribute('data-paywall-overlay-status'), true);
   if (window.location.pathname.startsWith('/live/')) {
@@ -3090,11 +3089,32 @@ else if (matchDomain('spglobal.com')) {
 }
 
 else if (matchDomain('standardmedia.co.ke')) {
-  let js_disabled = document.querySelector('div#js-disabled');
-  removeDOMElement(js_disabled);
-  let js_enabled = document.querySelector('div#js-enabled');
-  if (js_enabled)
-    js_enabled.removeAttribute('id');
+  let paywall = document.querySelector('div.fade-out-container');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      try {
+        let json = JSON.parse(json_script.text.replace(/[\r\n]/g, ''));
+        if (json) {
+          let json_text = parseHtmlEntities(breakText(json.articleBody)).replace(/[\r\n]/g, '<br>').replace(/[^<]+<br><br>/, '');
+          let article = document.querySelector('div.content');
+          if (json_text && article) {
+            let parser = new DOMParser();
+            let doc = parser.parseFromString('<p>' + json_text + '</p>', 'text/html');
+            let article_new = doc.querySelector('p');
+            let pars_old = article.querySelectorAll('p:not([class])');
+            removeDOMElement(...pars_old);
+            article.appendChild(article_new);
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+  let ads = 'div.ad';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('staradvertiser.com')) {
@@ -3882,7 +3902,7 @@ else if (matchDomain(usa_craincomm_domains)) {
                 if (par.raw_oembed._id) {
                   par_new = document.createElement('p');
                   let par_link = document.createElement('a');
-                  par_link.href = par_link.innerText = par.raw_oembed._id;
+                  par_link.href = par_link.innerText = par.raw_oembed._id.replace(/\/$/, '');
                   par_link.target = '_blank';
                   par_new.appendChild(par_link);
                 }
@@ -4135,7 +4155,7 @@ else if (matchDomain('wsj.com')) {
         let article_id = article_id_dom.content;
         let url_src = 'https://mats.mobile.dowjones.io/translate/' + article_id + '/jpml';
         let x_api_key = 'e05995ff442143255eb8381f72d4913bf7503d6c';
-        getExtFetch(url_src, '', {headers: {"x-api-key": x_api_key}}, main_wsj_pro);
+        getExtFetch(url_src, '', {"x-api-key": x_api_key}, main_wsj_pro);
         function main_wsj_pro(url_src, data) {
           try {
             if (data) {
@@ -4163,7 +4183,7 @@ else if (matchDomain('wsj.com')) {
                       schema_data = JSON.parse(schema_script.text);
                   }
                 }
-                let pars = body.querySelectorAll('p[class], panel.media-item');
+                let pars = body.querySelectorAll('p[class], h2, h3, panel.media-item');
                 let par_first = true;
                 let image_nr = 0;
                 let par_new;
@@ -4171,7 +4191,7 @@ else if (matchDomain('wsj.com')) {
                   if (par.tagName === 'p') {
                     if (par_first)
                       par_first = false;
-                    let doc = parser.parseFromString('<p class="' + par_class + '" data-type="paragraph">' + par.innerHTML.replace(/(<\/?mark([^>]+)?>)/g, '') + '</section>', 'text/html');
+                    let doc = parser.parseFromString('<p class="' + par_class + '" data-type="paragraph">' + par.innerHTML.replace(/(<\/?mark([^>]+)?>)/g, '') + '</p>', 'text/html');
                     par_new = doc.querySelector('p');
                     if (par_new) {
                       let app_links = par_new.querySelectorAll('a[data-canonical-url][href^="wsj:"], a[data-canonical-url]:not([href])');
@@ -4201,6 +4221,9 @@ else if (matchDomain('wsj.com')) {
                       }
                       image_nr++;
                     }
+                  } else if (!par_first && par.tagName) {
+                    let doc = parser.parseFromString('<' + par.tagName + '>' + par.innerHTML + '</' + par.tagName + '>', 'text/html');
+                    par_new = doc.querySelector(par.tagName);
                   }
                   if (par_new)
                     article.appendChild(par_new);
