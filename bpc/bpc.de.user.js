@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.0.9.1
+// @version         4.1.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -57,6 +57,8 @@ var de_lv_domains = ['profi.de', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de', 'saechsische.de'];
 var de_motor_presse_domains = ['aerokurier.de', 'auto-motor-und-sport.de', 'flugrevue.de', 'motorradonline.de', 'womenshealth.de'];
 var de_rp_medien_domains = ['ga.de', 'rp-online.de', 'saarbruecker-zeitung.de', 'volksfreund.de'];
+var de_vrm_domains = ['allgemeine-zeitung.de', 'echo-online.de', 'wiesbadener-kurier.de'];
+var de_vrm_custom_domains = ['buerstaedter-zeitung.de', 'hochheimer-zeitung.de', 'lampertheimer-zeitung.de', 'lauterbacher-anzeiger.de', 'main-spitze.de', 'mittelhessen.de', 'oberhessische-zeitung.de', 'wormser-zeitung.de'];
 
 if (matchDomain('aachener-zeitung.de')) {
   let url = window.location.href;
@@ -1028,6 +1030,29 @@ else if (matchDomain('ruhrnachrichten.de') || document.querySelector('a.mgw-logo
       removeDOMElement(push);
     }, 1000);
   }
+}
+
+else if (matchDomain(de_vrm_domains) || matchDomain(de_vrm_custom_domains)) {
+  func_post = function () {
+    let article = document.querySelector(article_sel);
+    if (article) {
+      article.querySelectorAll('div > div[role="button"]').forEach(e => removeDOMElement(e.parentNode));
+      if (mobile) {
+        let pictures = document.querySelectorAll('picture > img[style]');
+        for (let elem of pictures) {
+          elem.style = 'width: 95%; margin: 10px;';
+          elem.parentNode.removeAttribute('style');
+        }
+      }
+    }
+  }
+  let article_sel = 'article section';
+  let url = window.location.href;
+  window.setTimeout(function () {
+    getArchive(url, 'div[data-testid="paywall-blurred-content"]', {rm_attrib: 'class'}, article_sel);
+  }, 1000);
+  let ads = 'div.adSlot, div.loadingBanner';
+  hideDOMStyle(ads);
 }
 
 }, 1000);

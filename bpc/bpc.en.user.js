@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.0.0
+// @version         4.1.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -73,6 +73,7 @@
 // @exclude         *://*.rubiconproject.com/*
 // @exclude         *://*.seedtag.com/*
 // @exclude         *://*.smartadserver.com/*
+// @exclude         *://*.stripe.com/*
 // @exclude         *://*.tinypass.com/*
 // @exclude         *://*.twitter.com/*
 // @exclude         *://*.youtube.com/*
@@ -226,8 +227,11 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || document.
   let paywall = document.querySelector('article.meteredContent');
   if (paywall) {
     paywall.removeAttribute('class');
-    paywall.firstChild.before(freediumLink(url));
-    paywall.firstChild.before(readMediumLink(url));
+    let header = paywall.querySelector('h1');
+    if (header) {
+      header.before(freediumLink(url));
+      header.before(readMediumLink(url));
+    }
   }
   window.setTimeout(function () {
     let banner = pageContains('div > div > p', /author made this story available to/);
@@ -489,14 +493,23 @@ else {
   } else if (window.location.hostname.endsWith('.com.au')) {
     // Australia News Corp
     let au_news_corp_domains = ['adelaidenow.com.au', 'cairnspost.com.au', 'codesports.com.au', 'couriermail.com.au', 'dailytelegraph.com.au', 'geelongadvertiser.com.au', 'goldcoastbulletin.com.au', 'heraldsun.com.au', 'theaustralian.com.au', 'thechronicle.com.au', 'themercury.com.au', 'townsvillebulletin.com.au', 'weeklytimesnow.com.au'];
-    if (matchDomain(au_news_corp_domains)) {
+    if (matchDomain(au_news_corp_domains) || matchDomain('ntnews.com.au')) {
       let url = window.location.href;
-      if (url.includes('/subscribe/')) {
-        if (!url.includes('/digitalprinteditions') && url.includes('dest=') && url.split('dest=')[1].split('&')[0]) {
-          let url_new = decodeURIComponent(url.split('dest=')[1].split('&')[0]) + '?amp';
-          window.setTimeout(function () {
-            window.location.href = url_new;
-          }, 500);
+      if (window.location.pathname.startsWith('/subscribe/') && !url.includes('/digitalprinteditions')) {
+        let og_url = document.querySelector('head > meta[property="og:url"][content]');
+        if (og_url) {
+          let url_new = og_url.content;
+          if (matchDomain('ntnews.com.au')) {
+            let article = document.querySelector('div.dsf-article-preview');
+            if (article) {
+              article.before(googleSearchToolLink(url_new));
+            }
+          } else {
+            url_new += '?amp';
+            window.setTimeout(function () {
+              window.location.href = url_new;
+            }, 500);
+          }
         }
       } else if (window.location.search.match(/[&\?]amp/)) {
         amp_unhide_subscr_section('[id^="ad-mrec-"]', false);
