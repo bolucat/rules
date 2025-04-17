@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.0.0
+// @version         4.1.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -1016,20 +1016,6 @@ else if (matchDomain(de_madsack_domains) || document.querySelector('head > link[
 else if (matchDomain(de_ippen_media_domains) || document.querySelector('header a[href^="https://www.ippen.media"]')) {
   let ads = 'div[class^="id-TBeepSlot-"], div[data-id-advertdfpconf]';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('ruhrnachrichten.de') || document.querySelector('a.mgw-logo[href^="https://mgw.de"]')) {
-  let pathname = window.location.pathname;
-  let article_id;
-  if (pathname.includes('-p-'))
-    article_id = pathname.split('-p-')[1].split('/')[0];
-  getJsonUrl('body.is_plus_article', {rm_class: 'is_plus_article'}, 'article', {art_append: 1, art_hold: 1, art_class: 'article__content'}, article_id);
-  if (!matchDomain('ruhrnachrichten.de')) {
-    window.setTimeout(function () {
-      let push = document.querySelector('div.cleverpush-bell');
-      removeDOMElement(push);
-    }, 1000);
-  }
 }
 
 else if (matchDomain(de_vrm_domains) || matchDomain(de_vrm_custom_domains)) {
