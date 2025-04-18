@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.0.8.1
+// @version         4.1.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -497,6 +497,34 @@ else if (matchDomain('elespectador.com')) {
     }
   } else {
     amp_redirect('div.exclusive_validation');
+  }
+}
+
+else if (matchDomain('elmercurio.com')) {
+  if (window.location.hostname.startsWith('digital.')) {
+    window.setTimeout(function () {
+      let elem_hidden = document.querySelectorAll('[style="visibility:hidden"]');
+      for (let elem of elem_hidden)
+        elem.removeAttribute('style');
+      let page_pdf_content = document.querySelector('div.page_pdf_content');
+      let close_html = document.querySelector('div.close_html');
+      let cont_page_full = document.querySelector('div.cont_page_full');
+      removeDOMElement(page_pdf_content, close_html, cont_page_full);
+    }, 1000);
+    window.setTimeout(function () {
+      let cont_articlelight = document.querySelector('div.cont_articlelight');
+      if (cont_articlelight)
+        cont_articlelight.setAttribute('style', 'height: 100% !important; width: 90% !important');
+    }, 3000);
+    if (window.location.pathname.startsWith('/mobile')) {
+      let lessreadmore = document.querySelectorAll('article.lessreadmore');
+      for (let article of lessreadmore)
+        article.classList.remove('lessreadmore');
+      let bt_readmore = document.querySelectorAll('div[id*="bt_readmore_"]');
+      removeDOMElement(...bt_readmore);
+    }
+  } else if (window.location.pathname.endsWith('/Registro/Login.aspx')) {
+    header_nofix('body');
   }
 }
 

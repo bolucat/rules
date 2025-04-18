@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.0.2
+// @version         4.1.0.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1475,6 +1475,9 @@ else if (matchDomain('bizjournals.com')) {
   if (window.location.pathname.includes('/subscriber-only/')) {
     header_nofix('div.primary');
   } else {
+    let paywall_content = document.querySelectorAll('.paywall-content[style]');
+    for (let elem of paywall_content)
+      elem.removeAttribute('style');
     window.setTimeout(function () {
       let dialog = document.querySelector('div[id^="headlessui-dialog-"], div.sheet-overlay');
       if (dialog) {
@@ -4086,7 +4089,7 @@ else if (matchDomain('voguebusiness.com')) {
                       elem_new.target = '_blank';
                     makeElem(elem.slice(2), elem_new);
                     par_elem.appendChild(elem_new);
-                  } else if (item === 'inline-embed' || !(['ad', 'cm-unit', 'inline-newsletter', 'native-ad'].includes(item) || (item.length < 30 && item.includes('inline-embed')))) {
+                  } else if (item === 'inline-embed' || !(['ad', 'cm-unit', 'inline-newsletter', 'journey-inline-newsletter', 'native-ad'].includes(item) || (item.length < 30 && item.includes('inline-embed')))) {
                     if (item === 'inline-embed') {
                       let img_data = elem[1];
                       if (img_data && img_data.type === 'image') {

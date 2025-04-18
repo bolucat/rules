@@ -4,7 +4,7 @@
 ! Homepage: https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 ! License: MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
 ! Last modified: 
-! Version: 4.1.0.0
+! Version: 4.1.0.3
 
 ! General
 
@@ -71,6 +71,7 @@ berlingske.dk##div#paywall
 bhaskar.com##div.paywallBlockedContent~div:remove()
 bhaskar.com##article div:empty
 bhaskar.com##+js(ra, class, div.paywallBlockedContent, stay)
+bizjournals.com##+js(ra, style, .paywall-content[style], stay)
 bizjournals.com##+js(ra, style, html, stay)
 bizjournals.com##+js(rc, is-overlaid, html.is-overlaid, stay)
 bizjournals.com##+js(rc, is-overlaid, body.is-overlaid, stay)
@@ -397,7 +398,9 @@ bendigoadvertiser.com.au,bordermail.com.au,canberratimes.com.au,centralwesternda
 accountingtoday.com,americanbanker.com,benefitnews.com,bondbuyer.com,dig-in.com,financial-planning.com,nationalmortgagenews.com##+js(set, window.contentGating.ungate, true)
 
 ! Condé Nast
-/journey/compiler/build-*.js$script,~third-party,domain=architecturaldigest.com|bonappetit.com|cntraveler.com|epicurious.com|gq.com|newyorker.com|vanityfair.com|vogue.co.uk|vogue.com|voguebusiness.com|wired.com
+/\.com\/[-\w]+/$script,~third-party,domain=architecturaldigest.com|bonappetit.com|cntraveler.com|epicurious.com|gq.com|newyorker.com|vanityfair.com|vogue.com|wired.com
+/www\.vogue\.co\.uk\/[-\w]+/$script,~third-party
+||voguebusiness.com/journey/compiler/build-*.js$script,~third-party
 voguebusiness.com##+js(cookie-remover, userId)
 
 ! Ajc.com & Cox First Media
