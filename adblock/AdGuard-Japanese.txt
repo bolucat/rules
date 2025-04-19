@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: pqkmaZrQhysgZL3Y2XSoEQ
-! Diff-Path: ../patches/7/7-s-1744971064-3600.patch
+! Checksum: 8lJBLEnE2kSEApQZ8HkRxA
+! Diff-Path: ../patches/7/7-s-1745075409-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.63.81
-! TimeUpdated: 2025-04-18T10:07:16+00:00
+! Version: 2.0.63.85
+! TimeUpdated: 2025-04-19T15:06:14+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -440,6 +440,9 @@
 !
 !
 !
+! fake message
+aimomo.net##+js(set-constant, google_tag_manager, {})
+aimomo.net##+js(set-constant, adsbygoogle.pageState, 1)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/203197
 ||math-joy-life.com/build/assets/detect-*.js
 ! anti-adb
@@ -1690,14 +1693,15 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 /shopping/item/m*/?zenid=$document,to=cfd|fun|shop|space|top|xyz
 /mall/*.html?zenid=$document,to=cfd|fun|shop|space|top|xyz
 /mart/*.html?zenid=$document,to=cfd|fun|shop|space|top|xyz
+/^https:\/\/[a-z]{5,8}\.[a-z]{4,10}\.[a-z]{2,6}\/item\/m\d{10,11}$/$document,to=shop
 /^https:\/\/(?!www)[a-z]{3,5}\.[a-z]{4,10}\.[a-z]{2,6}\/item-(?:(?=[a-z]*\d)[0-9a-z]{10}|\d{8})\.html$/$document,match-case,to=art|baby|biz|blog|buzz|cc|cfd|click|cloud|club|eu|fit|fun|hair|homes|info|ink|lat|life|lol|me|mom|my|one|online|sbs|shop|site|skin|space|store|top|world|xyz
 /^https?:\/\/(?!www)[a-z]{3,5}\.[0-9a-z]{4,10}\.[a-z]{2,6}\/[a-z]{3,15}\/(?=[a-z]{0,9}[0-9A-Z])[0-9A-z]{10}\.html$/$document,match-case,to=art|baby|biz|blog|buzz|cc|cfd|click|cloud|club|eu|fit|fun|hair|homes|info|ink|lat|life|lol|me|mom|my|one|online|sbs|shop|site|skin|space|store|top|world|xyz|~livedoor.biz|~livedoor.blog
 /?AC=*&IC=$document,to=com|fun|online|site
 .asp?AC=*&IC=$document,to=com|fun|online|site
 /ap/signin/openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.co.jp$document,to=cn|top|xyz
 /index.php?route=product/product&product_id=$document,to=cyou|life|live|shop|xyz|~ocam.live
-/index.php?main_page=product_info*&cPath=$document,to=asia|bar|beauty|best|biz|bond|buzz|cam|cfd|click|cloud|club|cyou|fit|fun|gay|homes|icu|ink|life|live|ltd|me|monster|my|one|online|pics|pro|qpon|quest|rest|ru.com|sa.com|sbs|shop|site|skin|space|store|tokyo|top|website|wiki|work|xyz|za.com
-/index.php?main_page=product_info&products_id=$document,to=asia|bar|beauty|best|biz|bond|buzz|cam|cfd|click|cloud|club|cyou|fit|fun|gay|homes|icu|ink|life|live|ltd|me|monster|my|one|online|pics|pro|qpon|quest|rest|ru.com|sa.com|sbs|shop|site|skin|space|store|tokyo|top|website|wiki|work|xyz|za.com
+/index.php?main_page=product_info*&cPath=$document,to=asia|bar|beauty|best|biz|bond|buzz|cam|cfd|click|cloud|club|cyou|fit|fun|gay|homes|icu|ink|life|live|ltd|me|mom|monster|my|one|online|pics|pro|qpon|quest|rest|ru.com|sa.com|sbs|shop|site|skin|space|store|tokyo|top|website|wiki|work|xyz|za.com
+/index.php?main_page=product_info&products_id=$document,to=asia|bar|beauty|best|biz|bond|buzz|cam|cfd|click|cloud|club|cyou|fit|fun|gay|homes|icu|ink|life|live|ltd|me|mom|monster|my|one|online|pics|pro|qpon|quest|rest|ru.com|sa.com|sbs|shop|site|skin|space|store|tokyo|top|website|wiki|work|xyz|za.com
 /\.(?:club|cn|icu|top|pro|site|work)\/Personal\/member\/Login\/index\.php\?oneTimeAccessID=/$document,to=club|cn|icu|top|pro|site|work
 !
 /^https:\/\/[a-z]{4,8}\.[a-z]{7,10}\.shop\/product\/\d{4,7}$/$document,match-case
@@ -3625,6 +3629,8 @@ rikujyokyogi.co.jp##.code-block[style$="text-align: center; display: block; clea
 /adframes.js$domain=biz-journal.jp|g-journal.jp
 watch2chan.com,2ji.pink###execphp-15
 2ji.pink###execphp-16
+eroanime-movie.com##.section-header:has(+ ul[class^="campain-list-"])
+eroanime-movie.com##ul[class^="campain-list-"]
 eroanime-movie.com##div[class^="rectangle"]
 eroanime-movie.com##.top-sponsored
 lettuceclub.net##.p-adlcn
@@ -7146,6 +7152,7 @@ travel-nippon.net##a[href^="https://click.linksynergy.com/fs-bin/click"]
 adultexpo.jp##.bfb_textBtnTextBtn
 nttdocomo.co.jp##.sec-crpTop-stop
 hinapishi.com##iframe[width="320"][height="100"]
+vipsister23.com##a[href^="https://www.dmm.co.jp"][target="_blank"]
 vipsister23.com##a[href*="https://al.dmm.co"]
 vipsister23.com##a[href*="https://www.bybit.com/jpwelcome/"]
 ||digiket.net/blog/$script,third-party

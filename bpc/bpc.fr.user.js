@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.0.8.3
+// @version         4.1.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -289,8 +289,8 @@ else if (matchDomain('jeuneafrique.com')) {
     let article = document.querySelector('div.article__content > div[data-mrf-recirculation]');
     let article_id = window.location.pathname.split('/')[1];
     if (article && article_id) {
-      let limit_low = 50;
-      let limit_high = 600;
+      let limit_low = 50 + randomInt(50);
+      let limit_high = 600 + randomInt(100);
       function show_data(article, body) {
         let parser = new DOMParser();
         let doc = parser.parseFromString('<div>' + body + '</div>', 'text/html');
@@ -300,7 +300,7 @@ else if (matchDomain('jeuneafrique.com')) {
       }
       function fetch_data(limit) {
         let url_src = 'https://www.jeuneafrique.com/api/mobile/v6.0/featured/?limit=' + limit;
-        fetch(url_src, {headers: {"x-exp": "1741079242710", "x-sig": "b431724e94023a6969c5427133e1614db2cbe90e", "cache-control": "no-store"}})
+        fetch(url_src, {headers: {"x-exp": "1741079242710", "x-sig": "b431724e94023a6969c5427133e1614db2cbe90e"}})
         .then(response => {
           if (response.ok) {
             response.json().then(json => {
@@ -317,7 +317,6 @@ else if (matchDomain('jeuneafrique.com')) {
                   } else
                     header_nofix(article, '', 'BPC > no fix (source file)');
                   if (ls_update) {
-                    let now_date = (new Date()).toISOString().split('T')[0];
                     if (!ls_date || limit > limit_low || now_date > ls_date)
                       ls_json_articles = {};
                     for (let art of src_articles)
@@ -333,19 +332,34 @@ else if (matchDomain('jeuneafrique.com')) {
           }
         }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
       }
+      let json_date;
+      let json_script = document.querySelector('script[type="application/ld+json"]');
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text);
+          if (json && json['@graph']) {
+            let date_arr = json['@graph'].filter(x => x.datePublished);
+            if (date_arr.length)
+              json_date = date_arr[0].datePublished;
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
       let now_date = (new Date()).toISOString().split('T')[0];
+      let art_date = json_date ? json_date.split('T')[0] : now_date;
       let ls_date = localStorage.getItem('###_json_date') || '';
       let ls_json_articles = {};
       if (ls_date) {
         let ls_articles = localStorage.getItem('###_json');
         ls_json_articles = JSON.parse(ls_articles);
-        if (ls_date < now_date)
+        if (ls_date <= art_date)
           fetch_data(limit_low);
         else {
           let art_data = ls_json_articles[article_id];
           if (art_data)
             show_data(article, art_data);
-          else if (Object.keys(ls_json_articles).length <= limit_low)
+          else if (Object.keys(ls_json_articles).length <= limit_low + 50)
             fetch_data(limit_high);
           else
             header_nofix(article, '', 'BPC > no fix (source file)')
