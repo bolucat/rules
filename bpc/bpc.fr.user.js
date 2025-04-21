@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.0.0
+// @version         4.1.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -311,10 +311,7 @@ else if (matchDomain('jeuneafrique.com')) {
                   let ls_update = true;
                   if (src_article)
                     show_data(article, src_article.content_full);
-                  else if (limit === limit_low) {
-                    ls_update = false;
-                    fetch_data(limit_high);
-                  } else
+                  else
                     header_nofix(article, '', 'BPC > no fix (source file)');
                   if (ls_update) {
                     if (!ls_date || limit > limit_low || now_date > ls_date)
@@ -329,7 +326,8 @@ else if (matchDomain('jeuneafrique.com')) {
                 console.log(err);
               }
             })
-          }
+          } else 
+            header_nofix(article, '', 'BPC > no fix (source file)')
         }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
       }
       let json_date;
@@ -353,19 +351,19 @@ else if (matchDomain('jeuneafrique.com')) {
       if (ls_date) {
         let ls_articles = localStorage.getItem('###_json');
         ls_json_articles = JSON.parse(ls_articles);
-        if (ls_date <= art_date)
-          fetch_data(limit_low);
+        if (ls_date < art_date)
+          fetch_data(limit_high);
         else {
           let art_data = ls_json_articles[article_id];
           if (art_data)
             show_data(article, art_data);
-          else if (Object.keys(ls_json_articles).length <= limit_low + 50)
-            fetch_data(limit_high);
+          else if (now_date === art_date)
+            fetch_data(limit_low);
           else
             header_nofix(article, '', 'BPC > no fix (source file)')
         }
       } else {
-        fetch_data(limit_low);
+        fetch_data(limit_high);
       }
     }
   }

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.0.4
+// @version         4.1.0.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -207,6 +207,7 @@ var usa_mcc_domains = ['bnd.com', 'charlotteobserver.com', 'elnuevoherald.com', 
 var usa_mng_domains = ['bostonherald.com', 'denverpost.com', 'eastbaytimes.com', 'mercurynews.com', 'ocregister.com', 'pressenterprise.com', 'sandiegouniontribune.com', 'twincities.com'];
 var usa_nymag_domains = ['curbed.com', 'grubstreet.com', 'nymag.com', 'thecut.com', 'vulture.com'];
 var usa_outside_mag_domains = ["backpacker.com", "betamtb.com", "betternutrition.com", "cleaneatingmag.com", "climbing.com", "outsideonline.com", "oxygenmag.com", "skimag.com", "trailrunnermag.com", "triathlete.com", "vegetariantimes.com", "womensrunning.com", "yogajournal.com"];
+var usa_penske_media_domains = ['billboard.com', 'rollingstone.com', 'sourcingjournal.com', 'sportico.com', 'variety.com', 'wwd.com'];
 var usa_tribune_domains = ['baltimoresun.com', 'capitalgazette.com', 'chicagotribune.com', 'courant.com', 'dailypress.com', 'mcall.com', 'nydailynews.com', 'orlandosentinel.com', 'pilotonline.com', 'sun-sentinel.com'];
 
 if (matchDomain('gitflic.ru')) {
@@ -641,7 +642,7 @@ else {
         else {
           waitDOMElement(paywall_sel, 'DIV', thewest_main, true);
         }
-        let ads = 'div.headerAdvertisement';
+        let ads = 'div.headerAdvertisement, div.disabled-ad';
         hideDOMStyle(ads);
       } else if (document.querySelector('head > link[rel="dns-prefetch"][href="//static.ew.mmg.navigacloud.com"]')) { // McPherson Media Group
         let paywall = document.querySelector('div#content-Load-message');
@@ -3880,7 +3881,7 @@ else if (matchDomain(usa_conde_nast_domains)) {
   let maps = document.querySelectorAll('div.map_wrapper');
   for (let elem of maps)
     elem.style.visibility = 'visible';
-  let banners = 'aside.paywall-bar, div[class^="MessageBannerWrapper-"], div.ad-stickyhero, div.ad_wrapper';
+  let banners = 'div.ad, aside.paywall-bar, div[class^="MessageBannerWrapper-"], div.ad-stickyhero, div.ad_wrapper';
   hideDOMStyle(banners);
 }
 
@@ -3987,12 +3988,17 @@ else if (matchDomain(usa_craincomm_domains)) {
 }
 
 else if (matchDomain(usa_nymag_domains)) {
-  let ads = 'div.m-ad, section.ad-splash';
+  let ads = 'div.m-ad, section.ad-splash, aside.ad_static';
   hideDOMStyle(ads);
 }
 
 else if (matchDomain(usa_outside_mag_domains)) {
   let ads = 'div.js-ad';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain(usa_penske_media_domains)) {
+  let ads = 'div.admz';
   hideDOMStyle(ads);
 }
 
