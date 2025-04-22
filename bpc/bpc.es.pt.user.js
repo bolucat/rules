@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.1.0.0
+// @version         4.1.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -735,10 +735,7 @@ else if (matchDomain('lanacion.com.ar')) {
 }
 
 else if (matchDomain('latercera.com')) {
-  let paywall = document.querySelector('div.pw-frontier');
-  if (paywall)
-    removeDOMElement(paywall);
-  let ads = 'div.spm';
+  let ads = 'div.ads-block';
   hideDOMStyle(ads);
 }
 

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.0.5
+// @version         4.1.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1188,6 +1188,9 @@ else if (matchDomain('unherd.com')) {
 }
 
 else if (matchDomain(uk_nat_world_domains) || document.querySelector('footer > div a[href^="https://www.nationalworldplc.com"]')) {
+  let premium = document.querySelector('div.premium.no-entitlement');
+  if (premium)
+    premium.classList.remove('premium', 'no-entitlement');
   let ads = 'div[class^="MarkupAds__Container-"], div[class*="_AdContainer-"], div[class^="Dailymotion__Wrapper-"], div.banner';
   hideDOMStyle(ads);
 }
