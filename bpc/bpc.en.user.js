@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.1.0
+// @version         4.1.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2837,19 +2837,6 @@ else if (matchDomain('puck.news')) {
 else if (matchDomain('reuters.com')) {
   let ads = 'div[data-testid="ResponsiveAdSlot"], div[data-testid="Dianomi"]';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('rivals.com')) {
-  func_post = function () {
-    let paywall = pageContains('div[style]', 'Subscribe to read more');
-    if (paywall.length) {
-      let banner = paywall.pop().parentNode;
-      header_nofix(banner, '', 'BPC > no archive-fix');
-      removeDOMElement(banner);
-    }
-  }
-  let url = window.location.href;
-  getArchive(url, 'div[class^="Paywall_paywall_"]', '', 'div[class^="Article_body_"]', '', 'main div[style*="grid-row-start:body"]');
 }
 
 else if (matchDomain('rugbypass.com')) {
