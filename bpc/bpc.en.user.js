@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.1.1
+// @version         4.1.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2734,8 +2734,8 @@ else if (matchDomain('nybooks.com')) {
 else if (matchDomain('nytimes.com')) {
   if (!window.location.pathname.startsWith('/athletic/')) {
     waitDOMElement('div#dock-container', 'DIV', removeDOMElement, false);
-    let banners = 'div[data-testid="inline-message"], div[id^="ad-"], div.pz-ad-box';
-    hideDOMStyle(banners);
+    let ads = 'div[data-testid="inline-message"], div[id^="ad-"], div.pz-ad-box, div[class^="css-"]:has( > div#top-wrapper)';
+    hideDOMStyle(ads);
   }
 }
 
@@ -3330,6 +3330,11 @@ else if (matchDomain('theatlantic.com')) {
   hideDOMStyle(banners);
 }
 
+else if (matchDomain('thebaltimorebanner.com')) {
+  let ads = 'div.article-body__inline-ad';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('thebulletin.org')) {
   getJsonUrl('div.article--cropped', '', 'div#body-copy', {art_append: 1});
 }
@@ -3579,6 +3584,10 @@ else if (matchDomain('thelampmagazine.com')) {
     elem.href = url_search;
     elem.onclick = x => window.location.href = url_search;
   }
+}
+
+else if (matchDomain('thelogic.co')) {
+  setCookie('firstarticle', '', 'thelogic.co', '/', 0);
 }
 
 else if (matchDomain('thenewatlantis.com')) {
