@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: m9W1Z/SynEbJN2xb53wHSg
-! Diff-Path: ../patches/7/7-s-1745593832-3600.patch
+! Checksum: fQhy8ABmDkZ5MvEiT8lj2A
+! Diff-Path: ../patches/7/7-s-1745683863-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.64.0
-! TimeUpdated: 2025-04-25T15:06:59+00:00
+! Version: 2.0.64.4
+! TimeUpdated: 2025-04-26T16:07:07+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1527,6 +1527,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/uploads/2024/09/fanza_ad$image
 !
 ! Malware/Phishing
+.cn/QUbkxeCpCA/$document
 ://www-dmm.*.com/rajklnc/$document
 /rms/client/LO0101001.php$document
 ?ph0nq=010$document
@@ -1776,6 +1777,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+fily.co.jp##a[href^="https://apps.apple.com/jp/app/"] > img[width="720"][height="540"]
+boxing-master.com##.boxin-
 4gamer.net##div[id^="BANNER-"]
 tradingcardstyle.jp##.entry-content > table[style="border-collapse: collapse; width: 100%;"]:has(> tbody > tr > td[style="width: 100%; background-color: #ffffff; text-align: left;"] > a[href^="https://www.amazon.co.jp"][target="_blank"][rel="follow noopener"])
 tradingcardstyle.jp##.entry-content > table[style="border-collapse: collapse; width: 100%;"]:has(> tbody > tr > td[style="width: 100%;"] > img ~ p > a.btn[href^="https://www.amazon.co.jp"][target="_blank"][rel="follow noopener"])
@@ -4978,11 +4981,15 @@ moez-m.com###top2_left
 moez-m.com##.entry-body > center > table[width="430"]:not([cellspacing])
 moez-m.com##.solinkimag
 ||ota-goods.info^$third-party
+figsoku.net##+js(abort-current-script, document.createElement, randomad)
+figsoku.net###randomad2
+figsoku.net##.pluginWrap:has(> div.textwidget > div.sum)
+figsoku.net##.pluginWrap[style="width: 245px; height: 4px; position: relative;"]
+figsoku.net##.zaiko
+figsoku.net##aside > a[href^="https://www.amazon.co.jp"]
 figsoku.net##a[href*="px.a8.net/svt/ejp"]
-figsoku.net##.checker-related-wrap
 figsoku.net##.tokka
 figsoku.net##div[class^="spadd"]
-figsoku.net##.soku_wrap
 figsoku.net##.sum
 ||moeclo.ldblog.jp/topad01.html
 ||ldblog.jp/livedoorad/$subdocument
@@ -7794,7 +7801,7 @@ biyou-seikei.jp##.prTxt
 b.kyodo.co.jp##.banner-area-entry
 jumpmatome2ch.biz,animanch.com##.AMvertical
 animanch.com##div[style="width: 780px; height: 485px;"]
-moeasia.net,kuraberu.com,animanch.com##.abox
+figsoku.net,moeasia.net,kuraberu.com,animanch.com##.abox
 1000mg.jp##.article-outer-3 > div[style^="clear:both;margin-top:0px;"]
 nicheee.com###main div.column-inner-2 > center
 nicheee.com##.plugin-blog_members + div.plugin-memo

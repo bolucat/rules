@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Fri, 25 Apr 2025 01:39:20 +0000
-! Diff-Path: ../patches/2025.4.25.814.patch#ublock-quick-fixes
+! Last modified: Sat, 26 Apr 2025 06:16:31 +0000
+! Diff-Path: ../patches/2025.4.26.865.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -52,11 +52,11 @@ web.facebook.com,www.facebook.com##div[role="complementary"] a[aria-labelledby][
 web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.{-}.sponsored_data.client_token)
 web.facebook.com,www.facebook.com##+js(trusted-replace-xhr-response, '/null,[^\n]{0,170}"node":\{"__typename"[^\n]{0,170}__typename":"SponsoredData"[^\n]+?\},"cursor"/g', 'null,"cursor"', /api/graphql)
 ! VOE sites
-||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=richardsignfish.com,important
-richardsignfish.com##+js(nowoif)
-richardsignfish.com##+js(set, console.clear, undefined)
-richardsignfish.com##+js(acs, globalThis, break;case)
-richardsignfish.com##+js(acs, WebAssembly, atob)
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=sarahnewspaperbeat.com,important
+sarahnewspaperbeat.com##+js(nowoif)
+sarahnewspaperbeat.com##+js(set, console.clear, undefined)
+sarahnewspaperbeat.com##+js(acs, globalThis, break;case)
+sarahnewspaperbeat.com##+js(acs, WebAssembly, atob)
 ! next-episode .net
 !next-episode.net##+js(rmnt, script, '/[\s\S]{0,}head[\s\S]{1900,}/')
 !next-episode.net##+js(rpnt, script, '/.then[\s\S]{0,}?;/g')
@@ -66,6 +66,7 @@ richardsignfish.com##+js(acs, WebAssembly, atob)
 japscan.lol##+js(norafif, /^/)
 japscan.lol##+js(trusted-set-attr, .navbar-nav > li#navpromo2.nav-item > a, onclick, 'let a=function(){};return false;')
 japscan.lol##+js(no-fetch-if, /https:\/\/ansuksar\.com\/[0-9a-zA-Z]{3\,26}\/\d{4\,6}\b/, length:125746)
+japscan.lol##+js(no-fetch-if, /https:\/\/platform\.pubadx\.one\/pubadx-ad\.js\?v=\d{13}/, length:4500-7000)
 ! START: Counter Liste FR rules
 japscan.lol#@##main > .card:has(a[href*="/manga/?type="][href*="&content="][target="_blank"])
 japscan.lol#@#div.container > [href]

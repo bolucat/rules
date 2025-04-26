@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Fri, 25 Apr 2025 08:27:14 +0000
-! Diff-Path: ../patches/2025.4.25.814.patch#ublock-filters
+! Last modified: Sat, 26 Apr 2025 13:47:16 +0000
+! Diff-Path: ../patches/2025.4.26.865.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -4099,79 +4099,50 @@ link-to.net##.ad-block-1
 /jquery.watch.js|$script,1p,important,domain=~dekrantvantoen.nl
 @@||static.sunmedia.tv^$script,xhr,domain=ivoox.com
 @@||services.sunmedia.tv/geotarget/geocity.php$xhr,domain=ivoox.com
-@@||ivoox.com^$ghide
 ivoox.com###adLayout
 ||static.addevweb.com/integrations$script,3p
 *$script,3p,domain=7starhd.*,denyallow=googleapis.com
 7starhd.*##+js(nowoif)
 ||r-q-e.com^$3p
-autojournal.fr,autoplus.fr,sportauto.fr##+js(nostif, (), 1)
 uploadev.*##+js(nowoif)
 uploadev.*##+js(set, openInNewTab, noopFunc)
-volksstimme.de##+js(aopr, TRM)
 @@||shortearn.*^$ghide
 shortearn.*##.banner
 shortearn.*##+js(aopr, AaDetector)
 shortearn.*##+js(aopr, open)
 shortearn.*##+js(set, blurred, false)
 shortearn.*##.box-main > .blog-item
-beta.shortearn.eu##+js(acs, fetch, detectAdblockWithInvalidURL)
-beta.shortearn.eu##^script:has-text(detectAdblockWithInvalidURL)
 *$frame,denyallow=google.com,domain=shortearn.in
 *$script,3p,denyallow=cloudflare.com|google.com|gstatic.com|recaptcha.net,domain=shortearn.*
 4shared.com##+js(nosiif, .append, 1000)
 ||4shared.com/empty.js$script,1p,important
 ||4shared.com/sw.js$script,important
-pingit.*,~pingit.com,~pingit.me,pngit.live##+js(aopr, AaDetector)
-pingit.*,~pingit.com,~pingit.me,pngit.live##+js(aopr, open)
-pingit.*,~pingit.com,~pingit.me,pngit.live##+js(aopr, rmVideoPlay)
-pingit.*,~pingit.com,~pingit.me,pngit.live##+js(aopr, _pop)
-pingit.*,~pingit.com,~pingit.me,pngit.live##+js(aopw, Fingerprint2)
-pingit.*,~pingit.com,~pingit.me,pngit.live##+js(set, blurred, false)
-||pingit.*/sw.js$script,1p,domain=~pingit.com|~pingit.me
-*$frame,3p,domain=pingit.im|pngit.live
-*$script,3p,denyallow=cdn77.org|google.com|gstatic.com|pingit.im|recaptcha.net|smartsuppcdn.com|smartsuppchat.com,domain=pingit.*|pngit.live|~pingit.com|~pingit.me
-noticiasesports.live##+js(nano-sib, , 1200, 0)
-noticiasesports.live##+js(nowoif)
-noticiasesports.live###overlay
-@@||chichester.co.uk^$ghide
+pingit.*,~pingit.com##+js(aopr, AaDetector)
+pingit.*,~pingit.com##+js(aopr, open)
+pingit.*,~pingit.com##+js(aopr, rmVideoPlay)
+pingit.*,~pingit.com##+js(aopr, _pop)
+pingit.*,~pingit.com##+js(aopw, Fingerprint2)
+pingit.*,~pingit.com##+js(set, blurred, false)
+||pingit.*/sw.js$script,1p,domain=~pingit.com
+*$script,3p,denyallow=cdn77.org|google.com|gstatic.com|recaptcha.net|smartsuppcdn.com|smartsuppchat.com,domain=pingit.*|~pingit.com
 hdfull.*##+js(acs, document.createElement, /l\.parentNode\.insertBefore\(s/)
 hdfull.*##+js(aeld, mousedown, !!{});)
 hdfull.*##+js(nano-stb)
-gamovideo.com##+js(acs, onload)
-gamovideo.com##+js(aopr, open)
-gamovideo.com##+js(acs, document.createElement, onerror)
-gamovideo.com###po-pimp
-||gamovideo.com^$frame,1p
-hitokin.net##+js(set, loadingAds, true)
-||swarm.video/telerium_dev.js
 ! developerinsider.co anti adb
 developerinsider.co##+js(set, runAdBlocker, false)
 phonenumber-lookup.info##+js(aopr, pa)
-! loadTool
-abellalist.com,didilist.com,erotichdworld.com,sharkyporn.com##+js(acs, loadTool, popping)
 ! nextorrent . site popups
 nextorrent.*##+js(acs, jQuery, popunder)
 nextorrent.*##+js(ra, onclick)
-closeronline.co.uk##+js(aopr, _sp_._networkListenerData)
 calculate.plus##+js(nostif, checkStopBlock)
 turkdown.com##+js(aopr, AaDetector)
 link.turkdown.com##+js(set, blurred, false)
 @@||turkdown.com^$ghide
-@@||hilly.io/adBlockDetector.js$script,1p
-@@||hilly.io^$ghide
-@@||imasdk.googleapis.com/js/sdkloader/ima3.js$script,domain=hilly.io
-ilprimatonazionale.it#@#.td-ad-background-link
-ilprimatonazionale.it##+js(set, td_ad_background_click_link, undefined)
-ilprimatonazionale.it##body:style(background-image: none !important;)
 urlgalleries.net##+js(aopr, AaDetector)
 urlgalleries.net##+js(acs, document.cookie, setOCookie)
 moonquill.com##+js(aopw, document.getElementsByClassName)
 googlvideo.com##+js(aopr, mm)
 googlvideo.com##+js(nowoif)
-@@||finobe.com^$ghide
-@@||googlesyndication.com/pagead/js/adsbygoogle.js$script,domain=finobe.com
-*$script,redirect-rule=noopjs,domain=finobe.com
 @@||convallariaslibrary.com^$ghide
 convallariaslibrary.com##.code-block
 convallariaslibrary.com##.widget_custom_html ins:upward(.widget_custom_html)
@@ -4269,12 +4240,6 @@ laradiobbs.net##+js(set, adblock, false)
 nationalgeographic.fr##+js(no-xhr-if, /\/VisitorAPI\.js|\/AppMeasurement\.js/)
 nationalgeographic.*##.ng-ad-banner
 nationalgeographic.*##.ngart__footer-ad
-mstream.*##+js(aopr, open)
-ver-pelis-online.*##+js(set, decodeURIComponent, trueFunc)
-ver-pelis-online.*##a.lav_btn
-ver-pelis-online.*##[href$="player.html"]
-ver-pelis-online.*##.holder >li:has([href="/pelis/descargar.html"])
-ver-pelis-online.*##a.eli_lav_btn, .mobile_btn
 konten.co.id##+js(nostif, overlay, 2000)
 @@||farsondigitalwatercams.com^$ghide
 farsondigitalwatercams.com##.advert
@@ -4290,16 +4255,8 @@ diariodenavarra.es##+js(aeld, DOMContentLoaded, /adblock/i)
 diariodenavarra.es##+js(nostif, /adblock/i)
 diariodenavarra.es###AdSlot_megabanner
 diariodenavarra.es##.sticky_roba
-urlty.com##+js(set, blurred, false)
-urlty.com##+js(aopr, open)
 keepvid.*##+js(nowoif)
 ||player.ooyala.com/static/*/ad-plugin/*$script,redirect=noopjs,domain=dragons.com.au
-xiaomifans.pl##+js(nostif, test, 100)
-@@||rangdhanu.live^$ghide
-streamporn.pw##+js(aopr, ExoLoader.serve)
-streamporn.pw##+js(nowoif)
-streamporn.pw##.btn-lg.btn-block.btn
-streamporn.pw###overlays
 @@||cdn.taboola.com/libtrc/$script,domain=ndtv.com
 @@||trc.taboola.com/ndtv$script,domain=ndtv.com
 @@||trc.taboola.com/ndtv-ndtvmobile/$frame,domain=ndtv.com
@@ -4335,9 +4292,6 @@ ustream.to##.overlay
 fr.streamon-sport.ru,hoca4u.com##+js(acs, document.createElement, onerror)
 sound-park.*,soundpark.*,soundpark-club.*##+js(acs, $, open)
 sound-park.*,soundpark.*,soundpark-club.*##+js(acs, document.createElement, script)
-! paladinsdecks.com anti adb
-||paladinsdecks.com/fileadmin/*/fab.min.js$script,1p,redirect=fuckadblock.js-3.2.0
-@@||paladinsdecks.com/ad/banner/*$xhr,1p
 go.bucketforms.com##+js(acs, $, adblocker)
 bidouillesikea.com##+js(aopr, adbackDebug)
 blizzboygames.net##+js(nowebrtc)
@@ -4357,10 +4311,6 @@ barchart.com##[id^=customAd]
 modelisme.com,parasportontario.ca,prescottenews.com##+js(set, closeBlockerModal, false)
 juegoviejo.com##+js(nano-stb)
 anime-jl.net##+js(aopr, detector_launch)
-zona-leros.net##+js(aeld, DOMContentLoaded, shortener)
-zona-leros.net##.content_store
-player.zona-leros.net,zlplayer.net###dvr-vid
-zona-leros.net##.Body > .Container > ul.Rows > li:first-child:has(> article > a[href][target="_blank"])
 zpaste.net,zlpaste.net##+js(aeld, DOMContentLoaded, adlinkfly)
 zpaste.net,pixeldrain.com###sponsors
 ||zshorte.net/*.html$frame,3p
@@ -7312,7 +7262,11 @@ tea-coffee.net,spatsify.com,newedutopics.com,getviralreach.in,edukaroo.com,funke
 tea-coffee.net,spatsify.com,newedutopics.com,getviralreach.in,edukaroo.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com,jkssbalerts.com##+js(set, count, 0)
 tea-coffee.net,spatsify.com,newedutopics.com,getviralreach.in,edukaroo.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com,jkssbalerts.com###tp98, #btn6:style(display: block !important;)
 tea-coffee.net,spatsify.com,newedutopics.com,getviralreach.in,edukaroo.com,funkeypagali.com,careersides.com,nayisahara.com,wikifilmia.com,infinityskull.com,viewmyknowledge.com,iisfvirtual.in,starxinvestor.com,jkssbalerts.com##[id$="-Ads"], [id*="-gpt-ad"], center > h3, #skull, #content, #btnx, .mh-clearfix.mh-wrapper
-go.publicearn.com##.page-header > h3, .banner, .bg-soft-primary
+publicearn.*##+js(rpnt, script, Android/, false/, stay, 1)
+publicearn.*##+js(rpnt, script, alert, false)
+publicearn.*##+js(rpnt, script, 2000, 10)
+publicearn.*##.page-header > h3, .banner, .bg-soft-primary, [style="margin-top: 250px;"], .box-main > center > center > [href], video
+publicearn.*##[href*="t.me"]
 @@*$ghide,domain=imagereviser.com|upshrink.com
 @@*$xhr,domain=imagereviser.com|upshrink.com
 imagereviser.com##center, [src*="google.com/recaptcha/"]:others()
@@ -8077,41 +8031,36 @@ stfly.biz,airevue.net,atravan.net##.my-20
 stfly.biz,airevue.net,atravan.net##.max-w-screen-lg.mt-6.prose-lg.prose.mx-auto > div:has(p)
 stfly.biz,airevue.net,atravan.net##.font-medium.text-sm.tracking-wider.uppercase.text-blue-400
 stfly.biz,airevue.net,atravan.net##.lg\:leading-tight.mt-1.lg\:tracking-tight.font-bold.lg\:text-5xl.text-4xl
-apkmodvn.com,mod1s.com##+js(nostif, adsPost)
-apkmodvn.com##+js(set-cookie, _ckLV1, 1)
 apkmoddone.com##+js(nostif, 1e3*)
-dl.apkmoddone.com,phongroblox.com##+js(nostif, /^/, 1000)
-dl.apkmoddone.com##+js(set-cookie, fckXBlock, 1)
-phongroblox.com##+js(set-cookie, antiBlock, 1)
-dl.apkmoddone.com,phongroblox.com##+js(rpnt, script, return!![], return![])
-dl.apkmoddone.com,phongroblox.com##+js(set, aSl.gcd, 0)
-apkmoddone.com##+js(nowoif, /wheceelt\.net|shopee\.|\/jump\/next\.php\?/, 10, obj)
-sitemini.io.vn,vip1s.top##+js(nostif, '=document[', 2000)
-phongroblox.com##+js(nowoif, /\/4.+ _0/)
-www.apkmoddone.com##+js(rpnt, script, ;return;, , condition, _0x)
-!www.apkmoddone.com##+js(trusted-replace-argument, document.querySelector, 0, {"value": "body"}, condition, iframe)
-!www.apkmoddone.com##+js(rpnt, script, loadShort(directValue) {, loadShort(directValue) { location = "https://www.apkmodvn.com/p/sub-to-unlock.html?direct=" + btoa(directValue);)
-www.apkmoddone.com##+js(rpnt, script, /return Array[^;]+/, return true)
-apkmodvn.com##+js(rpnt, script, function sutounlock_0x, //function sutounlock_0x)
-apkmodvn.com##+js(set, delayClick, false)
-@@||acscdn.com/script/$script,3p,header=x-guploader-uploadid,domain=www.apkmoddone.com
-@@||acscdn.com/script/$script,3p,domain=www.apkmoddone.com
-@@||youradexchange.com/script/$xhr,3p,domain=www.apkmoddone.com
-@@||ipinfo.io/json$xhr,3p,domain=www.apkmoddone.com
-@@||alwingulla.com/88/tag.min.js$script,xhr,domain=www.apkmoddone.com
+apkmoddone.com##+js(rpnt, script, ;return;, , condition, _0x)
+apkmoddone.com##+js(rpnt, script, /return Array[^;]+/, return true)
+apkmoddone.com##+js(no-fetch-if, /veepteero|tag\.min\.js/)
+apkmoddone.com##+js(nowoif, /^/, 10)
+sitemini.io.vn,vip1s.top##+js(nostif, , 1999)
+sitemini.io.vn,vip1s.top##+js(nostif, , 2000)
+sitemini.io.vn,vip1s.top##+js(disable-newtab-links)
+sitemini.io.vn,vip1s.top###fakeDown, .siteMap
 @@||phongroblox.com^$ghide
-apkmodvn.com,phongroblox.com##[data-da]
-apkmodvn.com##.stuAd
-mod1s.com##a[href="javascript:;"]:has(> span:has-text(Advertisement))
+phongroblox.com##+js(nostif, /^/, 1000)
+phongroblox.com##+js(set-cookie, antiBlock, 1)
+phongroblox.com##+js(rpnt, script, return!![], return![])
+phongroblox.com##+js(set, aSl.gcd, 0)
+phongroblox.com##+js(nowoif, /\/4.+ _0/)
+phongroblox.com###fakeDown
+phongroblox.com##.RecurringadBanner:style(clip-path: circle(0) !important;)
+phongroblox.com##.NoteAd
+phongroblox.com##[data-da]
+@@||acscdn.com/script/$script,3p,header=x-guploader-uploadid,domain=apkmoddone.com
+@@||acscdn.com/script/$script,3p,domain=apkmoddone.com
+@@||youradexchange.com/script/$xhr,3p,domain=apkmoddone.com
+@@||ipinfo.io/json$xhr,3p,domain=apkmoddone.com
+@@||alwingulla.com/88/tag.min.js$script,xhr,domain=apkmoddone.com
 ||acscdn.com/script/aclib.js$script,redirect-rule=noopjs
 ||alwingulla.com^$script,3p,redirect-rule=noopjs,domain=apkmoddone.com
 ||adosiz.net^
 ||dpuplet.net^
 ||golnkz.com^
 ||reyeshehadtwobri.com^
-phongroblox.com###fakeDown
-phongroblox.com##.RecurringadBanner
-phongroblox.com##.NoteAd
 thotpacks.xyz###popconlkr
 thotpacks.xyz##.modal-backdrop
 thotpacks.xyz##+js(set, blurred, false)
@@ -8940,7 +8889,7 @@ transtxxx.com##div[style="display:flex !important"] > div
 ! SECTION: PopAds-sites
 !#if cap_html_filtering
 123-movies.*,123movieshd.*,123movieshub.*,123moviesme.*,1337x.*,141jav.com,1bit.space,1bitspace.com,1stream.*,1tamilmv.*,2ddl.*,2umovies.*,345movies.com,3dporndude.com,3hiidude.*,4archive.org,4horlover.com,4stream.*,560pmovie.com,5movies.*,7hitmovies.*,85tube.com,85videos.com,9xmovie.*##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
-aagmaal.*,acefile.co,actusports.eu,adblockeronstape.*,adblockeronstreamtape.*,adblockplustape.*,adblockstreamtape.*,adblockstrtape.*,adblockstrtech.*,adblocktape.*,adclickersbot.com,adcorto.*,adricami.com,adslink.pw,adultstvlive.com,adz7short.space,aeblender.com,ahdafnews.blogspot.com,aiblog.tv,ak47sports.com,akuma.moe,alexsports.*,alexsports.*,alexsportss.*,alexsportz.*,allplayer.tk,amateurblog.tv,androidadult.com,anhsexjav.xyz,anidl.org,anime-loads.org,animeblkom.net,animefire.plus,animelek.me,animepahe.*,animesanka.*,animespire.net,animestotais.xyz,animeyt.es,animixplay.*,aniplay.*,anroll.net,antiadtape.*,anymoviess.xyz,aotonline.org,asenshu.com,asialiveaction.com,asianclipdedhd.net,asianclub.*,ask4movie.*,askim-bg.com,asumsikedaishop.com,atomixhq.*,atomohd.*,avcrempie.com,avseesee.com,gettapeads.com##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
+aagmaal.*,acefile.co,actusports.eu,adblockeronstape.*,adblockeronstreamtape.*,adblockplustape.*,adblockstreamtape.*,adblockstrtape.*,adblockstrtech.*,adblocktape.*,adclickersbot.com,adcorto.*,adricami.com,adslink.pw,adultstvlive.com,adz7short.space,aeblender.com,ahdafnews.blogspot.com,aiblog.tv,ak47sports.com,akuma.moe,alexsports.*,alexsports.*,alexsportss.*,alexsportz.*,allplayer.tk,amateurblog.tv,androidadult.com,anhsexjav.xyz,anidl.org,anime-loads.org,animeblkom.net,animefire.plus,animelek.me,animepahe.*,animesanka.*,animeshqip.org,animespire.net,animestotais.xyz,animeyt.es,animixplay.*,aniplay.*,anroll.net,antiadtape.*,anymoviess.xyz,aotonline.org,asenshu.com,asialiveaction.com,asianclipdedhd.net,asianclub.*,ask4movie.*,askim-bg.com,asumsikedaishop.com,atomixhq.*,atomohd.*,avcrempie.com,avseesee.com,gettapeads.com##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
 backfirstwo.com,bajarjuegospcgratis.com,balkanportal.net,balkanteka.net,bdnewszh.com,beinmatch.*,belowporn.com,bestgirlsexy.com,bestnhl.com,bestporn4free.com,bestporncomix.com,bet36.es,bgwp.cc,bhaai.*,bikinitryon.net,birdurls.com,bitsearch.to,blackcockadventure.com,blackcockchurch.org,blackporncrazy.com,blizzboygames.net,blizzpaste.com,blkom.com,blog-peliculas.com,blogtrabalhista.com,blurayufr.*,bobsvagene.club,bolly4umovies.click,bonusharian.pro,brilian-news.id,brupload.net,bucitana.com,buffstreams.*##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
 camchickscaps.com,camgirlcum.com,camgirls.casa,canalesportivo.*,cashurl.in,castingx.net,ccurl.net,celebrity-leaks.net,cgpelis.net,charexempire.com,choosingnothing.com,clasico.tv,clickndownload.*,clicknupload.*,clik.pw,coin-free.com,coins100s.fun,comicsmanics.com,compucalitv.com,coolcast2.com,cosplaytab.com,countylocalnews.com,cpmlink.net,crackstreamshd.click,crespomods.com,crisanimex.com,crunchyscan.fr,cuevana3.fan,cuevana3hd.com,cumception.com,cutpaid.com##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
 daddylive.*,daddylivehd.*,dailyuploads.net,datawav.club,daughtertraining.com,ddrmovies.*,deepgoretube.site,deltabit.co,deporte-libre.top,depvailon.com,derleta.com,desiremovies.*,desivdo.com,desixx.net,detikkebumen.com,deutschepornos.me,devlib.*,diasoft.xyz,directupload.net,diskusscan.com,divxtotal.*,divxtotal1.*,dixva.com,dlhd.*,doctormalay.com,dofusports.xyz,dogemate.com,doods.cam,doodskin.lat,downloadrips.com,downvod.com,dphunters.mom,dragontranslation.com,dvdfullestrenos.com,dvdplay.*##^script[data-cfasync]:has-text(/h=decodeURIComponent|popundersPerIP/)
@@ -9375,7 +9324,7 @@ vidsrc.cc#@#+js(acs, EventTarget.prototype.addEventListener, delete window)
 !#endif
 /^https?:\/\/[a-z]{8,15}\.xyz\/$/$xhr,3p,to=xyz,method=head,header=access-control-expose-headers:/X-DirectionPartner-Id/
 /^https?:\/\/[a-z]{8,15}\.com\/$/$xhr,3p,to=com,method=head,header=access-control-expose-headers:/X-DirectionPartner-Id/
-/^https?:\/\/[a-z]{6,15}\.[a-z]{2,3}\/5\/\d{6,7}(?:\?_=\d+|\/\??)?$/$script,xhr,3p
+/^https?:\/\/[a-z0-9]{5,15}\.[a-z]{2,3}\/5\/\d{6,7}(?:\?_=\d+|\/\??)?$/$script,xhr,3p
 /^https?:\/\/[-a-z]{8,15}\.(?:com|net)\/400\/\d{7}(?:\?v=\d+)?$/$script,3p,to=com|net
 /^https?:\/\/[-a-z]{8,15}\.(?:com|net)\/401\/\d{7}(?:\?v=\d+)?$/$script,3p,to=com|net
 /^https?:\/\/[-a-z]{8,15}\.(?:com|net)\/500\/\d{7}\?/$xhr,3p,to=com|net
@@ -9416,7 +9365,7 @@ goku.sx##+js(aost, Object, inlineScript)
 18comic.vip,18comic-gquu.vip,asiaon.*,asiaontop.com,bunkrr.*,fapfappy.com,hhkungfu.*,hitomi.la,homemoviestube.com,jav.direct,javhd.today,javhdz.today,javmix.tv,klmanga.*,komikmanhwa.me,lovingsiren.com,manga1001.*,mangaraw.*,mangarawjp.*,nekopoi.*,nelomanga.com,netfapx.com,savefiles.com,streampoi.com,syosetu.*,turbovid.xyz,xanimeporn.com##+js(acs, WebAssembly, atob)
 /aas/r45d/vki/*$script,redirect=noop.js
 /^https:\/\/[a-z]{8,12}\.com\/en\/(?:[a-z]{2,10}\/){0,2}[a-z]{2,}\?(?:[a-z]+=[^&=?\s]*?&)*?id=[12]\d{6}\b/$script,3p,match-case,to=com
-/^https:\/\/[a-z]{8,12}\.com\/[a-z]{6,10}$/$script,3p,match-case,to=com,header=etag:/^W\/"\d+cc-\d+"$/
+/^https:\/\/[a-z]{8,12}\.com(?:\/[a-z]{2,10}){1,3}$/$script,3p,match-case,header=etag:/^W\/"[0-9a-z]+-[0-9a-z]+"$/,to=com
 ||angularpoppyrobbing.com^
 ||mudacban.com^
 ||pawjfavraag.com^
@@ -9680,7 +9629,7 @@ dogdrip.net,infinityfree.com##ins.adsbygoogle:style(height: 1px !important; visi
 ||css-load.com^$font,ping
 ||img-load.com^$font,ping
 ||html-load.com^$font,ping
-||html-load.com^$script,xhr,domain=373news.com|alc.co.jp|allthetests.com|animanch.com|aniroleplay.com|apkmirror.com|aucfree.com|autoby.jp|autofrage.net|automobile-catalog.com|bg-mania.jp|blogmura.com|buzzfeed.com|buzzfeednews.com|chanto.jp.net|cinetrafic.fr|cocokara-next.com|computerfrage.net|crosswordsolver.com|cruciverba.it|daily.co.jp|dictionnaire.lerobert.com|dnevno.hr|dropgame.jp|drweil.com|dziennik.pl|forsal.pl|game8.jp|gardeningsoul.com|gazetaprawna.pl|gloria.hr|gigafile.nu|globalrph.com|golf-live.at|grapee.jp|gutefrage.net|heureka.cz|horairesdouverture24.fr|infor.pl|iza.ne.jp|j-cast.com|j-town.net|jablickar.cz|javatpoint.com|jawapos.com|jmty.jp|joemonster.org|kinmaweb.jp|kobe-journal.com|kompasiana.com|kreuzwortraetsel.de|kurashiru.com|kyoteibiyori.com|lacuarta.com|laleggepertutti.it|lamire.jp|langenscheidt.com|lifehacker.jp|livenewschat.eu|m.economictimes.com|malaymail.com|mamastar.jp|maketecheasier.com|minkou.jp|modhub.us|motor-talk.de|motorbikecatalog.com|motscroises.fr|muragon.com|nana-press.com|natalie.mu|niketalk.com|nikkan-gendai.com|nikkansports.com|oeffnungszeitenbuch.de|ondemandkorea.com|onecall2ch.com|oraridiapertura24.it|oxfordlearnersdictionaries.com|palabr.as|pashplus.jp|persoenlich.com|petitfute.com|picrew.me|play-games.com|powerpyx.com|quefaire.be|raetsel-hilfe.de|ranking.net|roleplayer.me|rostercon.com|samsungmagazine.eu|sankei.com|sanspo.com|slashdot.org|sourceforge.net|syosetu.com|talkwithstranger.com|tbsradio.jp|the-crossword-solver.com|transparentcalifornia.com|transparentnevada.com|trilltrill.jp|tvtv.ca|tvtv.us|ufret.jp|uranai.nosv.org|watchdocumentaries.com|webdesignledger.com|wetteronline.de|wfmz.com|winfuture.de|word-grabber.com|wort-suchen.de|woxikon.*|yakkun.com|yugioh-starlight.com|yutura.net|zagreb.info|zakzak.co.jp
+||html-load.com^$script,xhr,domain=373news.com|alc.co.jp|allthetests.com|animanch.com|aniroleplay.com|apkmirror.com|aucfree.com|autoby.jp|autofrage.net|automobile-catalog.com|bg-mania.jp|blogmura.com|buzzfeed.com|buzzfeednews.com|chanto.jp.net|cinetrafic.fr|cocokara-next.com|computerfrage.net|crosswordsolver.com|cruciverba.it|daily.co.jp|dictionnaire.lerobert.com|dnevno.hr|dropgame.jp|drweil.com|dziennik.pl|forsal.pl|game8.jp|gardeningsoul.com|gazetaprawna.pl|gloria.hr|gigafile.nu|globalrph.com|golf-live.at|grapee.jp|gutefrage.net|heureka.cz|horairesdouverture24.fr|infor.pl|iza.ne.jp|j-cast.com|j-town.net|jablickar.cz|javatpoint.com|jawapos.com|jmty.jp|joemonster.org|kinmaweb.jp|kobe-journal.com|kompasiana.com|kreuzwortraetsel.de|kurashiru.com|kyoteibiyori.com|lacuarta.com|laleggepertutti.it|lamire.jp|langenscheidt.com|lifehacker.jp|livenewschat.eu|luremaga.jp|m.economictimes.com|malaymail.com|mamastar.jp|maketecheasier.com|minkou.jp|modhub.us|motor-talk.de|motorbikecatalog.com|motscroises.fr|muragon.com|nana-press.com|natalie.mu|niketalk.com|nikkan-gendai.com|nikkansports.com|oeffnungszeitenbuch.de|ondemandkorea.com|onecall2ch.com|oraridiapertura24.it|oxfordlearnersdictionaries.com|palabr.as|pashplus.jp|persoenlich.com|petitfute.com|picrew.me|play-games.com|powerpyx.com|quefaire.be|raetsel-hilfe.de|ranking.net|roleplayer.me|rostercon.com|samsungmagazine.eu|sankei.com|sanspo.com|slashdot.org|sourceforge.net|syosetu.com|talkwithstranger.com|tbsradio.jp|the-crossword-solver.com|transparentcalifornia.com|transparentnevada.com|trilltrill.jp|tvtv.ca|tvtv.us|ufret.jp|uranai.nosv.org|watchdocumentaries.com|webdesignledger.com|wetteronline.de|wfmz.com|winfuture.de|word-grabber.com|wort-suchen.de|woxikon.*|yakkun.com|young-machine.com|yugioh-starlight.com|yutura.net|zagreb.info|zakzak.co.jp
 ! livedoor-sites
 ||html-load.com^$script,xhr,domain=2chblog.jp|2monkeys.jp|46matome.net|akb48glabo.com|akb48matomemory.com|alfalfalfa.com|all-nationz.com|anihatsu.com|aqua2ch.net|blog.esuteru.com|blog.livedoor.jp|blog.jp|blogo.jp|chaos2ch.com|choco0202.work|crx7601.com|danseisama.com|dareda.net|digital-thread.com|doorblog.jp|exawarosu.net|fgochaldeas.com|football-2ch.com|gekiyaku.com|golog.jp|hacchaka.net|heartlife-matome.com|liblo.jp|fesoku.net|fiveslot777.com|gamejksokuhou.com|girlsreport.net|girlsvip-matome.com|grasoku.com|gundamlog.com|honyaku-channel.net|ikarishintou.com|imas-cg.net|imihu.net|inutomo11.com|itainews.com|itaishinja.com|jin115.com|jisaka.com|jnews1.com|jumpsokuhou.com|jyoseisama.com|keyakizaka46matomemory.net|kidan-m.com|kijoden.com|kijolariat.net|kijolifehack.com|kijomatomelog.com|kijyokatu.com|kijyomatome.com|kijyomatome-ch.com|kijyomita.com|kirarafan.com|kitimama-matome.net|kitizawa.com|konoyubitomare.jp|kotaro269.com|kyousoku.net|ldblog.jp|livedoor.biz|livedoor.blog|majikichi.com|matacoco.com|matomeblade.com|matomelotte.com|matometemitatta.com|mojomojo-licarca.com|morikinoko.com|nandemo-uketori.com|netatama.net|news-buzz1.com|news30over.com|nmb48-mtm.com|norisoku.com|npb-news.com|ocsoku.com|okusama-kijyo.com|onihimechan.com|orusoku.com|otakomu.jp|otoko-honne.com|oumaga-times.com|outdoormatome.com|pachinkopachisro.com|paranormal-ch.com|recosoku.com|s2-log.com|saikyo-jump.com|shuraba-matome.com|ske48matome.net|squallchannel.com|sukattojapan.com|sumaburayasan.com|usi32.com|uwakich.com|uwakitaiken.com|vault76.info|vipnews.jp|vippers.jp|vipsister23.com|vtubernews.jp|watarukiti.com|world-fusigi.net|zakuzaku911.com|zch-vip.com
 ||css-load.com^$domain=ygosu.com|loawa.com|bamgosu.site
@@ -9719,7 +9668,7 @@ worldhistory.org##^script:has-text(adShield)
 bleepingcomputer.com,pravda.com.ua##^script:has-text(Ad-Shield)
 ap7am.com,cinema.com.my,dolldivine.com,giornalone.it,iplocation.net,jamaicaobserver.com,jawapos.com,jutarnji.hr,kompasiana.com,mediaindonesia.com,slobodnadalmacija.hr,upmedia.mg##^script:has-text(adrecover.com)
 sourceforge.net##^script:has-text(/bizx|prebid/)
-373news.com,alc.co.jp,allthetests.com,animanch.com,aniroleplay.com,apkmirror.com,aucfree.com,autoby.jp,autofrage.net,automobile-catalog.com,carscoops.com,chanto.jp.net,cinetrafic.fr,cocokara-next.com,computerfrage.net,crosswordsolver.com,cruciverba.it,daily.co.jp,dictionnaire.lerobert.com,dnevno.hr,dropgame.jp,drweil.com,dziennik.pl,dziennik.pl,forsal.pl,freemcserver.net,game8.jp,gardeningsoul.com,gazetaprawna.pl,gigafile.nu,globalrph.com,golf-live.at,grapee.jp,gutefrage.net,heureka.cz,horairesdouverture24.fr,indiatimes.com,infor.pl,iza.ne.jp,j-cast.com,j-town.net,jablickar.cz,javatpoint.com,kinmaweb.jp,kobe-journal.com,kreuzwortraetsel.de,kurashiru.com,kyoteibiyori.com,lacuarta.com,lacuarta.com,laleggepertutti.it,langenscheidt.com,livenewschat.eu,malaymail.com,mamastar.jp,maketecheasier.com,minkou.jp,modhub.us,motorbikecatalog.com,motscroises.fr,muragon.com,nana-press.com,natalie.mu,niketalk.com,nikkan-gendai.com,oeffnungszeitenbuch.de,onecall2ch.com,oraridiapertura24.it,oxfordlearnersdictionaries.com,palabr.as,pashplus.jp,persoenlich.com,petitfute.com,play-games.com,powerpyx.com,quefaire.be,raetsel-hilfe.de,ranking.net,roleplayer.me,rostercon.com,samsungmagazine.eu,sankei.com,sanspo.com,slashdot.org,sourceforge.net,syosetu.com,talkwithstranger.com,the-crossword-solver.com,transparentcalifornia.com,transparentnevada.com,trilltrill.jp,tvtv.ca,tvtv.us,ufret.jp,uranai.nosv.org,watchdocumentaries.com,webdesignledger.com,wetteronline.de,wfmz.com,winfuture.de,winfuture.de,word-grabber.com,wort-suchen.de,woxikon.*,yugioh-starlight.com,yutura.net,zagreb.info,zakzak.co.jp##^script:has-text(html-load.com)
+373news.com,alc.co.jp,allthetests.com,animanch.com,aniroleplay.com,apkmirror.com,aucfree.com,autoby.jp,autofrage.net,automobile-catalog.com,carscoops.com,chanto.jp.net,cinetrafic.fr,cocokara-next.com,computerfrage.net,crosswordsolver.com,cruciverba.it,daily.co.jp,dictionnaire.lerobert.com,dnevno.hr,dropgame.jp,drweil.com,dziennik.pl,dziennik.pl,forsal.pl,freemcserver.net,game8.jp,gardeningsoul.com,gazetaprawna.pl,gigafile.nu,globalrph.com,golf-live.at,grapee.jp,gutefrage.net,heureka.cz,horairesdouverture24.fr,indiatimes.com,infor.pl,iza.ne.jp,j-cast.com,j-town.net,jablickar.cz,javatpoint.com,kinmaweb.jp,kobe-journal.com,kreuzwortraetsel.de,kurashiru.com,kyoteibiyori.com,lacuarta.com,lacuarta.com,laleggepertutti.it,langenscheidt.com,livenewschat.eu,luremaga.jp,malaymail.com,mamastar.jp,maketecheasier.com,minkou.jp,modhub.us,motorbikecatalog.com,motscroises.fr,muragon.com,nana-press.com,natalie.mu,niketalk.com,nikkan-gendai.com,oeffnungszeitenbuch.de,onecall2ch.com,oraridiapertura24.it,oxfordlearnersdictionaries.com,palabr.as,pashplus.jp,persoenlich.com,petitfute.com,play-games.com,powerpyx.com,quefaire.be,raetsel-hilfe.de,ranking.net,roleplayer.me,rostercon.com,samsungmagazine.eu,sankei.com,sanspo.com,slashdot.org,sourceforge.net,syosetu.com,talkwithstranger.com,the-crossword-solver.com,transparentcalifornia.com,transparentnevada.com,trilltrill.jp,tvtv.ca,tvtv.us,ufret.jp,uranai.nosv.org,watchdocumentaries.com,webdesignledger.com,wetteronline.de,wfmz.com,winfuture.de,winfuture.de,word-grabber.com,wort-suchen.de,woxikon.*,young-machine.com,yugioh-starlight.com,yutura.net,zagreb.info,zakzak.co.jp##^script:has-text(html-load.com)
 ! livedoor-sites
 2chblog.jp,2monkeys.jp,46matome.net,akb48glabo.com,akb48matomemory.com,alfalfalfa.com,all-nationz.com,anihatsu.com,aqua2ch.net,blog.esuteru.com,blog.livedoor.jp,blog.jp,blogo.jp,chaos2ch.com,choco0202.work,crx7601.com,danseisama.com,dareda.net,digital-thread.com,doorblog.jp,exawarosu.net,fgochaldeas.com,football-2ch.com,gekiyaku.com,golog.jp,hacchaka.net,heartlife-matome.com,liblo.jp,fesoku.net,fiveslot777.com,gamejksokuhou.com,girlsreport.net,girlsvip-matome.com,grasoku.com,gundamlog.com,honyaku-channel.net,ikarishintou.com,imas-cg.net,imihu.net,inutomo11.com,itainews.com,itaishinja.com,jin115.com,jisaka.com,jnews1.com,jumpsokuhou.com,jyoseisama.com,keyakizaka46matomemory.net,kidan-m.com,kijoden.com,kijolariat.net,kijolifehack.com,kijomatomelog.com,kijyokatu.com,kijyomatome.com,kijyomatome-ch.com,kijyomita.com,kirarafan.com,kitimama-matome.net,kitizawa.com,konoyubitomare.jp,kotaro269.com,kyousoku.net,ldblog.jp,livedoor.biz,livedoor.blog,majikichi.com,matacoco.com,matomeblade.com,matomelotte.com,matometemitatta.com,mojomojo-licarca.com,morikinoko.com,nandemo-uketori.com,netatama.net,news-buzz1.com,news30over.com,nmb48-mtm.com,norisoku.com,npb-news.com,ocsoku.com,okusama-kijyo.com,onihimechan.com,orusoku.com,otakomu.jp,otoko-honne.com,oumaga-times.com,outdoormatome.com,pachinkopachisro.com,paranormal-ch.com,recosoku.com,s2-log.com,saikyo-jump.com,shuraba-matome.com,ske48matome.net,squallchannel.com,sukattojapan.com,sumaburayasan.com,usi32.com,uwakich.com,uwakitaiken.com,vault76.info,vipnews.jp,vippers.jp,vipsister23.com,vtubernews.jp,watarukiti.com,world-fusigi.net,zakuzaku911.com,zch-vip.com##^script:has-text(html-load.com)
 !#else
@@ -9730,7 +9679,7 @@ ap7am.com,cinema.com.my,dolldivine.com,giornalone.it,iplocation.net,jamaicaobser
 cinema.com.my,crosswordsolver.com##+js(trusted-suppress-native-method, HTMLScriptElement.prototype.setAttribute, '"data-sdk"', abort)
 winfuture.de##+js(aeld, load, error-report.com)
 sourceforge.net##+js(rmnt, script, /bizx|prebid/)
-373news.com,alc.co.jp,allthetests.com,animanch.com,aniroleplay.com,apkmirror.com,aucfree.com,autoby.jp,autofrage.net,automobile-catalog.com,carscoops.com,chanto.jp.net,cinetrafic.fr,cocokara-next.com,computerfrage.net,crosswordsolver.com,cruciverba.it,daily.co.jp,dictionnaire.lerobert.com,dnevno.hr,dropgame.jp,drweil.com,dziennik.pl,dziennik.pl,forsal.pl,freemcserver.net,game8.jp,gardeningsoul.com,gazetaprawna.pl,gigafile.nu,globalrph.com,golf-live.at,grapee.jp,gutefrage.net,heureka.cz,horairesdouverture24.fr,indiatimes.com,infor.pl,iza.ne.jp,j-cast.com,j-town.net,jablickar.cz,javatpoint.com,kinmaweb.jp,kobe-journal.com,kreuzwortraetsel.de,kurashiru.com,kyoteibiyori.com,lacuarta.com,lacuarta.com,laleggepertutti.it,langenscheidt.com,livenewschat.eu,malaymail.com,mamastar.jp,maketecheasier.com,minkou.jp,modhub.us,motorbikecatalog.com,motscroises.fr,muragon.com,nana-press.com,natalie.mu,niketalk.com,nikkan-gendai.com,oeffnungszeitenbuch.de,onecall2ch.com,oraridiapertura24.it,oxfordlearnersdictionaries.com,palabr.as,pashplus.jp,persoenlich.com,petitfute.com,play-games.com,powerpyx.com,quefaire.be,raetsel-hilfe.de,ranking.net,roleplayer.me,rostercon.com,samsungmagazine.eu,sankei.com,sanspo.com,slashdot.org,sourceforge.net,syosetu.com,talkwithstranger.com,the-crossword-solver.com,transparentcalifornia.com,transparentnevada.com,trilltrill.jp,tvtv.ca,tvtv.us,ufret.jp,uranai.nosv.org,watchdocumentaries.com,webdesignledger.com,wetteronline.de,wfmz.com,winfuture.de,winfuture.de,word-grabber.com,wort-suchen.de,woxikon.*,yugioh-starlight.com,yutura.net,zagreb.info,zakzak.co.jp##+js(rmnt, script, html-load.com)
+373news.com,alc.co.jp,allthetests.com,animanch.com,aniroleplay.com,apkmirror.com,aucfree.com,autoby.jp,autofrage.net,automobile-catalog.com,carscoops.com,chanto.jp.net,cinetrafic.fr,cocokara-next.com,computerfrage.net,crosswordsolver.com,cruciverba.it,daily.co.jp,dictionnaire.lerobert.com,dnevno.hr,dropgame.jp,drweil.com,dziennik.pl,dziennik.pl,forsal.pl,freemcserver.net,game8.jp,gardeningsoul.com,gazetaprawna.pl,gigafile.nu,globalrph.com,golf-live.at,grapee.jp,gutefrage.net,heureka.cz,horairesdouverture24.fr,indiatimes.com,infor.pl,iza.ne.jp,j-cast.com,j-town.net,jablickar.cz,javatpoint.com,kinmaweb.jp,kobe-journal.com,kreuzwortraetsel.de,kurashiru.com,kyoteibiyori.com,lacuarta.com,lacuarta.com,laleggepertutti.it,langenscheidt.com,livenewschat.eu,luremaga.jp,malaymail.com,mamastar.jp,maketecheasier.com,minkou.jp,modhub.us,motorbikecatalog.com,motscroises.fr,muragon.com,nana-press.com,natalie.mu,niketalk.com,nikkan-gendai.com,oeffnungszeitenbuch.de,onecall2ch.com,oraridiapertura24.it,oxfordlearnersdictionaries.com,palabr.as,pashplus.jp,persoenlich.com,petitfute.com,play-games.com,powerpyx.com,quefaire.be,raetsel-hilfe.de,ranking.net,roleplayer.me,rostercon.com,samsungmagazine.eu,sankei.com,sanspo.com,slashdot.org,sourceforge.net,syosetu.com,talkwithstranger.com,the-crossword-solver.com,transparentcalifornia.com,transparentnevada.com,trilltrill.jp,tvtv.ca,tvtv.us,ufret.jp,uranai.nosv.org,watchdocumentaries.com,webdesignledger.com,wetteronline.de,wfmz.com,winfuture.de,winfuture.de,word-grabber.com,wort-suchen.de,woxikon.*,young-machine.com,yugioh-starlight.com,yutura.net,zagreb.info,zakzak.co.jp##+js(rmnt, script, html-load.com)
 ! livedoor-sites
 2chblog.jp,2monkeys.jp,46matome.net,akb48glabo.com,akb48matomemory.com,alfalfalfa.com,all-nationz.com,anihatsu.com,aqua2ch.net,blog.esuteru.com,blog.livedoor.jp,blog.jp,blogo.jp,chaos2ch.com,choco0202.work,crx7601.com,danseisama.com,dareda.net,digital-thread.com,doorblog.jp,exawarosu.net,fgochaldeas.com,football-2ch.com,gekiyaku.com,golog.jp,hacchaka.net,heartlife-matome.com,liblo.jp,fesoku.net,fiveslot777.com,gamejksokuhou.com,girlsreport.net,girlsvip-matome.com,grasoku.com,gundamlog.com,honyaku-channel.net,ikarishintou.com,imas-cg.net,imihu.net,inutomo11.com,itainews.com,itaishinja.com,jin115.com,jisaka.com,jnews1.com,jumpsokuhou.com,jyoseisama.com,keyakizaka46matomemory.net,kidan-m.com,kijoden.com,kijolariat.net,kijolifehack.com,kijomatomelog.com,kijyokatu.com,kijyomatome.com,kijyomatome-ch.com,kijyomita.com,kirarafan.com,kitimama-matome.net,kitizawa.com,konoyubitomare.jp,kotaro269.com,kyousoku.net,ldblog.jp,livedoor.biz,livedoor.blog,majikichi.com,matacoco.com,matomeblade.com,matomelotte.com,matometemitatta.com,mojomojo-licarca.com,morikinoko.com,nandemo-uketori.com,netatama.net,news-buzz1.com,news30over.com,nmb48-mtm.com,norisoku.com,npb-news.com,ocsoku.com,okusama-kijyo.com,onihimechan.com,orusoku.com,otakomu.jp,otoko-honne.com,oumaga-times.com,outdoormatome.com,pachinkopachisro.com,paranormal-ch.com,recosoku.com,s2-log.com,saikyo-jump.com,shuraba-matome.com,ske48matome.net,squallchannel.com,sukattojapan.com,sumaburayasan.com,usi32.com,uwakich.com,uwakitaiken.com,vault76.info,vipnews.jp,vippers.jp,vipsister23.com,vtubernews.jp,watarukiti.com,world-fusigi.net,zakuzaku911.com,zch-vip.com##+js(rmnt, script, html-load.com)
 !#endif
@@ -9769,6 +9718,32 @@ alejandrocenturyoil.com,heatherwholeinvolve.com,jennifercertaindevelopment.com,k
 voe.sx>>##+js(nowoif)
 voe.sx>>##+js(set, console.clear, undefined)
 ! !SECTION: voe.sx
+! SECTION: Hydrax
+||iamcdn.net/players/player*.*mins.js$script,domain=freeplayervideo.com|nazarickol.com|player-cdn.com
+! abysscdn.com,freeplayervideo.com,nazarickol.com,player-cdn.com##+js(set, detectAdBlockAll, noopFunc)
+*$image,redirect-rule=32x32.png,domain=freeplayervideo.com|nazarickol.com|player-cdn.com
+freeplayervideo.com,nazarickol.com,player-cdn.com,playhydrax.com##+js(set, console.clear, undefined)
+freeplayervideo.com,nazarickol.com,player-cdn.com,playhydrax.com##+js(ra, style, #over)
+fullfreeimage.com,freeplayervideo.com,hydraxcdn.biz,imagelovers.com,nazarickol.com,player-cdn.com,playhydrax.com##+js(nowoif, /^/, 1)
+jav.guru##.inside-right-sidebar > aside.widget_custom_html
+jav.guru###text-76
+jav.guru###text-92
+jav.guru###text-93
+/cdn-cgi/trace$xhr,1p,domain=abysscdn.com|playhydrax.com
+abysscdn.com##div[style*="z-index:100000"]
+abysscdn.com##.playover
+abysscdn.com,playhydrax.com##+js(set, document.ontouchend, null)
+abysscdn.com,playhydrax.com##+js(set, document.onclick, null)
+abysscdn.com,fullfreeimage.com,hihihaha1.xyz,hydraxcdn.biz,imagelovers.com,player-cdn.com,playermeow.com,playhydrax.com##+js(trusted-replace-outbound-text, Array.prototype.shift, /^.+$/s, '', condition, https)
+/favicon.ico|$image,3p,domain=abysscdn.com|fullfreeimage.com|hihihaha1.xyz|hihihaha2.xyz|hydraxcdn.biz|imagelovers.com|player-cdn.com|playermeow.com|playhydrax.com
+! popups when moving out of fullscreen
+abysscdn.com,fullfreeimage.com,hihihaha1.xyz,hihihaha2.xyz,hydraxcdn.biz,imagelovers.com,player-cdn.com,playermeow.com,playhydrax.com##+js(aost, HTMLElement.prototype.click, _0x)
+abysscdn.com,fullfreeimage.com,hydraxcdn.biz,imagelovers.com,playermeow.com,playhydrax.com###overlay
+playhydrax.com##+js(rpnt, script, (isNoAds), (true))
+||affluentarmyequator.com^$popup,doc
+||boobausauhipsa.net^$popup,doc
+||usheebainaut.com^
+! !SECTION: Hydrax
 ! END: General filters (put filters before this line)
 ! *** uAssets:filters/filters-2020.txt ***
 *$script,redirect-rule=noopjs,domain=arcai.com
@@ -18202,6 +18177,7 @@ myanimelist.net##[data-koukoku-width]:remove()
 myanimelist.net##+js(rmnt, style, body:not(.ownlist))
 myanimelist.net##[class*="-malside"]
 myanimelist.net##[class*="-pdatla"]
+myanimelist.net##.bookstore-detail-right
 ! winknews.com anti adblock
 ! homepage live video breakage
 @@||imasdk.googleapis.com/js/sdkloader/ima3.js$script,domain=winknews.com
@@ -20659,29 +20635,6 @@ fmovies.*,f2movies.to##body.modal-open:style(overflow: auto!important)
 fmovies.*###gift-middle
 fmovies.*###gift-top
 fmovies.*##+js(acs, document.write, innerWidth)
-||iamcdn.net/players/player*.*mins.js$script,domain=freeplayervideo.com|nazarickol.com|player-cdn.com
-! abysscdn.com,freeplayervideo.com,nazarickol.com,player-cdn.com##+js(set, detectAdBlockAll, noopFunc)
-*$image,redirect-rule=32x32.png,domain=freeplayervideo.com|nazarickol.com|player-cdn.com
-freeplayervideo.com,nazarickol.com,player-cdn.com,playhydrax.com##+js(set, console.clear, undefined)
-freeplayervideo.com,nazarickol.com,player-cdn.com,playhydrax.com##+js(ra, style, #over)
-fullfreeimage.com,freeplayervideo.com,hydraxcdn.biz,imagelovers.com,nazarickol.com,player-cdn.com,playhydrax.com##+js(nowoif, /^/, 1)
-jav.guru##.inside-right-sidebar > aside.widget_custom_html
-jav.guru###text-76
-jav.guru###text-92
-jav.guru###text-93
-/cdn-cgi/trace$xhr,1p,domain=abysscdn.com|playhydrax.com
-abysscdn.com##div[style*="z-index:100000"]
-abysscdn.com##.playover
-abysscdn.com,playhydrax.com##+js(set, document.ontouchend, null)
-abysscdn.com,playhydrax.com##+js(set, document.onclick, null)
-abysscdn.com,fullfreeimage.com,hihihaha1.xyz,hydraxcdn.biz,imagelovers.com,player-cdn.com,playhydrax.com##+js(trusted-replace-outbound-text, Array.prototype.shift, /^.+$/s, '', condition, https)
-/favicon.ico|$image,3p,domain=abysscdn.com|fullfreeimage.com|hihihaha1.xyz|hihihaha2.xyz|hydraxcdn.biz|imagelovers.com|player-cdn.com|playhydrax.com
-! popups when moving out of fullscreen
-abysscdn.com,fullfreeimage.com,hihihaha1.xyz,hihihaha2.xyz,hydraxcdn.biz,imagelovers.com,player-cdn.com,playhydrax.com##+js(aost, HTMLElement.prototype.click, _0x)
-abysscdn.com,fullfreeimage.com,hydraxcdn.biz,imagelovers.com,playhydrax.com###overlay
-playhydrax.com##+js(rpnt, script, (isNoAds), (true))
-||affluentarmyequator.com^$popup,doc
-||boobausauhipsa.net^$popup,doc
 *$ping,domain=fullxh.com|galleryxh.site|megaxh.com|movingxh.world|seexh.com|unlockxh4.com|valuexh.life|xhaccess.com|xhadult2.com|xhadult3.com|xhadult4.com|xhadult5.com|xhamster.*|xhamster10.*|xhamster11.*|xhamster12.*|xhamster13.*|xhamster14.*|xhamster15.*|xhamster16.*|xhamster17.*|xhamster18.*|xhamster19.*|xhamster20.*|xhamster2.*|xhamster3.*|xhamster4.*|xhamster42.*|xhamster46.com|xhamster5.*|xhamster7.*|xhamster8.*|xhamsterporno.mx|xhbig.com|xhbranch5.com|xhchannel.com|xhdate.world|xhday.com|xhday1.com|xhlease.world|xhmoon5.com|xhofficial.com|xhopen.com|xhplanet1.com|xhplanet2.com|xhreal2.com|xhreal3.com|xhspot.com|xhtotal.com|xhtree.com|xhvictory.com|xhwebsite.com|xhwebsite2.com|xhwebsite5.com|xhwide1.com|xhwide2.com|xhwide5.com
 ://collector.$domain=fullxh.com|galleryxh.site|megaxh.com|movingxh.world|seexh.com|unlockxh4.com|valuexh.life|xhaccess.com|xhadult2.com|xhadult3.com|xhadult4.com|xhadult5.com|xhamster.*|xhamster10.*|xhamster11.*|xhamster12.*|xhamster13.*|xhamster14.*|xhamster15.*|xhamster16.*|xhamster17.*|xhamster18.*|xhamster19.*|xhamster20.*|xhamster2.*|xhamster3.*|xhamster4.*|xhamster42.*|xhamster46.com|xhamster5.*|xhamster7.*|xhamster8.*|xhamsterporno.mx|xhbig.com|xhbranch5.com|xhchannel.com|xhdate.world|xhday.com|xhday1.com|xhlease.world|xhmoon5.com|xhofficial.com|xhopen.com|xhplanet1.com|xhplanet2.com|xhreal2.com|xhreal3.com|xhspot.com|xhtotal.com|xhtree.com|xhvictory.com|xhwebsite.com|xhwebsite2.com|xhwebsite5.com|xhwide1.com|xhwide2.com|xhwide5.com
 /api/models?userId=$xhr,domain=fullxh.com|galleryxh.site|megaxh.com|movingxh.world|seexh.com|unlockxh4.com|valuexh.life|xhaccess.com|xhadult2.com|xhadult3.com|xhadult4.com|xhadult5.com|xhamster.*|xhamster10.*|xhamster11.*|xhamster12.*|xhamster13.*|xhamster14.*|xhamster15.*|xhamster16.*|xhamster17.*|xhamster18.*|xhamster19.*|xhamster20.*|xhamster2.*|xhamster3.*|xhamster4.*|xhamster42.*|xhamster46.com|xhamster5.*|xhamster7.*|xhamster8.*|xhamsterporno.mx|xhbig.com|xhbranch5.com|xhchannel.com|xhdate.world|xhday.com|xhday1.com|xhlease.world|xhmoon5.com|xhofficial.com|xhopen.com|xhplanet1.com|xhplanet2.com|xhreal2.com|xhreal3.com|xhspot.com|xhtotal.com|xhtree.com|xhvictory.com|xhwebsite.com|xhwebsite2.com|xhwebsite5.com|xhwide1.com|xhwide2.com|xhwide5.com
@@ -20986,16 +20939,16 @@ bombuj.*##+js(nobab)
 fcportables.com##+js(set, adsClasses, undefined)
 fcportables.com##+js(set, gsecs, 0)
 fcportables.com##+js(rmnt, script, ai_adb)
-dood.*,doods.pro,dooodster.com,dooood.*,ds2play.com##+js(aopw, DoodPop)
+dood.*,doods.*,dooodster.com,dooood.*,ds2play.com##+js(aopw, DoodPop)
 all3do.com,do7go.com,d0o0d.com,do0od.com,dood.*,dooodster.com,ds2video.com,vidply.com##+js(acs, decodeURI, decodeURIComponent)
 dood.*##+js(aopr, __aaZoneid)
-all3do.com,do7go.com,d0000d.com,d000d.com,d0o0d.com,do0od.com,dood.*,doods.pro,dooodster.com,dooood.*,ds2play.com,ds2video.com,vidply.com##+js(nowoif)
+all3do.com,do7go.com,d0000d.com,d000d.com,d0o0d.com,do0od.com,dood.*,doods.*,dooodster.com,dooood.*,ds2play.com,ds2video.com,vidply.com##+js(nowoif)
 !#if cap_html_filtering
-all3do.com,do7go.com,d0000d.com,d000d.com,d0o0d.com,do0od.com,dood.*,doods.pro,doodstream.*,dooodster.com,dooood.*,ds2play.com,ds2video.com,vidply.com##^script:has-text(/adblock|popunder|openedPop|WebAssembly/)
+all3do.com,do7go.com,d0000d.com,d000d.com,d0o0d.com,do0od.com,dood.*,doods.*,doodstream.*,dooodster.com,dooood.*,ds2play.com,ds2video.com,vidply.com##^script:has-text(/adblock|popunder|openedPop|WebAssembly|wpadmngr/)
 !#else
-all3do.com,do7go.com,d0000d.com,d000d.com,d0o0d.com,do0od.com,dood.*,doods.pro,doodstream.*,dooodster.com,dooood.*,ds2play.com,ds2video.com,vidply.com##+js(rmnt, script, /adblock|popunder|openedPop|WebAssembly/)
+all3do.com,do7go.com,d0000d.com,d000d.com,d0o0d.com,do0od.com,dood.*,doods.*,doodstream.*,dooodster.com,dooood.*,ds2play.com,ds2video.com,vidply.com##+js(rmnt, script, /adblock|popunder|openedPop|WebAssembly|wpadmngr/)
 !#endif
-/sw.js$script,domain=all3do.com|do7go.com|d0000d.com|d000d.com|d0o0d.com|do0od.com|dood.*|doods.pro|dooodster.com|dooood.*|ds2play.com|ds2video.com|vidply.com
+/sw.js$script,domain=all3do.com|do7go.com|d0000d.com|d000d.com|d0o0d.com|do0od.com|dood.*|doods.*|dooodster.com|dooood.*|ds2play.com|ds2video.com|vidply.com
 *$script,3p,denyallow=cdnjs.cloudflare.com|doodcdn.co|fastlycdn.com|gstatic.com,domain=dooodster.com
 *$script,3p,denyallow=cdnjs.cloudflare.com|crisp.chat|doodcdn.co|doodcdn.io|fastlycdn.com|gstatic.com,domain=all3do.com|do7go.com|vidply.com
 $popup,3p,domain=ds2play.com,badfilter
@@ -21234,7 +21187,9 @@ timesnewsgroup.com.au##+js(acs, $, popup)
 ||launcherleaks.net/*main_script.js$script,1p
 livecamrips.*##+js(rmnt, script, window.open)
 livecamrips.su>>,~cloudflare.com,~disqus.com,~google.com##+js(nowoif)
+livecamrips.su>>,~cloudflare.com,~disqus.com,~google.com##+js(acs, EventTarget.prototype.addEventListener, delete window)
 filemoon.*>>,96ar.com>>,iqksisgw.xyz>>,u6lyxl0w.skin>>,ww9g.com>>,xcoic.com>>,nptsr.live>>,4bct9.live>>,xztgl.com>>,remilf.xyz>>##+js(nowoif)
+filemoon.*>>,96ar.com>>,designparty.sx>>,iqksisgw.xyz>>,u6lyxl0w.skin>>,ww9g.com>>,xcoic.com>>,nptsr.live>>,4bct9.live>>,xztgl.com>>,remilf.xyz>>##+js(acs, EventTarget.prototype.addEventListener, delete window)
 designparty.sx>>##+js(nowoif)
 5j386s9.sbs##+js(nowoif)
 ! exactlyhowlong. com detection
@@ -22869,6 +22824,7 @@ voz.vn##.p-pageWrapper:style(margin-bottom: 0px !important;)
 ||cdn.atf-tagmanager.de/config/$script,domain=yacht.de,redirect=noopjs
 lk21official.pics##+js(set-cookie, lk21-player-dona, 1)
 playeriframe.lol>>,0ochi8hp.com##+js(nowoif)
+playeriframe.lol>>,0ochi8hp.com##+js(acs, EventTarget.prototype.addEventListener, delete window)
 ||lk21static.buzz/assets/stopjudi/$media
 lk21official.pics###top-b
 iqksisgw.xyz##+js(nostif, "document['\x")
@@ -23237,6 +23193,7 @@ vid2faf.*,vidplay.*##[src^="assets/bn"]:upward([style])
 /\/[A-Z]{1,2}\/[-0-9a-z]{5,}\.com\/(?:[0-9a-f]{2}\/){3}[0-9a-f]{32}\.js$/$script,1p,match-case,to=com
 /lazymolecule/*.js$script
 bflix.*>>,~cloudflare.com,~disqus.com,~google.com##+js(nowoif)
+bflix.*>>,~cloudflare.com,~disqus.com,~google.com##+js(acs, EventTarget.prototype.addEventListener, delete window)
 ||cibntv.net/youku/*$media,redirect=noopmp3-0.1s,domain=youku.com
 ||valipl.cp31.ott.cibntv.net^$media,redirect=noopmp3-0.1s,domain=youku.com
 youku.com##+js(nano-stb, , ,0)
@@ -23770,6 +23727,7 @@ pornproxy.art,pornproxy.app##+js(nowoif)
 pornproxy.art,pornproxy.app##+js(aopr, LieDetector)
 ! watchserieshd. stream ad popups
 watchserieshd.stream>>##+js(nowoif)
+watchserieshd.stream>>##+js(acs, EventTarget.prototype.addEventListener, delete window)
 voiceofdenton.com##+js(set, advanced_ads_check_adblocker, noopFunc)
 myesports.gg##+js(no-fetch-if, method:GET)
 concealednation.org##+js(set, advanced_ads_check_adblocker, noopFunc)
@@ -23953,3 +23911,5 @@ abyssplay.pages.dev##+js(nowoif, _blank)
 glamour.com###main-content:style(margin-top: 125px !important;)
 !#endif
 streambolt.tv##+js(aopw, showADBOverlay)
+cbssports.com##+js(rmnt, script, /admiral/i)
+||epoznan.pl/getAdsysCode?
