@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.1.2
+// @version         4.1.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1150,6 +1150,7 @@ else if (matchDomain('thetimes.com')) {
               parent_node = parent_node.parentNode;
             parent_node.removeAttribute('style');
           }
+          article.querySelectorAll('div[style*=";width:"]').forEach(e => e.style.width = '90%');
         }
         let embed_iframes = article.querySelectorAll('div > times-embed-iframe-max[src]');
         for (let elem of embed_iframes) {
@@ -1191,7 +1192,7 @@ else if (matchDomain(uk_nat_world_domains) || document.querySelector('footer > d
   let premium = document.querySelector('div.premium.no-entitlement');
   if (premium)
     premium.classList.remove('premium', 'no-entitlement');
-  let ads = 'div[class^="MarkupAds__Container-"], div[class*="_AdContainer-"], div[class^="Dailymotion__Wrapper-"], div.banner';
+  let ads = 'div[class^="MarkupAds__Container-"], div[class*="_AdContainer-"], div[class^="Dailymotion__Wrapper-"], div.banner, div#mantis-carousel-wrapper:has( > mantis-ui-widget:empty)';
   hideDOMStyle(ads);
 }
 
@@ -2115,15 +2116,12 @@ else if (matchDomain('foreignpolicy.com')) {
 }
 
 else if (matchDomain('fortune.com')) {
+  setCookie(['xbc', 'pcid'], '', 'fortune.com', '/', 0);
   let paywall = document.querySelector('div.paywallActive');
-  if (window.location.pathname.match(/\/amp(\/)?/)) {
-    amp_unhide_access_hide('="NOT p.showRegWall AND NOT p.showPayWall"', '="p.showPayWall"', '[class^="amp-ad"], div.paywall');
-  } else {
-    if (paywall)
-      paywall.removeAttribute('class');
-    let banners = 'div.daBnAu, div.trinity-player, div:empty';
-    hideDOMStyle(banners);
-  }
+  if (paywall)
+    paywall.removeAttribute('class');
+  let banners = 'div.tp-container-inner, div[class^="sc-"]:has( > div[data-cy="leaderboard"]), div[class^="sc-"]:has( > div.nativo-tout)';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain('foxnews.com')) {
@@ -2251,8 +2249,8 @@ else if (matchDomain('historyextra.com')) {
     removeDOMElement(...extra_pars);
     article_masked.classList.remove('template-article__masked');
   }
-  let ad_banner = document.querySelector('.ad-banner-container');
-  removeDOMElement(ad_banner);
+  let ads = 'div.ad-slot, div.ad-banner, div.stitcher-ad--dai-placeholder';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('historytoday.com')) {
@@ -3239,9 +3237,10 @@ else if (matchDomain('tempo.co')) {
   if (matchDomain('magz.tempo.co')) {
     header_nofix('article', 'div.pw-containers');
   } else {
-    let paywall = document.querySelector('div.bg-black > div > img[src="/_ipx/_/icons/paywallatas.svg"]');
+    let paywall_sel = 'img[src="/_ipx/_/icons/paywallatas.svg"]';
+    let paywall = document.querySelector(paywall_sel);
     if (paywall) {
-      removeDOMElement(paywall.parentNode.parentNode);
+      hideDOMStyle('div.bg-black:has( > div > ' + paywall_sel + ')', 5);
       let article_hidden = document.querySelector('article > div:not([class]) div.overflow-hidden');
       if (article_hidden)
         article_hidden.removeAttribute('class');

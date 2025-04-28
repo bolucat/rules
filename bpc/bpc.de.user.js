@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.0.1
+// @version         4.1.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -930,7 +930,17 @@ else if (matchDomain('weser-kurier.de')) {
 }
 
 else if (matchDomain('zeit.de')) {
+  let header_sel = 'article > header';
+  let header = document.querySelector(header_sel);
   func_post = function () {
+    if (header) {
+      let header_new = document.querySelector(header_sel);
+      if (header_new)
+        header_new.parentNode.replaceChild(header, header_new);
+    }
+    let comments_link = document.querySelector('div[style*="align-items"] a[href$="#comments"]');
+    if (comments_link)
+      comments_link.href = '#comments';
     if (mobile) {
       let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
       for (let elem of lazy_images)
@@ -938,14 +948,13 @@ else if (matchDomain('zeit.de')) {
       let span_empty = document.querySelectorAll('span:empty');
       removeDOMElement(...span_empty);
     }
-    let ads = document.querySelectorAll('div[style*=";min-height:"] > div[id^="iqadtile"]');
-    for (let ad of ads)
-      hideDOMElement(ad.parentNode);
+    let ads = 'div[style*=";min-height:"]:has( > div[id^="iqadtile"])';
+    hideDOMStyle(ads, 2);
   }
   let url = window.location.href.split(/[#\?]/)[0];
   if (document.querySelector('head > link[rel="next"]'))
     url += '/komplettansicht';
-  getArchive(url, 'aside#paywall', '', 'article', '', 'article', 'article > div');
+  getArchive(url, 'aside#paywall', '', 'main', '', 'main', 'article > div');
   let ads = 'div[id^="iqadtile"], .iqdcontainer';
   hideDOMStyle(ads);
 }

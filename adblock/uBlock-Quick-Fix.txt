@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sun, 27 Apr 2025 14:30:08 +0000
-! Diff-Path: ../patches/2025.4.27.926.patch#ublock-quick-fixes
+! Last modified: Mon, 28 Apr 2025 11:41:52 +0000
+! Diff-Path: ../patches/2025.4.28.993.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -19,10 +19,10 @@ youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAd
 !#endif
 !#endif
 ||googlevideo.com/videoplayback*&ctier=L&*%2Cctier%2C$xhr,3p,domain=m.youtube.com|music.youtube.com|www.youtube.com
-www.youtube.com##+js(trusted-rpnt, script, (function serverContract(), /*START*/"YOUTUBE_PREMIUM_LOGO"!==ytInitialData?.topbar?.desktopTopbarRenderer?.logo?.topbarLogoRenderer?.iconImage?.iconType&&(location.href.startsWith("https://www.youtube.com/tv#/")||location.href.startsWith("https://www.youtube.com/embed/")||document.addEventListener("DOMContentLoaded"\,(function(){const t=()=>{const t=document.getElementById("movie_player");if(!t)return;if(!t.getStatsForNerds?.()?.debug_info?.startsWith?.("SSAP\, AD"))return;const e=t.getProgressState?.();e&&e.duration>0&&(e.loaded<e.duration||e.duration-e.current>1)&&t.seekTo?.(e.duration)};t()\,new MutationObserver((()=>{t()})).observe(document\,{childList:!0\,subtree:!0})})));(function serverContract(), sedCount, 1)
+www.youtube.com##+js(trusted-rpnt, script, (function serverContract(), /*START*/"YOUTUBE_PREMIUM_LOGO"!==ytInitialData?.topbar?.desktopTopbarRenderer?.logo?.topbarLogoRenderer?.iconImage?.iconType&&(location.href.startsWith("https://www.youtube.com/tv#/")||location.href.startsWith("https://www.youtube.com/embed/")||document.addEventListener("DOMContentLoaded"\,(function(){const t=()=>{const t=document.getElementById("movie_player");if(!t)return;if(!t.getStatsForNerds?.()?.debug_info?.startsWith?.("SSAP\, AD"))return;const e=t.getProgressState?.();e&&e.duration>0&&(e.loaded<e.duration||e.duration-e.current>1)&&t.seekTo?.(e.duration)};t()\,new MutationObserver((()=>{t()})).observe(document\,{childList:!0\,subtree:!0})})));(()=>{const t={apply:(t\,o\,n)=>{const e=n[0];return"function"==typeof e&&e.toString().includes("onAbnormalityDetected")&&(n[0]=function(){})\,Reflect.apply(t\,o\,n)}};window.Promise.prototype.then=new Proxy(window.Promise.prototype.then\,t)})();(function serverContract(), sedCount, 1)
 www.youtube.com##+js(nano-stb, [native code], 17000, 0.001)
 !#if cap_html_filtering
-||www.youtube.com/s/player/*/base.js$script,xhr,replace=/if\(e===""\)/if(0)/
+||www.youtube.com/s/_/ytmainappweb/_/js/$script,xhr,replace=/onAbnormalityDetected"\,function\(\)[\S\s]+?playabilityStatus\)\}/onAbnormalityDetected"\,function(){}/
 !#endif
 www.youtube.com##+js(json-prune-fetch-response, playerAds adPlacements adSlots no_ads playerResponse.playerAds playerResponse.adPlacements playerResponse.adSlots playerResponse.no_ads [].playerResponse.adPlacements [].playerResponse.playerAds [].playerResponse.adSlots [].playerResponse.no_ads, , propsToMatch, /player\?|get_watch|^\W+$/)
 www.youtube.com##+js(json-prune-fetch-response, playerAds adPlacements adSlots no_ads playerResponse.playerAds playerResponse.adPlacements playerResponse.adSlots playerResponse.no_ads, , propsToMatch, /playlist?)
@@ -166,9 +166,6 @@ pvpoke-re.com##+js(trusted-suppress-native-method, Element.prototype.insertAdjac
 pvpoke-re.com##body:style(overflow-y: auto !important; position: static !important; width: auto !important; height: auto !important;)
 pvpoke-re.com##html:style(overflow-y: auto !important;)
 pvpoke-re.com##+js(aeld, /keydown|scroll|touchmove|touchstart|wheel/, function(_0x)
-!pvpoke-re.com##body [style*="z-index"]:style(background: none !important; z-index: -2147483647 !important;)
-pvpoke-re.com##body [style*="fixed"]:style(background: none !important; z-index: -2147483647 !important;)
-pvpoke-re.com##body [style*="fixed"] p[style*="font-size"]:style(font-size: 0 !important;)
 pvpoke-re.com##.main-wrap[style*="opacity"]:style(opacity: 1 !important;)
 pvpoke-re.com##+js(aost, Array.from, /_tick|[0-9A-Za-z]{8\,}\/< https:\/\/pvpoke-re\.com\/[0-9A-Za-z]{8\,}\.js\?v=/)
 pvpoke-re.com##+js(set, scrollTo, noopFunc)
@@ -176,8 +173,8 @@ pvpoke-re.com##.nitro-any
 pvpoke-re.com##+js(trusted-suppress-native-method, Document.prototype.getElementsByTagName, '"h1"', prevent, /_tick|[0-9A-Za-z]{8\,}\/< https:\/\/pvpoke-re\.com\/[0-9A-Za-z]{8\,}\.js\?v=/)
 pvpoke-re.com##+js(trusted-suppress-native-method, Document.prototype.getElementsByTagName, '"h2"', prevent, /_tick|[0-9A-Za-z]{8\,}\/< https:\/\/pvpoke-re\.com\/[0-9A-Za-z]{8\,}\.js\?v=/)
 pvpoke-re.com##+js(trusted-suppress-native-method, Document.prototype.getElementsByTagName, '"p"', prevent, /_tick|[0-9A-Za-z]{8\,}\/< https:\/\/pvpoke-re\.com\/[0-9A-Za-z]{8\,}\.js\?v=/)
-||pvpoke-re.com/*.js?v=$script,replace=/&&([0-9A-Za-z]{8\,12})\(\);?\}function \1\(\)\{const _0x[\S\s]+?\1\(\);?\}\}let /&&\$1()}function \$1(){}let /
-||pvpoke-re.com/*.js?v=$script,replace=/(\]=[0-9A-Za-z]{8\,12};function [0-9A-Za-z]{8\,12}\(\)\{)const _0x[0-9a-f]+=\{[\S\s]+?\);?\}\}const/\$1}const/
+||pvpoke-re.com/*.js?v=$script,replace=/(\!\[\];function [0-9A-Za-z]{8\,12}\(\)\{)function _0x[0-9a-f]{6}\(_0x[0-9a-f]{6}\,.+?\+_0x[0-9a-f]{6};\}\}/\$1}/
+pvpoke-re.com##body *:is([style*="fixed"],[style*="absolute"]):not(header):style(visibility: hidden !important;)
 ||vgwort.de^$image,3p,redirect=1x1.gif,domain=cool-web.de|gps-cache.de|web-spiele.de|fun-seiten.de|photo-alben.de|wetter-vorhersage.de|coolsoftware.de|kryptografie.de|cool-domains.de|net-tours.de|such-maschine.de|qul.de|mailtool.de|c-ix.de|softwareengineer.de|net-tools.de|hilfen.de|45er.de|cooldns.de|hardware-entwicklung.de|cool--web-de.translate.goog|gps--cache-de.translate.goog|web--spiele-de.translate.goog|fun--seiten-de.translate.goog|photo--alben-de.translate.goog|wetter--vorhersage-de.translate.goog|coolsoftware-de.translate.goog|kryptografie-de.translate.goog|cool--domains-de.translate.goog|net--tours-de.translate.goog|such--maschine-de.translate.goog|qul-de.translate.goog|mailtool-de.translate.goog|c--ix-de.translate.goog|softwareengineer-de.translate.goog|net--tools-de.translate.goog|hilfen-de.translate.goog|45er-de.translate.goog|cooldns-de.translate.goog|hardware--entwicklung-de.translate.goog
 @@*$ghide,domain=cool-web.de|gps-cache.de|web-spiele.de|fun-seiten.de|photo-alben.de|wetter-vorhersage.de|coolsoftware.de|kryptografie.de|cool-domains.de|net-tours.de|such-maschine.de|qul.de|mailtool.de|c-ix.de|softwareengineer.de|net-tools.de|hilfen.de|45er.de|cooldns.de|hardware-entwicklung.de|cool--web-de.translate.goog|gps--cache-de.translate.goog|web--spiele-de.translate.goog|fun--seiten-de.translate.goog|photo--alben-de.translate.goog|wetter--vorhersage-de.translate.goog|coolsoftware-de.translate.goog|kryptografie-de.translate.goog|cool--domains-de.translate.goog|net--tours-de.translate.goog|such--maschine-de.translate.goog|qul-de.translate.goog|mailtool-de.translate.goog|c--ix-de.translate.goog|softwareengineer-de.translate.goog|net--tools-de.translate.goog|hilfen-de.translate.goog|45er-de.translate.goog|cooldns-de.translate.goog|hardware--entwicklung-de.translate.goog
 @@*$script,1p,domain=cool-web.de|gps-cache.de|web-spiele.de|fun-seiten.de|photo-alben.de|wetter-vorhersage.de|coolsoftware.de|kryptografie.de|cool-domains.de|net-tours.de|such-maschine.de|qul.de|mailtool.de|c-ix.de|softwareengineer.de|net-tools.de|hilfen.de|45er.de|cooldns.de|hardware-entwicklung.de
