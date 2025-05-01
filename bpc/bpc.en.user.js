@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.1.3
+// @version         4.1.1.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -196,6 +196,7 @@ var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
 var no_dn_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'hydrogeninsight.com', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
 var sg_sph_media_domains = ['businesstimes.com.sg', 'straitstimes.com'];
 var timesofindia_domains = ['epaper.indiatimes.com', 'timesofindia.indiatimes.com'];
+var uk_dmg_media_domains = ['dailymail.co.uk', 'mailonsunday.co.uk', 'thisismoney.co.uk'];
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
 var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntraveler.com', 'epicurious.com', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.co.uk', 'vogue.com', 'wired.com'];
@@ -1127,8 +1128,19 @@ else if (matchDomain('thenewslens.com')) {
 }
 
 else if (matchDomain('thestage.co.uk')) {
+  func_post = function () {
+    let paywall = document.querySelector(paywall_sel);
+    if (paywall) {
+      removeDOMElement(paywall);
+      let article = document.querySelector(article_sel);
+      if (article)
+        article.before(googleSearchToolLink(url));
+    }
+  }
+  let paywall_sel = 'div#ao-MeteringDNAllow';
+  let article_sel = 'div[id^="aos-FeatureArticle2Col-"], div[id^="aos-ReviewArticle-"]';
   let url = window.location.href;
-  getArchive(url, 'div#ao-MeteringDNAllow', '', 'div[id^="aos-FeatureArticle2Col-"], div[id^="aos-ReviewArticle-"]');
+  getArchive(url, paywall_sel, '', article_sel);
 }
 
 else if (matchDomain(['thesun.co.uk', 'thescottishsun.co.uk'])) {
@@ -1186,6 +1198,14 @@ else if (matchDomain('unherd.com')) {
     if (premium)
       premium.removeAttribute('id');
   }
+}
+
+else if (matchDomain(uk_dmg_media_domains)) {
+  let paywall = document.querySelector('body.is-paywalled-article');
+  if (paywall)
+    paywall.classList.remove('is-paywalled-article');
+  let ads = 'ad-slot, div.billboard-container';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(uk_nat_world_domains) || document.querySelector('footer > div a[href^="https://www.nationalworldplc.com"]')) {
@@ -4761,7 +4781,7 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
                 arch_dom = arch_dom.firstChild;
               let arch_div = document.createElement('div');
               arch_div.appendChild(archiveLink_renew(url_src));
-              arch_div.appendChild(archiveLink(window.location.href, 'BPC > Full article text fetched from (no need to report issue for external site):\r\n'));
+              arch_div.appendChild(archiveLink(window.location.href.split(/[#\?]/)[0], 'BPC > Full article text fetched from (no need to report issue for external site):\r\n'));
               arch_div.style = 'margin: 0px 0px 50px;';
               arch_dom.before(arch_div);
             }
@@ -4867,7 +4887,7 @@ function archiveLink(url, text_fail = 'BPC > Try for full article text (no need 
 }
 
 function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
-  return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href, url, text_fail);
+  return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href.split(/[#\?]/)[0], url, text_fail);
 }
 
 function googleSearchToolLink(url, text_fail = 'BPC > Try for full article text (test url & copy html (tab) code to [https://codebeautify.org/htmlviewer]):\r\n') {
