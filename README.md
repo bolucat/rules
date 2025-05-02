@@ -1,4 +1,5 @@
 # clash/Loyalsoldier
+- [apple.txt](https://rules.neuq.de/clash/Loyalsoldier/apple.txt)
 - [applications.txt](https://rules.neuq.de/clash/Loyalsoldier/applications.txt)
 - [cncidr.txt](https://rules.neuq.de/clash/Loyalsoldier/cncidr.txt)
 - [direct.txt](https://rules.neuq.de/clash/Loyalsoldier/direct.txt)

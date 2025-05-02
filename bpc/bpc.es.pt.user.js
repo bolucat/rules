@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.1.1.0
+// @version         4.1.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -60,7 +60,6 @@
 // @match           *://*.observador.pt/*
 // @match           *://*.ole.com.ar/*
 // @match           *://*.politicaexterior.com/*
-// @match           *://*.record.pt/*
 // @match           *://*.regio7.cat/*
 // @match           *://*.revistaoeste.com/*
 // @match           *://*.sabado.pt/*
@@ -314,6 +313,16 @@ else if (matchDomain('expresso.pt')) {
     ampToHtml();
 }
 
+else if (matchDomain('infolibre.es')) {
+  if (window.location.pathname.endsWith('.amp.html')) {
+    amp_unhide_access_hide('^="access"', '="NOT access"');
+  } else {
+    amp_redirect('div.paywall__wrapper');
+    let ads = 'div.edi-advertising, div.header-ad';
+    hideDOMStyle(ads);
+  }
+}
+
 else if (matchDomain(['lavanguardia.com', 'mundodeportivo.com'])) {
   let ads = 'span.content-ad, span.hidden-ad, span.ad-unit, div.ad-div';
   hideDOMStyle(ads);
@@ -345,7 +354,7 @@ else if (matchDomain('publico.es')) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain(['record.pt', 'sabado.pt'])) {
+else if (matchDomain('sabado.pt')) {
   if (!window.location.pathname.includes('/amp/'))
     amp_redirect('.bloqueio_exclusivos, .container_assinatura, .bloco_bloqueio', '', window.location.href.replace('/detalhe/', '/amp/'));
   else
@@ -1028,7 +1037,7 @@ function archiveLink(url, text_fail = 'BPC > Try for full article text (no need 
 }
 
 function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
-  return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href, url, text_fail);
+  return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href.split(/[#\?]/)[0], url, text_fail);
 }
 
 function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full article text:\r\n') {
