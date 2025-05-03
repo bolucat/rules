@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: GNnpRYc54oMQay6cgV9oGw
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1746205842-3600.patch
+! Checksum: v+PxZtQsLeyEYtIX7ga7fw
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1746288684-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.81.80
-! TimeUpdated: 2025-05-02T17:06:10+00:00
+! Version: 2.3.81.93
+! TimeUpdated: 2025-05-03T16:06:48+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -21058,9 +21058,9 @@ proboxtv.com##body > div[style^="position: fixed; top:"][style*="z-index:"][styl
 foodtechnos.in###adblock-modal
 ! https://github.com/AdguardTeam/AdguardFilters/issues/201162
 @@||godlikeproductions.com/adblock/js/checks/fingerprint.js$domain=godlikeproductions.com
-! vogue.com - content gets removed in article
-vogue.com#$#.ad.ad-body.ad-slot.ad-content[style*="width: 1px"][style*="height: 1px"] { display: block !important; }
-@@||ads-static.conde.digital/production/cns/builds/vogue/v*.js$domain=vogue.com
+! vogue.com and newyorker.com - content gets removed in article
+newyorker.com,vogue.com#$#.ad.ad-body.ad-slot.ad-content[style*="width: 1px"][style*="height: 1px"] { display: block !important; }
+@@||ads-static.conde.digital/production/cns/builds/$domain=vogue.com|newyorker.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/201324
 read.amazon.*##+js(set-constant, canRunAds, 1)
 read.amazon.*,primevideo.com##+js(set-constant, ue_adb_chk, 1)
@@ -47963,6 +47963,9 @@ $subdocument,third-party,denyallow=disqus.com,domain=welovemanga.one
 ! NOTE: Specific rules
 !
 !
+gunbroker.com##div[id^="adPlacement"]
+gocomics.com##div[class^="HeaderAd_"]
+gocomics.com##div[class*="AdDisplay_"]
 comick.io##.w-full.relative > div.pt-2:has(> div.w-full.flex.justify-center)
 comick.io##.reader-container > div > div#images-reader-container ~ div.py-16:has(> div[id^="pubadx-"])
 indiaglitz.com##.top_cms_ads

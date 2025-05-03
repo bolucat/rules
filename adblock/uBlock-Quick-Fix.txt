@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Fri, 02 May 2025 13:49:43 +0000
-! Diff-Path: ../patches/2025.5.2.928.patch#ublock-quick-fixes
+! Last modified: Sat, 03 May 2025 16:06:16 +0000
+! Diff-Path: ../patches/2025.5.3.992.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -51,13 +51,14 @@ youtube.com##+js(json-prune, entries.[-].command.reelWatchEndpoint.adClientParam
 ! web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.viewer.sideFeed.nodes.0.{-}.nodes.0.rhc_ad)
 ! web.facebook.com,www.facebook.com##+js(json-prune-xhr-response, data.viewer.sideFeed.nodes.0.{-}.nodes.0.rhc_ad, , propsToMatch, /api/graphql)
 web.facebook.com,www.facebook.com##div[role="complementary"] a[aria-labelledby][attributionsrc^="/privacy_sandbox/comet/register/source/?eid="][href^="http"]
-! web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.{-}.ads_data)
-web.facebook.com,www.facebook.com##+js(trusted-replace-xhr-response, '/null,[^\n]{0,170}"node":\{"__typename"[^\n]{0,170}__typename":"SponsoredData"[^\n]+?\},"cursor"/g', 'null,"cursor"', /api/graphql)
+web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.serpResponse.results.edges.[-].rendering_strategy.view_model.story.sponsored_data.ad_id)
+web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.{-}.ads_data.__typename)
+web.facebook.com,www.facebook.com##+js(trusted-replace-xhr-response, '/null,[^\n]{0,170}"node":\{"__typename"[^\n]{0,2500}"__typename":"SponsoredData"[^\n]+?\},"cursor"/g', 'null,"cursor"', /api/graphql)
 ! VOE sites
-||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=diananatureforeign.com,important
-diananatureforeign.com##+js(nowoif)
-diananatureforeign.com##+js(set, console.clear, undefined)
-diananatureforeign.com##+js(acs, globalThis, break;case)
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=jonathansociallike.com,important
+jonathansociallike.com##+js(nowoif)
+jonathansociallike.com##+js(set, console.clear, undefined)
+jonathansociallike.com##+js(acs, globalThis, break;case)
 ! next-episode .net
 !next-episode.net##+js(rmnt, script, '/[\s\S]{0,}head[\s\S]{1900,}/')
 !next-episode.net##+js(rpnt, script, '/.then[\s\S]{0,}?;/g')
@@ -67,7 +68,6 @@ diananatureforeign.com##+js(acs, globalThis, break;case)
 japscan.lol##+js(norafif, /^/)
 japscan.lol##+js(trusted-set-attr, .navbar-nav > li#navpromo2.nav-item > a, onclick, 'let a=function(){};return false;')
 japscan.lol##+js(no-fetch-if, /\/\/ansuksar\.com\/[0-9a-zA-Z]{3\,26}\/\d{4\,6}\b/, length:125746)
-japscan.lol##+js(trusted-replace-fetch-response, /(if\s*\(Array\.isArray\(window\.pubadxtag\)\)\s*\{)/, $1}, /pubadx-ad.js)
 ! START: Counter Liste FR rules
 japscan.lol#@##main > .card:has(a[href*="/manga/?type="][href*="&content="][target="_blank"])
 japscan.lol#@#div.container > [href]
@@ -99,7 +99,7 @@ poophq.com,veev.to,doods.to##+js(no-xhr-if, adsco.re:2087)
 /dl?op=player_api&cmd=*adb=$xhr,1p,important,domain=poophq.com|veev.to|doods.to
 ||adsco.re^$script,redirect=none:5,domain=poophq.com|veev.to|doods.to
 poophq.com,veev.to,doods.to##+js(nostif, /^\s*function\s*\(\s*\)\s*{\s*[a-zA-Z]{1\,2}\s*\(.{1\,10}$/)
-poophq.com,veev.to,doods.to##+js(nostif, /compuuter|lool|tzad|wzab|tzac1/)
+poophq.com,veev.to,doods.to##+js(nostif, /computer|l0ool|tzaz|wzab|tzac/)
 !#endif
 !#endif
 *$script,3p,domain=poophq.com|veev.to|doods.to,redirect-rule=noopjs
