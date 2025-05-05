@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.1.4
+// @version         4.1.1.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1261,6 +1261,39 @@ else if (matchDomain('ajc.com')) {
     paygate.removeAttribute('class');
   let video_blocker = document.querySelector('div.video-blocker');
   removeDOMElement(video_blocker);
+}
+
+else if (matchDomain('al-monitor.com')) {
+  func_post = function () {
+    if (mobile) {
+      let article = document.querySelector(article_sel);
+      if (article) {
+        let lazy_images = article.querySelectorAll('picture > img[loading="lazy"][style]');
+        for (let elem of lazy_images) {
+          elem.style = 'width: 95%;';
+          elem.parentNode.removeAttribute('style');
+        }
+        let art_width = article.offsetWidth - 20 + 'px';
+        let header = document.querySelector('header');
+        if (header)
+          header.style.width = art_width;
+        let elems = article.querySelectorAll(':not(a, svg)[style*="width"]');
+        for (elem of elems) {
+          elem.style.width = art_width;
+          elem.style['grid-template-columns'] = '';
+        }
+        let lang = article.querySelector('div[style] > ul[style*="align-items"]');
+        if (lang)
+          lang.parentNode.removeAttribute('style');
+        let par = article.querySelector('div[style] > div[dir="ltr"]');
+        if (par)
+          par.parentNode.style = 'width: ' + art_width;
+      }
+    }
+  }
+  let url = window.location.href;
+  let article_sel = 'article';
+  getArchive(url, 'div.node__paywall-cta', '', article_sel, '', article_sel, article_sel + ' > div');
 }
 
 else if (matchDomain('americanbanker.com') || matchDomain(usa_arizent_custom_domains)) {
@@ -3677,6 +3710,10 @@ else if (matchDomain('thespectator.com')) {
   let div_hidden = document.querySelector('div.ev-meter-content-class');
   if (div_hidden)
     div_hidden.classList.remove('ev-meter-content-class');
+  let newsletter = pageContains('p', /^\[special_offer\]/);
+  removeDOMElement(...newsletter);
+  let ads = 'ins.adsbygoogle';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('theweek.com')) {
