@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Unbreak
 ! Expires: 5 days
-! Last modified: Fri, 02 May 2025 04:46:11 +0000
-! Diff-Path: ../patches/2025.5.5.816.patch#ublock-unbreak
+! Last modified: Tue, 06 May 2025 07:36:34 +0000
+! Diff-Path: ../patches/2025.5.6.871.patch#ublock-unbreak
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/unbreak.txt ***
@@ -2659,6 +2659,7 @@ the-independent.com##+js(no-fetch-if, npttech.com/advertising.js)
 !#endif
 @@||icanhazip.com^$xhr,domain=dnscheck.tools
 nvidia.com##+js(trusted-set-cookie, ak_bmsc, , 0, , domain, .nvidia.com)
+marketplace.nvidia.com##+js(set, ClickOmniPartner, noopFunc)
 @@||assets.adobedtm.com/extensions/*/AppMeasurement$script,domain=medscape.com
 ||g.doubleclick.net/tag/js/gpt.js$script,xmlhttprequest,domain=kino.de,important
 ||g.doubleclick.net/pagead/managed/js/gpt/$script,domain=kino.de,important
@@ -2701,3 +2702,5 @@ prisjakt.no##+js(set, apntag.refresh, noopFunc)
 @@||outbrain.com^$redirect-rule,domain=stuff.co.nz
 ! unbreak pgportal.gov.in footer banner(Govt of india sites)
 pgportal.gov.in#@#.ad_image
+campusfrance.org##+js(set, pa, {})
+campusfrance.org##+js(set, pa.sendEvent, noopFunc)

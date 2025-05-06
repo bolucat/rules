@@ -1,8 +1,8 @@
 [Adblock Plus 2.0]
-! Checksum: ntyfb0Q7nZFQz86VQ5igpA
-! Version: 202505051811
+! Checksum: kFCf2dk78bYbFYpm7scGuA
+! Version: 202505061811
 ! Title: RU, UA, UZ, KZ
-! Last modified: 05 May 2025 18:11 UTC
+! Last modified: 06 May 2025 18:11 UTC
 ! Expires: 1 days (фильтр обновляется автоматически каждые 2 дня)
 ! Homepage: https://forums.lanik.us/viewforum.php?f=102
 !
@@ -23302,7 +23302,7 @@ https://*adtech_uid=$~third-party,xmlhttprequest,domain=lena-miro.ru|levik.blog|
 ||news.mail.ru/-/*.js?
 ||newsyou.info/wp-content/plugins/gtranslate/
 ||newsyou.info^$csp=script-src-elem 'self' https:
-||pikabu.ru/ajax/*?A81gf=$xmlhttprequest
+||pikabu.ru/ajax/*?n7jrU=$xmlhttprequest
 ||ritsatv.ru^$csp=script-src
 ||ritsatv.ru^$popup
 ||ritsatv.ru^$~document
@@ -23878,17 +23878,24 @@ ok.ru##.exit-popup
 ok.ru#?#.feed-list > .feed-w:-abp-has(> [class^="feed"] > .feed-header [class] ~ [class] ~ [class] ~ [class] ~ [class] ~ [class])
 ok.ru#?#.feed-list > .feed-w:-abp-has([class^="feed"][class*="label"]:-abp-contains(Реклама))
 ok.ru#?#.feed-list > .feed-w:-abp-has(button[class*="advert-badge"])
+ok.ru#?#.feed-list > .feed-w:-abp-has(dzen-content)
 ok.ru##.forthTopAdv
 ok.ru##.html5-vpl_oklive-banner
+ok.ru#?#[data-logger="SimpleLogger"]:-abp-has([href^="https://dzen.ru/"])
+ok.ru#?#[data-logger="SimpleLogger"]:-abp-has(dzen-content)
 ok.ru#?#div:-abp-has(> #hook_Block_CompactFooter) > div:not(#hook_Block_CompactFooter)
 ok.ru##div[class*="__banner-feed-"]
 ok.ru##div[data-place*="BANNER"]
+ok.ru##dzen-content
 ! Очень однобокая реклама Хрома + очень часто просят удалить
 ok.ru##.update-browser_container
 ! Блокировка
+/DzenLoader$domain=ok.ru
+/res/assets/alf2-$script,domain=ok.ru
+/res/assets/RightColumn-$script,domain=ok.ru
+/res/react/dzen$domain=ok.ru
+||ok.ru/web-api/pts/dzen-
 ||st.mycdn.me/res/i/anonym/jakobs/$image
-||st.okcdn.ru/res/assets/alf2-$script,domain=ok.ru
-||st.okcdn.ru/res/assets/RightColumn-$script,domain=ok.ru
 ! Реклама, встроенная расширением OkTools)
 ok.ru##iframe[src^="//oktools.ru/page/static/"]
 ||oktools.ru/page/static/
