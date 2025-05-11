@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         4.0.8.1
+// @version         4.0.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fi.se.user.js
@@ -235,7 +235,7 @@ function replaceDomElementExtSrc(url, url_src, html, proxy, base64, selector, te
                 arch_dom = arch_dom.firstChild;
               let arch_div = document.createElement('div');
               arch_div.appendChild(archiveLink_renew(url_src));
-              arch_div.appendChild(archiveLink(window.location.href, 'BPC > Full article text fetched from (no need to report issue for external site):\r\n'));
+              arch_div.appendChild(archiveLink(window.location.href.split(/[#\?]/)[0], 'BPC > Full article text fetched from (no need to report issue for external site):\r\n'));
               arch_div.style = 'margin: 0px 0px 50px;';
               arch_dom.before(arch_div);
             }
@@ -309,7 +309,7 @@ function archiveLink(url, text_fail = 'BPC > Try for full article text (no need 
 }
 
 function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
-  return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href, url, text_fail);
+  return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href.split(/[#\?]/)[0], url, text_fail);
 }
 
 function nftLink(url, text_fail = 'BPC > Full article text:\r\n') {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.1.5
+// @version         4.1.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1481,32 +1481,38 @@ else if (matchDomain('barrons.com')) {
 else if (matchDomain('benzinga.com')) {
   function benz_main(node) {
     removeDOMElement(node);
-    let blurred = document.querySelector('div.article-content-paywalled');
-    if (blurred) {
-      blurred.classList.remove('article-content-paywalled');
-      let key_points = document.querySelectorAll('li.blur-sm');
-      for (let elem of key_points)
-        elem.classList.remove('blur-sm');
-      let article = document.querySelector('div#article-body');
-      if (article) {
-        let json_script = document.querySelector('script#__NEXT_DATA__');
-        if (json_script) {
-          try {
-            let json = JSON.parse(json_script.text);
-            if (json && json.props.pageProps.article.primaryImage) {
-              let img_data = json.props.pageProps.article.primaryImage;
-              if (img_data.url) {
-                let img = document.createElement('img');
-                img.src = img_data.url;
-                img.alt = img_data.alt;
-                article.before(img);
+    if (!window.location.pathname.startsWith('/report/')) {
+      let blurred = document.querySelector('div.article-content-paywalled');
+      if (blurred) {
+        blurred.classList.remove('article-content-paywalled');
+        let key_points = document.querySelectorAll('li.blur-sm');
+        for (let elem of key_points)
+          elem.classList.remove('blur-sm');
+        let article = document.querySelector('div#article-body');
+        if (article) {
+          let json_script = document.querySelector('script#__NEXT_DATA__');
+          if (json_script) {
+            try {
+              let json = JSON.parse(json_script.text);
+              if (json && json.props.pageProps.article.primaryImage) {
+                let img_data = json.props.pageProps.article.primaryImage;
+                if (img_data.url) {
+                  let img = document.createElement('img');
+                  img.src = img_data.url;
+                  img.alt = img_data.alt;
+                  article.before(img);
+                }
               }
+            } catch (err) {
+              console.log(err);
             }
-          } catch (err) {
-            console.log(err);
           }
         }
       }
+    } else {
+      let blurred = document.querySelector('div.blur-lg');
+      if (blurred)
+        blurred.classList.remove('blur-lg');
     }
   }
   waitDOMElement('div.paywall-content', 'DIV', benz_main, false);
@@ -3469,6 +3475,11 @@ else if (matchDomain('theglobeandmail.com')) {
     elem.src = elem.getAttribute('data-src');
   let ads = 'div.c-ad--base';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('thehill.com')) {
+  let banners = 'div.civic-science-article-container:empty, aside.ad-unit, iframe#instaread_iframe:not([src])';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
