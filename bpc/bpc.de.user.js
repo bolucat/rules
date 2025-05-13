@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.2.0
+// @version         4.1.2.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -585,6 +585,7 @@ else if (matchDomain('stern.de')) {
         let lazy_images = article.querySelectorAll('figure > img[loading="lazy"][style]');
         for (let elem of lazy_images) {
           elem.style = 'width: 95%;';
+          elem.parentNode.style = 'margin-bottom: 20px';
           let caption = elem.parentNode.querySelector('figcaption');
           if (caption)
             caption.style = 'width: 95%;';
@@ -592,13 +593,16 @@ else if (matchDomain('stern.de')) {
         let article_recs = article.querySelectorAll('article');
         for (let elem of article_recs)
           elem.style = 'width: 95%;';
+        let article_opulent = document.querySelector('div.page-opulent__body-inner > div > div');
+        if (article_opulent)
+          article_opulent.removeAttribute('style');
       }
     }
   }
   let paywall_sel = 'ws-paywall';
   let article_sel = 'div.article__body';
   let article_src_sel = 'main > article > div:last-child';
-  let link_sel = 'div.page__content-inner';
+  let link_sel = 'div.page__content-inner, div.page-opulent__body';
   let url = window.location.href;
   getArchive(url, paywall_sel, '', article_sel, '', article_src_sel, link_sel);
 }
@@ -1028,6 +1032,18 @@ else if (matchDomain(de_ippen_media_domains) || document.querySelector('header a
 }
 
 else if (matchDomain('ruhrnachrichten.de') || document.querySelector('a.mgw-logo[href^="https://mgw.de"]')) {
+  func_post = function () {
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 95%;';
+      let read_more = document.querySelectorAll('article[id] > figure');
+      for (let elem of read_more) {
+        elem.removeAttribute('style');
+        elem.parentNode.removeAttribute('style');
+      }
+    }
+  }
   let url = window.location.href;
   getArchive(url, 'body.is_plus_article', {rm_class: 'is_plus_article'}, 'div#premium-content');
   if (!matchDomain('ruhrnachrichten.de')) {
@@ -1485,7 +1501,8 @@ function amp_unhide_subscr_section(amp_ads_sel = '', replace_iframes = true, amp
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
   for (let elem of subscr_section)
     elem.removeAttribute('subscriptions-section');
-  hideDOMStyle(amp_ads_sel, 5);
+  if (amp_ads_sel)
+    hideDOMStyle(amp_ads_sel, 5);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
@@ -1498,7 +1515,8 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
     let amp_access_not_dom = document.querySelectorAll('[amp-access' + amp_access_not + ']');
     removeDOMElement(...amp_access_not_dom);
   }
-  hideDOMStyle(amp_ads_sel, 6);
+  if (amp_ads_sel)
+    hideDOMStyle(amp_ads_sel, 6);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }

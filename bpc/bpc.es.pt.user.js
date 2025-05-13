@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.1.1.2
+// @version         4.1.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -162,17 +162,17 @@ else if (matchDomain('elespanol.com')) {
 }
 
 else if (matchDomain(es_unidad_domains)) {
-  if (!window.location.hostname.match(/^amp(-[a-z]{2})?\./)) {
+  if (!window.location.hostname.startsWith('amp.')) {
     let url = window.location.href;
     if (!window.location.pathname.startsWith('/mejores-colegios')) {
-      amp_redirect('div.ue-c-article__premium', '', url.replace('/www.', '/amp.'));
+      amp_redirect('div[class^="ue-c-article__premium"]', '', url.replace('/www.', '/amp.'));
     } else if (matchDomain('elmundo.es')) {
       header_nofix('main p', 'div.ue-c-article__premium');
       header_nofix('table', 'div.ue-c-paywall');
     }
   } else {
     amp_unhide_access_hide('="authorized=true"', '="authorized!=true"');
-    amp_unhide_subscr_section('.advertising, div.ue-c-ad');
+    amp_unhide_subscr_section('.advertising, .ue-c-ad');
   }
 }
 
@@ -975,7 +975,8 @@ function amp_unhide_subscr_section(amp_ads_sel = '', replace_iframes = true, amp
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
   for (let elem of subscr_section)
     elem.removeAttribute('subscriptions-section');
-  hideDOMStyle(amp_ads_sel, 5);
+  if (amp_ads_sel)
+    hideDOMStyle(amp_ads_sel, 5);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
@@ -988,7 +989,8 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
     let amp_access_not_dom = document.querySelectorAll('[amp-access' + amp_access_not + ']');
     removeDOMElement(...amp_access_not_dom);
   }
-  hideDOMStyle(amp_ads_sel, 6);
+  if (amp_ads_sel)
+    hideDOMStyle(amp_ads_sel, 6);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.2.0
+// @version         4.1.2.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -200,7 +200,7 @@ var uk_dmg_media_domains = ['dailymail.co.uk', 'mailonsunday.co.uk', 'thisismone
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
 var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntraveler.com', 'epicurious.com', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.co.uk', 'vogue.com', 'wired.com'];
-var usa_craincomm_domains = ['360dx.com', 'adage.com', 'chicagobusiness.com', 'crainscleveland.com', 'crainsdetroit.com', 'crainsgrandrapids.com', 'crainsnewyork.com', 'european-rubber-journal.com', 'genomeweb.com', 'modernhealthcare.com', 'pionline.com', 'plasticsnews.com', 'precisionmedicineonline.com', 'rubbernews.com', 'sustainableplastics.com', 'tirebusiness.com', 'utech-polyurethane.com'];
+var usa_craincomm_domains = ['360dx.com', 'adage.com', 'autonews.com', 'chicagobusiness.com', 'crainscleveland.com', 'crainsdetroit.com', 'crainsgrandrapids.com', 'crainsnewyork.com', 'european-rubber-journal.com', 'genomeweb.com', 'modernhealthcare.com', 'pionline.com', 'plasticsnews.com', 'precisionmedicineonline.com', 'rubbernews.com', 'sustainableplastics.com', 'tirebusiness.com', 'utech-polyurethane.com'];
 var usa_gannett_domains = ['azcentral.com', 'cincinnati.com', 'commercialappeal.com', 'courier-journal.com', 'democratandchronicle.com', 'desmoinesregister.com', 'detroitnews.com', 'dispatch.com', 'freep.com', 'indystar.com', 'jacksonville.com', 'jsonline.com', 'knoxnews.com', 'news-press.com', 'northjersey.com', 'oklahoman.com', 'statesman.com', 'tennessean.com'];
 var usa_hearst_comm_domains = ['ctpost.com', 'expressnews.com', 'houstonchronicle.com', 'nhregister.com', 'sfchronicle.com', 'timesunion.com'];
 var usa_lee_ent_domains = ['buffalonews.com', 'journalnow.com', 'journalstar.com', 'madison.com', 'nwitimes.com', 'omaha.com', 'richmond.com', 'stltoday.com', 'tucson.com', 'tulsaworld.com'];
@@ -232,7 +232,7 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || document.
     let header = paywall.querySelector('h1');
     if (header) {
       header.before(freediumLink(url));
-      header.before(readMediumLink(url));
+      //header.before(readMediumLink(url));
     }
   }
   window.setTimeout(function () {
@@ -251,12 +251,12 @@ if (matchDomain('afr.com')) {
   let article_sel = '#endOfArticle:not(:empty)';
   let article = document.querySelector(article_sel);
   if (!article) {
-    article_sel = 'section#body-content';
+    article_sel = '#body-content';
     article = document.querySelector(article_sel);
   }
   if (article) {
     window.setTimeout(function () {
-      let pars = article.querySelectorAll('p:not([class]), figure:not(:empty)');
+      let pars = article.querySelectorAll('p:not([class]), p[class*="-defaultWrapper"], figure:not(:empty)');
       let pagination = document.querySelector('div > span#pagination-top');
       if ((pars.length && pars.length < 5) || pagination) {
         if (pagination) {
@@ -317,11 +317,17 @@ if (matchDomain('afr.com')) {
                       if (placeholders)
                         json_text = json_text.replace(/<x-placeholder id="(\w+)"><\/x-placeholder>/g, find_item);
                       let parser = new DOMParser();
-                      let doc = parser.parseFromString('<div id="endOfArticle">' + json_text + '</div>', 'text/html');
+                      let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
                       let content_new = doc.querySelector('div');
-                      if (article_sel.startsWith('#endOfArticle'))
+                      let widget = document.querySelector('div[class$="-wrapper"] > div#WidgetContainer');
+                      if (article_sel.startsWith('#endOfArticle')) {
                         article.parentNode.replaceChild(content_new, article);
-                      else
+                        if (widget)
+                          content_new.firstChild.before(widget.parentNode);
+                        window.setTimeout(function () {
+                          content_new.id = 'endOfArticle';
+                        }, 500);
+                      } else
                         article.firstChild.before(content_new);
                       addStyle(article_sel + ' p {margin: 20px 0px;}');
                     } else {
@@ -3283,6 +3289,48 @@ else if (matchDomain('swarajyamag.com')) {
   }
 }
 
+else if (matchDomain('techinasia.com')) {
+  let paywall = document.querySelector('div.paywall-content');
+  if (paywall) {
+    hideDOMStyle('div.paywall-content');
+    let content_new = paywall.querySelector('div.content');
+    let empty_par = content_new.querySelector('a.flourish-credit:not(img), h2:not(:has(~ p))');
+    if (!empty_par) {
+      let div = document.createElement('div');
+      div.className = paywall.className.replace('paywall-content', '');
+      div.append(content_new);
+      paywall.before(div);
+      let container = document.querySelector('div.col div > div.container');
+      if (container)
+        container.classList.remove('container');
+    } else {
+      let url = window.location.href;
+      let url_xhr = url.replace('.com/', '.com/wp-json/techinasia/2.0/posts/').replace('/visual-story/', '/');
+      fetch(url_xhr)
+      .then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            let json_text = json.posts[0].content;
+            json_text = json_text.replace(/width\=\"(\d){3,}\"/g, 'width="100%"').replace(/height\=\"(\d){3,}\"/g, 'height="100%"');
+            if (json_text) {
+              let parser = new DOMParser();
+              let doc = parser.parseFromString('<div class="content">' + json_text + '</div>', 'text/html');
+              let content_new = doc.querySelector('div.content');
+              let content = document.querySelector('div.content');
+              if (content)
+                content_new.className = content.className;
+              paywall.before(content_new);
+            }
+          });
+        }
+      });
+    }
+  }
+  let splash_subscribe = document.querySelector('div.splash-subscribe');
+  let paywall_hard = document.querySelector('div.paywall-hard');
+  removeDOMElement(splash_subscribe, paywall_hard);
+}
+
 else if (matchDomain(['techtarget.com', 'computerweekly.com'])) {
   let paywall = document.querySelector('div.paywall');
   if (paywall) {
@@ -3952,7 +4000,7 @@ else if (matchDomain(usa_conde_nast_domains)) {
 }
 
 else if (matchDomain(usa_craincomm_domains)) {
-  if (matchDomain('adage.com')) {
+  if (domain = matchDomain(['adage.com', 'autonews.com'])) {
     let paywall = document.querySelector('div#piano-paywall-container');
     let article = document.querySelector('article.b-article-body');
     if (paywall && article) {
@@ -3992,10 +4040,10 @@ else if (matchDomain(usa_craincomm_domains)) {
                 }
               } else if (par.type === 'video') {
                 if (par.canonical_url) {
-                  if (par.canonical_website === 'adage') {
+                  if (domain.startsWith(par.canonical_website)) {
                     par_new = document.createElement('p');
                     let par_link = document.createElement('a');
-                    par_link.href = par_link.innerText = 'https://www.adage.com' + par.canonical_url.replace(/\/$/, '');
+                    par_link.href = par_link.innerText = 'https://www.' + domain + par.canonical_url.replace(/\/$/, '');
                     par_link.target = '_blank';
                     par_new.appendChild(par_link);
                   } else
@@ -5058,7 +5106,8 @@ function amp_unhide_subscr_section(amp_ads_sel = '', replace_iframes = true, amp
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
   for (let elem of subscr_section)
     elem.removeAttribute('subscriptions-section');
-  hideDOMStyle(amp_ads_sel, 5);
+  if (amp_ads_sel)
+    hideDOMStyle(amp_ads_sel, 5);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
@@ -5071,7 +5120,8 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
     let amp_access_not_dom = document.querySelectorAll('[amp-access' + amp_access_not + ']');
     removeDOMElement(...amp_access_not_dom);
   }
-  hideDOMStyle(amp_ads_sel, 6);
+  if (amp_ads_sel)
+    hideDOMStyle(amp_ads_sel, 6);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
