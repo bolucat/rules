@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.2.2
+// @version         4.1.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1545,9 +1545,57 @@ else if (matchDomain('bizjournals.com')) {
   if (window.location.pathname.includes('/subscriber-only/')) {
     header_nofix('div.primary');
   } else {
-    let paywall_content = document.querySelectorAll('.paywall-content[style]');
-    for (let elem of paywall_content)
-      elem.removeAttribute('style');
+    let paywall = document.querySelector('div.paywall-content:empty');
+    if (paywall) {
+      paywall.classList.remove('paywall-content');
+      let article = document.querySelector('div#ContentTease');
+      if (article) {
+        let json_script = document.querySelector('script#__NUXT_DATA__');
+        if (json_script) {
+          try {
+            let json = JSON.parse(json_script.text);
+            if (json) {
+              let pars_index = json.indexOf('paragraph') + 1;
+              if (pars_index) {
+                let parser = new DOMParser();
+                article.innerHTML = '';
+                let hl_index = json.indexOf('highlights') + 1;
+                if (hl_index) {
+                  let container = document.createElement('div');
+                  container.className = 'border border-gray-300 p-2 font-sans';
+                  container.style = 'margin-bottom: 20px;';
+                  let title = document.createElement('h3');
+                  title.className = 'pb-4 font-bold';
+                  title.innerText = 'Story Highlights';
+                  let doc = parser.parseFromString('<div class="content mb-4">' + json[hl_index] + '</div>', 'text/html');
+                  let highlights = doc.querySelector('div');
+                  container.append(title, highlights);
+                  article.appendChild(container);
+                }
+                for (let i = pars_index; i < pars_index + 50; i++) {
+                  let par = json[i];
+                  let style = '';
+                  if (par === 'header') {
+                    style = 'font-weight: bold;';
+                    i++;
+                    par = json[i];
+                  }
+                  if (par && typeof par === 'string') {
+                    if (par.match(/^\d{4}-\d{2}-/))
+                      break;
+                    let doc = parser.parseFromString('<p class="content mb-4"' + (style ? 'style="' + style + '"' : '') + '>' + par + '</p>', 'text/html');
+                    let par_new = doc.querySelector('p');
+                    article.appendChild(par_new);
+                  }
+                }
+              }
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+    }
     window.setTimeout(function () {
       let dialog = document.querySelector('div[id^="headlessui-dialog-"], div.sheet-overlay');
       if (dialog) {
@@ -1564,7 +1612,7 @@ else if (matchDomain('bizjournals.com')) {
       }
     }, 1000);
   }
-  let ads = 'div.adwrap';
+  let ads = 'div.adwrap, div[data-dev="MovableAd"]';
   hideDOMStyle(ads);
 }
 
