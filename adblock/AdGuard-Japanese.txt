@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: yGyOg1IIPAQTf8YTYQEYtg
-! Diff-Path: ../patches/7/7-s-1747206700-3600.patch
+! Checksum: noUYSeIbv7iUv6iBYqMx1Q
+! Diff-Path: ../patches/7/7-s-1747325524-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.64.53
-! TimeUpdated: 2025-05-14T07:07:27+00:00
+! Version: 2.0.64.56
+! TimeUpdated: 2025-05-15T16:08:02+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -27,6 +27,7 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp|~rakuten.ne.jp
 !
+||linoee.com^$all
 ||line-e.com^$all
 ||shindnx.site^$document
 ||ads-lite2.net^$third-party
@@ -1713,8 +1714,8 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 .asp?AC=*&IC=$document,to=com|fun|online|site
 /ap/signin/openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.co.jp$document,to=cn|top|xyz
 /index.php?route=product/product&product_id=$document,to=cyou|life|live|shop|xyz|~ocam.live
-/index.php?main_page=product_info*&cPath=$document,to=asia|bar|beauty|best|biz|bond|buzz|cam|cfd|click|cloud|club|cyou|fit|fun|gay|homes|icu|ink|lat|life|live|ltd|me|mom|monster|my|one|online|pics|pro|qpon|quest|rest|ru.com|sa.com|sbs|shop|site|skin|space|store|tokyo|top|website|wiki|work|xyz|za.com
-/index.php?main_page=product_info&products_id=$document,to=asia|bar|beauty|best|biz|bond|buzz|cam|cfd|click|cloud|club|cyou|fit|fun|gay|homes|icu|ink|lat|life|live|ltd|me|mom|monster|my|one|online|pics|pro|qpon|quest|rest|ru.com|sa.com|sbs|shop|site|skin|space|store|tokyo|top|website|wiki|work|xyz|za.com
+/index.php?main_page=product_info*&cPath=$document,to=asia|bar|beauty|best|biz|bond|buzz|cam|cfd|click|cloud|club|cyou|fit|fun|gay|homes|icu|ink|lat|life|live|ltd|makeup|me|mom|monster|my|one|online|pics|pro|qpon|quest|rest|ru.com|sa.com|sbs|shop|site|skin|space|store|tokyo|top|website|wiki|work|xyz|za.com
+/index.php?main_page=product_info&products_id=$document,to=asia|bar|beauty|best|biz|bond|buzz|cam|cfd|click|cloud|club|cyou|fit|fun|gay|homes|icu|ink|lat|life|live|ltd|makeup|me|mom|monster|my|one|online|pics|pro|qpon|quest|rest|ru.com|sa.com|sbs|shop|site|skin|space|store|tokyo|top|website|wiki|work|xyz|za.com
 /\.(?:club|cn|icu|top|pro|site|work)\/Personal\/member\/Login\/index\.php\?oneTimeAccessID=/$document,to=club|cn|icu|top|pro|site|work
 !
 /^https:\/\/[a-z]{4,8}\.[a-z]{7,10}\.shop\/product\/\d{4,7}$/$document,match-case
@@ -2527,6 +2528,7 @@ w.atwiki.jp##iframe[width="728px"][height="90px"]
 crank-in.net###bannerin
 qiita.com##.p-items_main > div:not([class], [id]) > aside[class^="style-"]:has(> div:only-child:not([class], [id]) > div[class^="style-"]:only-child > div[class^="style-"] > div[data-testid="ArticleAdsAfterBody_AdUnit"])
 ||api.twieromanga.com/api/headerancherad
+weathernews.jp##div[id^="ads-"][class^="ads-"][style]
 weathernews.jp##.pc[style="text-align: center; min-height: 100px;"]
 weathernews.jp###sub > section.dmenu-non:has(> div[style="width: 100%; margin: 0px auto 10px; text-align: center;"] > div[id^="div-gpt-"])
 weathernews.jp#$##footer[style="margin-bottom: 100px;"] { margin-bottom: 0 !important; }
@@ -3433,8 +3435,6 @@ allabout.co.jp###sys-upper-rec
 allabout.co.jp#?#.aa_swipe-content > div.aa_box-center:has(> div.ad-bnr)
 coindeskjapan.com#?#body > div.mx-10px.py-60px:has(> div.flex > div[id^="div-gpt-ad"])
 coindeskjapan.com#?#body > div.mx-10px > div.border-b:has(>  div.flex > div[id^="div-gpt-ad"])
-madamefigaro.jp##.modfortuneSign
-numero.jp##div[style="min-height: 300px;"]
 numero.jp##.bnr_wide
 numero.jp##.new_ad_area
 blogterest.net#?#.blockAreaMainMiddle > div.blockWrapper > .blockBody > h2 + div[style="padding:10px;"] > a[href^="https://al.dmm.co.jp"][target="_blank"] > img[style="border-radius:15px;border:5px solid #dedede;"]:upward(3)
@@ -5414,7 +5414,6 @@ ani-chat.net###side-fixed > div.widget_execphp
 ani-chat.net##.txt > p > a[target="_blank"][rel^="noopener"]
 ani-chat.net##.posts-under-1 > div.execphpwidget > div.txt
 city.komae.tokyo.jp###DynamicAd
-thebest-1.com##.ads_fix_height_sp
 bushikaku.net##.sys_search_ad_text
 bushikaku.net##.ad__middle-banner__item--search
 lp.p.pia.jp##.advert__wrapper
@@ -6130,7 +6129,6 @@ qjweb.jp##li.detail_box[style$="display: flex; align-items: center; justify-cont
 home.kingsoft.jp###article-list > li:has(> div > iframe[width="300px"][height="250px"])
 home.kingsoft.jp##.list-group-item:has(> .pr)
 home.kingsoft.jp##div[style="min-height: 256px;"]
-home.kingsoft.jp##div[style="min-height: 280px;"]
 home.kingsoft.jp##[class*="-ads"]
 mart-magazine.com##.l-banner01Ad
 yaraon-blog.com###mytextwidget-36
@@ -6490,7 +6488,6 @@ brutus.jp##.c-widget-adbanner-frame
 ananweb.jp##.ad-banner:not([data-name="single-2-soken"])
 agrinews.co.jp##.newadarea
 agrinews.co.jp##.uk-width-large-12
-casabrutus.com##div[id^="ads-"]
 hanako.tokyo##.ad-banner:not([data-name=single-related-posts])
 woman.mynavi.jp##.is-banner:not(#shindan_top_sns_area)
 woman.mynavi.jp##.is-sponsored
@@ -6677,8 +6674,6 @@ caramel-sp.com##li[id^="native_"]
 ||caramel-sp.com/ad/
 jav380.com##div[style="position: fixed; bottom: 5px; right: 5px; width: 300px; z-index: 9999;"]
 musenboya.com##.entry-footer > a[href^="https://hb.afl.rakuten.co.jp"]
-theav.xyz##.c307ad
-.gif$domain=theav.xyz,third-party
 zabuu.site##.ads_za
 seikyouiku-illust.com##.c-sponsorbanner
 famitsu.com##amp-iframe[width="382"][height="700"]
@@ -6695,13 +6690,10 @@ net-frx.com##.postman22-nw2
 net-frx.com##.postman22-nw255
 net-frx.com##.botmads
 rankingoo.net,sirabee.com,toyokeizai.net##.related
-thebest-1.com##.ads_fix_height_pc
 store.united-arrows.co.jp###glr_popup
 unitedcinemas.jp##.sideAd_300x250
 tokion.jp##div[class*="tkn-ad--top-billboard"]
-||seikatsu110.jp/img/webp/library/bnr_network_
-ieeebd.org##.b-r--before-site-content
-j-lic.com,ieeebd.org##div[style="min-height: 280px;"]
+home.kingsoft.jp,j-lic.com##div[style="min-height: 280px;"]
 logmi.jp##.ranking-item[data-rank="PR"]
 orefolder.jp##div[style$="min-height:175px;"]
 sunri2525.blog.jp##.left-column-inner > div.plugin-rakuten + div.plugin-memo
@@ -8722,7 +8714,7 @@ inazumanews2.com##.kkk
 kobe-np.co.jp##.isInfeedLoad
 kobe-np.co.jp##.prNews
 kobe-np.co.jp##div[id^="knpc-"]
-cat.benesse.ne.jp,dog.benesse.ne.jp##div[style="min-height: 300px;"]
+numero.jp,cat.benesse.ne.jp,dog.benesse.ne.jp##div[style="min-height: 300px;"]
 st.benesse.ne.jp##div[id^="div-M_MD_kiji_fluid_"]
 benesse.ne.jp##div[style^="height: 250px"]
 ||39.benesse.ne.jp/resource/ad/
@@ -9500,13 +9492,13 @@ jorudan.co.jp##div[style^="width:500px;min-height:280px"]
 jorudan.co.jp##.amazon_associate_banner
 jorudan.co.jp##.com_pr_rmads_right
 jorudan.co.jp##div[id^="Ads_google_"]
-||smtgvs.weathernews.jp/s/topics/img/banner/
 alc.co.jp###news > ul
 alc.co.jp###container > div[style^="width:1100px; "]
 ||aacdn.jp/js/aa/matome/ad.js
 news.allabout.co.jp##.layout_sidebar > div.obtain-height
 allabout.co.jp###fourm_video
-allabout.co.jp##div[id^="sys"][data-tracking-zone*="-ad"]
+allabout.co.jp##div[id^="sys_aa_"]
+allabout.co.jp##div[id^="sys-"]
 allabout.co.jp##.aa_content-side > div[data-tracking-zone] > div.obtain-height
 allabout.co.jp##.sys-aa_placement
 allabout.co.jp##.docomo_custom_alliance
@@ -10302,8 +10294,6 @@ fc1adult.com#?#.tag_list + div.block-title:contains(今日から配信のHey動�
 mabui-onna.com#?#.plugin_first:has(> div > div.plugin-freearea[style="text-align:left"])
 oppao.blog.jp#?#.plugin-memo:has(> .side > .dmm_ranking)
 web.fc2.com#?#body > table[width="150"][border="0"][cellspacing="0"][cellpadding="3"]:has(table[width="100%"][border="1"][cellpadding="5"] a[href^="http://click.t2z.jp/zzz/"][target="_blank"])
-forzastyle.com#?#footer > section:has(> div[id^="logly-"])
-forzastyle.com#?#footer > section:has(> div[id^="logly-"]) + hr.bold
 ranking.goo.ne.jp#?#.main-ranking > dd > ul > li:has(> div.NR-ad)
 yuchrszk.blogspot.com#?##side-section > div.HTML:has(> div.widget-content > div.separator > a[href*="?utm_source"])
 manababy.jp#?#.recommend_list > ul > li.cf:has(i.pr)

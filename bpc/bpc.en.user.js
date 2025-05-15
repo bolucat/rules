@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.2.3
+// @version         4.1.2.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -790,46 +790,14 @@ else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
 }
 
 else if (matchDomain('businesspost.ie')) {
-  function bpie_main() {
-    if ($) {
-      let article_id_dom = document.querySelector('article[id]');
-      let article_id;
-      if (article_id_dom)
-        article_id = article_id_dom.id;
-      if (article_id) {
-        let bp_ajaxurl = 'https://www.businesspost.ie/wp-admin/admin-ajax.php';
-        let data_ajax = {
-          action: 'fetch_article_content',
-          type: 'POST',
-          data: {
-            id: article_id
-          },
-          dataType: 'json',
-          contentType: 'application/json'
-        };
-        $.ajax({
-          type: 'POST',
-          url: bp_ajaxurl,
-          data: data_ajax,
-          success: function (data) {
-            $('main article .article-body-section').html(data);
-          }
-        });
-      }
-    } else
-      refreshCurrentTab();
+  let url = window.location.href;
+  let paywall = document.querySelector('div#bp_piano_article_subscription_offer');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.article-content');
+    if (article)
+      article.firstChild.before(archiveLink(url));
   }
-  window.setTimeout(function () {
-    let paywall = document.querySelector('div#bp_paywall_content');
-    let article_id_dom = document.querySelector('article[id]');
-    let article_id;
-    if (article_id_dom)
-      article_id = article_id_dom.id;
-    if (paywall || article_id) {
-      removeDOMElement(paywall);
-      insert_script(bpie_main);
-    }
-  }, 500);
 }
 
 else if (matchDomain('decanter.com')) {
