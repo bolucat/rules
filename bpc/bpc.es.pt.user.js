@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.1.2.0
+// @version         4.1.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -189,7 +189,18 @@ else if (matchDomain(es_grupo_vocento_domains)) {
   let paywall_sel = 'div.voc-paywall, div.container-wall-exclusive__content-login';
   let paywall = document.querySelector(paywall_sel);
   if (!window.location.pathname.endsWith('_amp.html')) {
-    if (!matchDomain(['eldiariomontanes.es'])) {
+    if (matchDomain('abc.es')) {
+      if (paywall) {
+        let span_break = document.querySelector('span.c-text');
+        removeDOMElement(paywall, span_break);
+        let art_hidden = document.querySelectorAll('span.paywall, div.wpb_column > span');
+        for (let elem of art_hidden) {
+          let attributes = [...elem.attributes];
+          for (let attrib of attributes)
+            elem.removeAttribute(attrib.name);
+        }
+      }
+    } else if (!matchDomain(['eldiariomontanes.es'])) {
       amp_redirect(paywall_sel, '', window.location.pathname.replace('.html', '_amp.html'));
     } else {
       if (paywall) {
@@ -198,13 +209,21 @@ else if (matchDomain(es_grupo_vocento_domains)) {
         removeDOMElement(paywall);
       }
     }
-    let banners = 'div.voc-advertising, div.voc-ob-wrapper, div.voc-discounts, div.ev-em-modal, span.mega-superior, div.v-adv';
-    hideDOMStyle(banners);
+    let ads = '.voc-advertising, div.voc-ob-wrapper, div.voc-discounts, div.ev-em-modal, span.mega-superior, div.v-adv';
+    hideDOMStyle(ads);
   } else {
-    amp_unhide_access_hide('="result=\'ALLOW_ACCESS\'"', '="result!=\'ALLOW_ACCESS\'"', 'div.v-adv');
-    let body_top = document.querySelector('body#top');
-    if (body_top)
-      body_top.removeAttribute('id');
+    if (matchDomain('abc.es') && window.location.pathname.startsWith('/xlsemanal/')) {
+      let paywall = document.querySelector('div.voc-pw');
+      if (paywall) {
+        removeDOMElement(paywall);
+        ampToHtml();
+      }
+    } else {
+      amp_unhide_access_hide('="result=\'ALLOW_ACCESS\'"', '="result!=\'ALLOW_ACCESS\'"', 'div.v-adv');
+      let body_top = document.querySelector('body#top');
+      if (body_top)
+        body_top.removeAttribute('id');
+    }
   }
 }
 

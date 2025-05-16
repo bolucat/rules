@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.2.4
+// @version         4.1.2.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3524,10 +3524,71 @@ else if (matchDomain('thedailybeast.com')) {
 else if (matchDomain('thediplomat.com')) {
   if (matchDomain('magazine.thediplomat.com')) {
     let article = document.querySelector('article > section.h-96');
-    if (article)
+    if (article) {
       article.classList.remove('h-96');
-    let fade = 'aside.bg-gradient-to-b';
-    hideDOMStyle(fade, 2);
+      let art_body = article.querySelector('div.prose');
+      if (art_body) {
+        let art_img = article.parentNode.querySelector('figure > picture > img[src]');
+        let art_img_src;
+        let art_img_match;
+        if (art_img) {
+          art_img_src = art_img.getAttribute('src');
+          let match = art_img.getAttribute('src').match(/\/media\/\d+\/(\w+)\.\w+/);
+          if (match)
+            art_img_match = match[1];
+        }
+        let url = window.location.href.split(/[#\?]/)[0];
+        fetch(url)
+        .then(response => {
+          if (response.ok) {
+            response.text().then(html => {
+              if (html.includes('<script>window.__remixContext.streamController.enqueue("')) {
+                try {
+                  let source = (html.split('<script>window.__remixContext.streamController.enqueue("')[1].split(/\](\\n)?"\);<\/script>/)[0] + ']').replace(/\\"/g, '"').replace(/\\\\"/g, '\\"');
+                  let json = JSON.parse(source);
+                  if (json) {
+                    let body_index = json.indexOf('body') + 1;
+                    if (body_index) {
+                      art_body.innerHTML = '';
+                      let parser = new DOMParser();
+                      for (let i = body_index; i < json.length; i++) {
+                        let par = json[i];
+                        if (typeof par === 'string') {
+                          if (par.startsWith('<p>')) {
+                            let doc = parser.parseFromString('<div>' + par + '</div>', 'text/html');
+                            let par_new = doc.querySelector('div');
+                            let pars = par_new.querySelectorAll('p');
+                            for (let par of pars)
+                              art_body.appendChild(par);
+                          } else if (art_img_match && par !== art_img_match && par.includes(art_img_match.slice(0, -1))) {
+                            let caption;
+                            for (let n = i - 5; n < i; n++) {
+                              let item = json[n];
+                              if (typeof item === 'string' && !item.startsWith('<p>') && !['caption', 'credit_name', 'file', 'image'].includes(item) && !item.match(/\d+_\d+/))
+                                caption = caption ? caption + '\r\n' + item : item;
+                            }
+                            let figure = makeFigure(art_img_src.replace(art_img_match, par), caption);
+                            figure.style = 'margin: 20px 0px;';
+                            art_body.appendChild(figure);
+                          }
+                        }
+                      }
+                    }
+                  }
+                } catch (err) {
+                  console.log(err);
+                }
+              }
+            });
+          }
+        })
+      }
+      let fade = 'aside.bg-gradient-to-b';
+      hideDOMStyle(fade, 2);
+      let banner = document.querySelector('section > a[href^="https://thediplomat.com/subscriptions"]');
+      if (banner)
+        removeDOMElement(banner.parentNode);
+    }
   }
   let ads = 'aside.td-ad-container--labeled, div[data-actirise]';
   hideDOMStyle(ads);

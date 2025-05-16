@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.2.2
+// @version         4.1.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -204,44 +204,6 @@ else if (matchDomain('boersen-zeitung.de')) {
       replaceDomElementExt(url, false, false, 'article');
     }
   }, 2000);
-}
-
-else if (matchDomain('cicero.de')) {
-  let url = window.location.href;
-  if (!window.location.search.match(/(\?|&)amp/)) {
-    let paywall = document.querySelector('.plenigo-paywall');
-    if (paywall) {
-      removeDOMElement(paywall);
-      func_post = function () {
-        let related_images = document.querySelectorAll('amp-carousel a > amp-img[src]');
-        for (let elem of related_images) {
-          let img = document.createElement('img');
-          Object.assign(img, {
-            src: elem.getAttribute('src'),
-            height: elem.getAttribute('height'),
-            width: elem.getAttribute('width'),
-            alt: elem.getAttribute('alt')
-          });
-          elem.parentNode.replaceChild(img, elem);
-        }
-        let img_captions = document.querySelectorAll('div.carousel-caption:empty');
-        removeDOMElement(...img_captions);
-      }
-      let url_amp = url.split('?')[0] + '?amp';
-      replaceDomElementExt(url_amp, false, false, '.field-name-field-cc-body');
-    }
-  } else {
-    let teasered_content = document.querySelector('.teasered-content');
-    if (teasered_content)
-      teasered_content.classList.remove('teasered-content');
-    let teasered_content_fader = document.querySelector('.teasered-content-fader');
-    let btn_read_more = document.querySelector('.btn--read-more');
-    removeDOMElement(teasered_content_fader, btn_read_more);
-    let ads = 'amp-ad';
-    hideDOMStyle(ads);
-  }
-  let urban_ad_sign = document.querySelectorAll('.urban-ad-sign');
-  removeDOMElement(...urban_ad_sign);
 }
 
 else if (matchDomain('faz.net')) {

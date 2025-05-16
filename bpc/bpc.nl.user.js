@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.0.9.1
+// @version         4.1.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -63,7 +63,13 @@ var nl_dpg_adr_domains = ['ad.nl', 'bd.nl', 'bndestem.nl', 'destentor.nl', 'ed.n
 var nl_dpg_media_domains = ['demorgen.be', 'flair.nl', 'humo.be', 'libelle.nl', 'margriet.nl', 'parool.nl', 'trouw.nl', 'volkskrant.nl'];
 var nl_mediahuis_region_domains = ['gooieneemlander.nl', 'haarlemsdagblad.nl', 'ijmuidercourant.nl', 'leidschdagblad.nl', 'limburger.nl', 'noordhollandsdagblad.nl'];
 
-if (matchDomain(be_mediahuis_domains)) {
+if (matchDomain('adformatie.nl')) {
+  document.querySelectorAll('iframe[uc-src]').forEach(e => e.src = e.getAttribute('uc-src'));
+  let ads = 'div.c-ad-slot';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain(be_mediahuis_domains)) {
   window.setTimeout(function () {
     let video = document.querySelector('div.video, div[data-testid="article-video"]');
     func_post = function () {

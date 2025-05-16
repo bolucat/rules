@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: noUYSeIbv7iUv6iBYqMx1Q
-! Diff-Path: ../patches/7/7-s-1747325524-3600.patch
+! Checksum: bFk9F2aCvaOaH8EswyAkgw
+! Diff-Path: ../patches/7/7-s-1747415489-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.64.56
-! TimeUpdated: 2025-05-15T16:08:02+00:00
+! Version: 2.0.64.59
+! TimeUpdated: 2025-05-16T17:06:32+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -27,6 +27,8 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp|~rakuten.ne.jp
 !
+||lifeedly.com^$document
+||hyadain.com^$document
 ||linoee.com^$all
 ||line-e.com^$all
 ||shindnx.site^$document
@@ -244,7 +246,6 @@
 ||neofield.click^$third-party
 ||r-ad.ne.jp^$third-party
 ||spreadlink.net^$third-party
-||woomy.me^$third-party
 ||seedapp-creative.s3.amazonaws.com^
 ||admane.jp^$third-party
 ||smaad.net^$third-party
@@ -597,7 +598,7 @@ puzzle-ch.com#@##adframe:not(frameset)
 puzzle-ch.com#@#ins.adsbygoogle[data-ad-client]
 puzzle-ch.com#@#ins.adsbygoogle[data-ad-slot]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/151651
-addchannel.net,beasoku.com,blog.housinkai.com,kakenhi.net,seesaa.net##+js(addEventListener-defuser, DOMContentLoaded, interstitialAd)
+memo.wiki,addchannel.net,beasoku.com,blog.housinkai.com,kakenhi.net,seesaa.net##+js(addEventListener-defuser, DOMContentLoaded, interstitialAd)
 ||blog.seesaa.jp/visual/*/common/js/footer.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/148073
 lemino.docomo.ne.jp##+js(no-xhr-if, doubleclick.net)
@@ -8858,7 +8859,8 @@ dic.nicovideo.jp##iframe.nicoichiba
 dic.nicovideo.jp##.article > div[style="margin-left: -4px;"] + ul[style="margin-left: -4px;"]
 dic.nicovideo.jp##div[id^="dic_sp_300x250_"]
 automesseweb.jp###ads-pc-top-super
-sponichi.co.jp#$#div[id^="logly-lift-"] { display: none !important; }
+sponichi.co.jp##.article_recommend_list > div[id^="logly-lift-"]
+sponichi.co.jp##aside div[id^="logly-lift-"]
 qiita.com,nlab.itmedia.co.jp,number.bunshun.jp,financial-field.com,news.nifty.com,automesseweb.jp##div[id^="logly-lift-"]
 yahoo.co.jp##.yads-overlay
 pokemon-matome.net##.blogparts_freeArea:last-child
