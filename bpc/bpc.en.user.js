@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.2.5
+// @version         4.1.2.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2308,19 +2308,12 @@ else if (matchDomain('hilltimes.com')) {
 }
 
 else if (matchDomain('hindustantimes.com')) {
-  let paywall = document.querySelector('.freemium-card');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let freemium_text = document.querySelector('.freemiumText');
-    if (freemium_text)
-      freemium_text.classList.remove('freemiumText');
-  }
+  document.querySelectorAll('.freemiumText').forEach(e => e.classList.remove('freemiumText'));
   let noscroll = document.querySelector('body.open-popup');
   if (noscroll)
     noscroll.classList.remove('open-popup');
-  let close_story = '.closeStory';
-  let ads = 'div[class^="adHeight"]';
-  hideDOMStyle(close_story + ', ' + ads);
+  let banners = 'div[class^="sub-paywall-version"], div[class^="adHeight"], .closeStory';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain('historyextra.com')) {

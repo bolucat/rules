@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.1.0
+// @version         4.1.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -729,9 +729,10 @@ else if (matchDomain('lepoint.fr')) {
 }
 
 else if (matchDomain('lequipe.fr')) {
-  let paywall = document.querySelector('div.Article__paywall');
+  let paywall_sel = 'div.Article__paywall';
+  let paywall = document.querySelector(paywall_sel);
   if (paywall) {
-    removeDOMElement(paywall);
+    hideDOMStyle(paywall_sel, 2);
     let article_id = window.location.pathname.match(/\d+$/)[0];
     let article = document.querySelector('div.article__body');
     let notes = window.location.pathname.includes('Article/Les-notes-');
@@ -794,9 +795,9 @@ else if (matchDomain('lequipe.fr')) {
   }
   let ads = 'div.AmPlaceholder, div.Modal[data-modal="amsBlock"]';
   hideDOMStyle(ads);
-  let noscroll = document.querySelector('html.no-scroll');
+  let noscroll = document.querySelector('html');
   if (noscroll)
-    noscroll.classList.remove('no-scroll');
+    noscroll.style.overflow = 'auto';
 }
 
 else if (matchDomain('lerevenu.com')) {
@@ -1852,7 +1853,8 @@ function amp_unhide_subscr_section(amp_ads_sel = '', replace_iframes = true, amp
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
   for (let elem of subscr_section)
     elem.removeAttribute('subscriptions-section');
-  hideDOMStyle(amp_ads_sel, 5);
+  if (amp_ads_sel)
+    hideDOMStyle(amp_ads_sel, 5);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
@@ -1865,7 +1867,8 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
     let amp_access_not_dom = document.querySelectorAll('[amp-access' + amp_access_not + ']');
     removeDOMElement(...amp_access_not_dom);
   }
-  hideDOMStyle(amp_ads_sel, 6);
+  if (amp_ads_sel)
+    hideDOMStyle(amp_ads_sel, 6);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
