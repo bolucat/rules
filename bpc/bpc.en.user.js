@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.2.6
+// @version         4.1.2.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -790,14 +790,15 @@ else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
 }
 
 else if (matchDomain('businesspost.ie')) {
-  let url = window.location.href;
-  let paywall = document.querySelector('div#bp_piano_article_subscription_offer');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.article-content');
-    if (article)
-      article.firstChild.before(archiveLink(url));
+  func_post = function () {
+    if (mobile) {
+      document.querySelectorAll('img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
+    }
   }
+  let url = window.location.href;
+  getArchive(url, 'div#bp_piano_article_subscription_offer', '', 'div[itemprop="articleBody"]');
+  let ads = 'div[id^="Inline-MPU-article-"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('decanter.com')) {
