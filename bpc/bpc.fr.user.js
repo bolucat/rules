@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.2.1
+// @version         4.1.2.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -293,92 +293,95 @@ else if (matchDomain(fr_groupe_nice_matin_domains)) {
 }
 
 else if (matchDomain('jeuneafrique.com')) {
-  let paywall = document.querySelector('div#poool-widget');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.article__content > div[data-mrf-recirculation]');
-    let article_id = window.location.pathname.split('/')[1];
-    if (article && article_id) {
-      let limit_low = 50 + randomInt(50);
-      let limit_high = 600 + randomInt(100);
-      function show_data(article, body) {
-        let parser = new DOMParser();
-        let doc = parser.parseFromString('<div>' + body + '</div>', 'text/html');
-        let article_new = doc.querySelector('div');
-        article.innerHTML = '';
-        article.parentNode.replaceChild(article_new, article);
-      }
-      function fetch_data(limit) {
-        let url_src = 'https://www.jeuneafrique.com/api/mobile/v6.0/featured/?limit=' + limit;
-        fetch(url_src, {headers: {"x-exp": "1741079242710", "x-sig": "b431724e94023a6969c5427133e1614db2cbe90e"}})
-        .then(response => {
-          if (response.ok) {
-            response.json().then(json => {
-              try {
-                let src_articles = json.articles.filter(x => !x.content_status_open);
-                if (src_articles) {
-                  let src_article = src_articles.filter(x => x.id == article_id)[0];
-                  let ls_update = true;
-                  if (src_article)
-                    show_data(article, src_article.content_full);
-                  else
-                    header_nofix(article, '', 'BPC > no fix (source file)');
-                  if (ls_update) {
-                    if (!ls_date || limit > limit_low || now_date > ls_date)
-                      ls_json_articles = {};
-                    for (let art of src_articles)
-                      ls_json_articles[art.id] = art.content_full;
-                    localStorage.setItem('###_json_date', now_date);
-                    localStorage.setItem('###_json', JSON.stringify(ls_json_articles));
-                  }
-                }
-              } catch (err) {
-                console.log(err);
-              }
-            })
-          } else 
-            header_nofix(article, '', 'BPC > no fix (source file)')
-        }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
-      }
-      let json_date;
-      let json_script = document.querySelector('script[type="application/ld+json"]');
-      if (json_script) {
-        try {
-          let json = JSON.parse(json_script.text);
-          if (json && json['@graph']) {
-            let date_arr = json['@graph'].filter(x => x.datePublished);
-            if (date_arr.length)
-              json_date = date_arr[0].datePublished;
-          }
-        } catch (err) {
-          console.log(err);
+  let now_date = (new Date()).toISOString().split('T')[0];
+  let ls_date = localStorage.getItem('###_json_date') || '';
+  let ls_json_articles = {};
+  function show_data(article, body) {
+    let parser = new DOMParser();
+    let doc = parser.parseFromString('<div>' + body + '</div>', 'text/html');
+    let article_new = doc.querySelector('div');
+    article.innerHTML = '';
+    article.parentNode.replaceChild(article_new, article);
+  }
+  function store_data(json, limit, limit_low = 100, article_id = '', article = '') {
+    try {
+      let src_articles = json.articles.filter(x => !x.content_status_open);
+      if (src_articles) {
+        if (article_id) {
+          let src_article = src_articles.filter(x => x.id == article_id)[0];
+          if (src_article)
+            show_data(article, src_article.content_full);
+          else
+            header_nofix(article, '', 'BPC > no fix (source file)');
         }
+        if (!ls_date || limit > limit_low || now_date > ls_date)
+          ls_json_articles = {};
+        for (let art of src_articles)
+          ls_json_articles[art.id] = art.content_full;
+        localStorage.setItem('###_json', JSON.stringify(ls_json_articles));
+        localStorage.setItem('###_json_date', now_date);
       }
-      let now_date = (new Date()).toISOString().split('T')[0];
-      let art_date = json_date ? json_date.split('T')[0] : now_date;
-      let ls_date = localStorage.getItem('###_json_date') || '';
-      let ls_json_articles = {};
-      if (ls_date) {
-        let ls_articles = localStorage.getItem('###_json');
-        ls_json_articles = JSON.parse(ls_articles);
-        if (ls_date < art_date)
-          fetch_data(limit_high);
-        else {
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  if (true) {
+    let paywall = document.querySelector('div#poool-widget');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let article = document.querySelector('div.article__content > div[data-mrf-recirculation]');
+      let article_id = window.location.pathname.split('/')[1];
+      if (article && article_id) {
+        let limit_low = 50 + randomInt(50);
+        let limit_high = 600 + randomInt(100);
+        function fetch_data(limit) {
+          let url_src = 'https://www.jeuneafrique.com/api/mobile/v6.0/featured/?limit=' + limit + '&rel=' + randomInt(100000);
+          fetch(url_src, {headers: {"x-exp": "1741079242710", "x-sig": "b431724e94023a6969c5427133e1614db2cbe90e"}})
+          .then(response => {
+            if (response.ok) {
+              response.json().then(json => {
+                store_data(json, limit, limit_low, article_id, article);
+              })
+            } else {
+              header_nofix(article, '', 'BPC > no fix (source file)');
+            }
+          }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
+        }
+        let json_date;
+        let json_script = document.querySelector('script[type="application/ld+json"]');
+        if (json_script) {
+          try {
+            let json = JSON.parse(json_script.text);
+            if (json && json['@graph']) {
+              let date_arr = json['@graph'].filter(x => x.datePublished);
+              if (date_arr.length)
+                json_date = date_arr[0].datePublished;
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+        let art_date = json_date ? json_date.split('T')[0] : now_date;
+        if (ls_date) {
+          let ls_articles = localStorage.getItem('###_json');
+          ls_json_articles = JSON.parse(ls_articles);
           let art_data = ls_json_articles[article_id];
           if (art_data)
             show_data(article, art_data);
+          else if (ls_date < art_date)
+            fetch_data(limit_high);
           else if (now_date === art_date)
             fetch_data(limit_low);
           else
             header_nofix(article, '', 'BPC > no fix (source file)')
+        } else {
+          fetch_data(limit_high);
         }
-      } else {
-        fetch_data(limit_high);
       }
     }
+    let ads = 'div.banner-ad, div.box-ad-brand';
+    hideDOMStyle(ads);
   }
-  let ads = 'div.banner-ad, div.box-ad-brand';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('journaldunet.com')) {

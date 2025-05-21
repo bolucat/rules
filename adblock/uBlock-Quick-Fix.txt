@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Tue, 20 May 2025 10:24:23 +0000
-! Diff-Path: ../patches/2025.5.20.819.patch#ublock-quick-fixes
+! Last modified: Wed, 21 May 2025 14:16:56 +0000
+! Diff-Path: ../patches/2025.5.21.871.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -79,7 +79,8 @@ japscan.lol#@#div.container > [href]
 /^https:\/\/acscdn\.com\/script\/(?:aclib|atg|compatibility|ippg|suv4|ut)\.js(\?cb=\d{13})?$/$script,3p,match-case,important,domain=japscan.lol
 ||platform.pubadx.one/pubadx-ad.js$script,domain=japscan.lol,important
 ||static.cloudflareinsights.com/beacon.min.js/$script,domain=japscan.lol,important
-japscan.lol#@#+js(trusted-set, pubadxtag, 'json:{"divIds": ["bg-ssp-9017-238131528466", "bg-ssp-8018-1135227806618"]}')
+japscan.lol##+js(trusted-set, pubadxtag, 'json:{"divIds": ["bg-ssp-9017-700359116694", "bg-ssp-8018-972902316561"]}')
+japscan.lol##+js(trusted-suppress-native-method, Document.prototype.querySelectorAll, '"/^#/"', stack, /stackDepth:4.+ inlineScript/)
 poophq.com,veev.to,doods.to##+js(nowoif)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /vast.php?)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /click\.com|preroll|native_render\.js|acscdn/, length:10001)
@@ -192,3 +193,35 @@ client.falixnodes.net##+js(set, amzn_aps_csm.init, noopFunc)
 client.falixnodes.net##+js(set, amzn_aps_csm.log, noopFunc)
 ||prodregistryv2.org^$badfilter
 elektroda.pl##*:has(> div > [class$=" act"] > a[href*=".php?"])
+||sapphire-api.target.com^$badfilter
+! temp address https://github.com/uBlockOrigin/uAssets/commit/53a86edefc152610cf6b81626c64a1e00c29eed7#commitcomment-157540745
+||imasdk.googleapis.com/js/sdkloader/ima3.js$redirect=google-ima.js,domain=southpark.*|southparkstudios.*,important
+||imasdk.googleapis.com/pal/sdkloader/pal.js$redirect=noop.js,domain=southpark.*|southparkstudios.*
+@@||imasdk.googleapis.com/js/sdkloader/ima3_dai.js$script,domain=southpark.*|southparkstudios.*
+@@||fwmrm.net^*/admanager.js$script,3p,domain=southpark.*|southparkstudios.*
+southpark.*,southparkstudios.*##+js(no-fetch-if, ima3_dai)
+southpark.*,southparkstudios.*##+js(json-prune-fetch-response, imasdk, , propsToMatch, topaz.viacomcbs.digital)
+channel4.com##+js(no-xhr-if, /\/ad\/g\/1/)
+channel4.com##.advertsMpu
+channel4.com##.block--mpu
+channel4.com##+js(json-prune, adverts.breaks)
+www.tiktok.com##+js(json-prune-fetch-response, itemList.[-].ad_info.ad_id, , propsToMatch, url:api/recommend/item_list/)
+||adxcel.com^
+||akamaized.net/audio/$media,redirect=noop-1s.mp4:10,from=open.spotify.com
+||scdn.co/audio/$media,redirect=noop-1s.mp4:10,domain=open.spotify.com
+||scdn.co/mp3-ad/$media,redirect=noop-1s.mp4:10,domain=open.spotify.com
+||spotifycdn.com/audio/$media,redirect=noop-1s.mp4:10,domain=open.spotify.com
+||amillionads.com^$media,redirect=noop-1s.mp4:10,from=open.spotify.com
+||2mdn.net^$media,redirect=noop-1s.mp4:10,domain=open.spotify.com
+||adxcel.com^$media,redirect=noop-1s.mp4:10,domain=open.spotify.com
+||adstudio-assets.scdn.co^$media,redirect=noop-1s.mp4:10,domain=open.spotify.com
+*$media,3p,redirect-rule=noop-1s.mp4:10,domain=open.spotify.com
+@@||podscribe.com/rss/$media,domain=open.spotify.com
+@@||mgln.ai/e/$media,domain=open.spotify.com
+@@/traffic.megaphone.fm/*.mp3^$media,domain=open.spotify.com
+vook.vc#@#[class*="-spnsr"]
+vook.vc##.note-main-spnsr a:not([href*="vook.vc"])
+vook.vc##.note-right-spnsr
+!#if env_mobile
+vook.vc##.note-sp-spnsr
+!#endif
