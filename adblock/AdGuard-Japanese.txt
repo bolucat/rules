@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: oSEPqIDZAOByFHdF9O2DEA
-! Diff-Path: ../patches/7/7-s-1747901587-3600.patch
+! Checksum: FJ+/vJLQwg34ZFEdvFUHeA
+! Diff-Path: ../patches/7/7-s-1748013114-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.64.67
-! TimeUpdated: 2025-05-22T08:09:03+00:00
+! Version: 2.0.64.71
+! TimeUpdated: 2025-05-23T15:07:33+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -27,6 +27,8 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp|~rakuten.ne.jp
 !
+||gamegadget.jp^$document
+||welte.jp^$document
 ||lifeedly.com^$document
 ||hyadain.com^$document
 ||linoee.com^$all
@@ -1539,6 +1541,8 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/uploads/2024/09/fanza_ad$image
 !
 ! Malware/Phishing
+.net/co.jp/|$document
+-pages-dev.translate.goog/*.co.jp.html?_x_tr_sch=&$document
 .icu/redirect.php?token=$document
 ://mastercard-*.cn/features-benefits/$document
 .shop/iclouds/|$document
@@ -1797,12 +1801,14 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+||amazonaws.com/api/AffiliateLinkGenerator
+plusdrive.link##div[style^="position: fixed; bottom: 0px; left: 0px; right: 0px; height: 110px;"]
 gizmodo.jp##div[class="l-ad"]
 pon-navi.net###movie-pr-box
 pon-navi.net##div[class^="adBox"]
 vook.vc##.note-main-spnsr a:not([href*="vook.vc"])
 vook.vc##.note-right-spnsr
-fantia.jp###main > .container:has(> .text-center > div[style] > div[data-cptid])
+fantia.jp##div[style="min-height: 90px;"]
 yourei.jp##.list-group > li.sentence:not([class*="source-title"]):has(> ins.adsbygoogle)
 totalwar.doorblog.jp##div[class^="article-body"] div.t_b[style^="line-height"]:has(> span[style="color: rgb(0, 0, 205);"] b > a[target="_blank"])
 totalwar.doorblog.jp##div[class^="article-body"] div.t_h:has(+ .t_b[style^="line-height"] > span[style="color: rgb(0, 0, 205);"] b > a[target="_blank"])
