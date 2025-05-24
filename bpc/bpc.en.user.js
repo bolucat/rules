@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.2.7
+// @version         4.1.2.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1607,7 +1607,7 @@ else if (matchDomain('bloomberg.com')) {
 }
 
 else if (matchDomain('bloombergadria.com')) {
-  let article_hidden = document.querySelector('article[style]');
+  let article_hidden = document.querySelector('article.single-news[style]');
   if (article_hidden)
     article_hidden.removeAttribute('style');
   let ads = '.banner';
@@ -1843,6 +1843,8 @@ else if (matchDomain('denik.cz')) {
     let video = elem.parentNode;
     video.parentNode.replaceChild(iframe, video);
   }
+  let ads = 'div.ad';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(['digiday.com', 'glossy.co', 'modernretail.co'])) {
@@ -4219,6 +4221,8 @@ else if (matchDomain('vice.com')) {
   let noscroll = document.querySelector('body.swg-disable-scroll');
   if (noscroll)
     noscroll.classList.remove('swg-disable-scroll');
+  let ads = 'div.lngtd-dyn-ph';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('vikatan.com')) {

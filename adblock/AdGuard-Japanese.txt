@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: FJ+/vJLQwg34ZFEdvFUHeA
-! Diff-Path: ../patches/7/7-s-1748013114-3600.patch
+! Checksum: LJ2omS/bgXoBtVmVLF1Zqg
+! Diff-Path: ../patches/7/7-s-1748106679-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.64.71
-! TimeUpdated: 2025-05-23T15:07:33+00:00
+! Version: 2.0.64.76
+! TimeUpdated: 2025-05-24T17:06:08+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -27,6 +27,7 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp|~rakuten.ne.jp
 !
+||adlookmanager.com^
 ||gamegadget.jp^$document
 ||welte.jp^$document
 ||lifeedly.com^$document
@@ -148,18 +149,17 @@
 ||promolayer.io^$third-party
 ||boost-next.co.jp^
 ||googleailesi.com^$all
-||bartinkizogrenciyurdu.com^$all
 ||js.glossom.jp^$third-party
 ||ratel-ad.com^$third-party
 ||cdn.mixx-ad.net^$third-party
 ||ad.xrea.com^
 ||advision-adnw.jp^$third-party
 ||ad-spire.net^$third-party
-||best-lucky-cat.xyz^$all
 ||geotg.jp^
 ||link-ag.net^$third-party
 ||js.mulan.cloud^
 ||abh.jp^$third-party
+||av-mov.com^$all
 ||click-count.info^$all
 ||andhub.jp^
 ||astrsk.net^$third-party
@@ -1709,7 +1709,7 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 ://eki*.*.com/Personal/member/Login/index.php?oneTimeAccessID=$document
 .com/ae/login.php?openid.pape.max_auth_age=0&openid.return_to=%$document
 !
-/^https?:\/\/(?:j[ap]|qq)\d{7,8}\.[a-z]{7,8}\.[a-z]{2,8}\//$document,to=art|asia|auction|bar|beauty|cam|click|cloud|coupons|digital|diy|food|forum|gay|guru|life|live|living|link|my|property|pw|rocks|run|sbs|shop|store|tattoo|tech|today|top|uno|work,match-case
+/^https?:\/\/(?:j[ap]|qq)\d{7,8}\.[a-z]{7,8}\.[a-z]{2,8}\//$document,to=art|asia|auction|bar|beauty|biz|cam|click|cloud|coupons|digital|diy|food|forum|gay|guru|info|life|live|living|link|my|property|pw|rocks|run|sbs|shop|store|tattoo|tech|today|top|uno|work,match-case
 |http://t-*/cz/$document,to=monster|online|space
 /ja/payment/|$document,to=co.in|co.za
 ://eki-net-*.*/Perosnal_member/$document,to=cn|net
@@ -1801,6 +1801,9 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+japanese-deepfake-hub.jp##main > div.col-span-1 > div.justify-around.flex > div:not([class])
+japanese-deepfake-hub.jp##.grid-cols-mainBig > div.py-2 > div:not([class]) > p.px-2.text-sm
+pingporn.ru##.asmr18
 ||amazonaws.com/api/AffiliateLinkGenerator
 plusdrive.link##div[style^="position: fixed; bottom: 0px; left: 0px; right: 0px; height: 110px;"]
 gizmodo.jp##div[class="l-ad"]
@@ -3221,6 +3224,9 @@ blog.2nt.com##div[class$="_outline"]:has(> div > div.plugin-freearea > script[sr
 blog.2nt.com##div[class$="_outline"]:has(> div > div.plugin-freearea > script[src^="//adm.shinobi.jp"])
 blog.2nt.com##.header + div.plugin-freearea:has(> table div[style="margin:0;padding:5px;font-size:12px;word-break: break-all;"] > a[href^="https://www.sokmil.com/av/_item/"] > img)
 blog.2nt.com##div.content:first-child:has(> div.entry_body > div[style="text-align:center;margin-bottom:10px;"] + div[style="font-size:8px;"])
+||eow.alc.co.jp/content/js/ad_mozaic.js
+||eow.alc.co.jp/content/js/popup_control.js
+eow.alc.co.jp###pc-sticky-ad
 eow.alc.co.jp##.rectangle_right
 eow.alc.co.jp###eijiro_pc_top_01
 cyclesports.jp##.newsWrap > .banner
@@ -4887,7 +4893,7 @@ carro-groce.com##.adVortexFixedAd
 fesoku.net###right > div.plugin-memo:first-child
 fesoku.net###touter + table
 fesoku.net##.sponsoredsink
-gamingdeputy.com,dietpartner.jp,hampee.com###block-2
+manga-comic-netabare.com,gamingdeputy.com,dietpartner.jp,hampee.com###block-2
 oniyomediary.com###links > div.side:last-child
 ||fc2.com/c/u/m/cumshots777/apex_bana2.png
 ||fc2.com/c/u/m/cumshots777/c46860.gif
@@ -6870,6 +6876,7 @@ orenoraresne.com,xn--glay-yn4c8b9a8lo661apz3h.com,yomogame252.com###text-81
 orenoraresne.com###text-83
 orenoraresne.com###text-86
 xn--glay-yn4c8b9a8lo661apz3h.com###text-91
+manga-comic-netabare.com###text-93
 erogazopple.com###text-106
 studentwalker.com,1000mg.jp###text-112
 oreteki-design.com###text-122
@@ -7096,7 +7103,7 @@ ichimame.com,tvanimemuryoudouga.com,hmd.site,corocoro-tabi.com,moqlog.jp###custo
 tousatu-club.com,namba-osaka.com,virtualgorillaplus.com###custom_html-22
 holosoku.com,ichimame.com,koikatsu-portal.com,tvanimemuryoudouga.com,sanabo.com###custom_html-23
 tvanimemuryoudouga.com,designoma.com,tech-biz-eng.com,naga-ken.info,sanabo.com###custom_html-24
-vtuberseason.com,dennosokuho.com,tipstour.net,e-countries.com,4thsight.xyz###custom_html-25
+setusoku.com,vtuberseason.com,dennosokuho.com,tipstour.net,e-countries.com,4thsight.xyz###custom_html-25
 you1news.com###custom_html-26
 holosoku.com,erokune.com,sukesuke-mile-kojiki.net###custom_html-27
 holosoku.com,vtuberseason.com,news2019.biz,sukesuke-mile-kojiki.net,daeudaeu.com,bodymate.jp###custom_html-28
@@ -8752,6 +8759,7 @@ matomehub.jp##.adv_bottom
 ||matomedane.jp/js/right_navi/
 geek.sc##.normal-sidebar a[href^="https://www.amazon.co.jp/gp/"]
 ||smart-bdash.com/reception-script/$domain=shinmai.co.jp
+shinmai.co.jp###hs-web-interactives-bottom-anchor
 shinmai.co.jp##.h-\[250px\].w-\[300px\]
 shinmai.co.jp##.max-w-\[1100px\] > div.pt-6.pb-8.border-app-text
 shinmai.co.jp##.text-app-text > div.h-\[266px\].bg-app-bg
@@ -9117,7 +9125,7 @@ yamagata-np.jp##div[class^="ad_superbanner_"]
 ken-g.com###ggl-wrapper
 ken-g.com###ggl-wrapper + hr
 ken-g.com##.ggl03
-shikotch.in,happycampus.co.jp,h1g.jp,javmix.*,momon-ga.com##div[style^="width: 300px; height: 250px"]
+nyahentai.re,shikotch.in,happycampus.co.jp,h1g.jp,javmix.*,momon-ga.com##div[style^="width: 300px; height: 250px"]
 rurubu.jp##.p-article-slider > ul.p-article-group__list
 negisoku.com##+js(addEventListener-defuser, DOMContentLoaded, Fixed)
 negisoku.com##div[style="position:fixed;bottom:0;right:0;z-index:9999;"]
