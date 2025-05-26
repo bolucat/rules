@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sat, 24 May 2025 13:11:03 +0000
-! Diff-Path: ../patches/2025.5.25.811.patch#ublock-quick-fixes
+! Last modified: Mon, 26 May 2025 12:25:01 +0000
+! Diff-Path: ../patches/2025.5.26.870.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -79,10 +79,11 @@ japscan.lol#@#div.container > [href]
 /^https:\/\/acscdn\.com\/script\/(?:aclib|atg|compatibility|ippg|suv4|ut)\.js(\?cb=\d{13})?$/$script,3p,match-case,important,domain=japscan.lol
 ||platform.pubadx.one/pubadx-ad.js$script,domain=japscan.lol,important
 ||static.cloudflareinsights.com/beacon.min.js/$script,domain=japscan.lol,important
-japscan.lol##+js(trusted-set, pubadxtag, 'json:{"divIds": ["bg-ssp-9017-714938037487", "bg-ssp-8018-834367375557"]}')
+japscan.lol##+js(trusted-set, pubadxtag, 'json:{"divIds": ["bg-ssp-9017-1653079382844", "bg-ssp-8018-1185959386399"]}')
 japscan.lol##+js(trusted-suppress-native-method, Document.prototype.getElementsByClassName, '"ZLQZQP"', prevent, /stackDepth:4.+ inlineScript/)
 japscan.lol##+js(trusted-suppress-native-method, Document.prototype.querySelectorAll, '"/^#/"', prevent, /stackDepth:4.+ inlineScript/)
-japscan.lol##+js(nostif, nextElementSibling)
+japscan.lol##+js(trusted-suppress-native-method, Document.prototype.getElementById, '"ZLQZQP"', prevent, /stackDepth:4.+ inlineScript/)
+japscan.lol##+js(nostif, innerHTML)
 poophq.com,veev.to,doods.to##+js(nowoif)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /vast.php?)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /click\.com|preroll|native_render\.js|acscdn/, length:10001)
@@ -158,7 +159,7 @@ smsonline.cloud##html[data-theme][lang] [id^="img_"][style]:has(iframe[framebord
 ||07c225f3.online/script/*.js?h=$uritransform=/script.+/loader.min.js/
 ||html-load.com/script/*.js?h=$uritransform=/script.+/loader.min.js/
 ||content-loader.com/script/*.js?h=$uritransform=/script.+/loader.min.js/
-/^https:\/\/(?:as(?:loader)?|loader)\.([-0-9A-Za-z]+.[-A-Za-z]{2,30})\/script\/(?:www\.)?\1\.js\?h=\d{9}$/$xhr,1p,strict3p,uritransform=/script.+/loader.min.js/
+/^https:\/\/(?:as(?:loader)?|loader)\.([-0-9A-Za-z]+.[-A-Za-z]{2,30})\/script\/(?:[-0-9a-z]+\.)?\1\.js\?h=\d{9}$/$xhr,1p,strict3p,uritransform=/script.+/loader.min.js/
 dogdrip.net,infinityfree.com,smsonline.cloud##+js(no-fetch-if, -load.com/script/, length:101)
 dogdrip.net,infinityfree.com,smsonline.cloud##+js(nostif, )](this\,..., 3000-6000)
 -load.com/script/$xhr,domain=smsonline.cloud
@@ -192,7 +193,8 @@ hulu.com##+js(xml-prune, 'xpath(//*[name()="MPD"]/@mediaPresentationDuration | /
 client.falixnodes.net##+js(rpnt, script, window.location.href = '/disableadblock';)
 client.falixnodes.net##+js(set, amzn_aps_csm.init, noopFunc)
 client.falixnodes.net##+js(set, amzn_aps_csm.log, noopFunc)
-elektroda.pl##*:has(> div > [class$=" act"] > a[href*=".php?"])
+elektroda.pl##div[class="topic-box clearfix "] + div[class]:last-child:has(> b:only-child > a[class][rel="nofollow"]:only-child)
+elektroda.pl##*:has(> div[style*="height"] > div > a[href*=".php?vid="][rel*="nofollow"])
 ||sapphire-api.target.com^$badfilter
 ! temp address https://github.com/uBlockOrigin/uAssets/commit/53a86edefc152610cf6b81626c64a1e00c29eed7#commitcomment-157540745
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$redirect=google-ima.js,domain=southpark.*|southparkstudios.*,important
