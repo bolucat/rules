@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.2.3
+// @version         4.1.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -926,9 +926,6 @@ else if (matchDomain('zeit.de')) {
 }
 
 else if (matchDomain(de_funke_medien_domains)) {
-  func_post = function () {
-    document.querySelectorAll('div[data-carousel-id-slider]').forEach(x => x.removeAttribute('class'));
-  }
   let paywall = document.querySelector('div#paywall-container');
   if (paywall) {
     removeDOMElement(paywall);
@@ -936,6 +933,25 @@ else if (matchDomain(de_funke_medien_domains)) {
     if (spark_script) {
       let match = spark_script.text.match(/PUBLICATION:\s?'([\w-]+)',/);
       if (match) {
+        func_post = function () {
+          document.querySelectorAll('div[data-carousel-id-slider]').forEach(x => x.removeAttribute('class'));
+          let twitter_templates = document.querySelectorAll('div[data-embed-id="twitter"] > template[data-embedbox-id-embed-template]');
+          for (let elem of twitter_templates) {
+            let parser = new DOMParser();
+            let doc = parser.parseFromString('<div>' + DOMPurify.sanitize(elem.innerHTML, dompurify_options) + '</div>', 'text/html');
+            let blockquote = doc.querySelector('div');
+            elem.parentNode.before(blockquote);
+            removeDOMElement(elem.parentNode);
+          }
+          let charts = document.querySelectorAll('aside > div[id^="datawrapper-vis-"]');
+          for (let elem of charts) {
+            let img = elem.querySelector('noscript > img[src]');
+            if (img) {
+              elem.parentNode.before(img);
+              removeDOMElement(elem.parentNode);
+            }
+          }
+        }
         let spark_domain = match[1];
         let url_src = 'https://app-webview.sparknews.funkemedien.de/' + spark_domain + window.location.pathname;
         fetch_headers = {"Authorization": "Basic YXBpOkNTeGxxRG1YM2xCTmRsS1l6allRcWZqTnFZMkhQVUVm"};
