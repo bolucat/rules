@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 6Ah/8XEwgEUCnrkmiSK1Pw
-! Diff-Path: ../patches/7/7-s-1748348131-3600.patch
+! Checksum: 0jInPOYpjYjnhyV3Uw7rcQ
+! Diff-Path: ../patches/7/7-s-1748452345-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.64.86
-! TimeUpdated: 2025-05-27T12:10:59+00:00
+! Version: 2.0.64.94
+! TimeUpdated: 2025-05-28T17:07:08+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -27,6 +27,7 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp|~rakuten.ne.jp
 !
+||ibento-yahoo.com^$document
 ||adlookmanager.com^
 ||gamegadget.jp^$document
 ||welte.jp^$document
@@ -417,7 +418,6 @@
 ! Bad: /banner.jpg (should be in general_url.txt)
 ! Bad: ||legitwebsite.com^$third-party (should be in adservers.txt)
 !
-||oogiri-ads-bucket.s3.ap-northeast-3.amazonaws.com^
 ||ad.datadeliver.net^
 ||ad.firestorage.jp^
 ||mbada.nan.co.jp^
@@ -452,6 +452,7 @@
 !
 !
 ! https://github.com/AdguardTeam/AdguardFilters/issues/206330
+rkd3.dev##+js(set-constant, navigator.brave, undefined)
 rkd3.dev##+js(no-fetch-if, adsbygoogle.js)
 ! GFC
 ||response.jp/feature/adb/
@@ -836,7 +837,7 @@ h-ken.net##+js(set-constant, adBlockDetected, noopFunc)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/60864
 /modal-dist/index.js$script,domain=ananweb.jp|newsweekjapan.jp
 ! https://github.com/AdguardTeam/AdguardFilters/issues/137690
-coron.tech##+js(remove-attr, class, [id][role] > [id] > [class] > section)
+coron.tech##+js(remove-attr, class, article[itemprop="articleBody"])
 connect.coron.tech##+js(abort-current-script, jQuery, decodeURIComponent)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/52566
 @@||ad-contents.jp^$generichide
@@ -1547,6 +1548,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/uploads/2024/09/fanza_ad$image
 !
 ! Malware/Phishing
+://sagawa-*.cn/login_show/$document
 .net/co.jp/|$document
 -pages-dev.translate.goog/*.co.jp.html?_x_tr_sch=&$document
 .icu/redirect.php?token=$document
@@ -1807,15 +1809,15 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+freepdfcomic.com##article.post:has(> ins[id])
 ranking.goo.ne.jp##div[style="margin: 2em 0;text-align: left;width: 100%;"]
 math.nakaken88.com##.fix-sidebar > div.widget:has(> div.widget-body > div.myAdAm)
-||d37hyjlpzcdxnh.cloudfront.net/images/goods/$domain=oogiri-chaya.com
-oogiri-chaya.com##.ads_insert
 seesaawiki.jp###ad963-div-id
 seesaawiki.jp##+js(addEventListener-defuser, DOMContentLoaded, adDiv)
 ||way78.com/side.html
 way78.com##tr[bgcolor="#ffffff"][valign="top"] > td[width="170"]
 qa.tunagaru.info##.widget_smartslider3
+community.kanphoto.net##.dti-banner
 community.kanphoto.net##.deai-banner
 japanese-deepfake-hub.jp##main > div.col-span-1 > div.justify-around.flex > div:not([class])
 japanese-deepfake-hub.jp##.grid-cols-mainBig > div.py-2 > div:not([class]) > p.px-2.text-sm
@@ -2520,6 +2522,8 @@ saikomangaraw.net##.text-center[style^=" height: 300px; overflow: hidden; max-wi
 qiita.com##.style-uaiz0z
 qiita.com##article ~ div > section[class^="style-"]:has(div[id^="logly-lift-"])
 marushin-magazine.com###custom_html-1
+chichi-pui.com##section:has(> div.p-advertisement-book-cards)
+chichi-pui.com##.p-sidebar > div:has(> div.p-sidebar-title-and-link > a.p-sidebar-title-and-link__link[href="/fanza/ranking/"])
 chichi-pui.com###js-homing-ad
 chichi-pui.com##section:has(> div.c-section-title-button > a[href^="/fanza/"])
 chichi-pui.com##.p-sidebar__advertisement

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.2.2
+// @version         4.1.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -316,6 +316,10 @@ else if (matchDomain('jeuneafrique.com')) {
         }
         if (!ls_date || limit > limit_low || now_date > ls_date)
           ls_json_articles = {};
+        else if (ls_date && !Object.keys(ls_json_articles).length) {
+          let ls_articles = localStorage.getItem('###_json');
+          ls_json_articles = JSON.parse(ls_articles);
+        }
         for (let art of src_articles)
           ls_json_articles[art.id] = art.content_full;
         localStorage.setItem('###_json', JSON.stringify(ls_json_articles));

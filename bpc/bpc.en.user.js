@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.2.8
+// @version         4.1.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2659,6 +2659,14 @@ else if (matchDomain('nationalreview.com')) {
   let banners = 'div.zephr-wrapper, div#bc-root, div.cookie-text';
   let ads = 'amp-ad, .ad-unit, .ad-skeleton, amp-connatix-player, div[class*="-connatix-"]';
   hideDOMStyle(banners + ', ' + ads);
+}
+
+else if (matchDomain('nature.com')) {
+  func_post = function () {
+    header_nofix('article', 'h2#access-options', 'BPC > no archive-fix');
+  }
+  let url = window.location.href;
+  getArchive(url, 'div.app-access-wall, h2#access-options', '', 'article');
 }
 
 else if (matchDomain('nautil.us')) {
