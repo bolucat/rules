@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.3.0
+// @version         4.1.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -43,7 +43,6 @@
 // @match           *://*.puck.news/*
 // @match           *://*.sloanreview.mit.edu/*
 // @match           *://*.stcatharinesstandard.ca/*
-// @match           *://*.tempo.co/*
 // @match           *://*.theleaflet.in/*
 // @match           *://*.uxdesign.cc/*
 // @match           *://*.wellandtribune.ca/*
@@ -1979,9 +1978,7 @@ else if (matchDomain('economictimes.indiatimes.com')) {
     let full_text = document.querySelector('div.paywall.p1');
     if (content && full_text)
       content.innerText = full_text.innerText;
-    let page_content = document.querySelector('div.pageContent:not([style])');
-    if (page_content)
-      page_content.setAttribute('style', 'height: auto !important;');
+    addStyle('div.pageContent {height: auto !important;}');
     let article_wrap = document.querySelector('div.article_wrap[style]');
     if (article_wrap)
       article_wrap.removeAttribute('style');
@@ -3120,7 +3117,7 @@ else if (matchDomain(sg_sph_media_domains)) {
       header_nofix('main', 'div#sph_cdp_4:not(:empty)', 'BPC > no archive-fix');
     }
     let url = window.location.href;
-    getArchive(url, 'div[id][data-sdkids-campaignname^="OVR_Anon_Locked_"]', '', 'main');
+    getArchive(url, 'div[id][data-sdkids-campaigntype="pay_wall"]', '', 'main');
   } else if (matchDomain('businesstimes.com.sg')) {
     let article = document.querySelector('div.body-content > div[class]');
     if (article) {
@@ -3358,51 +3355,6 @@ else if (matchDomain(['techtarget.com', 'computerweekly.com'])) {
     let banners = document.querySelectorAll('p#firstP, div#inlineRegistrationWrapper');
     removeDOMElement(...banners);
   }
-}
-
-else if (matchDomain('tempo.co')) {
-  if (matchDomain('magz.tempo.co')) {
-    header_nofix('article', 'div.pw-containers');
-  } else {
-    let paywall_sel = 'img[src="/_ipx/_/icons/paywallatas.svg"]';
-    let paywall = document.querySelector(paywall_sel);
-    if (paywall) {
-      hideDOMStyle('div.bg-black:has( > div > ' + paywall_sel + ')', 5);
-      let article_hidden = document.querySelector('article > div:not([class]) div.overflow-hidden');
-      if (article_hidden)
-        article_hidden.removeAttribute('class');
-      let article = document.querySelector('div#content-wrapper');
-      if (article) {
-        let json_script = document.querySelector('script#__NUXT_DATA__');
-        if (json_script) {
-          try {
-            let json = JSON.parse(json_script.text);
-            if (json) {
-              let article_index = json.indexOf('published') + 2;
-              if (article_index) {
-                let parser = new DOMParser();
-                for (let i = article_index; i < article_index + 50; i++) {
-                  let par = json[i];
-                  if (par && typeof par === 'string' && par.match(/^<(p|div)/)) {
-                    let doc = parser.parseFromString(par, 'text/html');
-                    let par_new = doc.querySelector('p, div');
-                    article.appendChild(par_new);
-                  } else if (!Array.isArray(par))
-                    console.log(par);
-                  else
-                    break;
-                }
-              }
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
-    }
-  }
-  let ads = 'div.ads';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('the-american-interest.com')) {

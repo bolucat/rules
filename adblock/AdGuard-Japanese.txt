@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 0jInPOYpjYjnhyV3Uw7rcQ
-! Diff-Path: ../patches/7/7-s-1748452345-3600.patch
+! Checksum: s4cbG3DMjqqFBUr7w6Xnnw
+! Diff-Path: ../patches/7/7-s-1748535147-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.64.94
-! TimeUpdated: 2025-05-28T17:07:08+00:00
+! Version: 2.0.64.97
+! TimeUpdated: 2025-05-29T16:08:08+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -27,6 +27,9 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp|~rakuten.ne.jp
 !
+||assessoriagmv.com^$all
+||brightskillsacademy.com^$all
+||japans-offers.com^$all
 ||ibento-yahoo.com^$document
 ||adlookmanager.com^
 ||gamegadget.jp^$document
@@ -451,6 +454,8 @@
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/206406
+||2ch.logpo.jp/Scripts/bab.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/206330
 rkd3.dev##+js(set-constant, navigator.brave, undefined)
 rkd3.dev##+js(no-fetch-if, adsbygoogle.js)
@@ -837,7 +842,7 @@ h-ken.net##+js(set-constant, adBlockDetected, noopFunc)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/60864
 /modal-dist/index.js$script,domain=ananweb.jp|newsweekjapan.jp
 ! https://github.com/AdguardTeam/AdguardFilters/issues/137690
-coron.tech##+js(remove-attr, class, article[itemprop="articleBody"])
+coron.tech##+js(remove-attr, class, article[itemprop="articleBody"], stay)
 connect.coron.tech##+js(abort-current-script, jQuery, decodeURIComponent)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/52566
 @@||ad-contents.jp^$generichide
@@ -1548,6 +1553,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/uploads/2024/09/fanza_ad$image
 !
 ! Malware/Phishing
+://www-matsui-co-jp-$document
 ://sagawa-*.cn/login_show/$document
 .net/co.jp/|$document
 -pages-dev.translate.goog/*.co.jp.html?_x_tr_sch=&$document
@@ -1741,7 +1747,7 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 !
 /^https:\/\/[a-z]{4,8}\.[a-z]{7,10}\.shop\/product\/\d{4,7}$/$document,match-case
 /^https:\/\/[-0-9a-z]{6,20}\.com\/item-[0-9a-z]{10}\.html$/$document,match-case
-/^https?:\/\/([-0-9a-z]{3,}\.)?[a-z]{8,}\.[a-z]{3,6}\/product\/\d{6,}(\.html)?$/$document,to=fun|online|top
+/^https?:\/\/([-0-9a-z]{3,}\.)?[a-z]{6,}\.[a-z]{3,6}\/product\/\d{6,}(\.html)?$/$document,to=fun|online|top
 !---------------------------------------------------------------------------!
 !-------------- Rules for specific websites --------------------------------!
 !---------------------------------------------------------------------------!
@@ -1809,6 +1815,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+2ch.logpo.jp##.Jungle
+2ch.logpo.jp##.TATEJungleLarge
 freepdfcomic.com##article.post:has(> ins[id])
 ranking.goo.ne.jp##div[style="margin: 2em 0;text-align: left;width: 100%;"]
 math.nakaken88.com##.fix-sidebar > div.widget:has(> div.widget-body > div.myAdAm)
@@ -4253,8 +4261,7 @@ webcreatorbox.com##a[href^="/ads/"]
 webcreatorbox.com##.podcast + aside
 news.mynavi.jp##.articleSns ~ .articleBnr_list
 ekiten.jp##.ll-m-addContainer
-mt-soft.sakura.ne.jp,hiroburo.com##a[href^="https://www.amazon.co.jp/"]
-||m.media-amazon.com/images/G/$domain=valorant4jp.com|toychan.blog.jp
+||m.media-amazon.com/images/G/$domain=valorant4jp.com|toychan.blog.jp|2ch.logpo.jp
 valorant4jp.com###sidebar > .widget#HTML3
 getnews.jp###jp_gn_resp_article_inarticle_fundo
 ||akai-hana.jp/image/cm
@@ -6046,7 +6053,7 @@ olive-hitomawashi.com##div[style^="display: inline-block; min-width: 300px; min-
 ||nanigoto.net/?u=ad_amazon/
 nanigoto.net##div[style="width:100%;height:90px;"]
 nanigoto.net##div[style="width:336px;height:280px;"]
-||m.media-amazon.com/images/I/$domain=grasoku.com|bipblog.com|pachinkopachisro.com|newmatosoku.com|lifehack2ch.livedoor.biz|matome-plus.com|imasaragame.com
+||m.media-amazon.com/images/I/$domain=grasoku.com|bipblog.com|pachinkopachisro.com|newmatosoku.com|lifehack2ch.livedoor.biz|matome-plus.com|imasaragame.com|2ch.logpo.jp
 grasoku.com##.right-container > div.plugin-memo:nth-of-type(-n+4)
 otanews.livedoor.biz###leftbody
 otanews.livedoor.biz##.PortalLinks > center
@@ -9926,7 +9933,7 @@ tvbok.com###left_fix_out #left_box3
 tvbok.com###right_2nd > .right_box2
 bookbang.jp###footer_ban
 hatena.ne.jp##div[class^="entry-ad-"]
-xn--w8jtkjf8c570x.com,cg-method.com##a[href^="https://www.amazon.co.jp"]
+2ch.logpo.jp,mt-soft.sakura.ne.jp,hiroburo.com,xn--w8jtkjf8c570x.com,cg-method.com##a[href^="https://www.amazon.co.jp/"]
 blog.munieru.jp,anou4649.hatenablog.com,nomolk.hatenablog.com,moognyk.jp,noaboutsnote.hatenablog.com##.hatena-asin-detail
 ogeji.hatenablog.com##.entry-content > .code ~ table[style*="width:300px"]
 wiki.seesaa.jp##.ad-boomapp
