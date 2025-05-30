@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.2.3
+// @version         4.1.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1116,6 +1116,84 @@ else if (matchDomain('marianne.net')) {
     }
   }
   let ads = 'div[class*="--placeholder"]';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('ouest-france.fr')) {
+  if (matchDomain('www.ouest-france.fr')) {
+    function ouest_france_main() {
+      window.cmsfetch.push({
+        url: window.cms_bypass_rpc_url,
+        params: {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: 'platform/bypass-payant/get',
+            jsonrpc: '2.0',
+            method: 'getToken',
+            params: {
+              publicitaire: !0,
+              id_contenu: window.dataLayer[0].mdId
+            }
+          })
+        },
+        fn: function (e) {
+          let data = JSON.parse(e);
+          let newURL = new URL(window.location.href);
+          newURL.searchParams.append('token', data.result.token);
+          window.location.href = newURL.toString();
+        }
+      });
+    }
+    let paywall = document.querySelector('div.mur');
+    if (paywall && !window.location.search.includes('token=')) {
+      removeDOMElement();
+      insert_script(ouest_france_main);
+    }
+  } else {
+    function ouest_france_sub(app_id = 'c8kp7jv01t') {
+      let title_dom = document.querySelector('meta[name="twitter:title"][content]');
+      if (title_dom) {
+        let title = encodeURIComponent(title_dom.content);
+        fetch('https://' + app_id + '-dsn.algolia.net/1/indexes/*/queries', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-algolia-api-key": window.bp_algolia_articles,
+            "x-algolia-application-id": app_id.toUpperCase()
+          },
+          body: JSON.stringify({
+            requests: [{
+                indexName: "articles",
+                params: 'query=' + title
+              }
+            ]
+          })
+        })
+        .then(response => {
+          if (response.ok) {
+            response.json().then(json => {
+              let results = json.results[0].hits;
+              let article = results.find((result) => result.articleId == window.dataLayer[0].mdId);
+              if (article) {
+                let body = document.querySelector('div#article-detail');
+                if (body)
+                  body.innerText = article.texte;
+              }
+            })
+          }
+        }).catch(err => console.log(err));
+      }
+    }
+    let paywall = document.querySelector('div.mur');
+    if (paywall) {
+      removeDOMElement(paywall);
+      insert_script(ouest_france_sub);
+    }
+  }
+  let ads = 'div.pub';
   hideDOMStyle(ads);
 }
 

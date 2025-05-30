@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: x0eCVvn4d9zFwjeQHWzrQA
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1748538841-3600.patch
+! Checksum: YIf+dOtwK6IsX8VdaeWcqQ
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1748621574-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.3.86.32
-! TimeUpdated: 2025-05-29T17:06:24+00:00
+! Version: 2.3.86.53
+! TimeUpdated: 2025-05-30T16:07:54+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -18712,6 +18712,7 @@ youporn.com##+js(remove-node-text, script, /window\.[\s\S]*?_zone_[\s\S]*?{"zone
 !
 ! NOTE: Regular rules
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/206527
 ! https://github.com/AdguardTeam/AdguardFilters/issues/206205
 ||sportingsurge.com/js/loader.js
 sportingsurge.com###zdn-adblock-overlay
@@ -18799,6 +18800,8 @@ vinstartheme.com##.AdBlocker
 androidadult.com##.adblock-wrapper
 ! https://github.com/AdguardTeam/AdguardFilters/issues/202740
 sampledrive.org###adblock-overlay
+sampledrive.org##body > div[id][style="display: block;"]:has(> div[id]:only-child > div[style*="margin: clamp"])
+sampledrive.org##+js(noeval-if, pagead2.googlesyndication.com)
 poplinks.sbs##+js(abort-on-property-write, checkAdsStatus)
 poplinks.sbs##+js(abort-current-script, document.createElement, AdBlock)
 shorttrick.in##+js(no-xhr-if, pagead2.googlesyndication.com)
@@ -21607,7 +21610,11 @@ upfion.com,haxi.online,upfiles.app,upfiles-urls.com,falpus.com,fooak.com,plknu.c
 ! https://github.com/AdguardTeam/AdguardFilters/issues/135504
 ||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$redirect=googlesyndication.com/adsbygoogle.js,domain=t2bot.ru,important,xmlhttprequest,script
 @@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$domain=t2bot.ru
+! https://github.com/AdguardTeam/AdguardFilters/issues/206562
 ! https://github.com/AdguardTeam/AdguardFilters/issues/137878
+redketchup.io##+js(googletagservices_gpt)
+redketchup.io##+js(set-constant, googletag.cmd.push, noopFunc)
+redketchup.io##+js(no-setTimeout-if, /googletag\.pubads|\/PreBid\.js/)
 redketchup.io##+js(adjust-setTimeout, "hidden"!=document.visibilityState&&)
 ||securepubads.g.doubleclick.net/tag/js/gpt.js$script,redirect=noop.js,domain=redketchup.io,important
 ! https://github.com/AdguardTeam/AdguardFilters/issues/137898
@@ -35800,6 +35807,7 @@ histmag.org##.p-0[style^="text-align: center; background:"]
 histmag.org###content > div[style="display:flex;font-size:14px;margin-top:30px;margin-bottom:5px"]
 histmag.org###content > div[style="display:flex;font-size:14px;margin-top:30px;margin-bottom:5px"] + .py-8
 histmag.org###content > div[style="display:flex;font-size:14px;margin-top:30px;margin-bottom:5px"] + .py-8 + div[style="display:flex;font-size:14px;margin-top:10px;margin-bottom:30px"]
+histmag.org###article > .my-12:has(> .mx-4:only-child > .py-4:first-child + #our-bread + .py-4:last-child)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/106921
 histmag.org#?##article > div.css-nil:has(> div:contains(REKLAMA))
 histmag.org#?##content > div > p:has(> div.css-nil > div:contains(REKLAMA))
@@ -38176,10 +38184,10 @@ tvn24.pl##.video-player > .videoPlayer.player-initialized .vjs-switching .vjs-lo
 ! https://github.com/AdguardTeam/AdguardFilters/issues/138389
 @@||imasdk.googleapis.com/js/sdkloader/ima3.js$domain=player.pl|vod.pl
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,domain=player.pl|vod.pl|tvn24.pl,important
-vod.pl,player.pl##+js(remove-class, async-hide, html)
-vod.pl,player.pl##+js(no-fetch-if, /ad\.xml\?|tvn\.hit\.gemius\.pl/, emptyStr)
-vod.pl,player.pl##+js(no-xhr-if, tvn.adocean.pl)
-vod.pl,player.pl##+js(no-setTimeout-if, loadAdvertScript)
+tvn24.pl,vod.pl,player.pl##+js(remove-class, async-hide, html)
+tvn24.pl,vod.pl,player.pl##+js(no-fetch-if, /ad\.(xml|json)\?|tvn\.hit\.gemius\.pl/, emptyStr)
+tvn24.pl,vod.pl,player.pl##+js(no-xhr-if, tvn.adocean.pl)
+tvn24.pl,vod.pl,player.pl##+js(no-setTimeout-if, loadAdvertScript)
 tvn24.pl##+js(json-prune, playlist.movie.advertising.ad_server)
 tvn.pl##+js(json-prune, movie.advertising.ad_server movies.*.advertising.ad_server playlist.movie.advertising.ad_server)
 vod.pl,player.pl#@#.ad
@@ -40850,7 +40858,7 @@ dlhd.*,lewblivehdplay.ru,topcartoons.tv,hdtoday.tv,watchcartoononline.bz,hitspor
 dlhd.*,lewblivehdplay.ru,topcartoons.tv,hdtoday.tv,watchcartoononline.bz,hitsports.pro,chrisellisonllc.xyz,arcasiangrocer.store,1qwebplay.xyz,buffsports.me,itopmusic.com,projectfreetv.mx,streamsb.online,holymanga.net,januflix.expert,mangareader.to,9animetv.to,rufiguta.com,buffsports.stream,moddroid.com,coolcast2.com,klmanga.*,manga1000.*,watchseries1.video,universanime.co,harimanga.com,gmanga.me,hentaizm.fun,apkmody.io,netcine.*,ninjashare.to,kick4ss.com,voirseries.io,turkish123.com,mangatuli.com,theproxy.to,y2mate.com,pelismart.com,downloadingadda.com,hhdstreams.club,uhdstreams.club,beef1999.blogspot.com,movies123.pk,sportstreamtv.live,samehadaku.vip,kickass.ws,kickass.love,animafan.biz,manga-raw.club,kissanime.nz,repackov.com##+js(addEventListener-defuser, , [$.)
 ! 28.01.22 Probably previous rules can be replaced by the rule below
 ! It seems, this rule works on iOS(original - cannot)
-nmac.to,kinoger.*,snowmtl.ru,animeflv.net,dbsullca.com,bong.ink,tutlehd4.com,topembed.pw,fiveyardlab.com,xsportbox.com,theflixertv.to,linksly.co,anidl.org,hxfile.co,embedstream.me,up-load.one,aniworld.to,bclikeqt.com,serien.cam,190.115.18.20,pikafile.com,superfilmes.tv,gofilmes.me,warezcdn.com,gowatchseries.*,onlinevideoconverter.com,shadowrangers.live,serienstream.to,goyabu.com,190.115.18.20,databasegdriveplayer.*,mycima.wiki,watchomovies.*,stream-complet.biz,jujutsukaisenonline.net,hh3dhay.com,animesonehd.xyz,cinemakottaga.*,mangahere.today,manganatos.com,animepahe.*,moviesverse.*,tuktukcinema.co,playlist-youtu.be,pelishouse.me,polstream.live,messitv.net,tamilyogi.best,slink.bid,shavetape.*,imgbase.ru,klubsports.xyz,world4ufree1.*,birdurls.com,webhostingpost.com,simsdom.com,send.cm,sampledrive.in,telefullenvivo.com,streamtapeadblock.*,bflix.to,speedostream.com,yomovies.*,gum-gum-stream.com,9xmovie.click,acervofilmes.com,airportseirosafar.com,assistirseriados.net,cmp3.ru,filmovi.ws,gentlewasher.com,mobilephonedir.com,mobiro.org,mp3-gratis.it,mp3-vk.ru,peliculontube.net,putlocker68.com,rojadirectahd.online,serijefilmovi.com,stickerdeals.net,thingstomen.com,u123movies.com,vbox7-mp3.info,vkmp3s.ru,zeidgh.com,fanproj.net,getmega.net,mobdropro.com,askim-bg.com,comofuncionaque.com,hdzone.org,hwnaturkya.com,i123movies.net,ibrasoftware.com,mega-mkv.com,nosong.ru,onlinesubtitrat.com,vkmp3.*,needrombd.com,e123movies.com,vudeo.io,gogoplay4.com,4anime.biz,crystal-launcher.net,crystal-launcher.pl,streamz.ws,animefreak.*,streaming-french.com,watchserieshd.*,lrepacks.net,animeonline.ninja,ssoap2day.*,bmovies.*,techgeek.digital,hurawatch.*,jujutsukaisen-manga.online,pelismart.com,pelismarthd.com,up-load.io,cima-club.*,repelis.in,yesmovies.*,a123movies.net,adblockstrtape.link,adblockstrtech.link,yodbox.com,vidoo.org,gomoviefree.*,bdnewszh.com,mangceh.cc,extreme-down.plus,mcubd.host,noob4cast.com,cricplay2.xyz,nba-streams.online,mangasco.com,masengwa.com,adblockstreamtape.*,lucaphim.com,hurawatch.at,tainio-mania.online,vipboxtv.*,upbam.org,myviid.com,vidbam.org,stardima.net,stardima.com,unblockedsites.net,serieskao.*,dartsstream.me,golfstreams.me,motogpstream.me,rugbystreams.me,socceronline.me,tennisstreams.me,boxingstreams.me,ufcstream.me,mlbstream.me,nbastream.nu,divicast.com,uploadflix.org,gdriveplayer.to,lookmoviess.com,beinmatch.*,imgdawgknuttz.com,tv.hd44.net,123-movies.*,dramacool.*,vanime.co,kiss-anime.*,s4p2.shingekinokyojin.tv,okanime.tv,wat32.tv,eplayvid.*,tvply.me,projectfreetv2.com,faselhd.*,123movie.*,mycima.ink,nocensor.*,shahed4u.*,animeunity.tv,series9.me,mp4upload.com,fmovies.*##+js(abort-current-script, document.createElement, delete window)
+luckypatchers.com,nmac.to,kinoger.*,snowmtl.ru,animeflv.net,dbsullca.com,bong.ink,tutlehd4.com,topembed.pw,fiveyardlab.com,xsportbox.com,theflixertv.to,linksly.co,anidl.org,hxfile.co,embedstream.me,up-load.one,aniworld.to,bclikeqt.com,serien.cam,190.115.18.20,pikafile.com,superfilmes.tv,gofilmes.me,warezcdn.com,gowatchseries.*,onlinevideoconverter.com,shadowrangers.live,serienstream.to,goyabu.com,190.115.18.20,databasegdriveplayer.*,mycima.wiki,watchomovies.*,stream-complet.biz,jujutsukaisenonline.net,hh3dhay.com,animesonehd.xyz,cinemakottaga.*,mangahere.today,manganatos.com,animepahe.*,moviesverse.*,tuktukcinema.co,playlist-youtu.be,pelishouse.me,polstream.live,messitv.net,tamilyogi.best,slink.bid,shavetape.*,imgbase.ru,klubsports.xyz,world4ufree1.*,birdurls.com,webhostingpost.com,simsdom.com,send.cm,sampledrive.in,telefullenvivo.com,streamtapeadblock.*,bflix.to,speedostream.com,yomovies.*,gum-gum-stream.com,9xmovie.click,acervofilmes.com,airportseirosafar.com,assistirseriados.net,cmp3.ru,filmovi.ws,gentlewasher.com,mobilephonedir.com,mobiro.org,mp3-gratis.it,mp3-vk.ru,peliculontube.net,putlocker68.com,rojadirectahd.online,serijefilmovi.com,stickerdeals.net,thingstomen.com,u123movies.com,vbox7-mp3.info,vkmp3s.ru,zeidgh.com,fanproj.net,getmega.net,mobdropro.com,askim-bg.com,comofuncionaque.com,hdzone.org,hwnaturkya.com,i123movies.net,ibrasoftware.com,mega-mkv.com,nosong.ru,onlinesubtitrat.com,vkmp3.*,needrombd.com,e123movies.com,vudeo.io,gogoplay4.com,4anime.biz,crystal-launcher.net,crystal-launcher.pl,streamz.ws,animefreak.*,streaming-french.com,watchserieshd.*,lrepacks.net,animeonline.ninja,ssoap2day.*,bmovies.*,techgeek.digital,hurawatch.*,jujutsukaisen-manga.online,pelismart.com,pelismarthd.com,up-load.io,cima-club.*,repelis.in,yesmovies.*,a123movies.net,adblockstrtape.link,adblockstrtech.link,yodbox.com,vidoo.org,gomoviefree.*,bdnewszh.com,mangceh.cc,extreme-down.plus,mcubd.host,noob4cast.com,cricplay2.xyz,nba-streams.online,mangasco.com,masengwa.com,adblockstreamtape.*,lucaphim.com,hurawatch.at,tainio-mania.online,vipboxtv.*,upbam.org,myviid.com,vidbam.org,stardima.net,stardima.com,unblockedsites.net,serieskao.*,dartsstream.me,golfstreams.me,motogpstream.me,rugbystreams.me,socceronline.me,tennisstreams.me,boxingstreams.me,ufcstream.me,mlbstream.me,nbastream.nu,divicast.com,uploadflix.org,gdriveplayer.to,lookmoviess.com,beinmatch.*,imgdawgknuttz.com,tv.hd44.net,123-movies.*,dramacool.*,vanime.co,kiss-anime.*,s4p2.shingekinokyojin.tv,okanime.tv,wat32.tv,eplayvid.*,tvply.me,projectfreetv2.com,faselhd.*,123movie.*,mycima.ink,nocensor.*,shahed4u.*,animeunity.tv,series9.me,mp4upload.com,fmovies.*##+js(abort-current-script, document.createElement, delete window)
 ! Do not add new domains, if the rule above works.
 ! clickunder - {delete window[$.g] (similar to 'zfgloaded')
 topcinema.*,vdbtm.shop,worldsports.me,kenitv.me,sportsonline.*,mkvhub.*,octanime.net,mangastream.mobi,unblocksite.pw,try2link.com,ytmp3.cc,1link.club,123moviesprime.com,attvideo.com,baixartorrents.org,userscloud.com,ssrmovies.world,yomovies1.xyz,ymovies.vip,194.163.183.129,asianload1.com,tny.so,fbstream.me,leechpremium.link,pelisplus.*,kissanimee.ru,sbplay.*,zone-annuaire.work,citpekalongan.com,mailnesia.com,repack-games.com,movizland.top,racaty.net,club-vinyl.ru,naijal.com,recetas.arrozconleche.info,vibehubs.com,1stkissmanga.com,bukatoko.my.id,fitasdeled.com,9anime.*,simpledownload.net,1mlsbd.com,ogario.ovh,mp3fusion.net,8-ball-magic.com,pelisstar.com,tajpoint.com,youtubetoany.com,strtapeadblock.me,atdhe.pro,filme-bune.biz,musiklip.ru,phc.web.id,web.livecricket.is,cydiasources.net,insurancebillpayment.net,mobilemovies.info,mp3cristianos.net,simonetwealth.net,livesport24.net,nullpk.com,empireg.ru,canonprintersdrivers.com,mega-p2p.net,1234movies.show,fakaza.com,moviesonline.fm,readingbd.com,subtitlecat.com,wifi4games.com,watchopm.net,xmovies.is,filmesonlinex.co,hwnaturkya.com,247movie.net,cinema.cimatna.com,crackevil.com,foreverwallpapers.com,neomovies.net,rojadirecta.global,uppboom.com,appsfree4u.com,bengalisite.com,beastlyprints.com,briefwatch.com,ch-play.com,clickforhire.com,dailyinsta.xyz,dtmaga.com,jewelry.com.my,johnwardflighttraining.com,kabarportal.com,lespassionsdechinouk.com,livestreamtv.pk,myfernweh.com,orangeink.pk,osoft.xyz,serijehaha.com,shrugemojis.com,talaba.su,tatabrada.tv,thetechzone.online,thripy.com,turcasmania.com,urdubolo.pk,comandotorrentshds.org,123movies-official.site,123moviesg.com,watchseri.net,123moviesmix.com,filmyone.com,123fox.net,123hbo.com,8putlocker.com,123gostream.fun,01234movies.email,123movies4up.com,123pirate.com,gogoanimes.*,arnaqueinternet.com,ate9ni.com,elevationmap.net,hahasports.co,hd44.com,kurdmovie.net,linkotes.com,linksdegrupos.com.br,mettablog.com,mozkra.com,naijahits.com,nbch.com.ar,onlineproxy.eu,pagodesparabaixar.org,romfast.com,stalkface.com,theismailiusa.org,viralitytoday.com,xxxwebdlxxx.top,fulltube.online,mangareader.site,tei.ai,gamato3.com,updatesmovie.xyz,watchsao.tv,haikyuu3.com,watchnoblesse.com,watchdrstone.com,demonslayeranime.com,watchblackclover.com,watchoverlord2.com,watchrezero2.com,123movies.net,hdmo.tv,comandotorrents.org,avimobilemovies.net,stream2watch.*,jackstreams.com,jetanimes.com,hdmoviehubs.in,earncoin.site,animefenix.com,9xmovies.*,freemovies4u.xyz,leermanga.xyz,extreme-down.video,series9.ac,liveonscore.tv,files.im,1primewire.com,animafan.biz,gdriveplayer.io,fitgirlrepacks.co,tii.ai,hakie.net,vidcloud9.com,watchseries.movie,xcine.tv,xsanime.com,icouchtuner.club,file-upload.com,shugraithou.com,gameslay.net,www.4bac.ro,www.spyloaded.net,skyshutter.com,hasi-thate.com,wordandobject.com,xsanime.com,try2link.com,uploadrar.com,theproxy.app,japscan.ws,123moviesgo.*,beinmatchtv.tv,janjua.tv,vidembed.*,animehay.tv##+js(abort-current-script, Math, delete window)
@@ -45404,6 +45412,7 @@ _ad_content.
 !+ NOT_PLATFORM(ext_safari, ios)
 /tghr.js$script
 !
+/api/users/*&ev=$script
 /banner.go?spaceid=
 click?pid=*&sub2=Clickunder$all
 /aclib.js^$script
@@ -45450,6 +45459,7 @@ click?pid=*&sub2=Clickunder$all
 /?publisherId=*&hostId=$all
 .com/1?z=$script,third-party
 /systemerror-mac/?$document
+/s/s/js/m/im.js?v=
 /s/s/js/i-top.js?v=
 .online/*/eeeekayresrsammicraaajkaschhoilsebadhiyakuchtanahiaayaajturuionmeebbat/$document
 /Win0xixm07/?phone=$document
@@ -45837,10 +45847,10 @@ vi-control.net,nullforums.net,landyzone.co.uk,nullcave.pro,woxmax.com,waskucity.
 ! Requests like https://almstda.tv/5/6202259
 !
 ! related to /tag.min.js regexp blocking rule
-.com^|$xmlhttprequest,third-party,domain=vipleague.pm|myflixerz.to|kaido.to|swatchseries.is|hianime.*|dbsullca.com|hdtodayz.to|hdtoday.cc|myasiantv.ac|anitaku.pe|s3embtaku.pro|footyroom.top|miztv.shop|movieshd.watch|watch.cricstream.me|mega4upload.net|streamingcommunity.*|vixcloud.co|yuppow.com|animeunity.so|zonatmo.com|dopebox.to|viprow.nu|reliabletv.me|animeflv.net|giize.com|hianimez.*|nmac.to|caq21harderv991gpluralplay.xyz|daddylive.*|topcinema.*|alldownplay.xyz
-.net^|$xmlhttprequest,third-party,domain=vipleague.pm|myflixerz.to|kaido.to|swatchseries.is|hianime.*|dbsullca.com|hdtodayz.to|hdtoday.cc|myasiantv.ac|anitaku.pe|s3embtaku.pro|footyroom.top|miztv.shop|movieshd.watch|watch.cricstream.me|mega4upload.net|streamingcommunity.*|vixcloud.co|yuppow.com|animeunity.so|zonatmo.com|dopebox.to|viprow.nu|reliabletv.me|animeflv.net|giize.com|hianimez.*|nmac.to|caq21harderv991gpluralplay.xyz|daddylive.*|topcinema.*|alldownplay.xyz
-.to^|$xmlhttprequest,third-party,domain=vipleague.pm|myflixerz.to|kaido.to|swatchseries.is|hianime.*|dbsullca.com|hdtodayz.to|hdtoday.cc|myasiantv.ac|anitaku.pe|s3embtaku.pro|footyroom.top|miztv.shop|movieshd.watch|watch.cricstream.me|mega4upload.net|streamingcommunity.*|vixcloud.co|yuppow.com|animeunity.so|zonatmo.com|dopebox.to|viprow.nu|reliabletv.me|animeflv.net|giize.com|hianimez.*|nmac.to|caq21harderv991gpluralplay.xyz|daddylive.*|topcinema.*|alldownplay.xyz
-.xyz^|$xmlhttprequest,third-party,domain=vipleague.pm|myflixerz.to|kaido.to|swatchseries.is|hianime.*|dbsullca.com|hdtodayz.to|hdtoday.cc|myasiantv.ac|anitaku.pe|s3embtaku.pro|footyroom.top|miztv.shop|movieshd.watch|watch.cricstream.me|mega4upload.net|streamingcommunity.*|vixcloud.co|yuppow.com|animeunity.so|zonatmo.com|dopebox.to|viprow.nu|reliabletv.me|animeflv.net|giize.com|hianimez.*|nmac.to|caq21harderv991gpluralplay.xyz|daddylive.*|topcinema.*|alldownplay.xyz
+.com^|$xmlhttprequest,third-party,domain=vipleague.pm|myflixerz.to|kaido.to|swatchseries.is|hianime.*|dbsullca.com|hdtodayz.to|hdtoday.cc|myasiantv.ac|anitaku.pe|s3embtaku.pro|footyroom.top|miztv.shop|movieshd.watch|watch.cricstream.me|mega4upload.net|streamingcommunity.*|vixcloud.co|yuppow.com|animeunity.so|zonatmo.com|dopebox.to|viprow.nu|reliabletv.me|animeflv.net|giize.com|hianimez.*|nmac.to|caq21harderv991gpluralplay.xyz|daddylive.*|topcinema.*|alldownplay.xyz|luckypatchers.com
+.net^|$xmlhttprequest,third-party,domain=vipleague.pm|myflixerz.to|kaido.to|swatchseries.is|hianime.*|dbsullca.com|hdtodayz.to|hdtoday.cc|myasiantv.ac|anitaku.pe|s3embtaku.pro|footyroom.top|miztv.shop|movieshd.watch|watch.cricstream.me|mega4upload.net|streamingcommunity.*|vixcloud.co|yuppow.com|animeunity.so|zonatmo.com|dopebox.to|viprow.nu|reliabletv.me|animeflv.net|giize.com|hianimez.*|nmac.to|caq21harderv991gpluralplay.xyz|daddylive.*|topcinema.*|alldownplay.xyz|luckypatchers.com
+.to^|$xmlhttprequest,third-party,domain=vipleague.pm|myflixerz.to|kaido.to|swatchseries.is|hianime.*|dbsullca.com|hdtodayz.to|hdtoday.cc|myasiantv.ac|anitaku.pe|s3embtaku.pro|footyroom.top|miztv.shop|movieshd.watch|watch.cricstream.me|mega4upload.net|streamingcommunity.*|vixcloud.co|yuppow.com|animeunity.so|zonatmo.com|dopebox.to|viprow.nu|reliabletv.me|animeflv.net|giize.com|hianimez.*|nmac.to|caq21harderv991gpluralplay.xyz|daddylive.*|topcinema.*|alldownplay.xyz|luckypatchers.com
+.xyz^|$xmlhttprequest,third-party,domain=vipleague.pm|myflixerz.to|kaido.to|swatchseries.is|hianime.*|dbsullca.com|hdtodayz.to|hdtoday.cc|myasiantv.ac|anitaku.pe|s3embtaku.pro|footyroom.top|miztv.shop|movieshd.watch|watch.cricstream.me|mega4upload.net|streamingcommunity.*|vixcloud.co|yuppow.com|animeunity.so|zonatmo.com|dopebox.to|viprow.nu|reliabletv.me|animeflv.net|giize.com|hianimez.*|nmac.to|caq21harderv991gpluralplay.xyz|daddylive.*|topcinema.*|alldownplay.xyz|luckypatchers.com
 !
 ! For URL shorteners or simple sites with frequently changed ad servers.
 ! Incorrectly blocked domains can be excluded using regex(synchronize this regexp in all filters)
@@ -45855,6 +45865,16 @@ $subdocument,third-party,denyallow=disqus.com,domain=welovemanga.one
 ! NOTE: Specific rules
 !
 !
+timesofindia.indiatimes.com##div[data-font] > div:has(> div[id^="div-gpt-"]:only-child)
+tube8.com,youporn.com##div:has(> ins.adsbytrafficjunky)
+tubewolf.com##.network-links
+xbabe.com##a[href^="https://xbabe.com/go/"]
+||cdn-fc.com/creatives/bar/
+bravoporn.com##a[target="_blank"]:not([href*="bravoporn.com"])
+||streambolt.tv/js2/
+streambolt.tv##div[style*="z-index: 2147483647;"][style*="position: fixed;"]
+streambolt.tv##.video > div[style*="z-index:"]:not([class])
+streambolt.tv##+js(addEventListener-defuser, DOMContentLoaded, detect)
 thesextube.net##.bloglo-sidebar-inner > div[id^="custom_html-"]
 rule34.xxx##.content > span[data-nosnippet] > div[style^="min-height:"]
 ||manytoon.com/animation.mp4
@@ -45868,7 +45888,7 @@ freeuseporn.com##.menu > ul > li:not([class]):has(> a[target="_blank"]:not([href
 ||freeuseporn.com/bnr/
 pornobae.com##.barra-txt
 nexusgames.to##+js(addEventListener-defuser, DOMContentLoaded, window.open)
-undertow.club##.deskContent:has(> center > ins[id])
+undertow.club##div[class*="Content"]:has(> center > ins[id])
 mysexgamer.com#$?#a[href^="/out.php?"] { display: none !important; }
 mysexgamer.com#$?#.candySides { display: none !important; }
 mysexgamer.com#$?#.alertHolder { display: none !important; }
@@ -66371,65 +66391,10 @@ mail.yahoo.com##[data-test-id^="pencil-ad"]
 ! ATTENTION: The rules in this section must be accompanied by a link of an issue, where the problem will be fixed
 ! or with clear description what to do next
 !
-! https://github.com/AdguardTeam/AdguardFilters/issues/206388
-! TODO: remove the following rules when the issue is resolved:
-!       https://gitlab.com/malware-filter/urlhaus-filter/-/issues/110
-||github.githubassets.com/assets/app_assets_modules_github_behaviors_ajax-error_ts-app_assets_modules_github_behaviors_include-d0d0a6-9dc4ed803189.js^$all,badfilter
-||github.githubassets.com/assets/app_assets_modules_github_behaviors_commenting_edit_ts-app_assets_modules_github_behaviors_ht-83c235-ce8979e4f922.js^$all,badfilter
-||github.githubassets.com/assets/app_assets_modules_github_behaviors_task-list_ts-app_assets_modules_github_sso_ts-ui_packages-900dde-c84fbefd392e.js^$all,badfilter
-||github.githubassets.com/assets/app_assets_modules_github_ref-selector_ts-351a8f8ec24b.js^$all,badfilter
-||github.githubassets.com/assets/app_assets_modules_github_settings_integrations-transfer_ts-app_assets_modules_github_setting-84b62a-8e65dc1f4363.js^$all,badfilter
-||github.githubassets.com/assets/app_assets_modules_github_sticky-scroll-into-view_ts-3e000c5d31a9.js^$all,badfilter
-||github.githubassets.com/assets/appearance-settings-99fa071d4285.js^$all,badfilter
-||github.githubassets.com/assets/behaviors-a4b59f1126fc.js^$all,badfilter
-||github.githubassets.com/assets/element-registry-759bd527e556.js^$all,badfilter
-||github.githubassets.com/assets/environment-d607485791a5.js^$all,badfilter
-||github.githubassets.com/assets/github-elements-2c6b561fd398.js^$all,badfilter
-||github.githubassets.com/assets/github-logo-55c5b9a1fe52.png^$all,badfilter
-||github.githubassets.com/assets/github-mark-57519b92ca4e.png^$all,badfilter
-||github.githubassets.com/assets/keyboard-shortcuts-dialog-da52b1ba42ce.js^$all,badfilter
-||github.githubassets.com/assets/notifications-global-7f3748c0d76b.js^$all,badfilter
-||github.githubassets.com/assets/octicons-react-cf2f2ab8dab4.js^$all,badfilter
-||github.githubassets.com/assets/pinned-octocat-093da3e6fa40.svg^$all,badfilter
-||github.githubassets.com/assets/primer-react-5c26f1a581a7.js^$all,badfilter
-||github.githubassets.com/assets/profile-97837a4e31a1.js^$all,badfilter
-||github.githubassets.com/assets/react-core-2d17b940397e.js^$all,badfilter
-||github.githubassets.com/assets/react-lib-80430c87778a.js^$all,badfilter
-||github.githubassets.com/assets/sessions-1e75b15ae60a.js^$all,badfilter
-||github.githubassets.com/assets/settings-6055a20e2833.js^$all,badfilter
-||github.githubassets.com/assets/signup-92ec28022238.js^$all,badfilter
-||github.githubassets.com/assets/ui_packages_document-metadata_document-metadata_ts-ui_packages_promise-with-resolvers-polyfil-40d47c-83bb4d2a9499.js^$all,badfilter
-||github.githubassets.com/assets/ui_packages_failbot_failbot_ts-3f3eb0fe798c.js^$all,badfilter
-||github.githubassets.com/assets/ui_packages_ui-commands_ui-commands_ts-392f523dd6f6.js^$all,badfilter
-||github.githubassets.com/assets/ui_packages_updatable-content_updatable-content_ts-f4e60782b52d.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_braintree_browser-detection_dist_browser-detection_js-node_modules_githu-bb80ec-72267f4e3ff9.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_color-convert_index_js-e3180fe3bcb3.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_delegated-events_dist_index_js-node_modules_github_catalyst_lib_index_js-ea8eaa-ae0dbe787ad8.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_delegated-events_dist_index_js-node_modules_github_memoize_dist_esm_inde-455471-db0dac70ef9e.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_emotion_is-prop-valid_dist_emotion-is-prop-valid_esm_js-node_modules_emo-b1c483-30bc59af3a76.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_fzy_js_index_js-node_modules_github_paste-markdown_dist_index_js-6c00013a3dc4.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_auto-complete-element_dist_index_js-node_modules_github_catalyst_-8e9f78-a90ac05d2469.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_catalyst_lib_index_js-node_modules_primer_live-region-element_dis-b2aea6-22827f205bdc.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_file-attachment-element_dist_index_js-node_modules_primer_view-co-63644b-8389d8c5493d.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_filter-input-element_dist_index_js-node_modules_github_remote-inp-3eebbd-0763620ad7bf.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_filter-input-element_dist_index_js-node_modules_github_remote-inp-d8c643-f5192902810f.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_markdown-toolbar-element_dist_index_js-ceef33f593fa.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_mini-throttle_dist_index_js-node_modules_github_combobox-nav_dist-97536f-0a0158d4c78e.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_mini-throttle_dist_index_js-node_modules_stacktrace-parser_dist_s-1d3d52-4be8ffe9a34a.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_mini-throttle_dist_index_js-node_modules_virtualized-list_es_inde-5cfb7e-e6b0d3ff3d24.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_quote-selection_dist_index_js-node_modules_github_session-resume_-c1aa61-97c8ff49bc41.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_relative-time-element_dist_index_js-fd884d19bf73.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_remote-form_dist_index_js-node_modules_delegated-events_dist_inde-2ef075-049db99cb0f3.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_remote-form_dist_index_js-node_modules_delegated-events_dist_inde-893f9f-b6294cf703b7.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_remote-form_dist_index_js-node_modules_delegated-events_dist_inde-94fd67-e789af5a4655.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_selector-observer_dist_index_esm_js-f690fd9ae3d5.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_text-expander-element_dist_index_js-78748950cb0c.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_github_turbo_dist_turbo_es2017-esm_js-a03ee12d659a.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_lit-html_lit-html_js-be8cb88f481b.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_morphdom_dist_morphdom-esm_js-0c08218c7d5f.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_oddbird_popover-polyfill_dist_popover-fn_js-81211bd82278.js^$all,badfilter
-||github.githubassets.com/assets/vendors-node_modules_primer_behaviors_dist_esm_index_mjs-0dbb79f97f8f.js^$all,badfilter
-||github.githubassets.com/assets/wp-runtime-0441ffe6536b.js^$all,badfilter
+! Incorrect blocking in Phishing URL Blocklist
+! https://x.com/mekabuto/status/1926147501595283528
+! TODO: check 02.06.2025 and remove if fixed
+||sbisec.co.jp/etgate/^$all,badfilter
 ! https://github.com/AdguardTeam/AdguardFilters/issues/187875#issuecomment-2361917970
 ! Problem occurs only in Brave browser with MV3 extension
 ! TODO: remove it when this issue - https://github.com/AdguardTeam/AdguardBrowserExtension/issues/2954 is fixed

@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Thu, 29 May 2025 15:02:00 +0000
-! Diff-Path: ../patches/2025.5.29.1048.patch#ublock-filters
+! Last modified: Fri, 30 May 2025 11:10:31 +0000
+! Diff-Path: ../patches/2025.5.30.817.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -7121,6 +7121,9 @@ bookmystrip.com,sabkiyojana.com##center:others()
 bookmystrip.com,sabkiyojana.com##+js(set, document.hidden, false)
 bookmystrip.com,sabkiyojana.com##+js(set-cookie, imps, 3, , reload, 1)
 bookmystrip.com,sabkiyojana.com##+js(aopw, AdBDetected)
+!#if !cap_html_filtering
+secretplus.in###SmileyBanner:remove()
+!#endif
 ||api.gplinks.com/track/js/main.js$script,replace=/(var isOverGoogleAd = false;)([\s\S]*)(sendPostback\([\n\s\S]*?\))/\$1\$3;\$2\$3/
 ||api.gplinks.com/track/js/main.js$script,replace=/'IFRAME'/'BODY'/g
 ||api.gplinks.com/track/js/main.js$script,replace=/!document\.hidden/true/gm
@@ -9411,11 +9414,9 @@ soap2day.*##+js(rmnt, script, Reflect)
 ! !SECTION: FingerprintJS
 ! SECTION: shown_at popunder
 !#if cap_html_filtering
-123animehub.cc,123animes.ru,actvid.*,boosterx.stream,cataz.to,cineb.rs,demonicscans.org,flixhq.to,gomovies.sx,gomoviestv.to,limetorrents.lol,luluvdoo.com,mgeko.cc,mkvcinemas.*,mov18plus.cloud,moviesapi.to,netmovies.to,torrentdownload.*,torrentdownloads.*,tukipasti.com,vidfast.pro,zoechip.com##^script:has-text(shown_at)
-moflix-stream.fans##^script:has-text(HTMLAllCollection)
+123animehub.cc,123animes.ru,actvid.*,boosterx.stream,cataz.to,cineb.rs,demonicscans.org,flixhq.to,gomovies.sx,gomoviestv.to,himovies.sx,limetorrents.lol,luluvdoo.com,mgeko.cc,mkvcinemas.*,moflix-stream.fans,mov18plus.cloud,moviesapi.to,netmovies.to,torrentdownload.*,torrentdownloads.*,tukipasti.com,vidfast.pro,zoechip.com##^script:has-text(HTMLAllCollection)
 !#else
-123animehub.cc,123animes.ru,actvid.*,boosterx.stream,cataz.to,cineb.rs,demonicscans.org,flixhq.to,gomovies.sx,gomoviestv.to,limetorrents.lol,luluvdoo.com,mgeko.cc,mkvcinemas.*,mov18plus.cloud,moviesapi.to,netmovies.to,torrentdownload.*,torrentdownloads.*,tukipasti.com,vidfast.pro,zoechip.com##+js(rmnt, script, shown_at)
-moflix-stream.fans##+js(rmnt, script, HTMLAllCollection)
+123animehub.cc,123animes.ru,actvid.*,boosterx.stream,cataz.to,cineb.rs,demonicscans.org,flixhq.to,gomovies.sx,gomoviestv.to,himovies.sx,limetorrents.lol,luluvdoo.com,mgeko.cc,mkvcinemas.*,moflix-stream.fans,mov18plus.cloud,moviesapi.to,netmovies.to,torrentdownload.*,torrentdownloads.*,tukipasti.com,vidfast.pro,zoechip.com##+js(acs, addEventListener, HTMLAllCollection)
 cataz.to##+js(nowoif)
 !#endif
 cineb.rs,moviesjoyhd.to,rawkuma.com##+js(aeld, mousedown, shown_at)
@@ -9842,6 +9843,12 @@ playhydrax.com##+js(rpnt, script, (isNoAds), (true))
 ||boobausauhipsa.net^$popup,doc
 ||usheebainaut.com^
 ! !SECTION: Hydrax
+! SECTION: Non-English sites
+! NOTE: Georgian
+||forum.ge/trash/ads_
+||sab.fast.ge^$subdocument
+forum.ge##.w3-hide-medium:has(img[src="/trash/ads_down.gif"])
+! !SECTION: Non-English sites
 ! noadblocker.js "Enhanced Ad Blocker Detection Script"
 /^https:\/\/[a-z0-9]{6,10}\.[a-z]{2,3}\/js\d?\/noadblocker\.js(?:\?v=\d)?$/$script,1p,strict1p
 ! END: General filters (put filters before this line)
@@ -20452,6 +20459,7 @@ xvideos.com##a[href*="/go.php?"][href*="&ad="]
 1337x.*,x1337x.*,1337x.ninjaproxy1.com##+js(nostif, location.href)
 1337x.*,x1337x.*,1337x.ninjaproxy1.com##.js-modal-url:remove()
 1337x.*,x1337x.*,1337x.ninjaproxy1.com###alert-popup:remove()
+||x1337x.*/js/vpn.js
 cheatcloud.cc,cheater.ninja,cheatermad.com,cheatsquad.gg##+js(nano-sib, clearInterval)
 cheatsquad.gg##+js(nosiif, visibility, 1000)
 cheatermad.com##+js(nostif, offset)
@@ -23414,7 +23422,6 @@ bemyhole.com##.cams-button
 bgmiupdate.com.in##+js(set, HTMLImageElement.prototype.onerror, undefined)
 !lewdgames.to##+js(acs, document.addEventListener, adLink)
 lewdgames.to##a.downloadLink[data-wpel-link="external"]
-lewdgames.to#@##fwdevpDiv0
 lewdgames.to##+js(rpnt, script, /vastSource.*?\,/, vastSource:''\,)
 /\/js\/script_\d{2}\.\d{2}\.js\?\d+$/$script,1p,strict1p
 kissjav.*##+js(acs, WebAssembly, Promise)
@@ -23866,6 +23873,8 @@ zeenews.india.com##+js(no-fetch-if, adsbygoogle)
 @@*$script,1p,domain=cool-web.de|gps-cache.de|web-spiele.de|fun-seiten.de|photo-alben.de|wetter-vorhersage.de|coolsoftware.de|kryptografie.de|cool-domains.de|net-tours.de|such-maschine.de|qul.de|mailtool.de|c-ix.de|softwareengineer.de|net-tools.de|hilfen.de|45er.de|cooldns.de|hardware-entwicklung.de
 cool--web-de.translate.goog,gps--cache-de.translate.goog,web--spiele-de.translate.goog,fun--seiten-de.translate.goog,photo--alben-de.translate.goog,wetter--vorhersage-de.translate.goog,coolsoftware-de.translate.goog,kryptografie-de.translate.goog,cool--domains-de.translate.goog,net--tours-de.translate.goog,such--maschine-de.translate.goog,qul-de.translate.goog,mailtool-de.translate.goog,c--ix-de.translate.goog,softwareengineer-de.translate.goog,net--tools-de.translate.goog,hilfen-de.translate.goog,45er-de.translate.goog,cooldns-de.translate.goog,hardware--entwicklung-de.translate.goog##+js(nostif, wbDeadHinweis)
 cool--web-de.translate.goog,gps--cache-de.translate.goog,web--spiele-de.translate.goog,fun--seiten-de.translate.goog,photo--alben-de.translate.goog,wetter--vorhersage-de.translate.goog,coolsoftware-de.translate.goog,kryptografie-de.translate.goog,cool--domains-de.translate.goog,net--tours-de.translate.goog,such--maschine-de.translate.goog,qul-de.translate.goog,mailtool-de.translate.goog,c--ix-de.translate.goog,softwareengineer-de.translate.goog,net--tools-de.translate.goog,hilfen-de.translate.goog,45er-de.translate.goog,cooldns-de.translate.goog,hardware--entwicklung-de.translate.goog##+js(nostif, , 10000)
+||doubleclick.net^$badfilter
+@@||tpc.googlesyndication.com/pagead/js/*/elements/html/countdown_handler_fy2021.js$domain=safeframe.googlesyndication.com
 vide-greniers.org##+js(no-fetch-if, ads)
 vide-greniers.org###mnfDetail_adSenseHead
 l2crypt.com##+js(noeval-if, ads)

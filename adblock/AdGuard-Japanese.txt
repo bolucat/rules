@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: s4cbG3DMjqqFBUr7w6Xnnw
-! Diff-Path: ../patches/7/7-s-1748535147-3600.patch
+! Checksum: rO+Zdm6S2y1xkIWo6ahqPA
+! Diff-Path: ../patches/7/7-s-1748603491-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.64.97
-! TimeUpdated: 2025-05-29T16:08:08+00:00
+! Version: 2.0.65.0
+! TimeUpdated: 2025-05-30T11:06:58+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1815,6 +1815,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+enfant.media##.my-15:has(> div.grid > div > div[id^="ef_"][style^="min-width: 300px"])
+cookpad.com###page + div.grid-cols-subgrid.col-span-2.sticky.bottom-0
 2ch.logpo.jp##.Jungle
 2ch.logpo.jp##.TATEJungleLarge
 freepdfcomic.com##article.post:has(> ins[id])
@@ -7326,6 +7328,7 @@ mi-mollet.com##div[id$="_ArticleBottom"]
 mi-mollet.com##div[id^="MM_PC_rectangle_"]
 ||asg.to/advert/
 eromanga-school.com##div[class$="-mieru"]
+otonasalone.jp##.renewal-top-banner:has(> script[src^="https://js.mediams.mb.softbank.jp/"])
 otonasalone.jp##.col-xs-12 > p[style="margin-bottom:0px;"]
 cityheaven.net##.ofnd
 cityheaven.net##.wrap-adm[style="width:170px; height:200px;"]
@@ -9069,8 +9072,6 @@ ckworks.jp##div[style^="width:960px;height:320px"]
 ||excite.co.jp/jp/ad/
 newsclip.be,sp.uta-net.com###header_banner
 buskita.com,city.hiroshima.lg.jp,city.kitahiroshima.hokkaido.jp,town.yoichi.hokkaido.jp,sp.uta-net.com###footer_banner
-sp.uta-net.com###kashi_adunit_above
-sp.uta-net.com##.kashi_banner2
 fujitv-view.jp##.c-adgrid
 game.nifty.com,repiiii.goo.ne.jp##.is-ad
 openloadpro.com###main > div[style^="margin: 0 auto 60px auto;"]
@@ -11077,6 +11078,7 @@ imas-cg.net#?#.plugin-memo > div.side div.ad-center:upward(.plugin-memo)
 matometatta-news.net#?#.entry[data-type=space] script[src^="https://img.ad-nex.com/"]:upward(.entry)
 !
 ! popIn ads
+enfant.media##._popIn_infinite_page:has(> li > a[class*="_popIn_recommend_article_ad"])
 gentosha-go.com#$?#._popIn_infinite_page > li:has(> a[class*="_popIn_recommend_article_ad"]) { remove: true; }
 jocr.jp##.articleList__item:has(> div[id^="_popIn_infeed"])
 ibarakinews.jp#?##_popIn_recommend_carousel2_div > div._popIn_recommend_articles > ul._popIn_infinite_page > li > a._popIn_recommend_article_ad:upward(2)
@@ -11084,8 +11086,6 @@ ibarakinews.jp#?##_popIn_recommend_carousel2_div > div._popIn_recommend_articles
 topics.or.jp#?##_popIn_recommend ul._popIn_infinite_page > li > a._popIn_recommend_article_ad:upward(2)
 daily.co.jp#?#._popIn_recommend_container a._popIn_recommend_article_ad:upward(._popIn_recommend_container)
 moment.nikkan-gendai.com,nishi2.jp,basketball-zine.com,encount.press,otonano-shumatsu.com,otv.co.jp,tss-tv.co.jp,knb.ne.jp,dime.jp,qjweb.jp,jocr.jp,projectdesign.jp,fujitv-view.jp,fishingjapan.jp,bepal.net,mbs.jp,oricon.co.jp,hira2.jp,ameblo.jp,sitakke.jp,numero.jp,am-our.com,animageplus.jp,animeanime.jp,asahi.com,autocar.jp,books.j-cast.com,cafend.net,careerconnection.jp,cinemacafe.net,curazy.com,dailyportalz.jp,gamespark.jp,getnavi.jp,hinata.me,inside-games.jp,intojapanwaraku.com,japanese.joins.com,kanaloco.jp,matome.response.jp,mensnonno.jp,moneyforward.com,mynavi.jp,news.nifty.com,news.tv-asahi.co.jp,ryukyushimpo.jp,saitama-np.co.jp,smt.docomo.ne.jp,taishu.jp,uhb.jp,uta-net.com,yamahack.com,yukawanet.com,zigsow.jp##._popIn_infinite_page > li:has(> a[class*="_popIn_recommend_article_ad"])
-sp.uta-net.com,otonasalone.jp#?#._popIn_infinite_page > a._popIn_recommend_article_ad:upward(1)
-otonasalone.jp#?#._popIn_infinite_page > a._popIn_recommend_article_ad_reserved:upward(1)
 !
 rocketnews24.com,youpouch.com###custom_html-2 div.ad300x250
 rocketnews24.com,youpouch.com##amp-ad
