@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Fri, 30 May 2025 10:34:30 +0000
-! Diff-Path: ../patches/2025.5.30.817.patch#ublock-quick-fixes
+! Last modified: Sat, 31 May 2025 10:39:39 +0000
+! Diff-Path: ../patches/2025.5.31.866.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -69,7 +69,6 @@ japscan.lol##+js(norafif, /^/)
 japscan.lol##+js(trusted-set-attr, .navbar-nav > li#navpromo2.nav-item > a, onclick, 'let a=function(){};return false;')
 japscan.lol##+js(no-fetch-if, /\/\/ansuksar\.com\/[0-9a-zA-Z]{3\,26}\/\d{4\,6}\b/, length:125746)
 ! START: Counter Liste FR rules
-japscan.lol#@##main > .card:has(a[href*="/manga/?type="][href*="&content="][target="_blank"])
 japscan.lol#@#div.container > [href]
 ! END
 ||japscan.lol/zjs/$script,replace=/function GoodDay\(\)\{.+?\}\}\}//
@@ -79,10 +78,10 @@ japscan.lol#@#div.container > [href]
 /^https:\/\/acscdn\.com\/script\/(?:aclib|atg|compatibility|ippg|suv4|ut)\.js(\?cb=\d{13})?$/$script,3p,match-case,important,domain=japscan.lol
 ||platform.pubadx.one/pubadx-ad.js$script,domain=japscan.lol,important
 ||static.cloudflareinsights.com/beacon.min.js/$script,domain=japscan.lol,important
-japscan.lol##+js(trusted-set, pubadxtag, 'json:{"divIds": ["bg-ssp-9017-869522122545", "bg-ssp-8018-1508728781937"]}')
-japscan.lol##+js(trusted-suppress-native-method, Document.prototype.getElementsByClassName, '"ZLQZQP"', prevent, /stackDepth:4.+ inlineScript/)
+japscan.lol##+js(trusted-set, pubadxtag, 'json:{"divIds": ["bg-ssp-9017-1543422146274", "bg-ssp-8018-5896993179", "bg-ssp-8042-119830060592"]}')
+japscan.lol##+js(trusted-suppress-native-method, Document.prototype.getElementsByClassName, '"/^ZLQZQ/"', prevent, /stackDepth:4.+ inlineScript/)
 japscan.lol##+js(trusted-suppress-native-method, Document.prototype.querySelectorAll, '"/^#/"', prevent, /stackDepth:4.+nawNA/)
-japscan.lol##+js(trusted-suppress-native-method, Document.prototype.getElementById, '"ZLQZQP"', prevent, /stackDepth:4.+ inlineScript/)
+japscan.lol##+js(trusted-suppress-native-method, Document.prototype.getElementById, '"/^ZLQZQ/"', prevent, /stackDepth:4.+ inlineScript/)
 japscan.lol##+js(trusted-suppress-native-method, Document.prototype.querySelector, '"/^#/"', prevent, /stackDepth:4.+ inlineScript:2/)
 japscan.lol##+js(nostif, =document[_0x)
 poophq.com,veev.to,doods.to##+js(nowoif)
@@ -128,8 +127,8 @@ infinityscans.xyz,infinityscans.net,infinityscans.org##div[class="alert alert-in
 panel.freemcserver.net#@#+js(rpnt, script, 'G-1B4LC0KT6C');, 'G-1B4LC0KT6C'); window.setTimeout(function(){blockPing()}\,200);)
 panel.freemcserver.net##+js(rpnt, script, 'G-1B4LC0KT6C');, 'G-1B4LC0KT6C'); localStorage.setItem("tuna"\, "dW5kZWZpbmVk"); localStorage.setItem("sausage"\, "ZmFsc2U="); window.setTimeout(function(){fuckYouUblockAndJobcenterTycoon(false)}\,200);)
 ! filemoon
-djx10.org,0deh.com,2glho.org,58n1.com,5mgz1.com,6jlvu.com,djx10.org,fu-4u3omzw0.nl,guum5.com,hmt6u.com,imdpu9eq.com,kzjou.com,l8e8.com,l99j.com,mee-cccdoz45.com,my4w.com,qa2h.com,qvzidojm.com,tz7z9z0h.com,v1kkm.com,xcoic.com,xo7c.com,z4h4.com,/^moon(?:-[a-z0-9]+)?-embed\.com$/,/^moonfile-[a-z0-9-]+\.com$/,/^[0-9a-z]{5,8}\.(art|cfd|fun|icu|info|live|pro|sbs|world)$/,/^moo-[a-z0-9]+(-[a-z0-9]+)*-mkay\.com$/,/^file-[a-z0-9]+(-[a-z0-9]+)*-(moon|embed)\.com$/,/^fle-[a-z0-9]+(-[a-z0-9]+)*-moo\.com$/,/^filemoon-[a-z0-9]+(?:-[a-z0-9]+)*\.(?:com|xyz)$/##+js(nowoif, /^ [-\d]/)
-djx10.org,0deh.com,2glho.org,58n1.com,5mgz1.com,6jlvu.com,djx10.org,fu-4u3omzw0.nl,guum5.com,hmt6u.com,imdpu9eq.com,kzjou.com,l8e8.com,l99j.com,mee-cccdoz45.com,my4w.com,qa2h.com,qvzidojm.com,tz7z9z0h.com,v1kkm.com,xcoic.com,xo7c.com,z4h4.com,/^moon(?:-[a-z0-9]+)?-embed\.com$/,/^moonfile-[a-z0-9-]+\.com$/,/^[0-9a-z]{5,8}\.(art|cfd|fun|icu|info|live|pro|sbs|world)$/,/^moo-[a-z0-9]+(-[a-z0-9]+)*-mkay\.com$/,/^file-[a-z0-9]+(-[a-z0-9]+)*-(moon|embed)\.com$/,/^fle-[a-z0-9]+(-[a-z0-9]+)*-moo\.com$/,/^filemoon-[a-z0-9]+(?:-[a-z0-9]+)*\.(?:com|xyz)$/##+js(acs, Math.random, parseInt(localStorage['\x)
+0deh.com,2glho.org,58n1.com,5mgz1.com,6jlvu.com,c1z39.com,djx10.org,fu-4u3omzw0.nl,guum5.com,hmt6u.com,imdpu9eq.com,kzjou.com,l8e8.com,l99j.com,mee-cccdoz45.com,my4w.com,qa2h.com,qvzidojm.com,tz7z9z0h.com,v1kkm.com,xcoic.com,xo7c.com,z4h4.com,/^moon(?:-[a-z0-9]+)?-embed\.com$/,/^moonfile-[a-z0-9-]+\.com$/,/^[0-9a-z]{5,8}\.(art|cfd|fun|icu|info|live|pro|sbs|world)$/,/^moo-[a-z0-9]+(-[a-z0-9]+)*-mkay\.com$/,/^file-[a-z0-9]+(-[a-z0-9]+)*-(moon|embed)\.com$/,/^fle-[a-z0-9]+(-[a-z0-9]+)*-moo\.com$/,/^filemoon-[a-z0-9]+(?:-[a-z0-9]+)*\.(?:com|xyz)$/##+js(nowoif, /^ [-\d]/)
+0deh.com,2glho.org,58n1.com,5mgz1.com,6jlvu.com,c1z39.com,djx10.org,fu-4u3omzw0.nl,guum5.com,hmt6u.com,imdpu9eq.com,kzjou.com,l8e8.com,l99j.com,mee-cccdoz45.com,my4w.com,qa2h.com,qvzidojm.com,tz7z9z0h.com,v1kkm.com,xcoic.com,xo7c.com,z4h4.com,/^moon(?:-[a-z0-9]+)?-embed\.com$/,/^moonfile-[a-z0-9-]+\.com$/,/^[0-9a-z]{5,8}\.(art|cfd|fun|icu|info|live|pro|sbs|world)$/,/^moo-[a-z0-9]+(-[a-z0-9]+)*-mkay\.com$/,/^file-[a-z0-9]+(-[a-z0-9]+)*-(moon|embed)\.com$/,/^fle-[a-z0-9]+(-[a-z0-9]+)*-moo\.com$/,/^filemoon-[a-z0-9]+(?:-[a-z0-9]+)*\.(?:com|xyz)$/##+js(acs, Math.random, parseInt(localStorage['\x)
 f51rm.com>>##+js(nowoif, /^ [-\d]/)
 u26bekrb.fun##+js(set, adBlockDetected, undefined)
 !#if cap_html_filtering

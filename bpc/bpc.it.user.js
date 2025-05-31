@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.0.9.0
+// @version         4.1.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -36,8 +36,8 @@ var it_ilmessaggero_domains = ['corriereadriatico.it', 'ilgazzettino.it', 'ilmat
 var it_quotidiano_domains = ['ilgiorno.it', 'ilrestodelcarlino.it', 'iltelegrafolivorno.it', 'lanazione.it', 'quotidiano.net'];
 
 if (matchDomain('corriere.it')) {
-  if (window.location.pathname.endsWith('_amp.html')) {
-    amp_unhide_subscr_section('');
+  if (window.location.pathname.endsWith('_amp.shtml')) {
+    amp_unhide_subscr_section('iframe[src^="https://ads."]');
   } else {
     if (window.location.pathname.includes('_preview.shtml') && !window.location.pathname.startsWith('/podcast/')) {
       window.setTimeout(function () {
@@ -45,6 +45,8 @@ if (matchDomain('corriere.it')) {
       }, 500);
     }
   }
+  let ads = 'div.bck-adv, div.boxADVmanuale';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('corrieredellosport.it')) {
@@ -542,7 +544,8 @@ function amp_unhide_subscr_section(amp_ads_sel = '', replace_iframes = true, amp
   let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
   for (let elem of subscr_section)
     elem.removeAttribute('subscriptions-section');
-  hideDOMStyle(amp_ads_sel, 5);
+  if (amp_ads_sel)
+    hideDOMStyle(amp_ads_sel, 5);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }
@@ -555,7 +558,8 @@ function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_se
     let amp_access_not_dom = document.querySelectorAll('[amp-access' + amp_access_not + ']');
     removeDOMElement(...amp_access_not_dom);
   }
-  hideDOMStyle(amp_ads_sel, 6);
+  if (amp_ads_sel)
+    hideDOMStyle(amp_ads_sel, 6);
   if (replace_iframes)
     amp_iframes_replace(amp_iframe_link, source);
 }

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.3.3
+// @version         4.1.3.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1865,12 +1865,22 @@ else if (matchDomain('dnevnik.bg')) {
   window.setTimeout(function () {
     let article_lock = document.querySelector('div.article-lock');
     if (article_lock) {
+      let intro = article_lock.querySelector('div[role="paragraph"]');
+      let intro_start;
+      if (intro)
+        intro_start = intro.innerText.substring(0, 25);
       let scripts = document.querySelectorAll('script:not([src], [type])');
       let json_script;
+      let link_script;
+      let script_start = 'self.__next_f.push([1,"';
       for (let script of scripts) {
-        if (script.text.startsWith('self.__next_f.push([1,"') && script.text.includes('[storyid:')) {
-          json_script = script;
-          break;
+        if (script.text.startsWith(script_start)) {
+          if (!link_script && script.text.includes('significantLink\\":'))
+            link_script = script;
+          else if (!json_script && script.text.includes('[storyid:') || (intro_start && script.text.replace(/\\"/g, '"').startsWith(script_start + intro_start)))
+            json_script = script;
+          if (json_script && link_script)
+            break;
         }
       }
       if (json_script) {
@@ -1878,13 +1888,6 @@ else if (matchDomain('dnevnik.bg')) {
         let banner = 'div.paywall-content';
         hideDOMStyle(banner);
         let img_main = document.querySelector('div.story-gallery-main figure > img[src]');
-        let link_script;
-        for (let script of scripts) {
-          if (script.text.startsWith('self.__next_f.push([1,"') && script.text.includes('significantLink\\":')) {
-            link_script = script;
-            break;
-          }
-        }
         let links;
         if (link_script)
           links = link_script.text.split('significantLink\\":[')[1].split('\\"],')[0].replace(/\\"/g, '').split(',');
