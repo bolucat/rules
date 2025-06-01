@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Sat, 31 May 2025 08:54:16 +0000
-! Diff-Path: ../patches/2025.5.31.866.patch#ublock-annoyances
+! Last modified: Sun, 01 Jun 2025 13:01:29 +0000
+! Diff-Path: ../patches/2025.6.1.926.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -1660,8 +1660,6 @@ bendigoadvertiser.com.au##+js(nosiif, modal)
 ! fatgirlskinny.net overlay annoyance
 fatgirlskinny.net##.pum
 fatgirlskinny.net##html:style(overflow:auto !important)
-! anti select lightnovelworld .com
-lightnovelworld.*###chapter-article .chapter-content:style(user-select: text !important; -ms-user-select: text !important; -moz-user-select: text !important; -khtml-user-select: text !important; -webkit-user-select: text !important; -webkit-touch-callout: default !important;)
 ! economica .net manipulated clipboard
 economica.net##+js(aeld, copy)
 ! kuroko-analyze.com right-click
@@ -2710,10 +2708,8 @@ outidesigoto.com##*:style(-webkit-touch-callout: default !important; -webkit-use
 rightnonel.com##+js(aopr, document.oncontextmenu)
 rightnonel.com##+js(aopr, document.onmousedown)
 rightnonel.com##+js(aopr, disableSelection)
-! lightnovelpub. com, webnovelpub. com anti select
-lightnovelpub.com,novelpub.com,webnovelpub.com##*:style(-webkit-touch-callout: default !important; -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important;)
-||moatads.com^$image,redirect=1x1.gif,domain=lightnovelpub.com
-lightnovelpub.com##[data-pw-desk]:upward(1)
+! webnovelpub. com anti select
+novelpub.com,webnovelpub.com##*:style(-webkit-touch-callout: default !important; -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important;)
 ! viafarmaciaonline. it anti right click
 viafarmaciaonline.it##+js(aopr, document.oncontextmenu)
 read.amazon.com##+js(aeld, contextmenu)
@@ -3017,8 +3013,7 @@ likey.me##+js(aeld, /contextmenu|keydown/, preventDefault)
 ziare.com##+js(aeld, copy)
 ! agrointel. ro copy manipulation
 agrointel.ro##+js(aeld, copy)
-! freefilesync. org anti-blocker
-freefilesync.org#@#.adsbygoogle
+freefilesync.org##+js(rmnt, script, /adblock/i)
 ! 01. org sticky header
 01.org##.o-header, .project-header-actions:style(position: initial !important;)
 01.org##main[class^="o-content"]:style(top: 0px !important;)

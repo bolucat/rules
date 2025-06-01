@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sat, 31 May 2025 10:39:39 +0000
-! Diff-Path: ../patches/2025.5.31.866.patch#ublock-quick-fixes
+! Last modified: Sun, 01 Jun 2025 15:14:27 +0000
+! Diff-Path: ../patches/2025.6.1.926.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -52,8 +52,17 @@ youtube.com##+js(json-prune, entries.[-].command.reelWatchEndpoint.adClientParam
 ! web.facebook.com,www.facebook.com##+js(json-prune-xhr-response, data.viewer.sideFeed.nodes.0.{-}.nodes.0.rhc_ad, , propsToMatch, /api/graphql)
 web.facebook.com,www.facebook.com##div[role="complementary"] a[aria-labelledby][attributionsrc^="/privacy_sandbox/comet/register/source/?eid="][href^="http"]
 web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.serpResponse.results.edges.[-].rendering_strategy.view_model.story.sponsored_data.ad_id)
-! web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.{-}.the_spons_data.__typename)
-! web.facebook.com,www.facebook.com##+js(trusted-replace-xhr-response, '/null,[^\n]{0,170}"node":\{"__typename"[^\n]{0,2500}"__typename":"SponsoredData"[^\n]+?\},"cursor"/g', 'null,"cursor"', /api/graphql)
+web.facebook.com,www.facebook.com##+js(json-edit, ..__bbox.result.data.node[?@.*.__typename=="SponsoredData"])
+!#if ext_devbuild
+!#if env_firefox
+web.facebook.com,www.facebook.com##+js(jsonl-edit-xhr-response, .data[?@.category=="SPONSORED"].node, , propsToMatch, /graphql)
+web.facebook.com,www.facebook.com##+js(jsonl-edit-xhr-response, .data.viewer.news_feed.edges.*[?@.category=="SPONSORED"].node, , propsToMatch, /graphql)
+!#endif
+!#endif
+!#if ext_ubol
+web.facebook.com,www.facebook.com##+js(jsonl-edit-xhr-response, .data[?@.category=="SPONSORED"].node, , propsToMatch, /graphql)
+web.facebook.com,www.facebook.com##+js(jsonl-edit-xhr-response, .data.viewer.news_feed.edges.*[?@.category=="SPONSORED"].node, , propsToMatch, /graphql)
+!#endif
 ! VOE sites
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=jilliandescribecompany.com,important
 jilliandescribecompany.com##+js(nowoif)
@@ -156,10 +165,10 @@ smsonline.cloud##html[data-theme][lang] [id^="img_"][style]:has(iframe[framebord
 ~dogdrip.net,~infinityfree.com,~smsonline.cloud##*:not(body) > a[href^="https://07c225f3.online/content"]
 07c225f3.online,content-loader.com,css-load.com,html-load.com,img-load.com##html:not(:has(> head > style:only-child:has-text(width:399px;height:411px))):style(filter: opacity(0) !important; pointer-events: none !important;)
 /^https:\/\/www\.[0-9a-z-]{8,}\.xyz\/script\/[-.0-9A-Za-z]+\.[-A-Za-z]{2,30}\.js$/$script,3p,match-case,to=xyz,header=x-length
-||07c225f3.online/script/*.js?h=$uritransform=/script.+/loader.min.js/
-||html-load.com/script/*.js?h=$uritransform=/script.+/loader.min.js/
-||content-loader.com/script/*.js?h=$uritransform=/script.+/loader.min.js/
-/^https:\/\/(?:as(?:loader)?|loader)\.([-0-9A-Za-z]+.[-A-Za-z]{2,30})\/script\/(?:[-0-9a-z]+\.)?\1\.js\?h=\d{9}$/$xhr,1p,strict3p,uritransform=/script.+/loader.min.js/
+://07c225f3.online/loader.min.js
+://html-load.com/loader.min.js
+://content-loader.com/loader.min.js
+/^https:\/\/(?:as(?:loader)?|loader)\.[-0-9A-Za-z]+.[-A-Za-z]{2,30}\/loader.min.js$/$script,1p,strict3p
 dogdrip.net,infinityfree.com,smsonline.cloud##+js(no-fetch-if, -load.com/script/, length:101)
 dogdrip.net,infinityfree.com,smsonline.cloud##+js(nostif, )](this\,..., 3000-6000)
 -load.com/script/$xhr,domain=smsonline.cloud
