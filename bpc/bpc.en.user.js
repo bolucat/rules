@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.3.4
+// @version         4.1.3.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -56,6 +56,7 @@
 // @connect         dowjones.io
 // @exclude         *://*.amazon-adsystem.com/*
 // @exclude         *://*.consentmanager.net/*
+// @exclude         *://*.criteo.com/*
 // @exclude         *://*.dailymotion.com/*
 // @exclude         *://*.doubleclick.net/*
 // @exclude         *://*.dwcdn.net/*
@@ -75,9 +76,11 @@
 // @exclude         *://*.stripe.com/*
 // @exclude         *://*.tinypass.com/*
 // @exclude         *://*.twitter.com/*
+// @exclude         *://*.ultimedia.com/*
 // @exclude         *://*.youtube.com/*
 // @exclude         *://*.abcmais.com/*
 // @exclude         *://*.artsenkrant.com/*
+// @exclude         *://*.bienpublic.com/*
 // @exclude         *://*.cambiocolombia.com/*
 // @exclude         *://*.clarin.com/*
 // @exclude         *://*.connaissancedesarts.com/*
@@ -109,7 +112,9 @@
 // @exclude         *://*.larioja.com/*
 // @exclude         *://*.latercera.com/*
 // @exclude         *://*.lavenir.net/*
+// @exclude         *://*.ledauphine.com/*
 // @exclude         *://*.ledevoir.com/*
+// @exclude         *://*.lejsl.com/*
 // @exclude         *://*.lerevenu.com/*
 // @exclude         *://*.lesinrocks.com/*
 // @exclude         *://*.levante-emv.com/*

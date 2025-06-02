@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.3.1
+// @version         4.1.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -11,6 +11,7 @@
 // @match           *://*.fr/*
 // @match           *://*.aoc.media/*
 // @match           *://*.arcinfo.ch/*
+// @match           *://*.bienpublic.com/*
 // @match           *://*.businessam.be/*
 // @match           *://*.connaissancedesarts.com/*
 // @match           *://*.courrierinternational.com/*
@@ -22,8 +23,10 @@
 // @match           *://*.lacote.ch/*
 // @match           *://*.lalibre.be/*
 // @match           *://*.lavenir.net/*
+// @match           *://*.ledauphine.com/*
 // @match           *://*.ledevoir.com/*
 // @match           *://*.legrandcontinent.eu/*
+// @match           *://*.lejsl.com/*
 // @match           *://*.lenouvelliste.ch/*
 // @match           *://*.lerevenu.com/*
 // @match           *://*.lesinrocks.com/*
@@ -44,6 +47,8 @@
 // @connect         archive.ph
 // @connect         archive.vn
 // @connect         apps.lemonde.fr
+// @exclude         *://*.poool.fr/*
+// @exclude         *://*.weborama.fr/*
 // @grant           GM.xmlHttpRequest
 // ==/UserScript==
 
@@ -69,6 +74,7 @@ hideDOMStyle(ads, 10);
 var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net'];
 var be_roularta_domains = ['femmesdaujourdhui.be', 'flair.be', 'levif.be'];
 var fr_be_groupe_rossel_domains = ['aisnenouvelle.fr', 'courrier-picard.fr', 'lardennais.fr', 'lavoixdunord.fr', 'lemessager.fr', 'lesoir.be', 'lest-eclair.fr', 'liberation-champagne.fr', 'lunion.fr', 'nordlittoral.fr', 'paris-normandie.fr', 'sudinfo.be'];
+var fr_groupe_ebra_domains = ['bienpublic.com', 'dna.fr', 'estrepublicain.fr', 'lalsace.fr', 'ledauphine.com', 'lejsl.com', 'leprogres.fr', 'republicain-lorrain.fr', 'vosgesmatin.fr'];
 var fr_groupe_la_depeche_domains = ['centrepresseaveyron.fr', 'journaldemillau.fr', 'ladepeche.fr', 'lindependant.fr', 'midilibre.fr', 'nrpyrenees.fr', 'petitbleu.fr', 'rugbyrama.fr'];
 var fr_groupe_nice_matin_domains = ['monacomatin.mc', 'nicematin.com', 'varmatin.com'];
 
@@ -268,12 +274,12 @@ else if (matchDomain(fr_be_groupe_rossel_domains)) {
   let paywall = document.querySelector('r-panel.r-panel--paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    hideDOMStyle('r-mini-panel.r-mini-panel--froomle', 2);
+    hideDOMStyle('r-mini-panel.r-mini-panel--froomle, div.r-paywall', 2);
     let article = document.querySelector('r-article--section, div.r-content, div#article_paywall_es');
-    let match = window.location.pathname.match(/^\/[id]*(\d+)\//);
+    let match = window.location.pathname.match(/^\/(id)?(\d+)\//);
     if (article && match) {
       article.removeAttribute('class');
-      let article_id = match[1];
+      let article_id = match[2];
       let apps = 'apps';
       let apps_list = {
         'aisnenouvelle.fr': 'an',
@@ -305,6 +311,45 @@ else if (matchDomain(fr_be_groupe_rossel_domains)) {
     }
   }
   let ads = 'r-pub';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain(fr_groupe_ebra_domains)) {
+  function ebra_main() {
+    window.setTimeout(function () {
+      let url_src = window.location.origin + "/services/grdc/detail?key=" + getWebContentKey();
+      fetch(url_src)
+      .then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            if (json.html) {
+              let article = $("article.viewPartial");
+              if (article) {
+                article.find(".fullDetailActions").remove();
+                article.find(".illustration").remove();
+                article.find(".videoComponent").remove();
+                article.find(".infos").after(json.html);
+                $(".retrievedBodyContent").insertBefore(
+                  article.find(".col_main #poool-widget"));
+                article.removeClass("locked");
+                $("div.previewContent").remove();
+                $("head").append(json.js);
+                formatWsContent();
+                $(".mainContent .accroche").addClass("unlocked");
+                $("iframe[src=''][data-src]").each(function() {$(this).attr("src", $(this).attr("data-src"))});
+              }
+            }
+          })
+        }
+      }).catch(err => console.log(err));
+    }, 1000);
+  }
+  let paywall = document.querySelector('div#paywall-dynamic');
+  if (paywall) {
+    removeDOMElement(paywall);
+    insert_script(ebra_main);
+  }
+  let ads = 'div.wrapperPub';
   hideDOMStyle(ads);
 }
 
@@ -783,10 +828,11 @@ else if (matchDomain('lepoint.fr')) {
 }
 
 else if (matchDomain('lequipe.fr')) {
-  let paywall_sel = 'div.Article__paywall';
-  let paywall = document.querySelector(paywall_sel);
+  let paywall = document.querySelector('div.Article__gradient');
   if (paywall) {
-    hideDOMStyle(paywall_sel, 2);
+    removeDOMElement(paywall);
+    hideDOMStyle('div.Article__paywall', 2);
+    addStyle('p.Article__paragraph--limited {visibility: visible !important; height: auto !important; margin: 0 0 20px !important;}');
     let article_id = window.location.pathname.match(/\d+$/)[0];
     let article = document.querySelector('div.article__body');
     let notes = window.location.pathname.includes('Article/Les-notes-');
