@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.3.5
+// @version         4.1.3.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1157,6 +1157,7 @@ else if (matchDomain('thetimes.com')) {
     if (!window.location.search.startsWith('?shareToken=')) {
       let teaser = document.querySelector('body[data-view-name="teaser-article"]');
       if (teaser) {
+        teaser.classList.remove('TeaserPage');
         let url = window.location.href;
         getArchive(url, 'div#paywall-portal-article-footer', '', article_sel);
         let scroll_style = 'html, body {overflow: auto !important;}';
@@ -1653,7 +1654,7 @@ else if (matchDomain('business-standard.com')) {
   }
   if (!window.location.pathname.startsWith('/amp/')) {
     if (true) {
-      let paywall_sel = 'div.subscribe-page';
+      let paywall_sel = 'div[class^="subscription_subscriptionPlan_"]';
       let paywall = document.querySelector(paywall_sel);
       if (paywall) {
         bs_main(paywall)
@@ -1661,7 +1662,7 @@ else if (matchDomain('business-standard.com')) {
         waitDOMElement(paywall_sel, 'DIV', bs_main, false);
       }
     }
-    let banner = 'section.sbcrbtmlfull';
+    let banner = 'section.sbcrbtmlfull, div.subscribfixed_artcalLeftBox__hmpMi';
     let ads = 'div.advertisement-bg, div[id^="between_article_content_"]';
     hideDOMStyle(banner + ', ' + ads);
   } else

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.3.2
+// @version         4.1.3.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -323,21 +323,42 @@ else if (matchDomain(fr_groupe_ebra_domains)) {
         if (response.ok) {
           response.json().then(json => {
             if (json.html) {
-              let article = $("article.viewPartial");
-              if (article) {
-                article.find(".fullDetailActions").remove();
-                article.find(".illustration").remove();
-                article.find(".videoComponent").remove();
-                article.find(".infos").after(json.html);
-                $(".retrievedBodyContent").insertBefore(
-                  article.find(".col_main #poool-widget"));
-                article.removeClass("locked");
-                $("div.previewContent").remove();
+            let article = document.querySelector('article.viewPartial:not(.done)');
+            if (article) {
+              article.classList.add('done');
+              let intro = article.querySelectorAll('div.fullDetailActions, div.illustration, div.videoComponent');
+              removeDOMElement(...intro)
+              let parser = new DOMParser();
+              let doc = parser.parseFromString('<div>' + json.html + '</div>', 'text/html');
+              let article_new = doc.querySelector('div');
+              let infos = article.querySelector('div.infos');
+              if (infos)
+                infos.after(article_new);
+              let body_content = document.querySelector('div.retrievedBodyContent');
+              if (body_content) {
+                let widget = article.querySelector('div.col_main div#poool-widget');
+                if (widget)
+                  body_content.before(widget);
+              }
+              article.classList.remove('locked');
+              let preview = document.querySelector('div.previewContent');
+              removeDOMElement(preview);
+              if (typeof $ !== 'undefined') {
                 $("head").append(json.js);
                 formatWsContent();
-                $(".mainContent .accroche").addClass("unlocked");
-                $("iframe[src=''][data-src]").each(function() {$(this).attr("src", $(this).attr("data-src"))});
+              } else {
+                let carousel = article.querySelector('ul.carousel-wrapper__slides');
+                if (carousel) {
+                  carousel.removeAttribute('class');
+                  carousel.querySelectorAll('li > figure').forEach(e => e.removeAttribute('class'));
+                  removeDOMElement(carousel.querySelector('figure:has(img[src^="data:image"])'));
+                }
               }
+              let accroche = document.querySelector('.mainContent .accroche');
+              if (accroche)
+                accroche.classList.add('unlocked');
+              article.querySelectorAll('iframe[src=""][data-src]').forEach(e => e.src = e.getAttribute('data-src'));
+            }
             }
           })
         }
