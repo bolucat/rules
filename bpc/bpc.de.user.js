@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.3.0
+// @version         4.1.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -303,11 +303,14 @@ else if (matchDomain('handelsblatt.com')) {
 else if (matchDomain('heise.de')) {
   func_post = function () {
     header_nofix('article', paywall_sel, 'BPC > no archive-fix');
+    let dark_mode = document.querySelector('html.dark');
+    if (dark_mode)
+      dark_mode.classList.remove('dark');
   }
-  let paywall_sel = 'a-gift:not([has-access])';
+  let paywall_sel = cs_param.paywall_sel || 'a-gift:has(div.paywall-delimiter)';
   let url = window.location.href;
   getArchive(url, paywall_sel, '', 'article');
-  let ads = 'div.ad-ldb-container, div.inread-cls-reduc';
+  let ads = 'div.ad-ldb-container, div.inread-cls-reduc, aside.img-ad';
   hideDOMStyle(ads);
 }
 
@@ -935,8 +938,8 @@ else if (matchDomain(de_funke_medien_domains)) {
       if (match) {
         func_post = function () {
           document.querySelectorAll('div[data-carousel-id-slider]').forEach(x => x.removeAttribute('class'));
-          let twitter_templates = document.querySelectorAll('div[data-embed-id="twitter"] > template[data-embedbox-id-embed-template]');
-          for (let elem of twitter_templates) {
+          let embed_templates = document.querySelectorAll('div[data-embed-id] > template[data-embedbox-id-embed-template]');
+          for (let elem of embed_templates) {
             let parser = new DOMParser();
             let doc = parser.parseFromString('<div>' + DOMPurify.sanitize(elem.innerHTML, dompurify_options) + '</div>', 'text/html');
             let blockquote = doc.querySelector('div');
