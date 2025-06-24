@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.1.4.1
+// @version         4.1.4.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -627,11 +627,28 @@ function matchUrlDomain(domains, url) {
   return matchDomain(domains, urlHost(url));
 }
 
-function setCookie(name, value, domain, path, days, localstorage_hold = false) {
+function matchCookies(name) {
+  return document.cookie.split(';').filter(x => x.trim().match(name)).map(y => y.split('=')[0].trim())
+}
+
+function setCookie(names, value, domain = '', path = '/', days = 0, localstorage_hold = false) {
   var max_age = days * 24 * 60 * 60;
-  document.cookie = name + "=" + (value || "") + "; domain=" + domain + "; path=" + path + "; max-age=" + max_age;
-  if (!localstorage_hold)
+  let ck_names = Array.isArray(names) ? names : [];
+  if (names instanceof RegExp)
+    ck_names = matchCookies(names);
+  else if (typeof names === 'string')
+    ck_names = [names];
+  for (let ck_name of ck_names) {
+    document.cookie = ck_name + "=" + (value || "") + (domain ? "; domain=" + domain : '') + (path ? "; path=" + path : '') + "; max-age=" + max_age;
+  }
+  if (!localstorage_hold) {
     window.localStorage.clear();
+    window.sessionStorage.clear();
+  }
+}
+
+function cookieExists(name) {
+  return document.cookie.split(';').some(ck => ck.trim().indexOf(name + '=') === 0)
 }
 
 function removeDOMElement(...elements) {

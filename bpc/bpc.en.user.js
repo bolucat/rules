@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.4.1
+// @version         4.1.4.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1288,6 +1288,8 @@ else if (matchDomain('americanbanker.com') || matchDomain(usa_arizent_custom_dom
     for (let elem of inline_gated)
       elem.classList.remove('inline-gated');
   }
+  let ads = document.querySelectorAll('div.GoogleDfpAd');
+  removeDOMElement(...ads);
 }
 
 else if (matchDomain('artnet.com')) {
@@ -3195,6 +3197,11 @@ else if (matchDomain('seattletimes.com')) {
 
 else if (matchDomain('sfstandard.com')) {
   setCookie('zephr-session', '', 'sfstandard.com', '/', 0);
+  let paywall = document.querySelector('div#paywall-container');
+  if (paywall) {
+    removeDOMElement(paywall);
+    refreshCurrentTab();
+  }
   let ads = 'div.sticky';
   hideDOMStyle(ads);
 }
@@ -4779,7 +4786,7 @@ function matchCookies(name) {
   return document.cookie.split(';').filter(x => x.trim().match(name)).map(y => y.split('=')[0].trim())
 }
 
-function setCookie(names, value, domain = '', path = '/', days = 0) {
+function setCookie(names, value, domain = '', path = '/', days = 0, localstorage_hold = false) {
   var max_age = days * 24 * 60 * 60;
   let ck_names = Array.isArray(names) ? names : [];
   if (names instanceof RegExp)
@@ -4789,7 +4796,10 @@ function setCookie(names, value, domain = '', path = '/', days = 0) {
   for (let ck_name of ck_names) {
     document.cookie = ck_name + "=" + (value || "") + (domain ? "; domain=" + domain : '') + (path ? "; path=" + path : '') + "; max-age=" + max_age;
   }
-  window.localStorage.clear();
+  if (!localstorage_hold) {
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+  }
 }
 
 function cookieExists(name) {
