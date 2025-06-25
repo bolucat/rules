@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: cChTc3miedSLoCMpzRboYg
-! Diff-Path: ../patches/7/7-s-1750777929-3600.patch
+! Checksum: kBraML3Fd8itLLsj+uo8GQ
+! Diff-Path: ../patches/7/7-s-1750871491-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.65.60
-! TimeUpdated: 2025-06-24T15:07:47+00:00
+! Version: 2.0.65.65
+! TimeUpdated: 2025-06-25T17:07:24+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1802,6 +1802,17 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+dq-dic.h1g.jp###menubar > div[style*="width:"][align="center"]
+h1g.jp##.menubar > div[style*="width:"][align="center"]
+h1g.jp##.mainbody > div[style*="height:"][align="center"]
+mobilegadget.jp#?##main > .page_navi ~ .content > h3.plg3_header:contains(Sponsored Link)
+mobilegadget.jp###sidemenu > .sidemenu_body:has(> .plg_body > .plugin-freearea > .adsbygoogle)
+h1g.jp##div[style$="width:728px; height:90px; margin:auto;"]
+h1g.jp#$#.upper-menu > div[style="height: 90px!important;"] { height: auto !important; }
+h1g.jp#$#.footer { padding-bottom: 110px !important; }
+h1g.jp##div[style="witdh:728px; height:90px;"]
+h1g.jp#$#.upper-menu { height: inherit !important; }
+h1g.jp##div[style$="width:728px; height:400px; margin:auto;"]
 cartune.me##.text-center.min-h-\[250px\]
 auctions.yahoo.co.jp###auction_spn
 roboin.io##._169wog0
@@ -8145,7 +8156,7 @@ appbank.net##.entry-list-item-native-ad
 server-navi.info##.box_s
 server-navi.info##.boxp
 server-navi.info##table[width="180"]:nth-last-of-type(-n+2)
-dokuo666.blog98.fc2.com,newssokuhou666.blog.fc2.com##div[style*="width:300px; height:250px"]
+h1g.jp,dokuo666.blog98.fc2.com,newssokuhou666.blog.fc2.com##div[style*="width:300px; height:250px"]
 ||smashop.jp/img/sml/sml-dp.jpg
 smashop.jp###r1_advertisement
 smashop.jp##.ad_navigation_300_250
@@ -11419,6 +11430,12 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_japanese
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/208209
+mobilegadget.jp#@#.header-ad
+! https://github.com/AdguardTeam/AdguardFilters/issues/208191
+! QR code in the sidebar blocked
+@@||edayo.ad-drop.jp/yie/ld/jsk$script,domain=h1g.jp
+@@||js.ad-drop.jp/t/$script,domain=h1g.jp
 ! https://github.com/AdguardTeam/AdguardFilters/issues/202622
 ! Website is broken when blocked scripts are removed from the page,
 ! so as a workaround, "redirect-rule" is used.

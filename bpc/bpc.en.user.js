@@ -4757,14 +4757,10 @@ if (document.querySelector('head > link[href*="/leaky-paywall"], script[src*="/l
 
 // General Functions
 
-function matchDomain(domains, hostname) {
-  var matched_domain = false;
-  if (!hostname)
-    hostname = window.location.hostname;
+function matchDomain(domains, hostname = window.location.hostname) {
   if (typeof domains === 'string')
     domains = [domains];
-  domains.some(domain => (hostname === domain || hostname.endsWith('.' + domain)) && (matched_domain = domain));
-  return matched_domain;
+  return domains.find(domain => hostname === domain || hostname.endsWith('.' + domain)) || false;
 }
 
 function urlHost(url) {
