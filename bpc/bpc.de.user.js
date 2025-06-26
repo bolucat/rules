@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.3.1
+// @version         4.1.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -1012,29 +1012,6 @@ else if (matchDomain(de_ippen_media_domains) || document.querySelector('header a
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('ruhrnachrichten.de') || document.querySelector('a.mgw-logo[href^="https://mgw.de"]')) {
-  func_post = function () {
-    if (mobile) {
-      let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
-      for (let elem of lazy_images)
-        elem.style = 'width: 95%;';
-      let read_more = document.querySelectorAll('article[id] > figure');
-      for (let elem of read_more) {
-        elem.removeAttribute('style');
-        elem.parentNode.removeAttribute('style');
-      }
-    }
-  }
-  let url = window.location.href;
-  getArchive(url, 'body.is_plus_article', {rm_class: 'is_plus_article'}, 'div#premium-content');
-  if (!matchDomain('ruhrnachrichten.de')) {
-    window.setTimeout(function () {
-      let push = document.querySelector('div.cleverpush-bell');
-      removeDOMElement(push);
-    }, 1000);
-  }
-}
-
 else if (matchDomain(de_vrm_domains) || matchDomain(de_vrm_custom_domains)) {
   func_post = function () {
     let article = document.querySelector(article_sel);
@@ -1062,14 +1039,10 @@ else if (matchDomain(de_vrm_domains) || matchDomain(de_vrm_custom_domains)) {
 
 // General Functions
 
-function matchDomain(domains, hostname) {
-  var matched_domain = false;
-  if (!hostname)
-    hostname = window.location.hostname;
+function matchDomain(domains, hostname = window.location.hostname) {
   if (typeof domains === 'string')
     domains = [domains];
-  domains.some(domain => (hostname === domain || hostname.endsWith('.' + domain)) && (matched_domain = domain));
-  return matched_domain;
+  return domains.find(domain => hostname === domain || hostname.endsWith('.' + domain)) || false;
 }
 
 function urlHost(url) {
@@ -1087,11 +1060,28 @@ function matchUrlDomain(domains, url) {
   return matchDomain(domains, urlHost(url));
 }
 
-function setCookie(name, value, domain, path, days, localstorage_hold = false) {
+function matchCookies(name) {
+  return document.cookie.split(';').filter(x => x.trim().match(name)).map(y => y.split('=')[0].trim())
+}
+
+function setCookie(names, value, domain = '', path = '/', days = 0, localstorage_hold = false) {
   var max_age = days * 24 * 60 * 60;
-  document.cookie = name + "=" + (value || "") + "; domain=" + domain + "; path=" + path + "; max-age=" + max_age;
-  if (!localstorage_hold)
+  let ck_names = Array.isArray(names) ? names : [];
+  if (names instanceof RegExp)
+    ck_names = matchCookies(names);
+  else if (typeof names === 'string')
+    ck_names = [names];
+  for (let ck_name of ck_names) {
+    document.cookie = ck_name + "=" + (value || "") + (domain ? "; domain=" + domain : '') + (path ? "; path=" + path : '') + "; max-age=" + max_age;
+  }
+  if (!localstorage_hold) {
     window.localStorage.clear();
+    window.sessionStorage.clear();
+  }
+}
+
+function cookieExists(name) {
+  return document.cookie.split(';').some(ck => ck.trim().indexOf(name + '=') === 0)
 }
 
 function removeDOMElement(...elements) {
