@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.3.3
+// @version         4.1.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -507,11 +507,6 @@ else if (matchDomain('journaldunet.com')) {
   let entry_reg_wall = document.querySelector('div.entry_reg_wall[style]');
   if (entry_reg_wall)
     entry_reg_wall.removeAttribute('style');
-}
-
-else if (matchDomain('lanouvellerepublique.fr')) {
-  let ads = 'aside.dfp';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('lecourrierdesstrateges.fr')) {
@@ -1261,10 +1256,14 @@ else if (matchDomain('ouest-france.fr')) {
         }
       });
     }
-    let paywall = document.querySelector('div.mur');
-    if (paywall && !window.location.search.includes('token=')) {
-      removeDOMElement();
-      insert_script(ouest_france_main);
+    if (!window.location.search.includes('token=')) {
+      let paywall = document.querySelector('div.mur');
+      if (paywall) {
+        removeDOMElement();
+        insert_script(ouest_france_main);
+      }
+    } else {
+      document.querySelectorAll('iframe:not([src])[data-embed-src]').forEach(e => e.src = e.getAttribute('data-embed-src'));
     }
   } else {
     function ouest_france_sub(app_id = 'c8kp7jv01t') {
@@ -1446,14 +1445,10 @@ else if (matchDomain('lamontagne.fr') || document.querySelector('head > meta[nam
 
 // General Functions
 
-function matchDomain(domains, hostname) {
-  var matched_domain = false;
-  if (!hostname)
-    hostname = window.location.hostname;
+function matchDomain(domains, hostname = window.location.hostname) {
   if (typeof domains === 'string')
     domains = [domains];
-  domains.some(domain => (hostname === domain || hostname.endsWith('.' + domain)) && (matched_domain = domain));
-  return matched_domain;
+  return domains.find(domain => hostname === domain || hostname.endsWith('.' + domain)) || false;
 }
 
 function urlHost(url) {
@@ -1471,11 +1466,28 @@ function matchUrlDomain(domains, url) {
   return matchDomain(domains, urlHost(url));
 }
 
-function setCookie(name, value, domain, path, days, localstorage_hold = false) {
+function matchCookies(name) {
+  return document.cookie.split(';').filter(x => x.trim().match(name)).map(y => y.split('=')[0].trim())
+}
+
+function setCookie(names, value, domain = '', path = '/', days = 0, localstorage_hold = false) {
   var max_age = days * 24 * 60 * 60;
-  document.cookie = name + "=" + (value || "") + "; domain=" + domain + "; path=" + path + "; max-age=" + max_age;
-  if (!localstorage_hold)
+  let ck_names = Array.isArray(names) ? names : [];
+  if (names instanceof RegExp)
+    ck_names = matchCookies(names);
+  else if (typeof names === 'string')
+    ck_names = [names];
+  for (let ck_name of ck_names) {
+    document.cookie = ck_name + "=" + (value || "") + (domain ? "; domain=" + domain : '') + (path ? "; path=" + path : '') + "; max-age=" + max_age;
+  }
+  if (!localstorage_hold) {
     window.localStorage.clear();
+    window.sessionStorage.clear();
+  }
+}
+
+function cookieExists(name) {
+  return document.cookie.split(';').some(ck => ck.trim().indexOf(name + '=') === 0)
 }
 
 function removeDOMElement(...elements) {
