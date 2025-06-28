@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.4.0
+// @version         4.1.4.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -844,17 +844,14 @@ else if (matchDomain('lepoint.fr')) {
 }
 
 else if (matchDomain('lequipe.fr')) {
-  let paywall = document.querySelector('div.Article__gradient');
+  let paywall = document.querySelector('article.Article--limited div.Article__gradient');
   if (paywall) {
     removeDOMElement(paywall);
     hideDOMStyle('div.Article__paywall', 2);
-    addStyle('p.Article__paragraph--limited {visibility: visible !important; height: auto !important; margin: 0 0 20px !important;}');
+    addStyle('div.Article__paragraph--limited {visibility: visible !important; height: auto !important; margin: 0 0 20px !important;}');
     let article_id = window.location.pathname.match(/\d+$/)[0];
     let article = document.querySelector('div.article__body');
-    let notes = window.location.pathname.includes('Article/Les-notes-');
-    if (notes)
-      header_nofix(article, '', 'BPC > no fix');
-    else if (article_id && article) {
+    if (article_id && article) {
       let url_src = 'https://dwh.lequipe.fr/api/v4/efr/news/' + article_id;
       fetch(url_src)
       .then(response => {
@@ -866,14 +863,25 @@ else if (matchDomain('lequipe.fr')) {
               article.innerHTML = '';
               article.className += ' Article__paragraph';
               article.appendChild(document.createElement('br'));
-              addStyle('div.article__body > p.Paragraph {font-family: "DINNextLTPro-Regular", sans-serif; font-size: 18px; font-weight: 400; line-height: 26px;}');
+              addStyle('div.article__body > div.Paragraph {font-family: "DINNextLTPro-Regular", sans-serif; font-size: 18px; font-weight: 400; line-height: 26px;}', 2);
               let parser = new DOMParser();
               for (let par of pars) {
                 let elem;
-                if (par.content) {
+                if (par.content || par.note) {
+                  if (!par.content)
+                    par.content = '';
                   if ((par.content.match(/(^<div|\/div>$)/g) || []).length !== 1) {
-                    let elem_type = par.content.includes('div>') ? 'div' : 'p';
-                    let doc = parser.parseFromString('<' + elem_type + ' class="Paragraph">' + par.content + '</' + elem_type + '>', 'text/html');
+                    let elem_type = 'div';
+                    if (par.title) {
+                      par.content = '<h2>' + par.title + '</h2>' + par.content;
+                    } else if (par.note) {
+                      if (par.note.label && par.note.rating) {
+                        let par_img = par.note.image || par.note.picture;
+                        let img = (par_img && par_img.url) ? '<img src="' + par_img.url.replace('{width}', '200').replace('{height}', 200).replace('{quality}', '75') + '" >' : '';
+                        par.content = '<h2>' + par.note.label + ': ' + par.note.rating + '</h2>' + img + par.content;
+                      }
+                    }
+                    let doc = parser.parseFromString('<div class="Paragraph">' + par.content + '</div>', 'text/html');
                     elem = doc.querySelector(elem_type);
                   }
                 } else if (par.title) {
@@ -1308,6 +1316,8 @@ else if (matchDomain('ouest-france.fr')) {
   }
   let ads = 'div.pub';
   hideDOMStyle(ads);
+  let banner = document.querySelector('div#pub_megabanner');
+  removeDOMElement(banner);
 }
 
 else if (matchDomain('philonomist.com')) {
@@ -1678,8 +1688,9 @@ function getJsonUrlText(article, callback, article_id = '', key = '', url_rest =
     fetch(json_url)
     .then(response => {
       if (response.ok) {
-        response.json().then(json => {
+        response.text().then(html => {
           try {
+            let json = JSON.parse(html.replace(/<script>[\S\s]+<\/script>/g, ''));
             let json_text = parseHtmlEntities(!key ? json.content.rendered : getNestedKeys(json, key));
             callback(json_text, article);
           } catch (err) {

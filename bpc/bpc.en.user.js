@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.4.2
+// @version         4.1.4.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -673,7 +673,7 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'decanter.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'thelawyer.com', 'thetimes.com', 'unherd.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'decanter.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'the-tls.com', 'thelawyer.com', 'thetimes.com', 'unherd.com'])) {//united kingdom/ireland
 
 if (matchDomain('apollo-magazine.com')) {
   setCookie('blaize_session', '', 'apollo-magazine.com', '/', 0);
@@ -1044,7 +1044,7 @@ else if (matchDomain('tes.com')) {
   removeDOMElement(banner);
 }
 
-else if (matchDomain('the-tls.co.uk')) {
+else if (matchDomain('the-tls.com')) {
   getJsonUrl('div.tls-single-article__closed-paywall', '', 'div.tls-article-body', {art_class: 'tls-article-body'});
   let fade = 'div.tls-single-article__closed-paywall-wrapper';
   let ads = 'div[class*="tls-single-article__ad-slot"]';
@@ -5506,8 +5506,9 @@ function getJsonUrlText(article, callback, article_id = '', key = '', url_rest =
     fetch(json_url)
     .then(response => {
       if (response.ok) {
-        response.json().then(json => {
+        response.text().then(html => {
           try {
+            let json = JSON.parse(html.replace(/<script>[\S\s]+<\/script>/g, ''));
             let json_text = parseHtmlEntities(!key ? json.content.rendered : getNestedKeys(json, key));
             callback(json_text, article);
           } catch (err) {
