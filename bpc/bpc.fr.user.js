@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.4.2
+// @version         4.1.4.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -74,6 +74,7 @@ hideDOMStyle(ads, 10);
 var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net'];
 var be_roularta_domains = ['femmesdaujourdhui.be', 'flair.be', 'levif.be'];
 var fr_be_groupe_rossel_domains = ['aisnenouvelle.fr', 'courrier-picard.fr', 'lardennais.fr', 'lavoixdunord.fr', 'lemessager.fr', 'lesoir.be', 'lest-eclair.fr', 'liberation-champagne.fr', 'lunion.fr', 'nordlittoral.fr', 'paris-normandie.fr', 'sudinfo.be'];
+var fr_gcf_custom_domains = ['larep.fr', 'leberry.fr', 'lechorepublicain.fr', 'lejdc.fr', 'lepopulaire.fr', 'leveil.fr', 'lyonne.fr'];
 var fr_groupe_ebra_domains = ['bienpublic.com', 'dna.fr', 'estrepublicain.fr', 'lalsace.fr', 'ledauphine.com', 'lejsl.com', 'leprogres.fr', 'republicain-lorrain.fr', 'vosgesmatin.fr'];
 var fr_groupe_la_depeche_domains = ['centrepresseaveyron.fr', 'journaldemillau.fr', 'ladepeche.fr', 'lindependant.fr', 'midilibre.fr', 'nrpyrenees.fr', 'petitbleu.fr', 'rugbyrama.fr'];
 var fr_groupe_nice_matin_domains = ['monacomatin.mc', 'nicematin.com', 'varmatin.com'];
@@ -1430,25 +1431,128 @@ else if (matchDomain('telerama.fr')) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('lamontagne.fr') || document.querySelector('head > meta[name="google-play-app"][content^="app-id=com.centrefrance"]')) {// Groupe Centre France
-  let paywall = document.querySelector('div#poool-widget');
+else if (matchDomain('lamontagne.fr') || matchDomain(fr_gcf_custom_domains)) { // Groupe Centre France
+  let paywall = document.querySelector('div.poool-widget');
   if (paywall) {
     removeDOMElement(paywall);
-    let json_script = getArticleJsonScript();
-    if (json_script) {
-      let json = JSON.parse(json_script.text);
-      if (json) {
-        let json_text = json.articleBody;
-        let content = document.querySelector('div.entry-content');
-        if (json_text && content) {
-          content.innerHTML = '';
-          let article_new = document.createElement('p');
-          article_new.innerText = json_text;
-          content.appendChild(article_new);
+    let article = document.querySelector('div#content section > div.flex-col');
+    if (article) {
+      let div_empty = article.querySelector('div[class^="min-h"]:empty');
+      removeDOMElement(div_empty);
+      let url = window.location.href;
+      fetch(url)
+      .then(response => {
+        if (response.ok) {
+          response.text().then(html => {
+            if (html.includes('\\"contentJson\\":')) {
+              let html_json = html.split('\\"contentJson\\":')[1].split(']},\\"')[0].replace(/\\"/g, '"').replace(/\\\\"/g, '\\"') + ']}';
+              try {
+                let json = JSON.parse(html_json);
+                if (json && json.content) {
+                  let cf_paywall = json.content.find(x => x.type === 'cf-paywall');
+                  if (cf_paywall) {
+                    let pars = cf_paywall.content;
+                    for (let par of pars) {
+                      function handle_par(par) {
+                        let elem = document.createElement('div');
+                        if (['paragraph', 'heading', 'cf-line-heading', 'cf-quote'].includes(par.type)) {
+                          if (par.content) {
+                            if (par.type === 'heading')
+                              elem.style = 'font-weight: bold;';
+                            else if (par.type === 'cf-quote')
+                              elem.style = 'font-style: italic;';
+                            for (let item of par.content) {
+                              let sub_elem;
+                              if (item.text) {
+                                sub_elem = document.createElement('span');
+                                let sub_elem_style = '';
+                                if (item.marks) {
+                                  for (let mark of item.marks) {
+                                    if (mark.type === 'link') {
+                                      if (mark.attrs && mark.attrs.href) {
+                                        sub_elem = document.createElement('a');
+                                        sub_elem.href = mark.attrs.href;
+                                        sub_elem_style = 'text-decoration:underline;';
+                                      }
+                                    } else if (mark.type === 'bold')
+                                      sub_elem_style += 'font-weight: bold;';
+                                    else if (mark.type === 'italic')
+                                      sub_elem_style += 'font-style: italic;';
+                                    if (sub_elem_style)
+                                      sub_elem.style = sub_elem_style;
+                                  }
+                                }
+                                sub_elem.innerText = item.text;
+                                if (par.type === 'cf-quote') {
+                                  if (par.attrs && par.attrs.author)
+                                    sub_elem.innerText += ' - ' + par.attrs.author + (par.attrs.source ? ' ' + par.attrs.source : '');
+                                }
+                              } else if (item.type === 'hardBreak') {
+                                sub_elem = document.createElement('br');
+                              } else
+                                console.log(item);
+                              if (sub_elem)
+                                elem.appendChild(sub_elem);
+                            }
+                          }
+                        } else if (par.type === 'cf-image') {
+                          if (par.attrs && par.attrs.src) {
+                            elem = document.createElement('img');
+                            elem.src = par.attrs.src;
+                          }
+                        } else if (par.type === 'cf-embed') {
+                          if (par.attrs && par.attrs.url) {
+                            elem = document.createElement('iframe');
+                            elem.src = par.attrs.url.replace(/^\/\//, 'https://');
+                            if (par.attrs.width)
+                              elem.width = par.attrs.width;
+                            if (par.attrs.height)
+                              elem.height = par.attrs.height;
+                          }
+                        } else if (par.type === 'cf-read-also') {
+                          if (par.attrs && par.attrs.text && par.attrs.url) {
+                            elem = document.createElement('a');
+                            elem.innerText = 'À lire aussi: ' + par.attrs.text;
+                            elem.href = par.attrs.url;
+                            elem.style = 'text-decoration:underline;';
+                          }
+                        } else {
+                          console.log(par);
+                        }
+                        if (elem)
+                          article.appendChild(elem);
+                      }
+                      if (par.type === 'cf-aside' && par.content) {
+                        for (let sub_par of par.content)
+                          handle_par(sub_par);
+                      } else
+                        handle_par(par);
+                    }
+                  }
+                }
+                if (html.includes(',\\"textToSpeech\\":{')) {
+                  let tts_url = html.split(',\\"textToSpeech\\":{')[1].split(',\\"url\\":\\"')[1].split('\\",\\"')[0];
+                  if (tts_url) {
+                    let audio_div = document.createElement('div');
+                    audio_div.innerText = "Écouter l'article";
+                    audio_div.style = 'margin-bottom: 20px;';
+                    let audio = document.createElement('iframe');
+                    audio.src = tts_url;
+                    audio_div.appendChild(audio);
+                    article.before(audio_div);
+                  }
+                }
+              } catch (err) {
+                console.log(err);
+              }
+            }
+          })
         }
-      }
+      }).catch(err => console.log(err))
     }
   }
+  let ads = 'div.ad-slot, div[class="w-[100vw]"]';
+  hideDOMStyle(ads);
 }
 
 }, 1000);
