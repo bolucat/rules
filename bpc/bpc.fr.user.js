@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.4.4
+// @version         4.1.4.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1432,7 +1432,7 @@ else if (matchDomain('telerama.fr')) {
 }
 
 else if (matchDomain('lamontagne.fr') || matchDomain(fr_gcf_custom_domains)) { // Groupe Centre France
-  let paywall = document.querySelector('div.poool-widget');
+  let paywall = document.querySelector('meta[name="premium"][content="true"]');
   if (paywall) {
     removeDOMElement(paywall);
     let article = document.querySelector('div#content section > div.flex-col');
@@ -1551,7 +1551,7 @@ else if (matchDomain('lamontagne.fr') || matchDomain(fr_gcf_custom_domains)) { /
       }).catch(err => console.log(err))
     }
   }
-  let ads = 'div.ad-slot, div[class="w-[100vw]"]';
+  let ads = 'div.ad-slot, div[class="w-[100vw]"], div.transition-all';
   hideDOMStyle(ads);
 }
 

@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Privacy
 ! Expires: 7 days
-! Last modified: Mon, 30 Jun 2025 05:39:13 +0000
-! Diff-Path: ../patches/2025.6.30.871.patch#ublock-privacy
+! Last modified: Tue, 01 Jul 2025 11:22:06 +0000
+! Diff-Path: ../patches/2025.7.1.930.patch#ublock-privacy
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/privacy.txt ***
@@ -1097,6 +1097,7 @@ edikted.com##+js(remove-cookie, /_shopify_y|yotpo_pixel/, when, scroll keydown)
 ||safelinks.protection.outlook.com/?url=$urlskip=?url
 ||insights.mtv.a2d.tv^
 mediamarkt.de##+js(aopw, ftr__startScriptLoad)
+||swatalk.com/wp-admin/admin-ajax.php?action=bill_minozzi_js_error_catched
 ! Merge in resource-abuse.txt
 ! *** uAssets:filters/resource-abuse.txt ***
 /edgemesh.*.js$script,domain=~edgemesh.com|~edgeno.de
@@ -1129,9 +1130,6 @@ djs.sk##+js(aopr, miner)
 steamplay.*##+js(aopw, CoinNebula)
 ! revdl . com avoids miners
 ||revdl.com^$csp=worker-src 'none';
-||firstonetv.*^$csp=worker-src 'none';
-||firstone.*^$csp=worker-src 'none';
-||firstonetv.*^$csp=connect-src 'none';
 ||backend.dna-delivery.com^$domain=france.tv|rt.com
 ||cdn.streamroot.io/dna-client/$script,domain=prod-player.tf1.fr
 ||csgo.xyz^$doc
@@ -1141,7 +1139,7 @@ steamplay.*##+js(aopw, CoinNebula)
 ! ||p2p.huya.com^$xhr
 ||msstatic.com/huya/*/p2plib.js$script
 ! Block some Chinese web pages from using P2P
-bilibili.com,dandanzan.top,nunuyy.*,v.qq.com##+js(nowebrtc)
+bilibili.com,dandanzan.top,v.qq.com##+js(nowebrtc)
 bilibili.com##+js(no-fetch-if, data.bilibili.com)
 bilibili.com##+js(trusted-suppress-native-method, navigator.sendBeacon, '"data.bilibili.com/log/"', prevent)
 ||monerominer.rocks/miner-mmr/webmnr.min.js
