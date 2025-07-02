@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.1.4.2
+// @version         4.1.4.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -54,7 +54,7 @@ var cs_param = {};
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"], amp-ad, amp-embed[type="mgid"], amp-embed[type="outbrain"], amp-embed[type="taboola"]';
+var ads = 'div.OUTBRAIN, div[id^="taboola-" i], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"], amp-ad, amp-embed[type="mgid"], amp-embed[type="outbrain"], amp-embed[type="taboola"]';
 hideDOMStyle(ads, 10);
 
 var be_mediahuis_domains = ['gva.be', 'hbvl.be', 'nieuwsblad.be', 'standaard.be'];
@@ -602,14 +602,10 @@ else if (matchDomain('vn.nl')) {
 
 // General Functions
 
-function matchDomain(domains, hostname) {
-  var matched_domain = false;
-  if (!hostname)
-    hostname = window.location.hostname;
+function matchDomain(domains, hostname = window.location.hostname) {
   if (typeof domains === 'string')
     domains = [domains];
-  domains.some(domain => (hostname === domain || hostname.endsWith('.' + domain)) && (matched_domain = domain));
-  return matched_domain;
+  return domains.find(domain => hostname === domain || hostname.endsWith('.' + domain)) || false;
 }
 
 function urlHost(url) {
@@ -935,6 +931,17 @@ function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full artic
   return text_fail_div;
 }
 
+function getSourceJsonScript(filter, attributes = ':not([src], [type])') {
+  if (typeof filter === 'string')
+    filter = new RegExp(filter);
+  let scripts = document.querySelectorAll('script' + attributes);
+  for (let script of scripts) {
+    if (script.text.match(filter))
+      return script;
+  }
+  return false;
+}
+
 function getArticleJsonScript() {
   let scripts = document.querySelectorAll('script[type="application/ld+json"]');
   let json_script;
@@ -975,8 +982,9 @@ function getJsonUrlText(article, callback, article_id = '', key = '', url_rest =
     fetch(json_url)
     .then(response => {
       if (response.ok) {
-        response.json().then(json => {
+        response.text().then(html => {
           try {
+            let json = JSON.parse(html.replace(/<script>[\S\s]+<\/script>/g, ''));
             let json_text = parseHtmlEntities(!key ? json.content.rendered : getNestedKeys(json, key));
             callback(json_text, article);
           } catch (err) {

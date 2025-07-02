@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.4.4
+// @version         4.1.4.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -192,7 +192,7 @@ var cs_param = {};
 var overlay = document.querySelector('body.didomi-popup-open');
 if (overlay)
   overlay.classList.remove('didomi-popup-open');
-var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"], amp-ad, amp-embed[type="mgid"], amp-embed[type="outbrain"], amp-embed[type="taboola"]';
+var ads = 'div.OUTBRAIN, div[id^="taboola-" i], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"], amp-ad, amp-embed[type="mgid"], amp-embed[type="outbrain"], amp-embed[type="taboola"]';
 hideDOMStyle(ads, 10);
 
 var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 'thepeterboroughexaminer.com', 'therecord.com', 'thespec.com', 'thestar.com', 'wellandtribune.ca'];
@@ -2137,9 +2137,10 @@ else if (matchDomain('espn.com')) {
 }
 
 else if (matchDomain('euobserver.com')) {
-  let paywall = pageContains('div > div > button > div > span', /^Register$/);
+  let paywall = pageContains('div > h4', 'To read this story, log in or subscribe');
   if (paywall.length) {
-    let article = paywall[0].parentNode.parentNode.parentNode.parentNode;
+    removeDOMElement(paywall[0].parentNode);
+    let article = document.querySelector('div:has(> p.rte-p)');
     if (article) {
       let filter = /^window\.__basedcache__\s?=\s?/;
       let json_script = getSourceJsonScript(filter);
@@ -2151,11 +2152,8 @@ else if (matchDomain('euobserver.com')) {
             if (body) {
               article.innerHTML = '';
               let parser = new DOMParser();
-              let doc = parser.parseFromString('<div class="w" style="font-size: 18px; line-height: 30px; position: relative;">' + body + '</div>', 'text/html');
+              let doc = parser.parseFromString('<div style="font-size: 18px; line-height: 30px; position: relative;">' + body + '</div>', 'text/html');
               let article_new = doc.querySelector('div');
-              let pars = article_new.querySelectorAll('p.rte-p');
-              for (let par of pars)
-                par.style = 'margin: 20px 0px;';
               article.appendChild(article_new);
             }
           }
