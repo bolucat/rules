@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.1.2.1
+// @version         4.1.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -64,24 +64,14 @@
 // @match           *://*.revistaoeste.com/*
 // @match           *://*.sabado.pt/*
 // @match           *://*.uol.com.br/*
+// @grant           GM.xmlHttpRequest
+// @require         https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc_func.js
 // ==/UserScript==
 
 (function() {
   //'use strict';
 
-var func_post;
-
 window.setTimeout(function () {
-
-var domain;
-var mobile = window.navigator.userAgent.toLowerCase().includes('mobile');
-var csDoneOnce;
-
-var overlay = document.querySelector('body.didomi-popup-open');
-if (overlay)
-  overlay.classList.remove('didomi-popup-open');
-var ads = 'div.OUTBRAIN, div[id^="taboola-"], div.ad-container, div[class*="-ad-container"], div[class*="_ad-container"], div.arc_ad, div[id^="poool-"], amp-ad, amp-embed[type="mgid"], amp-embed[type="outbrain"], amp-embed[type="taboola"]';
-hideDOMStyle(ads, 10);
 
 var ar_grupo_clarin_domains =['clarin.com', 'lavoz.com.ar', 'losandes.com.ar', 'ole.com.ar'];
 var es_epiberica_domains = ['diariodemallorca.es', 'eldia.es', 'elperiodico.com', 'epe.es', 'farodevigo.es', 'informacion.es', 'laprovincia.es', 'levante-emv.com', 'lne.es', 'mallorcazeitung.es', 'superdeporte.es'];
@@ -189,42 +179,28 @@ else if (matchDomain(es_grupo_vocento_domains)) {
   let paywall_sel = 'div.voc-paywall, div.container-wall-exclusive__content-login';
   let paywall = document.querySelector(paywall_sel);
   if (!window.location.pathname.endsWith('_amp.html')) {
-    if (matchDomain('abc.es')) {
-      if (paywall) {
-        let span_break = document.querySelector('span.c-text');
-        removeDOMElement(paywall, span_break);
-        let art_hidden = document.querySelectorAll('span.paywall, div.wpb_column > span');
-        for (let elem of art_hidden) {
-          let attributes = [...elem.attributes];
-          for (let attrib of attributes)
-            elem.removeAttribute(attrib.name);
-        }
-      }
-    } else if (!matchDomain(['eldiariomontanes.es'])) {
-      amp_redirect(paywall_sel, '', window.location.pathname.replace('.html', '_amp.html'));
-    } else {
-      if (paywall) {
-        let url = window.location.href;
-        paywall.before(archiveLink(url));
-        removeDOMElement(paywall);
+    if (paywall) {
+      let span_break = document.querySelector('span.c-text');
+      removeDOMElement(paywall, span_break);
+      let art_hidden = document.querySelectorAll('.paywall, div.wpb_column > span');
+      for (let elem of art_hidden) {
+        let attributes = [...elem.attributes];
+        for (let attrib of attributes)
+          elem.removeAttribute(attrib.name);
+        if (elem.tagName === 'DIV')
+          elem.className = 'paywall';
       }
     }
     let ads = '.voc-advertising, div.voc-ob-wrapper, div.voc-discounts, div.ev-em-modal, span.mega-superior, div.v-adv';
-    hideDOMStyle(ads);
+    hideDOMStyle(ads, 2);
   } else {
-    if (matchDomain('abc.es') && window.location.pathname.startsWith('/xlsemanal/')) {
-      let paywall = document.querySelector('div.voc-pw');
-      if (paywall) {
-        removeDOMElement(paywall);
-        ampToHtml();
-      }
-    } else {
-      amp_unhide_access_hide('="result=\'ALLOW_ACCESS\'"', '="result!=\'ALLOW_ACCESS\'"', 'div.v-adv');
-      let body_top = document.querySelector('body#top');
-      if (body_top)
-        body_top.removeAttribute('id');
-    }
+    amp_unhide_access_hide('="result=\'ALLOW_ACCESS\'"', '="result!=\'ALLOW_ACCESS\'"', 'div.v-adv');
+    let body_top = document.querySelector('body#top');
+    if (body_top)
+      body_top.removeAttribute('id');
   }
+  let banner = 'div.container-wall-exclusive';
+  hideDOMStyle(banner);
 }
 
 else if (matchDomain(es_epiberica_domains) || matchDomain(es_epiberica_custom_domains)) {
@@ -793,403 +769,13 @@ else if (matchDomain('revistaoeste.com')) {
 
 }
 
-if (document.querySelector('head > link[href*="/leaky-paywall"], script[src*="/leaky-paywall"], div[id^="issuem-leaky-paywall-"]')) {
-  let js_cookie = document.querySelector('script#leaky_paywall_cookie_js-js-extra');
-  if (js_cookie && js_cookie.text.includes('"post_container":"')) {
-    let post_sel = js_cookie.text.split('"post_container":"')[1].split('"')[0];
-    if (post_sel) {
-      let post = document.querySelector(post_sel);
-      if (post)
-        post.removeAttribute('class');
-    }
-  }
-}
+ads_hide();
+leaky_paywall_unhide();
 
 }, 1000);
 
 // General Functions
 
-function matchDomain(domains, hostname) {
-  var matched_domain = false;
-  if (!hostname)
-    hostname = window.location.hostname;
-  if (typeof domains === 'string')
-    domains = [domains];
-  domains.some(domain => (hostname === domain || hostname.endsWith('.' + domain)) && (matched_domain = domain));
-  return matched_domain;
-}
-
-function matchCookies(name) {
-  return document.cookie.split(';').filter(x => x.trim().match(name)).map(y => y.split('=')[0].trim())
-}
-
-function setCookie(names, value, domain = '', path = '/', days = 0) {
-  var max_age = days * 24 * 60 * 60;
-  let ck_names = Array.isArray(names) ? names : [];
-  if (names instanceof RegExp)
-    ck_names = matchCookies(names);
-  else if (typeof names === 'string')
-    ck_names = [names];
-  for (let ck_name of ck_names) {
-    document.cookie = ck_name + "=" + (value || "") + (domain ? "; domain=" + domain : '') + (path ? "; path=" + path : '') + "; max-age=" + max_age;
-  }
-  window.localStorage.clear();
-}
-
-function cookieExists(name) {
-  return document.cookie.split(';').some(ck => ck.trim().indexOf(name + '=') === 0)
-}
-
-function removeDOMElement(...elements) {
-  for (let element of elements) {
-    if (element)
-      element.remove();
-  }
-}
-
-function hideDOMElement(...elements) {
-  for (let element of elements) {
-    if (element)
-      element.style = 'display:none !important;';
-  }
-}
-
-function hideDOMStyle(selector, id = 1) {
-  let style = document.querySelector('head > style#ext'+ id);
-  if (!style && document.head) {
-    let sheet = document.createElement('style');
-    sheet.id = 'ext' + id;
-    sheet.innerText = selector + ' {display: none !important;}';
-    document.head.appendChild(sheet);
-  }
-}
-
-function addStyle(css, id = 1) {
-  let style = document.querySelector('head > style#add'+ id);
-  if (!style && document.head) {
-    let sheet = document.createElement('style');
-    sheet.id = 'add' + id;
-    sheet.innerText = css;
-    document.head.appendChild(sheet);
-  }
-}
-
-function clearPaywall(paywall, paywall_action) {
-  if (paywall) {
-    if (!paywall_action)
-      removeDOMElement(...paywall);
-    else {
-      for (let elem of paywall) {
-        if (paywall_action.rm_class)
-          elem.classList.remove(paywall_action.rm_class);
-        else if (paywall_action.rm_attrib)
-          elem.removeAttribute(paywall_action.rm_attrib);
-      }
-    }
-  }
-}
-
-function makeFigure(url, caption_text, img_attrib = {}, caption_attrib = {}) {
-  let elem = document.createElement('figure');
-  let img = document.createElement('img');
-  img.src = url;
-  for (let attrib in img_attrib)
-    if (img_attrib[attrib])
-      img.setAttribute(attrib, img_attrib[attrib]);
-  elem.appendChild(img);
-  if (caption_text) {
-    let caption = document.createElement('figcaption');
-    for (let attrib in caption_attrib)
-      if (caption_attrib[attrib])
-        caption.setAttribute(attrib, caption_attrib[attrib]);
-    let cap_par = document.createElement('p');
-    cap_par.innerText = caption_text;
-    caption.appendChild(cap_par);
-    elem.appendChild(caption);
-  }
-  return elem;
-}
-
-function header_nofix(header, cond_sel = '', msg = 'BPC > no fix') {
-  if (header && typeof header === 'string')
-    header = document.querySelector(header);
-  if (header && !document.querySelector('div#bpc_nofix')) {
-    if (cond_sel) {
-      let elem = document.querySelectorAll(cond_sel);
-      if (elem.length)
-        removeDOMElement(...elem);
-      else
-        return false;
-    }
-    let nofix_div = document.createElement('div');
-    nofix_div.id = 'bpc_nofix';
-    nofix_div.style = 'margin: 20px; font-size: 20px; font-weight: bold; color: red;';
-    nofix_div.innerText = msg;
-    header.before(nofix_div);
-  }
-}
-
-function amp_images_replace() {
-  window.setTimeout(function () {
-    let amp_images = document.querySelectorAll('figure amp-img[src^="http"]');
-    for (let amp_image of amp_images) {
-      let elem = document.createElement('img');
-      elem.src = amp_image.getAttribute('src');
-      elem.alt = amp_image.getAttribute('alt');
-      elem.style = 'width: 100%;';
-      amp_image.parentNode.replaceChild(elem, amp_image);
-    }
-  }, 1000);
-}
-
-function amp_iframes_replace(weblink = false, source = '') {
-  let amp_iframes = document.querySelectorAll('amp-iframe' + (source ? '[src*="' + source + '"]' : ''));
-  let par, elem;
-  for (let amp_iframe of amp_iframes) {
-    if (!weblink) {
-      if (amp_iframe.offsetHeight > 10) {
-        elem = document.createElement('iframe');
-        elem.src = amp_iframe.getAttribute('src').replace(/^http:/, 'https:');
-        elem.style = 'height: ' + amp_iframe.offsetHeight + 'px; width: 100%; border: 0px;';
-        if (amp_iframe.getAttribute('sandbox'))
-          elem.sandbox = amp_iframe.getAttribute('sandbox');
-        amp_iframe.parentNode.replaceChild(elem, amp_iframe);
-      }
-    } else {
-      par = document.createElement('p');
-      par.style = 'margin: 20px 0px;';
-      elem = document.createElement('a');
-      elem.innerText = 'Media-link';
-      elem.setAttribute('href', amp_iframe.getAttribute('src'));
-      elem.setAttribute('target', '_blank');
-      par.appendChild(elem);
-      amp_iframe.parentNode.replaceChild(par, amp_iframe);
-    }
-  }
-}
-
-function amp_redirect_not_loop(amphtml) {
-  if (!check_loop()) {
-    window.location.href = amphtml.href;
-  } else {
-    let header = (document.body && document.body.firstChild) || document.documentElement;
-    header_nofix(header, '', 'BPC > redirect to amp failed (disable amp-to-html extension/add-on or browser setting)');
-  }
-}
-
-function amp_redirect(paywall_sel, paywall_action = '', amp_url = '') {
-  let paywall = document.querySelectorAll(paywall_sel);
-  let amphtml = document.querySelector('head > link[rel="amphtml"]');
-  if (!amphtml && amp_url)
-    amphtml = {href: amp_url};
-  if (paywall.length && amphtml) {
-    clearPaywall(paywall, paywall_action);
-    amp_redirect_not_loop(amphtml);
-  }
-}
-
-function amp_unhide_subscr_section(amp_ads_sel = '', replace_iframes = true, amp_iframe_link = false, source = '') {
-  let preview = document.querySelectorAll('[subscriptions-section="content-not-granted"]');
-  removeDOMElement(...preview);
-  let subscr_section = document.querySelectorAll('[subscriptions-section="content"]');
-  for (let elem of subscr_section)
-    elem.removeAttribute('subscriptions-section');
-  if (amp_ads_sel)
-    hideDOMStyle(amp_ads_sel, 5);
-  if (replace_iframes)
-    amp_iframes_replace(amp_iframe_link, source);
-}
-
-function amp_unhide_access_hide(amp_access = '', amp_access_not = '', amp_ads_sel = '', replace_iframes = true, amp_iframe_link = false, source = '') {
-  let access_hide = document.querySelectorAll('[amp-access' + amp_access + '][amp-access-hide]:not([amp-access="error"], [amp-access^="message"], .piano)');
-  for (let elem of access_hide)
-    elem.removeAttribute('amp-access-hide');
-  if (amp_access_not) {
-    let amp_access_not_dom = document.querySelectorAll('[amp-access' + amp_access_not + ']');
-    removeDOMElement(...amp_access_not_dom);
-  }
-  if (amp_ads_sel)
-    hideDOMStyle(amp_ads_sel, 6);
-  if (replace_iframes)
-    amp_iframes_replace(amp_iframe_link, source);
-}
-
-function ampToHtml() {
-  window.setTimeout(function () {
-    let canonical = document.querySelector('head > link[rel="canonical"][href]');
-    if (canonical)
-      window.location.href = canonical.href;
-  }, 1000);
-}
-
-function check_loop(interval = 2000) {
-  let loop = true;
-  let loop_date = Number(sessionStorage.getItem('###_loop'));
-  if (!(loop_date && (Date.now() - loop_date < interval))) {
-    sessionStorage.setItem('###_loop', Date.now());
-    loop = false;
-  }
-  return loop;
-}
-
-function refreshCurrentTab(not_loop = true) {
-  if (!not_loop || !check_loop(5000)) {
-    window.setTimeout(function () {
-      window.location.reload(true);
-    }, 500);
-  } else {
-    let header = (document.body && document.body.firstChild) || document.documentElement;
-    header_nofix(header, '', 'BPC > refresh loop stopped');
-  }
-}
-
-function randomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
-function archiveRandomDomain() {
-  let tld_array = ['fo', 'is', 'li', 'md', 'ph', 'vn'];
-  let tld = tld_array[randomInt(6)];
-  return 'archive.' + tld;
-}
-
-function archiveLink(url, text_fail = 'BPC > Try for full article text (no need to report issue for external site):\r\n') {
-  return externalLink(['archive.today', archiveRandomDomain()], 'https://{domain}?run=1&url={url}', url, text_fail);
-}
-
-function archiveLink_renew(url, text_fail = 'BPC > Only use to renew if text is incomplete or updated:\r\n') {
-  return externalLink([new URL(url).hostname], '{url}/again?url=' + window.location.href.split(/[#\?]/)[0], url, text_fail);
-}
-
-function externalLink(domains, ext_url_templ, url, text_fail = 'BPC > Full article text:\r\n') {
-  let text_fail_div = document.createElement('div');
-  text_fail_div.id = 'bpc_archive';
-  text_fail_div.setAttribute('style', 'margin: 20px; font-size: 20px; font-weight: bold; color: red;');
-  let parser = new DOMParser();
-  text_fail = text_fail.replace(/\[(?<url>[^\]]+)\]/g, function (match, url) {
-    return "<a href='" + url + "' target='_blank' style='color: red'>" + new URL(url).hostname + "</a>";
-  });
-  let doc = parser.parseFromString('<span>' + text_fail + '</span>', 'text/html');
-  let elem = doc.querySelector('span');
-  text_fail_div.appendChild(elem);
-  for (let domain of domains) {
-    let ext_url = ext_url_templ.replace('{domain}', domain).replace('{url}', url.split('?')[0]);
-    let a_link = document.createElement('a');
-    a_link.innerText = domain;
-    a_link.href = ext_url;
-    a_link.target = '_blank';
-    text_fail_div.appendChild(document.createTextNode(' | '));
-    text_fail_div.appendChild(a_link);
-  }
-  return text_fail_div;
-}
-
-function getArticleJsonScript() {
-  let scripts = document.querySelectorAll('script[type="application/ld+json"]');
-  let json_script;
-  for (let script of scripts) {
-    if (script.innerText.match(/"(articlebody|text)":/i)) {
-      json_script = script;
-      break;
-    }
-  }
-  return json_script;
-}
-
-function getNestedKeys(obj, key) {
-  if (key in obj)
-    return obj[key];
-  let keys = key.split('.');
-  let value = obj;
-  for (let i = 0; i < keys.length; i++) {
-    value = value[keys[i]];
-    if (value === undefined)
-      break;
-  }
-  return value;
-}
-
-function getJsonUrlText(article, callback, article_id = '', key = '', url_rest = false, url_slash = false) {
-  let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
-  let json_url;
-  if (json_url_dom)
-    json_url = json_url_dom.href;
-  if (!json_url && article_id)
-    json_url = window.location.origin + '/wp-json/wp/v2/posts/' + article_id;
-  if (url_rest)
-    json_url = json_url.replace('/wp-json/', '/?rest_route=/');
-  else if (url_slash)
-    json_url = json_url.replace('/wp-json/', '//wp-json/');
-  if (json_url) {
-    fetch(json_url)
-    .then(response => {
-      if (response.ok) {
-        response.json().then(json => {
-          try {
-            let json_text = parseHtmlEntities(!key ? json.content.rendered : getNestedKeys(json, key));
-            if (json_text && json_text !== 'undefined')
-              callback(json_text, article);
-          } catch (err) {
-            console.log(err);
-          }
-        });
-      }
-    });
-  }
-}
-
-function getJsonUrlAdd(json_text, article, art_options = {}) {
-  let art_type = 'div';
-  let art_attrib = '';
-  if (Object.keys(art_options).length) {
-    if (art_options.art_type)
-      art_type = art_options.art_type;
-    if (art_options.art_class)
-      art_attrib += ' class="' + art_options.art_class + '"';
-    if (art_options.art_id)
-      art_attrib += ' id="' + art_options.art_id + '"';
-    if (art_options.art_style)
-      art_attrib += ' style="' + art_options.art_style + '"';
-    if (art_options.func_text)
-      json_text = art_options.func_text(json_text);
-  }
-  let parser = new DOMParser();
-  let doc = parser.parseFromString('<' + art_type + art_attrib + '>' + json_text + '</' + art_type + '>', 'text/html');
-  let article_new = doc.querySelector(art_type);
-  if (art_options.art_append || !article.parentNode) {
-    if (!art_options.art_hold)
-      article.innerHTML = '';
-    article.appendChild(article_new);
-  } else
-    article.parentNode.replaceChild(article_new, article);
-  if (func_post)
-    func_post();
-}
-
-function getJsonUrl(paywall_sel, paywall_action = '', article_sel, art_options = {}, article_id = '', key = '', url_rest = false, url_slash = false) {
-  let paywall = document.querySelectorAll(paywall_sel);
-  let article = document.querySelector(article_sel);
-  if (paywall.length && article) {
-    clearPaywall(paywall, paywall_action);
-    getJsonUrlText(article, (json_text, article) => {
-      if (json_text && article)
-        getJsonUrlAdd(json_text, article, art_options);
-    }, article_id, key, url_rest, url_slash);
-  }
-}
-
-function pageContains(selector, text) {
-  let elements = document.querySelectorAll(selector);
-  return Array.prototype.filter.call(elements, function (element) {
-    return RegExp(text).test(element.textContent);
-  });
-}
-
-function parseHtmlEntities(encodedString) {
-  let parser = new DOMParser();
-  let doc = parser.parseFromString('<textarea>' + encodedString + '</textarea>', 'text/html');
-  let dom = doc.querySelector('textarea');
-  return dom.value;
-}
+// import (see @require)
 
 })();
