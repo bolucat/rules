@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.4.1
+// @version         4.1.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -215,7 +215,7 @@ else if (matchDomain('faz.net')) {
 }
 
 else if (matchDomain('freitag.de')) {
-  let paywall = document.querySelector('aside.qa-paywall');
+  let paywall = document.querySelector('section.qa-paywall');
   if (paywall) {
     removeDOMElement(paywall);
     let related = document.querySelector('div.c-teaser-plus-related--paywall');
@@ -1030,5 +1030,27 @@ leaky_paywall_unhide();
 // General Functions
 
 // import (see @require)
+
+function breakText_headers(str) {
+  str = breakText(str, true);
+  // exceptions: names with alternating lower/uppercase (no general fix)
+  let str_rep_arr = ['AstraZeneca', 'BaFin', 'BerlHG', 'BfArM', 'BilMoG', 'BioNTech', 'ChatGPT', 'DiGA', 'EuGH', 'FinTechRat', 'GlaxoSmithKline', 'IfSG', 'medRxiv', 'mmHg', 'OpenAI', 'PlosOne', 'StVO', 'TikTok'];
+  let str_rep_split;
+  let str_rep_src;
+  for (let str_rep of str_rep_arr) {
+    str_rep_split = str_rep.split(/([a-z]+)(?=[A-Z](?=[A-Za-z]+))/);
+    str_rep_src = str_rep_split.reduce(function (accumulator, currentValue) {
+        return accumulator + currentValue + ((currentValue !== currentValue.toUpperCase()) ? '\n\n' : '');
+      });
+    if (str_rep_src.endsWith('\n\n'))
+      str_rep_src = str_rep_src.slice(0, -2);
+    str = str.replace(new RegExp(str_rep_src, "g"), str_rep);
+  }
+  str = str.replace(/De\n\n([A-Z])/g, "De$1");
+  str = str.replace(/La\n\n([A-Z])/g, "La$1");
+  str = str.replace(/Le\n\n([A-Z])/g, "Le$1");
+  str = str.replace(/Mc\n\n([A-Z])/g, "Mc$1");
+  return str;
+}
 
 })();

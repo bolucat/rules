@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Fri, 04 Jul 2025 13:13:14 +0000
-! Diff-Path: ../patches/2025.7.4.818.patch#ublock-quick-fixes
+! Last modified: Sat, 05 Jul 2025 10:19:33 +0000
+! Diff-Path: ../patches/2025.7.5.869.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -57,7 +57,7 @@ www.youtube.com##+js(trusted-replace-outbound-text, JSON.stringify, "clientScree
 ! web.facebook.com,www.facebook.com##+js(json-prune-xhr-response, data.viewer.sideFeed.nodes.0.{-}.nodes.0.rhc_ad, , propsToMatch, /api/graphql)
 web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.viewer.sideFeedUnit.nodes.[].new_adverts.nodes.[-].sponsored_data)
 web.facebook.com,www.facebook.com##+js(json-prune-xhr-response, data.viewer.sideFeedUnit.nodes.[].new_adverts.nodes.[-].sponsored_data)
-web.facebook.com,www.facebook.com##div[role="complementary"] a[aria-labelledby][attributionsrc][href^="http"][target="_blank"]
+web.facebook.com,www.facebook.com##a[aria-labelledby][attributionsrc][href^="http"][target="_blank"]
 web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.serpResponse.results.edges.[-].rendering_strategy.view_model.story.sponsored_data.ad_id)
 web.facebook.com,www.facebook.com##+js(json-edit, ..__bbox.result.data.node[?@.*.__typename=="SponsoredData"])
 !#if ext_devbuild
@@ -99,7 +99,8 @@ japscan.lol##+js(nostif, =document[_0x)
 !japscan.lol##+js(trusted-suppress-native-method, Document.prototype.getElementById, '"/^[-0-9A-Z_a-z]{4,8}$/"', prevent, /stackDepth:4.+ inlineScript/)
 japscan.lol##+js(trusted-set, aclib, json:{"isShowingPop": false})
 japscan.lol##+js(set, aclib.runInPagePush, {}, as, callback)
-japscan.lol##+js(nostif, /aclib|startsWith|&Dk.oS|^\(\s*\)\s*=>\s*\{\s*const\s* _0x.{300\,400}$/)
+japscan.lol##+js(nostif, /eval|ac'\+|startsW|^\(\s*\)\s*=>\s*\{\s*const\s* _0x.{250\,400}$/)
+japscan.lol##+js(noeval-if, aclib)
 poophq.com,veev.to,doods.to##+js(nowoif)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /vast.php?)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /click\.com|preroll|native_render\.js|acscdn/, length:10001)
@@ -218,7 +219,7 @@ vook.vc##.note-sp-spnsr
 @@||nontonx.com/cdn-cgi/rum$xhr,1p
 nontonx.com##+js(rmnt, script, location.reload)
 nontonx.com##+js(rmnt, script, uAssets)
-titan.nontonx.com##+js(trusted-replace-node-text, script, //tele();, telek6();)
+titan.nontonx.com##+js(trusted-replace-node-text, script, //tele();, telek7();)
 ||s.yimg.com/ss/analytics3.js$badfilter
 @@||datadome.co/|$domain=paypal.com
 @@||c.paypal.com/da/r/fb*$script,1p
