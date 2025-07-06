@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.1.4.5
+// @version         4.1.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -9,7 +9,6 @@
 // @supportURL      https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
 // @match           *://*.nl/*
-// @match           *://*.artsenkrant.com/*
 // @match           *://*.businessam.be/*
 // @match           *://*.demorgen.be/*
 // @match           *://*.doorbraak.be/*
@@ -45,7 +44,7 @@
 window.setTimeout(function () {
 
 var be_mediahuis_domains = ['gva.be', 'hbvl.be', 'nieuwsblad.be', 'standaard.be'];
-var be_roularta_domains = ['artsenkrant.com', 'beleggersbelangen.nl', 'flair.be', 'knack.be', 'kw.be', 'libelle.be'];
+var be_roularta_domains = ['beleggersbelangen.nl', 'flair.be', 'knack.be', 'kw.be', 'libelle.be'];
 var nl_dpg_adr_domains = ['ad.nl', 'bd.nl', 'bndestem.nl', 'destentor.nl', 'ed.nl', 'gelderlander.nl', 'pzc.nl', 'tubantia.nl'];
 var nl_dpg_media_domains = ['demorgen.be', 'flair.nl', 'humo.be', 'libelle.nl', 'margriet.nl', 'parool.nl', 'trouw.nl', 'volkskrant.nl'];
 var nl_mediahuis_region_domains = ['gooieneemlander.nl', 'haarlemsdagblad.nl', 'ijmuidercourant.nl', 'leidschdagblad.nl', 'limburger.nl', 'noordhollandsdagblad.nl'];
@@ -200,7 +199,7 @@ else if (matchDomain(be_roularta_domains)) {
       if (locked)
         locked.classList.remove('locked');
     }
-    if (!window.navigator.userAgent.toLowerCase().includes('chrome') && !matchDomain(['artsenkrant.com', 'kw.be']) && window.location.href.match(/\/(\w+-){2,}/)) {
+    if (!window.navigator.userAgent.toLowerCase().includes('chrome') && !matchDomain(['kw.be']) && window.location.href.match(/\/(\w+-){2,}/)) {
       let lazy_images = document.querySelectorAll('img[src^="data:image/"][data-lazy-src]');
       for (let elem of lazy_images) {
         elem.src = elem.getAttribute('data-lazy-src');
@@ -552,6 +551,13 @@ else if (matchDomain('telegraaf.nl')) {
       let parser = new DOMParser();
       let doc = parser.parseFromString('<div>' + elem.innerText.replace(/”/g, '"') + '</div>', 'text/html');
       let elem_new = doc.querySelector('div');
+      elem.parentNode.replaceChild(elem_new, elem);
+    }
+    let errors = document.querySelectorAll('div[loading="lazy"][old-src]:not([src]):has(div#__next_error__)');
+    for (let elem of errors) {
+      let elem_new = document.createElement('iframe');
+      elem_new.src = elem.getAttribute('old-src');
+      elem_new.style = 'width: 100%; height: ' + elem.getAttribute('height') + 'px;';
       elem.parentNode.replaceChild(elem_new, elem);
     }
     document.querySelectorAll('div > div[style^="min-height:"] > div[id^="player_"]').forEach(e => hideDOMElement(e.parentNode.parentNode));

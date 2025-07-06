@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.4.6
+// @version         4.1.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -814,8 +814,16 @@ else if (matchDomain('lepoint.fr')) {
         }).toString(CryptoJS.enc.Utf8))
     }
     let article = document.querySelector('div#contenu');
-    if (article && window.variable_article_poool)
+    if (article && window.variable_article_poool) {
       article.innerHTML = decryptVariable(window.variable_article_poool);
+      let videos = document.querySelectorAll('figure.video-dailymotion > blockquote[data-videoid]');
+      for (let elem of videos) {
+        let elem_new = document.createElement('iframe');
+        elem_new.src = 'https://www.dailymotion.com/embed/video/' + elem.getAttribute('data-videoid');
+        elem_new.style = 'height: 400px;';
+        elem.parentNode.replaceChild(elem_new, elem);
+      }
+    }
   }
   if (!matchDomain(['journal.lepoint.fr'])) {
     let paywall = document.querySelectorAll('aside.paywall');
@@ -1137,6 +1145,8 @@ else if (matchDomain('loeildelaphotographie.com')) {
 else if (matchDomain('lopinion.fr')) {
   let url = window.location.href;
   getArchive(url, 'div.paywall-premium', '', 'div.mainBody', '', 'div[style*=";line-height:1.8;"] div[style*=";line-height:1.8;"]');
+  let ads = 'div.ResponsiveAd';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('marianne.net')) {
