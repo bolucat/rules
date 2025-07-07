@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.5.1
+// @version         4.1.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -921,7 +921,7 @@ else if (matchDomain('welt.de')) {
       for (let elem of lazy_images)
         elem.style = 'width: 95%;';
     }
-    header_nofix('main header', 'img[alt="WELTplus"][loading]', 'BPC > no archive-fix');
+    header_nofix('main header', 'img[alt^="WELTplus"][loading]', 'BPC > no archive-fix');
     let ads = pageContains('span', 'Anzeige');
     removeDOMElement(...ads);
   }
