@@ -1,8 +1,8 @@
 [Adblock Plus 2.0]
-! Checksum: ep/t8iDXaqIB+VhZLjxoZQ
-! Version: 202507101821
+! Checksum: ihh+LLk7iDG2ch2rYNHzGw
+! Version: 202507111821
 ! Title: RU, UA, UZ, KZ
-! Last modified: 10 Jul 2025 18:21 UTC
+! Last modified: 11 Jul 2025 18:21 UTC
 ! Expires: 1 days (фильтр обновляется автоматически каждые 2 дня)
 ! Homepage: https://forums.lanik.us/viewforum.php?f=102
 !
@@ -1539,6 +1539,7 @@ by,~mail.ru,ru,ua##.banner_box
 ##a[href^="https://msetup.pro"]
 ~pari.ru##a[href^="https://pari.ru/promo/"]
 ##a[href^="https://relap.io/"][href*="promo_ad_link"]
+~telegra.ph##a[href^="https://telegra.ph/"]
 ##a[href^="https://wcm-ru.frontend.weborama.fr/fcgi-bin/dispatch.fcgi?"]
 ##a[href^="https://www.juicer.io?referrer="]
 ~litres.ru##a[href^="https://www.litres.ru/"][href$="#buy_now_noreg"]
@@ -23356,7 +23357,7 @@ https://*adtech_uid=$~third-party,xmlhttprequest,domain=lena-miro.ru|levik.blog|
 ||news.mail.ru/-/*.js?
 ||newsyou.info/wp-content/plugins/gtranslate/
 ||newsyou.info^$csp=script-src-elem 'self' https:
-||pikabu.ru/ajax/*?mAo0z=$xmlhttprequest
+||pikabu.ru/ajax/*?gJK9b=$xmlhttprequest
 ||ritsatv.ru^$csp=script-src
 ||ritsatv.ru^$popup
 ||ritsatv.ru^$~document
@@ -23914,16 +23915,18 @@ mirtesen.ru##[id^="unit_"]
 !
 ! зеркала MySeria.NET https://vk.com/myserianet
 ! частные
-fanserial.fun,fanserial.pw,fanserial.tv,fanserialstv.net##.article-aside-promo a[href][target="_blank"]
-fanserial.fun,fanserial.pw,fanserial.tv,fanserialstv.net##.flex-promo-series > .left-col > :not(#players):not(.serial-series-info)
-fanserial.fun,fanserial.pw,fanserial.tv,fanserialstv.net##.flex-promo-series > .right-col a[href][target="_blank"]
+fanserial.*,fanserial.сс,myfanserial.net##.article-aside-promo
+fanserial.*,fanserial.сс,myfanserial.net##.flex-promo-series > .left-col > :not(#players):not(.serial-series-info)
+fanserial.*,fanserial.сс,myfanserial.net##.flex-promo-series > .right-col
+fanserial.*,fanserial.сс,myfanserial.net##[itemtype*="://schema.org/TVEpisode"] [data-dlebid]
 ! общие
-##.article-aside-promo a[href][target="_blank"]
+##.article-aside-promo a[href*="webcash&"]
 ##.flex-promo-series > .left-col > :not(#players):not(.serial-series-info)
-##.flex-promo-series > .right-col a[href][target="_blank"]
+##.flex-promo-series > .right-col
+##[itemtype*="://schema.org/TVEpisode"] [data-dlebid]
 ! запросы
-/player/fan.xml$domain=fanserial.fun|fanserial.pw|fanserial.tv|fanserialstv.net
-@@||v*.plrjs.org/*.xml?rand=$xmlhttprequest,domain=fanserial.fun|fanserial.pw|fanserial.tv|fanserialstv.net
+/player/fan.xml$domain=fanserial.сс|myfanserial.net
+@@||v*.plrjs.org/*.xml?rand=$xmlhttprequest,domain=fanserial.cc|myfanserial.net
 !
 ! Одноклассники
 ok.ru###hook_Block_AsideColumn img:first-child ~ div:not(#hook_Block_CompactFooter)
@@ -24287,7 +24290,6 @@ avtorambler.com,rambler.ru#?#div:-abp-has(> div[style^="min-height:"]) > p ~ div
 !
 ! RBC (РБК)
 cnews.ru,utro.ru##.banner
-sportrbc.ru##.bet-block
 rbc.ru##.countdown
 rbc.ru##.deposit-block
 rbc.ru##.fox-fallback
@@ -24322,6 +24324,7 @@ autodaily.ru,autonews.ru,rbc.ru##.topline__branding__wrapper
 autodaily.ru,autonews.ru,rbc.ru,sportrbc.ru##.topline__disable-adv__button
 autodaily.ru,autonews.ru,rbc.ru,sportrbc.ru##.topline__item__image-block
 rbc.ru##.video-player__controls__ad-countdown
+/*betblock$domain=rbc.ru|sportrbc.ru
 /browser-updater$script,domain=autodaily.ru|autonews.ru|rbc.ru|sportrbc.ru
 /rbcbanners-*/_fullscreen.js$script,domain=autodaily.ru|autonews.ru|rbc.ru|sportrbc.ru
 utro.ru#?#[class*="title"]:-abp-contains(/новости партнеров/i)
@@ -24346,6 +24349,7 @@ rbc.ru##body.free .js-index-doscroll-pro
 rbc.ru##body.free .news-feed a[href*="utm_campaign"]
 rbc.ru##body.free [data-vr-zone="Главная новость"]::before
 rbc.ru##body.free [data-vr-zone="Топ новости"] a[href^="https://pro.rbc.ru/"]
+rbc.ru,sportrbc.ru##div[class^="bet-block"]
 autodaily.ru,autonews.ru,rbc.ru,rbclife.ru,sportrbc.ru##div[class^="fox-tail"]
 rbc.ru##div[class^="item-slider__partner"]
 utro.ru##div[class^="partners-block"]

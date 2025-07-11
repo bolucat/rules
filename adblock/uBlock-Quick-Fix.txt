@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Thu, 10 Jul 2025 10:51:56 +0000
-! Diff-Path: ../patches/2025.7.10.873.patch#ublock-quick-fixes
+! Last modified: Fri, 11 Jul 2025 05:16:29 +0000
+! Diff-Path: ../patches/2025.7.11.931.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -57,7 +57,7 @@ www.youtube.com##+js(trusted-replace-outbound-text, JSON.stringify, "clientScree
 ! web.facebook.com,www.facebook.com##+js(json-prune-xhr-response, data.viewer.sideFeed.nodes.0.{-}.nodes.0.rhc_ad, , propsToMatch, /api/graphql)
 web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.viewer.sideFeedUnit.nodes.[].new_adverts.nodes.[-].sponsored_data)
 web.facebook.com,www.facebook.com##+js(json-prune-xhr-response, data.viewer.sideFeedUnit.nodes.[].new_adverts.nodes.[-].sponsored_data)
-web.facebook.com,www.facebook.com##a[aria-labelledby][attributionsrc][href^="http"][target="_blank"]
+web.facebook.com,www.facebook.com##div[role="complementary"] a[aria-labelledby][attributionsrc^="/privacy_sandbox/comet/register/source/?eid="][href^="http"][target="_blank"]
 web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.serpResponse.results.edges.[-].rendering_strategy.view_model.story.sponsored_data.ad_id)
 web.facebook.com,www.facebook.com##+js(json-edit, ..__bbox.result.data.node[?@.*.__typename=="SponsoredData"])
 !#if ext_devbuild
@@ -193,13 +193,6 @@ royalroad.com##.dKKumhSnWiFq75vPUVtmTanQ:has(a[href^="https://www.royalroad.com/
 mail.yahoo.com##+js(nostif, adblock)
 gecmisi.com.tr##+js(trusted-replace-argument, String.prototype.includes, 0, json:"gecmisi", condition, googleads)
 gecmisi.com.tr##+js(trusted-replace-argument, String.prototype.includes, 0, json:"googleads", condition, gecmisi)
-hulu.com##+js(json-prune-fetch-response, breaks custom_breaks_data pause_ads video_metadata.end_credits_time, pause_ads, propsToMatch, /playlist)
-hulu.com##+js(json-prune-fetch-response, breaks custom_breaks_data pause_ads video_metadata.end_credits_time, breaks, propsToMatch, /playlist)
-hulu.com##+js(json-prune-fetch-response, breaks custom_breaks_data pause_ads, , propsToMatch, /playlist)
-hulu.com##+js(json-prune, breaks custom_breaks_data pause_ads)
-hulu.com##+js(json-prune, breaks custom_breaks_data pause_ads video_metadata.end_credits_time, pause_ads)
-hulu.com##+js(json-prune, breaks custom_breaks_data pause_ads video_metadata.end_credits_time, breaks)
-hulu.com##+js(xml-prune, 'xpath(//*[name()="MPD"]/@mediaPresentationDuration | //*[name()="Period"][.//*[name()="BaseURL" and contains(text(),"/ads-")]] | //*[name()="Period"][starts-with(@id,"ad")] | //*[name()="Period"][starts-with(@id,"Ad")] | //*[name()="Period"]/@start)', MPD Period[id^="Ad"i], .mpd)
 elektroda.pl,elektroda.de,elektroda.com##div[style="position: relative;"]:has(> a[href*=".php?"][onclick*="sendGAEvent"][target="_blank"][title] > img[width] + div > span)
 elektroda.pl##div[class="topic-box clearfix "] + div[class]:last-child:has(> a[style="font-weight: bold;"][target="_blank"]:only-child)
 elektroda.pl##*:has(> div[style*="height"] + div:last-child > div:first-child + div:last-child > a[href*=".php?"][rel][onclick].fancybox:only-child)
@@ -219,7 +212,7 @@ nontonx.com##+js(rpnt, script, /if \(!.+\(\)\) return;/g)
 nontonx.com##+js(rpnt, script, /if \(.\.. === null\) return;/g)
 nontonx.com##+js(rpnt, script, /if \([a-zA-Z\d]+\(\)\) \{/g, if(!0){)
 nontonx.com##+js(rpnt, script, /!results\.bait \|\| !results\.rum \|\| !results\.recaptcha/!1/g, !1)
-nontonx.com##+js(rpnt, script, /Object\.values.*?return false;/ms, return true;)
+nontonx.com##+js(rpnt, script, /!\(Object\.values.*?return false;/g)
 nontonx.com##+js(rmnt, script, location.reload)
 nontonx.com###rules-nontonx
 ||raw.githubusercontent.com^$domain=nontonx.com
