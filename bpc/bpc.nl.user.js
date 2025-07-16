@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.1.5.0
+// @version         4.1.5.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -464,6 +464,14 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
       iframe.style = 'height: 400px; border: none;';
       elem.parentNode.replaceChild(iframe, elem);
     }
+    let errors = document.querySelectorAll('div > div[old-src]:not([src]):has(div#main-frame-error)');
+    for (let elem of errors) {
+      let elem_new = document.createElement('iframe');
+      elem_new.src = elem.getAttribute('old-src');
+      elem_new.style = 'width: 100%; height: 400px; border: none;';
+      elem.parentNode.removeAttribute('style');
+      elem.parentNode.replaceChild(elem_new, elem);
+    }
     header_nofix('footer', sub_sel, 'BPC > no archive-fix');
   }
   let article_sel = 'div#remaining-paid-content';
@@ -543,8 +551,14 @@ else if (matchDomain('telegraaf.nl')) {
     if (mobile) {
       let article = document.querySelector('article');
       let body = document.querySelector('body');
-      if (article && body)
-        article.style.width = body.offsetWidth;
+      if (article && body) {
+        article.style.width = body.offsetWidth * 0.95;
+        let lazy_images = document.querySelectorAll('button > img[loading="lazy"]');
+        for (let elem of lazy_images) {
+          elem.style = 'width: 100%;';
+          elem.parentNode.style['min-height'] = 'auto';
+        }
+      }
     }
     let iframes = pageContains('div[style]', /^<iframe/);
     for (let elem of iframes) {
@@ -573,7 +587,7 @@ else if (matchDomain('telegraaf.nl')) {
         getArchive(url, paywall_sel, '', 'article');
     }
   }, 1000);
-  let ads = 'div[id^="ad_"], div[class^="scrollable-ads"], iframe#ecommerce-ad-iframe';
+  let ads = 'div[id^="ad_"], div[class^="scrollable-ads"], iframe#ecommerce-ad-iframe, div[data-pym-src]';
   hideDOMStyle(ads);
 }
 

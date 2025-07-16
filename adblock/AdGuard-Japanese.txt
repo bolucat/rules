@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: ZCtIo9lBqqE76+o0o9Pnmg
-! Diff-Path: ../patches/7/7-s-1752577904-3600.patch
+! Checksum: I63AkgRXtuTeYLnzs/YDNA
+! Diff-Path: ../patches/7/7-s-1752682383-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.66.33
-! TimeUpdated: 2025-07-15T11:07:23+00:00
+! Version: 2.0.66.39
+! TimeUpdated: 2025-07-16T16:08:28+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -27,6 +27,7 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp|~rakuten.ne.jp
 !
+||centsbicloud.bond^$all
 ||ademon.net^
 ||api.ada-cloud.com^
 ||erogazopple.com^$document
@@ -443,8 +444,6 @@
 !
 !
 !
-! https://github.com/AdguardTeam/AdguardFilters/issues/209363
-shukatsubbs.com#$#.ad.ads.adsbygoogle.ad1.ad-space.adbox.imggif.ad-banner.amp_ad.file-display-area { display: block !important; }
 ! anti-adb
 @@||koken.nicovideo.jp^$generichide
 ! https://github.com/AdguardTeam/AdguardFilters/issues/206406
@@ -484,13 +483,28 @@ chobirich.com#$#.Enquete { display: block !important; }
 ||rkd3.dev/detectadblocker.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/176057
 toyokeizai.net###tpModal
+! hhttps://github.com/AdguardTeam/AdguardFilters/issues/209363
+shukatsubbs.com,localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,j-rugby.club,j-volleyball.club,jukenbbs.com#$#.ad.ads.adsbygoogle.ad1.ad-space.adbox.imggif.ad-banner.amp_ad.file-display-area { display: block !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/195303
-localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,jukenbbs.com#@#.ad-space:not(.textads)
-localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,jukenbbs.com#@#[class^="div-gpt-ad"]:not([style^="width: 1px; height: 1px;"], .div-gpt-ad_adblock_test)
-localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,jukenbbs.com#@#div[id^="div-gpt-"]
-localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,jukenbbs.com#@#.div-gpt-ad:not([style^="width: 1px; height: 1px;"])
-localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,jukenbbs.com#@#[id^="div-gpt-ad"]
-localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,jukenbbs.com#@#.amp_ad
+shukatsubbs.com,localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,j-rugby.club,j-volleyball.club,jukenbbs.com#@#.ad-space:not(.textads)
+shukatsubbs.com,localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,j-rugby.club,j-volleyball.club,jukenbbs.com#@#[class^="div-gpt-ad"]:not([style^="width: 1px; height: 1px;"], .div-gpt-ad_adblock_test)
+shukatsubbs.com,localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,j-rugby.club,j-volleyball.club,jukenbbs.com#@#div[id^="div-gpt-"]
+shukatsubbs.com,localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,j-rugby.club,j-volleyball.club,jukenbbs.com#@#.div-gpt-ad:not([style^="width: 1px; height: 1px;"])
+shukatsubbs.com,localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,j-rugby.club,j-volleyball.club,jukenbbs.com#@#[id^="div-gpt-ad"]
+shukatsubbs.com,localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,j-rugby.club,j-volleyball.club,jukenbbs.com#@#.amp_ad
+! https://github.com/AdguardTeam/AdguardFilters/issues/166650
+! https://github.com/AdguardTeam/AdguardFilters/issues/167434
+j-basketball.club##ins.adsbygoogle[data-ad-slot]
+best-hit.tv,h178.com,jukenbbs.com,j-baseball.club,j-basketball.club##body div[class^="substitute-"][style="display: block !important;"]
+@@||shukatsubbs.com^$generichide
+@@||best-hit.tv^$generichide
+@@||h178.com^$generichide
+@@||j-baseball.club^$generichide
+@@||j-basketball.club^$generichide
+@@||j-rugby.club^$generichide
+@@||j-volleyball.club^$generichide
+@@||jukenbbs.com^$generichide
+shukatsubbs.com,localch.net,best-hit.tv,h178.com,j-baseball.club,j-basketball.club,j-rugby.club,j-volleyball.club,jukenbbs.com##+js(addEventListener-defuser, load, delayCheckAdBlock)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/193343
 ||pixnest.pipio.site/adblock.js
 pixnest.pipio.site##+js(abort-on-property-write, checkAdIframe)
@@ -571,16 +585,6 @@ jprime.jp#$#.js-article-wrap .article-body { opacity: 1 !important; pointer-even
 blog.2nt.com#@#.AdSense
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167887
 ||nazology.kusuguru.co.jp/wp-content/themes/*/js/adb/
-! https://github.com/AdguardTeam/AdguardFilters/issues/166650
-! https://github.com/AdguardTeam/AdguardFilters/issues/167434
-j-basketball.club##ins.adsbygoogle[data-ad-slot]
-best-hit.tv,h178.com,jukenbbs.com,j-baseball.club,j-basketball.club##body div[class^="substitute-"][style="display: block !important;"]
-@@||best-hit.tv^$generichide
-@@||h178.com^$generichide
-@@||j-baseball.club^$generichide
-@@||j-basketball.club^$generichide
-@@||jukenbbs.com^$generichide
-best-hit.tv,h178.com,j-baseball.club,j-basketball.club,jukenbbs.com##+js(addEventListener-defuser, load, delayCheckAdBlock)
 ! https://github.com/uBlockOrigin/uAssets/issues/20629
 @@||shindanmaker.com^$generichide
 shindanmaker.com#$#div[id^="div-gpt-"] { min-height: 1px !important; }
@@ -1524,6 +1528,10 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /wp-content/uploads/2024/09/fanza_ad$image
 !
 ! Malware/Phishing
+.icu/*.jp/|$document
+.icu/verify|$document
+/^https:\/\/[a-z]{6,9}\.com\/category\/(?=[0-9a-z]{0,15}[A-Z])[0-9A-Za-z]{16}\?$/$document
+/^https:\/\/[a-z]{6,9}\.com\/detail\/(?=[0-9a-z]{0,19}[A-Z])[0-9A-Za-z]{20}\?$/$document
 .top/v1/check|$document
 .com/index/client/ops/ib/3210000^$document
 /wdsoscosmsosmx.jp/*$document
@@ -1775,7 +1783,7 @@ live.nicovideo.jp,360life.shinyusha.co.jp,wealthadvisor.co.jp,might-co.com,retty
 ! ##.main-container-ads - can cause FP, use FQDN
 akege.blog.jp,badminton.doorblog.jp,buybuykorea.doorblog.jp,chihosoku.com,dondonwork.com,egm.doorblog.jp,idolgekijyo.doorblog.jp,ikuji-news.com,j02r.blog.jp,kijobibouroku.com,kimagure-kijyo.com,kusainews.com,mankai-zakura.doorblog.jp,maromeru.com,momoclomatomex.com,mon-st.blog.jp,nandemomatomedan.com,nijimoemoe.com,pachinkolist.com,rare-channel.com,mashlife.doorblog.jp,ringofred53.com,shingekikyojin.doorblog.jp,shuraba.net,shurabanote.com,taorun.xyz,toralucky.fun,uwasakijo.net,wiiups.com,yappaero.com,zootennis.fun,genshin.blog.jp,takegon.jp,moemoeanime.blog.jp##.main-container-ads
 ! ###sad
-city.numata.gunma.jp,city.tokai.aichi.jp,city.noda.chiba.jp,city.suginami.tokyo.jp,city.toyooka.lg.jp,city.kasugai.lg.jp,city.nishio.aichi.jp,city.higashikurume.lg.jp,city.urayasu.lg.jp,city.chigasaki.kanagawa.jp,city.itabashi.tokyo.jp,city.ebina.kanagawa.jp,city.tsukuba.lg.jp,city.iruma.saitama.jp,city.fussa.tokyo.jp,city.akita.lg.jp,city.amagasaki.hyogo.jp,city.wakayama.wakayama.jp,city.ise.mie.jp,city.inazawa.aichi.jp,city.toyota.aichi.jp,city.kariya.lg.jp,city.gifu.lg.jp,city.obu.aichi.jp,city.morioka.iwate.jp,pref.iwate.jp,city.inuyama.aichi.jp###sad
+lg.jp,city.numata.gunma.jp,city.tokai.aichi.jp,city.noda.chiba.jp,city.suginami.tokyo.jp,city.nishio.aichi.jp,city.chigasaki.kanagawa.jp,city.itabashi.tokyo.jp,city.ebina.kanagawa.jp,city.iruma.saitama.jp,city.fussa.tokyo.jp,city.amagasaki.hyogo.jp,city.wakayama.wakayama.jp,city.ise.mie.jp,city.inazawa.aichi.jp,city.toyota.aichi.jp,city.obu.aichi.jp,city.morioka.iwate.jp,pref.iwate.jp,city.inuyama.aichi.jp###sad
 ! ##.bana
 city.gose.nara.jp,city.inazawa.aichi.jp,city.kawasaki.jp,city.nagoya.jp,city.yao.osaka.jp,city.ikoma.lg.jp,city.higashiosaka.lg.jp,city.higashiomi.shiga.jp,city.ogaki.lg.jp,city.tama.lg.jp,city.inzai.lg.jp,city.kyotanabe.lg.jp,city.himeji.lg.jp,city.hirakata.osaka.jp,city.osaka.lg.jp,city.kyoto.lg.jp,city.maizuru.kyoto.jp,city.iga.lg.jp##.bana
 ! ###banner_footer1 Don't generalize to lg.jp (false positive on city.awaji.lg.jp)
@@ -1787,7 +1795,7 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
-arukikata.co.jp##div[class^="c-"][class*="-banner"]
+arukikata.co.jp##div[class^="c-"][class*="-banner"]:not(:has(.popin))
 tuma.jp##.container > div.index_banner_space:has(> div.text-center ~ div.ad-sp)
 hb-nippon.com###videoAds
 awakest.net##body > .popup:has(> .popup__inner > .pr_tx)
@@ -1795,7 +1803,8 @@ diskgarage.com##.inwrap:has(> ins.adsbygoogle)
 diskgarage.com##.two-col:has(> ins.adsbygoogle)
 keyakizaka46matomerabo.com##.adsBox:has(> ins.adsbygoogle)
 ar-mag.jp##.js-ad-entame
-kojodan.jp###header_space
+kojodan.jp#$##header_space { min-height: 0 !important; }
+kojodan.jp##div[id^="div-gpt-"] > div[style^="display: flex; justify-content: center; align-items: center; text-align:center;height: 180px;background-image: linear-gradient"]
 baseballking.jp,volleyballking.jp##.entry-content > div.addArea
 baseballking.jp,volleyballking.jp##.entry-content-main > div.addArea
 baseballking.jp,volleyballking.jp##.entry-footer-ads
@@ -2126,7 +2135,9 @@ gendai.media##div[style^="width:728px;"]
 gendai.media##.in-article-ad-slot
 gendai.media##.mt-4 > ul.grid > li.flex.justify-center:has(> div > div > div[data-testid^="GB_"])
 gendai.media##div > section[class*="mt-"] > h3.text-base:has(+ div.mt-3 > div > div[id^="taboola-below-article-thumbnails-"])
+||web.ultra-soccer.jp/ad/
 ||web.ultra-soccer.jp/textad?
+web.ultra-soccer.jp###pc-underarticle
 web.ultra-soccer.jp##div[style$="min-height:600px;"]
 web.ultra-soccer.jp##div[style$="min-height: 280px;"]
 web.ultra-soccer.jp##div[style^="border-radius: 5px; border: solid 1px #bbb; padding:7px 0 3px 0; margin:"]
@@ -4079,7 +4090,7 @@ onnela.asahi.co.jp##.insert-ad-area
 douga.tv-asahi.co.jp##.common-box-ad
 douga.tv-asahi.co.jp##.common-box-ad-landscape
 ||city.yatsushiro.lg.jp/dynamic/common/UploadFileOutput.ashx
-city.sodegaura.lg.jp###top_koukoku
+city.itoman.lg.jp,city.sodegaura.lg.jp###top_koukoku
 ||city.ryugasaki.ibaraki.jp/banner/
 city.izumisano.lg.jp##.banner2Mod > #randomBanner
 city.izumisano.lg.jp##.banner2Mod > #randomBanner + .list
@@ -5540,7 +5551,7 @@ adr-stock.com,nikkei225jp.com##.winAD
 ||episodesex.org/banner/
 mecicolle.gnavi.co.jp##.article-dfp
 ||realsound.jp/wp-content/themes/realsound/*/ads-slot.js
-city.settsu.osaka.jp,city.isesaki.lg.jp##.koukoku-area
+city.kitsuki.lg.jp,city.settsu.osaka.jp,city.isesaki.lg.jp##.koukoku-area
 valorantnews.jp###amgatti_sk-5
 host2.jp##.ad-sub
 sirabee.com,lifehacker.jp,roomie.jp##.bfapickup
@@ -5847,7 +5858,7 @@ tokk-hankyu.jp##.c-adContainer:not(.ad_sideFixTop)
 activitv.com##.cont_campaign
 activitv.com##.cont_end
 activitv.com##.img_link
-city.kasugai.lg.jp,city.wakayama.wakayama.jp,city.takayama.lg.jp,city.hino.lg.jp,pref.iwate.jp,city.utsunomiya.tochigi.jp###randomad
+lg.jp,city.wakayama.wakayama.jp,pref.iwate.jp,city.utsunomiya.tochigi.jp###randomad
 city.sanjo.niigata.jp##.koukoku-box
 dime.jp##.add_area-center
 dime.jp##.add_frame
@@ -5955,7 +5966,7 @@ city.komaki.aichi.jp,city.fujieda.shizuoka.jp###kokoku-area
 town.namie.fukushima.jp,city.ueda.nagano.jp,city.ome.tokyo.jp,lg.jp,city.kochi.kochi.jp###top_banner_koukoku
 town.fukushima.hokkaido.jp,city.goshogawara.lg.jp,city.mutsu.lg.jp,city.koshigaya.saitama.jp###koukoku
 city.fujinomiya.lg.jp##.rs_skip
-city.habikino.lg.jp##.advertising-area
+city.kushima.lg.jp,city.habikino.lg.jp##.advertising-area
 city.hokuto.yamanashi.jp###bnrLink
 city.ichinoseki.iwate.jp##.aBnr
 aichi.jp,hyogo.jp###sadfloat
@@ -5970,7 +5981,7 @@ city.bunkyo.lg.jp,city.nagano.nagano.jp,pref.toyama.jp,city.kuwana.lg.jp###tmp_b
 city.marugame.lg.jp##.under-banner
 city.matsusaka.mie.jp##.p-toppage__koukoku
 city.mishima.shizuoka.jp###sponsor-banner
-city.mihara.hiroshima.jp,city.asago.hyogo.jp,city.makurazaki.lg.jp,city.mito.lg.jp,pref.yamaguchi.lg.jp,city.matsumoto.nagano.jp,city.uji.kyoto.jp###top_banner_kokoku
+city-yuzawa.jp,city.mihara.hiroshima.jp,city.asago.hyogo.jp,city.makurazaki.lg.jp,city.mito.lg.jp,pref.yamaguchi.lg.jp,city.matsumoto.nagano.jp,city.uji.kyoto.jp###top_banner_kokoku
 city.miyakonojo.miyazaki.jp###top_photo_banner
 city.miyazaki.miyazaki.jp##.bnrWOut
 city.otake.hiroshima.jp,city.fukaya.saitama.jp,city.kunitachi.tokyo.jp,city.moriguchi.osaka.jp,city.nemuro.hokkaido.jp##.kokokuMod
@@ -11295,6 +11306,7 @@ vip-front.video.g.fc2.com,video.laxd.com,video.fc2.com##[class^="c-ad"]:not(.c-a
 ||nijigen-erogazou.com^$script,third-party
 !
 ! itest.5ch.net,itest.bbspink.com
+||itest.5ch.net/ads.json
 ||itest.5ch.net/assets/js/ad-manager-5ch.js
 ||itest.bbspink.com/assets/js/ad-manager-bbs.js
 itest.bbspink.com##.ad_subb_ls
@@ -11391,6 +11403,17 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_japanese
 !
 !
 !
+! kojodan.jp
+kojodan.jp#@#div[id^="div-gpt-"]
+kojodan.jp#@#[id^="div-gpt-ad"]
+kojodan.jp##+js(remove-attr, height, iframe[id^="google_ads_iframe"])
+@@||g.doubleclick.net/tag/js/gpt.js$domain=kojodan.jp
+@@||g.doubleclick.net/pagead/managed/js/gpt/*/pubads_impl.js$domain=kojodan.jp
+@@||g.doubleclick.net/gampad/ads?$xmlhttprequest,domain=kojodan.jp
+@@||safeframe.googlesyndication.com^$subdocument,domain=kojodan.jp
+@@||tpc.googlesyndication.com/simgad/$xmlhttprequest,domain=kojodan.jp
+@@||tpc.googlesyndication.com/pagead/imgad?$xmlhttprequest,domain=kojodan.jp
+safeframe.googlesyndication.com##+js(href-sanitizer, a[href^="https://adclick.g.doubleclick.net/"][href*="adurl="], ?adurl)
 ! temporally hidden for GTM
 ar-mag.jp,ben54.jp#$#html[class^="loading"] { visibility: visible !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/208209
