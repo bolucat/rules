@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.5.1
+// @version         4.1.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -191,6 +191,17 @@ else if (matchDomain('businessam.be')) {
 }
 
 else if (matchDomain('capital.fr')) {
+  let paywall = document.querySelector('div#articleWall-wrapper');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div#articleWall > div#articleWall-paid');
+    if (article) {
+      article.removeAttribute('class');
+      article.removeAttribute('hidden');
+      article.style['margin-top'] = '40px';
+      article.parentNode.removeAttribute('class');
+    }
+  }
   let videos = document.querySelectorAll('div > div#prisma-player-leader[data-ads-core*="Dailymotion"]');
   for (let video of videos) {
     try {
@@ -205,7 +216,7 @@ else if (matchDomain('capital.fr')) {
       console.log(err);
     }
   }
-  let ads = 'div.containerAds, div.ads-introText, div.outbrain-ads';
+  let ads = 'div.ad, div.ads-display, div.outbrain-ads';
   hideDOMStyle(ads);
 }
 
@@ -263,7 +274,7 @@ else if (matchDomain(fr_be_groupe_rossel_domains)) {
   if (paywall) {
     removeDOMElement(paywall);
     hideDOMStyle('r-mini-panel.r-mini-panel--froomle, div.r-paywall', 2);
-    let article = document.querySelector(cs_param.article_sel || 'r-article--section, div.r-content') || document.querySelector('div#article_paywall_es');
+    let article = document.querySelector('r-article--section, div.r-content') || document.querySelector('div#article_paywall_es');
     let match = window.location.pathname.match(/^\/(id)?(\d+)\//);
     if (article && match) {
       article.removeAttribute('class');
