@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.6.0
+// @version         4.1.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -64,6 +64,7 @@ var fr_be_groupe_rossel_domains = ['aisnenouvelle.fr', 'courrier-picard.fr', 'la
 var fr_gcf_custom_domains = ['larep.fr', 'leberry.fr', 'lechorepublicain.fr', 'lejdc.fr', 'lepopulaire.fr', 'leveil.fr', 'lyonne.fr'];
 var fr_groupe_ebra_domains = ['bienpublic.com', 'dna.fr', 'estrepublicain.fr', 'lalsace.fr', 'ledauphine.com', 'lejsl.com', 'leprogres.fr', 'republicain-lorrain.fr', 'vosgesmatin.fr'];
 var fr_groupe_la_depeche_domains = ['centrepresseaveyron.fr', 'journaldemillau.fr', 'ladepeche.fr', 'lindependant.fr', 'midilibre.fr', 'nrpyrenees.fr', 'petitbleu.fr', 'rugbyrama.fr'];
+var fr_groupe_la_manche_libre_custom_domains = ['echoancenis.fr', 'echoduberry.fr', 'hautanjou.fr', 'larenaissancehebdo.fr', 'lecourriercauchois.fr', 'lecourrierdelamayenne.fr'];
 var fr_groupe_nice_matin_domains = ['monacomatin.mc', 'nicematin.com', 'varmatin.com'];
 
 if (matchDomain('alternatives-economiques.fr')) {
@@ -275,7 +276,7 @@ else if (matchDomain(fr_be_groupe_rossel_domains)) {
     removeDOMElement(paywall);
     hideDOMStyle('r-mini-panel.r-mini-panel--froomle, div.r-paywall', 2);
     let article = document.querySelector('r-article--section, div.r-content') || document.querySelector('div#article_paywall_es');
-    let match = window.location.pathname.match(/^\/(id)?(\d+)\//);
+    let match = window.location.pathname.match(/^\/(art\/|id)?(\d+)\//);
     if (article && match) {
       article.removeAttribute('class');
       article.removeAttribute('id');
@@ -302,6 +303,7 @@ else if (matchDomain(fr_be_groupe_rossel_domains)) {
               let parser = new DOMParser();
               let doc = parser.parseFromString('<div>' + json.body + '</div>', 'text/html');
               let article_new = doc.querySelector('div');
+              article_new.querySelectorAll('iframe[allow*="fullscreen"][allowfullscreen]').forEach(e => e.removeAttribute('allowfullscreen'));
               article.innerHTML = '';
               article.appendChild(article_new);
             }
@@ -507,6 +509,46 @@ else if (matchDomain('journaldunet.com')) {
   let entry_reg_wall = document.querySelector('div.entry_reg_wall[style]');
   if (entry_reg_wall)
     entry_reg_wall.removeAttribute('style');
+}
+
+else if (domain = matchDomain('lamanchelibre.fr') || matchDomain(fr_groupe_la_manche_libre_custom_domains)) {
+  let paywall = document.querySelector('div#paywall_ctn');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article_id_match = window.location.pathname.match(/^\/\w+-(\d+)-/);
+    if (article_id_match) {
+      let article_id = article_id_match[1];
+      let article = document.querySelector('div.article_txt');
+      if (article_id && article) {
+        let url_src = 'https://app-api.' + domain + '/v1/getNew.php?id=' + article_id;
+        fetch(url_src)
+        .then(response => {
+          if (response.ok) {
+            response.json().then(json => {
+              try {
+                let parser = new DOMParser();
+                let doc = parser.parseFromString('<div>' + json.result[0].body + '</div>', 'text/html');
+                let article_new = doc.querySelector('div');
+                article_new.className = article.className;
+                article_new.classList.remove('melody');
+                let ng_images = article_new.querySelectorAll('div.picture_container > p > img[ng-src]:not([src])');
+                for (let elem of ng_images) {
+                  elem.src = elem.getAttribute('ng-src');
+                  let fs_button = elem.parentNode.parentNode.querySelector('div.fullscreen_button');
+                  removeDOMElement(fs_button);
+                }
+                article.parentNode.replaceChild(article_new, article);
+              } catch (err) {
+                console.log(err);
+              }
+            })
+          }
+        })
+      }
+    }
+  }
+  let ads = 'div.class_pub, div#tbl-next-up';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('lecourrierdesstrateges.fr')) {
@@ -963,9 +1005,7 @@ else if (matchDomain('lesechos.fr')) {
                 let parser = new DOMParser();
                 let doc = parser.parseFromString('<div class="' + article.className + '">' + json_text + '</div>', 'text/html');
                 let article_new = doc.querySelector('div');
-                let error_iframes = article_new.querySelectorAll('iframe[allow*="fullscreen"][allowfullscreen]');
-                for (let iframe of error_iframes)
-                  iframe.removeAttribute('allowfullscreen');
+                article_new.querySelectorAll('iframe[allow*="fullscreen"][allowfullscreen]').forEach(e => e.removeAttribute('allowfullscreen'));
                 if (article.parentNode && article_new) {
                   article.parentNode.replaceChild(article_new, article);
                   let article_lastnode = document.querySelector('.post-paywall  > :last-child');

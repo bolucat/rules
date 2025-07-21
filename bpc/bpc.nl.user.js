@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.1.5.1
+// @version         4.1.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -266,11 +266,22 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
         if (!json_match)
           refreshCurrentTab();
         else if (json.includes(',body:')) {
+          let nuxt_vars = json.split(/^\(function\(/)[1].split('){')[0].split(',');
+          let nuxt_values = json.split('}}(')[1].split('));')[0].replace(/,(true|false|null|\d+|{}),/g, ',"$1",').replace(/,(void\s\d),/g, ',"$1",').split(/\\?",\\?"/);
+          function findNuxtText(str, attributes = false) {
+            if (nuxt_vars.length && nuxt_values.length && !(attributes && str.length === 1 && str === str.toUpperCase())) {
+              let index = nuxt_vars.indexOf(str);
+              if (nuxt_values[index])
+                str = nuxt_values[index];
+            }
+            return str;
+          }
           let intro;
           let intro_match = json.match(/,leadtext_raw:"([^"]+)",/);
-          if (intro_match) {
+          let intro_meta_dom = document.querySelector('head > meta[data-hid="description"][content]');
+          if (intro_match || intro_meta_dom) {
             intro = document.createElement('p');
-            intro.innerText = intro_match[1];
+            intro.innerText = intro_match ? intro_match[1] : intro_meta_dom.content;
             intro.style = 'font-weight: bold;';
           }
           let json_text = json.split(',body:')[1].split(/,(leadText|brand_key|tts|pianoKeywords):/)[0].replace(/([{,])(\w+)(?=:(["\{\[]|[\w$]{1,2}[,\}]))/g, "$1\"$2\"").replace(/(Image\\":)(\d)([,}])/g, '$1\\"$2\\"$3').replace(/\":(\[)?([\w\$\.]+)([\]},])/g, "\":$1\"$2\"$3");
@@ -280,10 +291,10 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
             if (intro)
               article.appendChild(intro);
             let pars = JSON.parse(json_text);
-            function addParText(elem, par_text, add_br = false) {
+            function addParText(elem, par_text, add_br = false, attributes = false) {
               if (par_text) {
                 if (par_text.length <= 2)
-                  par_text = ' ... ';
+                  par_text = findNuxtText(par_text, attributes);
                 let span = document.createElement('span');
                 span.innerText = par_text;
                 elem.appendChild(span);
@@ -311,25 +322,32 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
               }
               elem.appendChild(figure);
             }
-            function addChildren(elem, children, add_br = false) {
+            function addChildren(elem, children, add_br = false, attributes = false) {
               for (let child of children) {
                 if (child.text) {
-                  addParText(elem, child.text, add_br);
+                  addParText(elem, child.text, add_br, attributes);
                 } else if (child.relation && (child.type === 'img' || child.relation.caption) && child.relation.href) {
                   let img_par = document.createElement('p');
                   addImage(img_par, child);
                   elem.appendChild(img_par);
-                } else if (child.relation && child.relation.link && child.relation.link.length > 2) {
+                } else if (child.relation && child.relation.link) {
+                  if (child.relation.link.length <= 2)
+                    child.relation.link = findNuxtText(child.relation.link).replace(/\\u002F/g, '/');
                   addLink(elem, decodeURIComponent(child.relation.title.length > 2 ? child.relation.title : child.relation.link), child.relation.link);
-                } else if (child.children && child.children[0]) {
-                  if (child.children[0].text) {
-                    if ((child.href && child.href.length > 2) || (child.relation && child.relation.follow && child.relation.follow.url)) {
-                      if (child.children[0].text.length > 2)
-                        addLink(elem, child.children[0].text, child.href || child.relation.follow.url, add_br);
-                    } else
-                      addParText(elem, child.children[0].text);
+                } else if (child.children) {
+                  if (child.children.length) {
+                    for (let item of child.children) {
+                      if (item.text) {
+                        if ((child.href && child.href.length > 2) || (child.relation && child.relation.follow && child.relation.follow.url)) {
+                          if (item.text.length > 2)
+                            addLink(elem, item.text, child.href || child.relation.follow.url, add_br);
+                        } else
+                          addParText(elem, item.text, false, child.attributes && child.attributes.length);
+                      } else
+                        addChildren(elem, item.children, false, item.attributes && item.attributes.length);
+                    }
                   } else
-                    addChildren(elem, child.children);
+                    elem.appendChild(document.createElement('br'));
                 }
               }
             }
