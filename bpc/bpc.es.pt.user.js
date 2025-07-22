@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.1.5.0
+// @version         4.1.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -666,6 +666,7 @@ else if (matchDomain('eluniverso.com')) {
 else if (matchDomain('em.com.br')) {
   if (!window.location.pathname.endsWith('/amp.html')) {
     amp_redirect('.news-blocked-content');
+    let ads = 'div.ads, div.containerads';
     hideDOMStyle(ads);
   } else {
     amp_unhide_subscr_section('amp-fx-flying-carpet');
@@ -703,7 +704,7 @@ else if (matchDomain('uol.com.br')) {
       removeDOMElement(signup);
     }
   }
-  let ads = 'div[class*="advertising"], div.jupiter-ads, div.up-floating, div[data-cp-id$="asfads"]';
+  let ads = 'div[class*="advertising"], div.jupiter-ads, div.up-floating, div[data-cp-id$="asfads"], div.ms-hapb, div.ms-apb';
   hideDOMStyle(ads);
 }
 

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.1.5.2
+// @version         4.1.5.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -267,7 +267,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
           refreshCurrentTab();
         else if (json.includes(',body:')) {
           let nuxt_vars = json.split(/^\(function\(/)[1].split('){')[0].split(',');
-          let nuxt_values = json.split('}}(')[1].split('));')[0].replace(/,(true|false|null|\d+|{}),/g, ',"$1",').replace(/,(void\s\d),/g, ',"$1",').split(/\\?",\\?"/);
+          let nuxt_values = json.split('}}(')[1].split('));')[0].replace(/,(true|false|\d+|{}),/g, ',"$1",').replace(/,(null),/g, ',"$1",').replace(/,(void\s\d),/g, ',"$1",').split(/\\?",\\?"/);
           function findNuxtText(str, attributes = false) {
             if (nuxt_vars.length && nuxt_values.length && !(attributes && str.length === 1 && str === str.toUpperCase())) {
               let index = nuxt_vars.indexOf(str);
@@ -315,7 +315,14 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
               let img = document.createElement('img');
               img.src = child.relation.href;
               figure.appendChild(img);
-              if (child.relation.caption && child.relation.caption.length > 2) {
+              if (child.relation.caption) {
+                if (child.relation.caption.length <= 2)
+                  child.relation.caption = findNuxtText(child.relation.caption).replace(/\\n/g, ' - ');
+                if (child.relation.caption.photographer) {
+                  if (child.relation.photographer.length <= 2)
+                    child.relation.photographer = findNuxtText(child.relation.photographer);
+                  child.relation.caption += ' - ' + child.relation.photographer;
+                }
                 let caption = document.createElement('figcaption');
                 caption.innerText = child.relation.caption;
                 figure.appendChild(caption);

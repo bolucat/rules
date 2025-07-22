@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.5.3
+// @version         4.1.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -754,9 +754,7 @@ else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
                   } else if (!['ad', 'quote', 'streamone'].includes(type)) {
                     let html = parser.parseFromString('<p class="' + intro_par_class + '">' + item + '</p>', 'text/html');
                     elem = html.querySelector('p');
-                    let error_iframes = elem.querySelectorAll('iframe[allow*="fullscreen"][allowfullscreen]');
-                    for (let iframe of error_iframes)
-                      iframe.removeAttribute('allowfullscreen');
+                    elem.querySelectorAll('iframe[allow*="fullscreen"][allowfullscreen]').forEach(e => e.removeAttribute('allowfullscreen'));
                     if (!['p', 'subhead', 'legacy-ml'].includes(type)) {
                       console.log(type);
                       console.log(item);
@@ -2233,7 +2231,7 @@ else if (matchDomain('forbes.com')) {
       header_nofix(header);
     }
   }
-  let ads = 'fbs-ad, div.inlineAdContainer';
+  let ads = 'fbs-ad, div[class^="fbs-ad"], div[data-testid^="fbs-ad"], div.inlineAdContainer, div[data-testid="locked-top-ad-container"]';
   hideDOMStyle(ads);
 }
 

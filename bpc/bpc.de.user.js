@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.5.3
+// @version         4.1.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -955,10 +955,21 @@ else if (matchDomain('zeit.de')) {
     let comments_link = document.querySelector('div[style*="align-items"] a[href$="#comments"]');
     if (comments_link)
       comments_link.href = '#comments';
+    let figures = document.querySelectorAll('figure:has(img[loading="lazy"][style])');
+    for (let figure of figures) {
+      let lazy_image = figure.querySelector('img');
+      if (lazy_image.src.startsWith('data:image/')) {
+        let json_script = figure.querySelector('script');
+        if (json_script && json_script.text.match(/"url":\s?"/)) {
+          let img_url = json_script.text.split(/"url":\s?"/)[1].split('",')[0];
+          lazy_image.src = img_url;
+          lazy_image.style = 'width: 95%;';
+          figure.removeAttribute('style');
+        }
+      } else if (mobile)
+        lazy_image.style = 'width: 95%;';
+    }
     if (mobile) {
-      let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
-      for (let elem of lazy_images)
-        elem.style = 'width: 95%;';
       let span_empty = document.querySelectorAll('span:empty');
       removeDOMElement(...span_empty);
     }

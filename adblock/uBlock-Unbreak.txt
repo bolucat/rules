@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Unbreak
 ! Expires: 5 days
-! Last modified: Sat, 19 Jul 2025 03:07:35 +0000
-! Diff-Path: ../patches/2025.7.21.933.patch#ublock-unbreak
+! Last modified: Tue, 22 Jul 2025 09:00:10 +0000
+! Diff-Path: ../patches/2025.7.22.999.patch#ublock-unbreak
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/unbreak.txt ***
@@ -476,6 +476,9 @@ wallpaperplay.com##.adsbygoogle
 ! fix boattrader .com image gallery
 @@||boatwizard.com/ads_prebid.min.js$script,domain=boattrader.com
 @@||shop.bbc.com/skin/$script,1p
+@@||fundingchoicesmessages.google.com^$script,domain=bbc.com
+bbc.com##+js(set, dvtag.getTargeting, trueFunc)
+||pub.doubleverify.com/dvtag/*/pub.js$script,domain=bbc.com,redirect=noop.js
 @@||products.wera.de^$xhr,1p
 @@||alicdn.com/*/tracker$script,domain=lazada.com.my
 @@||sportsnet.ca/wp-content/plugins/$script,css,1p
@@ -1204,7 +1207,6 @@ uschovna.cz##.branding:upward([target="_blank"])
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,domain=discoveryplus.in
 ! unbreak vermangasporno.com download button
 vermangasporno.com#@#a[target="_blank"][rel="noopener noreferrer"] > img
-@@||fundingchoicesmessages.google.com^$script,domain=bbc.com
 !#if env_firefox
 @@||dev.visualwebsiteoptimizer.com/j.php$domain=watch.impress.co.jp
 @@||dev.visualwebsiteoptimizer.com/v.gif$domain=watch.impress.co.jp
