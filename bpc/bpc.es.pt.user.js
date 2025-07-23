@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.1.6.0
+// @version         4.1.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -666,7 +666,7 @@ else if (matchDomain('eluniverso.com')) {
 else if (matchDomain('em.com.br')) {
   if (!window.location.pathname.endsWith('/amp.html')) {
     amp_redirect('.news-blocked-content');
-    let ads = 'div.ads, div.containerads';
+    let ads = 'div.ads, div.containerads, div.edm-banner, div.publicidade-interna-container';
     hideDOMStyle(ads);
   } else {
     amp_unhide_subscr_section('amp-fx-flying-carpet');
@@ -735,6 +735,14 @@ else if (matchDomain('globo.com')) {
 
 else if (matchDomain('lanacion.com.ar')) {
   setCookie(/^metering_arc/, '', 'lanacion.com.ar', '/', 0);
+  if (matchDomain('suscripciones.lanacion.com.ar')) {
+    let searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get('callback')) {
+      let article_sel = 'main.paywall-container';
+      let url = atob(searchParams.get('callback')).split('?')[0];
+      getArchive(url, article_sel + '> button', '', article_sel, '', 'div#fusion-app', 'div#wall');
+    }
+  }
   let ads = 'div.ln-banner-container';
   hideDOMStyle(ads);
 }
