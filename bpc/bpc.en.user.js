@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.6.0
+// @version         4.1.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -263,7 +263,7 @@ if (matchDomain('afr.com')) {
             response.text().then(html => {
               if (html.includes('__REDUX_STATE__=')) {
                 try {
-                  let json = JSON.parse(html.split('__REDUX_STATE__=')[1].split('};')[0].replace(/:undefined([,}])/g, ':"undefined"$1') + '}');
+                  let json = JSON.parse(html.split('__REDUX_STATE__=')[1].split('};')[0].replace(/:undefined([,}])/g, ':0$1').replace(/new\sMap\(\[([",\s\w]+)?\]\)/g, 0) + '}');
                   if (json) {
                     let placeholders;
                     function find_item(match, p1, offset, string) {
@@ -323,13 +323,9 @@ if (matchDomain('afr.com')) {
                       addStyle(article_sel + ' p {margin: 20px 0px;}');
                     } else {
                       let parser = new DOMParser();
-                      let first = true;
                       let posts = json.page.content.asset.posts;
+                      article.innerHTML = '';
                       for (let post of posts) {
-                        if (first) {
-                          first = false;
-                          continue;
-                        }
                         let asset = post.asset;
                         if (asset && asset.body) {
                           let json_text = asset.body;
@@ -2671,6 +2667,11 @@ else if (matchDomain('manoramaonline.com')) {
 
 else if (matchDomain('marketwatch.com')) {
   setCookie('cX_P', '', 'marketwatch.com', '/', 0);
+  if (window.location.pathname.startsWith('/livecoverage/')) {
+    window.setTimeout(function () {
+      fix_dowjones_live();
+    }, 1500);
+  }
   let ads = 'div.element--ad, div.j-ad, div.adWrapper, div#cx-articlecover';
   hideDOMStyle(ads);
 }

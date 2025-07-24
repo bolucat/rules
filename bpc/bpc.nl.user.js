@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.1.5.3
+// @version         4.1.5.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -317,7 +317,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
               figure.appendChild(img);
               if (child.relation.caption) {
                 if (child.relation.caption.length <= 2)
-                  child.relation.caption = findNuxtText(child.relation.caption).replace(/\\n/g, ' - ');
+                  child.relation.caption = findNuxtText(child.relation.caption).replace(/\\"/g, '"').replace(/\\n/g, ' - ');
                 if (child.relation.caption.photographer) {
                   if (child.relation.photographer.length <= 2)
                     child.relation.photographer = findNuxtText(child.relation.photographer);
