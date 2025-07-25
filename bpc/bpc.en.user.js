@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.6.2
+// @version         4.1.6.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4304,23 +4304,33 @@ else if (matchDomain('vikatan.com')) {
       removeDOMElement(paywall);
       let json_script = getArticleJsonScript();
       if (json_script) {
-        let json = JSON.parse(json_script.text);
-        if (json) {
-          let json_text = parseHtmlEntities(json.articleBody);
-          let content = document.querySelector('div.story-element > div');
-          if (json_text && content) {
-            let parser = new DOMParser();
-            let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-            let content_new = doc.querySelector('div');
-            content.parentNode.replaceChild(content_new, content);
+        try {
+          let json = JSON.parse(json_script.text);
+          if (json) {
+            let article = document.querySelector('div.story-element');
+            if (article) {
+              let parser = new DOMParser();
+              let json_text = parseHtmlEntities(json.articleBody);
+              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+              let content_new = doc.querySelector('div');
+              let content = document.querySelector('div.story-element > div');
+              if (content)
+                content.parentNode.replaceChild(content_new, content);
+              else
+                article.appendChild(content_new);
+            }
           }
+        } catch (err) {
+          console.log(err);
         }
       }
+      let story_hidden = document.querySelector('div[class^="styles-m__story-card-wrapper_"]');
+      if (story_hidden)
+        story_hidden.removeAttribute('class');
     }
-    let story_hidden = document.querySelector('div[class^="styles-m__story-card-wrapper_"]');
-    if (story_hidden)
-      story_hidden.removeAttribute('class');
-  }, 500);
+  }, 1500);
+  let ads = 'div[class^="styles-m__popup-wrapper-adb"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('voguebusiness.com')) {
