@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.6.3
+// @version         4.1.6.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -905,6 +905,9 @@ else if (matchDomain('stylist.co.uk')) {
   let paywall = document.querySelector('div[data-testid="paywall-component"]');
   if (paywall) {
     removeDOMElement(paywall);
+    let paywall_inline = document.querySelector('div.paywall--inline');
+    if (paywall_inline)
+      paywall_inline.removeAttribute('class');
     let json_script = document.querySelector('script#__NEXT_DATA__');
     if (json_script) {
       try {
