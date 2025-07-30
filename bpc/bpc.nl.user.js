@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.1.5.4
+// @version         4.1.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -140,33 +140,37 @@ else if (matchDomain('businessinsider.nl')) {
 }
 
 else if (matchDomain('doorbraak.be')) {
-  let paywall_sel = 'div.paywall';
-  let paywall = document.querySelector(paywall_sel);
-  if (paywall) {
-    removeDOMElement(paywall);
-    waitDOMElement(paywall_sel, 'DIV', removeDOMElement, false);
-    let json_script = document.querySelector('script#__NUXT_DATA__');
-    if (json_script) {
-      try {
-        if (!json_script.text.substr(0, 500).includes(window.location.pathname))
-          refreshCurrentTab();
-        let json = JSON.parse(json_script.text);
-        json = json.filter(x => typeof x === 'string' && x.startsWith('<p>'));
-        let json_text = json[0];
-        if (json_text) {
-          let parser = new DOMParser();
-          let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-          let content_new = doc.querySelector('div');
-          let article = document.querySelector('div > div.prose');
-          if (article) {
-            article.appendChild(content_new);
+  window.setTimeout(function () {
+    let plus = document.querySelector('h1 > svg');
+    let article = document.querySelector('div > div.prose');
+    if (plus && article) {
+      let paywall_sel = 'div.paywall';
+      let paywall = document.querySelector(paywall_sel);
+      let pars = article.querySelectorAll('p');
+      if (paywall || pars.length < 2) {
+        removeDOMElement(paywall);
+        waitDOMElement(paywall_sel, 'DIV', removeDOMElement, false);
+        let json_script = document.querySelector('script#__NUXT_DATA__');
+        if (json_script) {
+          try {
+            if (!json_script.text.substr(0, 500).includes(window.location.pathname))
+              refreshCurrentTab();
+            let json = JSON.parse(json_script.text);
+            json = json.filter(x => typeof x === 'string' && x.startsWith('<p>'));
+            let json_text = json[0];
+            if (json_text) {
+              let parser = new DOMParser();
+              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+              let content_new = doc.querySelector('div');
+              article.appendChild(content_new);
+            }
+          } catch (err) {
+            console.log(err);
           }
         }
-      } catch (err) {
-        console.log(err);
       }
     }
-  }
+  }, 1000);
 }
 
 else if (matchDomain(be_roularta_domains)) {

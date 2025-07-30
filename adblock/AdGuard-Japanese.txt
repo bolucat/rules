@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: DrGtyj3LFsUZb4UDFA5g/g
-! Diff-Path: ../patches/7/7-s-1753809228-3600.patch
+! Checksum: mVwU6jNdTjiwvdrTs8ww4A
+! Diff-Path: ../patches/7/7-s-1753888301-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.67.0
-! TimeUpdated: 2025-07-29T17:09:33+00:00
+! Version: 2.0.67.6
+! TimeUpdated: 2025-07-30T15:07:36+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1797,6 +1797,11 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+yomitai.jp##.special-inarticle
+botchi.net##div[class^="pr_"]
+||botchi.net/afi/$image
+botchi.net##.side_entry3:has(+ .side_afi3)
+botchi.net##.side_afi3
 ilovetrend.hatenablog.com#?#.entry-header-html > p:contains(/^スポンサーリンク$/)
 jisakuhibi.jp##div[style="border-top: 2px #dde solid; margin-bottom:5px; margin-top:100px; text-align:center; color:#999; font-size:80%;"]
 zack-it.com##.easyLink-box
@@ -3667,6 +3672,7 @@ hoge5ch.info##.amazon_item
 meshinews.blog.jp,hoge5ch.info##.right-container > div.plugin-memo:last-child
 ||coneti.net/post_image/mt_20220623211055_jF696njUWbNW.jpg$third-party
 ||poginfo.ddo.jp/pogs/images/pr/
+times.abema.tv##.article-relation-card
 times.abema.tv##.ad-side-sticky
 times.abema.tv##.u-lg-overflow-hidden[style="height: 200px;"]
 times.abema.tv#?#.c-article-footer-title:contains(/^関連(記事|動画)/)
@@ -6152,6 +6158,7 @@ olive-hitomawashi.com##div[style^="display: inline-block; min-width: 300px; min-
 nanigoto.net##div[style="width:100%;height:90px;"]
 nanigoto.net##div[style="width:336px;height:280px;"]
 ||m.media-amazon.com/images/I/$domain=grasoku.com|bipblog.com|pachinkopachisro.com|newmatosoku.com|lifehack2ch.livedoor.biz|matome-plus.com|imasaragame.com|2ch.logpo.jp|ginnga.blog.jp
+grasoku.com##a[href^="https://www.amazon.co.jp/gp/search"]
 grasoku.com##.right-container > div.plugin-memo:nth-of-type(-n+4)
 otanews.livedoor.biz###leftbody
 otanews.livedoor.biz##.PortalLinks > center
@@ -6349,7 +6356,7 @@ city.yachiyo.chiba.jp,phileweb.com###topBanner
 sirabee.com,fumumu.net##.entryBottomBanner
 46matome.net###more > table[border="0"]
 saikyo-jump.com,grasoku.com##.right-container > div.plugin-memo:last-of-type
-geek.sc,tcg-bloglife.com,p2y.jp,aoyagi-coffee.hatenablog.com,xn--eckybzahmsm43ab5g5336c9iug.com,moognyk.jp,nmbschedule.blog.fc2.com,abc-by.com,kusoneko.blogspot.com,ogeji.hatenablog.com,dn-voice.info,minto.tech,mupon.net,46matome.net,46room.blog.jp,keyakizaka46matomemory.net##.kaerebalink-box
+xn--mck5e585m.com,geek.sc,tcg-bloglife.com,p2y.jp,aoyagi-coffee.hatenablog.com,xn--eckybzahmsm43ab5g5336c9iug.com,moognyk.jp,nmbschedule.blog.fc2.com,abc-by.com,kusoneko.blogspot.com,ogeji.hatenablog.com,dn-voice.info,minto.tech,mupon.net,46matome.net,46room.blog.jp,keyakizaka46matomemory.net##.kaerebalink-box
 46matome.net,keyakizaka46matomemory.net###more > a[href^="https://hb.afl.rakuten.co.jp"]
 itainews.com,keyakizaka46matomemory.net##.plugin-monthly + div.plugin-memo
 bridge-salon.jp##div[id^="jp_ir_"][style]
@@ -6401,7 +6408,7 @@ news.ameba.jp##div[class^="SpAd"]
 huffingtonpost.jp##.leaderboard-flex-placeholder
 macaro-ni.jp##.articleShow__nativeAd
 ox-tv.co.jp,mantan-web.jp,macaro-ni.jp##.yadsOverlay
-newsphere.jp,watch.impress.co.jp,odaibako.net,ac-illust.com,photo-ac.com,mitok.info,getnews.jp,webcartop.jp##div[style="min-height: 250px;"]
+times.abema.tv,newsphere.jp,watch.impress.co.jp,odaibako.net,ac-illust.com,photo-ac.com,mitok.info,getnews.jp,webcartop.jp##div[style="min-height: 250px;"]
 juken.oricon.co.jp,response.jp,getnews.jp,withonline.jp,jprime.jp##div[style="min-height:250px;"]
 otajo.jp##iframe[src^="https://rcm-jp.amazon.co.jp/e/cm?"]
 2chmatome2.jp###gn_overlay_wrapper
@@ -10038,8 +10045,8 @@ hlsloader.com#?#section > center > span[style="opacity:0.7;font-size:xx-small"]:
 valorantchannel.livedoor.blog#?#div[class*="column-inner"] > div.plugin-memo:has(> div.sidetitlebody > div.sidetitle:contains(スポンサードリンク))
 nlab.itmedia.co.jp#?##cmsBody > div.inner > p:last-of-type:has(> * > a[href^="https://twitter.com/"][target="_blank"]):contains(作品提供) ~ div.cmsAmazonWrap
 mainichi.jp#?#.featurelist > li > div[id^="ad-"]:upward(1)
-tomoyuki65.com,rojiuragame.com,mtgoversears.com,kdrm4.com,yagan.hatenablog.com,gigafile.ltd,taisy0.com,furugi1717.net,nilcollection.net,souda-kansai.com##.entry-content > p:has(> ins.adsbygoogle)
-xn--mck5e585m.com,fnjpnews.com#?#.post-box > div.post-box-contents > ins.adsbygoogle:upward(2)
+gundam.matome-gamers.com,tomoyuki65.com,rojiuragame.com,mtgoversears.com,kdrm4.com,yagan.hatenablog.com,gigafile.ltd,taisy0.com,furugi1717.net,nilcollection.net,souda-kansai.com##.entry-content > p:has(> ins.adsbygoogle)
+xn--mck5e585m.com##.post-box:has(> div.post-box-contents > ins.adsbygoogle)
 akb48rompen.com#?#.plugin-memo > div.side > script[src*="amazon-adsystem.com/"]:upward(2)
 akb48rompen.com#?#.plugin-memo > div.side > a > img[src*="dmm.com/af/"]:upward(3)
 akb48rompen.com#?#blockquote:has(> .amazon)
