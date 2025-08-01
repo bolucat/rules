@@ -1,5 +1,5 @@
 #!/bin/bash
-# 2021-2024 @bolucat 
+# 2021-2025 @bolucat 
 # Credits: https://github.com/Loyalsoldier/clash-rules
 # 	   https://github.com/DivineEngine/Profiles
 #	   https://github.com/cobaltdisco/Google-Chinese-Results-Blocklist
@@ -29,6 +29,7 @@
 #	   https://github.com/immersive-translate/immersive-translate
 #	   https://github.com/gkd-kit/subscription
 #	   https://github.com/MetaCubeX/meta-rules-dat
+#	   https://github.com/ignaciocastro/a-dove-is-dumb
 
 OPTION=$1
 CUR=${PWD}
@@ -38,6 +39,7 @@ clean() {
 	clash/ip-show-list \
 	clash/anti-ad clash/openclash \
 	clash/fei-rules clash/ios-rule-script \
+ 	clash/a-dove-is-dumb \
 	clash/cf-ip clash/my/my-reject-*.yaml \
  	clash/meta-rules-dat
 	rm -rf seo adblock iptv bpc clearurls userscripts
