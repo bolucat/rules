@@ -1,12 +1,12 @@
 <div align="center">
-  <a href=https://a.dove.isdumb.one><img src="https://cdn.jsdelivr.net/gh/ignaciocastro/a-dove-is-dumb@assets/header.jpg"></a>
+  <a href=https://a.dove.isdumb.one><img src="https://gl.githack.com/ignaciocastro/a-dove-is-dumb/-/raw/assets/header.jpg"></a>
   
   <sub><sup>click to open</sup></sub>
 
 
-[/127](https://a.dove.isdumb.one/127 "Alternative using 127.0.0.1 instead of 0.0.0.0") [/cdn](https://a.dove.isdumb.one/cdn "Served from jsDelivr") [/fastly](https://a.dove.isdumb.one/fastly "Served from jsDelivr's Fastly mirror (对中国用户有用)") [/pihole](https://a.dove.isdumb.one/pihole "Optimized for Pi-hole users (No IP before domain)") [/winhosts](https://a.dove.isdumb.one/winhosts "Follows Microsoft Windows' default hosts file format")
+[/127](https://a.dove.isdumb.one/127 "Alternative using 127.0.0.1 instead of 0.0.0.0") [/cdn](https://a.dove.isdumb.one/cdn "Served from jsDelivr") [/fastly](https://a.dove.isdumb.one/fastly "Served from jsDelivr's Fastly mirror (对中国用户有用)") [/pihole](https://a.dove.isdumb.one/pihole "Optimized for Pi-hole users (No IP before domain)") [/winhosts](https://a.dove.isdumb.one/winhosts "Follows Microsoft Windows' default hosts file format") [/clash](https://a.dove.isdumb.one/clash "Formatted for Clash-based programs")
 
-_Latest update: Thu, 28 Nov 2024 00:35:33 UTC_
+_Latest update: Fri, 01 Aug 2025 08:25:49 UTC_
 
 <sub>_NEW: Join the Telegram channel for updates [here](https://a.dove.isdumb.one/telegram)._</sub>
 
@@ -57,7 +57,7 @@ Quick, easy and painless way of blocking Adobe's telemetry checking servers. Upd
 <details>
     <summary>hostsmgr users (Automatic updates)</summary>
 
-1. Add your preferred URL to hosts_sources.dat
+1. Add your prefered URL to hosts_sources.dat
 2. Run hostsmgr to update
 </details>
 
@@ -77,7 +77,7 @@ Not at all. This list is usually weeks ahead of Adobe's domain switches, so it d
 - If they add more domains and I can add them as preventive updates
 - If they make a switch between domain formats (Moving from _*.adobe.io_ to _*.prod.cloud.adobe.io_, for example.)
 
-### My preferred program is not letting me use the list!
+### My prefered program is not letting me use the list!
 This can happen with programs that do not support 301 redirects as the source URL. You can use the following direct URLs instead:
 
 <details>
@@ -91,11 +91,11 @@ This can happen with programs that do not support 301 redirects as the source UR
 - Microsoft Windows hosts: https://a.dove.isdumb.one/winhosts.txt
 </details>
 
-### It was working fine and now I'm getting / I'm still getting the "Unlicensed program" window / I have a new subdomain to submit
-Adobe tends to update their telemetry checking subdomain every two weeks. Feel free to open [an issue](https://github.com/ignaciocastro/a-dove-is-dumb/issues/new) if you already tried updating the list and nothing happened. Use Fiddler / Charles Proxy when opening the program, sort by _"/integritychecker/machineevents/v1"_ and include the subdomain it was requested from. **Please include the URL as text instead of just pasting a screenshot**, your submission will be rejected if you don't paste the URL.
+### It was working fine and now I'm getting / I'm still getting the red banner pop-up / I have a new subdomain to submit
+Adobe tends to update their telemetry checking subdomain every two weeks. Feel free to open [an issue](https://github.com/ignaciocastro/a-dove-is-dumb/issues) if you already tried updating the list and nothing happened. Use Fiddler / Charles Proxy when opening the program, sort by _"/integritychecker/machineevents/v1"_ and include the subdomain it was requested from. **Please include the URL as text instead of just pasting a screenshot**, your submission will be rejected if you don't paste the URL.
 
 ### I'm in a country where Github / Cloudflare is slow or blocked / 我所在的国家Github/Cloudflare速度慢或被屏蔽
-jsDelivr URL should redirect you to a suitable mirror according to your latency / country. If you still can't access any option, please [open an issue](https://github.com/ignaciocastro/a-dove-is-dumb/issues/new).
+jsDelivr URL should redirect you to a suitable mirror according to your latency / country. If you still can't access any option, please [open an issue](https://gitlab.com/ignaciocastro/a-dove-is-dumb/-/issues).
 
 对于中国用户：cdn.jsdelivr.net此前曾在大陆遭到屏蔽。你可以试试这些替代品
 <details>
@@ -114,11 +114,11 @@ They are not necessary, but always appreciated! Your contribution will help me p
 <div align="center">
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/F2F2PQN55)
-[![liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/ignaseeo/)
+[![buymeacoffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://buymeacoffee.com/ignaciocastro)
 
 [Github Sponsors (+crypto wallets)](https://github.com/sponsors/ignaciocastro)
 
 </center>
 
 ##
- <div align="center"><img src="https://cdn.jsdelivr.net/gh/ignaciocastro/a-dove-is-dumb@assets/a-dove.png"></div>
+ <div align="center"><img src="https://gl.githack.com/ignaciocastro/a-dove-is-dumb/-/raw/assets/a-dove.png"></div>

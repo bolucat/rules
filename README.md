@@ -174,6 +174,8 @@
 - [127.txt](https://rules.neuq.de/clash/a-dove-is-dumb/127.txt)
 - [LICENSE](https://rules.neuq.de/clash/a-dove-is-dumb/LICENSE)
 - [README.md](https://rules.neuq.de/clash/a-dove-is-dumb/README.md)
+- [_headers](https://rules.neuq.de/clash/a-dove-is-dumb/_headers)
+- [_redirects](https://rules.neuq.de/clash/a-dove-is-dumb/_redirects)
 - [clash.yaml](https://rules.neuq.de/clash/a-dove-is-dumb/clash.yaml)
 - [list.txt](https://rules.neuq.de/clash/a-dove-is-dumb/list.txt)
 - [pihole.txt](https://rules.neuq.de/clash/a-dove-is-dumb/pihole.txt)

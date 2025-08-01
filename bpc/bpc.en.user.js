@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.6.4
+// @version         4.1.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1056,7 +1056,7 @@ else if (matchDomain('thelawyer.com')) {
   }
 }
 
-else if (matchDomain('theneweuropean.co.uk')) {
+else if (matchDomain('thenewworld.co.uk')) {
   let paywall = document.querySelector('div[data-show-fade-on-noaccess]');
   if (paywall) {
     removeDOMElement(paywall);
@@ -1229,6 +1229,8 @@ else if (matchDomain('ajc.com')) {
     paygate.removeAttribute('class');
   let video_blocker = document.querySelector('div.video-blocker');
   removeDOMElement(video_blocker);
+  let ads = 'div.arc_ad';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('al-monitor.com')) {
