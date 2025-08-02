@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Fri, 01 Aug 2025 05:16:00 +0000
-! Diff-Path: ../patches/2025.8.1.1000.patch#ublock-quick-fixes
+! Last modified: Sat, 02 Aug 2025 16:53:04 +0000
+! Diff-Path: ../patches/2025.8.2.1049.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -103,9 +103,8 @@ japscan.*##+js(trusted-suppress-native-method, Document.prototype.querySelectorA
 japscan.*##+js(nostif, =document[_0x)
 japscan.*##+js(trusted-set, aclib, json:{"isShowingPop": false})
 japscan.*##+js(set, aclib.runInPagePush, {}, as, callback)
-japscan.*##+js(trusted-replace-outbound-text, Function.prototype.toString, ( ) => (( ) => value), 'runInPagePush(t){if(this.#ft.inPagePush)return void this.#r.error("in-page push zone already loaded on page");this.#ft.inPagePush=!0;const{zoneId:e,delay:r,maxAds:n,renderPosDesktop:i,renderPosMobile:o,offsetTop:s,sub1:a,isAutoTag:c,collectiveZoneId:u,linkedZoneId:l,aggressivity:d,recordPageView:h,abTest:f,tagVersionSuffix:g}=t;let{refreshRate:p}=t;if(!e)throw new Error("mandatory zoneId is not provided!");if(!wt(e))throw new Error("zoneId is not a string!");if(void 0!==p&&(!yt(p)||p<0))throw new Error("refreshRate is not an integer or is less than zero");if(void 0!==r&&(!yt(r)||r<0))throw new Error("delay is not an integer or is less than zero");if(void 0!==n&&(!yt(n)||n<1))throw new Error("maxAds is not an integer or is less than one");if(void 0!==i&&!xt(i))throw new Error("renderPosDesktop is not valid");if(void 0!==o&&!xt(o))throw new Error("renderPosMobile is not valid");if(void 0!==s&&(!yt(s)||s<0))throw new Error("offsetTop is not an integer or is less than zero");this.#r.debug("loading in-page push on page"),c?this.#pt.add(u):this.#pt.add(e),void 0!==p&&p>0&&p<10&&(p<5?p*=60:p=30),this.#r.debug("ipp rr set to",p);const v={zoneId:e,refreshRate:p??60,delay:r??0,maxAds:n??1,renderPosDesktop:i??"top",renderPosMobile:o??"top",offsetTop:s??0,sub1:a,isAutoTag:c,collectiveZoneId:u,linkedZoneId:l,aggressivity:d,recordPageView:h,abTest:f,tagVersionSuffix:g,adserverDomain:this.#v,adblockSettings:this.#s,adcashGlobalName:this.#xt,isLoadedAsPartOfLibrary:!1,uniqueFingerprint:this.#C};if(this.#Ct.InPagePush)return v.isLoadedAsPartOfLibrary=!0,void new this.#Ct.InPagePush(v);if(window.InPagePush)new window.InPagePush(v);else{const t=document.createElement("script");t.type="text/javascript",t.src=`${window.location.protocol}//${this.#ht}/script/inpagepush.js`,t.setAttribute("nipp","1"),t.onload=()=>{new window.InPagePush(v)},t.onerror=()=>{this.#r.error(`failed loading ${t.src}`)},document.head.appendChild(t)}}')
 japscan.*##+js(set, aclib.runBanner, {}, as, function)
-japscan.*##+js(aeld, load, /s('\+')?t('\+')?a('\+')?r('\+')?t('\+')?s('\+')?W('\+')?i('\+')?t('\+')?h/)
+japscan.*##+js(trusted-replace-outbound-text, Function.prototype.toString, ( ) => value, 'runBanner(t){const{zoneId:e,width:r,height:n,renderIn:i,sub1:o,currentScript:s}=t;if(!e)throw new Error("mandatory zoneId is not provided!");if(!wt(e))throw new Error("zoneId is not a string!");if(void 0!==r&&!yt(r))throw new Error("Banner width is not an integer");if(void 0!==n&&!yt(n))throw new Error("Banner height is not an integer");let a;this.#r.debug("loading banner on page",e),i||(document.currentScript&&document.currentScript.parentElement&&(a=document.currentScript.parentElement),s&&(a=s.parentElement));const c={zoneId:e,width:r,height:n,renderIn:i,currentElement:a,sub1:o,adcashGlobalName:this.#xt,uniqueFingerprint:this.#C,adblockSettings:this.#s};if(this.#Ct.Banner)new this.#Ct.Banner(c);else if(this.#ft.banner||this.#mt){if(window.Banner)return this.#pt.add(c.zoneId),void new Banner(c);const t=S()((()=>{window.Banner&&(this.#pt.add(c.zoneId),new Banner(c),clearInterval(t))}),100)}else{this.#mt=!0;var u=document.createElement("script");u.type="text/javascript",u.src=`${location.protocol}//${this.#ht}/script/banner.js`,u.onload=()=>{this.#ft.banner=!0,this.#mt=!1,this.#pt.add(c.zoneId),new Banner(c)},u.onerror=()=>{this.#ft.banner=!1,this.#mt=!1,this.#r.error(`failed loading ${u.src}`)},u.setAttribute("data-adel","ban"),u.setAttribute("a-lib","1"),document.head.appendChild(u)}}')
 poophq.com,veev.to,doods.to##+js(nowoif)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /vast.php?)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /click\.com|preroll|native_render\.js|acscdn/, length:10001)
@@ -142,8 +141,8 @@ veev.to#@#.avb-active
 panel.freemcserver.net#@#+js(rpnt, script, 'G-1B4LC0KT6C');, 'G-1B4LC0KT6C'); window.setTimeout(function(){blockPing()}\,200);)
 panel.freemcserver.net##+js(rpnt, script, 'G-1B4LC0KT6C');, 'G-1B4LC0KT6C'); localStorage.setItem("tuna"\, "dW5kZWZpbmVk"); localStorage.setItem("sausage"\, "ZmFsc2U="); window.setTimeout(function(){fuckYouUblockAndJobcenterTycoon(false)}\,200);)
 ! filemoon
-0deh.com,26efp.com,2glho.org,58n1.com,5mgz1.com,6jlvu.com,c1z39.com,djx10.org,fu-4u3omzw0.nl,guum5.com,hmt6u.com,imdpu9eq.com,kzjou.com,l8e8.com,l99j.com,mee-cccdoz45.com,my4w.com,qa2h.com,qvzidojm.com,tpz6t.com,tz7z9z0h.com,v1kkm.com,xcoic.com,xo7c.com,z4h4.com,/^moon(?:-[a-z0-9]+)?-embed\.com$/,/^moonfile-[a-z0-9-]+\.com$/,/^[0-9a-z]{5,8}\.(art|cfd|fun|icu|info|live|pro|sbs|world)$/,/^moo-[a-z0-9]+(-[a-z0-9]+)*-mkay\.com$/,/^file-[a-z0-9]+(-[a-z0-9]+)*-(moon|embed)\.com$/,/^fle-[a-z0-9]+(-[a-z0-9]+)*-moo\.com$/,/^filemoon-[a-z0-9]+(?:-[a-z0-9]+)*\.(?:com|xyz)$/##+js(nowoif, /^ [-\d]/)
-0deh.com,26efp.com,2glho.org,58n1.com,5mgz1.com,6jlvu.com,c1z39.com,djx10.org,fu-4u3omzw0.nl,guum5.com,hmt6u.com,imdpu9eq.com,kzjou.com,l8e8.com,l99j.com,mee-cccdoz45.com,my4w.com,qa2h.com,qvzidojm.com,tpz6t.com,tz7z9z0h.com,v1kkm.com,xcoic.com,xo7c.com,z4h4.com,/^moon(?:-[a-z0-9]+)?-embed\.com$/,/^moonfile-[a-z0-9-]+\.com$/,/^[0-9a-z]{5,8}\.(art|cfd|fun|icu|info|live|pro|sbs|world)$/,/^moo-[a-z0-9]+(-[a-z0-9]+)*-mkay\.com$/,/^file-[a-z0-9]+(-[a-z0-9]+)*-(moon|embed)\.com$/,/^fle-[a-z0-9]+(-[a-z0-9]+)*-moo\.com$/,/^filemoon-[a-z0-9]+(?:-[a-z0-9]+)*\.(?:com|xyz)$/##+js(acs, Math.random, parseInt(localStorage['\x)
+0deh.com,26efp.com,2glho.org,58n1.com,5mgz1.com,6jlvu.com,c1z39.com,djx10.org,fu-4u3omzw0.nl,guum5.com,hmt6u.com,imdpu9eq.com,kzjou.com,l455o.com,l8e8.com,l99j.com,mee-cccdoz45.com,my4w.com,qa2h.com,qvzidojm.com,tpz6t.com,tz7z9z0h.com,v1kkm.com,xcoic.com,xo7c.com,z4h4.com,/^moon(?:-[a-z0-9]+)?-embed\.com$/,/^moonfile-[a-z0-9-]+\.com$/,/^[0-9a-z]{5,8}\.(art|cfd|fun|icu|info|live|pro|sbs|world)$/,/^moo-[a-z0-9]+(-[a-z0-9]+)*-mkay\.com$/,/^file-[a-z0-9]+(-[a-z0-9]+)*-(moon|embed)\.com$/,/^fle-[a-z0-9]+(-[a-z0-9]+)*-moo\.com$/,/^filemoon-[a-z0-9]+(?:-[a-z0-9]+)*\.(?:com|xyz)$/##+js(nowoif, /^ [-\d]/)
+0deh.com,26efp.com,2glho.org,58n1.com,5mgz1.com,6jlvu.com,c1z39.com,djx10.org,fu-4u3omzw0.nl,guum5.com,hmt6u.com,imdpu9eq.com,kzjou.com,l455o.com,l8e8.com,l99j.com,mee-cccdoz45.com,my4w.com,qa2h.com,qvzidojm.com,tpz6t.com,tz7z9z0h.com,v1kkm.com,xcoic.com,xo7c.com,z4h4.com,/^moon(?:-[a-z0-9]+)?-embed\.com$/,/^moonfile-[a-z0-9-]+\.com$/,/^[0-9a-z]{5,8}\.(art|cfd|fun|icu|info|live|pro|sbs|world)$/,/^moo-[a-z0-9]+(-[a-z0-9]+)*-mkay\.com$/,/^file-[a-z0-9]+(-[a-z0-9]+)*-(moon|embed)\.com$/,/^fle-[a-z0-9]+(-[a-z0-9]+)*-moo\.com$/,/^filemoon-[a-z0-9]+(?:-[a-z0-9]+)*\.(?:com|xyz)$/##+js(acs, Math.random, parseInt(localStorage['\x)
 f51rm.com>>##+js(nowoif, /^ [-\d]/)
 u26bekrb.fun##+js(set, adBlockDetected, undefined)
 !#if cap_html_filtering
@@ -183,8 +182,10 @@ bing.com##+js(rpnt, script, _w.keyMap=, '(()=>{const e={apply:(e,t,n)=>{let o=Re
 bing.com##+js(no-xhr-if, /fd/ls/lsp.aspx)
 bing.com##ol#b_results > li:has(> :is(.b_tpcn, .b_title, h2) a[href^="https://www.bing.com/aclk?"])
 bing.com##ol#b_results > li.b_algo:has(.b_lineclamp3:matches-css-before(content:/^url\(\Sdata:image\/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD.AAAA/))
-bg-gledai.*,gledaitv.*##+js(no-fetch-if, method:HEAD)
-cdn.bg-gledai.*,cdn.gledaitv.*##+js(rmnt, script, .textContent)
+cdn.bg-gledai.*,cdn.gledaitv.*##+js(no-fetch-if, method:HEAD)
+cdn.bg-gledai.*,cdn.gledaitv.*##+js(no-xhr-if, method:HEAD)
+cdn.bg-gledai.*,cdn.gledaitv.*##+js(rmnt, script, /\.textContent|createObjectURL/)
+cdn.bg-gledai.*,cdn.gledaitv.*##[id^="anti-pedali-"]
 faqwiki.us##+js(nostif, .offsetHeight>0)
 faqwiki.*##+js(rmnt, script, /adblock/i)
 pvpoke-re.com##+js(trusted-suppress-native-method, Element.prototype.insertAdjacentHTML, '"afterbegin"', prevent, /\/[A-Za-z]+\.min\.js\?/)
