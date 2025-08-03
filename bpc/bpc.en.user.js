@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.7.1
+// @version         4.1.7.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -636,7 +636,7 @@ else {
         else {
           waitDOMElement(paywall_sel, 'DIV', thewest_main, true);
         }
-        let ads = 'div.headerAdvertisement, div.disabled-ad';
+        let ads = 'div.headerAdvertisement, div.disabled-ad, div.ad-no-notice';
         hideDOMStyle(ads);
       } else if (document.querySelector('head > link[rel="dns-prefetch"][href="//static.ew.mmg.navigacloud.com"]')) { // McPherson Media Group
         let paywall = document.querySelector('div#content-Load-message');
@@ -1621,7 +1621,7 @@ else if (matchDomain('businessoffashion.com')) {
 }
 
 else if (matchDomain('capital.bg')) {
-  let paywall = document.querySelector('div.paywall-story');
+  let paywall = document.querySelector('section > article > footer > a[data-referral="Paywall"]');
   if (paywall) {
     removeDOMElement(paywall);
     let json_script = getArticleJsonScript();
@@ -1632,6 +1632,7 @@ else if (matchDomain('capital.bg')) {
         let img_main = document.querySelector('div.story--header picture > img[src]');
         let article = document.querySelector('div.story-content');
         if (json_text && article) {
+          article.innerHTML = '';
           let article_new = document.createElement('p');
           let json_pars = parseHtmlEntities(json_text).replace(/\s{2,}/g, '\r\n\r\n').split(/[\[\]]{2}/);
           for (let elem of json_pars) {
@@ -1646,7 +1647,7 @@ else if (matchDomain('capital.bg')) {
                     par.style = 'margin: 20px; width: 90%;';
                   }
                 }
-              } else if (!elem.match(/quote:\d+/)) {
+              } else if (!elem.match(/(embed|quote):\d+/)) {
                 par = document.createElement('p');
                 par.innerText = elem;
               }
@@ -1657,7 +1658,8 @@ else if (matchDomain('capital.bg')) {
         }
       }
     }
-  }
+  } else
+    header_nofix('div.story-content > p', 'section > header > a[data-referral="Paywall"]');
 }
 
 else if (matchDomain(['chronicle.com', 'philanthropy.com'])) {

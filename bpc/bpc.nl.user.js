@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.1.7.0
+// @version         4.1.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -285,7 +285,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
           let intro_meta_dom = document.querySelector('head > meta[data-hid="description"][content]');
           if (intro_match || intro_meta_dom) {
             intro = document.createElement('p');
-            intro.innerText = intro_match ? intro_match[1] : intro_meta_dom.content;
+            intro.innerText = intro_match ? intro_match[1].replace(/\\u002F/g, '/') : intro_meta_dom.content;
             intro.style = 'font-weight: bold;';
           }
           let json_text = json.split(',body:')[1].split(/,(leadText|brand_key|tts|pianoKeywords):/)[0].replace(/([{,])(\w+)(?=:(["\{\[]|[\w$]{1,2}[,\}]))/g, "$1\"$2\"").replace(/(Image\\":)(\d)([,}])/g, '$1\\"$2\\"$3').replace(/\":(\[)?([\w\$\.]+)([\]},])/g, "\":$1\"$2\"$3");
@@ -321,8 +321,8 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
               figure.appendChild(img);
               if (child.relation.caption) {
                 if (child.relation.caption.length <= 2)
-                  child.relation.caption = findNuxtText(child.relation.caption).replace(/\\"/g, '"').replace(/\\n/g, ' - ');
-                if (child.relation.caption.photographer) {
+                  child.relation.caption = findNuxtText(child.relation.caption).replace(/\\"/g, '"').replace(/\\n/g, ' - ').replace(/\\u002F/g, '/');
+                if (child.relation.photographer) {
                   if (child.relation.photographer.length <= 2)
                     child.relation.photographer = findNuxtText(child.relation.photographer);
                   child.relation.caption += ' - ' + child.relation.photographer;
