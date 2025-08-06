@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.7.1
+// @version         4.1.7.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -715,8 +715,17 @@ else if (matchDomain('sueddeutsche.de')) {
 }
 
 else if (matchDomain('suedkurier.de')) {
+  func_post = function () {
+    let article = document.querySelector(article_sel);
+    if (article) {
+      let pars = article.querySelectorAll('section > div > div[style^="box-sizing:"]');
+      if (pars && pars.length < 3)
+        header_nofix(article_sel, '', 'BPC > no archive-fix');
+    }
+  }
   let url = window.location.href;
-  getArchive(url, 'aside.article-paywall', '', 'main > article');
+  let article_sel = 'main > article';
+  getArchive(url, 'aside.article-paywall', '', article_sel);
 }
 
 else if (matchDomain('t3n.de')) {
