@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: RgIVeFE+ge0KS5/IRJAyew
-! Diff-Path: ../patches/7/7-s-1754500434-3600.patch
+! Checksum: 0wKjl+awN2VfuBdC4t/osA
+! Diff-Path: ../patches/7/7-s-1754583177-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.67.40
-! TimeUpdated: 2025-08-06T17:09:45+00:00
+! Version: 2.0.67.46
+! TimeUpdated: 2025-08-07T16:08:40+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -27,6 +27,7 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$third-party,domain=~rakuten-co.jp|~rakuten.ne.jp
 !
+||live-lr.cc^$document
 ||live-qj.cc^$document
 ||ademon.net^
 ||api.ada-cloud.com^
@@ -1534,6 +1535,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 /^https:\/\/[a-z]{6,9}\.com\/category\/(?=[0-9a-z]{0,15}[A-Z])[0-9A-Za-z]{16}\?$/$document
 /^https:\/\/[a-z]{6,9}\.com\/detail\/(?=[0-9a-z]{0,19}[A-Z])[0-9A-Za-z]{20}\?$/$document
 .top/v1/check|$document
+.com/cash/driect/client/anti/3210000^$document
 .com/index/client/ops/ib/3210000^$document
 /wdsoscosmsosmx.jp/*$document
 ://etc-*.cn/Rfuncc1$document
@@ -1641,7 +1643,6 @@ count/login/?=id/log/*/login.asp$document,domain=cc|com
 n.lat/login|$document
 .cn/auth/login.php?/realms/msweb/protocol/openid-connect/auth?client_id=moneySiteWeb&redirect_uri=https://www.aeon.co.jp/$document
 /?phone=(0101)-$document
-://www.eki-net.*.com/$document
 ://*.*.xyz/jp.html^$document
 .net/funccode.php|$document
 .com/funccode.php|$document
@@ -1708,6 +1709,7 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 .com%E2%*@$document,to=cn|com
 |http://t-*/cz/$document,to=monster|online|space
 /ja/payment/|$document,to=co.in|co.za
+://www.eki-net.*.com/$document,to=~eki-net.com
 ://eki-net-*.*/Perosnal_member/$document,to=cn|net
 /\/all\/login\.php\?([0-9a-f]{32})=\1$/$document,match-case,to=com
 /\/t_([0-9A-Za-z]{32})\?token=\1/$document,to=cloud|cn|com|net|top|vip
@@ -1797,7 +1799,7 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
-lovecp-books.com##.promotionArea
+lovecp-books.com##iframe[id^="ac"]
 erogif-eden.com##a[rel="sponsored"]
 indiegamekoryaku.com##div[style="border: 2px solid #f0c040; padding: 12px; background: #fffce6; margin: 20px 0; border-radius: 6px;"]
 indiegamekoryaku.com###imobile-interstitial
@@ -2207,7 +2209,7 @@ chirashi.kurashiru.com##.StoresShow-rectangleAds
 av-league.com##.l-box ~ div[class^="im-rectangle-"]
 navitime.co.jp##footer[style="height: 50px;"]
 c-ute.doorblog.jp##div[class^="article-body"] > span:has(> a[href^="https://www.amazon.co.jp/"])
-c-ute.doorblog.jp##div[class^="article-body"] > div[class^="title"]:has(> p:contains(Amazon))
+c-ute.doorblog.jp#?#div[class^="article-body"] > div[class^="title"]:has(> p:contains(Amazon))
 c-ute.doorblog.jp##div[class^="article-body"] > blockquote:has(> div.amazon)
 hagesokuho.livedoor.blog##.adTx1
 hagesokuho.livedoor.blog##.amzBox1
@@ -4748,8 +4750,8 @@ pointtown.com##.c-footer-ad
 izzetmtgnews.com##a[href*=".cardrush"] > img
 city.meguro.tokyo.jp##.banner-box
 ||blog.seesaa.jp/contents/bmlist.txt
-rakukan.net##.article__content > a[href^="https://amzn.to"][target="_blank"]:contains(【PR】Amazon)
-rakukan.net##.article__content > a[href^="https://amzn.to"][target="_blank"]:contains(【PR】Amazon) + b
+rakukan.net#?#.article__content > a[href^="https://amzn.to"][target="_blank"]:contains(【PR】Amazon)
+rakukan.net#?#.article__content > a[href^="https://amzn.to"][target="_blank"]:contains(【PR】Amazon) + b
 rakukan.net##.side > section.module:has(> div > ins.adsbygoogle)
 rakukan.net##.side > section.module:has(> div > div[id^="im-"])
 rakukan.net##.side > section.module:has(> div > center > script)
@@ -5201,7 +5203,12 @@ moez-m.com###top2_left
 moez-m.com##.entry-body > center > table[width="430"]:not([cellspacing])
 moez-m.com##.solinkimag
 ||ota-goods.info^$third-party
+figsoku.net##+js(href-sanitizer, a[href^="https://al.dmm.com/?lurl="], ?lurl)
+figsoku.net##+js(href-sanitizer, a[href^="https://affiliate.suruga-ya.jp/modules/af/af_jump.php?"], ?goods_url)
+figsoku.net##+js(href-sanitizer, a[href*="hb.afl.rakuten.co.jp/hgc/"][href*="/?pc="], ?pc)
+figsoku.net##+js(href-sanitizer, a[href*="ck.jp.ap.valuecommerce.com/servlet/referral?"][href*="&vc_url="], ?vc_url)
 figsoku.net##+js(abort-current-script, document.createElement, randomad)
+figsoku.net##.pluginWrap[style^="width: 240px; height: 16px; "]
 figsoku.net###randomad2
 figsoku.net##.pluginWrap:has(> div.textwidget > div.sum)
 figsoku.net##.pluginWrap[style="width: 245px; height: 4px; position: relative;"]
@@ -9143,7 +9150,7 @@ zigsow.jp##.panel-banner
 ||fensi.plus/store-ad.js$script,redirect=noop.js,domain=real-sports.jp
 ||adultfreedom.info^$image,third-party
 eroangle.club##.article > div.clear + div.clear + h3.frontTitle ~ article.excerpt_pick:has(~ div.clear + h3.frontTitle + article.excerpt_pick + div.clear)
-eroangle.club##.article > h3.frontTitle:contains(お勧めサイト[PR])
+eroangle.club#?#.article > h3.frontTitle:contains(お勧めサイト[PR])
 ||telegra.ph/file/$domain=ero-shame.club|eroangle.club|erogazoo.net
 erogazoo.net,erogazoo555.com,eroangle.club,ero-shame.club##.bbsarea
 womanlife.online,anime-news.net##.afc_popup
@@ -9787,7 +9794,7 @@ gamer.ne.jp##div[class^="adRecommend_"]
 ||blog.seesaa.jp/js/insert-ad.min.js
 ||colorfulbox.jp/common/img/bnr/$third-party
 geinoukame.com###main_body > table > tbody > tr > td > center
-geinoukame.com##.menu_title:contains(/スポンサードリンク|記事|【PR】/)
+geinoukame.com#?#.menu_title:contains(/スポンサードリンク|記事|【PR】/)
 geinoukame.com##div[id^="g_floating_area"]
 geinoukame.com##div[style$="width: 625x;height:210px"]
 taiyoukou-navi.info###main > div.freespace

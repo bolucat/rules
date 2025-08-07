@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.1.7.1
+// @version         4.1.7.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -480,32 +480,71 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
   if (sub)
     sub.click();
   func_post = function () {
-    let shades = document.querySelectorAll('div[style*="background-color"][style*=";width"]');
-    for (let elem of shades)
-      elem.style.width = '85%';
-    let lazy_images = document.querySelectorAll('picture img[loading="lazy"][style]');
-    for (let elem of lazy_images)
-      elem.style = 'width: 95%;';
-    let widgets = document.querySelectorAll('div[old-src^="https://valley.ad.nl/widgets/"]:not([src])');
-    for (let elem of widgets) {
-      let iframe = document.createElement('iframe');
-      iframe.src = elem.getAttribute('old-src');
-      iframe.style = 'height: 400px; border: none;';
-      elem.parentNode.replaceChild(iframe, elem);
-    }
-    let errors = document.querySelectorAll('div > div[old-src]:not([src]):has(div#main-frame-error)');
-    for (let elem of errors) {
-      let elem_new = document.createElement('iframe');
-      elem_new.src = elem.getAttribute('old-src');
-      elem_new.style = 'width: 100%; height: 400px; border: none;';
-      elem.parentNode.removeAttribute('style');
-      elem.parentNode.replaceChild(elem_new, elem);
+    let article = document.querySelector(article_src_sel);
+    if (article) {
+      let shades = article.querySelectorAll('div[style*="background-color"][style*=";width"]');
+      for (let elem of shades)
+        elem.style.width = '85%';
+      let lazy_images = article.querySelectorAll('picture img[loading="lazy"][style]');
+      for (let elem of lazy_images)
+        elem.style = 'width: 95%;';
+      let widgets = article.querySelectorAll('div > div > div div[old-src^="https://valley.ad.nl/widgets/"]:not([src])');
+      for (let elem of widgets) {
+        let iframe = document.createElement('iframe');
+        iframe.src = elem.getAttribute('old-src');
+        iframe.style = 'height: 400px; border: none;';
+        elem.parentNode.replaceChild(iframe, elem);
+      }
+      let errors = article.querySelectorAll('div > div[old-src]:not([src]):has(div#main-frame-error)');
+      for (let elem of errors) {
+        let elem_new = document.createElement('iframe');
+        elem_new.src = elem.getAttribute('old-src');
+        elem_new.style = 'width: 100%; height: 400px; border: none;';
+        elem.parentNode.removeAttribute('style');
+        elem.parentNode.replaceChild(elem_new, elem);
+      }
+      let picture_divs = article.querySelectorAll('picture > div[style*="min-height:"]:has(svg)');
+      for (let elem of picture_divs) {
+        elem.parentNode.removeAttribute('style');
+        removeDOMElement(elem);
+      }
+      let podcast = article.querySelector('div > div[old-src^="https://omny.fm/"]:not([src])');
+      if (podcast) {
+        let iframe = document.createElement('iframe');
+        iframe.src = podcast.getAttribute('old-src');
+        podcast.parentNode.replaceChild(iframe, podcast);
+      }
+      let video_scripts = article.querySelectorAll('div > div > script[type="application/ld+json"], article > script[type="application/ld+json"]');
+      for (let elem of video_scripts) {
+        if (elem.text.includes(',"embedUrl":"')) {
+          let iframe = document.createElement('iframe');
+          iframe.src = elem.text.split(',"embedUrl":"')[1].split('"')[0];
+          iframe.style = 'width: 100%; height: 400px;';
+          let container = elem.parentNode;
+          if (elem.parentNode.tagName === 'DIV')
+            container = container.parentNode;
+          container.parentNode.replaceChild(iframe, container);
+        }
+      }
     }
     header_nofix('footer', sub_sel, 'BPC > no archive-fix');
   }
-  let article_sel = 'div#remaining-paid-content';
   let url = window.location.href;
-  getArchive(url, article_sel + '[data-reduced="true"]', {rm_attrib: 'data-reduced'}, article_sel);
+  let article_sel = 'div#remaining-paid-content';
+  let article_src_sel = 'div#fjs-paywall-intro + div';
+  let article = document.querySelector(article_sel);
+  if (article) {
+    article_src_sel += ', ' + article_sel;
+    getArchive(url, article_sel + '[data-reduced="true"]', {rm_attrib: 'data-reduced'}, article_sel, '', article_src_sel);
+  } else {
+    let article_sel = 'article#article-content';
+    article_src_sel += ', ' + article_sel + ' > section';
+    getArchive(url, article_sel + ' > section[class]:empty', {rm_attrib: 'class'}, article_sel + ' > section:empty', '', article_src_sel);
+    let ads = 'span[style*="background-color:"]:has(> span[style*="min-height:"])';
+    hideDOMStyle(ads, 2);
+  }
+  let ads = 'div.dfp-space';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(nl_dpg_media_domains)) {
