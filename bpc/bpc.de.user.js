@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.7.2
+// @version         4.1.7.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -233,7 +233,7 @@ else if (matchDomain('focusplus.de')) {
             if (article_key) {
               let pars = json.props.pageProps.__APOLLO_STATE__[article_key].content;
               if (pars) {
-                addStyle('header p:not([class]) {font-size: 20px; font-family: Vollkorn; line-height: 30px; margin: 20px 0px;} header h2 {font-size: 32px; font-family: Vollkorn; font-weight: bold}');
+                addStyle('header p {font-size: 20px; font-family: Vollkorn; line-height: 30px; margin: 20px 0px;} header h2 {font-size: 32px; font-family: Vollkorn; font-weight: bold}');
                 let parser = new DOMParser();
                 for (let par of pars) {
                   let elem;
@@ -248,6 +248,12 @@ else if (matchDomain('focusplus.de')) {
                         elem.appendChild(span);
                       }
                       elem.style = 'font-style: italic; margin: 0px 20px;';
+                    }
+                  } else if (par.video) {
+                    if (par.video.src) {
+                      elem = document.createElement('iframe');
+                      elem.src = par.video.src.replace('watch?v=', 'embed/');
+                      elem.style = 'width: 100%; height: 400px;';
                     }
                   } else if (!par.image)
                     console.log(par);

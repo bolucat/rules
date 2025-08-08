@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.1.6.2
+// @version         4.1.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -108,12 +108,15 @@ else if (matchDomain('diariodenavarra.es')) {
 }
 
 else if (matchDomain('dn.pt')) {
-  if (window.location.pathname.endsWith('/amp/')) {
-    let amp_list = 'amp-list';
-    hideDOMStyle(amp_list);
-  } else {
-    let ads = document.querySelectorAll('div.sk-pub');
-    removeDOMElement(...ads);
+  let paywall = document.querySelector('div#metered-paywall-banner');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.paywall');
+    if (article) {
+      let article_new = getArticleQuintype();
+      if (article_new && article.parentNode)
+        article.parentNode.replaceChild(article_new, article);
+    }
   }
 }
 
