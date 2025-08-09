@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.7.3
+// @version         4.1.7.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -211,63 +211,6 @@ else if (matchDomain('faz.net')) {
     getArchive(url, 'div.paywall, div.wall__wrapper', '', 'article');
     let ads = 'div.lay-PaySocial, div.iqadtile_wrapper, div.iqdcontainer';
     hideDOMStyle(ads);
-  }
-}
-
-else if (matchDomain('focusplus.de')) {
-  let paywall = document.querySelector('div#piano-offer-container');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('header');
-    let article_id_match = window.location.pathname.match(/\d+$/);
-    if (article && article_id_match) {
-      let json_script = document.querySelector('script#__NEXT_DATA__');
-      if (json_script) {
-        try {
-          let json = JSON.parse(json_script.text);
-          if (json && json.props.pageProps.__APOLLO_STATE__) {
-            let url_next = json.props.pageProps.path;
-            if (url_next && !window.location.pathname.includes(url_next))
-              refreshCurrentTab();
-            let article_key = Object.keys(json.props.pageProps.__APOLLO_STATE__).find(x => x.endsWith('Article:' + article_id_match[0]));
-            if (article_key) {
-              let pars = json.props.pageProps.__APOLLO_STATE__[article_key].content;
-              if (pars) {
-                addStyle('header p {font-size: 20px; font-family: Vollkorn; line-height: 30px; margin: 20px 0px;} header h2 {font-size: 32px; font-family: Vollkorn; font-weight: bold}');
-                let parser = new DOMParser();
-                for (let par of pars) {
-                  let elem;
-                  if (par.text) {
-                    let doc = parser.parseFromString('<div>' + par.text + '</div>', 'text/html');
-                    elem = doc.querySelector('div');
-                    let par_new = document.createElement('div');
-                    if (par.__typename === 'ParagraphQuote') {
-                      if (par.author) {
-                        let span = document.createElement('span');
-                        span.innerText = par.author;
-                        elem.appendChild(span);
-                      }
-                      elem.style = 'font-style: italic; margin: 0px 20px;';
-                    }
-                  } else if (par.video) {
-                    if (par.video.src) {
-                      elem = document.createElement('iframe');
-                      elem.src = par.video.src.replace('watch?v=', 'embed/');
-                      elem.style = 'width: 100%; height: 400px;';
-                    }
-                  } else if (!par.image)
-                    console.log(par);
-                  if (elem)
-                    article.appendChild(elem);
-                }
-              }
-            }
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    }
   }
 }
 
