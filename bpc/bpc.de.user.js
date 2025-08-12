@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.7.5
+// @version         4.1.7.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -323,6 +323,9 @@ else if (matchDomain('jacobin.de')) {
                     console.log(par);
                 }
               }
+              let author_footer = article.querySelector('div.content-element > div > h3');
+              if (author_footer)
+                article.appendChild(author_footer.parentNode.parentNode);
             }
           }
         }

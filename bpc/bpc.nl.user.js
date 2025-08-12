@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.1.7.3
+// @version         4.1.7.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -324,7 +324,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
                   child.relation.caption = findNuxtText(child.relation.caption).replace(/\\"/g, '"').replace(/\\n/g, ' - ').replace(/\\u002F/g, '/');
                 if (child.relation.photographer) {
                   if (child.relation.photographer.length <= 2)
-                    child.relation.photographer = findNuxtText(child.relation.photographer);
+                    child.relation.photographer = findNuxtText(child.relation.photographer).replace(/\\u002F/g, '/');
                   child.relation.caption += ' - ' + child.relation.photographer;
                 }
                 let caption = document.createElement('figcaption');
@@ -344,7 +344,9 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
                 } else if (child.relation && child.relation.link) {
                   if (child.relation.link.length <= 2)
                     child.relation.link = findNuxtText(child.relation.link).replace(/\\u002F/g, '/');
-                  addLink(elem, decodeURIComponent(child.relation.title.length > 2 ? child.relation.title : child.relation.link), child.relation.link);
+                  if (child.relation.title.length <= 2)
+                    child.relation.title = findNuxtText(child.relation.title);
+                  addLink(elem, child.relation.title, child.relation.link);
                 } else if (child.children) {
                   if (child.children.length) {
                     for (let item of child.children) {
