@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: bjn4rxfIkr5w68JcC3sIDQ
-! Diff-Path: ../patches/224/224-s-1755091305-3600.patch
+! Checksum: 7RjztKddKDFXh62Eq385iQ
+! Diff-Path: ../patches/224/224-s-1755169862-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.41.84
-! TimeUpdated: 2025-08-13T13:17:58+00:00
+! Version: 2.1.41.89
+! TimeUpdated: 2025-08-14T11:07:17+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1049,6 +1049,9 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 !
 ! NOTE: Specific rules
 !
+*$denyallow=efuxs.com,domain=efuxs.com,script,subdocument,xmlhttprequest
+efuxs.com##+js(abort-current-script, document.write, position:)
+efuxs.com#$?#body > div[style^="position:fixed;"] { remove: true; }
 right.com.cn##.wp > .a_t:has(> table > tbody > tr > td > .adsbygoogle)
 /^https:\/\/m\.2shuqu\.net\/static\/[a-z0-9]+\/[a-z0-9]+\.js/$script,domain=m.2shuqu.net
 ||gl.ali213.net/images/jsq_gl.jpg
@@ -4636,6 +4639,7 @@ newduba.cn###jq_youxi
 ##.promlnk[style="position:relative;width:100%;height:100%;"]
 ##.propa_bottom
 ##.pure-g[onclick*="float"]
+##.push-top[clickmode="cpt"]
 ##.push-bottom-container[clickmode="cpt"]
 ##.push-slider[clickmode="cpt"]
 ##.qpdb + a[href]
@@ -4932,6 +4936,15 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$third-party
+||3vnofjidlv.com^
+||p7jroq6xco.com^
+||aiamok.icu^
+||fzruzulad.com^
+||6888.site^
+||4ufutzmihl.com^
+||f8c2gftcsj.com^
+||goi08141kh.com^
+||wqhuludpb.com^
 ||naarnurm.com^
 ||fe4c0422j.com^
 ||r0hpdbkqs.com^
@@ -13484,8 +13497,7 @@ meijutt.*/js/pcjs/
 ||gtimg.cn/music/photo_new/T053XD001001BZyX50UcRRk.
 ||k8dm.com/960x70.
 ||ibmwclub.com/tophub/assets/js/sponsor.
-||5dm.link/ancblmszmd/
-||5dm.link/ablgld/
+||5dm.link/a$image
 ||hdmoli.pro/a_d/
 ||komiic.com/ads/
 ||v2ex.com/pro/emitter
@@ -13495,7 +13507,7 @@ vmlib.com##.wp-caption
 vmlib.com##.elementor-widget > .elementor-widget-container > a[href^="http"]:not([href*="vmlib."])
 mydrivers.com##div[style="margin: auto;width: 580px;padding: 10px 0;"]
 docin.com##.mini-series-container
-5dm.link###player_pausex
+5dm.link##div[id^="player_p"]
 1lou.info,1lou.icu,1lou.me,1lou.one,1lou.pro###advert > :not(.card)
 manhuapica.com##a[href^="/ad/"]
 nodeseek.com##.promotation-item
@@ -16774,7 +16786,7 @@ douguo.com##.mbs
 pcworks.cn##.md-show
 hk01.com##.md\:min-h-\[90px\]
 redian.news##.md\:w-\[728px\].mx-auto
-1909.me,8se.me,crxs.me,xchina.biz,xchina.co##.media
+1909.me,8se.me,crxs.me,xchina.site,xchina.biz,xchina.co##.media
 1111.baidu.com,bdimg.com,live.baidu.com,tieba.baidu.com,tieba.com,xingqu.baidu.com##.mediago-ad-wrapper
 cnool.net##.meilai_box
 qq.com##.member_ads
@@ -17081,7 +17093,6 @@ anquan.org##.pub_side_ad
 doudoudm.site,ezdmw.com##.public_ad
 abmedia.io##.pum
 8se.me##.push-bottom
-1909.me,8se.me,crxs.me,xchina.biz,xchina.co##.push-top
 cnplugins.com##.pushbox1
 zol.com.cn##.pv-mol_ask
 sogou.com##.pz-widget-flash-container

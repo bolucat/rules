@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.7.3
+// @version         4.1.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4231,7 +4231,7 @@ else if (matchDomain(usa_penske_media_domains)) {
 
 else if (matchDomain(usa_tribune_domains)) {
   getJsonUrl('div.paywall-container', '', 'div.body-copy', {art_class: 'body-copy'});
-  let ads = 'div.dfp-ad';
+  let ads = 'div.dfp-ad, div.bx-slab, div.sbn-widget-body, div#mobile-adhesion';
   hideDOMStyle(ads);
 }
 
@@ -4388,12 +4388,6 @@ else if (matchDomain('voguebusiness.com')) {
 else if (matchDomain('vox.com')) {
   let ads = 'div[id^="div-gpt-ad-"]';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('washingtonpost.com')) {
-  let leaderboard = '#leaderboard-wrapper';
-  let ads = 'div[data-qa$="-ad"], div[data-component="Ad"], div[data-qa="outbrain"]';
-  hideDOMStyle(leaderboard + ', ' + ads);
 }
 
 else if (matchDomain('winnipegfreepress.com')) {
