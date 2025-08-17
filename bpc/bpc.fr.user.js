@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.6.3
+// @version         4.1.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -666,17 +666,16 @@ else if (matchDomain('lefigaro.fr')) {
                     link_elem.target = '_blank';
                     elem.append(link_elem);
                   }
-                } else if (['FreeHtml', 'Tweet'].includes(par_type)) {
-                  if (par.sourceCode) {
-                    let doc = parser.parseFromString('<div>' + par.sourceCode + '</div>', 'text/html');
-                    elem = doc.querySelector('div');
-                    let tweet_link = elem.querySelector('a[href^="https://twitter.com/"], a[href^="https://x.com/"]');
-                    if (tweet_link) {
-                      tweet_link.innerText = tweet_link.href;
-                      tweet_link.target = '_blank';
-                    }
+                } else if (par.sourceCode) {
+                  let doc = parser.parseFromString('<div>' + par.sourceCode + '</div>', 'text/html');
+                  elem = doc.querySelector('div');
+                  let tweet_link = elem.querySelector('a[href^="https://twitter.com/"], a[href^="https://x.com/"]');
+                  if (tweet_link) {
+                    tweet_link.innerText = tweet_link.href;
+                    tweet_link.target = '_blank';
                   }
                 } else if (par_type === 'Youtube') {
+					console.log(par)
                   if (par.id) {
                     elem = document.createElement('iframe');
                     elem.src = 'https://www.youtube.com/embed/' + par.id;
@@ -968,6 +967,33 @@ else if (matchDomain('lequipe.fr')) {
                     video_link.style = 'text-decoration: underline;';
                     video_link.target = '_blank';
                     elem.appendChild(video_link);
+                  }
+                } else if (par.__type === 'article_paragraph_playing_field') {
+                  if (par.data) {
+                    let url = par.data;
+                    fetch(url)
+                    .then(response => {
+                      if (response.ok) {
+                        response.json().then(json => {
+                          if (json.arbitre && json.titulaires) {
+                            let ids = [json.arbitre].concat(json.titulaires);
+                            if (json.banc)
+                              for (let elem of json.banc)
+                                ids = ids.concat([elem.entraineur], elem.remplacants);
+                            let notes = document.querySelectorAll('span.EditorRatingsField__note');
+                            for (let note of notes) {
+                              let name_dom = note.parentNode.querySelector('span[class$="--name"]');
+                              if (name_dom) {
+                                let name = (name_dom.innerText.includes(':') ? name_dom.innerText.split(':')[1] : name_dom.innerText).trim();
+                                let json_note = ids.find(x => x.nom === name);
+                                if (json_note)
+                                  note.innerText = json_note.note;
+                              }
+                            }
+                          }
+                        })
+                      }
+                    })
                   }
                 } else if (!['article_paragraph_pub'].includes(par.__type))
                   console.log(par);
