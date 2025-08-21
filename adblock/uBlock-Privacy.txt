@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Privacy
 ! Expires: 7 days
-! Last modified: Tue, 19 Aug 2025 06:29:02 +0000
-! Diff-Path: ../patches/2025.8.20.930.patch#ublock-privacy
+! Last modified: Thu, 21 Aug 2025 13:09:08 +0000
+! Diff-Path: ../patches/2025.8.21.999.patch#ublock-privacy
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/privacy.txt ***
@@ -10,6 +10,8 @@
 ! Redirect to neutered Google Analytics Experiments
 ||google-analytics.com/cx/api.js$script,redirect=google-analytics.com/cx/api.js:5
 ||googletagmanager.com/gtag/js$script,xhr,redirect=googletagmanager_gtm.js:5
+||googletagmanager.com/gtag/js?id=$removeparam=gtm
+||googletagmanager.com/gtag/js?id=$removeparam=cx
 ||lnkr.us^$doc
 ||icontent.us^$doc
 ||qip.ru^$doc
@@ -1149,7 +1151,7 @@ laurelberninteriors.com##+js(set, adthrive._components.start, noopFunc)
 evropa2.cz##+js(set-local-storage-item, /cnc_alien_invasion_code|pixelsLastFired/, $remove$)
 ||support.theguardian.com/*/guardian-ad-lite?returnAddress=http$doc,urlskip=?returnAddress
 grok.com##+js(no-fetch-if, url:/api/statsig/log_event method:POST)
-||cdn.stroeerdigitalgroup.de/metatag/live/
+||cdn.stroeerdigitalgroup.de/metatag/live/$domain=~golem.de
 ||px.a8.net/svt/ejp?*&a8ejpredirect=$doc,urlskip=?a8ejpredirect -uricomponent
 ||affiliate.suruga-ya.jp/modules/af/af_jump.php?*&goods_url=$doc,urlskip=?goods_url
 ||al.dmm.com/?lurl=$doc,urlskip=?lurl
@@ -1173,7 +1175,6 @@ abs-cbn.com##+js(set-session-storage-item, VR-INJECTOR-INSTANCES-MAP, $remove$)
 ||vtcnews.vn/Content/pc/js/pages/loadjs/tracking.js
 ||track.vtcnews.vn^
 ||trueachievements.com/tgn/ana?*page_view
-||vidembed.re/js/script.outbound-links.pageview-props.tagged-events.js
 ||prod.outgoing.prod.webservices.mozgcp.net/v1/$urlskip=/\/v1\/\w+\/(http.+)$/ -uricomponent +https
 ||www.google.com/url?q=$urlskip=?q
 ! posthog
@@ -1229,6 +1230,8 @@ mediamarkt.de##+js(aopw, ftr__startScriptLoad)
 ||monitor.*/test?rnd=$xhr,3p
 /measurements/*.ts?rnd=$xhr,3p
 !#endif
+||netflix.com/log/
+/iomm/latest/bootstrap/loader.js
 ! Merge in resource-abuse.txt
 ! *** uAssets:filters/resource-abuse.txt ***
 /edgemesh.*.js$script,domain=~edgemesh.com|~edgeno.de
