@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.7.6
+// @version         4.1.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -890,6 +890,31 @@ else if (matchDomain('welt.de')) {
 
 else if (matchDomain('weser-kurier.de')) {
   let ads = 'div.ad-wrapper, div.anyad, div.msn-ads';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('wiwo.de')) {
+  let paywall = document.querySelector('app-paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('app-blind-text');
+    if (article) {
+      let json_script = getArticleJsonScript();
+      if (json_script) {
+        let json = JSON.parse(json_script.text);
+        if (json) {
+          let json_text = json.find(x => x.articleBody).articleBody;
+          let article_new = document.createElement('div');
+          article_new.innerText = json_text.replace(/[\r\n]/g, '\r\n\r\n');
+          article_new.style = 'margin: 20px;';
+          article.parentNode.replaceChild(article_new, article);
+          let url = window.location.href;
+          article_new.firstChild.before(googleSearchToolLink(url));
+        }
+      }
+    }
+  }
+  let ads = 'div.iqadtile';
   hideDOMStyle(ads);
 }
 
