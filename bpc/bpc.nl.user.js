@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.1.7.4
+// @version         4.1.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -62,6 +62,11 @@ else if (matchDomain(be_mediahuis_domains)) {
       let article = document.querySelector(article_sel);
       if (article) {
         if (video) {
+          if (matchDomain(['gva.be', 'nieuwsblad.be'])) {
+            let placeholder = video.querySelector('div[class^="Placeholder_placeholder"]');
+            if (placeholder)
+              placeholder.removeAttribute('class');
+          }
           let video_new = article.querySelector('div[id$="-streamone"], div[id^="video-player-"], div[id^="player_"]');
           if (video_new && video_new.parentNode)
             video_new.parentNode.replaceChild(video, video_new);
@@ -104,6 +109,8 @@ else if (matchDomain(be_mediahuis_domains)) {
     if (popup)
       popup.click();
   }, 1500);
+  let ads = 'div[id^="ad_inline-"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('businessam.be')) {

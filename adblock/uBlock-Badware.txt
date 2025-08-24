@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Sat, 23 Aug 2025 09:42:53 +0000
-! Diff-Path: ../patches/2025.8.23.811.patch#ublock-badware
+! Last modified: Sun, 24 Aug 2025 02:55:21 +0000
+! Diff-Path: ../patches/2025.8.24.866.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -2775,9 +2775,9 @@ www.cambe.pr.gov.br##+js(noeval-if, tigervip2)
 /\/wap\/api\/(?:activity\/)?[a-zA-Z]+![-_a-zA-Z]+\.action\?/$xhr,1p,strict1p,match-case
 ||wetching.ru^$doc,frame
 ! made-in-china.com
-||griffithdds.com/*/madeinchina.com/$all,to=~made-in-china.com
-||oortech.com/mic.shtml^$doc,to=~made-in-china.com
-||r2.dev/made-in-china.com/$doc,to=~made-in-china.com
+||griffithdds.com/*/madeinchina.com/$all
+||oortech.com/mic.shtml^$doc
+||r2.dev/made-in-china.com/$doc
 ! fedex
 ||e-serviceparts.info^$all
 ! booking.com
@@ -2806,7 +2806,7 @@ www.cambe.pr.gov.br##+js(noeval-if, tigervip2)
 ||socalthesyndicate.com/*/adobefud/$all
 ||pub-*.r2.dev/adobe2024.html^$doc
 ||adobepd*.glitch.me^$doc
-||doc*-order*adobe.glitch.me^$doc,to=glitch.me
+||doc*-order*adobe.glitch.me^$doc
 ||glitch.me/adobe-auto*.html^$doc
 ||facture-free.com/Adobeverapdf/$all
 ||mytemp.website/safetyfileaccess.htm^$doc
@@ -2831,16 +2831,16 @@ www.cambe.pr.gov.br##+js(noeval-if, tigervip2)
 ||allegrolokalnie.pl-$doc
 ||allegrolokalnie.*.shop^$doc
 ! rackspace
-||racks.pages.dev^$all,to=~rackspace.com
-||rackweb-----support*.weebly.com^$all,to=~rackspace.com
+||racks.pages.dev^$all
+||rackweb-----support*.weebly.com^$all
 ! dana
-||danakagetrsm.vercel.app^$all,to=~dana.id
-||layanan-app.com^$all,to=~dana.id
+||danakagetrsm.vercel.app^$all
+||layanan-app.com^$all
 ||dana-indone*.id^$doc,to=my.id|web.id|~dana.id
 ! biz.id
 -dna-log-*.biz.id^$doc,to=biz.id|~dana.id
 ! my.id
-||pemesanan*.glowz.my.id^$doc,to=~dana.id
+||pemesanan*.glowz.my.id^$doc
 ||claiim-hadiahh-danax-$all,to=~dana.id
 ! orange.fr
 ||orange53.yolasite.com^$all
@@ -2852,7 +2852,7 @@ www.cambe.pr.gov.br##+js(noeval-if, tigervip2)
 ||servicemailorange25.wixsite.com^$all
 ||assistancesosh.wixsite.com^$all
 /or/.espace-.client/(;authentication.htm^$doc,to=~orange.fr
-||tw1.ru/Orange/$doc,to=~orange.fr
+||tw1.ru/Orange/$doc
 ||messagerie*.godaddysites.com^$doc
 ||messagerie*.wixsite.com^$doc
 ||messagerie*.yolasite.com^$doc
@@ -2882,17 +2882,17 @@ www.cambe.pr.gov.br##+js(noeval-if, tigervip2)
 ||939l.xyz^$all
 ||ebnays.xyz^$all
 ||51eabay.com^$all
-||ebaydw.^$all,to=ebaydw.cc|ebaydw.com
+||ebaydw.$all,to=ebaydw.cc|ebaydw.com
 ||pages.dev/errors/validateCaptcha^$doc
 ! alibaba
-||hologramid.cn^$all,to=~alibaba.com
-||jybelinda.com^$all,to=~alibaba.com
-||vetsinthecity.me/*/Alibaba/$doc,to=~alibaba.com
-||sanpelmaquinas.com.br^$all,to=~alibaba.com
-||molekinha.com.br/*/alibaba.com/$doc,to=~alibaba.com
+||hologramid.cn^$all
+||jybelinda.com^$all
+||vetsinthecity.me/*/Alibaba/$doc
+||sanpelmaquinas.com.br^$all
+||molekinha.com.br/*/alibaba.com/$doc
 /alibaba.com/passport.alibaba.com/*$doc,to=~alibaba.com
 ! aliexpress
-||airpsite.club^$all,to=~aliexpress.com
+||airpsite.club^$all
 ! AT&T
 ||wixsite.com/att-support/$doc
 ||diwapa3051.wixsite.com^$all
@@ -2920,6 +2920,7 @@ www.cambe.pr.gov.br##+js(noeval-if, tigervip2)
 ||f.digital-*.com/igit/$doc
 ||currentlyatt*.weebly.com^$all
 ||currentlymail*.weebly.com^$all
+||attmailservice*.weebly.com^$all
 ||att-currently-*.weeblysite.com^$all
 ||dropbox.com/*/AT-T-YAHOO-MAIL.paper^$doc
 ||2025*maintenance.weebly.com^$doc
@@ -2956,7 +2957,7 @@ www.cambe.pr.gov.br##+js(noeval-if, tigervip2)
 ||isz.bqv.mybluehost.me^$doc
 ||polufredsoa.2mydns.net^$all
 ||2mydns.net/fr-impot-gouv^$doc
-/\.temporary\.site\/service\/[a-f0-9]{32}\//$doc,to=temporary.site|~impots.gouv.fr
+/\.temporary\.site\/service\/[a-f0-9]{32}\//$doc,match-case,to=temporary.site|~impots.gouv.fr
 ||kkg.yaf.temporary.site^$doc
 ! amendes.gouv.fr
 ||antai-gouv-fr.troliga.sk^$all
@@ -3049,6 +3050,7 @@ www.cambe.pr.gov.br##+js(noeval-if, tigervip2)
 ||codeanyapp.com/hype/$doc
 ! bancolombia
 ||e-cmv.ph^$all
+||somosbancolombia.zeabur.app^$all
 ||bancolombiaapp.glitch.me^$all
 ||cancelaciondeseguros-*.azurewebsites.net^$doc
 ! Lloyds Bank
@@ -3469,6 +3471,7 @@ www.cambe.pr.gov.br##+js(noeval-if, tigervip2)
 ||itrustcapitaalloginn.webflow.io^$all
 ||secure---sso---robinhood---com-cdn.webflow.io^$doc
 ||sso--en--cobo--trsuted-auth.webflow.io^$all
+||netcoislogin-zone.webflow.io^$all
 ||pepecoinsuper-airdrop.pages.dev^$doc
 ||appmemekombatclaim.pages.dev^$doc
 ||testmyaa.pages.dev^$doc

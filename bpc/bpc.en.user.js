@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.8.4
+// @version         4.1.8.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -192,7 +192,7 @@ var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
 var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntraveler.com', 'epicurious.com', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.co.uk', 'vogue.com', 'wired.com'];
 var usa_craincomm_domains = ['360dx.com', 'adage.com', 'autonews.com', 'chicagobusiness.com', 'crainscleveland.com', 'crainsdetroit.com', 'crainsgrandrapids.com', 'crainsnewyork.com', 'european-rubber-journal.com', 'genomeweb.com', 'modernhealthcare.com', 'pionline.com', 'plasticsnews.com', 'precisionmedicineonline.com', 'rubbernews.com', 'sustainableplastics.com', 'tirebusiness.com', 'utech-polyurethane.com'];
-var usa_gannett_domains = ['azcentral.com', 'cincinnati.com', 'commercialappeal.com', 'courier-journal.com', 'democratandchronicle.com', 'desmoinesregister.com', 'detroitnews.com', 'dispatch.com', 'freep.com', 'indystar.com', 'jacksonville.com', 'jsonline.com', 'knoxnews.com', 'news-press.com', 'northjersey.com', 'oklahoman.com', 'statesman.com', 'tennessean.com'];
+var usa_gannett_domains = ['azcentral.com', 'cincinnati.com', 'commercialappeal.com', 'courier-journal.com', 'democratandchronicle.com', 'desmoinesregister.com', 'detroitnews.com', 'dispatch.com', 'freep.com', 'indystar.com', 'jacksonville.com', 'jsonline.com', 'knoxnews.com', 'news-press.com', 'northjersey.com', 'oklahoman.com', 'palmbeachpost.com', 'statesman.com', 'tennessean.com'];
 var usa_hearst_comm_domains = ['ctpost.com', 'expressnews.com', 'houstonchronicle.com', 'nhregister.com', 'sfchronicle.com', 'timesunion.com'];
 var usa_lee_ent_domains = ['buffalonews.com', 'journalnow.com', 'journalstar.com', 'madison.com', 'nwitimes.com', 'omaha.com', 'richmond.com', 'stltoday.com', 'tucson.com', 'tulsaworld.com'];
 var usa_mcc_domains = ['bnd.com', 'charlotteobserver.com', 'elnuevoherald.com', 'fresnobee.com', 'kansas.com', 'kansascity.com', 'kentucky.com', 'mcclatchydc.com', 'miamiherald.com', 'newsobserver.com', 'sacbee.com', 'star-telegram.com', 'thestate.com', 'tri-cityherald.com'];
@@ -1772,6 +1772,11 @@ else if (matchDomain('cyclingnews.com')) {
     window.localStorage.removeItem(item);
 }
 
+else if (matchDomain('dailyherald.com')) {
+  let ads = 'div.dhTopAd, div[data-widget-host="revcontent"]';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('dailywire.com')) {
   let paywall = document.querySelector('div#payed-article-paywall');
   if (paywall) {
@@ -2509,7 +2514,7 @@ else if (matchDomain('insidehighered.com')) {
 
 else if (matchDomain('interestingengineering.com')) {
   addStyle('body {overflow: auto !important; position: relative !important; top: unset !important;}');
-  let banners = 'main > div.t-hidden, div.t-bg-black';
+  let banners = 'main > div[class*="t-hidden"], div.t-bg-black';
   hideDOMStyle(banners);
 }
 
@@ -4281,12 +4286,8 @@ else if (matchDomain('usatoday.com')) {
 }
 
 else if (matchDomain('vice.com')) {
-  let paywall = document.querySelectorAll('iframe.swg-dialog, swg-popup-background');
-  removeDOMElement(...paywall);
-  let noscroll = document.querySelector('body.swg-disable-scroll');
-  if (noscroll)
-    noscroll.classList.remove('swg-disable-scroll');
-  let ads = 'div.lngtd-dyn-ph';
+  getJsonUrl('section.unlock-container', '', 'div.entry-content');
+  let ads = 'div.lngtd-dyn-ph, div.lngtd-ad-wrapper-banner';
   hideDOMStyle(ads);
 }
 
