@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.8.6
+// @version         4.1.8.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -461,8 +461,7 @@ else if (matchDomain(['brisbanetimes.com.au', 'smh.com.au', 'theage.com.au', 'wa
 else {
   // Australian Community Media newspapers
   let au_comm_media_domains = ['bendigoadvertiser.com.au', 'bordermail.com.au', 'canberratimes.com.au', 'centralwesterndaily.com.au', 'dailyadvertiser.com.au', 'dailyliberal.com.au', 'examiner.com.au', 'illawarramercury.com.au', 'newcastleherald.com.au', 'northerndailyleader.com.au', 'standard.net.au', 'theadvocate.com.au', 'thecourier.com.au', 'westernadvocate.com.au'];
-  let au_comm_media_link = document.querySelector('a[href^="https://austcommunitymedia.my.site.com/"]');
-  if (matchDomain(au_comm_media_domains) || au_comm_media_link) {
+  if (matchDomain(au_comm_media_domains) || document.querySelector('div#footer a[href^="https://acm.media/"]')) {
     let mask = document.querySelector('div[class^="gradient-mask-"]');
     if (mask) {
       mask.removeAttribute('class');
