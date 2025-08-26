@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: TWEOAkn0diLeBKYWF3ZVEQ
-! Diff-Path: ../patches/7/7-s-1756120276-3600.patch
+! Checksum: YusfgofFc6NVpVYlpZd2Zg
+! Diff-Path: ../patches/7/7-s-1756203102-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.68.2
-! TimeUpdated: 2025-08-25T11:07:04+00:00
+! Version: 2.0.68.5
+! TimeUpdated: 2025-08-26T10:07:26+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1527,7 +1527,7 @@ jikayosha.jp#$#.wym-v2022__header.is-scroll-up ~ .wym-v2022__footer-fixed.is-pc-
 .icu/v1/check|$document
 .sbs/v1/check|$document
 -mufg-jp.*.com/$document
-://www.jabank.org.*.com/$document
+://www.jabank.*.*.com/$document
 ://pocketcard-*.cn/netservice/login/$document
 .shop/*%F0%9D%9A%8C%F0%9D%9A%98.%F0%9D%9A%93%F0%9D%9A%99/$document
 /open/?apiName=$xmlhttprequest,~third-party
@@ -1705,8 +1705,8 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 .com/ae/login.php?openid.pape.max_auth_age=0&openid.return_to=%$document
 !
 /^https?:\/\/(?:j[ap]|qq)\d{7,8}\.[a-z]{7,8}\.[a-z]{2,8}\//$document,to=agency|art|asia|auction|bar|beauty|beer|best|biz|business|cam|cards|click|cloud|coupons|digital|diy|fashion|food|forum|gay|guru|info|life|live|living|link|ltd|my|property|pw|rocks|run|sbs|shop|store|studio|tattoo|tech|today|top|uno|work,match-case
--co-jp-*.com/$document,to=com
--co-jp.*.com/$document,to=com
+-co-jp-*.com/$document,to=cfd|com|sbs
+-co-jp.*.com/$document,to=cfd|com|sbs
 /product_details?id=$document,to=click
 ://smbc.$document,to=cn|com|top
 ://smbccard*.$document,to=club
@@ -1808,6 +1808,7 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+xenospectrum.com##div[class^="gb-element-"]:has(> div[class^="gas_fallback-ad_"])
 feedwatcher.net###wrapper > div.feed-block > div:has(> ins.adsbygoogle[data-ad-slot])
 news.tv-asahi.co.jp##.ad-timeline-summary-taboola
 ||avdb-app.com/_next/image?url=%2Faffi%2F
@@ -6525,6 +6526,7 @@ okazurand.net##.product-detail-purchase--floating
 okazurand.net##.adowidgets
 okazurand.net##.ado-area
 hominis.media##.pr-ad
+news.infoseek.co.jp##.reaction_navi
 news.infoseek.co.jp###headerAdvertisementsTopicsCommon
 news.infoseek.co.jp###headerAd1TopicsCommon
 news.infoseek.co.jp##.runa_affiliate
@@ -8012,6 +8014,7 @@ pref.tokushima.lg.jp##.banner_ad
 ||momoiroadult.com/wp-content/uploads/*_640_100_$image,~third-party
 ||momoiroadult.com/wp-content/uploads/*_600x500$image,~third-party
 ||momoiroadult.com/wp-content/uploads/*_600_500_$image,~third-party
+momoiroadult.com##div[id^="myplace-"] > a[target="_blank"][rel="nofollow noopener"] > img
 momoiroadult.com##div[class$="-home"] > div[style$="margin: auto;"][style*="width:"]
 momoiroadult.com##a[href^="https://www.madamlive.tv/LiveChat/acs.php"]
 momoiroadult.com##div[class$="-header"]
