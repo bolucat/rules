@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Privacy
 ! Expires: 7 days
-! Last modified: Tue, 26 Aug 2025 07:05:27 +0000
-! Diff-Path: ../patches/2025.8.26.684.patch#ublock-privacy
+! Last modified: Wed, 27 Aug 2025 09:30:34 +0000
+! Diff-Path: ../patches/2025.8.27.1046.patch#ublock-privacy
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/privacy.txt ***
@@ -40,7 +40,7 @@ old.reddit.com##a.outbound[data-outbound-url]:remove-attr(data-outbound-url)
 www.reddit.com##+js(json-prune, data.*.elements.edges.[].node.outboundLink)
 www.reddit.com##+js(json-prune, data.children.[].data.outbound_link)
 ||redditstatic.com/shreddit/sentry-$domain=reddit.com
-||www.reddit.com/|$xhr,1p,method=post
+! www.reddit.com##+js(json-edit-fetch-request, .*, propsToMatch, /svc/shreddit/events)
 ||reddit.com^$doc,removeparam=/web_only=/
 ||reddit.com^$doc,removeparam=/deep_link=/
 ||reddit.com^$doc,removeparam=correlation_id
@@ -1248,7 +1248,6 @@ mediamarkt.de##+js(aopw, ftr__startScriptLoad)
 ||api.gitbook.com/v1/orgs/*/insights/events
 ||ps.vnexpress.net/ps/chk?
 ||vnexpress.net/microservice/fc^
-||vnecdn.net/vnexpress/restruct/*/eclick/
 ||static.eclick.vn^$image,redirect=1x1.gif
 ! carparts.com,nba.com
 /newrelic-prod.js|$script,1p
@@ -1262,6 +1261,8 @@ mediamarkt.de##+js(aopw, ftr__startScriptLoad)
 ||svc.litv.tv/api/v*/unit
 /js/script.outbound-links.pageview-props.tagged-events.js
 /js/script.outbound-links.pageview-props.tagged-events.manual.js
+||linklog.tiagorangel.com/api/script.js
+linklog.tiagorangel.com##+js(set, data, true)
 ||brighteon.com/api-v*/public/visit-tracking
 !#if !ext_ubol
 ||slc.cbssports.com^
@@ -1293,6 +1294,11 @@ mediamarkt.de##+js(aopw, ftr__startScriptLoad)
 !#endif
 ||api-widget.soundcloud.com/me?client_id=
 ||editor.labelbox.com/metrics
+! test on uBO first
+!#if !ext_ubol
+||assets.prod.abebookscdn.com/*/scripts/digitaldata/analytics-
+||assets.prod.abebookscdn.com/*/scripts/utilities/PixelRenderer-
+!#endif
 ! Merge in resource-abuse.txt
 ! *** uAssets:filters/resource-abuse.txt ***
 /edgemesh.*.js$script,domain=~edgemesh.com|~edgeno.de
