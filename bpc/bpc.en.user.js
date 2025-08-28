@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.8.7
+// @version         4.1.9.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1742,15 +1742,9 @@ else if (matchDomain('cnn.com')) {
 
 else if (matchDomain('columbian.com')) {
   setCookie('blaize_session', '', 'columbian.com', '/', 0);
-  let paywall = document.querySelectorAll('div#inline-paywall, div#paywall-modal');
-  if (paywall) {
-    removeDOMElement(...paywall);
-    let article = document.querySelector('article');
-    if (article) {
-      let url = window.location.href;
-      article.firstChild.before(googleSearchToolLink(url));
-    }
-  }
+  header_nofix('story', 'div#inline-paywall');
+  let ads = 'div.modal, div#sticky-footer-cta, div.article-inline, div[id^="ad-instory-"], div#onesignal-slidedown-container';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('csmonitor.com')) {
@@ -3658,20 +3652,20 @@ else if (matchDomain('thehill.com')) {
 
 else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
   if (!window.location.pathname.endsWith('/amp/')) {
-    let counter = '#test';
-    let ads = 'div.ad, div.article-ad, div.dfp-ad, div#paywallbox, div[id^="piano-art-"]';
-    hideDOMStyle(counter + ', ' + ads);
+    if (window.location.pathname.match(/\/videos\/[-\/\w]+\.ece/)) {
+      let video = document.querySelector('div.lead-video-cont');
+      if (video) {
+        let player = video.querySelector('div.jwplayer');
+        if (!player)
+          header_nofix(video, '', 'BPC > for videos disable extension');
+      }
+    }
+    let ads = 'div.ad, div.article-ad, div.dfp-ad, div#paywallbox, div[id^="piano-art-"], #test';
+    hideDOMStyle(ads);
   } else {
     let ads = '[class^="height"], [class^="advt"], [id^="piano"]';
     hideDOMStyle(ads);
   }
-  function hindu_main() {
-    if (window) {
-      window.Adblock = false;
-      window.isNonSubcribed = false;
-    }
-  }
-  insert_script(hindu_main);
 }
 
 else if (matchDomain(['thejuggernaut.com', 'jgnt.co'])) {

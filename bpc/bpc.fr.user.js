@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.8.1
+// @version         4.1.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -239,11 +239,36 @@ else if (matchDomain(['challenges.fr', 'sciencesetavenir.fr'])) {
 }
 
 else if (matchDomain('charliehebdo.fr')) {
-  window.setTimeout(function () {
-    let paywalled_content = document.querySelector('div.ch-paywalled-content');
-    if (paywalled_content)
-      paywalled_content.removeAttribute('style');
-  }, 500);
+  let paywall = document.querySelector('div#paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('article[id^="post-"]');
+    if (article) {
+      let article_id = article.id.split('post-')[1];
+      if (article_id) {
+        let intro_pars = article.querySelectorAll('div#principal > p');
+        if (intro_pars.length) {
+          let url = window.location.href;
+          let json_url = 'https://charliehebdo.fr/wp-json/wp/v2/posts/' + article_id + '?appkey=' + 'JeSuisCharlie2023';
+          fetch(json_url)
+          .then(response => {
+            if (response.ok) {
+              response.json().then(json => {
+                let json_text = json.content.rendered;
+                if (json_text) {
+                  let parser = new DOMParser();
+                  let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+                  let article_new = doc.querySelector('div');
+                  intro_pars[0].before(article_new);
+                  removeDOMElement(...intro_pars);
+                }
+              });
+            }
+          });
+        }
+      }
+    }
+  }
 }
 
 else if (matchDomain('connaissancedesarts.com')) {
