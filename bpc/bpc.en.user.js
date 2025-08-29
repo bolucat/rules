@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.9.0
+// @version         4.1.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2893,6 +2893,42 @@ else if (matchDomain('nybooks.com')) {
   hideDOMStyle(banners);
 }
 
+else if (matchDomain('nypost.com')) {
+  if (window.location.pathname.includes('/sports/')) {
+    let paywall = document.querySelectorAll('head > meta[content*="Sports Plus"]');
+    if (paywall.length) {
+      removeDOMElement(...paywall);
+      let article_sel = 'div.single__content';
+      let article = document.querySelector(article_sel);
+      if (article) {
+        article.classList.remove('entry-content-exclusive-covered');
+        let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]'); ;
+        if (json_url_dom) {
+          let match = json_url_dom.href.match(/\d+$/);
+          if (match) {
+            let footer = article.querySelector('div.single__footer');
+            let article_id = match[0];
+            let url_src = 'https://nypost.nypost.djservices.io/apps/nypost-v3/theaters/sports?screen_ids=' + article_id;
+            let x_access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJBVVRIX1BIUkFTRV9QUk9EX0FORFJPSUQiOiJGNGYzYnhzZGlIa1M1QzVIWUxUNSJ9.OGooBqisVQznx2FDxZpHAqWu-oG1wPJLUxYBMd3xOKiLakoR2XQC2hXnyS3zb1Dw6AkKcMhWyZfRerUckFjga8Ii59lZtP8Xt92iCUyJjs0yjmLJgkZWEGqZ8szM2UK7jZJ5SsHaYfe2V3c7KrtfbY74aWGwddvg-Ex4O5hwv3aiAJpI_aZMFqniClGM2pYbGNSPxH-I0PMuwTzt-oyofhQsRJWOQES8fmQz1H-opqQVr3B0-ev4MxYZjfk8kKnXxRbf7tDbQvastQh8kLe3KN90ptSp_LWbkPgo0G8Vw9Jzxy1TUd_VNgTE21uNdRAoZbxDly7aw-9CTDtb1OtXVg";
+            getExtFetch(url_src, '', {
+              "app-identifier": "com.news.screens",
+              "device-type": "phone",
+              "x-access-token": x_access_token
+            }, fix_dowjones_fetch, data_ext_fetch_id++, [article]);
+            if (footer) {
+              window.setTimeout(function () {
+                article.appendChild(footer);
+              }, 1000);
+            }
+          }
+        }
+      }
+    }
+  }
+  let ads = 'div.ad';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('nytimes.com')) {
   if (!window.location.pathname.startsWith('/athletic/')) {
     waitDOMElement('div#dock-container', 'DIV', removeDOMElement, false);
@@ -3234,6 +3270,11 @@ else if (matchDomain('slideshare.net')) {
   let limit_overlay = document.querySelector('.limit-overlay');
   if (limit_overlay)
     limit_overlay.classList.remove('limit-overlay');
+}
+
+else if (matchDomain('sltrib.com')) {
+  let ads = 'div.ad, div.stickyAd, div.stickyTopAd, div[class^="sltrib_medrec"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('sloanreview.mit.edu')) {
@@ -4803,7 +4844,7 @@ function fix_dowjones_fetch(url_src, data, article) {
           }
         }
         let body_first = true;
-        let img_lead = document.querySelector('div.img__lead img[src]');
+        let img_lead = document.querySelector('div.img__lead img[src], div.featured-image img[src]');
         let img_lead_url;
         if (img_lead)
           img_lead_url = img_lead.src.split('?')[0];
@@ -4813,7 +4854,7 @@ function fix_dowjones_fetch(url_src, data, article) {
           if (par_class)
             elem.className = par_class;
           if (par.type === 'body') {
-            if (par.body && par.styleID.includes('default')) {
+            if (par.body && par.styleID.match(/(default|bodyFrame)/)) {
               if (body_first && intro) {
                 elem = intro;
                 body_first = false;
@@ -4830,6 +4871,12 @@ function fix_dowjones_fetch(url_src, data, article) {
                 style: 'width: 80%; margin: auto;'
               });
             }
+          } else if (['article', 'inlineArticle'].includes(par.type) && par.title && par.title.text && par.shareUrl) {
+            let sub_elem = document.createElement('a');
+            sub_elem.href = par.shareUrl;
+            sub_elem.innerText = par.title.text;
+            sub_elem.style = 'font-weight: bold;';
+            elem.appendChild(sub_elem);
           } else if (par.type === 'dynamicinset') {
             if (par.webview && par.webview.value) {
               let iframe = document.createElement('iframe');
@@ -4877,7 +4924,7 @@ function fix_dowjones_fetch(url_src, data, article) {
                sub_elem.style = 'width: 100%; height: 400px;';
                elem.appendChild(sub_elem);
              }
-          } else if (!['ad', 'audioplayer', 'authorBios', 'byline', 'caption', 'divider', 'paywall-promotion', 'pullquotebody', 'scrollinggallery', 'sectionTitle', 'title', 'webview'].includes(par.type)) {
+          } else if (!['ad', 'audioplayer', 'authorBios', 'byline', 'caption', 'columnistHeader', 'divider', 'inlineComment', 'paywall-promotion', 'pullquotebody', 'scrollinggallery', 'sectionTitle', 'tags', 'title', 'verticalContainer', 'webview'].includes(par.type)) {
             console.log(par);
           }
           if (elem.hasChildNodes())
