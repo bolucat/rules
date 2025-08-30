@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.9.1
+// @version         4.1.9.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2000,6 +2000,13 @@ else if (matchDomain('economictimes.com')) {
         let parser = new DOMParser();
         let doc = parser.parseFromString('<div style="margin: 20px 0px;">' + content.innerText + '</div>', 'text/html');
         let content_new = doc.querySelector('div');
+        let charts = content_new.querySelectorAll('iframe[id^="datawrapper-chart-"]');
+        for (let elem of charts) {
+          elem.width = '100%';
+          elem.height = '400px';
+          elem.scrolling = 'yes';
+          elem.style.margin = '20px 0px';
+        }
         if (content_new && content.parentNode)
           content.parentNode.replaceChild(content_new, content);
       } else
@@ -2037,8 +2044,15 @@ else if (matchDomain('economictimes.indiatimes.com')) {
     removeDOMElement(paywall);
     let content = document.querySelector('div.content1, div.artText');
     let full_text = document.querySelector('div.paywall.p1');
-    if (content && full_text)
-      content.innerText = full_text.innerText;
+    if (content && full_text) {
+      if (!(full_text.innerText.includes('!function()') && full_text.innerText.includes('datawrapper-height')))
+        content.innerText = full_text.innerText;
+      else {
+        let amphtml = document.querySelector('head > link[rel="amphtml"]');
+        if (amphtml)
+          amp_redirect_not_loop(amphtml)
+      }
+    }
     addStyle('div.pageContent {height: auto !important;}');
     let article_wrap = document.querySelector('div.article_wrap[style]');
     if (article_wrap)
