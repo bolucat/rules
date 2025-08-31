@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.9.2
+// @version         4.1.9.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -29,6 +29,7 @@
 // @match           *://*.ftm.eu/*
 // @match           *://*.gitflic.ru/*
 // @match           *://*.haaretz.co.il/*
+// @match           *://*.iai.tv/*
 // @match           *://*.independent.ie/*
 // @match           *://*.indiatoday.in/*
 // @match           *://*.intrafish.no/*
@@ -143,6 +144,9 @@
 
 (function() {
   //'use strict';
+
+if (window.top !== window.self && !matchDomain(['app.historytoday.com', 'appan.newscientist.com']))
+  return;
 
 var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
 
@@ -652,7 +656,7 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'decanter.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'the-tls.com', 'thelawyer.com', 'thetimes.com', 'unherd.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['apollo-magazine.com', 'autosport.com', 'decanter.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'iai.tv', 'irishexaminer.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'the-tls.com', 'thelawyer.com', 'thetimes.com', 'unherd.com'])) {//united kingdom/ireland
 
 if (matchDomain('apollo-magazine.com')) {
   setCookie('blaize_session', '', 'apollo-magazine.com', '/', 0);
@@ -866,6 +870,44 @@ else if (matchDomain('gbnews.com')) {
 
 else if (matchDomain('granta.com')) {
   getJsonUrl('div.article-sign-up-container', '', 'div.article-excerpt');
+}
+
+else if (matchDomain('iai.tv')) {
+  let paywall = document.querySelector('div.article-paywall-main');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div > div.iai-article--content-inner');
+    if (article) {
+      let content_new = document.querySelector('head > meta[name="twitter:description"][content]');
+      if (content_new) {
+        let parser = new DOMParser();
+        let doc = parser.parseFromString('<div>' + content_new.content + '</div>', 'text/html');
+        let article_new = doc.querySelector('div');
+        article.parentNode.replaceChild(article_new, article);
+      }
+    }
+  }
+}
+
+else if (matchDomain('irishexaminer.com')) {
+  setCookie('blaize_session', '', 'irishexaminer.com', '/', 0);
+  let paywall = document.querySelector('div#paywall-premium');
+  if (paywall) {
+    let body_hide = document.querySelector('article style:not(:empty)');
+    removeDOMElement(paywall, body_hide);
+    let article = document.querySelector('story') || document.querySelector('article');
+    if (article) {
+      if (article.tagName === 'ARTICLE') {
+        let home = document.createElement('a');
+        home.innerText = 'Home';
+        home.href = 'https://www.irishexaminer.com';
+        home.style.margin = '20px';
+        article.before(document.createElement('br'), home);
+      }
+      let url = window.location.href;
+      article.before(googleSearchToolLink(url));
+    }
+  }
 }
 
 else if (matchDomain('literaryreview.co.uk')) {
@@ -2335,6 +2377,15 @@ else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
 
 else if (matchDomain('harpers.org')) {
   setCookie('hr_session', '', 'harpers.org', '/', 0);
+  let paywall = document.querySelector('div#full-paywall');
+  if (paywall) {
+    paywall.removeAttribute('id');
+    header_nofix(paywall, '', 'BPC > no fix (for older articles archive may work)');
+    let url = window.location.href;
+    paywall.before(archiveLink(url));
+  }
+  let ads = 'div#ctas';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('hbr.org')) {
