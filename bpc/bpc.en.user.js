@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.9.5
+// @version         4.1.9.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -891,21 +891,65 @@ else if (matchDomain('iai.tv')) {
 
 else if (matchDomain('irishexaminer.com')) {
   setCookie('blaize_session', '', 'irishexaminer.com', '/', 0);
-  let paywall = document.querySelector('div#paywall-premium');
-  if (paywall) {
-    let body_hide = document.querySelector('article style:not(:empty)');
-    removeDOMElement(paywall, body_hide);
-    let article = document.querySelector('story') || document.querySelector('article');
-    if (article) {
-      if (article.tagName === 'ARTICLE') {
-        let home = document.createElement('a');
-        home.innerText = 'Home';
-        home.href = 'https://www.irishexaminer.com';
-        home.style.margin = '20px';
-        article.before(document.createElement('br'), home);
+  let premium = document.querySelector('head > meta[name="isPremium"][content="true"]');
+  let article = document.querySelector('article');
+  if (premium && article) {
+    removeDOMElement(premium);
+    function stripAppLinks(story) {
+      story.querySelectorAll('a.readmore-event[href$="?type=app"]').forEach(e => e.href = e.href.split('?')[0]);
+    }
+    let url = window.location.href;
+    let app = window.location.search.startsWith('?type=app');
+    if (!app) {
+      let paywall = document.querySelector('div#paywall-premium');
+      if (paywall) {
+        let body_hide = article.querySelector('style:not(:empty)');
+        removeDOMElement(paywall, body_hide);
+        let url_src = url.split(/[#\?]/)[0] + '?type=app';
+        let story = article.querySelector('story');
+        if (story) {
+          let podcast = article.querySelector('figure.bbw-embed');
+          if (!podcast) {
+            fetch(url_src)
+            .then(response => {
+              if (response.ok) {
+                response.text().then(html => {
+                  if (html.includes('<story')) {
+                    let parser = new DOMParser();
+                    let doc = parser.parseFromString(html, 'text/html');
+                    let story_new = doc.querySelector('story');
+                    if (story_new) {
+                      stripAppLinks(story_new);
+                      story.parentNode.replaceChild(story_new, story);
+                    }
+                  }
+                });
+              }
+            });
+          } else
+          window.location.href = url_src;
+        } else
+          window.location.href = url_src;
       }
-      let url = window.location.href;
-      article.before(googleSearchToolLink(url));
+    } else {
+      let longread = document.querySelector('head > meta[name="isLongRead"][content="true"]');
+      if (longread) {
+        removeDOMElement(longread);
+        let row = article.querySelector('div.row');
+        if (row)
+          row.append(googleSearchToolLink(url.split('?')[0]));
+      } else {
+        let div = document.createElement('div');
+        div.style.margin = '20px';
+        let home = document.createElement('a');
+        home.innerText = window.location.hostname;
+        home.href = 'https://' + window.location.hostname;
+        div.append(home);
+        article.before(div);
+        let story = article.querySelector('story');
+        if (story)
+          stripAppLinks(story);
+      }
     }
   }
 }

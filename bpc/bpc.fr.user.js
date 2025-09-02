@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.9.1
+// @version         4.1.9.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -8,6 +8,7 @@
 // @homepageURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
+// @noframes
 // @match           *://*.fr/*
 // @match           *://*.aoc.media/*
 // @match           *://*.arcinfo.ch/*
@@ -35,6 +36,7 @@
 // @match           *://*.loeildelaphotographie.com/*
 // @match           *://*.marianne.net/*
 // @match           *://*.monacomatin.mc/*
+// @match           *://*.moustique.be/*
 // @match           *://*.parismatch.com/*
 // @match           *://*.philonomist.com/fr/*
 // @match           *://*.pourleco.com/*
@@ -58,7 +60,7 @@
 
 window.setTimeout(function () {
 
-var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net'];
+var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net', 'moustique.be'];
 var be_roularta_domains = ['femmesdaujourdhui.be', 'flair.be', 'levif.be'];
 var fr_be_groupe_rossel_domains = ['aisnenouvelle.fr', 'courrier-picard.fr', 'lardennais.fr', 'lavoixdunord.fr', 'lemessager.fr', 'lesoir.be', 'lest-eclair.fr', 'liberation-champagne.fr', 'lunion.fr', 'nordlittoral.fr', 'paris-normandie.fr', 'sudinfo.be'];
 var fr_gcf_custom_domains = ['larep.fr', 'leberry.fr', 'lechorepublicain.fr', 'lejdc.fr', 'lepopulaire.fr', 'leveil.fr', 'lyonne.fr'];
@@ -164,7 +166,7 @@ else if (matchDomain(be_groupe_ipm_domains)) {
         div_hidden.classList.remove('is-hidden');
     }, 500);
   }
-  let ads = 'div.ap-AdContainer, div.ap-Outbrain';
+  let ads = 'div.ap-AdContainer';
   hideDOMStyle(ads);
 }
 
