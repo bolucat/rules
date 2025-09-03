@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.9.6
+// @version         4.1.9.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1278,28 +1278,31 @@ if (matchDomain(usa_adv_local_domains)) {
 
 else if (matchDomain('adweek.com')) {
   setCookie('blaize_session', '', '.www.adweek.com', '/', 0);
-  let paywall = document.querySelector('div#paywall-subscribe');
+  let paywall = document.querySelector('div.paywall');
   if (paywall) {
-    let fade = document.querySelector('div[style*="linear-gradient"]');
-    removeDOMElement(paywall, fade);
-    let json_script = getArticleJsonScript();
-    if (json_script) {
-      try {
-        let json = JSON.parse(json_script.text);
-        if (json) {
-          let json_text = json.sharedContent.articleBody;
-          let content = document.querySelector('div.aw-article-content');
-          if (json_text && content) {
-            let url = window.location.href;
-            content.before(archiveLink(url));
-            content.innerHTML = '';
-            let article_new = document.createElement('p');
-            article_new.innerText = json_text;
-            content.appendChild(article_new);
+    removeDOMElement(paywall);
+    let fade = 'div.adw-article-body div[style*="linear-gradient"]';
+    hideDOMStyle(fade);
+    let article = document.querySelector('div.non-paywall');
+    if (article) {
+      let json_script = getArticleJsonScript();
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text);
+          if (json && json.sharedContent) {
+            let json_text = json.sharedContent.articleBody;
+            if (json_text.match(/\[[^\[]+]/)) {
+              let url = window.location.href;
+              article.after(googleSearchToolLink(url));
+              header_nofix('div#bpc_archive', '', 'BPC > no fix (missing (social) media)');
+            }
+            json_text = json_text.replace(/\[[^\[]+]/g, '').replace(/((\r)?\n)+/g, '\r\n\r\n');
+            if (json_text)
+              article.innerText = json_text;
           }
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
       }
     }
   }
@@ -1682,17 +1685,24 @@ else if (matchDomain('business-standard.com')) {
         let json = JSON.parse(json_script.text);
         if (json && json.props.pageProps.data.htmlContent) {
           let json_text = json.props.pageProps.data.htmlContent;
-          let content = document.querySelector('div[class^="MainStory_storycontent__"');
-          if (json_text && content) {
-            content.innerHTML = '';
-            let intro = content.querySelectorAll('div:not([class]');
-            removeDOMElement(...intro);
+          let article = document.querySelector('div[class^="MainStory_storycontent__"], div[class^="blueprint-story-detail_storbpcontent_"]');
+          if (json_text && article) {
+            removeDOMElement(json_script);
+            article.innerHTML = '';
             let parser = new DOMParser();
             let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-            let content_new = doc.querySelector('div');
-            window.setTimeout(function () {
-              content.appendChild(content_new);
-            }, 1000);
+            let article_new = doc.querySelector('div');
+            if (article_new) {
+              let zoom_images = article_new.querySelectorAll('div > img.zoomimg');
+              for (let img of zoom_images) {
+                let caption = img.parentNode.querySelector('div[style]');
+                if (caption)
+                  caption.removeAttribute('style');
+              }
+              window.setTimeout(function () {
+                article.appendChild(article_new);
+              }, 1000);
+            }
           }
         } else
           refreshCurrentTab();
@@ -1703,11 +1713,12 @@ else if (matchDomain('business-standard.com')) {
   }
   if (!window.location.pathname.startsWith('/amp/')) {
     if (true) {
-      let paywall_sel = 'div[class^="subscription_subscriptionPlan_"]';
+      let paywall_sel = 'div[class^="subscription_subscriptionPlan_"], div[class^="BluePrintPaywall_BPstoryPaywall_"]';
       let paywall = document.querySelector(paywall_sel);
       if (paywall) {
         bs_main(paywall)
       } else {
+        csDoneOnce = true;
         waitDOMElement(paywall_sel, 'DIV', bs_main, false);
       }
     }

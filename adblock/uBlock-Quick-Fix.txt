@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Mon, 01 Sep 2025 11:45:51 +0000
-! Diff-Path: ../patches/2025.9.2.816.patch#ublock-quick-fixes
+! Last modified: Wed, 03 Sep 2025 02:46:10 +0000
+! Diff-Path: ../patches/2025.9.3.869.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -118,8 +118,8 @@ japscan.*##+js(set, aclib.runAutoTag, noopFunc)
 japscan.*##+js(trusted-replace-argument, String.prototype.includes, 0, json:'', condition, function runAutoTag() { [native code] })
 japscan.*##+js(trusted-replace-argument, String.prototype.indexOf, 0, json:'', condition, function runAutoTag() { [native code] })
 japscan.*##+js(trusted-replace-argument, String.prototype.split, 0, json:'', condition, function runAutoTag() { [native code] })
-japscan.*##+js(nostif, /containsLiteral|OhYehGoo|NATIVE_SIG|ZOqP/)
-japscan.*##+js(nostif, /\(\)=>/, 1000)
+japscan.*##+js(nostif, /&&[A-Z]{4}\(\)/)
+japscan.*##+js(nostif, /\(\s*\)\s*=>/, 1000)
 poophq.com,veev.to,doods.to##+js(nowoif)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /vast.php?)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /click\.com|preroll|native_render\.js|acscdn/, length:10001)
@@ -265,3 +265,4 @@ global.novelpia.com##+js(no-fetch-if, favicon, length:252)
 global.novelpia.com##div[id^="novelpia_"]:remove()
 ||dmxleo.dailymotion.com/cdn/manifest/video/$xhr,domain=dailymotion.com,badfilter
 ||richlink.blogsys.jp^$domain=nwknews.jp,badfilter
+||uspssmartpackagelockers.com^$all,badfilter
