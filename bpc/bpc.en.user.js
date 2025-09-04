@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.1.9.8
+// @version         4.2.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4675,32 +4675,6 @@ else if (matchDomain('wsj.com')) {
   }
   let ads = 'div.wsj-ad, div.adWrapper, div.css-xgokil-Box, div#cx-article-cover-overlay';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('zerohedge.com')) {
-  let paywall = document.querySelector('div[class^="PremiumOverlay_container__"]');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_script = document.querySelector('script#__NEXT_DATA__');
-    if (json_script) {
-      try {
-        let json = JSON.parse(json_script.innerText);
-        if (json && json.props.pageProps.node.body) {
-          let article_new = parseHtmlEntities(decode_utf8(atob(json.props.pageProps.node.body.substring(21))));
-          let article = document.querySelector('div[class^="NodeContent_mainContent__"');
-          if (article) {
-            article.innerHTML = '';
-            let parser = new DOMParser();
-            let doc = parser.parseFromString('<div>' + article_new + '</div>', 'text/html');
-            let content_new = doc.querySelector('div');
-            article.appendChild(content_new);
-          }
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }
 }
 
 else if (matchDomain(ke_nation_media_domains)) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.9.0
+// @version         4.1.9.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -8,6 +8,7 @@
 // @homepageURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
+// @noframes
 // @match           *://*.de/*
 // @match           *://*.beobachter.ch/*
 // @match           *://*.handelsblatt.com/*
@@ -151,6 +152,13 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
     }
   }
   let ads = 'div.ad-wrapper, div[id^="apn-ad-slot-"]';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('berliner-zeitung.de')) {
+  let url = window.location.href;
+  getArchive(url, 'div[class^="soft-paywall_wrapper_"]', '', 'div#articleBody');
+  let ads = 'div[class^="traffective_"], div[class^="article_billboard-"], div[class*="_ad_"], div[class^="outbrain_"], div[id^="qmn-ad-"], div[style]:empty';
   hideDOMStyle(ads);
 }
 
@@ -932,11 +940,12 @@ else if (matchDomain('zeit.de')) {
     let comments_link = document.querySelector('div[style*="align-items"] a[href$="#comments"]');
     if (comments_link)
       comments_link.href = '#comments';
+    let gst_link = false;
     let figures = document.querySelectorAll('figure:has(img[loading="lazy"][style])');
     for (let figure of figures) {
       let lazy_image = figure.querySelector('img');
       if (lazy_image.src.startsWith('data:image/')) {
-        let json_script = figure.querySelector('script');
+        let json_script = figure.querySelector('script[type="application/ld+json"]:not(:empty)');
         if (json_script && json_script.text.match(/"url":\s?"/)) {
           let img_url = json_script.text.split(/"url":\s?"/)[1].split('",')[0];
           if (!img_url.includes('.zeit.de/newsletter/')) {
@@ -944,6 +953,10 @@ else if (matchDomain('zeit.de')) {
             lazy_image.style = 'width: 95%;';
             figure.removeAttribute('style');
           }
+        } else if (!gst_link && !figure.querySelector('figcaption[style*="display:none;"]')) {
+          gst_link = true;
+          header.append(googleSearchToolLink(url));
+          header_nofix('div#bpc_archive', '', 'BPC > no images (see GST-link)');
         }
       } else if (mobile)
         lazy_image.style = 'width: 95%;';
