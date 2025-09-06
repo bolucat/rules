@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: PnFe4bMUPRPenifUuUifzQ
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1757092216-3600.patch
+! Checksum: E3PcFZfJGE6wDYB99OTRxw
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1757178613-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.8.60
-! TimeUpdated: 2025-09-05T17:06:11+00:00
+! Version: 2.4.8.84
+! TimeUpdated: 2025-09-06T17:05:48+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -14058,6 +14058,7 @@ wcoforever.tv,wcostream.org,watchanimesub.net,wco.tv,wcostream.net,wcostream.com
 @@||embed.watchanimesub.net/inc/embed/kampyle.js
 @@||embed.watchanimesub.net/inc/embed/ads.js
 @@||embed.wcostream.com^$generichide
+!+ NOT_PLATFORM(ext_ff)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/97271
 @@||static.stands4.com/app_common/js/prebid-ads.js
 quotes.net##+js(set-constant, canRunAds, true)
@@ -35501,6 +35502,7 @@ $subdocument,third-party,denyallow=disqus.com,domain=welovemanga.one
 !
 ! NOTE: Specific rules
 !
+||akirabox.com/js/akira-ads2.js
 genius.com##div[class*="__AdLeaderboard-"]
 genius.com##div[class^="Annotation__Ad-"]
 apkpure.com##.buff-store-card
@@ -55633,6 +55635,12 @@ $popup,third-party,domain=dood.ws,badfilter
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/212884
+euronews.com#@##connatix-container
+euronews.com#@#.connatix-container
+euronews.com#@#[data-ad-name]
+euronews.com#@#.cnx-player-wrapper
+@@||connatix.com^$domain=euronews.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/212574
 @@||c.amazon-adsystem.com/aax2/apstag.js$domain=independentespanol.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/212223
