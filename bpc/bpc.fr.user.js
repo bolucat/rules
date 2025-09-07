@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.1.9.2
+// @version         4.1.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -89,6 +89,7 @@ else if (matchDomain('aoc.media')) {
 }
 
 else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {// Groupe ESH Médias
+  window.setTimeout(function () {
   let paywall = document.querySelector('section#paywall-articles');
   if (paywall) {
     removeDOMElement(paywall);
@@ -142,6 +143,7 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {// Group
       }
     }
   }
+  }, 2000);
   let ads = 'div[class*="ads_type_"]';
   hideDOMStyle(ads);
 }

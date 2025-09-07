@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.9.2
+// @version         4.1.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -11,6 +11,7 @@
 // @noframes
 // @match           *://*.de/*
 // @match           *://*.beobachter.ch/*
+// @match           *://*.blick.ch/*
 // @match           *://*.handelsblatt.com/*
 // @match           *://*.handelszeitung.ch/*
 // @match           *://*.kurier.at/*
@@ -79,9 +80,12 @@ else if (matchDomain('aerztezeitung.de')) {
 }
 
 else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
+  window.setTimeout(function () {
   let paywall = document.querySelector('div#piano-inlined');
   if (paywall) {
     removeDOMElement(paywall);
+    let fade = document.querySelector('div.article-body > div.paywall-wrapper-with-print-info');
+    removeDOMElement(paywall, fade);
     let json_script = document.querySelector('script#hydrationdata');
     if (json_script) {
       try {
@@ -98,11 +102,14 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
             for (let paragraph of paragraphs)
               paragraph.innerHTML = '';
             let parser = new DOMParser();
+            let img_first = true;
+            let img_use = false;
+            let img_caption;
             for (let par in pars) {
               let par_elem = pars[par];
               let elem = document.createElement('div');
               elem.style = 'font-size: 1.7rem; margin: 25px;';
-              let sub_elem = '';
+              let sub_elem;
               if (par_elem.__typename === 'TextParagraph' && par_elem.text) {
                 let content_new = parser.parseFromString('<div>' + par_elem.text + '</div>', 'text/html');
                 sub_elem = content_new.querySelector('div');
@@ -117,26 +124,49 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
                 }
               } else if (par_elem.__typename === 'ImageFile') {
                 if (par_elem.origin) {
-                  sub_elem = document.createElement('img');
-                  sub_elem.src = par_elem.origin;
-                  sub_elem.alt = par_elem.alt;
-                  if (par_elem.width) {
-                    let ratio = par_elem.width / (mobile ? 320 : 640);
-                    sub_elem.width = par_elem.width / ratio;
-                    sub_elem.height = par_elem.height / ratio;
-                  }
+                  if (!img_first) {
+                    let img_attrib = {alt: par_elem.alt};
+                    if (par_elem.width) {
+                      let ratio = par_elem.width / (mobile ? 320 : 640);
+                      img_attrib.width = par_elem.width / ratio;
+                      img_attrib.height = par_elem.height / ratio;
+                    }
+                    sub_elem = makeFigure(par_elem.origin, '_', img_attrib);
+                    img_caption = sub_elem.querySelector('figcaption');
+                    img_use = true;
+                  } else
+                    img_first = false;
                 }
               } else if (par_elem.__typename === 'Image') {
-                if (par_elem.credit) {
-                  sub_elem = document.createElement('p');
-                  sub_elem.appendChild(document.createTextNode(par_elem.credit));
-                }
+                if (img_use && img_caption && par_elem.credit)
+                  img_caption.after('Quelle: ', par_elem.credit);
               } else if (par_elem.__typename === 'ImageParagraph') {
-                if (par_elem.caption) {
-                  let content_new = parser.parseFromString('<div>' + par_elem.caption + '</div>', 'text/html');
-                  sub_elem = content_new.querySelector('div');
+                if (img_use && img_caption && par_elem.caption)
+                  img_caption.innerText = par_elem.caption.replace(/(<\/?[^>]+>)/g, '');
+              } else if (par_elem.__typename === 'MinistageParagraph') {
+                if (par_elem.ministage && par_elem.ministage.headline) {
+                  sub_elem = document.createElement('p');
+                  sub_elem.append(par_elem.ministage.headline, ' - ' + par_elem.ministage.lead);
+                  if (par_elem.ministage.link) {
+                    let sub_link = document.createElement('a');
+                    sub_link.href = par_elem.ministage.link.path;
+                    sub_link.innerText = par_elem.ministage.link.label;
+                    sub_elem.append(document.createElement('br'), sub_link);
+                  }
                 }
-              } else if (!['Article', 'Author', 'Channel', 'LandingPage', 'Query'].includes(par_elem.__typename)) {
+              } else if (par_elem.__typename === 'ListicleItemParagraph') {
+                if (par_elem.title &&par_elem.text && par_elem.link && par_elem.link.path) {
+                  sub_elem = document.createElement('a');
+                  sub_elem.href = par_elem.link.path;
+                  sub_elem.innerText = par_elem.title + ' - ' + par_elem.text.replace(/(<\/?[^>]+>)/g, '');
+                }
+              } else if (par_elem.__typename === 'Product') {
+                if (par_elem.title && par_elem.link && par_elem.link.path) {
+                  sub_elem = document.createElement('a');
+                  sub_elem.href = par_elem.link.path;
+                  sub_elem.innerText = (par_elem.shortTitle ? par_elem.shortTitle + ' - ' : '') + par_elem.title;
+                }
+              } else if (!['Article', 'Author', 'BlockquoteParagraph', 'Channel', 'InfoBoxParagraph', 'LandingPage', 'Query', 'TeaserParagraph', 'TeaserStageParagraph'].includes(par_elem.__typename)) {
                 console.log(par_elem);
               }
               if (sub_elem) {
@@ -151,7 +181,8 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
       }
     }
   }
-  let ads = 'div.ad-wrapper, div[id^="apn-ad-slot-"]';
+  }, 1000);
+  let ads = 'div.ad-wrapper, div[id^="apn-ad-slot-"], div[class^="piano-article-aside"]';
   hideDOMStyle(ads);
 }
 
@@ -187,6 +218,11 @@ else if (matchDomain('bild.de')) {
   }
   let url = window.location.href;
   getArchive(url, 'div.offer-module', '', 'article');
+}
+
+else if (matchDomain('blick.ch')) {
+  let ads = 'aside[class*="slot-code"], aside[class*="_teaser_"][class*="slot-code"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('boersen-zeitung.de')) {
