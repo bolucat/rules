@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.1.9.3
+// @version         4.2.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -422,7 +422,7 @@ else if (matchDomain('kurier.at')) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('mittelbayerische.de')) {
+else if (matchDomain(['mittelbayerische.de', 'pnp.de'])) {
   let url = window.location.href;
   getArchive(url, 'div.paywall-layer', '', 'div#article-body');
   let ads = 'div.d-sm-block';
