@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: uqpQu1PZbNQSTev4/VP8lg
-! Diff-Path: ../patches/7/7-s-1757232731-3600.patch
+! Checksum: jtBOLtXm4vZ3m89+rr53nA
+! Diff-Path: ../patches/7/7-s-1757434340-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.68.31
-! TimeUpdated: 2025-09-07T08:08:02+00:00
+! Version: 2.0.68.35
+! TimeUpdated: 2025-09-09T16:08:01+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -620,7 +620,6 @@ lemino.docomo.ne.jp##+js(no-xhr-if, doubleclick.net)
 ! densetsuav.blog.2nt.com,gjdsk2012.blog.2nt.com etc. anti-adb
 blog.2nt.com#@#.adspace
 ! https://github.com/AdguardTeam/AdguardFilters/issues/173271
-inkbrushpainting.work,bridalgown.work,contents-group.work,heisei-housewarming.work,liquidfoundation.work,nailcolor.work,studioglass.work,tapestry.work,teaceremony.work,weddinghall.work##+js(abort-on-property-write, blockId)
 $script,third-party,redirect-rule=noop.js,domain=inkbrushpainting.work|bridalgown.work|contents-group.work|heisei-housewarming.work|liquidfoundation.work|nailcolor.work|studioglass.work|tapestry.work|teaceremony.work|weddinghall.work
 ||ad-stir.com/js/adstir.js$script,redirect-rule=noop.js
 ||adingo.jp/p.js$script,redirect-rule=noop.js
@@ -1812,6 +1811,9 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+gaitame.com##.g-h-ads
+gaitame.com##.g-insert-ads
+wikiwiki.jp###adsense-body-top-wrap
 baby-calendar.jp###before_footer_widget
 baby-calendar.jp##.w-beforeRelated
 baby-calendar.jp##div[style="height: 90px;"]
@@ -2521,6 +2523,8 @@ gensin.blog.jp###lite_link
 dissoku.net##.v-row:has(> div.v-col > div > a[href="https://favry.app"])
 b.best-hit.tv##.heading:has(+ div[style="text-align:center"] > div[style$="background-color:#F0F0F0; text-align: center;"])
 b.best-hit.tv##div[style$="background-color:#F0F0F0; text-align: center;"]
+contents-group.work##.adSP1 + div[style="background-color:#fff;width:100%;text-align:center;padding:2px 0;margin:10px auto;"]
+contents-group.work###mainContent + script + div.pc:has(+ div.adSP1)
 best-hit.tv##div[style="margin-top:10px; margin-bottom:10px; text-align:center;"]
 contents-group.work#?#div[align="center"][style="margin: 20px 0px;"]:contains(/^- PR -$/)
 contents-group.work###interstitial
@@ -4871,6 +4875,7 @@ liquidfoundation.work##td[height="260"][width="310"]
 liquidfoundation.work##td[height="290"][width="320"]
 gamefactory.jp##.banner_area_300
 gamefactory.jp##.banner_area_728
+ib-game.jp##.tag_336
 ib-game.jp##.ad_size_728x90
 ib-game.jp##.tag_300
 ib-game.jp##.tag_468
