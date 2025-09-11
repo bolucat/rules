@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.0.1
+// @version         4.2.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -908,7 +908,7 @@ else if (matchDomain('irishexaminer.com')) {
         let url_src = url.split(/[#\?]/)[0] + '?type=app';
         let story = article.querySelector('story');
         if (story) {
-          let podcast = article.querySelector('figure.bbw-embed');
+          let podcast = article.querySelector('.bbw-embed');
           if (!podcast) {
             fetch(url_src)
             .then(response => {
@@ -927,7 +927,7 @@ else if (matchDomain('irishexaminer.com')) {
               }
             });
           } else
-          window.location.href = url_src;
+            window.location.href = url_src;
         } else
           window.location.href = url_src;
       }
@@ -949,6 +949,7 @@ else if (matchDomain('irishexaminer.com')) {
         let story = article.querySelector('story');
         if (story)
           stripAppLinks(story);
+        hideDOMStyle('.bbw-embed');
       }
     }
   }
