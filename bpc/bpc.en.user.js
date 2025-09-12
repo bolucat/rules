@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.0.2
+// @version         4.2.0.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -284,8 +284,10 @@ if (matchDomain('afr.com')) {
                                 result = item.data.text;
                             }
                           } else if (item.type === 'image') {
-                            if (item.data.fileName)
-                              result = '<figure><img src="https://static.ffx.io/images/w_960/' + item.data.fileName + '" style="width: 100%;"><figcaption>' + (item.data.caption ? item.data.caption : '') + (item.data.source ? '<span style="font-weight: bold;">&nbsp;' + item.data.source + '</span>' : '') + '</figcaption></figure>';
+                            if (item.data.fileName) {
+                              let credit = (item.data.credit && item.data.credit.trim()) || item.data.source;
+                              result = '<figure><img src="https://static.ffx.io/images/w_960/' + item.data.fileName + '" style="width: 100%;"><figcaption>' + (item.data.caption ? item.data.caption : '') + (credit ? '<span style="font-weight: bold;">&nbsp;' + credit + '</span>' : '') + '</figcaption></figure>';
+                            }
                           } else if (item.type === 'youtube') {
                             if (item.data.url) {
                               if (item.data.url.includes('watch?v='))
@@ -298,7 +300,7 @@ if (matchDomain('afr.com')) {
                               result = '<a href="' + item.data.url + '" target="_blank">' + item.data.url + '</a>';
                           } else if (item.type === 'iframe') {
                             if (item.data.url)
-                              result = '<iframe src="' + item.data.url + '" style="width: 100%; height: 200px; border: none;"></iframe>';
+                              result = '<iframe src="' + item.data.url + '" style="width: 100%; height: 400px; border: none;"></iframe>';
                           } else if (!['callout', 'quote', 'relatedStory', 'video'].includes(item.type)) {
                             console.log(item);
                           }
@@ -4880,6 +4882,13 @@ else if (document.querySelector('head > meta[property][content^="https://cdn.for
 else if (document.querySelector('head > script[src*=".postmedia.digital/"], head > meta[content*=".postmedia.digital/"]')) {
   let ads = 'div.ad__section-border, div[id^="tbl_"], div.js-widget-content';
   hideDOMStyle(ads);
+}
+
+else if (document.querySelector('head > link[href$=".wallkit.net"]')) {
+  let paywall = document.querySelector('div.wkwp-paywall');
+  if (paywall)
+    paywall.removeAttribute('class');
+  hideDOMStyle('div.wkwp-paywall-block');
 }
 
 }
