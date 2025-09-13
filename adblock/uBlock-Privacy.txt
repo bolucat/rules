@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Privacy
 ! Expires: 7 days
-! Last modified: Fri, 12 Sep 2025 10:16:18 +0000
-! Diff-Path: ../patches/2025.9.12.811.patch#ublock-privacy
+! Last modified: Sat, 13 Sep 2025 14:05:32 +0000
+! Diff-Path: ../patches/2025.9.13.862.patch#ublock-privacy
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/privacy.txt ***
@@ -548,6 +548,11 @@ arstechnica.com,dermnetnz.org##.gsc-webResult a[data-cturl]:remove-attr(/^data-c
 ||bdvmetricas.banvenez.com.ve^
 ||bilet.com/gtmcf/
 ||deezer.com/ajax/gw-light.php?method=log.listen
+||razorpay.com/build/razor-analytics/
+||razorpay.com/build/analytics-sdk/
+||11st.co.kr/js/rake/RakeData.js
+||11st.co.kr/js/product/RakeData.js
+||11st.co.kr/emw.st?
 !#endif
 ! Tracking cookies
 ! fastly click-through
@@ -689,6 +694,8 @@ theverge.com##+js(remove-cookie, vmidv1)
 theverge.com##+js(set-local-storage-item, csg_uid, $remove$)
 goodcar.com##+js(set-local-storage-item, uw-uid, $remove$)
 ici.radio-canada.ca##+js(set-local-storage-item, RC_PLAYER_USER_ID, $remove$)
+soundcloud.com##+js(remove-cookie, /sc_anonymous_id|sc_tracking_anonymous_id/, when, scroll keydown)
+soundcloud.com##+js(set-local-storage-item, /sc_tracking_anonymous_id|statsig/, $remove$)
 ! Query parameter stripping
 ! Google ads/analytics
 $removeparam=gbraid
@@ -1144,6 +1151,9 @@ r.mail.wowvegas.com%2Ftr%2Fop%2F$image
 ! atlassian
 -track.atlassian.com/CI0/$image
 -track.atlassian.com%2FCI0%2F$image
+! cineplex.de
+.cineplex.de/q/$image
+.cineplex.de%2Fq%2F$image
 ! others
 static.adsugar.ch/img?ord=$image
 static.adsugar.ch%2Fimg%3Ford%3D$image
@@ -1232,7 +1242,6 @@ grok.com##+js(no-fetch-if, url:/api/statsig/log_event method:POST)
 ! test on uBO first
 !#if !ext_ubol
 ||mercari.com/ko40/
-||u-web-assets.mercdn.net/assets/scripts/raphaelp-*.js
 mercari.com##+js(json-edit-fetch-request, .*[?.operationName=="TrackEvent"], propsToMatch, /v1/api)
 !#endif
 /^https:\/\/www\.vogue\.com\/[-\w]{120,}$/$script,1p,strict1p,domain=vogue.com
