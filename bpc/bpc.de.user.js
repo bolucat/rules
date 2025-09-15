@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.0.0
+// @version         4.2.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -660,15 +660,23 @@ else if (matchDomain('sueddeutsche.de')) {
                       iframe.style = 'width: 100%; height: 400px; margin-bottom: 32px;';
                     elem = content_new.querySelector(elem_type);
                   }
+                } else if (par.component === 'ercms') {
+                  if (par.content && par.content.url) {
+                    elem = document.createElement('div');
+                    let iframe = document.createElement('iframe');
+                    iframe.src = par.content.url;
+                    iframe.style = 'width: 100%; height: 400px; margin-bottom: 32px;';
+                    elem.appendChild(iframe);
+                  }
                 } else if (par.component === 'subheading') {
                   if (par.content && par.content.text) {
                     elem.innerText = par.content.text;
                     elem.style = 'font-weight: bold;';
                   }
                 } else if (par.component === 'image') {
-                  if (par.content && par.content.image) {
-                    let caption = par.content.caption ? par.content.caption.html + ' (Foto: ' + par.content.imageSource + ')' : '';
-                    let sub_elem = makeFigure(par.content.image.url, caption);
+                  if (par.image) {
+                    let caption = par.caption ? par.caption.html + ' (Foto: ' + par.imageSource + ')' : '';
+                    let sub_elem = makeFigure(par.image.url, caption);
                     elem.appendChild(sub_elem);
                   }
                 } else if (!(['articleHeader', 'articleTeaserM', 'newsletterEmbed'].includes(par.component) || par.component.startsWith('iqadtile')))
