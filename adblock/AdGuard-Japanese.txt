@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: MEG5GimA6BmhiQ1Lzzg33A
-! Diff-Path: ../patches/7/7-s-1758125558-3600.patch
+! Checksum: OboGo1dQKYGzGic4V5nTHA
+! Diff-Path: ../patches/7/7-s-1758211924-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.68.54
-! TimeUpdated: 2025-09-17T16:08:17+00:00
+! Version: 2.0.68.57
+! TimeUpdated: 2025-09-18T16:08:02+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1649,7 +1649,6 @@ n.lat/login|$document
 ://www.etc.*.*.com/$document
 ://www.etc.*.*.club/$document
 .cn/WebDesk/www/index.php$document
-.co.jp.*.cn/ai/$document
 /\.com\/(?:[a-z]{2,}-)+p-\d{4,6}\.html\?(?:page_source|prevRef|re[fl])=/$document,match-case
 /^https:\/\/(?:(?!www)[a-z]{3,}\.)?[0-9a-z\-]{3,}\.(?:com|net|org)\/index\.php\?main_page=product_info(&stl=\d)?&(?:cPath|products_id)=/$document
 ://www2.etc-*.com/$document
@@ -1711,6 +1710,7 @@ _co_jp.*.php$document,to=cc|com
 ://visa-*/pay-with-featured/$document,to=cn|com
 ://eki-*.*/Perosnal_member/$document,to=cn|com
 ://*.*.co.jp.*.com/$document,to=com
+.co.jp.*.*/$document,to=cn|cyou
 -co-jp-*.*/$document,to=cfd|com|sbs|site
 -co-jp.*.*/$document,to=cfd|com|sbs|site
 /product_details?id=$document,to=click
@@ -1719,7 +1719,7 @@ _co_jp.*.php$document,to=cc|com
 ://smdc-$document,to=cn|fit|pl
 ://smbc-$document,to=club|cn|fit|link|shop|top
 /funccode.php|$document,to=cfd|xyz
-.jp%*@$document,domain=cn|com
+.jp%*@$document,to=cn|com
 .com%*@$document,to=cn|com
 |http://t-*/cz/$document,to=monster|online|space
 /ja/payment/|$document,to=co.in|co.za
@@ -1732,14 +1732,14 @@ _co_jp.*.php$document,to=cc|com
 /shopping/item/m*/?zenid=$document,to=cfd|fun|shop|space|top|xyz
 /mall/*.html?zenid=$document,to=cfd|fun|shop|space|top|xyz
 /mart/*.html?zenid=$document,to=cfd|fun|shop|space|top|xyz
-/^https?:\/\/([-0-9a-z]{3,}\.)?[a-z]{6,}\.[a-z]{3,7}\/product\/\d{6,}(\.html)?$/$document,to=baby|casa|fun|online|org|top|website|yoga
+/^https?:\/\/([-0-9a-z]{3,}\.)?[a-z]{6,}\.[a-z]{3,7}\/product\/\d{6,}(\.html)?$/$document,to=baby|cam|casa|fun|online|org|top|website|yoga
 /^https:\/\/[a-z]{5,8}\.[a-z]{4,10}\.[a-z]{2,6}\/item\/m\d{10,11}$/$document,to=shop
 /?AC=*&IC=$document,to=com|fun|online|site
 .asp?AC=*&IC=$document,to=com|fun|online|site
 /ap/signin/openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.co.jp$document,to=cn|top|xyz
 /index.php?route=product/product&product_id=$document,to=cyou|life|live|shop|xyz|~ocam.live
-/index.php?main_page=product_info*&cPath=$document,to=asia|baby|bar|beauty|best|biz|bond|buzz|cam|casa|cfd|click|cloud|club|cyou|fashion|fit|forum|fun|gay|homes|icu|ink|lat|life|live|ltd|makeup|me|mom|monster|my|one|online|pics|pro|qpon|quest|rent|rest|ru.com|run|sa.com|sbs|shop|site|skin|space|store|tokyo|top|website|wiki|work|xyz|yachts|yoga|za.com
-/index.php?main_page=product_info&products_id=$document,to=asia|baby|bar|beauty|best|biz|bond|buzz|cam|casa|cfd|click|cloud|club|cyou|fashion|fit|forum|fun|gay|homes|icu|ink|lat|life|live|ltd|makeup|me|mom|monster|my|one|online|pics|pro|qpon|quest|rent|rest|ru.com|run|sa.com|sbs|shop|site|skin|space|store|tokyo|top|website|wiki|work|xyz|yachts|yoga|za.com
+/index.php?main_page=product_info*&cPath=$document,to=asia|baby|bar|beauty|best|biz|blog|bond|buzz|cam|casa|cfd|click|cloud|club|cyou|fashion|fit|forum|fun|gay|homes|icu|ink|lat|life|live|ltd|makeup|me|mom|monster|my|one|online|pics|pro|qpon|quest|rent|rest|ru.com|run|sa.com|sbs|shop|site|skin|space|store|tokyo|top|website|wiki|work|xyz|yachts|yoga|za.com
+/index.php?main_page=product_info&products_id=$document,to=asia|baby|bar|beauty|best|biz|blog|bond|buzz|cam|casa|cfd|click|cloud|club|cyou|fashion|fit|forum|fun|gay|homes|icu|ink|lat|life|live|ltd|makeup|me|mom|monster|my|one|online|pics|pro|qpon|quest|rent|rest|ru.com|run|sa.com|sbs|shop|site|skin|space|store|tokyo|top|website|wiki|work|xyz|yachts|yoga|za.com
 /\.(?:club|cn|icu|top|pro|site|work)\/Personal\/member\/Login\/index\.php\?oneTimeAccessID=/$document,to=club|cn|icu|top|pro|site|work
 ! https://github.com/AdguardTeam/FiltersCompiler/issues/254
 /^https:\/\/(?!www)[a-z]{3,5}\.[a-z]{4,10}\.[a-z]{2,6}\/item-(?:[0-9a-z]{10}|\d{8})\.html$/$document,match-case,to=art|baby|biz|blog|buzz|cards|cc|cfd|click|cloud|club|cyou|eu|fit|fun|hair|homes|info|ink|lat|life|live|lol|me|mom|my|one|online|pics|quest|sbs|shop|site|skin|space|store|today|top|world|xyz
@@ -5752,7 +5752,6 @@ apexlegends-news.com###diver_widget_pcsp-55
 azurlanesokuhou.blog.jp##a[href^="https://www.amazon.co.jp/gp/product/"]
 pokemongo-get.com##.entry-content > p + div[style="border-style: solid ; border-width: 2px; border-color: #CCCCCC;"]
 mathwords.net##.adsense_p_2
-oshiete.goo.ne.jp##div[style^="margin:20px"][class="clearfix"]
 doujinhibiki.net##div[class^="unBox"][class*="ad"]
 japan.cnet.com###ad_text
 relazo.net##div[style*="height:250px;"]
@@ -8449,8 +8448,6 @@ gaccom.jp##.realestate-memory-box
 gaccom.jp##div[style="margin-top:10px; margin-bottom:30px;text-align:center;display:inline-block;"]
 gaccom.jp##div[style="padding:25px 10px;display:inline-block;"]
 ||enoge.org/js/amazon_sale_
-oshiete.goo.ne.jp##.sponcer
-oshiete.goo.ne.jp###gheader
 moneyzine.jp##.pickupBlock
 moneyzine.jp##.specialBlock
 yugioh-wiki.net###body > table:last-child
@@ -8649,7 +8646,7 @@ mangahack.com##.nbrArea
 mangaz.com###scroll-adv
 mangaz.com##.amazonLinkMod
 playlearnlife.com##.theiaStickySidebar > .widget_text
-oshiete.goo.ne.jp,city.joetsu.niigata.jp,shogi.or.jp##.addArea
+city.joetsu.niigata.jp,shogi.or.jp##.addArea
 kurashiru.com##.PcApp-adContainer
 kurashiru.com##div[class*="adsWrapper"]
 kyounoryouri.jp##.recipe--detail-bannerarea
@@ -9659,7 +9656,7 @@ hamusoku.com##.topbox
 ||seesaa.net/image/loopad*$subdocument,third-party
 ||vippers.jp/include*$xmlhttprequest
 47news.jp##.billbord-js
-netamesi.com,amaebi.co,bnewg.sokuho.org##.advertisement-position
+butumori.com,netamesi.com,amaebi.co,bnewg.sokuho.org##.advertisement-position
 asahi.com##.OutbrainRecMod
 asahi.com##.InReadCenter
 asahi.com##.footer-ad-area
@@ -10224,7 +10221,6 @@ entameclip.com#?#.widget_text > div > div[id^="logly"]:upward(2)
 otakumix.doorblog.jp#?##sidebar > div.plugin-memo:has(> div.sidetitlebody > div.sidetitle:contains(/ad/))
 openworldnews.net###maintext > blockquote:has(> div.AmaQuick-box)
 pokemongo-kouryakumatome.net##.-freeArea:has(ins.adsbygoogle)
-oshiete.goo.ne.jp#?#.articlePhotoList_articleNormal > a[data-osccid^="recommend_qa_ad"] > div.img_crown:upward(2)
 suzukikenichi.com#?##side > div > .widget-wrap > h3:contains(/^Ads$/):upward(1)
 suzukikenichi.com#?#.entry-footer > p[style]:contains([Ads & Featured Articles])
 heim.jp#?#.l-section > div.u-alignCenter > ins.adsbygoogle:upward(2)
@@ -10455,7 +10451,7 @@ jbbs.shitaraba.net#?#.jbbsCustomHeader > table[width="95%"] a[href="http://wiki.
 jbbs.shitaraba.net#?#body table[width="640"] > tbody:has(> tr > td > a[href^="http://www.amazon."])
 jbbs.shitaraba.net#?#td > div[align="left"]:has(> a[href^="http://www.amazon."])
 mildch.com##.article__content > div[align="center"]:not([class])
-mildch.com##.module--free:has(> div.module__body > ins.adsbygoogle)
+butumori.com,mildch.com##.module--free:has(> div.module__body > ins.adsbygoogle)
 jugem.jp##.entry:has(#gInactiveAdContainer)
 jugem.jp#?#.side_content > dl div#jgSideAdContainer:upward(dl)
 jugem.jp#?##entry .entry_title:contains(スポンサーサイト):upward(#entry)

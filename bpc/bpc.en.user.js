@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.0.3
+// @version         4.2.0.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -863,6 +863,8 @@ else if (matchDomain('ft.com')) {
   }
   let url = window.location.href;
   getArchive(url, 'div#barrier-page', '', 'div.n-layout__row--content', '', 'div[style*="article-body"]', 'body');
+  let banners = '.js-article-ribbon, div.o-ads, pg-slot';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain('gbnews.com')) {
@@ -1661,7 +1663,7 @@ else if (matchDomain('bloomberg.com')) {
   window.setTimeout(function () {
     let shimmering = document.querySelector('article.first-story div[class*="Placeholder_placeholderParagraphWrapper-"]');
     if (shimmering) {
-      header_nofix(shimmering.parentNode, '', 'BPC > disable Dark Reader or enable JavaScript for site');
+      header_nofix(shimmering.parentNode, '', 'BPC > enable JavaScript for site');
     }
   }, 5000);
 }
@@ -4420,26 +4422,6 @@ else if (matchDomain(usa_tribune_domains)) {
   getJsonUrl('div.paywall-container', '', 'div.body-copy', {art_class: 'body-copy'});
   let ads = 'div.dfp-ad, div.bx-slab, div.sbn-widget-body, div#mobile-adhesion';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('usatoday.com')) {
-  if (window.location.hostname.startsWith('amp.')) {
-    amp_unhide_access_hide('="gup.hasAssetAccess"', '', 'div[class*="ad-"]');
-  } else {
-    amp_redirect('div.gnt_rb');
-    let roadblock = document.querySelector('.roadblock-container');
-    if (roadblock) {
-      removeDOMElement(roadblock);
-      article_next = document.querySelector('article.next-in-depth-story > div.article-inner');
-      if (article_next) {
-        let url = article_next.getAttribute('data-url');
-        let weblink = document.createElement('a');
-        weblink.href = url;
-        weblink.innerText = 'open next in-depth story';
-        article_next.appendChild(weblink);
-      }
-    }
-  }
 }
 
 else if (matchDomain('vice.com')) {
