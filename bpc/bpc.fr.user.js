@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.0.0
+// @version         4.2.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -281,8 +281,35 @@ else if (matchDomain('connaissancedesarts.com')) {
 }
 
 else if (matchDomain('courrierinternational.com')) {
-  let url = window.location.href;
-  getArchive(url, 'div#bloc_paywall', '', 'article');
+  let paywall = document.querySelector('div#bloc_paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article_sel = 'div.article-text';
+    let article = document.querySelector(article_sel);
+    if (article) {
+      let url = window.location.href;
+      let url_src = 'https://apps.courrierinternational.com/cri/v1/premium-android-phone/article?id=' + encodeURIComponent(window.location.pathname);
+      let json_key = 'templates.raw_content.content';
+      getExtFetch(url_src, json_key, {}, main_cri);
+      function main_cri(url, data) {
+        try {
+          if (data) {
+            let parser = new DOMParser();
+            let doc = parser.parseFromString(data, 'text/html');
+            let article_new = doc.querySelector(article_sel);
+            if (article_new) {
+              article_new.querySelectorAll('a[href^="crifr://article?id="]').forEach(e => e.href = decodeURIComponent(e.href.split('crifr://article?id=')[1].split('&')[0]).split('?')[0]);
+              article.parentNode.replaceChild(article_new, article);
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  }
+  let ads = 'div.dfp-slot, div.dfp__container';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('elle.fr')) {
@@ -1697,9 +1724,11 @@ else if (matchDomain('lamontagne.fr') || matchDomain(fr_gcf_custom_domains)) { /
                   if (tts_url) {
                     let audio_div = document.createElement('div');
                     audio_div.innerText = "Écouter l'article";
-                    audio_div.style = 'margin-bottom: 20px;';
-                    let audio = document.createElement('iframe');
+                    audio_div.style = 'margin-bottom: 20px; font-weight: bold;';
+                    let audio = document.createElement('audio');
                     audio.src = tts_url;
+                    audio.style = 'width: 100%';
+                    audio.setAttribute('controls', '');
                     audio_div.appendChild(audio);
                     article.before(audio_div);
                   }

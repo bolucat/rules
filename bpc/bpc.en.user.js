@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.0.4
+// @version         4.2.0.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3826,6 +3826,9 @@ else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
           header_nofix(video, '', 'BPC > for videos disable extension');
       }
     }
+    let read_more = document.querySelector('div.paywallbox-btn > button');
+    if (read_more)
+      read_more.click();
     let ads = 'div.ad, div.article-ad, div.dfp-ad, div#paywallbox, div[id^="piano-art-"], #test';
     hideDOMStyle(ads);
   } else {

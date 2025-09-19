@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.2.1.0
+// @version         4.2.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -677,9 +677,9 @@ else if (matchDomain('telegraaf.nl')) {
 }
 
 else if (matchDomain('vn.nl')) {
-    let paywall = document.querySelectorAll('section[class^="c-paywall"]');
-    if (paywall.length) {
-      removeDOMElement(...paywall);
+  let paywall = document.querySelectorAll('section[class^="c-paywall"]');
+  if (paywall.length) {
+    removeDOMElement(...paywall);
     let article = document.querySelector('div.c-article-content__container');
     if (article) {
       let json_script = document.querySelector('script#__NEXT_DATA__');
@@ -692,6 +692,16 @@ else if (matchDomain('vn.nl')) {
             let content_new = doc.querySelector('div');
             article.innerHTML = '';
             article.appendChild(content_new);
+            let audio = document.querySelector('div.c-author-info__audio-player');
+            if (audio) {
+              if (json.props.pageProps.article.audioplayer.audioFile.node.mediaItemUrl) {
+                let audio_new = document.createElement('audio');
+                audio_new.src = json.props.pageProps.article.audioplayer.audioFile.node.mediaItemUrl;
+                audio_new.style = 'height: 50px; width: 60%;';
+                audio_new.setAttribute('controls', '');
+                audio.parentNode.replaceChild(audio_new, audio);
+              }
+            }
           } else
             refreshCurrentTab();
         } catch (err) {

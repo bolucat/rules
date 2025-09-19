@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.0.1
+// @version         4.2.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -439,6 +439,22 @@ else if (matchDomain('motorradonline.de')) {
 }
 
 else if (matchDomain(['noz.de', 'shz.de'])) {
+  func_post = function () {
+    let podcasts = document.querySelectorAll('div > div[allow][old-src]');
+    for (let elem of podcasts) {
+      let iframe = document.createElement('iframe');
+      iframe.src = elem.getAttribute('old-src');
+      iframe.style = 'width: 100%; height: 300px;';
+      elem.parentNode.replaceChild(iframe, elem);
+    }
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('div > figure > picture > img[loading="lazy"][style]');
+      for (let elem of lazy_images) {
+        elem.style = 'width: 95%;';
+        elem.parentNode.parentNode.parentNode.removeAttribute('style');
+      }
+    }
+  }
   let url = window.location.href;
   getArchive(url, 'div.paywall', '', 'article');
   let ads = 'div.ad_label';
