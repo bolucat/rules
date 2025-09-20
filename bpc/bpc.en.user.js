@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.0.5
+// @version         4.2.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2307,6 +2307,37 @@ else if (matchDomain('financialexpress.com')) {
   let register = 'div.pcl-wrap';
   let ads_selector = window.location.pathname.endsWith('/lite/') ? '.ad-bg-container' : 'div[class*="-ads-blocks-ad-unit"]';
   hideDOMStyle(register + ', ' + ads_selector);
+}
+
+else if (matchDomain('fmrmagazine.com')) {
+  let paywall = document.querySelector('div.fr-gate-overlay');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.issue-article-intro');
+    if (article) {
+      let url_src = window.location.href.split(/[#\?]/)[0] + '.json';
+      fetch(url_src)
+      .then(response => {
+        if (response.ok) {
+          response.json().then(json => {
+            try {
+              let json_text = json.page.body_html;
+              if (json_text) {
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(json_text, 'text/html');
+                let article_new = doc.querySelector('div.issue-article-content');
+                if (article_new)
+                  article.after(article_new);
+                addStyle('body {overflow: auto !important;}');
+              }
+            } catch (err) {
+              console.log(err);
+            }
+          });
+        }
+      })
+    }
+  }
 }
 
 else if (matchDomain('forbes.com')) {
