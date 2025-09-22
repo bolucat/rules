@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.2.0
+// @version         4.2.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -57,6 +57,8 @@ if (matchDomain('aachener-zeitung.de')) {
   let noscroll = document.querySelectorAll('html[class], body[class]');
   for (let elem of noscroll)
     elem.removeAttribute('class');
+  let ads = 'section[data-theme-sponsored-content]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('aerztezeitung.de')) {
@@ -672,8 +674,11 @@ else if (matchDomain('sueddeutsche.de')) {
                     let elem_type = par.content.html.startsWith('<div>') ? 'div' : 'p';
                     let content_new = parser.parseFromString('<' + elem_type + '>' + parseHtmlEntities(par.content.html) + '</' + elem_type + '>', 'text/html');
                     let iframe = content_new.querySelector('iframe');
-                    if (iframe)
-                      iframe.style = 'width: 100%; height: 400px; margin-bottom: 32px;';
+                    if (iframe) {
+                      iframe.style = 'width: 100%; margin-bottom: 32px;';
+                      if (!iframe.height)
+                        iframe.height = '400px';
+                    }
                     elem = content_new.querySelector(elem_type);
                   }
                 } else if (par.component === 'ercms') {

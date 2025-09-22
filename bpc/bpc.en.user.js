@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.1.0
+// @version         4.2.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -190,7 +190,6 @@ var ke_nation_media_domains = ['businessdailyafrica.com', 'nation.africa'];
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
 var no_dn_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'hydrogeninsight.com', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
 var sg_sph_media_domains = ['businesstimes.com.sg', 'straitstimes.com'];
-var timesofindia_domains = ['epaper.indiatimes.com', 'timesofindia.indiatimes.com'];
 var uk_dmg_media_domains = ['dailymail.co.uk', 'mailonsunday.co.uk', 'thisismoney.co.uk'];
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
@@ -423,14 +422,17 @@ else if (matchDomain('macrobusiness.com.au')) {
       try {
         let json = JSON.parse(json_script.text);
         let json_text = json.filter(x => typeof x === 'string' && x.match(/(<|\\u003C)p>/))[0];
-        let parser = new DOMParser();
-        let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-        let content_new = doc.querySelector('div');
-        let article = document.querySelector('div.content');
-        if (article) {
-          article.innerHTML = '';
-          article.appendChild(content_new);
-        }
+        if (json_text) {
+          let parser = new DOMParser();
+          let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+          let content_new = doc.querySelector('div');
+          let article = document.querySelector('div.content');
+          if (article) {
+            article.innerHTML = '';
+            article.appendChild(content_new);
+          }
+        } else
+          refreshCurrentTab();
       } catch (err) {
         console.log(err);
       }
@@ -2171,6 +2173,8 @@ else if (matchDomain('economictimes.indiatimes.com')) {
       removeDOMElement(f_col);
     }
   }
+  let ads = 'div.topAdContainer, div.vdo_ai_can_ani, div[data-ad-slot]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('economist.com')) {
@@ -4128,81 +4132,29 @@ else if (matchDomain('timeshighereducation.com')) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain(timesofindia_domains)) {
-  if (matchDomain('epaper.indiatimes.com')) {
-    let blocker = document.querySelector('div.epaperBlockerWrap');
-    removeDOMElement(blocker);
-    if (window.location.pathname.startsWith('/english-news-paper-today-toi-print-edition/')) {
-      let paywall = document.querySelector('section#blocker');
-      if (paywall) {
-        let fq = document.querySelector('section#fq');
-        removeDOMElement(paywall, fq);
-        let json_script = getArticleJsonScript();
-        if (json_script) {
-          let json = JSON.parse(json_script.text);
-          if (json) {
-            let json_text = json.articleBody;
-            let content = document.querySelector('section[type="synopsis"]');
-            if (json_text && content) {
-              let article_new = document.createElement('p');
-              article_new.innerText = breakText(json_text);
-              content.innerHTML = '';
-              addStyle('[type="synopsis"]::after {background: none !important;}');
-              content.appendChild(article_new);
-            }
+else if (matchDomain('epaper.indiatimes.com')) {
+  let blocker = document.querySelector('div.epaperBlockerWrap');
+  removeDOMElement(blocker);
+  if (window.location.pathname.startsWith('/english-news-paper-today-toi-print-edition/')) {
+    let paywall = document.querySelector('section#blocker');
+    if (paywall) {
+      let fq = document.querySelector('section#fq');
+      removeDOMElement(paywall, fq);
+      let json_script = getArticleJsonScript();
+      if (json_script) {
+        let json = JSON.parse(json_script.text);
+        if (json) {
+          let json_text = json.articleBody;
+          let content = document.querySelector('section[type="synopsis"]');
+          if (json_text && content) {
+            let article_new = document.createElement('p');
+            article_new.innerText = breakText(json_text);
+            content.innerHTML = '';
+            addStyle('[type="synopsis"]::after {background: none !important;}');
+            content.appendChild(article_new);
           }
         }
       }
-    }
-  } else {
-    let url = window.location.href;
-    let region_block = document.querySelector('div.plan-popup.active');
-    if (region_block) {
-      removeDOMElement(region_block);
-      let overflow = document.querySelector('html[style]');
-      if (overflow)
-        overflow.removeAttribute('style');
-    }
-    if (!window.location.pathname.includes('/amp_')) {
-      let paywall = document.querySelector('div[id^="story-blocker"]');
-      if (paywall) {
-        removeDOMElement(paywall);
-        let json_script = getArticleJsonScript();
-        if (json_script) {
-          try {
-            let json = JSON.parse(json_script.text);
-            if (json) {
-              let json_text = json.articleBody;
-              let article = document.querySelector('div.paywall');
-              if (json_text && article) {
-                if (!json_text.match(/\s(src|href)=/))
-                  json_text = breakText(json_text).replace(/\n\n/g, '<br><br>');
-                window.setTimeout(function () {
-                  let parser = new DOMParser();
-                  let doc = parser.parseFromString('<div>' + parseHtmlEntities(json_text) + '</div>', 'text/html');
-                  let article_new = doc.querySelector('div');
-                  if (article_new) {
-                    article.innerHTML = '';
-                    article.appendChild(article_new);
-                  }
-                }, 1500);
-                addStyle('div.paywall::after {background-image: none !important;}');
-              }
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
-        window.setTimeout(function () {
-          let popup_button = document.querySelector('div.primeshow button:not([data-type])');
-          if (popup_button)
-            popup_button.click();
-        }, 1000);
-        let banners = 'div.bannerBenefitsWrapper';
-        hideDOMStyle(banners);
-      }
-    } else {
-      ampToHtml();
     }
   }
 }
