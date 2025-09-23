@@ -1,8 +1,8 @@
 [Adblock Plus 2.0]
-! Checksum: wzFvPBfvW2ofeyi2pmV/bQ
-! Version: 202509221811
+! Checksum: tlr+GpzKtwWHgm8i16DyPw
+! Version: 202509231821
 ! Title: RU, UA, UZ, KZ
-! Last modified: 22 Sep 2025 18:11 UTC
+! Last modified: 23 Sep 2025 18:21 UTC
 ! Expires: 1 days (фильтр обновляется автоматически каждые 2 дня)
 ! Homepage: https://forums.lanik.us/viewforum.php?f=102
 !
@@ -13175,6 +13175,7 @@ penzadoctor.ru##.article-banner
 techdigest.ru##.article-banner-side
 www.sport.ru##.article-bottom-block > .hdr2
 lifehacker.ru#?#.article-card-container > .container > [class*="article-card"]:-abp-has(.lh-article-card-meta__partner)
+lifehacker.ru#?#.article-card-container > .container > [class*="article-card"]:-abp-has(.slider__title:-abp-contains(Полезные товары))
 lifehacker.ru#?#.article-card-container > .container > [class*="article-card"]:-abp-has(a[href*="/topics/shopping/"])
 lifehacker.ru#?#.article-card-container > .container > [class*="article-card"]:-abp-has(a[href*="utm_"])
 playua.net##.article-comments > .row > div[class] + div[class]
@@ -15067,6 +15068,7 @@ list-org.com##.menu > .sticky
 2krota.ru##.menu > a:not([href^="/"])
 1yar.tv##.menu > li > a[href^="https://vk.com/"]
 appleinsider.ru##.menu-item > a[href*="utm_campaig"]
+burninghut.ru##.menu-item__link[href="/category/musthave/"]
 kursiv.media##.menu-promo
 freelansim.ru##.menu__item.special
 2ip.ua##.menu_banner
@@ -16104,6 +16106,7 @@ grodno24.com##.similar
 podillyanews.com##.similar-news
 novostiua.net##.simple-banner
 kurs.if.ua##.simple-top-block
+lifehacker.ru##.single-article > .widgets-renderer
 novadoba.com.ua##.single-bottom-advertising-block
 pravda.if.ua##.single-post-6__author
 hi-tech.ua#?#.single-post:-abp-has(.sam-pro-container)
@@ -16930,6 +16933,8 @@ forum.guns.ru##[class*="hide"][class$="ban"]
 appleinsider.ru##[class*="home-credit"]
 puerrtto.livejournal.com##[class*="kupibilet"]
 espritgames.ru##[class*="landing"]
+burninghut.ru#?#[class*="list"] > .article-card-small-list__item:-abp-has(.card-footer__categories > a[href="/category/musthave/"])
+burninghut.ru#?#[class*="list"] > .article-card-small-list__item:-abp-has(.card-footer__categories > span:-abp-contains(Реклама))
 www.onliner.by##[class*="megabanner"]
 minfin.com.ua##[class*="mfz-banner"]
 minfin.com.ua##[class*="mfz-teaser"]
@@ -18646,6 +18651,7 @@ russian.rt.com##div[class^="Popup-"]
 mobiguru.ru##div[class^="RELINK"]
 tass.ru##div[class^="ReadTass_wrapper"]
 www.sibnet.ru##div[class^="Realty_root"]
+auto.ru##div[class^="RecommendationsItem__ad-"]
 kanobu.ru#?#div[class^="Sidebar_sidebar_list"] > div[class]:-abp-has(> div > div > span:-abp-contains(Партнерский материал))
 igromania.ru,kanobu.ru##div[class^="TopPageBanner_wrap_"]
 yarnovosti.com##div[class^="_5"]
@@ -23415,15 +23421,12 @@ igdz1.ru^$script,domain=igdz.ru
 !#if ext_abp
 ! запросы
 ! ловушка для обфускации дзена: главная, статьи, новости, погода
-||dzen.ru/a/$csp=script-src 'unsafe-inline' 'unsafe-eval' data: static.dzeninfra.ru/react/ static.dzeninfra.ru/s3/zen-lib/ yandex.ru/ads/ vk.com/dist/ vk.com/js/api/videoplayer.js vk.com/dist/public/api/
-||dzen.ru/articles$csp=script-src 'unsafe-inline' 'unsafe-eval' data: static.dzeninfra.ru/react/ static.dzeninfra.ru/s3/zen-lib/ yandex.ru/ads/ vk.com/dist/ vk.com/js/api/videoplayer.js vk.com/dist/public/api/
-||dzen.ru/news$csp=script-src 'unsafe-inline' 'unsafe-eval' data: static.dzeninfra.ru/react/ static.dzeninfra.ru/s3/zen-lib/ yandex.ru/ads/ vk.com/dist/ vk.com/js/api/videoplayer.js vk.com/dist/public/api/
+||dzen.ru/a/$csp=script-src 'unsafe-inline' 'unsafe-eval' data: static.dzeninfra.ru/react/ static.dzeninfra.ru/s3/zen-apps/ static.dzeninfra.ru/s3/zen-lib/ yandex.ru/ads/ vk.com/dist/ vk.com/js/api/videoplayer.js vk.com/dist/public/api/
+||dzen.ru/articles$csp=script-src 'unsafe-inline' 'unsafe-eval' data: static.dzeninfra.ru/react/ static.dzeninfra.ru/s3/zen-apps/ static.dzeninfra.ru/s3/zen-lib/ yandex.ru/ads/ vk.com/dist/ vk.com/js/api/videoplayer.js vk.com/dist/public/api/
+||dzen.ru/news$csp=script-src 'unsafe-inline' 'unsafe-eval' data: static.dzeninfra.ru/react/ static.dzeninfra.ru/s3/zen-apps/ static.dzeninfra.ru/s3/zen-lib/ yandex.ru/ads/ vk.com/dist/ vk.com/js/api/videoplayer.js vk.com/dist/public/api/
 ||dzen.ru/pogoda/$script
-||static.dzeninfra.ru/s3/zen-lib/*/dzen-desktop/*.*.*.*.*.*.*.$script
-||static.dzeninfra.ru/s3/zen-lib/*/dzen-desktop/*_$script
-||static.dzeninfra.ru/s3/zen-lib/*/dzen-layout/*.*.*.*.*.*.*.$script
-||static.dzeninfra.ru/s3/zen-lib/*/news-site-mobile/*_$script
-||static.dzeninfra.ru/s3/zen-lib/*/news-site/*_$script
+||static.dzeninfra.ru/s3/zen-lib/*/dzen-desktop/*a*a*a*a*a*a*a$script
+||static.dzeninfra.ru/s3/zen-lib/*/news-site-mobile/*a*a*a*a*a*a*a$script
 !
 $csp=script-src-attr 'none',domain=eurointegration.com.ua|pravda.com.ua|sportanalytic.com
 /^https?://24smi\.org/*[/]*[/][^\s]{8,}/$xmlhttprequest,domain=24smi.org
@@ -23451,7 +23454,7 @@ https://*adtech_uid=$~third-party,xmlhttprequest,domain=lena-miro.ru|levik.blog|
 ||news.mail.ru/-/*.js?
 ||newsyou.info/wp-content/plugins/gtranslate/
 ||newsyou.info^$csp=script-src-elem 'self' https:
-||pikabu.ru/ajax/*?bNm5j=$xmlhttprequest
+||pikabu.ru/ajax/*?t8Orr=$xmlhttprequest
 ||ritsatv.ru^$csp=script-src
 ||ritsatv.ru^$popup
 ||ritsatv.ru^$~document
@@ -25322,7 +25325,7 @@ ruskline.ru##body > div[id^="money"]
 dnpmag.com,trendymen.ru##body > div[id^="popup-"]
 7days.ru,vokrug.tv##body > div[style^="position: fixed; bottom: 0px;"]
 daz3d.ru##body > span[id^="s"][style]
-esputnik.com##body.cl-noscroll > .cl-dialog[style*="position: fixed"]
+esputnik.com,~webinars.esputnik.com##body.cl-noscroll > .cl-dialog[style*="position: fixed"]
 pinterest.com##div[class*="ScreenBanner"]
 noworries.news##div[class*="remodal"]
 muzofon.com##div[class*="simplemodal"]

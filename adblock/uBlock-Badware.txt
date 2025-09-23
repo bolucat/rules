@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Mon, 22 Sep 2025 03:43:56 +0000
-! Diff-Path: ../patches/2025.9.22.815.patch#ublock-badware
+! Last modified: Tue, 23 Sep 2025 12:57:27 +0000
+! Diff-Path: ../patches/2025.9.23.870.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -560,6 +560,7 @@ howtoremove.guide###gray_de
 ||cdn.710k.com^$all
 .com/s/*?track=$doc
 ||cdnservice.ink^$all
+.co.in/a0x1/?cid=$doc
 ||discordvip.createsocialcard.top^$all
 ||whatsapp-32w.pages.dev^$all
 ^s1=*&click_id=$doc
@@ -2341,6 +2342,7 @@ cracksmid.com##div[style=""] > center > center
 ||pages.dev/a0ler0tm0s.mp3
 ||pages.dev/al1.mp3
 ||pages.dev/yaketsuku.mp3
+||pages.dev/esc.js
 ||pages.dev/fulls.js
 ||pages.dev/fullscreen.js
 ||pages.dev/media/alert.mp3
@@ -2351,6 +2353,7 @@ cracksmid.com##div[style=""] > center > center
 ||pages.dev/jupiter.js
 ||pages.dev/noir.js
 ||pages.dev/*/alertmicrosoft.mp3
+||pages.dev/webs.mp4
 ||r2.dev/_Fm7-alert.mp3
 ||r2.dev/media/_Fm7-alert.mp3
 ||windows.net/*/bxsafe.js
@@ -2428,7 +2431,7 @@ cracksmid.com##div[style=""] > center > center
 ||azurewebsites.net/alertmicrosoft.mp3
 ||azureedge.net/*/esc.js
 ||azureedge.net/*/flscn.js
-||ondigitalocean.app/text_tel.js
+/text_tel.js$domain=app|dev|fit
 z13.web.core.windows.net##+js(aeld, DOMContentLoaded, fullscreenEnabled)
 ||crackedpc.org^$all
 ||cracksway.com^$all
@@ -4430,10 +4433,9 @@ weightlossdiet.top##+js(acs, open, executeCode)
 ||update-macosx.com^$all
 ||cuocthiianhdepthieunhii2025.weebly.com^$all
 ||carrotsaystopping.com^$all
-/?jsc=*&f=*&t=$xhr,redirect=noop.txt
+/?js*&f=*&t=$xhr,redirect=noop.txt
 /submit.php?i=*&t=$xhr
-://api.*.com/?rt=$doc
-://api.*.com/?zrt=$doc
+/^https:\/\/api\.[a-z]{20,}\.com\/\?[a-z]{2,3}=[0-9a-f]{32}$/$doc,match-case
 ||webnotif.online^$all
 ||virusscanner.live^$all
 ||live/click.php?key=$doc
@@ -4553,3 +4555,5 @@ $doc,ipaddress=185.216.143.121
 ||bitchat.pro^$all
 ||bitchat.live^$all
 ||myhuaweicloud.com/app/Bitchat_*.apk$all
+||upa1bit.$all
+||upbitbr.$all
