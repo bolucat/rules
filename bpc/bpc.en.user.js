@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.1.2
+// @version         4.2.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1126,7 +1126,7 @@ else if (matchDomain('the-tls.com')) {
 
 else if (matchDomain('thelawyer.com')) {
   if (window.location.pathname.startsWith('/mda/')) {
-    header_nofix('div.sf-content__post', 'div.sf-login-form', 'BPC > no fix');
+    header_nofix('div.sf-content__post', 'div.sf-login-form');
   } else if (true) {
     let body = document.querySelector('body[class*="postid-"]');
     if (body) {
@@ -4567,95 +4567,64 @@ else if (matchDomain('wsj.com')) {
       fix_dowjones_live();
     }, 1500);
   } else {
-    let paywall = document.querySelector('.snippet-promotion, div[id*="-snippet-overlay"]');
+    let paywall_sel = '.snippet-promotion, div[id*="-snippet-overlay"]';
+    let paywall = document.querySelector(paywall_sel);
     if (paywall) {
-      removeDOMElement(paywall);
-      let article = document.querySelector('article section');
-      let article_id_dom = document.querySelector('head > meta[name="article.id"][content]');
-      if (article && article_id_dom) {
-        article.removeAttribute('class');
-        let article_id = article_id_dom.content;
-        let url_src = 'https://mats.mobile.dowjones.io/translate/' + article_id + '/jpml';
-        let x_api_key = 'e05995ff442143255eb8381f72d4913bf7503d6c';
-        getExtFetch(url_src, '', {"x-api-key": x_api_key}, main_wsj_pro);
-        function main_wsj_pro(url_src, data) {
-          try {
-            if (data) {
-              let intro = article.querySelectorAll('p[class][data-type="paragraph"]');
-              let par_class;
-              if (intro[0]) {
-                par_class = intro[0].className;
-                removeDOMElement(...intro);
-              }
-              let parser = new DOMParser();
-              let doc = parser.parseFromString(data, "application/xml");
-              let body = doc.querySelector('panel#body');
-              if (body) {
-                let media_bucket = doc.querySelector('panel#metadata > p#media-bucket');
-                let media_items = [];
-                let schema_data = [];
-                if (media_bucket) {
-                  media_items = JSON.parse(media_bucket.innerHTML).items.filter(x => ['image', 'video', 'youtube'].includes(x.type));
-                  if (media_items.length) {
-                    let video = document.querySelector('div[data-type="video"]');
-                    if (!(video && media_items[0].type !== 'video'))
-                      media_items = media_items.slice(1);
-                    let schema_script = document.querySelector('script#articleschema');
-                    if (schema_script)
-                      schema_data = JSON.parse(schema_script.text);
-                  }
+      let url = window.location.href;
+      let article_sel = 'article section';
+      let wsj_pro = paywall.querySelector('a[href^="https://wsjpro.com/"]');
+      if (wsj_pro) {
+        header_nofix(article_sel, paywall_sel);
+      } else {
+        let video_sel = 'div[data-type="video"]';
+        let video = document.querySelector(video_sel);
+        let schema_script = document.querySelector('script#articleschema');
+        func_post = function () {
+          let pars = document.querySelectorAll(article_sel + ' > div[data]');
+          if (pars.length < 5)
+            header_nofix(article_sel, '', 'BPC > no archive-fix');
+          if (video) {
+            let video_new = document.querySelector(video_sel);
+            if (video_new && video_new.parentNode)
+              video_new.parentNode.replaceChild(video, video_new);
+          }
+          let inline_videos = document.querySelectorAll('div[id^="video"]');
+          for (let inline_video of inline_videos) {
+            let video_id = inline_video.id.replace('video', '');
+            if (video_id && schema_script) {
+              try {
+                let video_data = JSON.parse(schema_script.text).find(x => x['@type'] === 'VideoObject' && x.embedUrl.includes(video_id));
+                if (video_data && inline_video.parentNode) {
+                  let elem = document.createElement('iframe');
+                  elem.src = video_data.embedUrl;
+                  elem.style = 'width: ' + inline_video.offsetWidth + 'px; height: ' + inline_video.offsetWidth * 3 / 4 + 'px;';
+                  inline_video.parentNode.replaceChild(elem, inline_video);
                 }
-                let pars = body.querySelectorAll('p[class], h2, h3, panel.media-item');
-                let par_first = true;
-                let image_nr = 0;
-                let par_new;
-                for (let par of pars) {
-                  if (par.tagName === 'p') {
-                    if (par_first)
-                      par_first = false;
-                    let doc = parser.parseFromString('<p class="' + par_class + '" data-type="paragraph">' + par.innerHTML.replace(/(<\/?mark([^>]+)?>)/g, '') + '</p>', 'text/html');
-                    par_new = doc.querySelector('p');
-                    if (par_new) {
-                      let app_links = par_new.querySelectorAll('a[data-canonical-url][href^="wsj:"], a[data-canonical-url]:not([href])');
-                      for (let elem of app_links)
-                        elem.href = elem.getAttribute('data-canonical-url');
-                    }
-                  } else if (!par_first && par.tagName === 'panel') {
-                    if (media_items[image_nr]) {
-                      let media_item = media_items[image_nr];
-                      if (media_item.type === 'image' && media_item['manifest-url']) {
-                        par_new = makeFigure(media_item['manifest-url'], media_item.caption + ' PHOTO: ' + media_item.credit.toUpperCase(), {style: 'width: 100%;'});
-                      } else if (media_item.type === 'video' && media_item.sourceid) {
-                        par_new = document.createElement('p');
-                        par_new.className = par_class;
-                        let title = document.createTextNode(media_item.title);
-                        let video = document.createElement('iframe');
-                        video.src = schema_data.find(x => x['@type'] === 'VideoObject' && x.embedUrl.includes(media_item.sourceid)).embedUrl;
-                        video.style = 'width: ' + article.offsetWidth + 'px; height: ' + article.offsetWidth * 3 / 4 + 'px;';
-                        let caption = document.createTextNode(media_item.caption + ' ' + media_item.credit);
-                        par_new.append(title, video, caption);
-                      } else if (media_item.type === 'youtube' && media_item['sourceid']) {
-                        par_new = document.createElement('iframe');
-                        par_new.src = 'https://www.youtube.com/embed/' + media_item['sourceid'];
-                        par_new.style = 'width: 100%; height: 400px;';
-                      } else {
-                        console.log(media_item);
-                      }
-                      image_nr++;
-                    }
-                  } else if (!par_first && par.tagName) {
-                    let doc = parser.parseFromString('<' + par.tagName + '>' + par.innerHTML + '</' + par.tagName + '>', 'text/html');
-                    par_new = doc.querySelector(par.tagName);
-                  }
-                  if (par_new)
-                    article.appendChild(par_new);
-                }
+              } catch (err) {
+                console.log(err);
               }
             }
-          } catch (err) {
-            console.log(err);
           }
+          if (mobile) {
+            let inline_images = document.querySelectorAll('div[style] > figure > picture > img');
+            for (let elem of inline_images) {
+              elem.style = 'width: 100%;';
+              elem.removeAttribute('height');
+              elem.removeAttribute('width');
+              elem.parentNode.removeAttribute('style');
+              elem.parentNode.parentNode.parentNode.removeAttribute('style');
+            }
+            let inline_data = document.querySelectorAll('div[data-layout="inline"][style]');
+            for (let elem of inline_data)
+              elem.removeAttribute('style');
+          }
+          let read_next = document.querySelector('div#cx-what-to-read-next');
+          removeDOMElement(read_next);
+          let inline_wrappers = document.querySelectorAll('div[style*="background-position"] > div[id^="wrapper-INLINEIMM_"]');
+          for (let elem of inline_wrappers)
+            removeDOMElement(elem.parentNode);
         }
+        getArchive(url, paywall_sel, '', article_sel);
       }
     }
   }
