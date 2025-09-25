@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.1.3
+// @version         4.2.1.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1963,7 +1963,7 @@ else if (matchDomain('dnevnik.bg')) {
           if (script.text.startsWith(script_start)) {
             if (!link_script && script.text.includes('significantLink\\":'))
               link_script = script;
-            else if (!json_script && script.text.includes('[storyid:') || (intro_start && script.text.replace(/\\"/g, '"').startsWith(script_start + intro_start)))
+            else if (!json_script && (script.text.includes('[storyid:') || (intro_start && script.text.replace(/\\u003c/g, '<').replace(/\\u003e/g, '>').replace(/<[^<]*>\s?/g, '').replace(/\\"/g, '"').startsWith(script_start + intro_start))))
               json_script = script;
             if (json_script && link_script)
               break;
@@ -2847,6 +2847,45 @@ else if (matchDomain('mid-day.com')) {
     if (read_more)
       read_more.click();
   }
+}
+
+else if (matchDomain('mnimarkets.com')) {
+  let paywall = document.querySelector('div.missing-out-overlay');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.body-html');
+    if (article) {
+      let twitter_description = document.querySelector('head > meta[name="twitter:description"][content]');
+      if (twitter_description && twitter_description.content.length > 200) {
+        let par = article.querySelector('p');
+        if (par)
+          par.innerText = parseHtmlEntities(twitter_description.content);
+      } else {
+        let intro_start = article.innerText.substring(0, 25);
+        let scripts = document.querySelectorAll('script:not([src], [type])');
+        let json_script;
+        let script_start = 'self.__next_f.push([1,"';
+        for (let script of scripts) {
+          if (script.text.startsWith(script_start)) {
+            if (intro_start && script.text.replace(/\\n/g, ' ').startsWith(script_start + intro_start)) {
+              json_script = script;
+              break;
+            }
+          }
+        }
+        if (json_script) {
+          let json_text = json_script.text.split('self.__next_f.push([1,"')[1].split('"])')[0].replace(/\\n\\n/g, '\r\n\r\n').replace(/\\n/g, ' ').replace(/\\"/g, '"').replace(/\\u0026/g, '&');
+          let article_new = document.createElement('p');
+          article_new.innerText = parseHtmlEntities(json_text);
+          article.innerHTML = '';
+          article.appendChild(article_new);
+        }
+      }
+    }
+  }
+  let body = document.querySelector('body');
+  if (body)
+    body.style = 'user-select: text !important';
 }
 
 else if (matchDomain('nationalgeographic.com')) {

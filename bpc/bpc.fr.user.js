@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.2.0
+// @version         4.2.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1226,7 +1226,7 @@ else if (matchDomain('liberation.fr')) {
     let article = document.querySelector('article[data-datawall-status]');
     if (article) {
       let url_src = 'https://arc.api.liberation.fr/content/v4/?website=liberation&website_url=' + encodeURIComponent(window.location.pathname);
-      let x_api_key = 'ejeePeingeitaegho3weengeeyohpu';
+      let x_api_key = 'a7X29mBvQeP1Ld98CgF2rK5uTzWY4h';
       fetch(url_src, {headers: {"x-api-key": x_api_key}})
       .then(response => {
         if (response.ok) {

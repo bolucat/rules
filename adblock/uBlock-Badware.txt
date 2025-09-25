@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Wed, 24 Sep 2025 15:27:58 +0000
-! Diff-Path: ../patches/2025.9.24.928.patch#ublock-badware
+! Last modified: Thu, 25 Sep 2025 14:19:33 +0000
+! Diff-Path: ../patches/2025.9.25.993.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -899,6 +899,7 @@ cracksmid.com##div[style=""] > center > center
 ://account.booking.xn--$doc
 ||complete-to-continue.pages.dev^$all
 ||pichk.myqcloud.com^$doc
+||gooqlee.com^$all
 ! scam sites
 ||webuzz.me^$doc
 ||coup-ling.net^$all
@@ -4558,5 +4559,17 @@ $doc,ipaddress=185.216.143.121
 ||upa1bit.$all
 ||upbitbr.$all
 ||y-comblnator.com^$all
-/^https://gitcoin-[a-z]{1,}\.com/?$/$all,reason="Blatant scammers who are not related to GitHub or Gitcoin whatsoever."
-/^https://[a-z]{1,}-gitcoin\.com/?$/$all,reason="Blatant scammers who are not related to GitHub or Gitcoin whatsoever."
+/^https?:\/\/gitcoin-[a-z]+\.com\//$all,reason="Blatant scammers who are not related to GitHub or Gitcoin whatsoever."
+/^https?:\/\/[a-z]+-gitcoin\.com\//$all,reason="Blatant scammers who are not related to GitHub or Gitcoin whatsoever."
+||paradlgm.com^$all
+-ledger.live^$doc
+||guarda.dev^$all
+||guardan.io^$all
+||official-ledger.live^$all
+||install-ledger.live^$all
+||en-ledger-install.com^$all
+/^https:\/\/[a-z]{5,10}\.[a-z]{5,10}\.[a-z]{3}\/y1\.html$/$doc,match-case,to=com|top|~weebly.com
+://www.*.pro/y1.html|$doc
+||nachdiewelt.click^$all
+||seloriva.com^$doc
+||seloriva.net^$doc

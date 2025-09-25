@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.2.0.0
+// @version         4.2.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -8,6 +8,7 @@
 // @homepageURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
+// @noframes
 // @match           *://*.es/*
 // @match           *://*.abcmais.com/*
 // @match           *://*.abril.com.br/*
@@ -207,12 +208,9 @@ else if (matchDomain(es_grupo_vocento_domains)) {
 }
 
 else if (matchDomain(es_epiberica_domains) || matchDomain(es_epiberica_custom_domains)) {
-  let paywall = document.querySelector('div.ft-helper-closenews');
+  let paywall = document.querySelector('p.ft-helper-closenews');
   if (paywall) {
-    paywall.removeAttribute('class');
-    let hidden_pars = paywall.querySelectorAll('.closeContentEnd');
-    for (let elem of hidden_pars)
-      elem.classList.remove('closeContentEnd');
+    paywall.classList.remove('ft-helper-closenews');
   }
   if (window.location.pathname.endsWith('.amp.html') || ['amp.elperiodico.com', 'amp.epe.es'].includes(window.location.hostname)) {
     let amp_images = document.querySelectorAll('figure > amp-img[src]');
@@ -223,10 +221,10 @@ else if (matchDomain(es_epiberica_domains) || matchDomain(es_epiberica_custom_do
       amp_image.parentNode.replaceChild(elem, amp_image);
     }
     document.querySelectorAll('div#the-most').forEach(e => e.removeAttribute('style'));
-    let ads = 'amp-next-page, span.ad-signature, div.wrap';
+    let ads = 'amp-next-page, span.ad-signature, div.wrap, .ft-ad';
     hideDOMStyle(ads);
   } else {
-    let ads = 'div.commercial-up-full__wrapper, aside.ft-ad, div[class^="_mo_recs"]';
+    let ads = 'div.commercial-up-full__wrapper, .ft-ad, div[class^="_mo_recs"]';
     hideDOMStyle(ads);
   }
 }
