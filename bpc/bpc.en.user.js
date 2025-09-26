@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.1.5
+// @version         4.2.1.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2775,6 +2775,8 @@ else if (matchDomain('livemint.com')) {
     let paywall = document.querySelector('div.paywall');
     if (paywall)
       paywall.classList.remove('paywall');
+    let banners = document.querySelectorAll('div[class^="storyPaywall_paywallStory_"]');
+    removeDOMElement(...banners);
     let ads = '[class^="ad"], [id^="ad"], #subscribeAd, .taboolaHeight';
     hideDOMStyle(ads);
   }
