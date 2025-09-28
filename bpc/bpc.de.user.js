@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.2.1
+// @version         4.2.2.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -36,6 +36,18 @@
 
 (function() {
   //'use strict';
+
+if (matchDomain('automobilwoche.de')) {
+  function automobilwoche_main() {
+    if (window.Fusion) {
+      window.Fusion.globalContent._id = 0;
+      window.Fusion.globalContent.content_restrictions = {};
+    }
+  }
+  window.setTimeout(function () {
+    insert_script(automobilwoche_main);
+  }, 100);
+}
 
 window.setTimeout(function () {
 
@@ -79,6 +91,11 @@ else if (matchDomain('aerztezeitung.de')) {
       }
     }
   }
+}
+
+else if (matchDomain('automobilwoche.de')) {
+  let banners = 'div#piano-paywall-container';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
