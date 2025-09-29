@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.1.7
+// @version         4.2.1.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -150,7 +150,19 @@ if (window.top !== window.self && !matchDomain(['app.historytoday.com', 'appan.n
 
 var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
 
-if (matchDomain('nzherald.co.nz')) {
+if (matchDomain(['adage.com', 'autonews.com'])) {
+  function crain_main() {
+    if (window.Fusion) {
+      window.Fusion.globalContent._id = 0;
+      window.Fusion.globalContent.content_restrictions = {};
+    }
+  }
+  window.setTimeout(function () {
+    insert_script(crain_main);
+  }, 100);
+}
+
+else if (matchDomain('nzherald.co.nz')) {
   function nzherald_main() {
     if (window.Fusion)
       window.Fusion.globalContent.isPremium = false;
@@ -4330,79 +4342,7 @@ else if (matchDomain(usa_conde_nast_domains)) {
 }
 
 else if (matchDomain(usa_craincomm_domains)) {
-  if (domain = matchDomain(['adage.com', 'autonews.com'])) {
-    let paywall = document.querySelector('div#piano-paywall-container');
-    let article = document.querySelector('article.b-article-body');
-    if (paywall && article) {
-      removeDOMElement(paywall);
-      let fusion_script = document.querySelector('script#fusion-metadata');
-      if (fusion_script && fusion_script.text.includes('Fusion.globalContent=')) {
-        try {
-          let json = JSON.parse(fusion_script.text.split('Fusion.globalContent=')[1].split(';Fusion.')[0]);
-          if (json) {
-            article.innerHTML = '';
-            let parser = new DOMParser();
-            let pars = json.content_elements;
-            for (let par of pars) {
-              let par_new;
-              if (['header', 'text'].includes(par.type)) {
-                if (par.content) {
-                  let doc = parser.parseFromString('<p class="c-paragraph">' + par.content + '</p>', 'text/html');
-                  par_new = doc.querySelector('p');
-                }
-              } else if (par.type === 'image') {
-                if (par.url) {
-                  let caption_text = par.caption;
-                  if (par.credits && par.credits.affiliation && par.credits.affiliation[0] && par.credits.affiliation[0].name)
-                    caption_text += ' (' + par.credits.affiliation[0].name + ')';
-                  par_new = makeFigure(par.url, caption_text);
-                }
-              } else if (par.type === 'raw_html') {
-                let doc = parser.parseFromString('<div>' + par.content + '</div>', 'text/html');
-                par_new = doc.querySelector('div');
-              } else if (par.raw_oembed) {
-                if (par.raw_oembed._id) {
-                  par_new = document.createElement('p');
-                  let par_link = document.createElement('a');
-                  par_link.href = par_link.innerText = par.raw_oembed._id.replace(/\/$/, '');
-                  par_link.target = '_blank';
-                  par_new.appendChild(par_link);
-                }
-              } else if (par.type === 'video') {
-                if (par.canonical_url) {
-                  if (domain.startsWith(par.canonical_website)) {
-                    par_new = document.createElement('p');
-                    let par_link = document.createElement('a');
-                    par_link.href = par_link.innerText = 'https://www.' + domain + par.canonical_url.replace(/\/$/, '');
-                    par_link.target = '_blank';
-                    par_new.appendChild(par_link);
-                  } else
-                    console.log(par);
-                }
-              } else if (par.type === 'list') {
-                if (par.items) {
-                  par_new = document.createElement('ul');
-                  for (let item of par.items) {
-                    let li = document.createElement('li');
-                    let doc = parser.parseFromString('<span>' + item.content + '</span>', 'text/html');
-                    let span = doc.querySelector('span');
-                    li.appendChild(span);
-                    par_new.appendChild(li);
-                  }
-                }
-              } else if (!['custom_embed'].includes(par.type)) {
-                console.log(par);
-              }
-              if (par_new)
-                article.appendChild(par_new);
-            }
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    }
-  } else if (matchDomain('european-rubber-journal.com')) {
+  if (matchDomain('european-rubber-journal.com')) {
     let paywall = document.querySelector('div.article-overlay');
     if (paywall) {
       let fade = document.querySelector('div.gradient');
