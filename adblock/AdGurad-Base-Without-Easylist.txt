@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: hLODB3EwaL9L3Cio9hA+cw
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1759165862-3600.patch
+! Checksum: W1tTQFHlJbZV8tjxgszZTw
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1759252243-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.14.26
-! TimeUpdated: 2025-09-29T17:06:55+00:00
+! Version: 2.4.14.50
+! TimeUpdated: 2025-09-30T17:06:31+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -10274,7 +10274,9 @@ on4t.com##+js(no-setTimeout-if, .offsetHeight === 0)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/214289
 /adblock-saas/*
 ! https://github.com/AdguardTeam/AdguardFilters/issues/214326
+idlixku.com##+js(abort-on-stack-trace, navigator, detect)
 idlixku.com##+js(abort-current-script, String.prototype.toLowerCase, /adblock/i)
+idlixku.com#$##dooplay_player_overlay { display: none !important; }
 idlixku.com#$##adblock-modal-wrapper { display: none !important; }
 idlixku.com#$##dt_contenedor { filter: none !important; pointer-events: auto !important; }
 idlixku.com#$##adblock-modal { display: none !important; }
@@ -10468,6 +10470,8 @@ nontonx.com##body > div[style]:has(> div[style] > button[onclick="location.reloa
 seelen.io##+js(no-fetch-if, pagead2.googlesyndication.com/pagead/js/adsbygoogle.js)
 seelen.io#$#.ant-modal-root { display: none !important; }
 seelen.io#$#body { overflow: auto !important; }
+seelen.io#?#body > #seelen-ad ~ div[style*="position: fixed;"][style*="z-index:"]:has(> div > div > div > span:contains(Ad Block Detected))
+!+ NOT_PLATFORM(ext_ff)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/207998
 @@||zeperfs.com^$generichide
 zeperfs.com#$#body .showAd { display: block !important; }
@@ -12179,7 +12183,7 @@ thestar.com,thespec.com,therecord.com,thepeterboroughexaminer.com,stcatharinesst
 thestar.com,thespec.com,therecord.com,thepeterboroughexaminer.com,stcatharinesstandard.ca,niagarafallsreview.ca,wellandtribune.ca,bramptonguardian.com,caledonenterprise.com,cambridgetimes.ca,durhamregion.com,flamboroughreview.com,guelphmercury.com,hamiltonnews.com,insidehalton.com,insideottawavalley.com,mississauga.com,muskokaregion.com,mykawartha.com,newhamburgindependent.ca,niagarathisweek.com,northbaynipissing.com,northumberlandnews.com,orangeville.com,ourwindsor.ca,parrysound.com,sachem.ca,simcoe.com,theifp.ca,toronto.com,waterloochronicle.ca,yorkregion.com,legacy.com,edition.pagesuite-professional.co.uk,hub.metroland.com#@#.adBanner
 ! https://github.com/AdguardTeam/AdguardFilters/issues/161334
 ! https://github.com/AdguardTeam/AdguardFilters/issues/193124
-rajssoid.online,importantclass.com,thevouz.in,smartfityoga.com,mangareleasedate.com###AdbModel
+reportmarathi.in,newsguides.in,gujaratcareerhub.in,rajssoid.online,importantclass.com,thevouz.in,smartfityoga.com,mangareleasedate.com###AdbModel
 ! https://github.com/AdguardTeam/AdguardFilters/issues/161342
 chatgptdemo.info,chatgptdemo.net###ADS-block-detect
 chatgptdemo.info,chatgptdemo.net##+js(no-fetch-if, pagead2.googlesyndication.com)
@@ -21324,6 +21328,7 @@ ap7am.com##.pr-1
 hamropatro.com##.header-banner
 ||hamropatro.com/images/rotating-ads/
 ! https://github.com/AdguardTeam/AdguardFilters/issues/211498
+!+ NOT_OPTIMIZED
 sportswordz.com##.adb-overlay
 ! https://github.com/AdguardTeam/AdguardFilters/issues/205143
 asianetnews.com##div[class*="AdBox"i]
@@ -22060,6 +22065,7 @@ indiatimes.com##.last8brdiv > div.sponsor_block
 !
 ! NOTE: Indonesian
 !
+samehadaku.*##.player-embed > div[onclick]
 komikdewasa.art##+js(window.open-defuser)
 komikdewasa.art##+js(addEventListener-defuser, click, tampilkanUrl)
 komikdewasa.art#$#body { padding-top: 0 !important; padding-bottom: 0 !important; }
@@ -30556,7 +30562,9 @@ truyenqqhot.com##div[id^="ads_"]
 !
 !
 !
-! !+ NOT_OPTIMIZED
+!+ NOT_OPTIMIZED
+##.ad_large
+!+ NOT_OPTIMIZED
 ##[href^="https://www.mypatriotsupply.com/"] > img
 !+ NOT_OPTIMIZED
 ##.inline-advert
@@ -35017,6 +35025,10 @@ neowin.net#$#div[class^="banner-"] { height: 0!important; min-height: 0!importan
 ||l.cdn-fileserver.com^
 ||search-nowglobal.com^
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/214275
+! Porn farms
+/assets/js/eaCtrl.js
+/video-js/nuevo.min.js
 ! Phishing
 /prize-*/assets/main.js$~third-party
 /prize-*/assets/modules.js$~third-party
@@ -35816,6 +35828,18 @@ $subdocument,third-party,denyallow=disqus.com,domain=welovemanga.one
 !
 ! NOTE: Specific rules
 !
+techradar.com#$#div[data-widget-type="ads"] + div[data-widget-type="dynamic"] { margin-top: 0px !important; }
+techradar.com##.listingResult:has(> .sponsored-post:only-child)
+okmagazine.com##article > div[class^="sc-"]:has(> div[class*="lngtd"])
+iceporn.tv##.JoinChannel
+iceporn.tv##h6[style^="margin:"][style*="color: gray;"]
+goodpornvids.com##.mi-links
+||jdp-prod-services.jdpower.com/seoadsgtw/
+jdpower.com#$#.site-top-ad-height { height: fit-content !important; }
+jdpower.com#$#.site-top-ad-height > div[class^="Mui"] { display: none !important; }
+zenlesslab.com,wutheringlab.com##.e-con-boxed:has(div[id^="pw-incontent"])
+slideshare.net##div[class*="AdComponent"]
+slideshare.net###notification-root[class^="Header_adSpace"]
 cine.to##+js(remove-node-text, script, Array.from(document.querySelectorAll)
 openweathermap.org###ulla-banner
 pesktop.com##.a728_90
@@ -36832,7 +36856,8 @@ xporn.tv##.standalonead
 telegramchannels.me##.columns.is-multiline > .column > .card.is-clmd:has(> a[href^="https://telegramchannels.me/goclimad/"]:only-child)
 hqporno.tv##+js(abort-current-script, String.prototype.substr, /\.join\(''\)[\s\S]*?;\)\$/)
 4kpornvideos.tv,pornogram.tv##.header-spot
-3dporndude.com##.spot
+yogaporn.net##.media_spot
+yogaporn.net,3dporndude.com##.spot
 3dporndude.com##.grid-temp > li:has(> script)
 ||wzzm13.com/ad_
 aniwave.best##+js(no-setInterval-if, popunder)
@@ -40058,7 +40083,7 @@ breitbart.com###MainW > div#accontainer
 ||players.radioonlinehd.net/ads/
 mangageko.com###radio_content
 ||truyen-hentai.com/*.php$script
-tmearn.net##.box-main > .row + .banner-captcha
+snipcash.com,tmearn.net##.box-main > .row + .banner-captcha
 forex.soft3arbi.com,10short.co###lm-slideup
 ||loader.to/ajax/ad/l.php$popup
 propermanchester.com##.pm-header-advert-wrap
@@ -44366,9 +44391,9 @@ torlock.icu##[class^="warn"]
 filmyone.com###mvp-post-main a[target="_blank"] > img
 bangalorenewstoday.com##.sidebar-widget-area > div[id^="text-"]
 hdbest.net###sidebar > #custom_html-17
-brainly.com,brainly.com.br,brainly.co.id,brainly.in,brainly.ph,brainly.pl,brainly.lat,brainly.in,brainly.ro,eodev.com,znanija.com##.brn-ads-box
-brainly.com,brainly.com.br,brainly.co.id,brainly.in,brainly.ph,brainly.pl,brainly.lat,brainly.in,brainly.ro,eodev.com,znanija.com##.js-new-ad-placeholder
-brainly.com,brainly.com.br,brainly.co.id,brainly.in,brainly.ph,brainly.pl,brainly.lat,brainly.in,brainly.ro,eodev.com,znanija.com##div[data-testid="brainly_ads_placeholder"]
+nosdevoirs.fr,brainly.com,brainly.com.br,brainly.co.id,brainly.in,brainly.ph,brainly.pl,brainly.lat,brainly.in,brainly.ro,eodev.com,znanija.com##.brn-ads-box
+nosdevoirs.fr,brainly.com,brainly.com.br,brainly.co.id,brainly.in,brainly.ph,brainly.pl,brainly.lat,brainly.in,brainly.ro,eodev.com,znanija.com##.js-new-ad-placeholder
+nosdevoirs.fr,brainly.com,brainly.com.br,brainly.co.id,brainly.in,brainly.ph,brainly.pl,brainly.lat,brainly.in,brainly.ro,eodev.com,znanija.com##div[data-testid="brainly_ads_placeholder"]
 azsoft.*,downfile.site##div.display ~ h2.text-center
 azsoft.*,downfile.site##div.display ~ p
 azsoft.*,downfile.site###adb_detected ~ div.text-content
@@ -46546,7 +46571,7 @@ bigtitsxxxsex.com##.bnrba
 diffnow.com###root > div[style="margin: 20px 72px;"] > div[style^="position: relative; display: flex; margin-top: 20px; margin-bottom: 20px; justify-content: center; align-items: center; border:"][style$="height: 100px; overflow: hidden;"]
 distrowatch.com##td[style="width: 19%; vertical-align: top; border: none"] > table[class="News"]+br+table[width="100%"]
 foxgay.com##body > .pb_footer
-zzztube.com,videoporn.tube,pornogram.tv,icegay.tv,24porn.com,gayporno.fm,gaymaletube.name,gayporn.fm,gaysuperman.com##.b-uvb-spot
+goodpornvids.com,zzztube.com,videoporn.tube,pornogram.tv,icegay.tv,24porn.com,gayporno.fm,gaymaletube.name,gayporn.fm,gaysuperman.com##.b-uvb-spot
 gaytiger.com##.content-inner-col > .aside-itempage-col
 gottabemobile.com##div[class^="code-block code-block-"][style]:not([class$="code-block code-block-16 ai-desktop-tablet"])
 heroesfire.com,vaingloryfire.com##.sidebar-feature.add.box
@@ -60116,6 +60141,8 @@ implbits.com#@#.banner_container
 !#########################################
 !
 !
+! KakaoTalk Android app
+! https://github.com/AdguardTeam/AdguardFilters/issues/214367
 ! https://github.com/AdguardTeam/AdguardFilters/issues/214029
 ! `*` - month abbreviation
 ! https://github.com/AdguardTeam/AdguardFilters/issues/214234
