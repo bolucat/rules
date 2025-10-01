@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.2.2
+// @version         4.2.2.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -799,64 +799,122 @@ else if (matchDomain('tagesspiegel.de')) {
 }
 
 else if (matchDomain('tt.com')) {
-  let paywall = document.querySelector('div#piano-logwall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div[data-io-article-url]');
-    if (article) {
-      let json_script = document.querySelector('script#tt-com-www-state');
-      if (json_script) {
-        try {
-          let json_articles = JSON.parse(json_script.text).TT_COM_WWW_GLOBAL_STATE.articles;
-          let json_article_id = json_articles.ids[0];
-          if (!json_article_id || (json_article_id && !window.location.pathname.includes(json_article_id)))
-            refreshCurrentTab();
-          let parser = new DOMParser();
-          let pars = json_articles.entities[json_article_id].articleData.article.elements;
-          for (let par of pars) {
-            let elem;
-            if (['body', 'subheadline1'].includes(par.type)) {
-              if (par.content) {
-                let doc = parser.parseFromString('<p>' + par.content + '</p>', 'text/html');
-                elem = doc.querySelector('p');
-                if (par.type === 'subheadline1')
-                  elem.style = 'font-weight: bold;';
-              }
-            } else if (par.type = 'x-im/content-part') {
-              if (par.elements) {
-                elem = document.createElement('p');
-                for (let item of par.elements) {
-                  if (item.content) {
-                    let doc = parser.parseFromString('<p>' + item.content + '</p>', 'text/html');
-                    sub_elem = doc.querySelector('p');
-                    elem.appendChild(sub_elem);
-                  }
-                }
-              }
-            } else if (par.type.match(/^x-im\//)) {
-              if (par.url) {
-                if (par.url.startsWith('https://twitter.com/')) {
-                  elem = document.createElement('p');
-                  let sub_elem = document.createElement('a');
-                  sub_elem.href = elem.innerText = par.url;
-                  sub_elem.target = '_blank';
-                  elem.appendChild(sub_elem);
-                } else {
-                  elem = document.createElement('iframe');
-                  elem.src = par.url;
-                  elem.style = 'height: ' + article.offsetWidth + 'px; width: ' + article.offsetWidth + 'px;';
-                }
+  window.setTimeout(function () {
+    let paywall = document.querySelector('div#piano-logwall');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let article = document.querySelector('div[data-io-article-url]');
+      if (article) {
+        let json_script = document.querySelector('script#tt-com-www-state');
+        if (json_script) {
+          try {
+            let json = JSON.parse(json_script.text);
+            let json_article;
+            let relations;
+            for (let key in json) {
+              if (json[key].b && json[key].b.article && (json[key].b.article.canonical === window.location.pathname)) {
+                json_article = json[key].b.article;
+                relations = json[key].b.contentRelations;
+                break;
               }
             }
-            if (elem)
-              article.appendChild(elem);
+            if (json_article) {
+              function addFigure(header_img_src, header_img_uuid, par) {
+                let elem;
+                if (header_img_src && header_img_uuid && par.uuid) {
+                  let caption = '';
+                  if (par.text)
+                    caption = par.text + (par.bylineAuthors && par.bylineAuthors[0] ? ' © ' + par.bylineAuthors[0] : '');
+                  elem = makeFigure(header_img_src.replace(header_img_uuid, par.uuid), caption, {style: 'width: 100%;'});
+                }
+                return elem
+              }
+              let header_img_src;
+              let header_img_uuid;
+              let header_img = document.querySelector('div.article-header img[src]');
+              if (header_img) {
+                header_img_src = header_img.src;
+                let match = header_img_src.match(/\/images\/(.+)\?/);
+                if (match)
+                  header_img_uuid = match[1];
+              }
+              let first_img = true;
+              let parser = new DOMParser();
+              let pars = json_article.elements;
+              for (let par of pars) {
+                let elem;
+                if (['body', 'subheadline1'].includes(par.type)) {
+                  if (par.content) {
+                    let doc = parser.parseFromString('<p>' + par.content + '</p>', 'text/html');
+                    elem = doc.querySelector('p');
+                    if (par.type === 'subheadline1')
+                      elem.style = 'font-weight: bold;';
+                  }
+                } else if (par.type = 'x-im/content-part') {
+                  if (par.elements) {
+                    elem = document.createElement('p');
+                    for (let item of par.elements) {
+                      if (item.content) {
+                        let doc = parser.parseFromString('<p>' + item.content + '</p>', 'text/html');
+                        sub_elem = doc.querySelector('p');
+                        elem.appendChild(sub_elem);
+                      }
+                    }
+                  } else if (par.uuid && par.fileName) {
+                    if (!first_img) {
+                      elem = addFigure(header_img_src, header_img_uuid, par);
+                    } else
+                      first_img = false;
+                  } else if (par.galleryTitle) {
+                    elem = document.createElement('div');
+                    let title = document.createElement('p');
+                    title.innerText = par.galleryTitle;
+                    title.style = 'font-weight: bold;';
+                    elem.appendChild(title);
+                    for (let img of par.images) {
+                      let sub_elem = addFigure(header_img_src, header_img_uuid, img);
+                      if (sub_elem)
+                        elem.appendChild(sub_elem);
+                    }
+                  } else if (par.contentType === 'x-im/article') {
+                    if (par.uuid && relations) {
+                      let relation = relations.find(x => x.uuid === par.uuid);
+                      if (relation && relation.url && relation.title) {
+                        elem = document.createElement('p');
+                        let sub_elem = document.createElement('a');
+                        sub_elem.href = relation.url;
+                        sub_elem.innerText = relation.title;
+                        elem.appendChild(sub_elem);
+                      }
+                    }
+                  } else if (par.url) {
+                    if (par.url.startsWith('https://twitter.com/')) {
+                      elem = document.createElement('p');
+                      let sub_elem = document.createElement('a');
+                      sub_elem.href = sub_elem.innerText = par.url;
+                      sub_elem.target = '_blank';
+                      elem.appendChild(sub_elem);
+                    } else {
+                      elem = document.createElement('iframe');
+                      elem.src = par.url;
+                      elem.style = 'height: ' + article.offsetWidth + 'px; width: ' + article.offsetWidth + 'px;';
+                    }
+                  } else if (!par.quote && Object.keys(par).length > 2)
+                    console.log(par);
+                } else
+                  console.log(par);
+                if (elem)
+                  article.appendChild(elem);
+              }
+            } else 
+              refreshCurrentTab();
+          } catch (err) {
+            console.log(err);
           }
-        } catch (err) {
-          console.log(err);
         }
       }
     }
-  }
+  }, 0);
   let ads = 'div[class*="ads-container"], div.adblock-warning';
   hideDOMStyle(ads);
 }
