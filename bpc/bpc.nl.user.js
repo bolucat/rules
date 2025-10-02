@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.2.2.0
+// @version         4.2.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -8,6 +8,7 @@
 // @homepageURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
+// @noframes
 // @match           *://*.nl/*
 // @match           *://*.businessam.be/*
 // @match           *://*.demorgen.be/*
@@ -627,8 +628,8 @@ else if (matchDomain(nl_mediahuis_region_domains)) {
 
 else if (matchDomain('nrc.nl')) {
   setCookie('counter', '', '', '/', 0, true);
-  let banners = document.querySelectorAll('div[id$="modal__overlay"], div.header__subscribe-bar, div.banner');
-  removeDOMElement(...banners);
+  let banners = 'div[id$="modal__overlay"], div.header__subscribe-bar, div.banner, dialog.dmt-login-modal';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain('telegraaf.nl')) {
@@ -652,7 +653,7 @@ else if (matchDomain('telegraaf.nl')) {
       let elem_new = doc.querySelector('div');
       elem.parentNode.replaceChild(elem_new, elem);
     }
-    let errors = document.querySelectorAll('div[loading="lazy"][old-src]:not([src]):has(div#__next_error__)');
+    let errors = document.querySelectorAll('div[old-src]:not([src]):has(div#__next_error__)');
     for (let elem of errors) {
       let elem_new = document.createElement('iframe');
       elem_new.src = elem.getAttribute('old-src');
