@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.2.1.0
+// @version         4.2.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -47,6 +47,7 @@
 // @match           *://*.exame.com/*
 // @match           *://*.expansion.com/*
 // @match           *://*.expresso.pt/*
+// @match           *://*.gauchazh.clicrbs.com.br/*
 // @match           *://*.gazetadopovo.com.br/*
 // @match           *://*.gestion.pe/*
 // @match           *://*.globo.com/*
@@ -708,6 +709,14 @@ else if (matchDomain('uol.com.br')) {
     }
   }
   let ads = 'div[class*="advertising"], div.jupiter-ads, div.up-floating, div[data-cp-id$="asfads"], div.ms-hapb, div.ms-apb';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('gauchazh.clicrbs.com.br')) {
+  let div_hidden = document.querySelector('div.m-paid-content > div.hidden');
+  if (div_hidden)
+    div_hidden.removeAttribute('class');
+  let ads = 'div.ad-banner, div.animate-pulse, div.slot-superbanner, div.overflow-hidden:has(div.bg-ad-placeholder), section.ads-section-area';
   hideDOMStyle(ads);
 }
 
