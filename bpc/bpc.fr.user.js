@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.2.3
+// @version         4.2.2.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -524,10 +524,21 @@ else if (matchDomain('jeuneafrique.com')) {
   let now_date = (new Date()).toISOString().split('T')[0];
   let ls_date = localStorage.getItem('###_json_date') || '';
   let ls_json_articles = {};
-  function show_data(article, body) {
+  let ls_json_urls = {};
+  function show_data(article, body, ls_json_urls) {
     let parser = new DOMParser();
     let doc = parser.parseFromString('<div>' + body + '</div>', 'text/html');
     let article_new = doc.querySelector('div');
+    let readmore_links = article_new.querySelectorAll('div.sc-lire-aussi');
+    for (let elem of readmore_links) {
+      elem.style = 'margin-bottom: 20px';
+      let app_link = elem.querySelector('a[href^="jeuneafrique://article/"');
+      if (app_link) {
+        let match = app_link.href.match(/\d+$/);
+        if (match && ls_json_urls[match[0]])
+          app_link.href = ls_json_urls[match[0]];
+      }
+    }
     article.innerHTML = '';
     article.parentNode.replaceChild(article_new, article);
   }
@@ -538,20 +549,26 @@ else if (matchDomain('jeuneafrique.com')) {
         if (article_id) {
           let src_article = src_articles.filter(x => x.id == article_id)[0];
           if (src_article)
-            show_data(article, src_article.content_full);
+            show_data(article, src_article.content_full, ls_json_urls);
           else
             header_nofix(article, '', 'BPC > no fix (source file)');
         }
-        if (!ls_date || limit > limit_low || now_date > ls_date)
+        if (!ls_date || limit > limit_low || now_date > ls_date) {
           ls_json_articles = {};
-        else if (ls_date && !Object.keys(ls_json_articles).length) {
+          ls_json_urls = {};
+        } else if (ls_date && !Object.keys(ls_json_articles).length) {
           let ls_articles = localStorage.getItem('###_json');
           ls_json_articles = JSON.parse(ls_articles);
+          let ls_urls = localStorage.getItem('###_json_urls') || {};
+          ls_json_urls = JSON.parse(ls_urls);
         }
         for (let art of src_articles)
           ls_json_articles[art.id] = art.content_full;
+        for (let art of json.articles)
+          ls_json_urls[art.id] = art.url;
         localStorage.setItem('###_json', JSON.stringify(ls_json_articles));
         localStorage.setItem('###_json_date', now_date);
+        localStorage.setItem('###_json_urls', JSON.stringify(ls_json_urls));
       }
     } catch (err) {
       console.log(err);
@@ -597,9 +614,11 @@ else if (matchDomain('jeuneafrique.com')) {
         if (ls_date) {
           let ls_articles = localStorage.getItem('###_json');
           ls_json_articles = JSON.parse(ls_articles);
+          let ls_urls = localStorage.getItem('###_json_urls') || {};
+          ls_json_urls = JSON.parse(ls_urls);
           let art_data = ls_json_articles[article_id];
           if (art_data)
-            show_data(article, art_data);
+            show_data(article, art_data, ls_json_urls);
           else if (ls_date < art_date)
             fetch_data(limit_high);
           else if (now_date === art_date)
@@ -774,7 +793,6 @@ else if (matchDomain('lefigaro.fr')) {
                     tweet_link.target = '_blank';
                   }
                 } else if (par_type === 'Youtube') {
-					console.log(par)
                   if (par.id) {
                     elem = document.createElement('iframe');
                     elem.src = 'https://www.youtube.com/embed/' + par.id;

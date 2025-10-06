@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.1.8
+// @version         4.2.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -207,8 +207,8 @@ var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
 var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntraveler.com', 'epicurious.com', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.co.uk', 'vogue.com', 'wired.com'];
 var usa_craincomm_domains = ['360dx.com', 'adage.com', 'autonews.com', 'chicagobusiness.com', 'crainscleveland.com', 'crainsdetroit.com', 'crainsgrandrapids.com', 'crainsnewyork.com', 'european-rubber-journal.com', 'genomeweb.com', 'modernhealthcare.com', 'pionline.com', 'plasticsnews.com', 'precisionmedicineonline.com', 'rubbernews.com', 'sustainableplastics.com', 'tirebusiness.com', 'utech-polyurethane.com'];
-var usa_gannett_domains = ['azcentral.com', 'cincinnati.com', 'commercialappeal.com', 'courier-journal.com', 'democratandchronicle.com', 'desmoinesregister.com', 'detroitnews.com', 'dispatch.com', 'freep.com', 'indystar.com', 'jacksonville.com', 'jsonline.com', 'knoxnews.com', 'news-press.com', 'northjersey.com', 'oklahoman.com', 'palmbeachpost.com', 'statesman.com', 'tennessean.com'];
-var usa_hearst_comm_domains = ['ctpost.com', 'expressnews.com', 'houstonchronicle.com', 'nhregister.com', 'sfchronicle.com', 'timesunion.com'];
+var usa_gannett_domains = ['azcentral.com', 'cincinnati.com', 'commercialappeal.com', 'courier-journal.com', 'democratandchronicle.com', 'desmoinesregister.com', 'detroitnews.com', 'dispatch.com', 'freep.com', 'indystar.com', 'jacksonville.com', 'jsonline.com', 'knoxnews.com', 'news-press.com', 'northjersey.com', 'oklahoman.com', 'palmbeachpost.com', 'tennessean.com'];
+var usa_hearst_comm_domains = ['ctpost.com', 'expressnews.com', 'houstonchronicle.com', 'nhregister.com', 'sfchronicle.com', 'statesman.com', 'timesunion.com'];
 var usa_lee_ent_domains = ['buffalonews.com', 'journalnow.com', 'journalstar.com', 'madison.com', 'nwitimes.com', 'omaha.com', 'richmond.com', 'stltoday.com', 'tucson.com', 'tulsaworld.com'];
 var usa_mcc_domains = ['bnd.com', 'charlotteobserver.com', 'elnuevoherald.com', 'fresnobee.com', 'kansas.com', 'kansascity.com', 'kentucky.com', 'mcclatchydc.com', 'miamiherald.com', 'newsobserver.com', 'sacbee.com', 'star-telegram.com', 'thestate.com', 'tri-cityherald.com'];
 var usa_mng_domains = ['bostonherald.com', 'denverpost.com', 'eastbaytimes.com', 'mercurynews.com', 'ocregister.com', 'pressenterprise.com', 'sandiegouniontribune.com', 'twincities.com'];
@@ -238,7 +238,7 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || document.
     let header = paywall.querySelector('h1');
     if (header) {
       header.before(freediumLink(url));
-      //header.before(readMediumLink(url));
+      header.before(readMediumLink(url));
     }
   }
   window.setTimeout(function () {
@@ -1853,7 +1853,7 @@ else if (matchDomain('cnn.com')) {
   let regwall_keys = Object.keys(window.localStorage).filter(x => x.match(/reg_?wall/i));
   for (let item of regwall_keys)
     window.localStorage.removeItem(item);
-  let ads = 'div[class^="ad-slot-"], div.container__ads';
+  let ads = 'div[class*="ad-slot-"], div.container__ads';
   hideDOMStyle(ads);
 }
 
@@ -2120,8 +2120,6 @@ else if (matchDomain('economictimes.com')) {
         let charts = content_new.querySelectorAll('iframe[id^="datawrapper-chart-"]');
         for (let elem of charts) {
           elem.width = '100%';
-          elem.height = '400px';
-          elem.scrolling = 'yes';
           elem.style.margin = '20px 0px';
         }
         if (content_new && content.parentNode)
@@ -4658,19 +4656,14 @@ else if ((domain = matchDomain(usa_gannett_domains)) || document.querySelector('
         article.firstChild.before(archiveLink(url));
     }
   }
+  let ads = 'aside[aria-label="advertisement"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(usa_hearst_comm_domains) || document.querySelector('head > script[src*="/treg.hearstnp.com/"]')) {
-  let overlay = document.querySelector('div > div#modalOuter');
-  if (overlay) {
-    hideDOMElement(overlay.parentNode);
-    let noscroll = document.querySelector('body[style]');
-    if (noscroll)
-      noscroll.removeAttribute('style');
-  }
-  let ads = pageContains('div > div > p', 'Article continues below this ad');
-  for (let elem of ads)
-    hideDOMElement(elem.parentNode.parentNode);
+  addStyle('body {overflow: visible!important;}');
+  let ads = 'div[data-block-type="ad"], div[data-widget-host="revcontent"], div.b-gray300, div#mod-target-div';
+  hideDOMStyle(ads);
 }
 
 else if ((domain = matchDomain(usa_lee_ent_domains)) || matchDomain(ca_torstar_domains.concat(['abqjournal.com'])) || document.querySelector('head > meta[name="tncms-access-version"]')) {
