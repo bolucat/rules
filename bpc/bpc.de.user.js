@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.2.6
+// @version         4.2.2.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -1234,7 +1234,7 @@ else if (matchDomain(de_vrm_domains) || matchDomain(de_vrm_custom_domains)) {
   let article_sel = 'article section';
   let url = window.location.href;
   window.setTimeout(function () {
-    getArchive(url, 'div[data-testid="paywall-blurred-content"]', {rm_attrib: 'class'}, article_sel);
+    getArchive(url, 'div.--blurredContent', {rm_attrib: 'class'}, article_sel);
   }, 1000);
   let ads = 'div.adSlot, div.loadingBanner';
   hideDOMStyle(ads);

@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: B+fJamwdrCXpvNWT4rq8qQ
-! Diff-Path: ../patches/224/224-s-1759752940-3600.patch
+! Checksum: QaOqhru7hdAk0AR8Om19eQ
+! Diff-Path: ../patches/224/224-s-1759849908-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.45.32
-! TimeUpdated: 2025-10-06T12:12:00+00:00
+! Version: 2.1.45.39
+! TimeUpdated: 2025-10-07T15:08:06+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -310,8 +310,6 @@ xchina.co##+js(addEventListener-defuser, DOMContentLoaded, check)
 2urs.com##+js(abort-on-property-read, ads)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/191724
 @@/js/adview_*.adsbygoogle.js$~third-party,domain=letv8.cc|zhibo1.cc
-! https://github.com/AdguardTeam/AdguardFilters/issues/189087
-hmanga.world##+js(no-fetch-if, method:HEAD)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183017
 fsbot.xyz##+js(no-fetch-if, pagead2.googlesyndication.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/182114
@@ -4464,7 +4462,6 @@ newduba.cn###jq_youxi
 ##.apd-footer
 ##.apd-home
 ##.apd-right
-##.app-down-fix.body-fix
 ##.appdownload_ad + .hider
 ##.archive > a[ontouchstart="this.click();"]
 ##.area > .tuiguang
@@ -4997,9 +4994,10 @@ newduba.cn###jq_youxi
 ###index_banner[src*=".imgdd.com"]
 ###ad-float.kyty
 ##.banner-adv-new
+##.m0auto > div:not([class]):not([id]) > div > .swiper-initialized
+##.grid > .m0auto > div > .grid + div:not([class]):not([id])
 ##body[ontouchstart] > .wrap > div[id^="content_"][style="display: block;"]
 ##body[ontouchstart] > div[id^="content_"][style="display: block;"]
-##.relative > div > img[sizes="100vh"][width="0"]
 ##a[href^="/archives/"] > .post-card > .blog-background[style*="gif;base64"]
 ###banner_links.banner-container
 ##.a-media.ex-728-90
@@ -5029,6 +5027,17 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$third-party
+||nvxq.cn^
+||m1jm3nzf2.com^
+||javdtezk7.com^
+||kpapyw.icu^
+||hlj10070ip.com^
+||anode67.top^
+||wzvaknomh.com^
+||1jlp1qbgu.com^
+||hlj10071ip.com^
+||u7ugo0jr3.com^
+||xpncjj.icu^
 ||steamers77.com^
 ||hlj10060ip.com^
 ||meimpheaea.com^
@@ -21219,7 +21228,9 @@ yydstxt*.com/js/cdn.
 ||banzhu33333.net/js/html
 ||djdedu.net/static/*.gif
 ||28lu.net^*/0
+||28lu.net^*/1
 ||wodeshucheng.com^*/0
+||wodeshucheng.com^*/1
 ||xiguasuwu.com/static/m.
 ||biqgg.com/n.
 ||biqgg.com/w.

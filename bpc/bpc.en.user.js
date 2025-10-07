@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.2.1
+// @version         4.2.2.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3035,6 +3035,16 @@ else if (matchDomain('newscientist.com')) {
 }
 
 else if (matchDomain('newsday.com')) {
+  let listen_button = document.querySelector('div.listen-button > button[disabled]');
+  if (listen_button) {
+    let audio_src_dom = listen_button.parentNode.querySelector('audio > source[src]');
+    if (audio_src_dom) {
+      let audio = document.createElement('audio');
+      audio.src = audio_src_dom.src;
+      audio.setAttribute('controls', '');
+      listen_button.parentNode.replaceChild(audio, listen_button);
+    }
+  }
   let nd_lock = document.querySelector('html[class]');
   if (nd_lock)
     nd_lock.removeAttribute('class');

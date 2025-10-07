@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.2.4
+// @version         4.2.2.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -24,6 +24,7 @@
 // @match           *://*.lacote.ch/*
 // @match           *://*.lalibre.be/*
 // @match           *://*.lavenir.net/*
+// @match           *://*.lecho.be/*
 // @match           *://*.ledauphine.com/*
 // @match           *://*.ledevoir.com/*
 // @match           *://*.legrandcontinent.eu/*
@@ -681,6 +682,28 @@ else if (domain = matchDomain('lamanchelibre.fr') || matchDomain(fr_groupe_la_ma
   }
   let ads = 'div.class_pub, div#tbl-next-up';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('lecho.be')) {
+  let url = window.location.href;
+  func_post = function () {
+    if (mobile) {
+      document.querySelectorAll('figure img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
+    }
+  }
+  if (matchDomain('investisseur.lecho.be')) {
+    if (window.location.pathname.endsWith('.html')) {
+      getArchive(url, 'html.paywalled', {rm_class: 'paywalled'}, 'main');
+      addStyle('body {overflow: auto !important}');
+    }
+	let banner = document.querySelector('div[data-id="react-paywall-auth0"]');
+	removeDOMElement(banner);
+  } else {
+    let close_button = document.querySelector('button.ds-modal__top-bar__closebutton');
+    if (close_button)
+      close_button.click();
+    getArchive(url, 'html.paywall-active', {rm_class: 'paywall-active'}, 'article');
+  }
 }
 
 else if (matchDomain('lecourrierdesstrateges.fr')) {
