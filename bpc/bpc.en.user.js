@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.2.2
+// @version         4.2.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2230,6 +2230,11 @@ else if (matchDomain('enotes.com')) {
     for (let ad of ads)
       hideDOMElement(ad.parentNode);
   }
+}
+
+else if (matchDomain('entrepreneur.com')) {
+  let ads = 'div.ad__wrapper, div#piano-metered-container';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('epoch.org.il')) {

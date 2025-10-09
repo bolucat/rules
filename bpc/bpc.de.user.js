@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.2.7
+// @version         4.2.2.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -509,6 +509,9 @@ else if (matchDomain(['nzz.ch', 'themarket.ch'])) {
   let fade = document.querySelectorAll('.nzzinteraction');
   for (let elem of fade)
     elem.classList.remove('nzzinteraction');
+  let fade_new = document.querySelector('div.barrier');
+  if (fade_new)
+    fade_new.removeAttribute('class');
   let ads = 'div.resor';
   hideDOMStyle(ads);
 }
