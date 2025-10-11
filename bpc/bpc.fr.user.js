@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.2.5
+// @version         4.2.2.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -696,8 +696,8 @@ else if (matchDomain('lecho.be')) {
       getArchive(url, 'html.paywalled', {rm_class: 'paywalled'}, 'main');
       addStyle('body {overflow: auto !important}');
     }
-	let banner = document.querySelector('div[data-id="react-paywall-auth0"]');
-	removeDOMElement(banner);
+    let banner = document.querySelector('div[data-id="react-paywall-auth0"]');
+    removeDOMElement(banner);
   } else {
     let close_button = document.querySelector('button.ds-modal__top-bar__closebutton');
     if (close_button)
@@ -1505,43 +1505,96 @@ else if (matchDomain('ouest-france.fr')) {
       document.querySelectorAll('iframe:not([src])[data-embed-src]').forEach(e => e.src = e.getAttribute('data-embed-src'));
     }
   } else {
-    function ouest_france_sub(app_id = 'c8kp7jv01t') {
-      let title_dom = document.querySelector('meta[name="twitter:title"][content]');
-      if (title_dom) {
-        let title = encodeURIComponent(title_dom.content);
-        fetch('https://' + app_id + '-dsn.algolia.net/1/indexes/*/queries', {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-algolia-api-key": window.bp_algolia_articles,
-            "x-algolia-application-id": app_id.toUpperCase()
-          },
-          body: JSON.stringify({
-            requests: [{
-                indexName: "articles",
-                params: 'query=' + title
-              }
-            ]
-          })
-        })
-        .then(response => {
-          if (response.ok) {
-            response.json().then(json => {
-              let results = json.results[0].hits;
-              let article = results.find((result) => result.articleId == window.dataLayer[0].mdId);
-              if (article) {
-                let body = document.querySelector('div#article-detail');
-                if (body)
-                  body.innerText = article.texte;
-              }
-            })
+    function ouest_france_sub() {
+      if (window.location.pathname.includes('/video-')) {
+        let video = document.querySelector('article figure');
+        if (video) {
+          let og_video_dom = document.querySelector('head > meta[property="og:video"][content]');
+          if (og_video_dom) {
+            let video_new = document.createElement('video');
+            video_new.src = og_video_dom.content;
+            video_new.style = 'width: 100%;';
+            video_new.setAttribute('controls', '');
+            video.parentNode.replaceChild(video_new, video);
           }
-        }).catch(err => console.log(err));
+        }
+      } else {
+        let title_dom = document.querySelector('head > meta[name="twitter:title"][content]');
+        if (title_dom) {
+          let title = encodeURIComponent(title_dom.content);
+          let app_id = window.sessionStorage.getItem('###_app_id');
+          fetch('https://' + app_id + '-dsn.algolia.net/1/indexes/*/queries', {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-algolia-api-key": window.bp_algolia_articles,
+              "x-algolia-application-id": app_id.toUpperCase()
+            },
+            body: JSON.stringify({
+              requests: [{
+                  indexName: "articles",
+                  params: 'query=' + title
+                }
+              ]
+            })
+          })
+          .then(response => {
+            if (response.ok) {
+              response.json().then(json => {
+                let results = json.results[0].hits;
+                let article = results.find((result) => result.articleId == window.dataLayer[0].mdId);
+                if (article) {
+                  let body = document.querySelector('div#article-detail > div.su-article');
+                  if (body) {
+                    body.parentNode.classList.remove('cache');
+                    let article_text = article.texte;
+                    let pars = body.querySelectorAll('p, h2');
+                    for (let par of pars) {
+                      let par_text = par.innerText.replace(/\u00a0/g, ' '); //&nbsp;
+                      if (article_text.startsWith(par_text)) {
+                        article_text = article_text.replace(par_text, '').trim();
+                      } else if (par.tagName === 'P' && par_text.endsWith('...')) {
+                        removeDOMElement(par);
+                        break;
+                      }
+                    }
+                    let par_new = document.createElement('p');
+                    par_new.innerText = article_text;
+                    body.appendChild(par_new);
+                    if (article.photos && article.photos.length > 1) {
+                      let header_img = document.querySelector('article figure img[src]');
+                      if (header_img && header_img.src.includes('/pictures/')) {
+                        let img_base = header_img.src.split('/pictures/')[0] + '/pictures/';
+                        let img_first = true;
+                        for (let img of article.photos) {
+                          if (!img_first) {
+                            let figure = document.createElement('figure');
+                            figure.style = 'margin: 20px 0px;';
+                            let img_new = document.createElement('img');
+                            img_new.src = img_base + img.id;
+                            let caption = document.createElement('figcaption');
+                            caption.innerText = img.legende + ' | ' + img.credits;
+                            figure.append(img_new, caption);
+                            body.appendChild(figure);
+                          } else
+                            img_first = false;
+                        }
+                      }
+                    }
+                    if (article.hasVideo)
+                      console.log('hasVideo');
+                  }
+                }
+              })
+            }
+          }).catch(err => console.log(err));
+        }
       }
     }
     let paywall = document.querySelector('div.mur');
     if (paywall) {
       removeDOMElement(paywall);
+      window.sessionStorage.setItem('###_app_id', 'c8kp7jv01t');
       insert_script(ouest_france_sub);
     }
   }
