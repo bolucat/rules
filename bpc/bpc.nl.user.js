@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.2.2.2
+// @version         4.2.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -494,10 +494,6 @@ else if (matchDomain('linda.nl')) {
 }
 
 else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
-  let sub_sel = 'article[id^="PURCHASE"]';
-  let sub = document.querySelector(sub_sel + ' > button');
-  if (sub)
-    sub.click();
   func_post = function () {
     let article = document.querySelector(article_src_sel);
     if (article) {
@@ -546,7 +542,12 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
         }
       }
     }
-    header_nofix('footer', sub_sel, 'BPC > no archive-fix');
+    if (matchDomain('hln.be')) {
+      let article_divs = document.querySelectorAll(article_src_sel + ' > div');
+      if (article_divs.length < 3)
+        header_nofix(article_sel + ' > header', '', 'BPC > no archive-fix');
+    } else
+      header_nofix(article_sel + ' > header', 'article[id^="PURCHASE"]', 'BPC > no archive-fix');
   }
   let url = window.location.href;
   let article_sel = 'div#remaining-paid-content';
@@ -556,9 +557,9 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
     article_src_sel += ', ' + article_sel;
     getArchive(url, article_sel + '[data-reduced="true"]', {rm_attrib: 'data-reduced'}, article_sel, '', article_src_sel);
   } else {
-    let article_sel = 'article#article-content';
+    article_sel = 'article#article-content';
     article_src_sel += ', ' + article_sel + ' > section';
-    getArchive(url, article_sel + ' > section[class]:empty', {rm_attrib: 'class'}, article_sel + ' > section:empty', '', article_src_sel);
+    getArchive(url, article_sel + ' div[data-testid="premium"]', {rm_attrib: 'data-testid'}, article_sel + ' > section', '', article_src_sel, article_sel + ' > header');
     let ads = 'span[style*="background-color:"]:has(> span[style*="min-height:"])';
     hideDOMStyle(ads, 2);
   }
@@ -690,8 +691,8 @@ else if (matchDomain('tijd.be')) {
       getArchive(url, 'html.paywalled', {rm_class: 'paywalled'}, 'main');
       addStyle('body {overflow: auto !important}');
     }
-	let banner = document.querySelector('div[data-id="react-paywall-auth0"]');
-	removeDOMElement(banner);
+    let banner = document.querySelector('div[data-id="react-paywall-auth0"]');
+    removeDOMElement(banner);
   } else {
     let close_button = document.querySelector('button.ds-modal__top-bar__closebutton');
     if (close_button)

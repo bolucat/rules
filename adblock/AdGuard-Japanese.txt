@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 8BVzSyJ/7vRajeZtVZLaHA
-! Diff-Path: ../patches/7/7-s-1760271245-3600.patch
+! Checksum: LQ1EjvVYLvLbI7pAe3XOrw
+! Diff-Path: ../patches/7/7-s-1760364727-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.69.18
-! TimeUpdated: 2025-10-12T12:10:00+00:00
+! Version: 2.0.69.23
+! TimeUpdated: 2025-10-13T14:07:53+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1714,7 +1714,7 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 ://eki*.*.com/Personal/member/Login/index.php?oneTimeAccessID=$document
 .com/ae/login.php?openid.pape.max_auth_age=0&openid.return_to=%$document
 !
-/^https?:\/\/(?:j[ap]|qq)\d{7,8}\.[a-z]{7,8}\.[a-z]{2,8}\//$document,to=agency|art|asia|auction|bar|beauty|beer|best|biz|business|cam|cards|click|cloud|coupons|digital|diy|fashion|food|forum|gay|guru|info|life|live|living|link|ltd|my|property|pw|rocks|run|sbs|shop|store|studio|tattoo|tech|today|top|uno|work,match-case
+/^https?:\/\/(?:j[ap]|qq)\d{7,8}\.[a-z]{7,8}\.[a-z]{2,8}\//$document,to=agency|art|asia|auction|bar|beauty|beer|best|biz|business|cam|cards|click|cloud|coupons|digital|diy|fashion|food|forum|gay|guru|info|life|live|living|link|ltd|my|ooo|property|pw|rocks|run|sbs|shop|store|studio|tattoo|tech|today|top|uno|work,match-case
 ://vpass-jp.$to=biz|sbs|top
 /app/auth_login|$document,to=bond|sbs
 /?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=sign-in&path=home&ref_=nav_Account&signIn=1&useRedirectOnSuccess=1|$document,to=cn|com
@@ -1829,6 +1829,9 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+ameblo.jp##div[class^="_"]:has(> div#taboola-below-article-thumbnails:only-child)
+dengekionline.com##div[class^="InLead_wrapper_"]
+log.dot-co.co.jp##.ad-name
 woman.excite.co.jp##.min-h-122.justify-center.py-16
 ||storage.googleapis.com/static-pcolle/parts/
 sportsseoulweb.jp##.m-adArea
@@ -5715,6 +5718,7 @@ kanjitisiki.com##.menu-ads
 ||muryouav.avximg.com/2020-09/$domain=xvideo-jp.com
 xvideo-jp.com#$#footer.bottom-\[100px\] { bottom: 0 !important; }
 xvideo-jp.com##.p-articleDMM__sale
+xvideo-jp.com###fanzatv_area
 topics.or.jp###_popIn_recommend_text
 ckworks.jp##div[class^="google_adsense"]
 ckworks.jp##.listItemGoodsAd

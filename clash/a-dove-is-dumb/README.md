@@ -6,24 +6,12 @@
 
 [/127](https://a.dove.isdumb.one/127 "Alternative using 127.0.0.1 instead of 0.0.0.0") [/cdn](https://a.dove.isdumb.one/cdn "Served from jsDelivr") [/fastly](https://a.dove.isdumb.one/fastly "Served from jsDelivr's Fastly mirror (对中国用户有用)") [/pihole](https://a.dove.isdumb.one/pihole "Optimized for Pi-hole users (No IP before domain)") [/winhosts](https://a.dove.isdumb.one/winhosts "Follows Microsoft Windows' default hosts file format") [/clash](https://a.dove.isdumb.one/clash "Formatted for Clash-based programs")
 
-_Latest update: Sun, 12 Oct 2025 15:26:50 UTC_
+_Latest update: Mon, 13 Oct 2025 06:49:26 UTC_
 
 <sub>_NEW: Join the Telegram channel for updates [here](https://a.dove.isdumb.one/telegram)._</sub>
 
 
 Quick, easy and painless way of blocking Adobe's telemetry checking servers. Updated continuously, without blocking other network-required features.</div>
-
-## Important: Some domains were deleted
-Following a [community vote](https://t.me/adobeisdumb/1097), domains older than a year have been removed from the list to reduce filesize. If you want to keep them in your hosts file, please browse to the _assets_ branch or use the following CDN links:
-<details>
-<summary>jsDelivr links</summary>
-  
-  - [list.txt](https://cdn.jsdelivr.net/gh/ignaciocastro/a-dove-is-dumb@assets/list.txt)
-  - [127.txt](https://cdn.jsdelivr.net/gh/ignaciocastro/a-dove-is-dumb@assets/127.txt)
-  - [pihole.txt](https://cdn.jsdelivr.net/gh/ignaciocastro/a-dove-is-dumb@assets/pihole.txt)
-  - [clash.yaml](https://cdn.jsdelivr.net/gh/ignaciocastro/a-dove-is-dumb@assets/clash.yaml)
-  - [winhosts.txt](https://cdn.jsdelivr.net/gh/ignaciocastro/a-dove-is-dumb@assets/winhosts.txt)
-</details>
 
 ## Usage
 

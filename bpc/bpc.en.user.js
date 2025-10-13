@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.2.3
+// @version         4.2.2.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4534,6 +4534,10 @@ else if (matchDomain('voguebusiness.com')) {
 else if (matchDomain('vox.com')) {
   let ads = 'div[id^="div-gpt-ad-"]';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('warontherocks.com')) {
+  getJsonUrl('a[href^="https://warontherocks.com/subscribe"]', '', 'div.tw\\:container.tw\\:mb-20>div');
 }
 
 else if (matchDomain('washingtonpost.com')) {
