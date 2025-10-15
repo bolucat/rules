@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.2.2.3
+// @version         4.2.2.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -495,7 +495,7 @@ else if (matchDomain('linda.nl')) {
 
 else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
   func_post = function () {
-    let article = document.querySelector(article_src_sel);
+    let article = document.querySelector(article_sel);
     if (article) {
       let shades = article.querySelectorAll('div[style*="background-color"][style*=";width"]');
       for (let elem of shades)
@@ -503,11 +503,13 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
       let lazy_images = article.querySelectorAll('picture img[loading="lazy"][style]');
       for (let elem of lazy_images)
         elem.style = 'width: 95%;';
-      let widgets = article.querySelectorAll('div > div > div div[old-src^="https://valley.ad.nl/widgets/"]:not([src])');
+      let widgets = article.querySelectorAll('div > div > div[old-src]:not([src])');
       for (let elem of widgets) {
         let iframe = document.createElement('iframe');
         iframe.src = elem.getAttribute('old-src');
-        iframe.style = 'height: 400px; border: none;';
+        iframe.style = 'width: 100%; border: none;';
+        if (iframe.src.includes('/widgets/') || iframe.src.includes('/playlists/'))
+          iframe.style.height = '400px';
         elem.parentNode.replaceChild(iframe, elem);
       }
       let errors = article.querySelectorAll('div > div[old-src]:not([src]):has(div#main-frame-error)');
@@ -522,12 +524,6 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
       for (let elem of picture_divs) {
         elem.parentNode.removeAttribute('style');
         removeDOMElement(elem);
-      }
-      let podcast = article.querySelector('div > div[old-src^="https://omny.fm/"]:not([src])');
-      if (podcast) {
-        let iframe = document.createElement('iframe');
-        iframe.src = podcast.getAttribute('old-src');
-        podcast.parentNode.replaceChild(iframe, podcast);
       }
       let video_scripts = article.querySelectorAll('div > div > script[type="application/ld+json"], article > script[type="application/ld+json"]');
       for (let elem of video_scripts) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.2.6
+// @version         4.2.2.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -43,6 +43,7 @@
 // @match           *://*.pourleco.com/*
 // @match           *://*.science-et-vie.com/*
 // @match           *://*.sudinfo.be/*
+// @match           *://*.valeursactuelles.com/*
 // @connect         archive.fo
 // @connect         archive.is
 // @connect         archive.li
@@ -1712,6 +1713,18 @@ else if (matchDomain('telerama.fr')) {
   }
   let ads = 'div.dfp-slot';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('valeursactuelles.com')) {
+  let paywall = document.querySelector('div.qiota');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let qiota_hidden = document.querySelector('div.qiota_reserve');
+    if (qiota_hidden)
+      qiota_hidden.removeAttribute('class');
+  }
+  let banners = 'div.subscription-banner, div.stick-sidebar';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain('lamontagne.fr') || matchDomain(fr_gcf_custom_domains)) { // Groupe Centre France

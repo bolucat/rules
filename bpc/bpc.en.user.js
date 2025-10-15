@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.2.5
+// @version         4.2.2.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -137,6 +137,7 @@
 // @exclude         *://*.topagrar.com/*
 // @exclude         *://*.tt.com/*
 // @exclude         *://*.tuttosport.com/*
+// @exclude         *://*.valeursactuelles.com/*
 // @exclude         *://*.wochenblatt.com/*
 // @grant           GM.xmlHttpRequest
 // @require         https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc_func.js
@@ -150,7 +151,7 @@ if (window.top !== window.self && !matchDomain(['app.historytoday.com', 'appan.n
 
 var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
 
-if (matchDomain(['adage.com', 'autonews.com'])) {
+if (matchDomain(['adage.com', 'autonews.com', 'pionline.com'])) {
   function crain_main() {
     if (window.Fusion) {
       window.Fusion.globalContent._id = 0;
