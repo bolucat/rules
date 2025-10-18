@@ -233,9 +233,9 @@
 - [bpc-paywall-filter.txt.4](https://rules.neuq.de/bpc/bpc-paywall-filter.txt.4)
 - [bpc-paywall-filter.txt.5](https://rules.neuq.de/bpc/bpc-paywall-filter.txt.5)
 - [bpc-paywall-filter.txt.6](https://rules.neuq.de/bpc/bpc-paywall-filter.txt.6)
-- [bypass-paywalls-chrome-clean-4.2.3.0.crx](https://rules.neuq.de/bpc/bypass-paywalls-chrome-clean-4.2.3.0.crx)
-- [bypass_paywalls_clean-latest.xpi](https://rules.neuq.de/bpc/bypass_paywalls_clean-latest.xpi)
-- [bypass_paywalls_clean-latest.xpi.1](https://rules.neuq.de/bpc/bypass_paywalls_clean-latest.xpi.1)
+- [bypass_paywalls_clean-4.2.3.0.xpi](https://rules.neuq.de/bpc/bypass_paywalls_clean-4.2.3.0.xpi)
+- [bypass_paywalls_clean-4.2.3.0.xpi.1](https://rules.neuq.de/bpc/bypass_paywalls_clean-4.2.3.0.xpi.1)
+- [bypass_paywalls_clean-4.2.3.0.xpi.2](https://rules.neuq.de/bpc/bypass_paywalls_clean-4.2.3.0.xpi.2)
 # clearurls
 - [data.min.json](https://rules.neuq.de/clearurls/data.min.json)
 - [data.minify.json](https://rules.neuq.de/clearurls/data.minify.json)
