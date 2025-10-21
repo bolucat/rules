@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.2.9
+// @version         4.2.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -281,7 +281,7 @@ if (matchDomain('afr.com')) {
             response.text().then(html => {
               if (html.includes('__REDUX_STATE__=')) {
                 try {
-                  let json = JSON.parse(html.split('__REDUX_STATE__=')[1].split('};')[0].replace(/:undefined([,}])/g, ':0$1').replace(/new\sMap\(\[([",\s\w]+)?\]\)/g, 0) + '}');
+                  let json = JSON.parse(html.split('__REDUX_STATE__=')[1].split('};')[0].replace(/:undefined([,}])/g, ':0$1').replace(/new\sMap\(\[[^{]*\]\)/g, 0) + '}');
                   if (json) {
                     let placeholders;
                     function find_item(match, p1, offset, string) {
@@ -505,7 +505,7 @@ else {
     let story_generic_iframe = '.story-generic__iframe';
     let blocker = 'div.blocker';
     let overlays = 'div.transition-all, div[id^="headlessui-dialog"]';
-    let ads = '.ad-placeholder, .sticky, [id*="-container"], #hindsight-ads-iframe';
+    let ads = '.ad-placeholder, .sticky, [id*="-container"], #hindsight-ads-iframe, div.vf3-conversations-list__promo, div#tbl-next-up, iframe[data-ad-id]';
     hideDOMStyle(story_generic_iframe + ', ' + blocker + ', ' + overlays + ', ' + ads);
   } else if (window.location.hostname.endsWith('.com.au')) {
     // Australia News Corp
@@ -1257,7 +1257,7 @@ else if (matchDomain('thetimes.com')) {
       }
     }
     let banners = 'div#paywall-portal-page-footer, .subscription-block';
-    let ads = 'div.channel-header-ad, div[id^="advert-"], div[class*="InlineAdWrapper"], div:has(> div > div#ad-header)';
+    let ads = 'div.channel-header-ad, div[id^="advert-"], div[class*="InlineAdWrapper"], div:has(> div > div#ad-header), div[style*="border-bottom-color:"]:has(> div > div[id^="ad-article-inline"])';
     hideDOMStyle(banners + ', ' + ads);
   }
 }
