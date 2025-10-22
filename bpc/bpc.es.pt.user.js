@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.2.2.0
+// @version         4.2.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -66,6 +66,12 @@
 // @match           *://*.revistaoeste.com/*
 // @match           *://*.sabado.pt/*
 // @match           *://*.uol.com.br/*
+// @connect         archive.fo
+// @connect         archive.is
+// @connect         archive.li
+// @connect         archive.md
+// @connect         archive.ph
+// @connect         archive.vn
 // @grant           GM.xmlHttpRequest
 // @require         https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc_func.js
 // ==/UserScript==
@@ -173,11 +179,10 @@ else if (matchDomain(es_unidad_domains)) {
 
 else if (matchDomain('elpais.com')) {
   if (window.location.pathname.endsWith('.amp.html') || window.location.search.match(/(\?|&)outputType=amp/)) {
-    amp_unhide_access_hide('="vip"], [amp-access="success"', '="NOT vip"], [amp-access="NOT success"');
-  } else {
-    let paywall = document.querySelector('div#ctn_freemium_article, div#ctn_premium_article');
-    removeDOMElement(paywall);
+    amp_unhide_access_hide('="vip"], [amp-access="success"', '="NOT vip"], [amp-access="NOT success"', 'div._cf');
   }
+  let ads = 'div.ad-giga, aside.outbrain';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(es_grupo_vocento_domains)) {

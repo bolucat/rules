@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.3.0
+// @version         4.2.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -12,6 +12,7 @@
 // @match           *://*.de/*
 // @match           *://*.beobachter.ch/*
 // @match           *://*.blick.ch/*
+// @match           *://*.faz.net/*
 // @match           *://*.handelsblatt.com/*
 // @match           *://*.handelszeitung.ch/*
 // @match           *://*.kurier.at/*
@@ -29,6 +30,7 @@
 // @connect         archive.md
 // @connect         archive.ph
 // @connect         archive.vn
+// @connect         fnetcore-api-prod.azurewebsites.net
 // @connect         funkemedien.de
 // @grant           GM.xmlHttpRequest
 // @require         https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc_func.js
@@ -255,6 +257,63 @@ else if (matchDomain('boersen-zeitung.de')) {
       replaceDomElementExt(url, false, false, 'article');
     }
   }, 2000);
+}
+
+else if (matchDomain('faz.net')) {
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let art_match = window.location.pathname.match(/-(\d+)\.html$/);
+    if (art_match) {
+      let article_id = art_match[1];
+      let article_sel = 'div[data-external-selector="body-elements"]';
+      let article = document.querySelector(article_sel);
+      if (article) {
+        article.removeAttribute('class');
+        let intro = article.querySelector('p[class][data-selector]');
+        if (intro) {
+          let par_class = intro.className;
+          let url = window.location.href;
+          let url_src = 'https://fnetcore-api-prod.azurewebsites.net/api/v3/article?id=' + article_id;
+          let json_key = 'content_elements';
+          getExtFetch(url_src, json_key, {}, main_faz);
+          function main_faz(url, data) {
+            try {
+              if (data && intro) {
+                let parser = new DOMParser();
+                let elem;
+                for (let par of data) {
+                  if (par.html) {
+                    let doc = parser.parseFromString(par.html, 'text/html');
+                    let elem_type_match = par.html.match(/^<(\w+)/);
+                    if (elem_type_match) {
+                      let elem_type = elem_type_match[1];
+                      elem = doc.querySelector(elem_type);
+                      if (elem_type !== 'iframe')
+                        elem.className = par_class;
+                      if (elem_type.match(/h\d/))
+                        elem.style = 'font-weight: bold;';
+                    }
+                  } else if (par.image && par.image.url) {
+                    elem = makeFigure(par.image.url, par.image.caption + ' ' + par.image.source);
+                    elem.style = 'margin: 20px 0px;';
+                  } else if (!par.adItem && !par.articleIds && par.isBlurred)
+                    console.log(par)
+                  if (elem && intro.parentNode)
+                    intro.parentNode.append(elem);
+                }
+                removeDOMElement(intro);
+              }
+            } catch (err) {
+              console.log(err);
+            }
+          }
+        }
+      }
+    }
+  }
+  let ads = 'div.lay-PaySocial, div.iqadtile_wrapper, div.iqdcontainer';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('freitag.de')) {
