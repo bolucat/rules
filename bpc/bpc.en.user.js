@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.3.0
+// @version         4.2.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -54,7 +54,6 @@
 // @connect         archive.ph
 // @connect         archive.vn
 // @connect         djservices.io
-// @connect         dowjones.io
 // @exclude         *://*.amazon-adsystem.com/*
 // @exclude         *://*.consentmanager.net/*
 // @exclude         *://*.centrefrance.com/*
@@ -203,7 +202,7 @@ window.setTimeout(function () {
 var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 'thepeterboroughexaminer.com', 'therecord.com', 'thespec.com', 'thestar.com', 'wellandtribune.ca'];
 var ke_nation_media_domains = ['businessdailyafrica.com', 'nation.africa'];
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
-var no_dn_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'hydrogeninsight.com', 'intrafish.com', 'intrafish.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
+var no_dn_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'hydrogeninsight.com', 'intrafish.com', 'intrafish.no', 'kystens.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
 var sg_sph_media_domains = ['businesstimes.com.sg', 'straitstimes.com'];
 var uk_dmg_media_domains = ['dailymail.co.uk', 'mailonsunday.co.uk', 'thisismoney.co.uk'];
 var uk_nat_world_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
@@ -4286,13 +4285,16 @@ else if (matchDomain(no_dn_media_domains)) {
           removeDOMElement(node.parentNode);
           try {
             let pars = JSON.parse(json_script.text);
-            let article_id_index = (pars.indexOf('global-article') || pars.indexOf('dn-article')) + 1;
+            let article_id_index = (pars.indexOf('global-article') + 1) || (pars.indexOf('dn-article') + 1);
             if (article_id_index) {
               let article_id = pars[article_id_index];
               if (article_id && !window.location.pathname.endsWith(article_id)) {
                 refreshCurrentTab();
                 return;
               }
+            } else {
+              refreshCurrentTab();
+              return;
             }
             article.innerHTML = '';
             article.classList.remove('shadow');
@@ -4321,6 +4323,13 @@ else if (matchDomain(no_dn_media_domains)) {
                     elem = makeFigure(pars[par.src], caption_text);
                     elem.className = 'dn-image';
                   }
+                } else if (type === 'embed') {
+                  elem = document.createElement('div');
+                  if (par.value) {
+                    let content_new = parser.parseFromString('<div>' + pars[par.value] + '</div>', 'text/html');
+                    let video = content_new.querySelector('div');
+                    elem.appendChild(video);
+                  }
                 } else if (type === 'factbox') {
                   elem = document.createElement('p');
                   if (par.title)
@@ -4346,7 +4355,7 @@ else if (matchDomain(no_dn_media_domains)) {
                   sub_elem.innerText = 'Related: ' + pars[par.title];
                   sub_elem.style = 'font-weight: bold;';
                   elem.appendChild(sub_elem);
-                } else if (!['ad', 'adobetarget', 'author', 'break', 'embed', 'Emne', 'Location', 'news', 'Organisasjon', 'Organisation', 'Organization', 'promobox', 'Person', 'Personer', 'Region', 'Regions', 'related', 'Sector', 'Sectors', 'Selskap', 'Shiptype', 'Sted', 'Topic', 'video'].includes(type)) {
+                } else if (!['ad', 'ad_group', 'adobetarget', 'author', 'break', 'Emne', 'job', 'Location', 'ma_frame', 'news', 'Organisasjon', 'Organisation', 'Organization', 'promobox', 'Person', 'Personer', 'quote', 'readpeak', 'Region', 'Regions', 'related', 'Sector', 'Sectors', 'Selskap', 'Shiptype', 'Sted', 'Steder', 'Topic', 'ukens_stilling', 'video'].includes(type)) {
                   for (let item in par) {
                     console.log(item);
                     console.log(pars[par[item]]);
@@ -4376,10 +4385,13 @@ else if (matchDomain(no_dn_media_domains)) {
                 body.style.width = '80%';
             }
           }
-        } else
-          dn_main(paywall);
-      } else {
-        waitDOMElement(paywall_sel, 'DIV', dn_main);
+        } else {
+          if (window.location.pathname.match(/^\/(e-avis|editions)/)) {
+            removeDOMElement(paywall);
+            header_nofix('section.wrapper');
+          } else
+            dn_main(paywall);
+        }
       }
     }, 1000);
   }
