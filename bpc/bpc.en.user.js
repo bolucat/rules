@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.3.1
+// @version         4.2.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1621,13 +1621,13 @@ else if (matchDomain('bizjournals.com')) {
                 }
                 for (let i = pars_index; i < pars_index + 50; i++) {
                   let par = json[i];
-                  let style = '';
+                  let style;
                   if (par === 'header') {
                     style = 'font-weight: bold;';
                     i++;
                     par = json[i];
                   }
-                  if (par && typeof par === 'string') {
+                  if (par && typeof par === 'string' && !['embed', 'horizontal_line', 'image', 'media'].includes(par)) {
                     if (par.match(/^\d{4}-\d{2}-/))
                       break;
                     let doc = parser.parseFromString('<p class="content mb-4"' + (style ? 'style="' + style + '"' : '') + '>' + par + '</p>', 'text/html');
