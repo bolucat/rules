@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.3.2
+// @version         4.2.3.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1619,19 +1619,34 @@ else if (matchDomain('bizjournals.com')) {
                   container.append(title, highlights);
                   article.appendChild(container);
                 }
-                for (let i = pars_index; i < pars_index + 50; i++) {
+                let json_images = json.filter(x => x && x.ord && x.url);
+                for (let i = pars_index; i < json.length; i++) {
                   let par = json[i];
+                  if (!par)
+                    continue;
                   let style;
                   if (par === 'header') {
                     style = 'font-weight: bold;';
                     i++;
                     par = json[i];
+                  } else if (par.type && json[par.type] === 'media') {
+                    let json_img = json_images.find(x => x.ord === par.ord);
+                    if (json_img) {
+                      let figure = makeFigure(json[json_img.url], json[json_img.caption]);
+                      article.appendChild(figure);
+                    }
                   }
-                  if (par && typeof par === 'string' && !['embed', 'horizontal_line', 'image', 'media'].includes(par)) {
+                  if (typeof par === 'string' && !['embed', 'horizontal_line', 'image', 'list', 'media'].includes(par)) {
                     if (par.match(/^\d{4}-\d{2}-/))
                       break;
-                    let doc = parser.parseFromString('<p class="content mb-4"' + (style ? 'style="' + style + '"' : '') + '>' + par + '</p>', 'text/html');
-                    let par_new = doc.querySelector('p');
+                    let elem_type = 'p';
+                    let elem_type_match = par.match(/^<(\w+)/);
+                    if (elem_type_match)
+                      elem_type = 'div';
+                    else
+                      par = '<p class="content mb-4"' + (style ? 'style="' + style + '"' : '') + '>' + par + '</p>';
+                    let doc = parser.parseFromString('<div style="margin: 10px 0px;">' + par + '</div>', 'text/html');
+                    let par_new = doc.querySelector(elem_type);
                     article.appendChild(par_new);
                   } else if (par.is_primary)
                     break;
