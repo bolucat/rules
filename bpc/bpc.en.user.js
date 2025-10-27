@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.3.4
+// @version         4.2.3.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1604,8 +1604,10 @@ else if (matchDomain('bizjournals.com')) {
             if (json) {
               let pars_index = json.indexOf('paragraph') + 1;
               if (pars_index) {
-                let parser = new DOMParser();
+                let intro = article.querySelector('p[class]');
+                let par_class = intro ? intro.className : 'content mb-4';
                 article.innerHTML = '';
+                let parser = new DOMParser();
                 let hl_index = json.indexOf('highlights') + 1;
                 if (hl_index) {
                   let container = document.createElement('div');
@@ -1614,7 +1616,7 @@ else if (matchDomain('bizjournals.com')) {
                   let title = document.createElement('h3');
                   title.className = 'pb-4 font-bold';
                   title.innerText = 'Story Highlights';
-                  let doc = parser.parseFromString('<div class="content mb-4">' + json[hl_index] + '</div>', 'text/html');
+                  let doc = parser.parseFromString('<div class="' + par_class + '">' + json[hl_index] + '</div>', 'text/html');
                   let highlights = doc.querySelector('div');
                   container.append(title, highlights);
                   article.appendChild(container);
@@ -1632,21 +1634,19 @@ else if (matchDomain('bizjournals.com')) {
                   } else if (par.type && json[par.type] === 'media') {
                     let json_img = json_images.find(x => x.ord === par.ord);
                     if (json_img) {
-                      let figure = makeFigure(json[json_img.url], json[json_img.caption]);
+                      let figure = makeFigure(json[json_img.url], json[json_img.caption] + (json[json_img.byline] ? '\r\n' + json[json_img.byline].toUpperCase() : ''));
+                      figure.className = par_class;
                       article.appendChild(figure);
                     }
                   }
-                  if (typeof par === 'string' && !['default', 'embed', 'horizontal_line', 'image', 'list', 'media'].includes(par)) {
+                  if (typeof par === 'string' && !['default', 'embed', 'horizontal_line', 'image', 'list', 'media', 'top25list'].includes(par)) {
                     if (par.match(/^\d{4}-\d{2}-/))
                       break;
-                    let elem_type = 'p';
-                    let elem_type_match = par.match(/^<(\w+)/);
-                    if (elem_type_match)
-                      elem_type = 'div';
-                    else
-                      par = '<p class="content mb-4"' + (style ? 'style="' + style + '"' : '') + '>' + par + '</p>';
-                    let doc = parser.parseFromString('<div style="margin: 10px 0px;">' + par + '</div>', 'text/html');
-                    let par_new = doc.querySelector(elem_type);
+                    let doc = parser.parseFromString('<div class="' + par_class + '">' + par + '</div>', 'text/html');
+                    let par_new = doc.querySelector('div');
+                    par_new.querySelectorAll('iframe[allow*="fullscreen"][allowfullscreen]').forEach(e => e.removeAttribute('allowfullscreen'));
+                    if (style)
+                      par_new.style = style;
                     article.appendChild(par_new);
                   } else if (par.is_primary || par['primary-channel'])
                     break;
@@ -4618,9 +4618,8 @@ else if (matchDomain('washingtonpost.com')) {
       getArchive(url, paywall_sel, {rm_class: 'meteredContent'}, 'div.teaser-content', '', 'article > div > div[style*="grid-column-end"]');
     }
   }
-  let leaderboard = '#leaderboard-wrapper';
-  let ads = 'div[data-qa$="-ad"], div[data-component="Ad"], div[data-qa="outbrain"]';
-  hideDOMStyle(leaderboard + ', ' + ads);
+  let ads = 'wp-ad-wrapper, div[data-qa$="-ad"], div[data-component="Ad"], div[data-qa="outbrain"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('winnipegfreepress.com')) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.2.3.1
+// @version         4.2.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -705,7 +705,14 @@ else if (matchDomain('exame.com')) {
 else if (matchDomain('uol.com.br')) {
   if (matchDomain('folha.uol.com.br')) {
     if (matchDomain('piaui.folha.uol.com.br')) {
-      header_nofix('div.paywall__content', 'div.revista--interna__assineonly');
+      let audio = document.querySelector('div.audio-player-container:has(audio[src])');
+      if (audio) {
+        let audio_new = document.createElement('audio');
+        audio_new.src = audio.querySelector('audio').src;
+        audio_new.setAttribute('controls', '');
+        audio.parentNode.replaceChild(audio_new, audio);
+      }
+      header_nofix('div.paywall__content', 'div.revista--interna__assineonly', 'BPC > no fix (audio-only)');
     } else if (window.location.pathname.startsWith('/amp/')) {
       amp_unhide_subscr_section('amp-sticky-ad');
     } else {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.3.2
+// @version         4.2.3.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -20,7 +20,6 @@
 // @match           *://*.profil.at/*
 // @match           *://*.schweizermonat.ch/*
 // @match           *://*.themarket.ch/*
-// @match           *://*.tt.com/*
 // @match           *://*.vn.at/*
 // @match           *://*.vol.at/*
 // @match           *://*.wochenblatt.com/*
@@ -275,14 +274,15 @@ else if (matchDomain('faz.net')) {
           let par_class = intro.className;
           let url = window.location.href;
           let url_src = 'https://fnetcore-api-prod.azurewebsites.net/api/v3/article?id=' + article_id;
-          let json_key = 'content_elements';
-          getExtFetch(url_src, json_key, {}, main_faz);
+          getExtFetch(url_src, '', {}, main_faz);
           function main_faz(url, data) {
             try {
               if (data && intro) {
+                let json_data = JSON.parse(data);
+                let pars = json_data.content_elements;
                 let parser = new DOMParser();
                 let elem;
-                for (let par of data) {
+                for (let par of pars) {
                   if (par.html) {
                     let doc = parser.parseFromString(par.html, 'text/html');
                     let elem_type_match = par.html.match(/^<(\w+)/);
@@ -298,11 +298,28 @@ else if (matchDomain('faz.net')) {
                     elem = makeFigure(par.image.url, par.image.caption + ' ' + par.image.source);
                     elem.style = 'margin: 20px 0px;';
                   } else if (!par.adItem && !par.articleIds && par.isBlurred)
-                    console.log(par)
+                    console.log(par);
                   if (elem && intro.parentNode)
                     intro.parentNode.append(elem);
                 }
                 removeDOMElement(intro);
+                if (window.location.pathname.startsWith('/podcasts/')) {
+                  let audio = document.querySelector('button[track-label="Podcast"]');
+                  if (audio && json_data.podcastAudioInfo && json_data.podcastAudioInfo.url) {
+                    let audio_new = document.createElement('audio');
+                    audio_new.src = json_data.podcastAudioInfo.url;
+                    audio_new.setAttribute('controls', '');
+                    audio.parentNode.replaceChild(audio_new, audio);
+                  }
+                } else {
+                  let audio = document.querySelector('button[track-label="TTS"]');
+                  if (audio && json_data.audioInfo && json_data.audioInfo.url) {
+                    let audio_new = document.createElement('audio');
+                    audio_new.src = json_data.audioInfo.url;
+                    audio_new.setAttribute('controls', '');
+                    audio.parentNode.replaceChild(audio_new, audio);
+                  }
+                }
               }
             } catch (err) {
               console.log(err);
@@ -864,127 +881,6 @@ else if (matchDomain('tagesspiegel.de')) {
     }
   }
   let ads = 'div.iqdcontainer';
-  hideDOMStyle(ads);
-}
-
-else if (matchDomain('tt.com')) {
-  window.setTimeout(function () {
-    let paywall = document.querySelector('div#piano-logwall');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let article = document.querySelector('div[data-io-article-url]');
-      if (article) {
-        let json_script = document.querySelector('script#tt-com-www-state');
-        if (json_script) {
-          try {
-            let json = JSON.parse(json_script.text);
-            let json_article;
-            let relations;
-            for (let key in json) {
-              if (json[key].b && json[key].b.article && (json[key].b.article.canonical === window.location.pathname)) {
-                json_article = json[key].b.article;
-                relations = json[key].b.contentRelations;
-                break;
-              }
-            }
-            if (json_article) {
-              function addFigure(header_img_src, header_img_uuid, par) {
-                let elem;
-                if (header_img_src && header_img_uuid && par.uuid) {
-                  let caption = '';
-                  if (par.text)
-                    caption = par.text + (par.bylineAuthors && par.bylineAuthors[0] ? ' © ' + par.bylineAuthors[0] : '');
-                  elem = makeFigure(header_img_src.replace(header_img_uuid, par.uuid), caption, {style: 'width: 100%;'});
-                }
-                return elem
-              }
-              let header_img_src;
-              let header_img_uuid;
-              let header_img = document.querySelector('div.article-header img[src]');
-              if (header_img) {
-                header_img_src = header_img.src;
-                let match = header_img_src.match(/\/images\/(.+)\?/);
-                if (match)
-                  header_img_uuid = match[1];
-              }
-              let first_img = true;
-              let parser = new DOMParser();
-              let pars = json_article.elements;
-              for (let par of pars) {
-                let elem;
-                if (['body', 'subheadline1'].includes(par.type)) {
-                  if (par.content) {
-                    let doc = parser.parseFromString('<p>' + par.content + '</p>', 'text/html');
-                    elem = doc.querySelector('p');
-                    if (par.type === 'subheadline1')
-                      elem.style = 'font-weight: bold;';
-                  }
-                } else if (par.type = 'x-im/content-part') {
-                  if (par.elements) {
-                    elem = document.createElement('p');
-                    for (let item of par.elements) {
-                      if (item.content) {
-                        let doc = parser.parseFromString('<p>' + item.content + '</p>', 'text/html');
-                        sub_elem = doc.querySelector('p');
-                        elem.appendChild(sub_elem);
-                      }
-                    }
-                  } else if (par.uuid && par.fileName) {
-                    if (!first_img) {
-                      elem = addFigure(header_img_src, header_img_uuid, par);
-                    } else
-                      first_img = false;
-                  } else if (par.galleryTitle) {
-                    elem = document.createElement('div');
-                    let title = document.createElement('p');
-                    title.innerText = par.galleryTitle;
-                    title.style = 'font-weight: bold;';
-                    elem.appendChild(title);
-                    for (let img of par.images) {
-                      let sub_elem = addFigure(header_img_src, header_img_uuid, img);
-                      if (sub_elem)
-                        elem.appendChild(sub_elem);
-                    }
-                  } else if (par.contentType === 'x-im/article') {
-                    if (par.uuid && relations) {
-                      let relation = relations.find(x => x.uuid === par.uuid);
-                      if (relation && relation.url && relation.title) {
-                        elem = document.createElement('p');
-                        let sub_elem = document.createElement('a');
-                        sub_elem.href = relation.url;
-                        sub_elem.innerText = relation.title;
-                        elem.appendChild(sub_elem);
-                      }
-                    }
-                  } else if (par.url) {
-                    if (par.url.startsWith('https://twitter.com/')) {
-                      elem = document.createElement('p');
-                      let sub_elem = document.createElement('a');
-                      sub_elem.href = sub_elem.innerText = par.url;
-                      sub_elem.target = '_blank';
-                      elem.appendChild(sub_elem);
-                    } else {
-                      elem = document.createElement('iframe');
-                      elem.src = par.url;
-                      elem.style = 'height: ' + article.offsetWidth + 'px; width: ' + article.offsetWidth + 'px;';
-                    }
-                  } else if (!par.quote && Object.keys(par).length > 2)
-                    console.log(par);
-                } else
-                  console.log(par);
-                if (elem)
-                  article.appendChild(elem);
-              }
-            } else 
-              refreshCurrentTab();
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
-    }
-  }, 0);
-  let ads = 'div[class*="ads-container"], div.adblock-warning';
   hideDOMStyle(ads);
 }
 

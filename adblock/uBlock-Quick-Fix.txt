@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sun, 26 Oct 2025 16:31:05 +0000
-! Diff-Path: ../patches/2025.10.26.1044.patch#ublock-quick-fixes
+! Last modified: Mon, 27 Oct 2025 13:31:47 +0000
+! Diff-Path: ../patches/2025.10.27.819.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -103,9 +103,6 @@ jilliandescribecompany.com##+js(acs, globalThis, break;case)
 ||platform.pubadx.one/pubadx-ad.js$script,domain=japscan.*,important
 ||static.cloudflareinsights.com/beacon.min.js/$script,domain=japscan.*,important
 !#endif
-japscan.*##+js(trusted-set, aclib, json:{"isShowingPop": false})
-japscan.*##+js(set, aclib.runInPagePush, {}, as, callback)
-japscan.*##+js(set, aclib.runAutoTag, noopFunc)
 japscan.*##body > div.full-container > div.full-container.text-center > div.mt-2[style="margin: 0px auto; display: block;"] > a.Aikoi.donate[target="_blank"][rel][href^="https://www.longosto.shop/?utm_source="] > img.img-fluid:style(visibility: hidden !important;)
 japscan.*#@#.navbar-nav > li.nav-item > a.text-truncate.nav-link.font-weight-bold[href*="?"]
 japscan.*#@#body > div.full-container > div.full-container.text-center > div.mt-2[style="margin: 0px auto; display: block;"] > a.Aikoi.donate[target="_blank"][rel][href^="https://www.longosto.shop/?utm_source="] > img.img-fluid
@@ -214,7 +211,6 @@ cdn.bg-gledai.video,cdn.gledaitv.fan,cdn.gledaitv.live##+js(aost, document.creat
 @@||cdn.gledaitv.$ghide
 faqwiki.us##+js(nostif, .offsetHeight>0)
 faqwiki.*##+js(rmnt, script, /adblock/i)
-pvpoke-re.com##.nitro-any
 @@||pvpoke-re.com^$ghide
 pvpoke-re.com##+js(no-xhr-if, /^https:\/\/pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js\?client=ca-pub-3497863494706299$/)
 ||g.doubleclick.net/pagead/ads?client=ca-pub-3497863494706299$frame,redirect=noop.html,domain=pvpoke-re.com
@@ -225,7 +221,7 @@ pvpoke-re.com##+js(trusted-create-html, body, <ins class="adsbygoogle adsbygoogl
 pvpoke-re.com##+js(trusted-replace-argument, Math.round, 0, 121, condition, /^(\d\d?|1[0-2]\d)\.\d+$/)
 pvpoke-re.com##+js(trusted-set-attr, ins.adsbygoogle:has(> #aswift_0_host), data-ad-status, unfilled)
 pvpoke-re.com##+js(ra, data-instype, ins.adsbygoogle:has(> div#aswift_0_host), stay)
-pvpoke-re.com##+js(trusted-set-attr, *:not(#nitro-top\,.nitro-any\,.main-wrap:has(~ [id^="nitro-sidebar"] .nitro-side) #nitro-body-desktop\,[id^="nitro-sidebar"]:has(.nitro-side) ~ #nitro-header-mobile) > ins.adsbygoogle:not(:has(#aswift_0)), data-ad-status, filled)
+pvpoke-re.com##+js(trusted-set-attr, *:not(.main-wrap:has(~ [id^="nitro-sidebar"] .nitro-side) #nitro-top\,.main-wrap:has(~ [id^="nitro-sidebar"] .nitro-side) #nitro-body-desktop\,[id^="nitro-sidebar"]:has(.nitro-side) ~ #nitro-header-mobile) > ins.adsbygoogle:not(:has(#aswift_0)), data-ad-status, filled)
 ||pvpoke-re.com/*.js?v=$replace=/([};])location(?:\[.+?\]|[.Oa-z]+){2}\(.+?\)===-(?:\(.+?\)|_?0x[0-9a-f]+|1)&&.*?location(?:\[.+?\]|[.Oa-z]+){2}\(.+?\)+(?:[\,>]|===)-(?:\(.+?\)+|_?0x[0-9a-f]+|1)\?/\$1 0 ?/
 ||pvpoke-re.com/*.js?v=$replace=/if\(location(?:\[.+?\]|[.Oa-z]+){2}\(.+?\).*?&&.*?location(?:\[.+?\]|[.Oa-z]+){2}\(.+?\)+(?:[\,>]|===)-(?:\(.+?\)+|_?0x[0-9a-f]+\)|1)/if(0)/
 ||pvpoke-re.com/*.js?v=$replace=/([};])_0x[0-9a-f]+\[(?:_0x[0-9a-f]+\([-0-9a-fx\,]+?\)|'[A-Za-z]+'|[.Oa-z]+)\]\(location(?:\[(?:_0x[0-9a-f]+\(.+?\)|'[A-Za-z]+'|[.Oa-z]+)\]){2}\(.+?\)\,-\(.+?\)\)&&.*?location(?:\[.+?\]|[.Oa-z]+){2}\(.+?\)+(?:[\,>]|===)-(?:\(.+?\)|1)\?/\$1 0 ?/
@@ -265,11 +261,16 @@ embed.wcostream.com##^script:has-text(/google_jobrunner|AdBlock|pubadx|embed\.ht
 !#else
 embed.wcostream.com##+js(rmnt, script, /google_jobrunner|AdBlock|pubadx|embed\.html/i)
 !#endif
-client.falixnodes.net##+js(rmnt, script, /aps_csm|snigelweb|redirectsomethingidkatthispoint|myveryveryverysuperdupercoolfeature|getthetitle|YWRuZ2lu|adngin|window\.location\.replace|101vh|Segoe UI|ffffff|style \= \"height|style\=\"text-shadow|Please disable adblock/)
-client.falixnodes.net##^script:has-text(aps_csm) + script
-client.falixnodes.net##^script:has-text(snigelPubConf) + script
+!#if ext_ubol
+@@||cdn.snigelweb.com/adengine/falixnodes.net/loader.js$script,domain=client.falixnodes.net
+@@||amazon-adsystem.com/bao-csm/aps-comm/aps_csm.js$script,domain=client.falixnodes.net
+@@||adengine.snigelweb.com/falixnodes.net/$script,domain=client.falixnodes.net
+!#else
+client.falixnodes.net##+js(rmnt, script, /aps_csm|snigelweb|mysupercoolredirect|yeahthisthing|yipeeeeeee|getdavalue|blabla|YWRuZ2lu|adngin|window\.location\.replace|101vh|Segoe UI|ffffff|style \= \"height|style\=\"text-shadow|Please disable adblock/)
 client.falixnodes.net##+js(rpnt, script, /googletag.*?enableServices\(\)\;/s)
 client.falixnodes.net##+js(rpnt, script, /googletag\.pubads\(\).*rewardedSlot\)\;\s+\}\)\;/s)
+client.falixnodes.net##+js(rpnt, script, window.location.href = '/neptune';)
+!#endif
 ||rm.freex2line.online/*.js|$domain=cimanow.cc
 ||global.novelpia.com/_nuxt/*.js|$script,replace=/if\(\w\.check_is_ad_free\(\)\)/if(true)/
 @@||global.novelpia.com^$ghide
@@ -290,6 +291,6 @@ omuzaani.me##+js(no-fetch-if, summerday, length:10, {"type":"cors"})
 ||region1.google-analytics.com/g/collect?$removeparam,xhr,domain=stateless.me
 @@||stateless.me^$ghide
 ! Blocked by PL
-@@||dev.visualwebsiteoptimizer.com^$script,domain=dominos.jp
+@@||dev.visualwebsiteoptimizer.com^$script,xhr,domain=dominos.jp
 th.gl##+js(nosiif, error)
 tvtropes.org##+js(nostif, /offsetHeight|loaded/)
