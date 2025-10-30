@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.3.6
+// @version         4.2.3.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4453,6 +4453,7 @@ else if (matchDomain(usa_craincomm_domains)) {
 }
 
 else if (matchDomain(usa_nymag_domains)) {
+  document.querySelectorAll('iframe[data-src]:not([src])').forEach(e => e.src = e.getAttribute('data-src'));
   let ads = 'div.m-ad, section.ad-splash, aside.ad_static';
   hideDOMStyle(ads);
 }
@@ -4600,7 +4601,7 @@ else if (matchDomain('voguebusiness.com')) {
 }
 
 else if (matchDomain('vox.com')) {
-  let ads = 'div[id^="div-gpt-ad-"]';
+  let ads = 'div[data-concert]';
   hideDOMStyle(ads);
 }
 
@@ -4646,7 +4647,7 @@ else if (matchDomain('wsj.com')) {
         let video = document.querySelector(video_sel);
         let schema_script = document.querySelector('script#articleschema');
         func_post = function () {
-          let pars = document.querySelectorAll(article_sel + ' > div[data]');
+          let pars = document.querySelectorAll(article_sel + ' div[data]');
           if (pars.length < 5)
             header_nofix(article_sel, '', 'BPC > no archive-fix');
           if (video) {
