@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.3.4
+// @version         4.2.3.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -264,7 +264,7 @@ else if (matchDomain('cicero.de')) {
 }
 
 else if (matchDomain('faz.net')) {
-  let paywall = document.querySelector('div.paywall');
+  let paywall = document.querySelector('div.wall');
   if (paywall) {
     removeDOMElement(paywall);
     let art_match = window.location.pathname.match(/-(\d+)\.html$/);
@@ -486,17 +486,14 @@ else if (matchDomain('jacobin.de')) {
 }
 
 else if (matchDomain('krautreporter.de')) {
-  let paywall = document.querySelector('.js-article-paywall');
+  let paywall = document.querySelector('section.js-access-wall');
   if (paywall) {
     removeDOMElement(paywall);
     window.setTimeout(function () {
-      let paywall_divider = document.querySelector('.js-paywall-divider');
-      let steady_checkout = document.querySelector('#steady-checkout');
-      removeDOMElement(paywall_divider, steady_checkout);
-      let blurred = document.querySelectorAll('.blurred');
-      for (let elem of blurred)
-        elem.classList.remove('blurred', 'json-ld-paywall-marker', 'hidden@print');
+      document.querySelectorAll('.blurred').forEach(e => e.classList.remove('blurred', 'json-ld-paywall-marker', 'hidden@print'));
     }, 500);
+    let banners = 'div.js-paywall-divider, #steady-checkout';
+    hideDOMStyle(banners);
   }
 }
 
