@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.2.3.3
+// @version         4.2.3.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -53,6 +53,7 @@
 // @match           *://*.globo.com/*
 // @match           *://*.lanacion.com.ar/*
 // @match           *://*.larioja.com/*
+// @match           *://*.lasegunda.com/*
 // @match           *://*.latercera.com/*
 // @match           *://*.lavoz.com.ar/*
 // @match           *://*.levante-emv.com/*
@@ -380,7 +381,7 @@ else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
   }
 }
 
-} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['abcmais.com', 'cambiocolombia.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'eluniverso.com', 'exame.com', 'globo.com', 'latercera.com', 'revistaoeste.com'])) {//south america
+} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['abcmais.com', 'cambiocolombia.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'eluniverso.com', 'exame.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com'])) {//south america
 
 if (matchDomain('abcmais.com')) {
   if (!window.location.pathname.endsWith('/amp/')) {
@@ -414,11 +415,8 @@ else if (matchDomain('abril.com.br')) {
 }
 
 else if (matchDomain(ar_grupo_clarin_domains)) {
-  let ads = 'div.ad-slot, div.box-adv, div.wrapperblock, div.banner, div[id^="div-gpt-ad-flotante"]';
+  let ads = 'div.ad-slot, div.box-adv, div.wrapperblock, div.banner, div[id^="div-gpt-ad-"], div.bannerTopHeader, div.sticky, div.SRA';
   hideDOMStyle(ads);
-  let ads_inline = document.querySelectorAll('div > div.sticky, div > div.SRA, div > div[id^="div-gpt-ad-inread"], div > div[id^="div-gpt-ad-caja"], div > div[id^="div-gpt-ad-horizontal"]');
-  for (let ad of ads_inline)
-    hideDOMElement(ad.parentNode);
 }
 
 else if (matchDomain('cambiocolombia.com')) {
@@ -774,6 +772,113 @@ else if (matchDomain('lanacion.com.ar')) {
   }
   let ads = 'div.ln-banner-container';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('lasegunda.com')) {
+  if (window.location.pathname.endsWith('/Registro/Login.aspx')) {
+    let intro = document.querySelector('body > div > article');
+    if (intro) {
+      intro.parentNode.removeAttribute('style');
+      intro.parentNode.parentNode.style = 'margin: 20px;';
+      let mh_new = document.createElement('div');
+      mh_new.style = 'font-size: 20px; font-weight: bold; text-align: center; margin: 20px;';
+      let main = document.createElement('a');
+      main.href = 'https://www.lasegunda.com';
+      main.innerText = 'la Segunda';
+      mh_new.appendChild(main);
+      intro.before(mh_new);
+      let page = document.querySelector('div#page');
+      if (page) {
+        let var_script;
+        let scripts = document.querySelectorAll('script:not([src], [type])');
+        for (let script of scripts) {
+          if (script.text.includes('rts_subcat')) {
+            var_script = script;
+            break;
+          }
+        }
+        if (var_script) {
+          let rts_subcat_match = var_script.text.match(/rts_subcat\s?=\s?'(.+)'/);
+          if (rts_subcat_match) {
+            let rts_subcat = rts_subcat_match[1].replace(/[\s\/]/g, '-');
+            if (rts_subcat === 'conversacion')
+              rts_subcat = 'conversación';
+            else if (rts_subcat === 'economia')
+              rts_subcat = 'economía';
+            else if (rts_subcat === 'politica')
+              rts_subcat = 'política';
+            else if (rts_subcat === 'ciencia-tecnologia')
+              rts_subcat = 'ciencia-tecnología';
+            else if (rts_subcat === 'cultura-espectaculos')
+              rts_subcat = 'cultura-espectáculos';
+            let rts_id_match = var_script.text.match(/rts_id\s?=\s?'(\d+)'/);
+            if (rts_id_match) {
+              let rts_id = rts_id_match[1];
+              let rts_image_match = var_script.text.match(/rts_image\s?=\s?'(.+)'/);
+              if (rts_image_match) {
+                let rts_image_url = rts_image_match[1];
+                let figure = makeFigure(rts_image_url);
+                figure.style = 'margin: 15px;';
+                intro.firstChild.before(figure);
+              }
+              function ecn_fetch(size = 0) {
+                let url_src = 'https://newsapi.ecn.cl/NewsApi/lasegunda/subseccion/' + rts_subcat + '?id=' + rts_id + (size ? '&size=50' : '');
+                fetch(url_src)
+                .then(response => {
+                  if (response.ok) {
+                    response.json().then(json => {
+                      try {
+                        if (json.hits && json.hits.hits) {
+                          let art_json = json.hits.hits.find(x => x._id === rts_id);
+                          if (art_json) {
+                            if (art_json._source) {
+                              let art_source = art_json._source;
+                              let author = document.createElement('span');
+                              author.innerText = art_source.autor + (art_source.fechaPublicacion ? '\r\n' + art_source.fechaPublicacion.replace('T', ' ').replace(/:00$/, '') : '');
+                              page.appendChild(author);
+                              function make_fig(p1, p2 = '') {
+                                let result = '<figure style="margin: 15px 0px"><img src="' + p1 + '"><figcaption>' + (p2 ? p2.replace(/^;\s/, '') : '') + '</figcaption></figure>';
+                                return result;
+                              }
+                              function make_imagen(match, p1, offset, string) {
+                                return make_fig(p1);
+                              }
+                              function make_imagen_credito(match, p1, p2, offset, string) {
+                                return make_fig(p1, p2);
+                              }
+                              function make_video(match, p1, offset, string) {
+                                return '<video controls src="' + p1 + '" style="width: 100%; margin: 15px 0px;">';
+                              }
+                              let art_text = art_source.texto.replace(/{IMAGEN?\s([^}]+)}/g, make_imagen);
+                              art_text = art_text.replace(/{IMAGENCREDITO\s([^;]+)(;\s[^}]+)}/g, make_imagen_credito);
+                              art_text = art_text.replace(/{VIDEO?\s([^}]+)}/g, make_video);
+                              art_text = art_text.replace(/{CITA[^}]+}/g, '').replace(/{DESTACAR\s/g, '');
+                              if (!art_text.includes('{'))
+                                art_text = art_text.replace(/}/g, '');
+                              else
+                                console.log('source still has macros');
+                              let parser = new DOMParser();
+                              let doc = parser.parseFromString('<div style="margin: 20px 0px;">' + art_text + '<br></div>', 'text/html');
+                              let article_new = doc.querySelector('div');
+                              page.appendChild(article_new);
+                            }
+                          } else if (!size)
+                            ecn_fetch(50);
+                        }
+                      } catch (err) {
+                        console.log(err);
+                      }
+                    });
+                  }
+                })
+              }
+              ecn_fetch();
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 else if (matchDomain('latercera.com')) {

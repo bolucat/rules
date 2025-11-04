@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.3.9
+// @version         4.2.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -112,6 +112,7 @@
 // @exclude         *://*.jeuneafrique.com/*
 // @exclude         *://*.journaldunet.com/*
 // @exclude         *://*.larioja.com/*
+// @exclude         *://*.lasegunda.com/*
 // @exclude         *://*.latercera.com/*
 // @exclude         *://*.lavenir.net/*
 // @exclude         *://*.ledauphine.com/*
@@ -4718,6 +4719,14 @@ else if (matchDomain('wsj.com')) {
   }
   let ads = 'div.wsj-ad, div.adWrapper, div.css-xgokil-Box, div#cx-article-cover-overlay';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('ynet.co.il')) {
+  let paywall = document.querySelector('div.paywall-wrapper');
+  if (paywall) {
+    removeDOMElement(paywall);
+    window.location.href = window.location.pathname + '?rel=plus';
+  }
 }
 
 else if (matchDomain(ke_nation_media_domains)) {
