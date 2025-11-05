@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Tue, 04 Nov 2025 12:45:29 +0000
-! Diff-Path: ../patches/2025.11.4.995.patch#ublock-quick-fixes
+! Last modified: Wed, 05 Nov 2025 07:06:22 +0000
+! Diff-Path: ../patches/2025.11.5.1050.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -115,7 +115,7 @@ japscan.*##+js(trusted-set, aclib, json:{"isShowingPop":false})
 japscan.*##+js(set, aclib.runInPagePush, noopFunc)
 japscan.*##+js(set, aclib.runBanner, {}, as, function)
 japscan.*##+js(set, aclib.runInterstitial, throwFunc)
-japscan.*##+js(trusted-suppress-native-method, Document.prototype.getElementById, '"/^[A-Z][0-9A-Z_a-z]{5}$/"')
+japscan.*##+js(trusted-suppress-native-method, Document.prototype.getElementById, '"/^[A-Z][0-9A-Z_a-z]{5,}$/"')
 poophq.com,veev.to,doods.to##+js(nowoif)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /vast.php?)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /click\.com|preroll|native_render\.js|acscdn/, length:10001)
@@ -298,8 +298,10 @@ omuzaani.me##+js(trusted-replace-argument, Headers.prototype.get, 0, json:"conte
 omuzaani.me##+js(trusted-replace-argument, Headers.prototype.has, 0, json:"content-type", condition, cache-control)
 omuzaani.me##+js(rpnt, script, /window.navigator.brave.+;/, false;)
 omuzaani.me##+js(no-fetch-if, summerday, length:10, {"type":"cors"})
-th.gl##+js(nosiif, /1===|\?void/)
+th.gl##+js(nosiif, /1===|\?void|&&/)
+th.gl##+js(nostif, ++)
 tvtropes.org##+js(nostif, /offsetHeight|loaded/)
 tvtropes.org##+js(set, HTMLScriptElement.prototype.onerror, undefined)
 ||rottentomatoes.com/assets/pizza-pie/javascripts/bundles/roma/rt-common.js$badfilter
 @@$doc,removeparam=msid,domain=editorialmanager.com
+/stormcaster.js$badfilter
