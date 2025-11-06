@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.2.3.4
+// @version         4.2.3.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -849,10 +849,10 @@ else if (matchDomain('lasegunda.com')) {
                               function make_video(match, p1, offset, string) {
                                 return '<video controls src="' + p1 + '" style="width: 100%; margin: 15px 0px;">';
                               }
-                              let art_text = art_source.texto.replace(/{IMAGEN?\s([^}]+)}/g, make_imagen);
+                              let art_text = art_source.texto.replace(/&nbsp;/g, ' ').replace(/{IMAGEN?\s([^}]+)}/g, make_imagen);
                               art_text = art_text.replace(/{IMAGENCREDITO\s([^;]+)(;\s[^}]+)}/g, make_imagen_credito);
                               art_text = art_text.replace(/{VIDEO?\s([^}]+)}/g, make_video);
-                              art_text = art_text.replace(/{CITA[^}]+}/g, '').replace(/{DESTACAR\s/g, '');
+                              art_text = art_text.replace(/{CITA[^}]+}/g, '').replace(/{DESTACAR\s/g, '').replace(/}/g, '');
                               if (!art_text.includes('{'))
                                 art_text = art_text.replace(/}/g, '');
                               else
