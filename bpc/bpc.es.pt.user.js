@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.2.3.6
+// @version         4.2.3.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -14,7 +14,6 @@
 // @match           *://*.abril.com.br/*
 // @match           *://*.ara.cat/*
 // @match           *://*.arabalears.cat/*
-// @match           *://*.cambiocolombia.com/*
 // @match           *://*.cartacapital.com.br/*
 // @match           *://*.clarin.com/*
 // @match           *://*.correiodopovo.com.br/*
@@ -381,7 +380,7 @@ else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
   }
 }
 
-} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['abcmais.com', 'cambiocolombia.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'eluniverso.com', 'exame.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com'])) {//south america
+} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['abcmais.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'eluniverso.com', 'exame.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com'])) {//south america
 
 if (matchDomain('abcmais.com')) {
   if (!window.location.pathname.endsWith('/amp/')) {
@@ -416,14 +415,6 @@ else if (matchDomain('abril.com.br')) {
 
 else if (matchDomain(ar_grupo_clarin_domains)) {
   let ads = 'div.ad-slot, div.box-adv, div.wrapperblock, div.banner, div[id^="div-gpt-ad-"], div.bannerTopHeader, div.sticky, div.SRA';
-  hideDOMStyle(ads);
-}
-
-else if (matchDomain('cambiocolombia.com')) {
-  let author = document.querySelector('head > meta[name="author"]');
-  if (author && !document.querySelector('article section'))
-    refreshCurrentTab();
-  let ads = 'div[role="banner"]';
   hideDOMStyle(ads);
 }
 
