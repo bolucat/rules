@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.4.1
+// @version         4.2.4.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2639,7 +2639,7 @@ else if (matchDomain('indiatoday.in')) {
     if (!url.includes('/amp/')) {
       amp_redirect('div#csc-paywall');
     } else {
-      amp_unhide_access_hide('="granted"', '="NOT NOT granted"');
+      amp_unhide_access_hide('="granted"', '="NOT NOT granted"', 'div[class^="wrapper_main-container_"], div.readmore__box');
     }
   }
 }
@@ -3635,34 +3635,8 @@ else if (matchDomain('statnews.com')) {
 }
 
 else if (matchDomain('stereogum.com')) {
-  let paywall = document.querySelector('div.members-only-overlay-wrapper');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]');
-    if (json_url_dom) {
-      let json_url = json_url_dom.href;
-      fetch(json_url)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(json => {
-            try {
-              let json_text = json.acf.article_modules[0].copy.replace(/data-src/g, 'src');
-              let content = document.querySelector('div.article__content div.text-block__inner');
-              if (json_text && content) {
-                let parser = new DOMParser();
-                let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-                let content_new = doc.querySelector('div');
-                content.innerHTML = '';
-                content.appendChild(content_new);
-              }
-            } catch (err) {
-              console.log(err);
-            }
-          });
-        }
-      });
-      }
-  }
+  let ads = 'div.adthrive-ad';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('stocknews.com')) {

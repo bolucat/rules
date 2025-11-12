@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Tue, 11 Nov 2025 05:48:43 +0000
-! Diff-Path: ../patches/2025.11.11.817.patch#ublock-quick-fixes
+! Last modified: Wed, 12 Nov 2025 11:29:20 +0000
+! Diff-Path: ../patches/2025.11.12.872.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -117,7 +117,7 @@ japscan.*##+js(set, aclib.runInPagePush, noopFunc)
 japscan.*##+js(set, aclib.runBanner, {}, as, function)
 japscan.*##+js(set, aclib.runInterstitial, throwFunc)
 japscan.*##+js(trusted-suppress-native-method, Document.prototype.getElementById, '"/^[A-Z][-0-9A-Z_a-z]{3,}$/"')
-japscan.*##+js(trusted-suppress-native-method, Document.prototype.querySelector, '"/^#[A-Z][A-Za-z]{4,}$/"')
+japscan.*##+js(trusted-suppress-native-method, Document.prototype.querySelector, '"/^#[A-Z][A-Za-z]+$/"')
 poophq.com,veev.to,doods.to##+js(nowoif)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /vast.php?)
 poophq.com,veev.to,doods.to##+js(no-xhr-if, /click\.com|preroll|native_render\.js|acscdn/, length:10001)
@@ -223,6 +223,7 @@ cdn.gledaitv.*##+js(nosiif, await)
 ! cdn.bg-gledai.video,cdn.gledaitv.fan,cdn.gledaitv.live##+js(aost, document.createElement, createAdblockWarning)
 @@*$image,xhr,domain=bg-gledai.*|gledaitv.*|bg-gledai.video|gledaitv.fan|gledaitv.live
 @@||gledaitv.$ghide
+@@||ads.poshtata.online/*.js?$script,domain=seirsanduk.*|seir-sanduk.com|seirsanduk.com|seirsanduk.net|seirsanduk.online
 faqwiki.us##+js(nostif, .offsetHeight>0)
 faqwiki.*##+js(rmnt, script, /adblock/i)
 @@||pvpoke-re.com^$ghide
@@ -285,8 +286,8 @@ client.falixnodes.net##+js(rpnt, script, /googletag\.pubads\(\).*rewardedSlot\)\
 client.falixnodes.net##+js(rpnt, script, .onerror, .ffffff)
 client.falixnodes.net##+js(rpnt, script, /window\.location\.href \= ('|")\/(please-disable|neptune|disableadblock|yeahblock|yupblock|verypleasedisable)('|")\;/)
 client.falixnodes.net##+js(aeld, error, function, elements, [src])
-client.falixnodes.net##+js(nosiif, /googlescriptloaded|location|verypleasedisable/)
-client.falixnodes.net##+js(nostif, /googlescriptloaded|location|verypleasedisable/)
+client.falixnodes.net##+js(nosiif, /didmyscriptloadyet|location|veryveryplease|verypleasedisable|click\(\)/)
+client.falixnodes.net##+js(nostif, /didmyscriptloadyet|location|veryveryplease|verypleasedisable|click\(\)/)
 *$script,redirect-rule=none:5,domain=client.falixnodes.net
 !#endif
 cimanow.cc,freex2line.online##+js(norafif, ++)
@@ -306,7 +307,7 @@ omuzaani.me##+js(no-fetch-if, summerday, length:10, {"type":"cors"})
 th.gl##+js(norafif, /\(\)=>[a-z]\(\)/)
 th.gl##+js(nosiif, /1===|\?void|&&/)
 th.gl##+js(nostif, /\+\+|setTimeout|\.close\(\)|Loading|&&delete/)
-th.gl##+js(nostif, native code, 10-1000)
+th.gl##.overflow-hidden.border-\[1px\].pointer-events-auto:has-text(/Get AD Free/i)
 tvtropes.org##+js(nostif, /offsetHeight|loaded/)
 tvtropes.org##+js(set, HTMLScriptElement.prototype.onerror, undefined)
 ||rottentomatoes.com/assets/pizza-pie/javascripts/bundles/roma/rt-common.js$badfilter
