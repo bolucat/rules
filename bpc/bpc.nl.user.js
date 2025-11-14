@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.2.3.3
+// @version         4.2.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -311,6 +311,10 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
             if (intro)
               article.appendChild(intro);
             let pars = JSON.parse(json_text);
+            if (window.location.pathname.includes('/live-')) {
+              pars = [];
+              header_nofix(article);
+            }
             function addParText(elem, par_text, add_br = false, attributes = false) {
               if (par_text) {
                 if (par_text.length <= 2)
@@ -719,6 +723,9 @@ else if (matchDomain('tijd.be')) {
     if (mobile) {
       document.querySelectorAll('figure img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
     }
+    let pars = document.querySelectorAll('div[itemprop="articleBody"] > div');
+    if (pars.length && pars.length < 5)
+      pars[0].before(googleSearchToolLink(url));
   }
   if (matchDomain('belegger.tijd.be')) {
     if (window.location.pathname.endsWith('.html')) {
@@ -728,9 +735,11 @@ else if (matchDomain('tijd.be')) {
     let banner = document.querySelector('div[data-id="react-paywall-auth0"]');
     removeDOMElement(banner);
   } else {
-    let close_button = document.querySelector('button.ds-modal__top-bar__closebutton');
-    if (close_button)
-      close_button.click();
+    window.setTimeout(function () {
+      let close_button = document.querySelector('button.ds-modal__top-bar__closebutton');
+      if (close_button)
+        close_button.click();
+    }, 1000);
     getArchive(url, 'html.paywall-active', {rm_class: 'paywall-active'}, 'article');
   }
 }

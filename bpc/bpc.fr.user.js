@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.3.0
+// @version         4.2.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -692,6 +692,9 @@ else if (matchDomain('lecho.be')) {
     if (mobile) {
       document.querySelectorAll('figure img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
     }
+    let pars = document.querySelectorAll('div[itemprop="articleBody"] > div');
+    if (pars.length && pars.length < 5)
+      pars[0].before(googleSearchToolLink(url));
   }
   if (matchDomain('investisseur.lecho.be')) {
     if (window.location.pathname.endsWith('.html')) {
@@ -701,9 +704,11 @@ else if (matchDomain('lecho.be')) {
     let banner = document.querySelector('div[data-id="react-paywall-auth0"]');
     removeDOMElement(banner);
   } else {
-    let close_button = document.querySelector('button.ds-modal__top-bar__closebutton');
-    if (close_button)
-      close_button.click();
+    window.setTimeout(function () {
+      let close_button = document.querySelector('button.ds-modal__top-bar__closebutton');
+      if (close_button)
+        close_button.click();
+    }, 1000);
     getArchive(url, 'html.paywall-active', {rm_class: 'paywall-active'}, 'article');
   }
 }

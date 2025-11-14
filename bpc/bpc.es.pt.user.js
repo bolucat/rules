@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.2.3.7
+// @version         4.2.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -456,7 +456,10 @@ else if (matchDomain('cartacapital.com.br')) {
 }
 
 else if (matchDomain('cronista.com')) {
-  let ads = 'div#ad-slot-header, div.ad-slot-intext, div#selectMediaNota, div.b-suscription-container';
+  let paywall = document.querySelector('div.article-body--blurred');
+  if (paywall)
+    paywall.classList.remove('article-body--blurred');
+  let ads = 'div#ad-slot-header, div.ad-slot-intext, div#selectMediaNota, div.b-suscription-container, div.paywall-chain--show';
   hideDOMStyle(ads);
 }
 
