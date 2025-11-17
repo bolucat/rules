@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: nzgxjC4A97SS+Yel9G+xRg
-! Diff-Path: ../patches/224/224-s-1763298900-3600.patch
+! Checksum: Srm3f3hs95kWhqzVG25Hkg
+! Diff-Path: ../patches/224/224-s-1763392358-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.48.1
-! TimeUpdated: 2025-11-16T13:11:42+00:00
+! Version: 2.1.48.9
+! TimeUpdated: 2025-11-17T15:09:10+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1060,6 +1060,7 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 !
 ! NOTE: Specific rules
 !
+eprice.com.hk##.main-section > .text-center[style^="min-height:"]:has(> div[class^="ad-"])
 ||nodejs.cn/_static/js/common.js
 ||img.jin10.com/event/*_
 ||lpl.qq.com/*/data/LOL_MATCH2_NEWS_RECOMMEND_*_INFO.js
@@ -1352,7 +1353,7 @@ ctinews.com##.show-in-md:has(> .ad-container)
 $script,third-party,denyallow=unpkg.zhihu.com,domain=52niuyan.cc
 sailtool.com##body > div[style^="position:fixed;right:0;top:"]
 aii.life###index-left-bn
-ddcar.com.tw##.popup-adv
+eprice.com.hk,ddcar.com.tw##.popup-adv
 ddcar.com.tw##div[id^="div-adsense-"]
 ddcar.com.tw##.section-page-articles > .text-center[style="min-width: 970px; min-height: 250px;"]
 runoob.com##.article-heading-ad
@@ -3100,6 +3101,8 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_chinese
 ! ! temporary
 ! https://github.com/AdguardTeam/AdguardBrowserExtension/issues/3031
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/218056
+dlsite.com#@#body[onresize="stopDebugger()"][onbeforecopy="return!1"] > div#root div:has(> img[src$=".gif"])
 ! https://github.com/AdguardTeam/AdguardFilters/issues/216942
 ! https://github.com/AdguardTeam/AdguardFilters/issues/216804
 dl.mail.com,dl.gmx.*,dl.web.*#@#body > [style^="display: block; width: 100%; height:"]:empty
@@ -5071,6 +5074,18 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$third-party
+||0oi1ej7mo.com^
+||a85t9mxnj.com^
+||xxts11170zs.com^
+||57m2em0y.xyz^
+||recount57.com^
+||qheg.cn^
+||iiahutvaa.com^
+||qq2tdd0xx.com^
+||49ioqq6kt.com^
+||xxts11171zs.com^
+||frchavvati.com^
+||carlinaframh.com^
 ||uetx75ibcu.com^
 ||dh8ypn3lq8.com^
 ||xxts11160zs.com^
@@ -13554,6 +13569,11 @@ meijutt.*/js/pcjs/
 ||shipin188.com/66
 /\/[a-z]+$/$script,third-party,domain=gimy.com.tw
 zhihu.com##.Pc-word-new
+91porna.com##.dx-banner-item
+91porna.com##.checkNum[target="_blank"]:not([href*="91porna.com"])
+91porna.com##.h-full.swiper
+91porna.com##.ad-dialog
+91porna.com##.modal-backdrop
 avbebe.com##.footer_column:nth-child(n+2)
 xchina.co##.block-overlay
 baozimh.org#?#.relative:-abp-has(>.bg-red-500)
