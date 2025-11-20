@@ -1,17 +1,13 @@
 # clash/Loyalsoldier
-- [apple.txt](https://rules.neuq.de/clash/Loyalsoldier/apple.txt)
 - [applications.txt](https://rules.neuq.de/clash/Loyalsoldier/applications.txt)
-- [cncidr.txt](https://rules.neuq.de/clash/Loyalsoldier/cncidr.txt)
 - [direct.txt](https://rules.neuq.de/clash/Loyalsoldier/direct.txt)
 - [gfw.txt](https://rules.neuq.de/clash/Loyalsoldier/gfw.txt)
 - [google.txt](https://rules.neuq.de/clash/Loyalsoldier/google.txt)
-- [greatfire.txt](https://rules.neuq.de/clash/Loyalsoldier/greatfire.txt)
 - [icloud.txt](https://rules.neuq.de/clash/Loyalsoldier/icloud.txt)
 - [lancidr.txt](https://rules.neuq.de/clash/Loyalsoldier/lancidr.txt)
 - [private.txt](https://rules.neuq.de/clash/Loyalsoldier/private.txt)
 - [proxy.txt](https://rules.neuq.de/clash/Loyalsoldier/proxy.txt)
 - [reject.txt](https://rules.neuq.de/clash/Loyalsoldier/reject.txt)
-- [telegramcidr.txt](https://rules.neuq.de/clash/Loyalsoldier/telegramcidr.txt)
 - [tld-not-cn.txt](https://rules.neuq.de/clash/Loyalsoldier/tld-not-cn.txt)
 # clash/DivineEngine
 - [China.yaml](https://rules.neuq.de/clash/DivineEngine/RuleSet/China.yaml)
@@ -229,6 +225,7 @@
 # bypass-wall-clean
 - [bpc-paywall-filter.txt](https://rules.neuq.de/bpc/bpc-paywall-filter.txt)
 - [bpc.de.user.js](https://rules.neuq.de/bpc/bpc.de.user.js)
+- [bpc.en.user.js](https://rules.neuq.de/bpc/bpc.en.user.js)
 - [bpc.es.pt.user.js](https://rules.neuq.de/bpc/bpc.es.pt.user.js)
 - [bpc.fi.se.user.js](https://rules.neuq.de/bpc/bpc.fi.se.user.js)
 - [bpc.fr.user.js](https://rules.neuq.de/bpc/bpc.fr.user.js)
