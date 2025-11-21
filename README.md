@@ -1,13 +1,17 @@
 # clash/Loyalsoldier
+- [apple.txt](https://rules.neuq.de/clash/Loyalsoldier/apple.txt)
 - [applications.txt](https://rules.neuq.de/clash/Loyalsoldier/applications.txt)
+- [cncidr.txt](https://rules.neuq.de/clash/Loyalsoldier/cncidr.txt)
 - [direct.txt](https://rules.neuq.de/clash/Loyalsoldier/direct.txt)
 - [gfw.txt](https://rules.neuq.de/clash/Loyalsoldier/gfw.txt)
 - [google.txt](https://rules.neuq.de/clash/Loyalsoldier/google.txt)
+- [greatfire.txt](https://rules.neuq.de/clash/Loyalsoldier/greatfire.txt)
 - [icloud.txt](https://rules.neuq.de/clash/Loyalsoldier/icloud.txt)
 - [lancidr.txt](https://rules.neuq.de/clash/Loyalsoldier/lancidr.txt)
 - [private.txt](https://rules.neuq.de/clash/Loyalsoldier/private.txt)
 - [proxy.txt](https://rules.neuq.de/clash/Loyalsoldier/proxy.txt)
 - [reject.txt](https://rules.neuq.de/clash/Loyalsoldier/reject.txt)
+- [telegramcidr.txt](https://rules.neuq.de/clash/Loyalsoldier/telegramcidr.txt)
 - [tld-not-cn.txt](https://rules.neuq.de/clash/Loyalsoldier/tld-not-cn.txt)
 # clash/DivineEngine
 - [China.yaml](https://rules.neuq.de/clash/DivineEngine/RuleSet/China.yaml)

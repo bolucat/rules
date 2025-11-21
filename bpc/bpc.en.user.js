@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.4.5
+// @version         4.2.4.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1733,6 +1733,9 @@ else if (matchDomain('bostonglobe.com')) {
 else if (matchDomain('business-standard.com')) {
   function bs_main(node) {
     removeDOMElement(node);
+    let audio_tts = document.querySelector('audio[src$="-short.mp3"]');
+    if (audio_tts)
+      audio_tts.src = audio_tts.src.replace('-short', '');
     let json_script = document.querySelector('script#__NEXT_DATA__');
     if (json_script) {
       try {
@@ -1770,7 +1773,7 @@ else if (matchDomain('business-standard.com')) {
       let paywall_sel = 'div[class^="subscription_subscriptionPlan_"], div[class^="BluePrintPaywall_BPstoryPaywall_"]';
       let paywall = document.querySelector(paywall_sel);
       if (paywall) {
-        bs_main(paywall)
+        bs_main(paywall);
       } else {
         csDoneOnce = true;
         waitDOMElement(paywall_sel, 'DIV', bs_main, false);
