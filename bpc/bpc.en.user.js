@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.4.6
+// @version         4.2.4.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2804,6 +2804,28 @@ else if (matchDomain('latimes.com')) {
     removeDOMElement(subscribers[0].parentNode);
   let ads = 'div.google-dfp-ad-wrapper, div.revcontent';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('law.com')) {
+  func_post = function () {
+    let pars = document.querySelectorAll(article_sel + ' div[style*="font-family:"]');
+    if (pars.length < 5)
+      pars[0].after(googleSearchToolLink(url));
+    let banner = document.querySelector(article_sel + ' div > div > div > a[href="https://store.law.com/Registration/default.aspx"]');
+    if (banner)
+      removeDOMElement(banner.parentNode.parentNode.parentNode);
+  }
+  let url = window.location.href;
+  let paywall_sel = 'div.paywall-content';
+  let article_sel = 'main:not(:has(main))';
+  let paywall = document.querySelector(paywall_sel);
+  if (paywall) {
+    let podcast = document.querySelector('article > a[href="/podcast/"]');
+    if (podcast)
+      paywall.removeAttribute('class');
+    else
+      getArchive(url, paywall_sel, {rm_atrrib: 'class'}, article_sel);
+  }
 }
 
 else if (matchDomain('livelaw.in')) {
