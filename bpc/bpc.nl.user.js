@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.2.4.2
+// @version         4.2.4.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -264,7 +264,7 @@ else if (matchDomain('groene.nl')) {
 
 else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > link[href*=".ndcmediagroep.nl/"]')) {
   let paywall = document.querySelector('div.signupPlus, div.pw-wrapper:not(.pw-none)');
-  if (paywall) {
+  if (paywall && !window.location.pathname.includes('/live-')) {
     let intro = document.querySelector('div.startPayWall');
     let html = document.documentElement.outerHTML;
     if (html.includes('window.__NUXT__=')) {
@@ -311,10 +311,6 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
             if (intro)
               article.appendChild(intro);
             let pars = JSON.parse(json_text);
-            if (window.location.pathname.includes('/live-')) {
-              pars = [];
-              header_nofix(article);
-            }
             function addParText(elem, par_text, add_br = false, attributes = false) {
               if (par_text) {
                 if (par_text.length <= 2)
