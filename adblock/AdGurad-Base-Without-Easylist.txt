@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: EaYvTcXpQIcH3S8bylruoQ
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1763831388-3600.patch
+! Checksum: w9kiQ1TAoARqOKezQjDwoA
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1763917806-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.27.11
-! TimeUpdated: 2025-11-22T17:05:56+00:00
+! Version: 2.4.27.35
+! TimeUpdated: 2025-11-23T17:06:06+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -36175,7 +36175,7 @@ weatherzone.com.au##main > div[class*=" "]:has(> div[class*="img_"])
 ! ad-shield fallback servers
 ! ex. https://lava.evenpatroller.com/loader.min.js
 ! ex. https://d23obxyzbkncgu.cloudfront.net/loader.min.js
-/^https:\/\/[a-z]{3,4}\.[a-z]{10,13}\.com\/loader\.min\.js$/$script,third-party,match-case,header=etag:/^W\/"[0-9a-f]{32}-\d{13}"$/
+/^https:\/\/[a-z]{3,4}\.[a-z]{8,14}\.com\/loader\.min\.js$/$script,third-party,match-case,header=etag:/^W\/"[0-9a-f]{32}-\d{13}"$/
 /^https:\/\/d[0-9a-z]{12,13}\.cloudfront\.net\/loader\.min\.js$/$script,third-party,match-case,header=etag:/^W\/"[0-9a-f]{32}"$/
 ! ad-shield.cc CNAME ex. https://www.47206262.xyz/script/jmty.jp.js
 /^https:\/\/www\.[0-9a-z-]{6,}\.com\/script\/(?=[0-9a-z]{0,29}[A-Z])[0-9A-Za-z]{10,30}\.js$/$script,third-party,match-case
@@ -36473,6 +36473,7 @@ techarmor.xyz##.my-ad-container
 !
 ! NOTE: Specific rules
 !
+filespayouts.com##+js(addEventListener-defuser, click, createElement)
 amazon.*##.a-section:has(> div[cel_widget_id^="adplacements:"]:last-child)
 politico.com##.gallery-carousel-ad
 eteknix.com###background-stream-cover
@@ -36676,8 +36677,8 @@ solarmovie.fi,flixtor.mov,1movies.bz,movhub.ws,yflix.to##div[class^="text-center
 dopebox.to##+js(abort-on-property-read, _g_sb_click)
 dopebox.to##+js(abort-current-script, globalThis, /break;case|;break;default:/)
 theproducenews.com##div[id*="-gamwadvertisement-"]
-nicomanga.com,nihonkuni.com,rawinu.com,weloma.art,love4u.net#$#.chapter-content > #unlock-box { display: none !important; }
-nicomanga.com,nihonkuni.com,rawinu.com,weloma.art,love4u.net#$#.chapter-content > #unlock-box ~ #imgChapter[style*="none"] { display: block !important; }
+nicomanga.com,nihonkuni.com,rawinu.com,weloma.art,love4u.net#$##unlock_box { display: none !important; }
+nicomanga.com,nihonkuni.com,rawinu.com,weloma.art,love4u.net#$##unlock_box ~ #imgChapter[style*="none"] { display: block !important; }
 nicomanga.com,nihonkuni.com,rawinu.com,weloma.art,love4u.net##+js(set-cookie, unlock_chapter_guest, 1)
 forge.plebmasters.de##+js(no-fetch-if, /partners/home)
 ||api.plebmasters.de/v*/announcements/
