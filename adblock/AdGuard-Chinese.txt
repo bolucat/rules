@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: vJhq8FpJ1IbCSEQE9w7zBA
-! Diff-Path: ../patches/224/224-s-1763982659-3600.patch
+! Checksum: xtnZXusmkNnTsPl2jGMH5w
+! Diff-Path: ../patches/224/224-s-1764083509-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.48.58
-! TimeUpdated: 2025-11-24T11:07:18+00:00
+! Version: 2.1.48.65
+! TimeUpdated: 2025-11-25T15:08:22+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1063,6 +1063,8 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 !
 ! NOTE: Specific rules
 !
+youku.com##div[class^="bullet_wrap_"]:has(> div[class^="yk_card_"] > a[data-spm^="yk_ad_"])
+||m.uishuku.com/*.js$~script
 mysteel.com##[class*="-adv"]
 mysteel.com#$#body { background-image: none !important; }
 ||mfs.mysteelcdn.com/group1/M00/1B/12/rBL632frP-KAHreoAAGnyljyVAg027.jpg
@@ -2871,6 +2873,9 @@ banzhu1111111.com,banzhu2222222.com,banzhu3333333.com,banzhu4444444.com,banzhu55
 ! Site with mirrors: https://cxysb.com/
 ! https://m.xddxsw.net/723/723946/7041611.html
 ! Examples:
+! - https://m.qbmfxs.com/book/84740/1127/2
+! - https://m.0xs.net/txt/40443/1?_rid=7507472011231237
+! - http://m.uishuku.com/131320/45206602_2.html
 ! - https://241028z.1iuh5l.com:9001/sc/1028?n=llvukcwa
 ! - https://246xgtyyh.frify.xyz:9369/hm/6?x=u46hl2p1sb&r=0&t=2sb3yi92g9&v=2
 ! - https://1744wlpi0.ohohklp.xyz:30009/bug?i=44
@@ -4995,8 +5000,7 @@ newduba.cn###jq_youxi
 ##div[onclick*="/ky"][onclick*="open"]
 ##div[onclick*="?i_code="]
 ##div[role="listitem"] > div > div > .bannerliststyle
-##div[style=" max-width:990px; margin:0 auto;"] > a > img[height="120px"]
-##div[style=" max-width:990px; margin:0 auto;"] > a > img[height="60px"]
+##body > div[style=" max-width:990px; margin:0 auto;"]:first-child > a[target="_blank"]
 ##div[style="margin:10px auto;width: 930px;height: 250px;"]
 ##div[style="position: fixed;top: 60px;right:0;z-index:999;width:250px"]
 ##div[style^="position"][onclick^="window.open"]
@@ -5093,6 +5097,18 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$third-party
+||d89sze2uu.com^
+||j33xvvanl.com^
+||jerhzr.icu^
+||xjx11250ts.com^
+||germinate06.top^
+||iqoi.cn^
+||enhancement44.com^
+||qrumphathu.com^
+||85270jylmzsym.top^
+||ufa9tt1n5.com^
+||v3pnvck24.com^
+||xjx11251ts.com^
 ||xyf21yawkj.com^
 ||1mb71rr5oo.com^
 ||xjx11240ts.com^
@@ -13679,7 +13695,9 @@ meijutt.*/js/pcjs/
 ||mysteel.com/ads/
 ||wujinyuzhou.top/ny/*00x
 ||wujinyuzhou.top/ny/ny852x116.
+||ping0.cc/static/images/ad/
 zhihu.com##.Pc-word-new
+ping0.cc##.adeles
 hcbbs.com##.plc > .pct + :last-child
 mysteel.com###float-adv
 91porna.com##.dx-banner-item
