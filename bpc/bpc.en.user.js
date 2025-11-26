@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.5.0
+// @version         4.2.5.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1308,7 +1308,8 @@ else if (matchDomain(uk_nat_world_domains) || document.querySelector('footer > d
 
 if (matchDomain(usa_adv_local_domains)) {
   if (!window.location.search.startsWith('?outputType=amp')) {
-   amp_redirect('div.paywall', '', window.location.pathname + '?outputType=amp');
+    document.querySelectorAll('.article__paragraph--blur').forEach(e => e.classList.remove('article__paragraph--blur'));
+    amp_redirect('div.paywall', '', window.location.pathname + '?outputType=amp');
   }
   let ads = 'div.ad, div.ad-inner, div.ad-unit, div#below-toprail, div[id^="taboola"]';
   hideDOMStyle(ads);
@@ -4692,7 +4693,7 @@ else if (matchDomain('washingtonpost.com')) {
       getArchive(url, paywall_sel, {rm_class: 'meteredContent'}, 'div.teaser-content', '', 'article > div > div[style*="grid-column-end"]');
     }
   }
-  let ads = 'wp-ad-wrapper, div[data-qa$="-ad"], div[data-component="Ad"], div[data-qa="outbrain"]';
+  let ads = 'wp-ad-wrapper, div[data-qa$="-ad"], div[data-component="Ad"], div[data-qa="outbrain"], div.PJLV-ifmxCWD-css';
   hideDOMStyle(ads);
 }
 
