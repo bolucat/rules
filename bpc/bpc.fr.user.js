@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.4.2
+// @version         4.2.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -21,6 +21,7 @@
 // @match           *://*.flair.be/fr/*
 // @match           *://*.jeuneafrique.com/*
 // @match           *://*.journaldunet.com/*
+// @match           *://*.la-croix.com/*
 // @match           *://*.lacote.ch/*
 // @match           *://*.lalibre.be/*
 // @match           *://*.lavenir.net/*
@@ -644,6 +645,21 @@ else if (matchDomain('journaldunet.com')) {
   let entry_reg_wall = document.querySelector('div.entry_reg_wall[style]');
   if (entry_reg_wall)
     entry_reg_wall.removeAttribute('style');
+}
+
+else if (matchDomain('la-croix.com')) {
+  function lacroix_main() {
+    fetch('/extend_access', {
+      method: "POST"
+    }).then(x => window.location.reload())
+  }
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    insert_script(lacroix_main);
+  }
+  let ads = 'div[data-gam]';
+  hideDOMStyle(ads);
 }
 
 else if (domain = matchDomain('lamanchelibre.fr') || matchDomain(fr_groupe_la_manche_libre_custom_domains)) {
