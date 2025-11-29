@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.5.1
+// @version         4.2.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -111,6 +111,7 @@
 // @exclude         *://*.ilsole24ore.com/*
 // @exclude         *://*.jeuneafrique.com/*
 // @exclude         *://*.journaldunet.com/*
+// @exclude         *://*.la-croix.com/*
 // @exclude         *://*.larioja.com/*
 // @exclude         *://*.lasegunda.com/*
 // @exclude         *://*.latercera.com/*
@@ -1804,7 +1805,8 @@ else if (matchDomain('businessoffashion.com')) {
 }
 
 else if (matchDomain('capital.bg')) {
-  let paywall = document.querySelector('section > article > footer > a[data-referral="Paywall"]');
+  let paywall_sel = 'section[data-paywall-id]';
+  let paywall = document.querySelector(paywall_sel);
   if (paywall) {
     removeDOMElement(paywall);
     let json_script = getArticleJsonScript();
@@ -1842,7 +1844,9 @@ else if (matchDomain('capital.bg')) {
       }
     }
   } else
-    header_nofix('div.story-content > p', 'section > header > a[data-referral="Paywall"]');
+    header_nofix('div.story-content > p', paywall_sel);
+  let ads = 'div.banner';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(['chronicle.com', 'philanthropy.com'])) {
@@ -1859,23 +1863,30 @@ else if (matchDomain(['chronicle.com', 'philanthropy.com'])) {
 }
 
 else if (matchDomain('cnbc.com')) {
-  let paywall = document.querySelector('div.ArticleGate-proGate');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.ArticleBody-articleBody');
-    if (article)
-      article.style = "margin: 20px; font-family: Lyon,Helvetica,Arial,sans-serif; font-size: 18px; line-height: 1.66";
-    let span_hidden = document.querySelectorAll('span[hidden]');
-    for (let elem of span_hidden) {
-      elem.removeAttribute('hidden');
-      elem.removeAttribute('class');
-      if (elem.innerText)
-        elem.innerText = elem.innerText.split('DISCLOSURES: (None)')[0];
+  window.setTimeout(function () {
+    let paywall = document.querySelector('div.ArticleGate-proGate');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let article = document.querySelector('div.ArticleBody-articleBody');
+      if (article) {
+        let intro = article.querySelectorAll('div.group > p');
+        if (intro.length < 5) {
+          removeDOMElement(...intro);
+          article.style = "margin: 20px; font-family: Lyon,Helvetica,Arial,sans-serif; font-size: 18px; line-height: 1.66";
+          let span_hidden = document.querySelectorAll('span[hidden]');
+          for (let elem of span_hidden) {
+            elem.removeAttribute('hidden');
+            elem.removeAttribute('class');
+            if (elem.innerText)
+              elem.innerText = elem.innerText.split('DISCLOSURES: (None)')[0];
+            article.appendChild(elem);
+          }
+        }
+      }
     }
-    let inline_image = document.querySelector('div[data-test="InlineImage"]');
-    if (inline_image)
-      article.firstChild.before(inline_image);
-  }
+  }, 2000);
+  let ads = 'div.TopBanner-container';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('cnn.com')) {

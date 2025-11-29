@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: +0SID7HdiErsv9rdo6OYTg
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1764349777-3600.patch
+! Checksum: QrahPvK+ckBghEL80ZF6OA
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1764436177-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.28.55
-! TimeUpdated: 2025-11-28T17:06:18+00:00
+! Version: 2.4.28.79
+! TimeUpdated: 2025-11-29T17:06:20+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -36221,6 +36221,8 @@ auone.jp,deckshop.pro,laposte.net,newser.com,reneweconomy.com.au,saabcentral.com
 newser.com##+js(abort-current-script, btoa, abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=)
 ||19706903.xyz^$domain=pravda.com.ua|jutarnji.hr|sporx.com|ap7am.com
 !
+! iOS/Safari compatible rules
+!
 !+ NOT_OPTIMIZED
 ||asloader.tz.de^$script,redirect=noop.js
 !
@@ -36256,7 +36258,7 @@ smsonline.cloud##html[data-theme][lang] [id^="img_"][style]:has(iframe[framebord
 !+ NOT_PLATFORM(ios, ext_android_cb, ext_safari, ext_chromium_mv3, windows, mac, cli, android)
 !
 !
-/^https:\/\/(?:as(?:loader)?|loader)\.([-0-9A-Za-z]+\.[-A-Za-z]{2,16})\/(?:loader\.min|script\/(?:www\.)?\1)\.js$/$script,~3p,match-case
+/^https:\/\/(?:as(?:loader)?|(?:shield)?load(?:er)?)\.([-0-9A-Za-z]+\.[-A-Za-z]{2,16})\/(?:loader\.min|script\/(?:www\.)?\1)\.js$/$script,~3p,match-case
 ! NOTE: Ad-Shield end ⬆️
 ! !SECTION: Ad-Shield
 ! END: Ad-Shield ad reinsertion
@@ -36507,6 +36509,8 @@ techarmor.xyz##.my-ad-container
 !
 ! NOTE: Specific rules
 !
+overclock3d.net###bglink
+overclock3d.net##body:style(background-image: none !important;)
 yahoo.com##.pointer-events-auto:has(> .ad-container:only-child)
 hentaimama.tv##.script_manager_video_master
 ||havenclick.com/www/delivery/*vast$xhr,redirect=noopvast-2.0

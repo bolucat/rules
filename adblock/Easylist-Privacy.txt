@@ -1,9 +1,9 @@
 [Adblock Plus 1.1]
-! Version: 202511281816
+! Version: 202511291802
 ! Title: EasyPrivacy
-! Last modified: 28 Nov 2025 18:16 UTC
+! Last modified: 29 Nov 2025 18:02 UTC
 ! Expires: 4 days (update frequency)
-! Commit: 1983ac68a1d0443319e72436911b2ed6b9606462
+! Commit: ef31318d513ecdd8b10af91837457e216c6b48e3
 ! *** easylist:template_header.txt ***
 ! 
 ! Please report any unblocked adverts or problems
@@ -363,6 +363,7 @@
 /api/v1/EndpointTracker
 /api/v1/firehose/batch
 /api/v1/firehose?_
+/api/v1/impressions|
 /api/v1/metrics
 /api/v1/reportData/*
 /api/v1/stat?
@@ -5048,6 +5049,7 @@ omni.soundestlink.com$image
 ||lexity.com^$third-party
 ||lfeeder.com^$third-party
 ||lfov.net^$third-party
+||lgrckt-in.com^$third-party
 ||linezing.com^$third-party
 ||linkconnector.com^$third-party
 ||linkifier.com^$third-party
@@ -7101,6 +7103,7 @@ omni.soundestlink.com$image
 ||fewjuice.com^
 ||fewkittens.com^
 ||fieldconfig.com^
+||figsprotein.com^
 ||fillthemap.com^
 ||filtercutter.com^
 ||finalizeforce.com^
@@ -7630,6 +7633,7 @@ omni.soundestlink.com$image
 ||oldfashionedoffer.com^
 ||omgthink.com^
 ||onedropocean.com^
+||onlinestarten.net^
 ||onlywoofs.com^
 ||opalquill.com^
 ||operationchicken.com^
@@ -8031,6 +8035,7 @@ omni.soundestlink.com$image
 ||slackpod.com^
 ||slaysweater.com^
 ||slickcontent.com^
+||slimesupplies.net^
 ||slinksuggestion.com^
 ||slopesoap.com^
 ||smallershops.com^
@@ -8450,6 +8455,7 @@ omni.soundestlink.com$image
 ||worldrealize.com^
 ||worriednumber.com^
 ||worriedwine.com^
+||wowfunnow.com^
 ||wrapstretch.com^
 ||wretchedfloor.com^
 ||writerhubs.com^
@@ -9630,6 +9636,7 @@ $third-party,xmlhttprequest,domain=opensubtitles.org
 ||activengage.com/overwatch/
 ||activity-flow.vtex.com^
 ||activity.wisepops.com^
+||acuris.com/wat/v2/data-event
 ||ad-shield.io^$third-party
 ||ad.aloodo.com^
 ||ad.mail.ru/*.gif?rnd=$third-party
@@ -11915,6 +11922,7 @@ $third-party,xmlhttprequest,domain=opensubtitles.org
 ||svibeacon.onezapp.com^
 ||swarm.video/j79z9kzty.js
 ||swarm.video/track/
+||swi.neobox.ebu.io/v3/collect?
 ||swiftypecdn.com/cc.js$third-party
 ||swiftypecdn.com/te.js$third-party
 ||sync.adap.tv^
@@ -15239,6 +15247,7 @@ $third-party,xmlhttprequest,domain=opensubtitles.org
 ||pornbox.com/event/
 ||pornbox.com/stats/
 ||porzo.com/js/analytics
+||poshmark.com/trck/
 ||prairiedog.hashnode.com^
 ||pravda.com.ua/counter/
 ||prescouter.com/pd.js
@@ -16344,6 +16353,8 @@ $csp=child-src 'none'; frame-src *; worker-src 'none',domain=thepiratebay.org|vi
 ! https://github.com/AdguardTeam/AdguardFilters/issues/180750
 ||pcoptimizedsettings.com/wp-content/plugins/koko-analytics/$script,redirect=noop.js,important
 ||pcoptimizedsettings.com/wp-content/uploads/breeze/google/gtag.js$script,redirect=noop.js,important
+! https://github.com/AdguardTeam/AdguardFilters/issues/218663
+||d21y75miwcfqoq.cloudfront.net/436f3341$image,redirect=nooptext
 ! GPC
 delta.com,geizhals.de,harborfreight.com,flyfrontier.com,acmemarkets.com,usaa.com,capezio.com,twitch.tv,spotify.com,tidal.com,deezer.com,pandora.com,qobuz.com,soundcloud.com,vimeo.com,x.com,twitter.com,eventbrite.com,wunderground.com,accuweather.com,formula1.com,lenscrafters.com,subway.com,ticketmaster.*,livewithkellyandmark.com,visible.com,porsche.com,uber.com,jdsports.com,engadget.com,yahoo.com,techcrunch.com,rivals.com,kkrt.com,crunchyroll.com,dnb.com,dnb.co.uk,weather.com,ubereats.com##+js(set, Navigator.prototype.globalPrivacyControl, false)
 delta.com,geizhals.de,harborfreight.com,flyfrontier.com,acmemarkets.com,usaa.com,capezio.com,twitch.tv,spotify.com,tidal.com,deezer.com,pandora.com,qobuz.com,soundcloud.com,vimeo.com,x.com,twitter.com,eventbrite.com,wunderground.com,accuweather.com,formula1.com,lenscrafters.com,subway.com,ticketmaster.*,livewithkellyandmark.com,visible.com,porsche.com,uber.com,jdsports.com,engadget.com,yahoo.com,techcrunch.com,rivals.com,kkrt.com,crunchyroll.com,dnb.com,dnb.co.uk,weather.com,ubereats.com##+js(set, navigator.globalPrivacyControl, false)
@@ -54771,6 +54782,8 @@ bitdefender.com##body[style="opacity: 0;"]:style(opacity: 1 !important;)
 @@||youvisit.com/tour/$script,subdocument,domain=uaf.edu
 @@||zillow.com/rental-manager/proxy/rental-manager-api/api/v1/users/freemium/analytics/pageViews$~third-party
 @@||zoominfo.com/c/amplitude-js$script,~third-party
+! ! monitor.azure.com
+@@||browser.events.data.microsoft.com/onecollector/$script,xmlhttprequest,domain=microsoft.com
 ! ! https://old.reddit.com/r/uBlockOrigin/comments/1czbcvg/foundit_is_blocking_searches_until_ublock_origin/
 @@||media.foundit.*/trex/public/theme_3/dist/js/userTracking.js$script,~third-party
 ! ! amplitude.com/libs
