@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 3sv0EqdTvPZtWCPXp+q5wQ
-! Diff-Path: ../patches/7/7-s-1764425390-3600.patch
+! Checksum: vSAHZ1La3p+fmkesWKSEwA
+! Diff-Path: ../patches/7/7-s-1764519067-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.70.41
-! TimeUpdated: 2025-11-29T14:06:33+00:00
+! Version: 2.0.70.44
+! TimeUpdated: 2025-11-30T16:07:43+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -60,7 +60,7 @@
 ||prime-ever.com^
 ||adandhub.com^
 ||getallmedia.com^
-||ssdsp.smt.docomo.ne.jp^$3p
+||ssdsp.smt.docomo.ne.jp^
 ||araklet.mediagene.co.jp^
 ||hatoltd.com^$3p
 ||amawidget.yutbr.com^
@@ -1531,6 +1531,7 @@ hostlove.com###index_nav > h1:style(padding-top: 30px!important;)
 /wp-content/uploads/2024/09/fanza_ad$image
 !
 ! Malware/Phishing
+.com/htm/sh1n/selectState$document
 .net/signup/newSave|$xhr,~3p
 .mobi/?token=$document
 ||ondigitalocean.app/webC0deinfojphtml/
@@ -1762,7 +1763,7 @@ _co_jp.*.php$document,to=cc|com
 /\/t_([0-9A-Za-z]{32})\?token=\1/$document,to=cloud|cn|com|net|top|vip
 /?Rfunccode=*&nextfunc=$document,to=cn|com|top
 /brand/detail/m*.html?zenid=$document,to=cfd|fun|qpon|shop|space|top|xyz
-/shopping/item/m*/?zenid=$document,to=cfd|fun|qpon|shop|space|top|xyz
+/shopping/item/m*/?zenid=$document,to=cfd|fun|qpon|sale|shop|space|top|xyz
 /mall/*.html?zenid=$document,to=cfd|fun|qpon|shop|space|top|xyz
 /mart/*.html?zenid=$document,to=cfd|fun|qpon|shop|space|top|xyz
 /^https?:\/\/([-0-9a-z]{3,}\.)?[a-z]{5,}\.[a-z]{3,7}\/product\/\d{4,}(\.html)?$/$document,to=baby|blog|bond|cam|casa|fun|homes|online|org|rest|sbs|shop|surf|top|website|yoga
@@ -1775,8 +1776,8 @@ _co_jp.*.php$document,to=cc|com
 /index.php?main_page=product_info&products_id=$document,to=asia|baby|bar|beauty|best|biz|blog|bond|buzz|cam|casa|cfd|click|cloud|club|cyou|fashion|fit|forum|fun|gay|homes|icu|info|ink|lat|life|live|ltd|makeup|me|mom|monster|my|one|online|pics|pro|qpon|quest|rent|rest|ru.com|run|sa.com|sale|sbs|shop|site|skin|space|store|team|tokyo|top|website|wiki|work|xyz|yachts|yoga|za.com
 /\.(?:club|cn|icu|top|pro|site|work)\/Personal\/member\/Login\/index\.php\?oneTimeAccessID=/$document,to=club|cn|icu|top|pro|site|work
 ! https://github.com/AdguardTeam/FiltersCompiler/issues/254
-/^https:\/\/(?!www)[a-z]{3,5}\.[a-z]{4,10}\.[a-z]{2,6}\/item-(?:[0-9a-z]{10}|\d{8})\.html$/$document,match-case,to=art|autos|baby|best|biz|blog|boats|buzz|cards|cc|cfd|click|cloud|club|cyou|eu|fit|fun|guru|hair|homes|info|ink|lat|life|live|lol|me|mom|my|one|online|pics|qpon|quest|sale|sbs|shop|site|skin|space|store|today|top|wiki|work|world|xyz
-/^https?:\/\/(?!www)[a-z]{3,5}\.[0-9a-z]{4,10}\.[a-z]{2,6}\/[a-z]{3,15}\/(?=[a-z]{0,9}[0-9A-Z])[0-9A-z]{10}\.html$/$document,match-case,to=art|autos|baby|biz|blog|boats|buzz|cards|cc|cfd|click|cloud|club|cyou|eu|fit|fun|guru|hair|homes|info|ink|lat|life|live|lol|me|mom|my|one|online|pics|quest|sale|sbs|shop|site|skin|space|store|today|top|wiki|world|xyz|~livedoor.biz|~livedoor.blog
+/^https:\/\/(?!www)[a-z]{3,5}\.[a-z]{4,10}\.[a-z]{2,6}\/item-(?:[0-9a-z]{10}|\d{8})\.html$/$document,match-case,to=art|autos|baby|best|biz|blog|boats|buzz|cards|cc|cfd|click|cloud|club|cyou|eu|fit|fun|guru|hair|homes|info|ink|lat|life|live|lol|me|mom|my|one|online|pics|qpon|quest|rest|sale|sbs|shop|site|skin|space|store|today|top|wiki|work|world|xyz
+/^https?:\/\/(?!www)[a-z]{3,5}\.[0-9a-z]{4,10}\.[a-z]{2,6}\/[a-z]{3,15}\/(?=[a-z]{0,9}[0-9A-Z])[0-9A-z]{10}\.html$/$document,match-case,to=art|autos|baby|biz|blog|boats|buzz|cards|cc|cfd|click|cloud|club|cyou|eu|fit|fun|guru|hair|homes|info|ink|lat|life|live|lol|me|mom|my|one|online|pics|qpon|quest|rest|sale|sbs|shop|site|skin|space|store|today|top|wiki|world|xyz|~livedoor.biz|~livedoor.blog
 !
 /^https:\/\/[-0-9a-z]{6,20}\.com\/item-[0-9a-z]{10}\.html$/$document,match-case
 !---------------------------------------------------------------------------!
@@ -1846,9 +1847,11 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+chance.enjoy.point.auone.jp###quiz_sp_banner_footer
+chance.enjoy.point.auone.jp###quiz_sp_contents
+game.hiroba.dpoint.docomo.ne.jp##div[style="min-width: 300px; min-height: 250px;"]
 dime.jp##.breadcrumb:style(margin-top: 0 !important;)
 dime.jp##.listBlock-topSpecial
-olympics.com##div[data-cy="adv-container"]
 momon-ga.com,nyahentai.re##+js(addEventListener-defuser, load, puTSstrpcht)
 finance.yahoo.co.jp##div[class^="SearchContents__group__"] > section[class*="SearchContents__ss__"]
 tbsradio.jp##div[class^="todays"][class*="_ad"]
@@ -2974,7 +2977,7 @@ pingporn.ru###player-wraper
 ||adacomi.com/banner_in/
 ||daotag.com^$script,xhr
 atmarkit.co.jp###RcolRectangle
-game.pointmall.rakuten.net,kantangame.com,game.hiroba.dpoint.docomo.ne.jp##+js(adjust-setTimeout, window.ADGMAD., 30000, 0.001)
+chance.enjoy.point.auone.jp,game.pointmall.rakuten.net,kantangame.com,game.hiroba.dpoint.docomo.ne.jp##+js(adjust-setTimeout, /adSkip|window\.ADGMAD/, 30000, 0.001)
 corp.rakuten.co.jp##.mno-pitari:style(padding-top: 0 !important;)
 corp.rakuten.co.jp###pitari_area:style(display: none !important;)
 basketballking.jp##div[style="text-align: center; margin:30px 0 30px 0;"]
@@ -11747,6 +11750,11 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_japanese
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/218829
+@@||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$domain=game.hiroba.dpoint.docomo.ne.jp
+@@||pagead2.googlesyndication.com/pagead/managed/js/adsense/$script,domain=game.hiroba.dpoint.docomo.ne.jp
+@@||g.doubleclick.net/pagead/ads?*&plat=$subdocument,domain=game.hiroba.dpoint.docomo.ne.jp
+game.hiroba.dpoint.docomo.ne.jp#@#.adsbygoogle-noablate
 ! https://github.com/AdguardTeam/AdguardFilters/issues/217654
 okazurand.net,nihon-bijo-zukan.com##+js(href-sanitizer, a[href^="https://al.fanza.co.jp/?lurl="], ?lurl)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/213269

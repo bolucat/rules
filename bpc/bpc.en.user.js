@@ -1805,8 +1805,7 @@ else if (matchDomain('businessoffashion.com')) {
 }
 
 else if (matchDomain('capital.bg')) {
-  let paywall_sel = 'section[data-paywall-id]';
-  let paywall = document.querySelector(paywall_sel);
+  let paywall = document.querySelector('section[data-paywall-id]');
   if (paywall) {
     removeDOMElement(paywall);
     let json_script = getArticleJsonScript();
@@ -1844,7 +1843,7 @@ else if (matchDomain('capital.bg')) {
       }
     }
   } else
-    header_nofix('div.story-content > p', paywall_sel);
+    header_nofix('div.story-content > p', 'section > header > a[data-referral="Paywall"]');
   let ads = 'div.banner';
   hideDOMStyle(ads);
 }

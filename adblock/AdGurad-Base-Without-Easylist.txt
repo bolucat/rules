@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: QrahPvK+ckBghEL80ZF6OA
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1764436177-3600.patch
+! Checksum: dZiiWsxwsW6ndW2MnDLoQA
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1764522580-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.28.79
-! TimeUpdated: 2025-11-29T17:06:20+00:00
+! Version: 2.4.29.3
+! TimeUpdated: 2025-11-30T17:06:28+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -36509,6 +36509,8 @@ techarmor.xyz##.my-ad-container
 !
 ! NOTE: Specific rules
 !
+googleads.g.doubleclick.net###abgc
+googleads.g.doubleclick.net###mys-wrapper
 overclock3d.net###bglink
 overclock3d.net##body:style(background-image: none !important;)
 yahoo.com##.pointer-events-auto:has(> .ad-container:only-child)
@@ -36519,8 +36521,8 @@ javxxx.me##+js(abort-on-stack-trace, Array.prototype.forEach, initPopunder)
 ||limeiptv.to/static/b2.gif$3p
 uflix.*##a[href^="https://limeiptv.to?"]
 uflix.*##+js(abort-current-script, document.getElementById, object-fit)
-xplay.gg##a[href^="https://playstake."][href*="/landing"]
-xplay.gg##div[class^="sc-"]:has(> a[href^="https://playstake."][href*="/landing"]:only-child)
+xplay.gg##a[target="_blank"]:has(> div:is([url], [src]))
+xplay.gg##div[class^="sc-"]:has(> a[target="_blank"]:only-child > div:is([url], [src]))
 ||cdn.xplay.cloud/img/site/common/partners/$domain=xplay.gg
 ||sherpa.agoda.com^$domain=girlsheavens.com
 girlsheavens.com###sidebar div[id^="adgshp"]
