@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.5.2
+// @version         4.2.5.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -415,7 +415,17 @@ else if (matchDomain('businessdesk.co.nz')) {
 }
 
 else if (matchDomain(['crikey.com.au', 'smartcompany.com.au', 'themandarin.com.au'])) {
-  let ads = 'div.wp-block-pm-ad-placeholder-block';
+  let paywall_sel = 'div[id^="pmc-zephr-"]';
+  let paywall = document.querySelector(paywall_sel);
+  if (paywall) {
+    let article_sel = 'div.entry-content';
+    let article = document.querySelector(article_sel);
+    if (article) {
+      getJsonUrl(paywall_sel, '', article_sel + ' > p');
+      article.style['max-height'] = 'none';
+    }
+  }
+  let ads = 'div.wp-block-pm-ad-placeholder-block, div[style*="linear-gradient"]';
   hideDOMStyle(ads);
 }
 
@@ -1777,7 +1787,6 @@ else if (matchDomain('business-standard.com')) {
       if (paywall) {
         bs_main(paywall);
       } else {
-        csDoneOnce = true;
         waitDOMElement(paywall_sel, 'DIV', bs_main, false);
       }
     }
@@ -1805,7 +1814,7 @@ else if (matchDomain('businessoffashion.com')) {
 }
 
 else if (matchDomain('capital.bg')) {
-  let paywall = document.querySelector('section[data-paywall-id]');
+  let paywall = document.querySelector('section > article a[href^="/paywall_click/"], section[data-paywall-id]');
   if (paywall) {
     removeDOMElement(paywall);
     let json_script = getArticleJsonScript();

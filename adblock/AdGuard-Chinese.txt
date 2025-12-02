@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: ZXNUTm9XsEL4+t0cDts8qQ
-! Diff-Path: ../patches/224/224-s-1764595336-3600.patch
+! Checksum: M5E2oVKVJinPJzN/E2XPGw
+! Diff-Path: ../patches/224/224-s-1764691949-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.48.99
-! TimeUpdated: 2025-12-01T13:19:17+00:00
+! Version: 2.1.49.7
+! TimeUpdated: 2025-12-02T16:09:37+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -308,7 +308,8 @@ colamanga.com#@#.ADFooter
 colamanga.com#@#.ADInfo
 colamanga.com#@#.ADLeader
 ! https://github.com/AdguardTeam/AdguardFilters/issues/195203
-xchina.co##+js(addEventListener-defuser, /DOMContentLoaded|load|complete/, /check|detected/)
+xchina.*##.block-overlay
+xchina.*##+js(addEventListener-defuser, /DOMContentLoaded|load|complete/, /check|detected/)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/194144
 2urs.com##+js(abort-on-property-read, ads)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/191724
@@ -1066,6 +1067,11 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 !
 ! NOTE: Specific rules
 !
+toy-people.com##.article_insertAD
+news.cnyes.com##.a133dm9s
+||xchina.$domain=crxs.me
+crxs.me##+js(abort-current-script, document.createElement, visitUrl)
+crxs.me##.push-top
 cava.tw##.banner
 cava.tw###modal-dm:style(display: none !important;)
 cava.tw##body:style(overflow: auto !important;)
@@ -1236,6 +1242,8 @@ hk.news.yahoo.com,tw.news.yahoo.com##.atoms > div[class^="bg-card-"]:has(> div[i
 tw.yahoo.com##iframe[src^="https://tw.buy.yahoo.com/smartbanner/"]
 tw.yahoo.com##.col1-bottom > .border-solid:not([id]):has(> iframe[src^="https://tw.buy.yahoo.com/smartbanner/"])
 chigua69.com##.video-list > div.video-item:has(> a[adv_id])
+hk01.com##div[class^="placeholder-top-"]:style(min-height: 0 !important;)
+hk01.com##div[class*="placeholder"]:has(> .lazyload-wrapper > .js-ad-slot)
 hk01.com##article > .items-center:has(.lazyload-wrapper > .js-ad-slot)
 hk01.com##.article-grid__desktop-rhs-section > .items-center:has(.lazyload-wrapper > .js-ad-slot)
 dqzboy.com##body > #popup[style^="position: fixed; bottom:"]
@@ -1332,12 +1340,6 @@ m.shuhaige.net##+js(abort-current-script, document.createElement, return a.split
 $script,3p,denyallow=bsgslb.com|bytecdntp.com,domain=m.shuhaige.net
 ||topthink.com/uploads/assistant/$image,domain=doc.thinkphp.cn
 ||cpu.baidu.com/block/wap/
-xchina.co##+js(abort-current-script, $, adModal)
-xchina.co##.content-box > .list > .item:not(.photo-image):has(> a[clickmode="cpt"])
-xchina.co##.content-box > .list > .item:not(.photo-image):has(> div > ins[data-zoneid])
-xchina.co##.photos > div.item:has(> div > a[target="_blank"])
-xchina.co##.photos > div.item:has(> div[class^="exoclick_"])
-xchina.co##div[class^="item photo zone"]
 qq3009qq.link##.box li:has(> a[href] > img[onclick])
 cnbeta.com.tw##.meta > .fr > a[target="_blank"] > img
 read.thisiscm.com##.gadBlock
@@ -1441,8 +1443,14 @@ enews.tw##.newsCardForLeftAdGadCode
 ||upload.xchina.biz/ad/
 ||xchina.click/upload/*.webp
 ||xchina.co/scripts/push_*.js
-xchina.co##div:has(> div:only-child > .media img[src*="/ad/"])
-xchina.co##.outer-banner
+xchina.*##+js(abort-current-script, $, adModal)
+xchina.*##.content-box > .list > .item:not(.photo-image):has(> a[clickmode="cpt"])
+xchina.*##.content-box > .list > .item:not(.photo-image):has(> div > ins[data-zoneid])
+xchina.*##.photos > div.item:has(> div > a[target="_blank"])
+xchina.*##.photos > div.item:has(> div[class^="exoclick_"])
+xchina.*##div[class^="item photo zone"]
+xchina.*##.push-top
+xchina.*##div[style*="width: 300px;"][style*="height: 455px;"]
 ||goosedaily.com/advertise/
 goosedaily.com##div[class^="ad-area-"]
 goosedaily.com##.lightboxbnr
@@ -1786,7 +1794,7 @@ liantu.cn##.side > .h250
 liantu.cn##.wrapper > .inner.h90
 world68.com##.content_l_flml.zzs
 world68.com##.head_m
-fabconvert.com,knews.com.tw,1905.com,news.ltn.com.tw,commonhealth.com.tw,health.tvbs.com.tw,idreamx.com,xchina.co,manhuafen.com,world68.com##.ad
+fabconvert.com,knews.com.tw,1905.com,news.ltn.com.tw,commonhealth.com.tw,health.tvbs.com.tw,idreamx.com,xchina.*,manhuafen.com,world68.com##.ad
 world68.com##.guanggao
 world68.com##.zzs_ad
 onebox.mydown.com##.fcGg
@@ -2327,8 +2335,6 @@ huya.com##.nav-expand-list #J_tt_hd_category_ad
 hk.xfastest.com##.adv_v2
 hk.xfastest.com##.adv-side-wrap
 huaban.com##.hb-ad
-xchina.co##.push-top
-xchina.co##div[style*="width: 300px;"][style*="height: 455px;"]
 emumax.com##.tbanner
 news.ebc.net.tw##a[href^="http://www.ebcbuzz.com/url/"]
 hkmovie6.com##.hotmobad
@@ -3005,7 +3011,7 @@ huaren.live##+js(set-constant, ConFig.config.ads, {})
 ! https://github.com/AdguardTeam/AdguardFilters/issues/134240
 ! Do not hide .bili-video-card container to not mess up content, related - https://github.com/AdguardTeam/AdguardFilters/issues/147194#issuecomment-1500803042
 ! https://user-images.githubusercontent.com/3976203/273172163-25ff30a0-c988-4ec3-9e51-cf4722a90976.jpg
-bilibili.com##.container > .bili-feed-card:has(> div.bili-video-card  div.bili-video-card__info--no-interest + h3 > a[target="_blank"]:not([href^="https://www.bilibili.com/"]))
+bilibili.com##.container > .bili-feed-card:has(> div.bili-video-card div.bili-video-card__info--no-interest + h3 > a[target="_blank"]:not([href^="https://www.bilibili.com/"]))
 bilibili.com##.recommended-container_floor-aside .container > div[class$="feed-card"]:has(div[style$="56.25%;"] > div[class]:matches-css(before, content: /AdGuard/))
 ! bilibili.com#?#.bili-video-card.is-rcmd > div > a[href*="cm.bilibili.com"][data-target-url]:not([data-target-url*=".bili"]) + .bili-video-card__info:upward(2)
 bilibili.com##.feed-card:has(> div.bili-feed-card > div > div > div.bili-video-card__no-interest + a[target="_blank"]:not([href^="https://www.bilibili.com/"]))
@@ -5112,6 +5118,18 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$3p
+||vbgyniffuy.com^
+||j4s12kfavg.com^
+||niuk12020gi.com^
+||suitcase890.top^
+||beautiful45.com^
+||uimr.cn^
+||ycikokryl.com^
+||n2xj2mxg3z.com^
+||jywn7lkbdw.com^
+||tphurqalq.com^
+||niuk12021gi.com^
+||wraataikep.com^
 ||9a4v0clpi.com^
 ||xjoiteee8.com^
 ||engineer66.com^
