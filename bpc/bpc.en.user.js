@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.5.5
+// @version         4.2.5.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4733,14 +4733,15 @@ else if (matchDomain('wsj.com')) {
       let url = window.location.href;
       let article_sel = 'article section';
       let wsj_pro = paywall.querySelector('a[href^="https://wsjpro.com/"]');
-      if (wsj_pro) {
-        header_nofix(article_sel, paywall_sel);
-      } else {
+      if (wsj_pro)
+        article_sel = 'article';
+      let article = document.querySelector(article_sel);
+      if (article) {
         let video_sel = 'div[data-type="video"]';
         let video = document.querySelector(video_sel);
         let schema_script = document.querySelector('script#articleschema');
         func_post = function () {
-          let pars = document.querySelectorAll(article_sel + ' div[data]');
+          let pars = document.querySelectorAll(article_sel + ' div[style*="font-family:"]');
           if (pars.length < 5)
             header_nofix(article_sel, '', 'BPC > no archive-fix');
           if (video) {

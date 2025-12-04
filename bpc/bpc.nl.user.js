@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.2.5.4
+// @version         4.2.5.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -690,7 +690,7 @@ else if (matchDomain('tijd.be')) {
       if (main)
         main.after(googleSearchToolLink(url));
     }
-    document.querySelectorAll('[inert]').forEach(e => e.removeAttribute('inert'));
+    clear_inert();
   }
   if (matchDomain('belegger.tijd.be')) {
     if (window.location.pathname.endsWith('.html')) {
@@ -718,6 +718,10 @@ else if (matchDomain('tijd.be')) {
       }
     }
   }
+  function clear_inert() {
+    document.querySelectorAll('[inert]').forEach(e => e.removeAttribute('inert'));
+  }
+  clear_inert();
 }
 
 else if (matchDomain('vn.nl')) {

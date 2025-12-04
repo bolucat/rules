@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.2.4.0
+// @version         4.2.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -552,6 +552,9 @@ else if (matchDomain('elobservador.com.uy')) {
 }
 
 else if (matchDomain('eltiempo.com')) {
+  let exclusivo = document.querySelector('div.c-articulo-exclusivo');
+  if (exclusivo)
+    exclusivo.classList.remove('c-articulo-exclusivo');
   let modulos = document.querySelector('div.modulos');
   if (modulos)
     modulos.classList.remove('modulos');
