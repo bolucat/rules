@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.3.6
+// @version         4.2.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -211,7 +211,7 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
 else if (matchDomain('berliner-zeitung.de')) {
   let url = window.location.href;
   getArchive(url, 'div[class^="soft-paywall_wrapper_"]', '', 'div#articleBody');
-  let ads = 'div[class^="traffective_"], div[class^="article_billboard-"], div[class*="_ad_"], div[class^="outbrain_"], div[id^="qmn-ad-"], div[style]:empty';
+  let ads = 'div[class^="traffective_"], div[class^="article_billboard-"], div[class*="_ad_"], div[class^="outbrain_"], div[id^="qmn-ad-"], div[style]:empty, div[data-height]';
   hideDOMStyle(ads);
 }
 
@@ -245,6 +245,17 @@ else if (matchDomain('bild.de')) {
 else if (matchDomain('blick.ch')) {
   let ads = 'aside[class*="slot-code"], aside[class*="_teaser_"][class*="slot-code"]';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('bnn.de')) {
+  func_post = function () {
+    if (mobile) {
+      document.querySelectorAll('picture img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
+    }
+    header_nofix('article section', 'section > span[style*="filter:blur"]', 'BPC > no archive-fix');
+  }
+  let url = window.location.href;
+  getArchive(url, 'section.paywall', '', 'article');
 }
 
 else if (matchDomain('boersen-zeitung.de')) {
