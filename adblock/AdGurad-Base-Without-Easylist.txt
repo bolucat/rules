@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: fgbwpj841T6jwffRxFltIQ
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1765548685-3600.patch
+! Checksum: SW6wvInoLtXfIbHTWbmkzA
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1765645764-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.31.88
-! TimeUpdated: 2025-12-12T14:08:03+00:00
+! Version: 2.4.32.12
+! TimeUpdated: 2025-12-13T17:06:14+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -33928,8 +33928,10 @@ get-to.link##+js(no-window-open-if, exdynsrv.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/42791
 cshort.org##+js(no-window-open-if, /(greatdexchange|onclickmega)\.com/)
 ! mixdrop.co, mixdrop.to - popups
-md3b0j6hj.com,mixdrop21.net,mixdropjmk.pw,mdzsmutpcvykb.net,mdfx9dc8n.net,mdbekjwqa.pw,mixdroop.*,mixdrp.*,mixdrop.*##+js(abort-current-script, document.createElement, dtnoppu)
-md3b0j6hj.com,mixdrop21.net,mixdropjmk.pw,mdzsmutpcvykb.net,mdfx9dc8n.net,mdbekjwqa.pw,mixdroop.*,mixdrp.*,mixdrop.*##+js(addEventListener-defuser, click, dtnoppu)
+mixdrop23.net,md3b0j6hj.com,mixdrop21.net,mixdropjmk.pw,mdzsmutpcvykb.net,mdfx9dc8n.net,mdbekjwqa.pw,mixdroop.*,mixdrp.*,mixdrop.*##+js(abort-current-script, document.createElement, dtnoppu)
+mixdrop23.net,md3b0j6hj.com,mixdrop21.net,mixdropjmk.pw,mdzsmutpcvykb.net,mdfx9dc8n.net,mdbekjwqa.pw,mixdroop.*,mixdrp.*,mixdrop.*##+js(addEventListener-defuser, click, dtnoppu)
+/mixdrop\d+\.net/##+js(abort-current-script, document.createElement, dtnoppu)
+/mixdrop\d+\.net/##+js(addEventListener-defuser, click, dtnoppu)
 ! typingtestnow.com - ads
 !+ NOT_PLATFORM(windows, mac, android)
 typingtestnow.com##+js(no-setTimeout-if, replace_blank_adsense_ads)
@@ -36067,24 +36069,23 @@ programme-tv.net##.gridRow-cards + div[class^="img_"]
 quefaire.be###banner
 quefaire.be##.gpt_box
 dogdrip.net##html[lang="ko"] [id^="img_"][style]:has(iframe[frameborder="0"][style]):style(clip-path: circle(0) !important;)
-infinityfree.com##html[lang][dir="ltr"] [id^="img_"][style]:has(iframe[frameborder="0"][style]):style(clip-path: circle(0) !important;)
 smsonline.cloud##html[data-theme][lang] [id^="img_"][style]:has(iframe[frameborder="0"][style]):style(clip-path: circle(0) !important;)
 ! Common rules, which partially hide banners
 .com/players/*/-1/$script,3p
 .com/players/*/-1/70/$xhr
-~dogdrip.net,~infinityfree.com,~smsonline.cloud##*:not(body) > a[href^="https://content-loader.com/player"]
-~dogdrip.net,~infinityfree.com,~smsonline.cloud##*:not(body) > a[href^="https://html-load.com/player"]
-~dogdrip.net,~infinityfree.com,~smsonline.cloud##*:not(body) > a[href^="https://07c225f3.online/player"]
+~dogdrip.net,~smsonline.cloud##*:not(body) > a[href^="https://content-loader.com/player"]
+~dogdrip.net,~smsonline.cloud##*:not(body) > a[href^="https://html-load.com/player"]
+~dogdrip.net,~smsonline.cloud##*:not(body) > a[href^="https://07c225f3.online/player"]
 07c225f3.online,content-loader.com,css-load.com,html-load.com,img-load.com##html:not(:has(> head > style:only-child:contains(width:399px;height:411px))):style(filter: opacity(0) !important; pointer-events: none !important;)
-~dogdrip.net,~infinityfree.com,~smsonline.cloud##div[style^="height:    250px; width:    300px;"]
-~dogdrip.net,~infinityfree.com,~smsonline.cloud##div[style^="width:    160px; height:    600px; margin: 0px auto; min-width: 160px; min-height: 600px;"]
-~dogdrip.net,~infinityfree.com,~smsonline.cloud##div[style^="width:    300px; height:    250px;"]
-~dogdrip.net,~infinityfree.com,~smsonline.cloud##html[class^="img_"][amp4ads=""][i-amphtml-layout=""][i-amphtml-no-boilerplate=""][amp-version="2509031727000"]
-~dogdrip.net,~infinityfree.com,~smsonline.cloud##html[class^="img_"][amp4ads=""][i-amphtml-layout=""][i-amphtml-no-boilerplate=""][amp-version="2507172035000"]
-~dogdrip.net,~infinityfree.com,~smsonline.cloud##html[class^="img_"][amp4ads=""][i-amphtml-layout=""][i-amphtml-no-boilerplate=""][amp-version="2502032353000"]
-~dogdrip.net,~infinityfree.com,~smsonline.cloud##img[height="   250"][width="   300"]
-~dogdrip.net,~infinityfree.com,~smsonline.cloud##img[height="   90"][width="   728"]
-~dogdrip.net,~infinityfree.com,~smsonline.cloud##ins[style$="height:    90px; width:    728px;"]
+~dogdrip.net,~smsonline.cloud##div[style^="height:    250px; width:    300px;"]
+~dogdrip.net,~smsonline.cloud##div[style^="width:    160px; height:    600px; margin: 0px auto; min-width: 160px; min-height: 600px;"]
+~dogdrip.net,~smsonline.cloud##div[style^="width:    300px; height:    250px;"]
+~dogdrip.net,~smsonline.cloud##html[class^="img_"][amp4ads=""][i-amphtml-layout=""][i-amphtml-no-boilerplate=""][amp-version="2509031727000"]
+~dogdrip.net,~smsonline.cloud##html[class^="img_"][amp4ads=""][i-amphtml-layout=""][i-amphtml-no-boilerplate=""][amp-version="2507172035000"]
+~dogdrip.net,~smsonline.cloud##html[class^="img_"][amp4ads=""][i-amphtml-layout=""][i-amphtml-no-boilerplate=""][amp-version="2502032353000"]
+~dogdrip.net,~smsonline.cloud##img[height="   250"][width="   300"]
+~dogdrip.net,~smsonline.cloud##img[height="   90"][width="   728"]
+~dogdrip.net,~smsonline.cloud##ins[style$="height:    90px; width:    728px;"]
 ! aglint-disable no-invalid-modifiers
 ! aglint-enable no-invalid-modifiers
 !+ NOT_PLATFORM(ios, ext_android_cb, ext_safari, ext_chromium_mv3, windows, mac, cli, android)
@@ -36341,6 +36342,9 @@ techarmor.xyz##.my-ad-container
 !
 ! NOTE: Specific rules
 !
+bleepingcomputer.com##.spon_res
+bleepingcomputer.com##.bc_right_sidebar > div:has(> .cz-line-heading:first-child + ul:last-child > li > .spon_res:only-child)
+swisscows.com##.web-results > article:has(> footer > .site > a[href*="bing.com/aclick"]):style(position: absolute !important; left: -3000px !important;)
 up-4ever.net##.row > div.col-12:has(> div.card > div.card-body > ins.adsbygoogle)
 eu.press-citizen.com##.secondary:has(> div.content-well > div.module-slot > partner-poster)
 eu.press-citizen.com##.page-background-placeholder
@@ -61152,6 +61156,7 @@ implbits.com#@#.banner_container
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/219632
 ! https://github.com/AdguardTeam/AdguardFilters/issues/219560
 ! https://www.rbtv77news.com/superabbit77-link/
 ! https://www.fctv33.work/
