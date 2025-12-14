@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.6.1
+// @version         4.2.6.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -285,7 +285,7 @@ else if (matchDomain('faz.net')) {
       let article = document.querySelector(article_sel);
       if (article) {
         article.removeAttribute('class');
-        let intro = article.querySelector('p[class][data-selector]');
+        let intro = article.querySelector('[class][data-selector="body-paragraph"]');
         if (intro) {
           let par_class = intro.className;
           let url = window.location.href;
@@ -842,32 +842,43 @@ else if (matchDomain('t3n.de')) {
 
 else if (matchDomain('tagesspiegel.de')) {
   let paywall_sel = 'div#paywall';
+  let article_sel = 'div#story-elements';
   let url = window.location.href;
   if (matchDomain('www.tagesspiegel.de')) {
     func_post = function () {
-      for (let elem of videos) {
-        let iframe = document.createElement('iframe');
-        iframe.src = elem.getAttribute('old-src');
-        iframe.style = 'width: 100%; height: 400px;';
-        elem.parentNode.replaceChild(iframe, elem);
-      }
-      let opinionary = document.querySelector('div > div#opinary-automation-placeholder');
-      if (opinionary)
-        hideDOMElement(opinionary.parentNode);
-      if (mobile) {
-        let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
-        for (let elem of lazy_images)
-          elem.style = 'width: 95%;';
+      let pars = document.querySelectorAll(article_sel + ' > div[style*="font-variant-numeric:"]');
+      if (pars.length < 3) {
+        let article = document.querySelector(article_sel);
+        if (article)
+          article.before(googleSearchToolLink(url));
+      } else {
+        let videos = document.querySelectorAll('div[old-src]:not([src])');
+        for (let elem of videos) {
+          let iframe = document.createElement('iframe');
+          iframe.src = elem.getAttribute('old-src');
+          iframe.style = 'width: 100%; height: 400px;';
+          elem.parentNode.replaceChild(iframe, elem);
+        }
+        let opinionary = document.querySelector('div > div#opinary-automation-placeholder');
+        if (opinionary)
+          hideDOMElement(opinionary.parentNode);
+        if (mobile) {
+          let lazy_images = document.querySelectorAll('figure img[loading="lazy"][style]');
+          for (let elem of lazy_images)
+            elem.style = 'width: 95%;';
+        }
       }
     }
-    getArchive(url, paywall_sel, '', 'div#story-elements');
+    getArchive(url, paywall_sel, '', article_sel);
   } else if (matchDomain('interaktiv.tagesspiegel.de')) {
     let paywall = document.querySelector(paywall_sel);
     if (paywall) {
       removeDOMElement(paywall);
-      let article = document.querySelector('div.tslr-article > p');
-      if (article)
-        article.firstChild.before(archiveLink(url));
+      let article = document.querySelector('main.tslr-article p');
+      if (article) {
+        article.before(googleSearchToolLink(url));
+        article.before(archiveLink(url));
+      }
     }
   }
   let ads = 'div.iqdcontainer';
