@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.6.1
+// @version         4.2.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3535,7 +3535,7 @@ else if (matchDomain('scmp.com')) {
                       } else if (par.attribs.class)
                         console.log(par);
                     }
-                  } else if (!['blockquote-quote', 'inline-ad-slot', 'track-viewed-percentage'].includes(par.type))
+                  } else if (!['blockquote-quote', 'inline-ad-slot', 'inline-plus-widget', 'track-viewed-percentage'].includes(par.type))
                     console.log(par);
                   if (elem.hasChildNodes())
                     article.appendChild(elem);
@@ -4034,20 +4034,20 @@ else if (matchDomain('theglobeandmail.com')) {
   if (fusion_script && fusion_script.text.includes('Fusion.globalContent=')) {
     try {
       let json = JSON.parse(fusion_script.text.split('Fusion.globalContent=')[1].split(';Fusion.')[0]);
-      let audio_tts = document.querySelector('div > div.audio-panel:has(p.audio-anonymous)');
-      if (audio_tts) {
-        let audio_json = getNestedKeys(json, 'additional_properties.tts_audio');
-        if (audio_json) {
-          let audio_src = audio_json.url_en_M || audio_json.url_en_F;
-          if (audio_src) {
-            let audio = document.createElement('audio');
-            audio.src = audio_src;
-            audio.setAttribute('controls', '');
-            audio_tts.parentNode.replaceChild(audio, audio_tts);
+      window.setTimeout(function () {
+        let audio_tts = document.querySelector('div > div#audio-panel > p[class^="ArticlePlayer__LoginCopy"]');
+        if (audio_tts) {
+          let audio_json = getNestedKeys(json, 'additional_properties.tts_audio');
+          if (audio_json) {
+            let audio_src = audio_json.url_en_M || audio_json.url_en_F;
+            if (audio_src) {
+              let audio = document.createElement('audio');
+              audio.src = audio_src;
+              audio.setAttribute('controls', '');
+              audio_tts.parentNode.parentNode.replaceChild(audio, audio_tts.parentNode);
+            }
           }
         }
-      }
-      window.setTimeout(function () {
         let video = document.querySelector('div > div.c-video:empty');
         if (video) {
           let streams = findKeyJson(json, 'streams');
@@ -4709,7 +4709,13 @@ else if (matchDomain('vox.com')) {
 }
 
 else if (matchDomain('warontherocks.com')) {
-  getJsonUrl('a[href^="https://warontherocks.com/subscribe"]', '', 'div.tw\\:container.tw\\:mb-20>div');
+  if (window.location.pathname.startsWith('/episode/')) {
+    header_nofix('div.single-content-section', 'a[href ^= "https://warontherocks.com/subscribe"]');
+  } else {
+    let paywall_sel = 'a[href^="https://warontherocks.com/membership"]';
+    let article_sel = 'div.tw\\:container.tw\\:mb-20>div';
+    getJsonUrl(paywall_sel, '', article_sel);
+  }
 }
 
 else if (matchDomain('washingtonpost.com')) {
