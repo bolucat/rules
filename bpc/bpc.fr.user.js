@@ -1563,7 +1563,7 @@ else if (matchDomain('ouest-france.fr')) {
     if (!window.location.search.includes('token=')) {
       let paywall = document.querySelector('div.mur');
       if (paywall) {
-        removeDOMElement();
+        removeDOMElement(paywall);
         insert_script(ouest_france_main);
       }
     } else {
