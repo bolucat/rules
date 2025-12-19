@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: r1sNCC7PRBhOMbj6ZPsYvQ
-! Diff-Path: ../patches/7/7-s-1766074376-3600.patch
+! Checksum: B3JhR7UZ8TE8J/QlK/BQoQ
+! Diff-Path: ../patches/7/7-s-1766124837-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.71.10
-! TimeUpdated: 2025-12-18T16:09:38+00:00
+! Version: 2.0.71.13
+! TimeUpdated: 2025-12-19T06:10:50+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -27,6 +27,7 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$3p,domain=~rakuten-co.jp|~rakuten.ne.jp
 !
+||indiegogo.jp^$document
 ||slashdot.jp^$document
 ||js.miyuki-web.net^
 ||girls-escort.tokyo^
@@ -961,6 +962,7 @@ kyukyoku-matome.com##.widget_pc_ad
 ##.js-kb-click
 ##.kyujin-jobs-container
 ##.logly-lift-ad-ad
+##.lol-error-page__ad
 ##.master-post-advert
 ##.my_ads
 ##.p-entry__ad
@@ -1775,7 +1777,8 @@ _co_jp.*.php$document,to=cc|com
 /shopping/item/m*/?zenid=$document,to=cfd|fun|qpon|sale|shop|space|top|xyz
 /mall/*.html?zenid=$document,to=cfd|fun|qpon|shop|space|top|xyz
 /mart/*.html?zenid=$document,to=cfd|fun|qpon|shop|space|top|xyz
-/^https?:\/\/([-0-9a-z]{3,}\.)?[a-z]{5,}\.[a-z]{3,7}\/product\/\d{4,}(\.html)?$/$document,to=baby|blog|bond|cam|casa|fun|homes|online|org|rest|sbs|shop|surf|top|website|yoga|~openfoodfacts.org
+/^https?:\/\/(?:[-0-9a-z]{3,}\.)?[a-z]{5,}\.[a-z]{3,7}\/product\/\d{4,7}(\.html)?$/$document,to=baby|blog|bond|cam|casa|fun|homes|online|rest|sbs|shop|surf|top|website|yoga
+/^https?:\/\/(?:[-0-9a-z]{4,}\.)?[a-z]{5,}\.org\/product\/\d{4,7}(\.html)?$/$document,to=~openfoodfacts.org
 /^https:\/\/[a-z]{5,8}\.[a-z]{4,10}\.[a-z]{2,6}\/item\/m\d{10,11}$/$document,to=shop
 /?AC=*&IC=$document,to=com|fun|online|site
 .asp?AC=*&IC=$document,to=com|fun|online|site
@@ -1856,10 +1859,10 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+||lolipop.jp/img/bnr/bnr_lolipop_ad_
+||narakko.jp/wp-content/themes/narakko/inc/get-jobbox.php
+narakko.jp##.jobbox_wrap
 hominis.media##.side-menu-pickup
-hominis.media##.side-menu-banner
-hominis.media###fix-enquete-banner
-hominis.media##.entry-campaign-banner
 eigaland.com##div[id^="pc_all_"]
 famitsu.com##a[class*="ArticleDetailBody_buttonForEC"]
 lazuda.com##.top-sponsorArea02
@@ -6345,6 +6348,7 @@ hedgehog.ryukyu##.l-sidebar > aside.widget_block
 tokueromanga.com,eromanga-jkschool.com###enhancedtextwidget-27
 mogeringo.com##div[style="min-height: 280px;height: auto"]
 ||bigboss-financial.com/pr/banner/bn_300_250_
+ieagent.jp##.smocca
 ieagent.jp##.floating-banner
 pictbland.net##.sub-content > div[style="width:200px; height:200px;"]
 ||v-travels.co.jp/view_link/onsen/bnr_200_200.jpg$3p

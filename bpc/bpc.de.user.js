@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.6.3
+// @version         4.2.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -711,9 +711,9 @@ else if (matchDomain('sueddeutsche.de')) {
   let url = window.location.href;
   if (matchDomain('sz-magazin.sueddeutsche.de')) {
     func_post = function () {
-      header_nofix('main', 'div#sz-paywall', 'BPC > no archive-fix');
+      header_nofix('main', 'div#sz-paywall:not(:empty)', 'BPC > no archive-fix');
     }
-    getArchive(url, 'div.articlemain__inner--reduced', {rm_class: 'articlemain__inner--reduced'}, 'main');
+    getArchive(url, 'div.offerpage-container', '', 'main');
   } else if (window.location.pathname.startsWith('/projekte/artikel/')) {
     func_post = function () {
       let lazy_images = document.querySelectorAll('img[loading="lazy"][style*="min-width:"]');
@@ -737,68 +737,7 @@ else if (matchDomain('sueddeutsche.de')) {
     let intro = document.querySelector(intro_sel);
     getArchive(url, 'div.offer-page', '', 'main');
   } else {
-    let paywall = document.querySelector('head > meta[content="locked"]');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let article_sel = 'div[itemprop="articleBody"]';
-      let article = document.querySelector(article_sel);
-      if (article) {
-        let json_script = document.querySelector('script[data-hydration-props-component-name="ArticleBodyDDRum"]');
-        if (json_script) {
-          try {
-            let json = JSON.parse(decodeURIComponent(json_script.text));
-            if (json) {
-              let pars = json.uiArticleContent;
-              if (pars.length) {
-                article.innerHTML = '';
-                addStyle(article_sel + ' p {margin-bottom: 32px;}');
-              }
-              let parser = new DOMParser();
-              for (let par of pars) {
-                let elem = document.createElement('p');
-                if (['paragraph', 'datawrapper', 'youtube'].includes(par.component)) {
-                  if (par.content && par.content.html) {
-                    let elem_type = par.content.html.startsWith('<div>') ? 'div' : 'p';
-                    let content_new = parser.parseFromString('<' + elem_type + '>' + parseHtmlEntities(par.content.html) + '</' + elem_type + '>', 'text/html');
-                    let iframe = content_new.querySelector('iframe');
-                    if (iframe) {
-                      iframe.style = 'width: 100%; margin-bottom: 32px;';
-                      if (!iframe.height)
-                        iframe.height = '400px';
-                    }
-                    elem = content_new.querySelector(elem_type);
-                  }
-                } else if (par.component === 'ercms') {
-                  if (par.content && par.content.url) {
-                    elem = document.createElement('div');
-                    let iframe = document.createElement('iframe');
-                    iframe.src = par.content.url;
-                    iframe.style = 'width: 100%; height: 400px; margin-bottom: 32px;';
-                    elem.appendChild(iframe);
-                  }
-                } else if (par.component === 'subheading') {
-                  if (par.content && par.content.text) {
-                    elem.innerText = par.content.text;
-                    elem.style = 'font-weight: bold;';
-                  }
-                } else if (par.component === 'image') {
-                  if (par.image) {
-                    let caption = par.caption ? par.caption.html + ' (Foto: ' + par.imageSource + ')' : '';
-                    let sub_elem = makeFigure(par.image.url, caption);
-                    elem.appendChild(sub_elem);
-                  }
-                } else if (!(['articleHeader', 'articleTeaserM', 'newsletterEmbed'].includes(par.component) || par.component.startsWith('iqadtile')))
-                  console.log(par);
-                if (elem.hasChildNodes())
-                  article.appendChild(elem);
-              }
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
-    }
+    getArchive(url, 'head > meta[content="locked"]', '', 'div[itemprop="articleBody"]');
   }
   let ads = 'er-ad-slot, div.iqdcontainer';
   hideDOMStyle(ads);
