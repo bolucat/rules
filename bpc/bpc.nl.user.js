@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.2.7.0
+// @version         4.2.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -277,9 +277,20 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
           if (path_match) {
             let article_id = path_match[1];
             json_match = json.includes(',id:"' + article_id + '",');
-            if (!json_match && json.match(/[(,]null,/)) {
-              let art_match = json.split(/[(,]null,/)[1].match(new RegExp('-' + article_id + '\\.', 'g'));
-              json_match = art_match && art_match.length > 1;
+            if (!json_match) {
+              let path_regex_str = '-' + article_id + '\\.';
+              if (json.match(/[(,]null,/)) {
+                let art_match = json.split(/[(,]null,/)[1].match(new RegExp(path_regex_str, 'g'));
+                json_match = art_match && art_match.length > 1;
+              }
+              if (!json_match) {
+                if (json.includes(',routePath:"')) {
+                  json_match = json.split(',routePath:"')[1].split('"')[0].match(new RegExp(path_regex_str));
+                } else if (json.includes(',relativeUrl:"')) {
+                  let json_split = json.split(',relativeUrl:"');
+                  json_match = json_split.some(e => e.split(/[",]/)[0].match(new RegExp(path_regex_str)));
+                }
+              }
             }
           }
         }
@@ -292,7 +303,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
             if (nuxt_vars.length && nuxt_values.length && !(attributes && str.length === 1 && str === str.toUpperCase())) {
               let index = nuxt_vars.indexOf(str);
               if (nuxt_values[index])
-                str = nuxt_values[index];
+                str = nuxt_values[index].replace(/\\u002F/g, '/');
             }
             return str;
           }
@@ -325,7 +336,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
             function addLink(elem, link_text, href, add_br = false) {
               let par_link = document.createElement('a');
               par_link.href = href;
-              par_link.innerText = link_text.replace(/\\n/, '');
+              par_link.innerText = link_text.replace(/\\n$/, '');
               elem.appendChild(par_link);
               if (add_br)
                 elem.appendChild(document.createElement('br'));
