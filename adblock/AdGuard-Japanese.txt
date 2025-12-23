@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: VU3fHhvyeR0z1bR48mgL9g
-! Diff-Path: ../patches/7/7-s-1766394880-3600.patch
+! Checksum: aMWPUjb87H9DTIjGJQnE3Q
+! Diff-Path: ../patches/7/7-s-1766509858-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.71.18
-! TimeUpdated: 2025-12-22T09:11:25+00:00
+! Version: 2.0.71.27
+! TimeUpdated: 2025-12-23T17:08:16+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1097,7 +1097,7 @@ anacap.doorblog.jp##+js(addEventListener-defuser, scroll, b.type)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/144212
 anianierosuki.work##+js(addEventListener-defuser, click, event)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/142720
-ikaskey.bktsk.com,live-theater.net,misskey.art,misskey.resonite.love,misskeytsf.love,misskirara.net,p1.a9z.dev,takusuki.com,trpger.us,mk.yopo.work,sushi.ski,warpday.net,zadankai.club,misskey.io##+js(json-prune, ads.[].imageUrl)
+ikaskey.bktsk.com,live-theater.net,misskey.art,misskey.resonite.love,misskeytsf.love,misskirara.net,p1.a9z.dev,takusuki.com,trpger.us,mk.yopo.work,sushi.ski,warpday.net,zadankai.club,misskey.io##+js(json-prune, ads)
 ! https://github.com/AdguardTeam/AdguardFilters/pull/136936
 agora-web.jp##+js(abort-current-script, document.currentScript, insertAdjacentHTML)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/136491
@@ -1859,6 +1859,12 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+gifruo.com###fix_sidebar > div.widget_diver_widget_pcsp
+gifruo.com###diver_widget_pcsp-45
+jigensha.info##div[style="overflow-x:auto;text-align:center;width:100%;"]
+jigensha.info##article.post > div[style="text-align:center;margin:4px;"]:not([class])
+achikochi-data.com###ranking-table-0 > tbody > tr:has(> td > div > ins.adsbygoogle)
+msk.kitazawa.me,live-theater.net##div[data-sticky-container-header-height] div[tabindex="0"] ~ div:not([tabindex="0"])
 ||lolipop.jp/img/bnr/bnr_lolipop_ad_
 ||narakko.jp/wp-content/themes/narakko/inc/get-jobbox.php
 narakko.jp##.jobbox_wrap
@@ -1868,6 +1874,9 @@ famitsu.com##a[class*="ArticleDetailBody_buttonForEC"]
 lazuda.com##.top-sponsorArea02
 ||app.lazuda.com/api/kyujin_box/
 news.tv-asahi.co.jp##body:is(.articles, .top) .con:has(.main-container):style(min-height: auto !important;)
+news.denfaminicogamer.jp###dc
+news.denfaminicogamer.jp##.drc
+news.denfaminicogamer.jp##.azl
 news.denfaminicogamer.jp##.steam
 news.denfaminicogamer.jp##.articleList > li:has(> aside.steam)
 news.denfaminicogamer.jp##div[id^="endfield_"]
@@ -3617,7 +3626,6 @@ tokyoartbeat.com##.yadsBanner
 shokuhin.net##.custom-html-widget > a:not([href^="https://shokuhin"])
 shokuhin.net##a[id$="api-click"]
 ysyoken.hikaku.minkabu.jp##.comarea
-||livedoor.blogimg.jp/ld_manga/imgs/
 gametohkenranbu.sakuraweb.com###content div[align="center"]:has(> ins.adsbygoogle)
 rakumachi.jp###js-ad_news_relational_post_top
 rakumachi.jp##.AdSide
@@ -5290,7 +5298,7 @@ totoneko.net###pc_text-19
 totoneko.net###pc_text-23
 free.foto.ne.jp##.list_row3_ad_2column
 ||zadankai.club/ads/
-ikaskey.bktsk.com,live-theater.net,misskey.art,misskey.resonite.love,misskeytsf.love,misskirara.net,p1.a9z.dev,takusuki.com,trpger.us,mk.yopo.work,sushi.ski,warpday.net,zadankai.club,misskey.io##.xF6dY
+ikaskey.bktsk.com,live-theater.net,misskey.art,misskey.resonite.love,misskeytsf.love,misskirara.net,p1.a9z.dev,takusuki.com,trpger.us,mk.yopo.work,sushi.ski,warpday.net,zadankai.club,misskey.io##.xsAPm
 aaieba.livedoor.biz###more > div[align="center"]:last-of-type > table
 aaieba.livedoor.biz###scroll
 aaieba.livedoor.biz##.aaieba-e
@@ -8351,6 +8359,7 @@ live-events.a-jp.org##.gad_pc
 jpshowbiz.us##.video-plugin-skip-button
 recochoku.jp##a[class="sub-nav__item-link"][target="_blank"]
 ||ddd-smart.net/ad/*_336-280$image
+crank-in.net##div[class*="contents"] > section:has(> #taboola-container)
 crank-in.net##.ad-area_pr:has(> figure.ad > p[style^="display: inline-block"])
 crank-in.net##.ad_CIT_top
 crank-in.net##.ad-area_trend_small
@@ -9261,7 +9270,7 @@ mag2.com##.siber-widget
 mag2.com##div[class*="ad-h"]
 knshow.com##.prText
 play.ponta.jp,vw.mangaz.com##.ad-page
-news.sukupara.jp,vw.mangaz.com,inazumanews2.com##.adv
+jigensha.info,news.sukupara.jp,vw.mangaz.com,inazumanews2.com##.adv
 inazumanews2.com##.check
 inazumanews2.com##.kkk
 kobe-np.co.jp##.isInfeedLoad
@@ -11811,6 +11820,8 @@ itest.5ch.net,itest.bbspink.com##.res_ad
 itest.5ch.net,itest.bbspink.com##div[class^="sproutad_"]
 itest.5ch.net,itest.bbspink.com##[class*="js-ads-content-top_"]
 !
+!+ NOT_OPTIMIZED
+||livedoor.blogimg.jp/ld_manga/imgs/
 !+ NOT_OPTIMIZED
 web.gekisaka.jp###PC_SP_NEWS_D_GROUP
 automaton-media.com###custom-background-css:remove()

@@ -137,6 +137,7 @@
 // @exclude         *://*.reforme.net/*
 // @exclude         *://*.revistaoeste.com/*
 // @exclude         *://*.science-et-vie.com/*
+// @exclude         *://*.semana.com/*
 // @exclude         *://*.topagrar.com/*
 // @exclude         *://*.tt.com/*
 // @exclude         *://*.tuttosport.com/*

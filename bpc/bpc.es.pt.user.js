@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.2.6.1
+// @version         4.2.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -65,6 +65,7 @@
 // @match           *://*.regio7.cat/*
 // @match           *://*.revistaoeste.com/*
 // @match           *://*.sabado.pt/*
+// @match           *://*.semana.com/*
 // @match           *://*.uol.com.br/*
 // @connect         archive.fo
 // @connect         archive.is
@@ -380,7 +381,7 @@ else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
   }
 }
 
-} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['abcmais.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'eluniverso.com', 'exame.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com'])) {//south america
+} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['abcmais.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'eluniverso.com', 'exame.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com', 'semana.com'])) {//south america
 
 if (matchDomain('abcmais.com')) {
   if (!window.location.pathname.endsWith('/amp/')) {
@@ -867,6 +868,13 @@ else if (matchDomain('revistaoeste.com')) {
     let ads = 'section.ad-wrapper, div.autozep-outer';
     hideDOMStyle(ads);
   }
+}
+
+else if (matchDomain('semana.com')) {
+  if (!window.location.pathname.startsWith('/amp/'))
+    amp_redirect('div.paywall > div:not(.article-body)');
+  let ads = 'div.ads-cls, amp-fx-flying-carpet';
+  hideDOMStyle(ads);
 }
 
 }
