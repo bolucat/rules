@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.7.0
+// @version         4.2.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -687,19 +687,16 @@ else if (matchDomain('stern.de')) {
           article_opulent.removeAttribute('style');
       }
     }
-    let charts = document.querySelectorAll('ws-socialwidget > slot > slot[slot="content"]');
-    for (let chart of charts) {
-      if (chart.innerText.includes('src="')) {
-        let chart_url = chart.innerText.split('src="')[1].split('"')[0];
-        let iframe = document.createElement('iframe');
-        iframe.src = chart_url;
-        iframe.style = "width: 100%; height: 600px; border: none;";
-        let container = chart.parentNode.parentNode;
-        container.parentNode.replaceChild(iframe, container);
-      }
+    let widgets = document.querySelectorAll('ws-socialwidget > slot > slot[slot="content"]');
+    for (let elem of widgets) {
+      let parser = new DOMParser();
+      let doc = parser.parseFromString('<div style="margin: 20px 0px;">' + elem.innerText + '</div>', 'text/html');
+      let elem_new = doc.querySelector('div');
+      let container = elem.parentNode.parentNode;
+      container.parentNode.replaceChild(elem_new, container);
     }
   }
-  let paywall_sel = 'ws-paywall';
+  let paywall_sel = 'main > article ws-paywall';
   let article_sel = 'div.article__body';
   let article_src_sel = 'main > article > div:last-child';
   let link_sel = 'div.page__content-inner, div.page-opulent';
