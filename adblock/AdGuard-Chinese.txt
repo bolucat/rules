@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: EORqptvcKnrJQVifn6B5QQ
-! Diff-Path: ../patches/224/224-s-1766668801-3600.patch
+! Checksum: 3EHt6bEE4pVaJDwiIuoKcw
+! Diff-Path: ../patches/224/224-s-1766765509-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.50.63
-! TimeUpdated: 2025-12-25T13:17:11+00:00
+! Version: 2.1.50.74
+! TimeUpdated: 2025-12-26T16:08:42+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -272,6 +272,9 @@
 ! Bad: ||ad.doubleclick.net^ (should be in adservers.txt)
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/221161
+w.waipian.sbs##.popup-tips
+w.waipian.sbs##.shortcuts-mobile-overlay
 ! https://github.com/AdguardTeam/AdguardFilters/issues/218417
 fabconvert.com#@#.ad-banner-top
 ! https://github.com/AdguardTeam/AdguardFilters/issues/212973
@@ -1071,6 +1074,9 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 !
 ! NOTE: Specific rules
 !
+supertaste.tvbs.com.tw##div[id^="taboola-"]
+supertaste.tvbs.com.tw##.sidebar > span:contains(人氣點閱榜)
+supertaste.tvbs.com.tw##.article_detail > div.cotxt_title:has(> p:contains(/延伸閱讀|你可能會喜歡|大家都在看/))
 sou-yun.cn###adsPanel:style(display: none !important;)
 sou-yun.cn##body:style(overflow: auto !important;)
 zol.com.cn###downBoxGaosu
@@ -1151,7 +1157,9 @@ luogu.me##.propaganda
 66ss.org###sidebar-follow:has(> div.widget > script[src*="/js/acmsd/"])
 *$denyallow=biqege.com,domain=biqege.com,script,xhr
 ||bz*.net/js/html*.js$~3p,script
+||bz*.com/js/html*.js$~3p,script
 ||bz*.net/js/cdn.js
+||bz*.com/js/cdn.js
 macromicro.me##+js(abort-current-script, $, /deposit-bonus?platform=26&utm_source=)
 macromicro.me##+js(abort-current-script, $, mmPopup() {)
 ||mumu*.com/js/cdn.js$~3p
@@ -5132,6 +5140,8 @@ newduba.cn###jq_youxi
 ##.a-media.ex-728-90
 ##a[clickmode="cpt"]
 ###foot > #btmBox
+##.player-rma > a[target="_blank"]
+##.player-tl > a[target="_blank"]
 ##.home-qf > div[class*="img-qf"]
 ##.home-qf > div[class*="img-ad"]
 ##.module-player > .dds_w
@@ -5161,6 +5171,24 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$3p
+||vm5xs8nvqh.com^
+||jg0y00ciyr.com^
+||w5bi16f3co.com^
+||vizgrt.icu^
+||ainb12260zh.com^
+||apparatus49.top^
+||toothpick75.com^
+||ybbreqrake.com^
+||j7kv55pr70.com^
+||twhyhf.icu^
+||ujhu.cn^
+||1gqd0o687z.com^
+||aa52jm08ly.com^
+||ainb12261zh.com^
+||nvielkaa.com^
+||ao2doihore.com^
+||ueaeahze.com^
+||f4h123m89w.com^
 ||1pt7wq8di.com^
 ||4d45i6p0g.com^
 ||5bess6df0.com^
@@ -13937,6 +13965,7 @@ meijutt.*/js/pcjs/
 ||sphdigital.com.sg/_plat/$domain=zaobao.com.sg
 ||douyucdn.cn/adxdsp/
 zhihu.com##.Pc-word-new
+weibo.com##.vue-recycle-scroller__item-view:has(img[src="https://d.sinaimg.cn/prd/1005/891/2025/03/21/icon_auth_white.png"])
 douyu.com##div[class^="body__"] > div[class^="card__"] > span > span[class^="card__"]:has(span[class^="cardTypeLabel"]:contains(广告))
 h-ciyuan.com##.theiaStickySidebar .widget_media_image
 h-ciyuan.com##.gridview-grid-post:has(a[title*="Ad』"])
