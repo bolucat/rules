@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.2.7.1
+// @version         4.2.7.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -344,6 +344,8 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
             function addImage(elem, child) {
               let figure = document.createElement('figure');
               let img = document.createElement('img');
+              if (child.relation.href.length <= 2)
+                child.relation.href = findNuxtText(child.relation.href);
               img.src = child.relation.href;
               figure.appendChild(img);
               if (child.relation.caption) {
@@ -679,7 +681,7 @@ else if (matchDomain('telegraaf.nl')) {
       }
     }
   }, 1000);
-  let ads = 'div[id^="ad_"], div[class^="scrollable-ads"], iframe#ecommerce-ad-iframe, div[data-pym-src]';
+  let ads = 'div[id^="ad_"], div[class^="scrollable-ads"], iframe#ecommerce-ad-iframe, div[data-pym-src], div.mh-ad-label';
   hideDOMStyle(ads);
 }
 
