@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.7.4
+// @version         4.2.7.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -21,6 +21,7 @@
 // @match           *://*.businesspost.ie/*
 // @match           *://*.businesstimes.com.sg/*
 // @match           *://*.capital.bg/*
+// @match           *://*.denik.cz/*
 // @match           *://*.dnevnik.bg/*
 // @match           *://*.epoch.org.il/*
 // @match           *://*.europower.no/*
@@ -1967,15 +1968,28 @@ else if (matchDomain('defector.com')) {
 }
 
 else if (matchDomain('denik.cz')) {
-  let video_sources = document.querySelectorAll('video[id] > source[src]');
-  for (let elem of video_sources) {
-    let iframe = document.createElement('iframe');
-    iframe.src = elem.src;
-    iframe.style = 'width: 100%; height: 100%;';
-    let video = elem.parentNode;
-    video.parentNode.replaceChild(iframe, video);
+  let paywall = document.querySelector('div#js-subscriptionBox');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article_sel = 'div.article-content';
+    let article = document.querySelector(article_sel);
+    if (article) {
+      func_post = function () {
+        let div_hidden = document.querySelector('div.paywall');
+        if (div_hidden)
+          div_hidden.removeAttribute('class');
+        let videos = document.querySelectorAll('video[id]:not([src])');
+        for (let elem of videos) {
+          elem.removeAttribute('class');
+          let video_button = elem.parentNode.querySelector('button');
+          removeDOMElement(video_button);
+        }
+      }
+      let url = window.location.href;
+      replaceDomElementExt(url, false, false, article_sel);
+    }
   }
-  let ads = 'div.ad';
+  let ads = 'div.leaderboard-top, div.outstream, div[class^="sticky-"], div[class*="wallpaper-"]';
   hideDOMStyle(ads);
 }
 
