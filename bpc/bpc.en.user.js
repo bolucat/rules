@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.7.6
+// @version         4.2.7.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4097,6 +4097,14 @@ else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
     let ads = '[class^="height"], [class^="advt"], [id^="piano"]';
     hideDOMStyle(ads);
   }
+}
+
+else if (matchDomain('theinformation.com')) {
+  let article_sel = 'article';
+  if (window.location.pathname.startsWith('/forum/'))
+    article_sel = 'section';
+  let url = window.location.href;
+  getArchive(url, 'aside[data-testid="paywall"]', '', article_sel);
 }
 
 else if (matchDomain(['thejuggernaut.com', 'jgnt.co'])) {
