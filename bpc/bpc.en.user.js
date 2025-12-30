@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.7.7
+// @version         4.2.7.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -998,6 +998,11 @@ else if (matchDomain('motorsportmagazine.com')) {
 
 else if (matchDomain('newstatesman.com')) {
   let ads = 'div.ad';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('observer.co.uk')) {
+  let ads = 'div._minH-50px:has(> div#landing-top)';
   hideDOMStyle(ads);
 }
 
@@ -4100,6 +4105,14 @@ else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
 }
 
 else if (matchDomain('theinformation.com')) {
+  func_post = function () {
+    if (mobile) {
+      document.querySelectorAll('img[loading="lazy"][style], div[style*="flex-shrink:"]').forEach(e => e.style = 'width: 95%;');
+      let comments = document.querySelector('div[style*="display:block;margin-right:"]');
+      if (comments)
+        comments.style['margin-right'] = '0px';
+    }
+  }
   let article_sel = 'article';
   if (window.location.pathname.startsWith('/forum/'))
     article_sel = 'section';

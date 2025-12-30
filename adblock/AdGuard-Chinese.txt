@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: ePneV3LRROikEPY1y0NHGA
-! Diff-Path: ../patches/224/224-s-1767024695-3600.patch
+! Checksum: XToZQ6GUe0kLfZWFj88N/A
+! Diff-Path: ../patches/224/224-s-1767107475-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.50.92
-! TimeUpdated: 2025-12-29T16:08:50+00:00
+! Version: 2.1.50.98
+! TimeUpdated: 2025-12-30T15:08:34+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -20,6 +20,7 @@
 ! Bad: /banner.jpg (should be in general_url.txt)
 ! Bad: ||adssubdomain.legitwebsite.com^ (should be in adservers_firstparty.txt)
 !
+||qhres2.com^
 ||aa67678156.com^$3p
 ||shieryuefajkix.com^
 ||shisanmaozser.com^
@@ -1074,6 +1075,7 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 !
 ! NOTE: Specific rules
 !
+*$script,3p,xhr,domain=m.biquge700.com|biquge001.com
 fnc.ebc.net.tw##.dfp_ad
 supertaste.tvbs.com.tw##div[id^="taboola-"]
 supertaste.tvbs.com.tw##.sidebar > span:contains(人氣點閱榜)
@@ -3425,6 +3427,7 @@ bmvc2020-conference.com#@#div[id][style="width: 100%;"] > iframe[scrolling="no"]
 -*-*-*-*.alpha^$script,3p
 /7755com-*00x*.gif
 /CC6F9ACB52D1582671AFEA808AFE10FE.gif
+.top/herebyad
 ||subhd.*/kaiyad.
 /js/clickadu.js
 /emwappopads/*
@@ -5173,6 +5176,24 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$3p
+||6kpudsordv.com^
+||i3j6h7j9cj.com^
+||kje9v2ic57.com^
+||ainb12300zh.com^
+||briefcase95.com^
+||zhuqellv.com^
+||ammonia20.com^
+||vujglx.icu^
+||2lj9n8sz0w.com^
+||kxsu.cn^
+||lavtcyojffug.com^
+||horribletrainer.com^
+||3q9j4w2r9d.com^
+||1dgfd.cc^
+||9txnu9rlmd.com^
+||e75liqii98.com^
+||ainb12301zh.com^
+||a4bbltm3u2.com^
 ||bmzzojmzu.com^
 ||d8lzzy93g.com^
 ||msn5vg8em.com^
@@ -14013,7 +14034,9 @@ meijutt.*/js/pcjs/
 ||workers.dev^$domain=axiang.cc
 ||sphdigital.com.sg/_plat/$domain=zaobao.com.sg
 ||douyucdn.cn/adxdsp/
+||711dm.com/color.
 zhihu.com##.Pc-word-new
+muinz.top##.module
 weibo.com##.vue-recycle-scroller__item-view:has(img[src="https://d.sinaimg.cn/prd/1005/891/2025/03/21/icon_auth_white.png"])
 douyu.com##div[class^="body__"] > div[class^="card__"] > span > span[class^="card__"]:has(span[class^="cardTypeLabel"]:contains(广告))
 h-ciyuan.com##.theiaStickySidebar .widget_media_image
@@ -21743,6 +21766,8 @@ yydstxt*.com/js/html
 yydstxt*.com/js/cdn.
 /js/ad.js$domain=69shuba.com
 ||vqbmxyzda.icu^
+||bz*.com/js/cdn.
+||bz*.com/js/html$~3p,script
 ||banzhu33333.net/js/cdn.
 ||banzhu33333.net/js/html
 ||djdedu.net/static/*.gif
