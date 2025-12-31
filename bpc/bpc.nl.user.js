@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.2.7.2
+// @version         4.2.7.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -551,33 +551,24 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
         }
       }
     }
-    let article_divs = document.querySelectorAll(article_src_sel + ' > div');
+    let article_divs = document.querySelectorAll(article_sel + ' > div');
     if (article_divs.length < 3) {
-      let header = document.querySelector(article_sel + ' > header');
+      let header = document.querySelector('article > header');
       if (header)
         header.before(googleSearchToolLink(url));
     }
-  }
-  let url = window.location.href;
-  let article_sel = 'div#remaining-paid-content';
-  let article_src_sel = 'div#fjs-paywall-intro + div';
-  let article = document.querySelector(article_sel);
-  if (article) {
-    article_src_sel += ', ' + article_sel;
-    getArchive(url, article_sel + '[data-reduced="true"]', {rm_attrib: 'data-reduced'}, article_sel, '', article_src_sel);
-  } else {
-    article_sel = 'article#article-content';
-    article_src_sel += ', ' + article_sel + ' > section';
-    let paywall_sel = article_sel + ' div[data-testid="premium"]';
-    let paywall_action = {rm_attrib: 'data-testid'};
-    if (!document.querySelector(paywall_sel)) { // regwal
-      paywall_sel = article_sel + ' > section[class]:empty';
-      paywall_action = {rm_attrib: 'class'};
-    }
-    getArchive(url, paywall_sel, paywall_action, article_sel + ' > section', '', article_src_sel, article_sel + ' > header');
     let ads = 'span[style*="background-color:"]:has(> span[style*="min-height:"])';
     hideDOMStyle(ads, 2);
   }
+  let url = window.location.href;
+  let article_sel = 'article > section';
+  let paywall_sel = 'div[data-testid="premium"]';
+  let paywall_action = {rm_attrib: 'data-testid'};
+  if (!document.querySelector(paywall_sel)) { // regwal
+    paywall_sel = article_sel + '[class]:empty';
+    paywall_action = {rm_attrib: 'class'};
+  }
+  getArchive(url, paywall_sel, paywall_action, article_sel);
   let ads = 'div.dfp-space';
   hideDOMStyle(ads);
 }
