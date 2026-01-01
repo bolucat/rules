@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.7.8
+// @version         4.2.7.9
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1702,9 +1702,6 @@ else if (matchDomain('bizjournals.com')) {
 
 else if (matchDomain('bloomberg.com')) {
   let paywall_sel = 'div[id^="fortress-"]';
-  let leaderboard = 'div[id^="leaderboard"], div[class^="leaderboard"], div.canopy-container';
-  let ads = 'div[data-ad-status], div[data-ad-type], div[class*="FullWidthAd_"], div.adWrapper';
-  hideDOMStyle(paywall_sel + ', ' + leaderboard + ', ' + ads);
   waitDOMElement(paywall_sel, 'DIV', removeDOMElement, true);
   waitDOMAttribute('body', 'BODY', 'data-paywall-overlay-status', node => node.removeAttribute('data-paywall-overlay-status'), true);
   if (window.location.pathname.startsWith('/live/')) {
@@ -1713,12 +1710,10 @@ else if (matchDomain('bloomberg.com')) {
     }, 15 * 60 * 1000);
   } else
     window.localStorage.clear();
-  window.setTimeout(function () {
-    let shimmering = document.querySelector('article.first-story div[class*="Placeholder_placeholderParagraphWrapper-"]');
-    if (shimmering) {
-      header_nofix(shimmering.parentNode, '', 'BPC > enable JavaScript for site');
-    }
-  }, 5000);
+  let leaderboard = 'div[id^="leaderboard"], div[class^="leaderboard"], div.canopy-container';
+  let shimmering = 'article.first-story div[class*="Placeholder_placeholderParagraphWrapper-"]';
+  let ads = 'div[data-ad-status], div[data-ad-type], div[class*="FullWidthAd_"], div.adWrapper';
+  hideDOMStyle([paywall_sel, leaderboard, shimmering, ads].join(','));
 }
 
 else if (matchDomain('bloombergadria.com')) {
@@ -4112,6 +4107,7 @@ else if (matchDomain('theinformation.com')) {
       if (comments)
         comments.style['margin-right'] = '0px';
     }
+    header_nofix(article_sel + ' > div', 'aside button', 'BPC > no archive-fix');
   }
   let article_sel = 'article';
   if (window.location.pathname.startsWith('/forum/'))
