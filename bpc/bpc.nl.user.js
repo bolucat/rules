@@ -541,18 +541,6 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
         elem.parentNode.removeAttribute('style');
         removeDOMElement(elem);
       }
-      let video_scripts = article.querySelectorAll('div > div > script[type="application/ld+json"], article > script[type="application/ld+json"]');
-      for (let elem of video_scripts) {
-        if (elem.text.includes(',"embedUrl":"')) {
-          let iframe = document.createElement('iframe');
-          iframe.src = elem.text.split(',"embedUrl":"')[1].split('"')[0];
-          iframe.style = 'width: 100%; height: 400px;';
-          let container = elem.parentNode;
-          if (elem.parentNode.tagName === 'DIV')
-            container = container.parentNode;
-          container.parentNode.replaceChild(iframe, container);
-        }
-      }
     }
     let article_divs = document.querySelectorAll(article_sel + ' > div');
     if (article_divs.length < 3) {

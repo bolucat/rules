@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.7.9
+// @version         4.2.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4102,12 +4102,18 @@ else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
 else if (matchDomain('theinformation.com')) {
   func_post = function () {
     if (mobile) {
-      document.querySelectorAll('img[loading="lazy"][style], div[style*="flex-shrink:"]').forEach(e => e.style = 'width: 95%;');
+      document.querySelectorAll('img[loading="lazy"][style], article:has(> a)').forEach(e => e.style = 'width: 95%;');
+      let flex_shrink = document.querySelectorAll('div[style] > div[style*="flex-shrink:"]');
+      for (let elem of flex_shrink) {
+        elem.style = 'width: 95%;';
+        elem.parentNode.removeAttribute('style');
+        removeDOMElement(elem.parentNode.querySelector('aside'));
+      }
       let comments = document.querySelector('div[style*="display:block;margin-right:"]');
       if (comments)
         comments.style['margin-right'] = '0px';
     }
-    header_nofix(article_sel + ' > div', 'aside button', 'BPC > no archive-fix');
+    header_nofix(article_sel + ' > div', article_sel + ' aside div[style*="align-items:"] > button', 'BPC > no archive-fix');
   }
   let article_sel = 'article';
   if (window.location.pathname.startsWith('/forum/'))
