@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.7.2
+// @version         4.2.7.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -270,8 +270,11 @@ else if (matchDomain('boersen-zeitung.de')) {
 }
 
 else if (matchDomain('cicero.de')) {
-  let url = window.location.href;
-  getArchive(url, 'div.plenigo-paywall', '', 'article > div:has(> div.ad-container)', '', 'article > div:has(h3)');
+  if (!window.location.search.startsWith('?amp')) {
+    let url = window.location.href;
+    getArchive(url, 'div.plenigo-paywall', '', 'article > div:has(> div.ad-container)', '', 'article > div:has(h3)');
+  } else if (document.querySelector('div.paywall-fadeout'))
+    ampToHtml();
 }
 
 else if (matchDomain('faz.net')) {
@@ -1070,7 +1073,7 @@ else if (matchDomain(de_funke_medien_domains)) {
       }
     }
   }
-  let ads = 'aside.ad-slot-wrapper';
+  let ads = 'aside[data-module-id="SparkAdSlotModule"]';
   hideDOMStyle(ads);
 }
 
