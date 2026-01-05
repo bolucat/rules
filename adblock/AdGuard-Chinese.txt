@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: qRBoF2sauKC1ECOCVetTRA
-! Diff-Path: ../patches/224/224-s-1767532654-3600.patch
+! Checksum: 3czbFkM6y1vXNpeB3952yw
+! Diff-Path: ../patches/224/224-s-1767629551-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.51.29
-! TimeUpdated: 2026-01-04T13:15:23+00:00
+! Version: 2.1.51.37
+! TimeUpdated: 2026-01-05T16:09:38+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -316,8 +316,8 @@ colamanga.com#@#.ADFooter
 colamanga.com#@#.ADInfo
 colamanga.com#@#.ADLeader
 ! https://github.com/AdguardTeam/AdguardFilters/issues/195203
-xchina.*##.block-overlay
-xchina.*##+js(addEventListener-defuser, /DOMContentLoaded|load|complete/, /check|detected/)
+8se.me,xchina.*##.block-overlay
+8se.me,xchina.*##+js(addEventListener-defuser, /DOMContentLoaded|load|complete/, /check|detected/)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/194144
 2urs.com##+js(abort-on-property-read, ads)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/191724
@@ -1076,6 +1076,10 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 !
 ! NOTE: Specific rules
 !
+huaren.live##+js(no-window-open-if)
+||static.okokserver.com/uploads/lesi/$image,domain=huaren.live
+||static.okokserver.com^$media,domain=huaren.live
+||okokserver.com/js/anti/pop*.js$domain=huaren.live
 *$script,3p,xhr,domain=m.biquge700.com|biquge001.com
 fnc.ebc.net.tw##.dfp_ad
 supertaste.tvbs.com.tw##div[id^="taboola-"]
@@ -1482,14 +1486,16 @@ enews.tw##.newsCardForLeftAdGadCode
 ||upload.xchina.biz/ad/
 ||xchina.click/upload/*.webp
 ||xchina.co/scripts/push_*.js
-xchina.*##+js(abort-current-script, $, adModal)
-xchina.*##.content-box > .list > .item:not(.photo-image):has(> a[clickmode="cpt"])
-xchina.*##.content-box > .list > .item:not(.photo-image):has(> div > ins[data-zoneid])
-xchina.*##.photos > div.item:has(> div > a[target="_blank"])
-xchina.*##.photos > div.item:has(> div[class^="exoclick_"])
-xchina.*##div[class^="item photo zone"]
-xchina.*##.push-top
-xchina.*##div[style*="width: 300px;"][style*="height: 455px;"]
+8se.me,xchina.*##+js(abort-current-script, $, adModal)
+8se.me,xchina.*##.content-box > .list > .item:not(.photo-image):has(> a[clickmode="cpt"])
+8se.me,xchina.*##.content-box > .list > .item:not(.photo-image):has(> div > ins[data-zoneid])
+8se.me,xchina.*##.photos > div.item:has(> div > a[target="_blank"])
+8se.me,xchina.*##.photos > div.item:has(> div[class^="exoclick_"])
+8se.me,xchina.*##div[class^="item photo zone"]
+8se.me,xchina.*##.push-top
+8se.me,xchina.*##div[style*="width: 300px;"][style*="height: 455px;"]
+8se.me,xchina.*##.ex-widget
+8se.me,xchina.*##.content-box:has(> .static-container-4:only-child > .a-media)
 ||goosedaily.com/advertise/
 goosedaily.com##div[class^="ad-area-"]
 goosedaily.com##.lightboxbnr
@@ -1943,6 +1949,8 @@ right.com.cn###hd > div.wp > div.hdc > h2
 helloyishi.com.tw##.article-desktop-ad-wrapper
 dy.xdf.cn,haoweichi.com##.ad2
 newmobilelife.com###ATS_sticky
+tieba.baidu.com##.ylh-ad-wrap
+tieba.baidu.com##.ylh-ad-container
 tieba.baidu.com##.top_toutu_admarks
 123pan.com##div[style="width:100%;position:absolute;bottom:0;height:96px"]
 wnflb2023.com##.GzList
@@ -5182,6 +5190,23 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$3p
+||g2wg5308q.com^
+||cgcg01050ht.com^
+||houotgk3m.com^
+||eevfstl1n.com^
+||ainb01050zh.com^
+||overture34.top^
+||oxidation83.com^
+||tizdfz.icu^
+||aleldrodm.com^
+||11vmzjiup.com^
+||ubyf.cn^
+||4jh1le34m.com^
+||cgcg01051ht.com^
+||uvd9re60w.com^
+||ainb01051zh.com^
+||qwnzzp50x.com^
+||13afemc28.com^
 ||xgsvpsz7f4.com^
 ||pavdiibdvr.com^
 ||x3lps9uuog.com^
