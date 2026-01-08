@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.8.1
+// @version         4.2.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -249,6 +249,13 @@ else if (matchDomain('challenges.fr')) {
               if (!url_nuxt_alias)
                 refreshCurrentTab();
             }
+            let audio_src = json.find(x => x && typeof x === 'string' && x.includes('.mp3'));
+            if (audio_src) {
+              let audio_tts = document.createElement('audio');
+              audio_tts.src = audio_src.split('?')[0];
+              audio_tts.setAttribute('controls', '');
+              article.before(audio_tts);
+            }
             let pars_index = json.indexOf('article') + 1;
             if (pars_index) {
               for (let i = pars_index; i < json.length; i++) {
@@ -264,7 +271,7 @@ else if (matchDomain('challenges.fr')) {
                           let child_type = json[child_par.type];
                           if (child_type === 'text') {
                             let item = document.createElement('span');
-                            let value = json[child_par.value].replace(/(\r?\n)+/g, '');
+                            let value = parseHtmlEntities(json[child_par.value].replace(/(\r?\n)+/g, ''));
                             if (value) {
                               item.innerText = value;
                               elem.appendChild(item);
@@ -303,7 +310,7 @@ else if (matchDomain('challenges.fr')) {
                       }
                     }
                     function addElement(elem, par) {
-                      if (par.tag && par.children) {
+                      if (par.tag && (json[par.tag] !== 'script') && par.children) {
                         let elem_new = document.createElement(json[par.tag]);
                         if (par.props) {
                           let par_props = json[par.props];
