@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.8.6
+// @version         4.2.8.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3297,6 +3297,17 @@ else if (matchDomain('nytimes.com')) {
     let ads = 'div[data-testid="inline-message"], div[id^="ad-"], div.pz-ad-box, div[class^="css-"]:has( > div#top-wrapper)';
     hideDOMStyle(ads);
   }
+}
+
+else if (matchDomain('on3.com')) {
+  let url = window.location.href;
+  getArchive(url, 'div[data-template-type="barrier"]', '', 'article');
+  let noscroll = document.querySelectorAll('html.scroll-lock, body.scroll-lock');
+  for (let elem of noscroll) {
+    elem.removeAttribute('class');
+    elem.removeAttribute('style');
+  }
+  hideDOMStyle('div#blocker');
 }
 
 else if (matchDomain('outlookbusiness.com')) {
