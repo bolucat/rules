@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: +nnfpKZ8IlseRNarUFkfOA
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1768238019-3600.patch
+! Checksum: L2rWQ9zNhM59MjDVmyeO9Q
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1768324484-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.39.29
-! TimeUpdated: 2026-01-12T17:10:13+00:00
+! Version: 2.4.39.53
+! TimeUpdated: 2026-01-13T17:11:09+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -23,6 +23,7 @@
 !
 !
 !
+||pubjelly.nxjmp.com^
 ||kzt2afc1rp52.com^
 ||favismanomie.com^
 ||latherprofanecognizance.com^
@@ -31409,6 +31410,10 @@ truyenqqhot.com##div[id^="ads_"]
 !+ NOT_OPTIMIZED
 ##.ContentAd
 !
+! Fansided network
+! https://github.com/AdguardTeam/AdguardFilters/issues/222591
+##div[data-target="ad"]
+!
 ! Many porn sites
 ###inPlayerGGzone
 !
@@ -31806,6 +31811,7 @@ wunderground.com##+js(set-constant, __Helios.modules.videoTag.createAdTag, noopF
 ! https://github.com/AdguardTeam/AdguardFilters/issues/208865
 ! https://github.com/AdguardTeam/AdguardFilters/issues/202695
 !+ NOT_PLATFORM(ext_ff)
+! https://github.com/AdguardTeam/AdguardFilters/issues/222009
 ! https://github.com/AdguardTeam/AdguardFilters/issues/205062
 ! https://github.com/AdguardTeam/AdguardFilters/issues/204296
 savefiles.com##+js(no-window-open-if, get/?spot_id=)
@@ -36389,8 +36395,10 @@ techarmor.xyz##.my-ad-container
 !
 ! NOTE: Specific rules
 !
+gamespot.com##script.stub-mpu
+gamespot.com##script.stub-leader
+www.yahoo.com##div[id^="recirc-"] > .grid > .relative.w-full:has(> .inset-0[id^="_r_"])
 tickhosting.com###support-modal
-nugglove.com##div[data-target="ad"]
 universal-lover-zz.icu,7fractals.icu,rupadirecta.lat,ffc786.icu##+js(no-window-open-if, _blank)
 ||interestingengineering.com/js/recovery.js
 hide.cx##.min-h-\[670px\]._min-h-\[274px\]
@@ -38070,7 +38078,7 @@ babesource.tv##a[href^="https://babesource.tv/a/"]
 flatheadbeacon.com##.adver-row
 edumail.icu##a[title="ShockVPN"]
 tmail.io##.container > div[x-data].p-3:style(width: 100% !important;)
-itijobalert.in,edukaroo.com##div[id*="-Ads"]
+fullformsmarathi.in,usanowday.com,bhadohimusic.in.net,itijobalert.in,edukaroo.com##div[id*="-Ads"]
 dafreeporn.com,milffox.com##.inp__wrapper
 milffox.com###native
 milffox.com##div[class^="bpalka"]
@@ -57389,6 +57397,8 @@ $popup,3p,domain=dood.ws,badfilter
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/222009
+@@||cdn.jsdelivr.net/gh/itspro-dev/project_files@master/publicearn2.js$domain=bhadohimusic.in.net|usanowday.com|fullformsmarathi.in
 ! https://github.com/AdguardTeam/AdguardFilters/issues/222498
 @@||camspacelive.com/widgets/$domain=lemoncams.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/220029
@@ -61401,6 +61411,7 @@ implbits.com#@#.banner_container
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/221464
 ! https://github.com/AdguardTeam/AdguardFilters/issues/222414
 ! https://github.com/AdguardTeam/AdguardFilters/issues/222359
 ! https://github.com/AdguardTeam/AdguardFilters/issues/221679
@@ -63074,6 +63085,7 @@ $websocket,domain=300mbfilms.io|lib.rus.ec
 @@||cdn.bg-gledai.*/embed.php$generichide
 cdn.gledaitv.*,cdn.bg-gledai.*##+js(abort-on-stack-trace, document.querySelector, Modal)
 cdn.gledaitv.*,cdn.bg-gledai.*##+js(abort-on-stack-trace, document.createElement, initBait)
+cdn.gledaitv.*,cdn.bg-gledai.*##body > div[style^="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%;"]
 cdn.gledaitv.*,cdn.bg-gledai.*###ad-detection-bait ~ div[id*="-"][style^="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%;"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/206003
 topsport.bg##+js(remove-node-text, script, baitTest)
