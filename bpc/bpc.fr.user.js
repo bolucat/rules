@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.8.3
+// @version         4.2.8.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1239,8 +1239,7 @@ else if (matchDomain('lequipe.fr')) {
               let pars = json.items.filter(x => x.layout === 'article_body')[0].objet.paragraphs;
               pars.shift();
               article.innerHTML = '';
-              article.className += ' Article__paragraph';
-              article.appendChild(document.createElement('br'));
+              article.style = 'margin: 20px;';
               addStyle('div.article__body > div.Paragraph {font-family: "DINNextLTPro-Regular", sans-serif; font-size: 18px; font-weight: 400; line-height: 26px;}', 2);
               let parser = new DOMParser();
               for (let par of pars) {
@@ -1275,7 +1274,7 @@ else if (matchDomain('lequipe.fr')) {
                     elem = makeFigure(url, caption, {}, {'style': 'font-weight: bold;'});
                   } else if (par.media.__type === 'video' && par.media.id) {
                     let url = par.media.image.url.replace('{width}', '400').replace('{height}', 400).replace('{quality}', '75');
-                    elem = makeFigure(url, par.media.legend);
+                    elem = makeFigure(url, par.media.legend, {'style': 'width: 100%;'});
                     let video_link = document.createElement('a');
                     video_link.href = video_link.innerText = 'https://geo.dailymotion.com/player.html?video=' + par.media.id;
                     video_link.style = 'text-decoration: underline;';
