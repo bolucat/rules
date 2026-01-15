@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: h2iKIds44VxZvd3Mj93buw
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1768410881-3600.patch
+! Checksum: b5hoZ7t6wepQF+TrRSiNGA
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1768497600-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.39.77
-! TimeUpdated: 2026-01-14T17:11:06+00:00
+! Version: 2.4.40.1
+! TimeUpdated: 2026-01-15T17:15:03+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -23,6 +23,10 @@
 !
 !
 !
+||afcpatrk.com^
+||jpaojfzimzki.com^
+||goodsstor.vip^$all
+||heartlessanthemantiquity.com^$all
 ||pubjelly.nxjmp.com^
 ||kzt2afc1rp52.com^
 ||favismanomie.com^
@@ -10295,6 +10299,15 @@ youporn.com##+js(remove-node-text, script, /window\.[\s\S]*?_zone_[\s\S]*?{"zone
 !
 ! NOTE: Regular rules
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/222575
+||launcherleaks.net/root_script.js
+launcherleaks.net##.swal2-container:style(display: none !important;)
+launcherleaks.net##body:style(overflow: auto !important;)
+! https://github.com/AdguardTeam/AdguardFilters/issues/222701
+kanoongpt.in##+js(addEventListener-defuser, DOMContentLoaded, showGate)
+! https://github.com/AdguardTeam/AdguardFilters/issues/222710
+forum.sbenny.com##+js(no-setTimeout-if, offsetHeight)
+forum.sbenny.com#@##adsbox
 ! https://github.com/AdguardTeam/AdguardFilters/issues/222676
 resulthubdtu.com#@#.ad-unit:not(.textads)
 resulthubdtu.com#@#.ad-space:not(.textads)
@@ -10403,6 +10416,7 @@ authenticateme.xyz#@#.googleAd
 freecourse.pro#@#.googleads
 freecourse.pro##+js(abort-current-script, document.querySelector, window.getComputedStyle)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/217853
+!+ NOT_OPTIMIZED
 ||fuxtool.netlify.app/js/adsblock.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/221259
 ! https://github.com/AdguardTeam/AdguardFilters/issues/217816
@@ -10807,7 +10821,7 @@ goodstream.one##+js(remove-node-text, script, showADBOverlay)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/206045
 indexsubtitle.cc##+js(abort-current-script, EventTarget.prototype.addEventListener, adsbygoogle.js)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/206032
-pinterest.*##body[style="overflow: hidden;"]:style(overflow: auto !important;)
+pinterest.*##body[style*="overflow: hidden;"]:style(overflow: auto !important;)
 pinterest.*##div[name="trap-focus"] > div[aria-label="Ad blocker modal"][role="alertdialog"]:style(display: none !important;)
 pinterest.*##+js(no-setTimeout-if, /.\(Array\.from\(document\.querySelectorAll\(.\)\)\.some\(.=>.\(.\)&&!.\(.\)\)\)\}|.\(Array\.from\(document\.querySelectorAll\(.\)\)\.some\(.=>.*checkVisibility/)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/202624
@@ -28706,9 +28720,7 @@ www.wp.pl##body > #root:style(opacity: 1 !important;)
 www.wp.pl##.grid > div:not([class]):has(> div[class*=" "]:only-child > div[class*=" "]:first-child + div[class*=" "]:last-child > div:empty:first-child + img[src*="://v.wpimg.pl/"][alt][role="presentation"]:last-child)
 www.wp.pl##div[class*=" "]:has(> img[src^="https://v.wpimg.pl/"]:first-child + div:last-child:empty)
 wp.pl##[class^="_"]:has(> img[src*=".wp.pl"])
-! turystyka.wp.pl,opinie.wp.pl,gry.wp.pl,moto.wp.pl,gwiazdy.wp.pl,tech.wp.pl,kobieta.wp.pl#?#div[class^="_"][class*=" _"]:has(>div[class]:first-child:empty+img[src*="://v.wpimg.pl/"][alt="WP"]:empty)
-turystyka.wp.pl##div:not([class]):not([id]) > div:not([class]):not([id]) > div[class*=" "] > div[class] > div:not([class]):not([id]):only-child > div:not([class]):not([id]):first-child > div[class]:only-child:upward(4)
-open.fm,dom.wp.pl,facet.wp.pl,film.wp.pl,finanse.wp.pl,gry.wp.pl,gwiazdy.wp.pl,kobieta.wp.pl,ksiazki.wp.pl,kuchnia.wp.pl,moto.wp.pl,opinie.wp.pl,tech.wp.pl,teleshow.wp.pl,turystyka.wp.pl,wawalove.wp.pl,wiadomosci.wp.pl,wroclaw.wp.pl##div[class*=" "]:has(> div[class]:first-child:empty + img[src*="://v.wpimg.pl/"][alt]:empty)
+sportowefakty.wp.pl,open.fm,dom.wp.pl,facet.wp.pl,film.wp.pl,finanse.wp.pl,gry.wp.pl,gwiazdy.wp.pl,kobieta.wp.pl,ksiazki.wp.pl,kuchnia.wp.pl,moto.wp.pl,opinie.wp.pl,tech.wp.pl,teleshow.wp.pl,turystyka.wp.pl,wawalove.wp.pl,wiadomosci.wp.pl,wroclaw.wp.pl##div[class*=" "]:has(> div[class]:first-child:empty + img[src*="://v.wpimg.pl/"][alt]:empty)
 pilot.wp.pl##div[style*="min-height:"] > div[class*=" "] > section[class*=" "] > div[class*=" "]:has(> img[src="https://std.wpcdn.pl/images/adv/placeholder_wp.svg"])
 pilot.wp.pl##.wp-player > .adpause > .plchldr
 ||naanalle.pl/pb/bid
@@ -30336,6 +30348,12 @@ animevietsub.*##.video-ad-layer
 animevietsub.*##center > a[target="_blank"] > img
 animevietsub.*##+js(set-cookie, popupOpened, true)
 !
+truyenqq.com.vn##.md-overlay
+truyenqq.com.vn##.popup1
+truyenqq.com.vn###flyer
+truyenqq.com.vn##a[href^="http://s.shopee.vn/"]
+truyenqq.com.vn##+js(no-setTimeout-if, popup())
+truyenqq.com.vn##+js(abort-current-script, addEventListener, flyer)
 ||i.finallygotthexds.site/vpromolink/$image
 rophim.*##.swiper-slide:has(> .sspp-area)
 rophim.*##.modal-backdrop
@@ -31609,7 +31627,7 @@ mygoodstream.pw,pornyhd.com,pornxday.com,freeservice.info,22pixx.xyz,eurostreami
 havefunporn.com,deephot.link,pornolomka9.com,pornoakt.*,mangacherri.com,xpicu.store,erothots1.com,kaliscan.me,veo-hentai.com,premiumporn.org,fastream.to,isekaitube.com,gayxx.net,xbgporn.com,bootstrample.com,hdhentai.tv,banned.porn,mangajikan.com,hentairead.io,nicomanga.com,weloma.art,love4u.net,asiangay.tv,japangaysex.com,erothots.co,onlyfootfetish.net,pig69.com,javsek.net,adictox.com,h.pornolomka3.com,idol69.net,javball.com,cnpics.org,gett.su,sex-empire.org,ovabee.com,otomi-games.com,pornososalka.org,javcock.com,javboys.com,ruangmoviez.my.id,magicemperor.online,xmoviesforyou.com,thatav.net,jetload.net,megapornfreehd.com,fileone.tv,javhiv.com,nyafilmer.com,gotgayporn.com,hqq.tv,pornhd.com,sextfun.com,imgoutlet.com,imgrock.net,myreadingmanga.info,porntrex.com,faselhd.co,tnaflix.com,anysex.com,filecrypt.cc,jawcloud.co,xmoviesforyou.com,swapsmut.com,pornwhite.com,zeriun.cc,uraaka-joshi.com,sxyprn.net,pahe.win,javplay.me,hispasexy.org,moviecrumbs.net,segurosdevida.site,xvideos.com,technicalatg.xyz,ashemaletube.com,moviesand.com,prostylex.org,faptube.xyz,erogarga.com,redhdtube.xxx,nyafilmer.*##+js(abort-on-property-read, popns)
 /pornolomka\d+\.com/##+js(abort-on-property-read, popns)
 ! PopAds
-vidnest.io,7fractals.icu,papashd.club,buffztreamz.shop,surfg.org,rippleplay.shop,javx357.com,vidnest.io,shah4u.*,mangalivre.tv,sd4u.net,nonixxx.cc,pelisflix1.digital,stmup.*,ask4porn.cc,cdn1.site,vidlink.pro,sshahid4u.*,lek-manga.net,advertape.net,s1p1cd.com,7starhd.*,animefire.io,myvidplay.com,uncut99.com,hdmovie99.*,strmup.*,mens1069.com,seir-sanduk.com,cdxaws.net,piratetv.pro,goalsport.info,shahid-4u.*,mixiporn.fun,vegamoviies.*,filmnudes.com,luluvid.com,tv247us.live,md3b0j6hj.com,watchmmafull.com,shhahid4u.*,shaid4u.day,shahhid4u.cam,dsvplay.com,x18hub.com,gayfor.us,kasiporn.com,tokyocafe.org,projeihale.com,bollyflix.cards,miztv.top,daddylivestream.com,speedporn.net,darkmahou.org,file4go.com,shahidd4u.net,cizgivedizi.com,builddiamond.net,capoplay.net,thedaddy.*,fullboys.com,w4hd.com,dipelis.junctionjive.co.uk,elrefugiodelpirata.com,bokepnya.com,shahid4u.*,jav-coco.com,mexa.sh,isekaitube.com,hentaitk.net,4chanarchives.com,turbovid.me,tvsportslive.fr,pelisxporno.net,141tube.com,tempodeconhecer.blogs.sapo.pt,siska.tv,siska.video,zetrrent.com,hentaiporno.xxx,pelisflix20.*,tvids.icu,tlnovelas.net,pencarian.link,vide0.net,hdpornflix.com,flickzap.com,bokep.im,streamingclic.com,asiaflix.*,japangaysex.com,bikinbayi.com,bokep.top,gaypornhot.com,javboys.tv,shaedh4u.net,shad4.cam,stream25.xyz,turboimagehost.com,do7go.com,bigwarp.*,animefire.plus,anime3rb.com,galinhasamurai.com,khatrimazafull.*,bgwp.cc,swipebreed.net,shahed4u.*,thekhatrimaza.ch,bigwarp.io,pelisxporno.net,dooodster.com,javsek.net,kumanga.com,thepiratebay.zone,anichin.co.id,lulu.st,teamoney.site,watchadsontape.com,advertisertape.com,dailyuploads.net,swiftload.io,goflix.*,zpaste.net,tapeadvertisement.com,soccerstream100.to,itopmusics.com,tvappapk.com,erosscans.xyz,downarchive.org,4drumkits.com,streaming-integrale.com,adblockplustape.xyz,jav-fun.cc,clickndownload.*,clicknupload.*,tapelovesads.org,pelisflix.*,lulustream.com,veev.to,kickassanimes.*,kaas.*,kickassanime.*,d000d.com,mixdrop21.net,retrotv.org,dodz.pro,y2tube.pro,doooood.co,itopmusic.com,nlegs.com,stream.crichd.vip,d0000d.com,gettapeads.com,mixdropjmk.pw,tapeadsenjoyer.com,do0od.com,mdzsmutpcvykb.net,mdfx9dc8n.net,asialiveaction.com,myeasymusic.ir,thepiratebay10.info,edwardarriveoften.com,adricami.com,aeblender.com,animespire.net,blackporncrazy.com,erovoice.us,filthy.family,forumchat.club,freeuse.me,gamepcfull.com,influencersgonewild.org,itunesfre.com,keralatvbox.com,ladangreceh.xyz,maturegrannyfuck.com,milfmoza.com,monaskuliner.ac.id,naughtypiss.com,notformembersonly.com,ojearnovelas.com,onlyfams.net,onlyfams.org,piratefast.xyz,pmvzone.com,pornfetishbdsm.com,publicsexamateurs.com,rule34.club,sextubebbw.com,slut.mom,shadowrangers.live,shadowrangers.net,sxnaar.com,tabooflix.cc,tabooflix.org,teenporncrazy.com,torrsexvid.com,ufcfight.online,vfxmed.com,watchbrooklynnine-nine.com,wpdeployit.com,xxxfree.watch,paulkitchendark.com,camgirls.casa,ekasiwap.com,ds2play.com,mdy48tn97.com,pornhoarder.*,showmanga.blog.fc2.com,streamtape.*,akuma.moe,mdbekjwqa.pw,ebookhunter.net,peeplink.in,deepgoretube.site,kathleenmemberhistory.com,acefile.co,hdsaprevodom.com,wwwstream.pro,mixdrp.to,fsicomics.com,manga-lek.net,balkanteka.net,phenomenalityuniform.com,backfirstwo.com,r18.best,simpsonizados.me,blurayufr.xyz,fastreams.*,ytstvmovies.*,shrink.icu,watchop.live,noblocktape.com,kaoskrew.org,sitenable.*,filesdownloader.com,siteget.net,freeproxy.io,glodls.to,dlhd.*,mixdroop.*,fireload.com,doods.pro,antiadtape.com,watchpsychonline.net,gamoneinterrupted.com,streamcenter.pro,justfullporn.net,nicesss.com,privatenudes.com,rivofutboltv.club,sportschamp.fun,pornoflux.com,urochsunloath.com,tapewithadblock.org,torrentdosfilmeshd1.net,anidl.org,netfuck.net,filmovitica.com,animerigel.com,jpop80ss3.blogspot.com,latinomegahd.net,streamhub.to,dooood.com,musicriders.blogspot.com,mangaclash.com,35volitantplimsoles5.com,javleak.com,daughtertraining.com,hornylips.com,originporn.com,teen-wave.com,theblueclit.com,thesexcloud.com,tightsexteens.com,seegames.xyz,cine20k.blogspot.com,enjoyhd.club,comohoy.com,pornleaks.in,mgnetu.com,alexsports.site,nsfwr34.com,watchcriminalminds.com,mimaletamusical.blogspot.com,portugues-fcr.blogspot.com,porntn.com,playdede.*,560pmovie.com,adblocktape.*,antecoxalbobbing1010.com,filmesonlinexhd.biz,nu6i-bg-net.com,sexgay18.com,ahdafnews.blogspot.com,cyamidpulverulence530.com,guidon40hyporadius9.com,vidz7.com,myvidster.com,yourupload.com,sports-stream.*,turbogvideos.com,fapptime.com,gameshdlive.xyz,worldstreams.watch,141jav.com,papahd.club,legendei.net,hentaiworld.tv,thepiratebay10.org,streamtapeadblockuser.*,enjoyhd.xyz,ohjav.com,strtapewithadblock.*,watchdoctorwhoonline.com,witanime.best,stapewithadblock.monster,hitomi.la,poapan.xyz,javboys.com,charexempire.com,extrafreetv.com,sportssoccer.club,mangoporn.net,megaddl.u4m.world,sports-stream.*,xestreams.com,tennisstreams.me,daddylivehd.*,bigclatterhomesguideservice.com,9xmovie.*,juba-get.com,haho.moe,housecardsummerbutton.com,adblockeronstape.me,fittingcentermondaysunday.com,teamos.xyz,sharemods.com,amateurblog.tv,latinblog.tv,silverblog.tv,xblog.tv,pxxbay.com,wwwsct.com,gawbne.com,forex-trnd.com,masaporn.xyz,un-block-voe.net,xxx18.uno,claimlite.club,socceron.name,pornstreams.co,voeunblk.com,hentaitk.net,voeunbl0ck.com,voeunblock2.com,sgpics.net,streamgoto.*,curvaweb.com,jiofiles.org,adslink.pw,voeunblock.com,tojav.net,streamadblockplus.com,voe-unblock.*,voe.sx,oneflix.pro,meusanimes.net,xxxxvideo.uno,read-onepiece.net,estrenosdoramas.net,nocensor.sbs,animeyt.es,mangagenki.me,sanet.st,tvseries.video,masahub.net,shadowrangers.live,anime-king.com,dvdplay.*,cuevana3.fan,javmost.*,nzbstars.com,animesonehd.xyz,rintor.*,animestotais.xyz,leechall.com,123-movies.*,slink.bid,shavetape.*,hesgoal.tv,themoviesflix.*,onlyfullporn.video,plylive.me,2ddl.it,allplayer.tk,askim-bg.com,ytstv.me,androidadult.com,pahe.win,everia.club,adblockstrtape.link,adblockstrtech.link,sexdicted.com,adblockstreamtape.*,vipboxtv.*,xpornium.net,crackstreams.*,037jav.com,beinmatch.*,imgdawgknuttz.com,projectfreetv2.com,youjax.com,silverpic.com,okanime.tv,kuxxx.com,anicosplay.net,aotonline.org,hispasexy.org,pastemytxt.com,mangajokomik.blogspot.com,kantotinyo.com,virpe.cc,stape.fun,4horlover.com,crunchyscan.fr,flizmovies.*,yourdailypornvideos.ws,123movieshub.*,sakurafile.com,idolsblog.tv,tvply.me,dengeki-plusv2.xyz,itdmusics.com,hopepaste.download,filmi123.club,viprow.*,strikeout.*,scatfap.com,socceronline.me,segurosdevida.site,anonymz.com,messitv.net,123watchmovies.*,1stream.top,ytmp3eu.com,streamta.*,bestnhl.com,swzz.xyz,animesanka.*,webcamrips.com,wickedspot.org,justfullporn.org,123moviesprime.com,masahub.com,viveseries.com,1tamilmv.*,keeplinks.org,kissanimee.ru,javhun.com,findav.*,thebussybandit.com,pornofaps.com,bajarjuegospcgratis.com,balkanportal.net,celebrity-leaks.net,datawav.club,desivdo.com,directupload.net,dvdfullestrenos.com,electro-torrent.pl,femdom-joi.com,gaysex69.net,hentaistream.co,lightdl.xyz,lightdlmovies.blogspot.com,pirateiro.com,pornotorrent.com.br,sexofilm.co,sportstream.tv,torrage.info,video.az,vstorrent.org,watchjavidol.com,xanimeporn.com,javhoho.com,xsober.com,kinemania.tv,manga-mx.com,gambarbogel.xyz,mediapemersatubangsa.com,gomo.to,9anime.*,strtapeadblock.me,myonvideo.com,hwnaturkya.com,lechetube.com,cinema.cimatna.com,password69.com,film1k.com,prostylex.org,pepperlive.info,manyakan.com,hitprn.com,streamzz.*,123moviesg.com,tvplusgratis.com,ask4movie.*,hollymoviehd.cc,123movieshd.*,movi.pk,findporn.*,zeriun.cc,smallencode.me,torrentsgames.xyz,hexupload.net,123movies-hd.online,adictosalatele.com,filmesonlinex.org,popimed.com,adz7short.space,mixdrop.sx,gledajcrtace.xyz,jpopsingles.eu,xxxwebdlxxx.top,anroll.net,sextgem.com,watchseries.*,imgsto.com,wowlive.info,1-2-3movies.com,ustream.to,jorpetz.com,daddyhd.com,daddylive.*,rapelust.com,videostreaming.rocks,imx.to,balkantelevizija.net,zonarutoppuden.com,yomovies.*,incestflix.com,dood.yt,dood.re,dood.wf,dood.la,dood.pm,dood.so,dood.to,dood.watch,dood.ws,sports24.*,linkebr.com,videoproxy.*,thiruttuvcd.xyz,smoner.com,movie8k.*,clipwatching.*,strtape.*,vipbox.lc,ccurl.net,usagoals.*,xxvideoss.org,zplayer.live,dropgalaxy.com,streamsport.*,wigilive.com,itopmusic.org,givemenflstreams.com,givemenbastreams.com,proxybit.*,batoscan.net,rule34hentai.net,kwik.cx,illink.net,300mbplus.*,hala-tube.net,hqcelebcorner.net,shrinkme.in,upstream.to,link1s.net,get-to.link,mirrorace.*,300mbfilms.*,hiperdex.com,rawdex.net,verpornocomic.com,scnlog.me,nodkey.xyz,itopmusic.com,linkjust1.com,iklandb.com,bestjavs.com,nocensor.*,thepiratebay0.org,scat.gold,clik.pw,animeblkom.net,freeomovie.to,leechpremium.link,uii.io,short.pe,snahp.it,animeshouse.net,porncomix.info,7r6.com,zobacz.ws,legendas.dev,sukidesuost.info,animeuniverse.it,drycounty.com,mitly.us,ouo.io,cda-tv.pl,picbaron.com,skidrowcodex.net,streamz.*,business-mortgage.pw,credits-loan.pw,business-credits.cc,business-mortgage.info,loan-trading.net,videogreen.xyz,filma24.*,playtube.ws,pornxbit.com,pornxday.com,rifurl.com,imgrock.net,piratebay.live##+js(abort-current-script, atob, /popundersPerIP[\s\S]*?Date[\s\S]*?getElementsByTagName[\s\S]*?insertBefore|w47DisKcw5g/)
+vinovo.to,vidnest.io,7fractals.icu,papashd.club,buffztreamz.shop,surfg.org,rippleplay.shop,javx357.com,vidnest.io,shah4u.*,mangalivre.tv,sd4u.net,nonixxx.cc,pelisflix1.digital,stmup.*,ask4porn.cc,cdn1.site,vidlink.pro,sshahid4u.*,lek-manga.net,advertape.net,s1p1cd.com,7starhd.*,animefire.io,myvidplay.com,uncut99.com,hdmovie99.*,strmup.*,mens1069.com,seir-sanduk.com,cdxaws.net,piratetv.pro,goalsport.info,shahid-4u.*,mixiporn.fun,vegamoviies.*,filmnudes.com,luluvid.com,tv247us.live,md3b0j6hj.com,watchmmafull.com,shhahid4u.*,shaid4u.day,shahhid4u.cam,dsvplay.com,x18hub.com,gayfor.us,kasiporn.com,tokyocafe.org,projeihale.com,bollyflix.cards,miztv.top,daddylivestream.com,speedporn.net,darkmahou.org,file4go.com,shahidd4u.net,cizgivedizi.com,builddiamond.net,capoplay.net,thedaddy.*,fullboys.com,w4hd.com,dipelis.junctionjive.co.uk,elrefugiodelpirata.com,bokepnya.com,shahid4u.*,jav-coco.com,mexa.sh,isekaitube.com,hentaitk.net,4chanarchives.com,turbovid.me,tvsportslive.fr,pelisxporno.net,141tube.com,tempodeconhecer.blogs.sapo.pt,siska.tv,siska.video,zetrrent.com,hentaiporno.xxx,pelisflix20.*,tvids.icu,tlnovelas.net,pencarian.link,vide0.net,hdpornflix.com,flickzap.com,bokep.im,streamingclic.com,asiaflix.*,japangaysex.com,bikinbayi.com,bokep.top,gaypornhot.com,javboys.tv,shaedh4u.net,shad4.cam,stream25.xyz,turboimagehost.com,do7go.com,bigwarp.*,animefire.plus,anime3rb.com,galinhasamurai.com,khatrimazafull.*,bgwp.cc,swipebreed.net,shahed4u.*,thekhatrimaza.ch,bigwarp.io,pelisxporno.net,dooodster.com,javsek.net,kumanga.com,thepiratebay.zone,anichin.co.id,lulu.st,teamoney.site,watchadsontape.com,advertisertape.com,dailyuploads.net,swiftload.io,goflix.*,zpaste.net,tapeadvertisement.com,soccerstream100.to,itopmusics.com,tvappapk.com,erosscans.xyz,downarchive.org,4drumkits.com,streaming-integrale.com,adblockplustape.xyz,jav-fun.cc,clickndownload.*,clicknupload.*,tapelovesads.org,pelisflix.*,lulustream.com,veev.to,kickassanimes.*,kaas.*,kickassanime.*,d000d.com,mixdrop21.net,retrotv.org,dodz.pro,y2tube.pro,doooood.co,itopmusic.com,nlegs.com,stream.crichd.vip,d0000d.com,gettapeads.com,mixdropjmk.pw,tapeadsenjoyer.com,do0od.com,mdzsmutpcvykb.net,mdfx9dc8n.net,asialiveaction.com,myeasymusic.ir,thepiratebay10.info,edwardarriveoften.com,adricami.com,aeblender.com,animespire.net,blackporncrazy.com,erovoice.us,filthy.family,forumchat.club,freeuse.me,gamepcfull.com,influencersgonewild.org,itunesfre.com,keralatvbox.com,ladangreceh.xyz,maturegrannyfuck.com,milfmoza.com,monaskuliner.ac.id,naughtypiss.com,notformembersonly.com,ojearnovelas.com,onlyfams.net,onlyfams.org,piratefast.xyz,pmvzone.com,pornfetishbdsm.com,publicsexamateurs.com,rule34.club,sextubebbw.com,slut.mom,shadowrangers.live,shadowrangers.net,sxnaar.com,tabooflix.cc,tabooflix.org,teenporncrazy.com,torrsexvid.com,ufcfight.online,vfxmed.com,watchbrooklynnine-nine.com,wpdeployit.com,xxxfree.watch,paulkitchendark.com,camgirls.casa,ekasiwap.com,ds2play.com,mdy48tn97.com,pornhoarder.*,showmanga.blog.fc2.com,streamtape.*,akuma.moe,mdbekjwqa.pw,ebookhunter.net,peeplink.in,deepgoretube.site,kathleenmemberhistory.com,acefile.co,hdsaprevodom.com,wwwstream.pro,mixdrp.to,fsicomics.com,manga-lek.net,balkanteka.net,phenomenalityuniform.com,backfirstwo.com,r18.best,simpsonizados.me,blurayufr.xyz,fastreams.*,ytstvmovies.*,shrink.icu,watchop.live,noblocktape.com,kaoskrew.org,sitenable.*,filesdownloader.com,siteget.net,freeproxy.io,glodls.to,dlhd.*,mixdroop.*,fireload.com,doods.pro,antiadtape.com,watchpsychonline.net,gamoneinterrupted.com,streamcenter.pro,justfullporn.net,nicesss.com,privatenudes.com,rivofutboltv.club,sportschamp.fun,pornoflux.com,urochsunloath.com,tapewithadblock.org,torrentdosfilmeshd1.net,anidl.org,netfuck.net,filmovitica.com,animerigel.com,jpop80ss3.blogspot.com,latinomegahd.net,streamhub.to,dooood.com,musicriders.blogspot.com,mangaclash.com,35volitantplimsoles5.com,javleak.com,daughtertraining.com,hornylips.com,originporn.com,teen-wave.com,theblueclit.com,thesexcloud.com,tightsexteens.com,seegames.xyz,cine20k.blogspot.com,enjoyhd.club,comohoy.com,pornleaks.in,mgnetu.com,alexsports.site,nsfwr34.com,watchcriminalminds.com,mimaletamusical.blogspot.com,portugues-fcr.blogspot.com,porntn.com,playdede.*,560pmovie.com,adblocktape.*,antecoxalbobbing1010.com,filmesonlinexhd.biz,nu6i-bg-net.com,sexgay18.com,ahdafnews.blogspot.com,cyamidpulverulence530.com,guidon40hyporadius9.com,vidz7.com,myvidster.com,yourupload.com,sports-stream.*,turbogvideos.com,fapptime.com,gameshdlive.xyz,worldstreams.watch,141jav.com,papahd.club,legendei.net,hentaiworld.tv,thepiratebay10.org,streamtapeadblockuser.*,enjoyhd.xyz,ohjav.com,strtapewithadblock.*,watchdoctorwhoonline.com,witanime.best,stapewithadblock.monster,hitomi.la,poapan.xyz,javboys.com,charexempire.com,extrafreetv.com,sportssoccer.club,mangoporn.net,megaddl.u4m.world,sports-stream.*,xestreams.com,tennisstreams.me,daddylivehd.*,bigclatterhomesguideservice.com,9xmovie.*,juba-get.com,haho.moe,housecardsummerbutton.com,adblockeronstape.me,fittingcentermondaysunday.com,teamos.xyz,sharemods.com,amateurblog.tv,latinblog.tv,silverblog.tv,xblog.tv,pxxbay.com,wwwsct.com,gawbne.com,forex-trnd.com,masaporn.xyz,un-block-voe.net,xxx18.uno,claimlite.club,socceron.name,pornstreams.co,voeunblk.com,hentaitk.net,voeunbl0ck.com,voeunblock2.com,sgpics.net,streamgoto.*,curvaweb.com,jiofiles.org,adslink.pw,voeunblock.com,tojav.net,streamadblockplus.com,voe-unblock.*,voe.sx,oneflix.pro,meusanimes.net,xxxxvideo.uno,read-onepiece.net,estrenosdoramas.net,nocensor.sbs,animeyt.es,mangagenki.me,sanet.st,tvseries.video,masahub.net,shadowrangers.live,anime-king.com,dvdplay.*,cuevana3.fan,javmost.*,nzbstars.com,animesonehd.xyz,rintor.*,animestotais.xyz,leechall.com,123-movies.*,slink.bid,shavetape.*,hesgoal.tv,themoviesflix.*,onlyfullporn.video,plylive.me,2ddl.it,allplayer.tk,askim-bg.com,ytstv.me,androidadult.com,pahe.win,everia.club,adblockstrtape.link,adblockstrtech.link,sexdicted.com,adblockstreamtape.*,vipboxtv.*,xpornium.net,crackstreams.*,037jav.com,beinmatch.*,imgdawgknuttz.com,projectfreetv2.com,youjax.com,silverpic.com,okanime.tv,kuxxx.com,anicosplay.net,aotonline.org,hispasexy.org,pastemytxt.com,mangajokomik.blogspot.com,kantotinyo.com,virpe.cc,stape.fun,4horlover.com,crunchyscan.fr,flizmovies.*,yourdailypornvideos.ws,123movieshub.*,sakurafile.com,idolsblog.tv,tvply.me,dengeki-plusv2.xyz,itdmusics.com,hopepaste.download,filmi123.club,viprow.*,strikeout.*,scatfap.com,socceronline.me,segurosdevida.site,anonymz.com,messitv.net,123watchmovies.*,1stream.top,ytmp3eu.com,streamta.*,bestnhl.com,swzz.xyz,animesanka.*,webcamrips.com,wickedspot.org,justfullporn.org,123moviesprime.com,masahub.com,viveseries.com,1tamilmv.*,keeplinks.org,kissanimee.ru,javhun.com,findav.*,thebussybandit.com,pornofaps.com,bajarjuegospcgratis.com,balkanportal.net,celebrity-leaks.net,datawav.club,desivdo.com,directupload.net,dvdfullestrenos.com,electro-torrent.pl,femdom-joi.com,gaysex69.net,hentaistream.co,lightdl.xyz,lightdlmovies.blogspot.com,pirateiro.com,pornotorrent.com.br,sexofilm.co,sportstream.tv,torrage.info,video.az,vstorrent.org,watchjavidol.com,xanimeporn.com,javhoho.com,xsober.com,kinemania.tv,manga-mx.com,gambarbogel.xyz,mediapemersatubangsa.com,gomo.to,9anime.*,strtapeadblock.me,myonvideo.com,hwnaturkya.com,lechetube.com,cinema.cimatna.com,password69.com,film1k.com,prostylex.org,pepperlive.info,manyakan.com,hitprn.com,streamzz.*,123moviesg.com,tvplusgratis.com,ask4movie.*,hollymoviehd.cc,123movieshd.*,movi.pk,findporn.*,zeriun.cc,smallencode.me,torrentsgames.xyz,hexupload.net,123movies-hd.online,adictosalatele.com,filmesonlinex.org,popimed.com,adz7short.space,mixdrop.sx,gledajcrtace.xyz,jpopsingles.eu,xxxwebdlxxx.top,anroll.net,sextgem.com,watchseries.*,imgsto.com,wowlive.info,1-2-3movies.com,ustream.to,jorpetz.com,daddyhd.com,daddylive.*,rapelust.com,videostreaming.rocks,imx.to,balkantelevizija.net,zonarutoppuden.com,yomovies.*,incestflix.com,dood.yt,dood.re,dood.wf,dood.la,dood.pm,dood.so,dood.to,dood.watch,dood.ws,sports24.*,linkebr.com,videoproxy.*,thiruttuvcd.xyz,smoner.com,movie8k.*,clipwatching.*,strtape.*,vipbox.lc,ccurl.net,usagoals.*,xxvideoss.org,zplayer.live,dropgalaxy.com,streamsport.*,wigilive.com,itopmusic.org,givemenflstreams.com,givemenbastreams.com,proxybit.*,batoscan.net,rule34hentai.net,kwik.cx,illink.net,300mbplus.*,hala-tube.net,hqcelebcorner.net,shrinkme.in,upstream.to,link1s.net,get-to.link,mirrorace.*,300mbfilms.*,hiperdex.com,rawdex.net,verpornocomic.com,scnlog.me,nodkey.xyz,itopmusic.com,linkjust1.com,iklandb.com,bestjavs.com,nocensor.*,thepiratebay0.org,scat.gold,clik.pw,animeblkom.net,freeomovie.to,leechpremium.link,uii.io,short.pe,snahp.it,animeshouse.net,porncomix.info,7r6.com,zobacz.ws,legendas.dev,sukidesuost.info,animeuniverse.it,drycounty.com,mitly.us,ouo.io,cda-tv.pl,picbaron.com,skidrowcodex.net,streamz.*,business-mortgage.pw,credits-loan.pw,business-credits.cc,business-mortgage.info,loan-trading.net,videogreen.xyz,filma24.*,playtube.ws,pornxbit.com,pornxday.com,rifurl.com,imgrock.net,piratebay.live##+js(abort-current-script, atob, /popundersPerIP[\s\S]*?Date[\s\S]*?getElementsByTagName[\s\S]*?insertBefore|w47DisKcw5g/)
 akuma.moe,mdbekjwqa.pw,ebookhunter.net,peeplink.in##+js(abort-on-stack-trace, parseInt, _isDelayBetweenExpired)
 !
 ! AdMaven
@@ -36077,6 +36095,7 @@ triblive.com###storyContent > div[data-type="float"][data-stn-player]
 !
 ! START: Ad-Shield ad reinsertion
 ! SECTION: Ad-Shield
+! adthrive/Raptive
 ! Ad-Shield Light - the website's NextJS script tries to initialize Ad-Shield script.
 weatherzone.com.au##div[class*=" "][height="270px"]
 weatherzone.com.au##div[class*=" "][height="74px"]
@@ -36411,6 +36430,14 @@ techarmor.xyz##.my-ad-container
 !
 ! NOTE: Specific rules
 !
+goodgameempire.eu###promoOverlay
+u.gg##.media-query_MOBILE_SMALL__MOBILE_LARGE:has(> div > div.h-\[300px\])
+smallshorts.com##iframe[src="https://smallshorts.com/task.php"]
+||forum.sbenny.com/js/sbenny/affiliate-links.json
+||forum.sbenny.com/affredirect.php
+forum.sbenny.com##.ad-wrapper2
+forum.sbenny.com##.notice-content:has(> #aff)
+mycima.kim##+js(no-window-open-if)
 healthgrades.com##body > div:has(> div[role="marquee"] > div[data-qa-target="leaderboard-ad"])
 healthgrades.com##div:not([data-card-id]):has(> div[data-visible="rendered"] > div[data-qa-target$="-ad"])
 showcamrips.com##+js(remove-node-text, script, /ads-|popunder|ads_|moiads|SetFirstPop/)
@@ -36576,7 +36603,7 @@ pokeflix.tv##.container > .row> .col-md-4:has(> center > center > .adsbygoogle)
 mining.com###company-spotlight-section
 mining.com###videos-section > .row > div:has(.ad-slot)
 utweb.rainberrytv.com##.card-container
-ukdevilz.com##.c_video noindex
+mat6tube.com,ukdevilz.com##.c_video noindex
 ||ukdevilz.com/static/players/*/vast.js
 ||katfile.online/js/pu.js
 ||katfile.online/js/pu.lc.js
@@ -37249,7 +37276,7 @@ windowsonarm.org##div[aria-labelledby="fui-ra"] + div table tbody > tr:has(ins.a
 windowsonarm.org##.sm\:px-6.lg\:px-8 > .py-8 > div:has(ins.adsbygoogle)
 venturebeat.com##.vb-ad-slot
 venturebeat.com##.article-body > div[class]:has(> div[id*="-"]:only-child:empty)
-comick.art,qmh.sex,cap3.sex,hindilinks4u.*,doujindesu.tv,easyvidplayer.com,camwhores.*,player4me.online,faselhds.biz,severeporn.com,rule34video.com,niyaniya.moe,pornxp.net##+js(abort-current-script, WebAssembly, atob)
+chochox.com,comick.art,qmh.sex,cap3.sex,hindilinks4u.*,doujindesu.tv,easyvidplayer.com,camwhores.*,player4me.online,faselhds.biz,severeporn.com,rule34video.com,niyaniya.moe,pornxp.net##+js(abort-current-script, WebAssembly, atob)
 jojo-news.com###cb-row--footer-main:has(#bottombanner)
 24porn.com##.b-head-6
 umatechnology.org###rk-exit-modal-bg
@@ -55311,6 +55338,7 @@ circleofcricket.com##.modal-backdrop:style(display: none !important;)
 circleofcricket.com###myModal:style(display: none !important;)
 circleofcricket.com##div.container-full.add:has(> a[href]:first-child)
 ||circleofcricket.com/assets/adv/
+! https://github.com/AdguardTeam/AdguardFilters/issues/222622
 !
 ! fly.inc
 djbassking.club,uaeboy.ae,csyildizi.com,mealold.com,pasflav.online,nidbdcheck.com,9sblog.com,newselab.com,glowandglamcorner.com,dadinthemaking.com,listofthis.com,phineypet.com,beautifulfashionnailart.com,americanstylo.com###desktop-ad-container
@@ -56225,7 +56253,7 @@ forbes.com##.channel--ad
 streamtape.com,streamtape.net,advertape.net,adblockeronstape.*,adblockplustape.*,adblockstreamtape.*,adblockstrtape.*,adblockstrtech.*,advertisertape.com,antiadtape.*,gettapeads.com,noblocktape.*,shavetape.*,stapadblockuser.*,stape.*,strcloud.*,streamadblocker.*,streamadblockplus.*,streamnoads.com,streamta.*,streamtapeadblock.*,streamtapeadblockuser.*,strtape.*,strtapeadblock.*,strtapeadblocker.*,strtapewithadblock.*,strtpe.*,tapeadsenjoyer.com,tapeadvertisement.com,tapeantiads.com,tapeblocker.com,tapelovesads.org,tapenoads.com,tapepops.com,tapewithadblock.org,watchadsontape.com,streamtape.*,wizja.cc,totalsportek.*,casthill.net,streamed.*,exposestrat.com,embedsports.top,nativesurge.net,yts.lt,yts.*,seir-sanduk.com,daddylive3.com,sterham.net,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,tv247us.live,kaa.to,strumyk.net,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,worldsports.st,filecrypt.cc,veplay.top,colegialasdeverdad.*,crackstreams.cx,flixrave.me,anime4i.com,cuttyy.com,daddyhd.com,daddylive.*,zavalise.com,wooflix.tv,yassflix.net,swipebreed.net,eurekaddl.lat,pawastreams.pro,en.tgo-tv.xyz,miztv.shop,vidlink.pro,knaben.xyz,powstream.*,rojadirectaenvivo.pl,ext.to,nepu.to,capo4play.com,wawacity.cfd,1337x.to,zone-telechargement.*,kickassanime.mx,redecanais.in,streameast.*,thestreameast.*,anroll.net,anarchy-stream.com,freckledine.net,buffstreams.app,sanet.lc,1stream.eu,sportsonline.*,dl-protect.link,cricstreams.re,extreme-down.*,eztvx.to,skidrowreloaded.com,olympicstreams.*,streambucket.net,modsfire.com,official.nbabite.com,sportsonline.*##+js(abort-on-property-read, Adcash)
 totalsportek.*,casthill.net,nativesurge.net,embedtv-5.icu,animeunity.*,pornhoarder.*,dlhd.*,omuzaani.me,vidsrc.*,builddiamond.net,playdede.link,audioz.download,wavewalt.me,ricstream.me,anime4i.vip,vipleague.*,swipebreed.net,eurekaddl.lat,sanet.st,buffsports.*,olympicstreams.*##+js(abort-current-script, globalThis, adserverDomain)
 exposestrat.com,embedsports.top,seir-sanduk.com,daddylive3.com,sterham.net,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,tv247us.live,kaa.to,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,worldsports.st,filecrypt.cc,veplay.top,colegialasdeverdad.*,crackstreams.cx,anime4i.com,cuttyy.com,puffytr.com,anizle.*,vidlink.pro,knaben.xyz,powstream.*,rojadirectaenvivo.pl,ext.to,capo4play.com,1337x.to,zone-telechargement.*,kickassanime.mx,redecanais.in,freckledine.net,buffstreams.app,sanet.lc,1stream.eu,sportsonline.*##+js(abort-on-stack-trace, Element.prototype.hasAttribute, isActionAllowedOnElement)
-livesporthub.shop,dstelemundo.site,7fractals.icu,epicplayplay.cfd,goalstreamer.shop,streameast7.com,buffztreamz.shop,rippleplay.shop,shd247.click,antenasport.top,gamestrend.net,cloudnestra.com,exposestrat.com,embedsports.top,seir-sanduk.com,embedtv-5.icu,daddylive3.com,sterham.net,animeunity.*,vixcloud.*,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,tv247us.live,kaa.to,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,worldsports.st,filecrypt.cc,veplay.top,colegialasdeverdad.*,crackstreams.cx,anime4i.com,cuttyy.com,puffytr.com,anizm.*,anizle.*##+js(abort-on-property-read, aclib)
+vinovo.to,livesporthub.shop,dstelemundo.site,7fractals.icu,epicplayplay.cfd,goalstreamer.shop,streameast7.com,buffztreamz.shop,rippleplay.shop,shd247.click,antenasport.top,gamestrend.net,cloudnestra.com,exposestrat.com,embedsports.top,seir-sanduk.com,embedtv-5.icu,daddylive3.com,sterham.net,animeunity.*,vixcloud.*,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,tv247us.live,kaa.to,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,worldsports.st,filecrypt.cc,veplay.top,colegialasdeverdad.*,crackstreams.cx,anime4i.com,cuttyy.com,puffytr.com,anizm.*,anizle.*##+js(abort-on-property-read, aclib)
 animeunity.*,vixcloud.*##+js(abort-on-stack-trace, setTimeout, runPop)
 animeunity.*,vixcloud.*##+js(no-window-open-if, !download)
 telewizjada.top##+js(abort-on-stack-trace, Array, runInPagePush)
@@ -57441,6 +57469,8 @@ $popup,3p,domain=dood.ws,badfilter
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/222743
+@@||googletagmanager.com/gtm.js$domain=lp.empire.goodgamestudios.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/222009
 @@||cdn.jsdelivr.net/gh/itspro-dev/project_files@master/publicearn2.js$domain=bhadohimusic.in.net|usanowday.com|fullformsmarathi.in
 ! https://github.com/AdguardTeam/AdguardFilters/issues/222498
@@ -61455,6 +61485,7 @@ implbits.com#@#.banner_container
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/222354
 ! https://github.com/AdguardTeam/AdguardFilters/issues/222688
 ! https://github.com/AdguardTeam/AdguardFilters/issues/222680
 ! https://github.com/AdguardTeam/AdguardFilters/issues/222331
@@ -61763,7 +61794,7 @@ implbits.com#@#.banner_container
 ! https://github.com/AdguardTeam/AdguardFilters/issues/188785
 ! https://github.com/AdguardTeam/AdguardFilters/issues/188784
 ! dizipal*.com - frequently changed domains
-! https://x.com/dizipalSx
+! t.ly/dizipalgiris
 ! aglint-disable-next-line no-invalid-modifiers
 ! https://github.com/AdguardTeam/AdguardFilters/issues/188449
 ! https://github.com/AdguardTeam/AdguardFilters/issues/188363
