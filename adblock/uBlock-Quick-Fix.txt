@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Sun, 18 Jan 2026 12:39:12 +0000
-! Diff-Path: ../patches/2026.1.18.996.patch#ublock-quick-fixes
+! Last modified: Mon, 19 Jan 2026 15:13:55 +0000
+! Diff-Path: ../patches/2026.1.19.1054.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -124,7 +124,6 @@ japscan.*##+js(trusted-suppress-native-method, Document.prototype.querySelectorA
 japscan.*##span ~ div[class][id]:not(#chapters, #reader):remove()
 japscan.*##span ~ div[class]:not([id]):remove()
 japscan.*##div[data-src]:remove()
-japscan.*##span ~ div[id]:not([class]):remove()
 japscan.*##+js(trusted-suppress-native-method, Document.prototype.querySelector, '"/^div\[/"')
 japscan.*##span ~ span[id][class]:remove()
 !japscan.*##+js(set, aclib.runPop, 1)
@@ -141,14 +140,13 @@ japscan.*##[class*="W"][class*="ll"] > span:remove()
 japscan.*##[class^="WidthF"] > span:remove()
 japscan.*##[class^="FuWidth"] > span:remove()
 japscan.*##[class^="Fllid"] > span:remove()
-japscan.*##+js(trusted-suppress-native-method, Document.prototype.querySelectorAll, '"/^\[d[a-z]t[a-z]?-[a-z]{3}\]$/"')
+japscan.*##+js(trusted-suppress-native-method, Document.prototype.querySelectorAll, '"/^\[d[a-z]t[a-z]?-[a-z]{2,3}\]$/"')
 japscan.*##+js(trusted-suppress-native-method, Document.prototype.querySelectorAll, '"/^\[[a-z]{2,3}-/"')
 japscan.*##+js(trusted-suppress-native-method, Document.prototype.querySelectorAll, '"/^\[data-[a-z]+src\]$/"')
 japscan.*##.YouGot + span:remove()
 japscan.*##+js(trusted-suppress-native-method, Document.prototype.querySelectorAll, '"/^\[[a-z]{5}-/"')
 japscan.*##[class^="Kiss" i] > span:remove()
-japscan.*##.LoveYou > span:remove()
-japscan.*##.YouLove > span:remove()
+japscan.*##[class*="Love" i] > span:remove()
 japscan.*##+js(trusted-suppress-native-method, Document.prototype.querySelectorAll, '"/^\[[a-ce-z][a-z]+-/"')
 japscan.*##+js(trusted-suppress-native-method, Document.prototype.querySelectorAll, '"/^\[d[b-z][a-z]*-/"')
 poophq.com,veev.to,doods.to##+js(nowoif)
@@ -230,6 +228,7 @@ smsonline.cloud##html[data-theme][lang] [id^="img_"][style]:has(iframe[framebord
 ~dogdrip.net,~smsonline.cloud##div[id^="img_"][style$="display: block;"]
 ~dogdrip.net,~smsonline.cloud##div[id^="img_"][style$="height: 90px;"]
 ~dogdrip.net,~smsonline.cloud##div[id^="img_"][style$="max-height:100px;background-color:rgba(128, 128, 128, 0.4);"]
+~dogdrip.net,~smsonline.cloud##div[id^="img_"] > button.gCloseButton
 content-loader.com,css-load.com,html-load.com,img-load.com##html:not(:has(> head > style:only-child:has-text(width:399px;height:411px))):style(filter: opacity(0) !important; pointer-events: none !important;)
 /^https:\/\/[a-z]{3,4}\.[0-9a-z-]{6,}\.(?:com|xyz)\/script\/(?:[-.0-9A-Za-z]+\.)?[-0-9A-Za-z]{2,30}\.js$/$script,3p,match-case,header=x-length
 ://html-load.com/*.js$script,3p,domain=~dogdrip.net|~smsonline.cloud
@@ -341,7 +340,6 @@ th.gl##+js(trusted-set-local-storage-item, account-storage, {"state":{"_hasHydra
 th.gl##body:style(overflow:auto !important; pointer-events:auto !important)
 tvtropes.org##+js(nostif, /offsetHeight|loaded/)
 tvtropes.org##+js(set, HTMLScriptElement.prototype.onerror, undefined)
-||rottentomatoes.com/assets/pizza-pie/javascripts/bundles/roma/rt-common.js$badfilter
 chzzkban.xyz##+js(no-fetch-if, pagead2.googlesyndication.com/pagead/js/adsbygoogle.js method:HEAD, emptyStr)
 chzzkban.xyz##+js(trusted-suppress-native-method, Node.prototype.contains, '{"className":"adsbygoogle"}', abort)
 ||akirabox.com^$script,domain=akirabox.to
