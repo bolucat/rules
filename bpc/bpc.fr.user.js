@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.8.5
+// @version         4.2.8.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -962,12 +962,18 @@ else if (matchDomain('lefigaro.fr')) {
                     elem.append(link_elem);
                   }
                 } else if (par.sourceCode) {
-                  let doc = parser.parseFromString('<div>' + par.sourceCode + '</div>', 'text/html');
-                  elem = doc.querySelector('div');
-                  let tweet_link = elem.querySelector('a[href^="https://twitter.com/"], a[href^="https://x.com/"]');
-                  if (tweet_link) {
-                    tweet_link.innerText = tweet_link.href;
-                    tweet_link.target = '_blank';
+                  if (par.sourceCode.includes(' data-url="https://podcasts.')) {
+                    elem = document.createElement('iframe');
+                    elem.src = par.sourceCode.split(' data-url="')[1].split('"')[0];
+                    elem.style = 'width: 100%; ' + (mobile ? 'aspect-ratio: 1 / 1' : '250px');
+                  } else {
+                    let doc = parser.parseFromString('<div>' + par.sourceCode + '</div>', 'text/html');
+                    elem = doc.querySelector('div');
+                    let tweet_link = elem.querySelector('a[href^="https://twitter.com/"], a[href^="https://x.com/"]');
+                    if (tweet_link) {
+                      tweet_link.innerText = tweet_link.href;
+                      tweet_link.target = '_blank';
+                    }
                   }
                 } else if (par_type === 'Youtube') {
                   if (par.id) {
@@ -1013,6 +1019,8 @@ else if (matchDomain('lefigaro.fr')) {
       }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
     }
   }
+  let ads = 'div.fig-ad-content';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('legrandcontinent.eu')) {
