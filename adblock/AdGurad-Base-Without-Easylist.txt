@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: owDcIuyOLLYt0+NQ7Q3mSA
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1768929345-3600.patch
+! Checksum: ik7u6YMxV38a8vHEtvIpzg
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1769012186-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.41.21
-! TimeUpdated: 2026-01-20T17:11:57+00:00
+! Version: 2.4.41.44
+! TimeUpdated: 2026-01-21T16:12:54+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -9977,7 +9977,7 @@ djstar.in,profileviewpic.com,downev.com,bedrat.xyz,euskalnews.tv,eventiavversine
 itopmusics.com,novelasligeras.net,4horlover.com##+js(abort-current-script, document.getElementById, pagead2.googlesyndication.com)
 !+ NOT_OPTIMIZED
 userupload.net,coastcams.com,financeyogi.net,androidadult.com,audiotools.in,bg-gledai.co##+js(abort-on-property-read, chp_adblock_browser)
-freemagazines.top,chpadblock.com##+js(noeval-if, chp_adblock)
+itopmusic.com,freemagazines.top,chpadblock.com##+js(noeval-if, chp_adblock)
 premierftp.net##+js(addEventListener-defuser, DOMContentLoaded, is_url_banned)
 starwarsaddicted.it,wuyong.fun,26g.me,myqqjd.com,poapan.xyz,javboys.com,idevicecentral.com,fcportables.com,codehelppro.com##+js(abort-on-property-read, reqServers)
 ! chp_ads_blocker popups, that can be hidden
@@ -10310,6 +10310,18 @@ youporn.com##+js(remove-node-text, script, /window\.[\s\S]*?_zone_[\s\S]*?{"zone
 !
 ! NOTE: Regular rules
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/223187
+leaguegaming.com##+js(prevent-fetch, adsbygoogle)
+! https://github.com/AdguardTeam/AdguardFilters/issues/223167
+kissjav.com#@#.ad-unit:not(.textads)
+kissjav.com##+js(no-setTimeout-if, .offsetHeight === 0)
+! https://github.com/AdguardTeam/AdguardFilters/issues/223163
+indexsubtitle.cc##+js(no-setTimeout-if, -0x)
+indexsubtitle.cc#@#.google_ads
+@@favicon.ico$domain=indexsubtitle.cc
+! https://github.com/AdguardTam/AdguardFilters/issues/223179
+epic.hellosports.live##+js(no-setTimeout-if, offsetHeight)
+epic.hellosports.live##.popSc
 ! https://pasteflash.sx/4xeDB4CT
 pasteflash.sx##+js(no-setInterval-if, blocked)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/223058
@@ -12108,6 +12120,8 @@ kissanime.is,kissanime.sx,kissanime.com.ru,kissanime.co##+js(prevent-fetch, page
 ! currently it uses v1.12.1 and generic redirect rule causes that wrong URL is set in "prevent-xhr"
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167581
 ! I saw a http request related to https://unblockia.com/.
+androidpolice.com#@#.w-adsninja-video-player
+androidpolice.com#@#.ad-zone:not(.textads)
 androidpolice.com#@#.adsninja-ad-zone
 androidpolice.com#@#.ad-current
 androidpolice.com#@#.ad-zone-container
@@ -19083,6 +19097,7 @@ auto.am##.azd-top
 ##.ainsyndication
 az##.makerekframe
 !
+||ajans.az/uploads/banner/
 yeniavaz.com##div[class*="banner"]
 icma.az##.banners
 icma.az##.news_banner
@@ -19777,6 +19792,7 @@ mob.hr##.side_banner
 !
 ! NOTE: Czech and Slovakian
 !
+@@||warforum.xyz/ads.js?$script,~3p
 evo.molcesko.cz###header:style(height: 20vw !important;)
 denik.cz##.leaderboard-top
 alza.sk###boxes > div.box[data-analytics*="/adCommodityClick"]
@@ -25009,6 +25025,10 @@ bieganie.pl##.biega-nb-paris > DIV[style^="text-align:"]:contains(Reklama)
 gospodarkamorska.pl##.Home_categories_box > div.polecamy-slider > div[class*="poster-dnone-"]
 onet.pl##a[href^="https://milionymonet.onet.pl/"]
 pograne.eu###custom_html-8
+! https://github.com/AdguardTeam/AdguardFilters/issues/223200
+polskawliczbach.pl##.probableXXX
+polskawliczbach.pl##+js(no-setTimeout-if, "none"===window.getComputedStyle)
+||polskawliczbach.pl/static/js/pwl.lazy.ab.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/219947
 oglaszamy24.pl##center > div[style*="min-height:"]:has(> .spolecznoscinet)
 oglaszamy24.pl##.page_container > center > div[style^="position:relative;min-height:150px"]
@@ -28236,7 +28256,8 @@ wirtualnemedia.pl###article-content > .wm-bordered-section:has(> div[class*=" "]
 wiadomosci.wp.pl##body > #root > div[class]:empty
 pudelek.pl,genialne.pl,money.pl,abczdrowie.pl,autokult.pl,gadzetomania.pl,jastrzabpost.pl,komorkomania.pl,polygamia.pl,pysznosci.pl,o2.pl,wp.pl##div[class*=" "]:has(> img[src^="https://v.wpimg.pl/"]:first-child + div[class*=" "] + div[class*=" "] + script:last-child)
 pudelek.pl,genialne.pl,money.pl,abczdrowie.pl,autokult.pl,gadzetomania.pl,jastrzabpost.pl,komorkomania.pl,polygamia.pl,pysznosci.pl,o2.pl,wp.pl##div[class*=" "]:has(> img[src^="https://v.wpimg.pl/"]:first-child + div[class*=" "] + script:last-child)
-facet.wp.pl,ipolska24.pl,wiadomosci.wp.pl,pysznosci.pl,open.fm,fotoblogia.pl,autokult.pl,money.pl,pudelek.pl##style + div[class*=" "]:has(> img[src^="https://v.wpimg.pl/"] + div:last-child)
+kultura.wp.pl,facet.wp.pl,ipolska24.pl,wiadomosci.wp.pl,pysznosci.pl,open.fm,fotoblogia.pl,autokult.pl,money.pl,pudelek.pl##style + div[class*=" "]:has(> img[src^="https://v.wpimg.pl/"] + div:last-child)
+kultura.wp.pl###root > div[class] > div[class]:only-child:has(> style:first-child + div[class*=" "]:last-child)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/179793
 www.o2.pl,rozrywka.o2.pl##.w-full[class*="bg-"] > div[class*="w-"][class*="px"] > div[class][style="width:100%"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/55606
@@ -28290,7 +28311,7 @@ sportowefakty.wp.pl#@#body > .content ~ script[async] + div[class]:not([id])
 sportowefakty.wp.pl#@#body > [class]:not([id]):matches-css(position: fixed):matches-css(top: 0px)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/164469
 wideo.wp.pl###__next > style + div[class*=" "]:empty
-wideo.wp.pl##div[class*=" "] > img[src="https://std.wpcdn.pl/images/adv/placeholder_wp.svg"]:upward(1)
+wideo.wp.pl##div[class*=" "]:has(> img[src="https://std.wpcdn.pl/images/adv/placeholder_wp.svg"])
 ! https://github.com/AdguardTeam/AdguardFilters/issues/155033
 pilot.wp.pl##aside section[class*=" "]:has(> style + div[class] > img[src="https://std.wpcdn.pl/images/adv/placeholder_wp.svg"])
 ! https://github.com/AdguardTeam/AdguardFilters/issues/142879
@@ -31374,6 +31395,9 @@ truyenqqhot.com##div[id^="ads_"]
 ##.topAd
 !+ NOT_OPTIMIZED
 ##.article-advert-container
+! https://github.com/AdguardTeam/AdguardFilters/issues/223175
+!+ NOT_OPTIMIZED
+##.outbrain
 ! https://www.rbtv77news.com/superabbit77-link/
 ! https://www.fctv33.work/
 ##.czlll-rlselse
@@ -36481,6 +36505,17 @@ techarmor.xyz##.my-ad-container
 !
 ! NOTE: Specific rules
 !
+uploadrar.com##.card.border-warning
+uploadrar.com##.my-4 > form[method="POST"] > center
+pdfdrive.to##.content > div.overlay:has(> div.banner)
+calgaryherald.com##.placeholder-inner
+tellows.net##.ad
+totalprosports.com##.pw-leaderboard
+rogerebert.com##.roger-review-inline-1-2
+rogerebert.com##.roger-review-inline-2-2
+kidsacademy.mobi##.ads-banner-container
+devuploads.com##a[href^="https://CosmicEarningPotential.com/"]
+devuploads.com##.btn-danger[onclick^="window.open"]
 ||troypoint.com/wp-content/uploads/*/toolbox-qr-dec24
 troypoint.com##.wp-block-group__inner-container > .wp-block-list ~ *
 troypoint.com##article > .entry-content > .inherit-container-width:has(a[href*="surfshark.com/"])
@@ -36884,7 +36919,8 @@ truecar.com##.flex:has(> div[data-test="adBanner"])
 truecar.com##ul > li[class^="order-"][class*="empty:hidden"]
 truecar.com##ul > li[style^="order"][class*="empty:hidden"]
 insurancekhabar.com##section[id^="esn_ad"]
-yts.lt,yts.*##.container div[class]:not([id]) > div[class]:not([id]):has(> div.title ~ p.blue ~ a[href][rel="noindex, nofollow"])
+yts.bz,yts.lt,yts.*##.home-content > div:has(.title ~ a[href][rel="noindex, nofollow"] img[src*="/images/download"])
+yts.bz,yts.lt,yts.*##.container div[class]:not([id]) > div[class]:not([id]):has(> div.title ~ p.blue ~ a[href][rel="noindex, nofollow"])
 thisav2.com##.order-last > div > div.space-y-6
 thisav2.com##div[style="width: 300px; height: 250px; overflow: hidden;"]
 cbsnews.com###component-taboola-local-article
@@ -55793,6 +55829,7 @@ missav.*,missav123.com,missav888.com##+js(remove-attr, @keyup.space.window|@clic
 missav.*,missav123.com,missav888.com##+js(no-window-open-if)
 !
 ! 7mmtv.sx
+mmsi01.com##div[style^="position:fixed;inset:0px;"]
 mmtv01.xyz##+js(no-setTimeout-if, window.open)
 mmtv01.xyz##+js(set-constant, premium, '')
 7mmtv.sx##+js(no-window-open-if)
@@ -56329,10 +56366,10 @@ forbes.com##.channel--ad
 /^https:\/\/strumyk\.net\/assets\/[0-9]+.js$/$script,domain=strumyk.net
 ||strumyk.net/assets/z-*.js
 ||nativesurge.net/wp-content/uploads/csh/surge.js
-streamtape.com,streamtape.net,advertape.net,adblockeronstape.*,adblockplustape.*,adblockstreamtape.*,adblockstrtape.*,adblockstrtech.*,advertisertape.com,antiadtape.*,gettapeads.com,noblocktape.*,shavetape.*,stapadblockuser.*,stape.*,strcloud.*,streamadblocker.*,streamadblockplus.*,streamnoads.com,streamta.*,streamtapeadblock.*,streamtapeadblockuser.*,strtape.*,strtapeadblock.*,strtapeadblocker.*,strtapewithadblock.*,strtpe.*,tapeadsenjoyer.com,tapeadvertisement.com,tapeantiads.com,tapeblocker.com,tapelovesads.org,tapenoads.com,tapepops.com,tapewithadblock.org,watchadsontape.com,streamtape.*,wizja.cc,totalsportek.*,casthill.net,streamed.*,exposestrat.com,embedsports.top,nativesurge.net,yts.lt,yts.*,seir-sanduk.com,daddylive3.com,sterham.net,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,tv247us.live,kaa.to,strumyk.net,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,worldsports.st,filecrypt.cc,veplay.top,colegialasdeverdad.*,crackstreams.cx,flixrave.me,anime4i.com,cuttyy.com,daddyhd.com,daddylive.*,zavalise.com,wooflix.tv,yassflix.net,swipebreed.net,eurekaddl.lat,pawastreams.pro,en.tgo-tv.xyz,miztv.shop,vidlink.pro,knaben.xyz,powstream.*,rojadirectaenvivo.pl,ext.to,nepu.to,capo4play.com,wawacity.cfd,1337x.to,zone-telechargement.*,kickassanime.mx,redecanais.in,streameast.*,thestreameast.*,anroll.net,anarchy-stream.com,freckledine.net,buffstreams.app,sanet.lc,1stream.eu,sportsonline.*,dl-protect.link,cricstreams.re,extreme-down.*,eztvx.to,skidrowreloaded.com,olympicstreams.*,streambucket.net,modsfire.com,official.nbabite.com,sportsonline.*##+js(abort-on-property-read, Adcash)
+streamtape.com,streamtape.net,advertape.net,adblockeronstape.*,adblockplustape.*,adblockstreamtape.*,adblockstrtape.*,adblockstrtech.*,advertisertape.com,antiadtape.*,gettapeads.com,noblocktape.*,shavetape.*,stapadblockuser.*,stape.*,strcloud.*,streamadblocker.*,streamadblockplus.*,streamnoads.com,streamta.*,streamtapeadblock.*,streamtapeadblockuser.*,strtape.*,strtapeadblock.*,strtapeadblocker.*,strtapewithadblock.*,strtpe.*,tapeadsenjoyer.com,tapeadvertisement.com,tapeantiads.com,tapeblocker.com,tapelovesads.org,tapenoads.com,tapepops.com,tapewithadblock.org,watchadsontape.com,streamtape.*,wizja.cc,totalsportek.*,casthill.net,streamed.*,exposestrat.com,embedsports.top,nativesurge.net,yts.bz,yts.lt,yts.*,seir-sanduk.com,daddylive3.com,sterham.net,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,tv247us.live,kaa.to,strumyk.net,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,worldsports.st,filecrypt.cc,veplay.top,colegialasdeverdad.*,crackstreams.cx,flixrave.me,anime4i.com,cuttyy.com,daddyhd.com,daddylive.*,zavalise.com,wooflix.tv,yassflix.net,swipebreed.net,eurekaddl.lat,pawastreams.pro,en.tgo-tv.xyz,miztv.shop,vidlink.pro,knaben.xyz,powstream.*,rojadirectaenvivo.pl,ext.to,nepu.to,capo4play.com,wawacity.cfd,1337x.to,zone-telechargement.*,kickassanime.mx,redecanais.in,streameast.*,thestreameast.*,anroll.net,anarchy-stream.com,freckledine.net,buffstreams.app,sanet.lc,1stream.eu,sportsonline.*,dl-protect.link,cricstreams.re,extreme-down.*,eztvx.to,skidrowreloaded.com,olympicstreams.*,streambucket.net,modsfire.com,official.nbabite.com,sportsonline.*##+js(abort-on-property-read, Adcash)
 totalsportek.*,casthill.net,nativesurge.net,embedtv-5.icu,animeunity.*,pornhoarder.*,dlhd.*,omuzaani.me,vidsrc.*,builddiamond.net,playdede.link,audioz.download,wavewalt.me,ricstream.me,anime4i.vip,vipleague.*,swipebreed.net,eurekaddl.lat,sanet.st,buffsports.*,olympicstreams.*##+js(abort-current-script, globalThis, adserverDomain)
 exposestrat.com,embedsports.top,seir-sanduk.com,daddylive3.com,sterham.net,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,tv247us.live,kaa.to,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,worldsports.st,filecrypt.cc,veplay.top,colegialasdeverdad.*,crackstreams.cx,anime4i.com,cuttyy.com,puffytr.com,anizle.*,vidlink.pro,knaben.xyz,powstream.*,rojadirectaenvivo.pl,ext.to,capo4play.com,1337x.to,zone-telechargement.*,kickassanime.mx,redecanais.in,freckledine.net,buffstreams.app,sanet.lc,1stream.eu,sportsonline.*##+js(abort-on-stack-trace, Element.prototype.hasAttribute, isActionAllowedOnElement)
-vinovo.to,livesporthub.shop,dstelemundo.site,7fractals.icu,epicplayplay.cfd,goalstreamer.shop,streameast7.com,buffztreamz.shop,rippleplay.shop,shd247.click,antenasport.top,gamestrend.net,cloudnestra.com,exposestrat.com,embedsports.top,seir-sanduk.com,embedtv-5.icu,daddylive3.com,sterham.net,animeunity.*,vixcloud.*,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,tv247us.live,kaa.to,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,worldsports.st,filecrypt.cc,veplay.top,colegialasdeverdad.*,crackstreams.cx,anime4i.com,cuttyy.com,puffytr.com,anizm.*,anizle.*##+js(abort-on-property-read, aclib)
+yts.bz,vinovo.to,livesporthub.shop,dstelemundo.site,7fractals.icu,epicplayplay.cfd,goalstreamer.shop,streameast7.com,buffztreamz.shop,rippleplay.shop,shd247.click,antenasport.top,gamestrend.net,cloudnestra.com,exposestrat.com,embedsports.top,seir-sanduk.com,embedtv-5.icu,daddylive3.com,sterham.net,animeunity.*,vixcloud.*,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,tv247us.live,kaa.to,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,worldsports.st,filecrypt.cc,veplay.top,colegialasdeverdad.*,crackstreams.cx,anime4i.com,cuttyy.com,puffytr.com,anizm.*,anizle.*##+js(abort-on-property-read, aclib)
 animeunity.*,vixcloud.*##+js(abort-on-stack-trace, setTimeout, runPop)
 animeunity.*,vixcloud.*##+js(no-window-open-if, !download)
 telewizjada.top##+js(abort-on-stack-trace, Array, runInPagePush)
