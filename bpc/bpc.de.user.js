@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.8.1
+// @version         4.2.9.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -12,6 +12,7 @@
 // @match           *://*.de/*
 // @match           *://*.beobachter.ch/*
 // @match           *://*.blick.ch/*
+// @match           *://*.diepresse.com/*
 // @match           *://*.faz.net/*
 // @match           *://*.handelsblatt.com/*
 // @match           *://*.handelszeitung.ch/*
@@ -275,6 +276,14 @@ else if (matchDomain('cicero.de')) {
     getArchive(url, 'div.plenigo-paywall', '', 'article > div:has(> div.ad-container)', '', 'article > div:has(h3)');
   } else if (document.querySelector('div.paywall-fadeout'))
     ampToHtml();
+}
+
+else if (matchDomain('diepresse.com')) {
+  let paywall = document.querySelector('div.premium-content.hide');
+  if (paywall)
+    paywall.removeAttribute('class');
+  let fade = 'div.paywall-container--locked';
+  hideDOMStyle(fade);
 }
 
 else if (matchDomain('faz.net')) {

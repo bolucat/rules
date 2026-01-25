@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.2.8.7
+// @version         4.2.8.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -287,13 +287,14 @@ else if (matchDomain('ftm.nl')) {
 else if (matchDomain('groene.nl')) {
   let url = window.location.href;
   getArchive(url, 'div#closed-block', '', 'article');
-  let more = pageContains('div.wrapper > h2', 'Verder lezen?');
-  if (more.length) {
-    let link_text = 'https://www.groene.nl/populair';
-    let a_link = document.createElement('a');
-    a_link.href = link_text;
-    a_link.innerText = 'BPC > ' + link_text.split('www.')[1];
-    more[0].parentNode.append(document.createElement('br'), a_link);
+  let login = document.querySelector('header li > a[href*="/accounts/inloggen"]');
+  if (login) {
+    let pop = document.createElement('li');
+    let pop_link = document.createElement('a');
+    pop_link.href = '/populair';
+    pop_link.innerText = 'Populair';
+    pop.appendChild(pop_link);
+    login.parentNode.after(pop);
   }
 }
 
@@ -646,13 +647,12 @@ else if (matchDomain(nl_mediahuis_region_domains)) {
             header.after(br, video, br);
         }
       }
+      article.querySelectorAll('hgroup, section:not(:empty)').forEach(e => e.removeAttribute('style'));
       if (mobile) {
         let div_next = document.querySelector('div[id="__next"]');
         if (div_next)
           article.style.width = div_next.offsetWidth - 20 + 'px';
-        let lazy_images = article.querySelectorAll('figure img[loading="lazy"][style]');
-        for (let elem of lazy_images)
-          elem.style = 'width: 95%;';
+        article.querySelectorAll('figure img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
         let figures = article.querySelectorAll('figure div');
         for (let elem of figures) {
           elem.removeAttribute('style');

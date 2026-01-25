@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: PDZoAeVx2B0dBjzMk4bT3Q
-! Diff-Path: ../patches/7/7-s-1769267433-3600.patch
+! Checksum: tyOx9rN/Vt1xeyI8dxSGQA
+! Diff-Path: ../patches/7/7-s-1769343328-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.71.97
-! TimeUpdated: 2026-01-24T15:07:28+00:00
+! Version: 2.0.72.0
+! TimeUpdated: 2026-01-25T12:12:06+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1736,7 +1736,7 @@ _ap/signin*?_encoding=UTF8&openid.assoc_handle=jpflex&openid.claimed_id=&action=
 ://eki*.*.com/Personal/member/Login/index.php?oneTimeAccessID=$document
 .com/ae/login.php?openid.pape.max_auth_age=0&openid.return_to=%$document
 !
-/^https?:\/\/(?:j[ap]|qq)\d{4,8}\.[a-z]{6,8}\.[a-z]{2,8}\//$document,to=agency|art|asia|auction|bar|beauty|beer|best|biz|bond|business|cam|cards|casa|click|cloud|coupons|digital|diy|fashion|food|forum|gay|guru|hair|info|life|live|living|link|ltd|my|ooo|property|pw|rocks|run|sbs|shop|skin|store|studio|tattoo|tech|today|top|uno|work,match-case
+/^https?:\/\/(?:j[ap]|qq)\d{4,8}\.[a-z]{6,8}\.[a-z]{2,10}\//$document,to=agency|art|asia|auction|bar|beauty|beer|best|biz|bond|business|cam|cards|casa|click|cloud|coupons|courses|cv|digital|diy|fashion|food|forum|gay|guru|hair|info|life|live|living|link|ltd|my|ooo|property|pw|qpon|republican|rocks|run|sale|sbs|services|shop|skin|store|studio|support|surf|tattoo|tech|today|top|uno|watch|work,match-case
 /%F0%9D%90%A2%F0%9D%90%A7%F0%9D%90%9D%F0%9D%90%9E%F0%9D%90%B1.%F0%9D%90%A1%F0%9D%90%AD%F0%9D%90%A6%F0%9D%90%A5$document,to=shop|top
 ://*.*.cn/jp^$document,to=cn
 -or-jp.net/$document,to=net
@@ -1856,6 +1856,7 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+ssnp.co.jp##.bbear-ad:not(:has(#main-inner))
 news.sp.netkeiba.com##.kyujin_box
 nicola.jp##.sp.banner-overlay
 askdoctors.jp##.targeting-banner-area
@@ -2625,6 +2626,8 @@ gazlog.jp##.swell-block-capbox:has(> div.cap_box_ttl:contains(/^関連商品$/))
 kohavrog.com##.entry-content > div[style="text-align: center;"]
 note.com,note.jp##figure[name][id] > a[href^="https://px.a8.net/svt/ejp"] > img[width="300"][height="250"]
 ||assets.st-note.com/img/1738966754-eopVDQn6ARFxth0fC5b3LX8W.jpg
+gendai.media##.leading-tight.text-base:has(+ div.mt-3 > div > div#taboola-below-article-thumbnails-gendai_biz-desktop1)
+gendai.media##.grid-cols-1 > li:has(> div > div > div[data-testid^="GB_pc_InFeed"])
 gendai.media##article > div.w-full.justify-center:has(> div > div[style="min-width:320px;min-height:50px"])
 gendai.media##div[style^="width:728px;"]
 gendai.media##.in-article-ad-slot
@@ -5109,7 +5112,7 @@ city.yatsushiro.lg.jp,erodougazo.com##.ban
 newtongym8.com,blogmimi.com,legend-anime.com,livemimi.com,meidomimi.com##div[style="float:none;margin:10px 0 10px 0;text-align:center;"]
 gachi-matome.com##.wp-block-image > a[href^="https://www.ka-nabell.com/"]
 sanspo.com##.article__inline-gptAd
-||hamlife.jp/wp-content/uploads/2021/10/jarl-radio-banner.png
+hamlife.jp##.adlantiss_frame
 hamlife.jp###ads336
 hamlife.jp###adsense-content-unit
 hamlife.jp###h-superbanner
@@ -7279,7 +7282,7 @@ elog-ch.net##.pr_table
 elog-ch.net##.yubi
 elog-ch.net##div[class^="rapper"]
 elog-ch.net##.random_ad_sidebar
-ssnp.co.jp,weekly-jitsuwa.jp##.bbear-ad
+weekly-jitsuwa.jp##.bbear-ad
 weekly-jitsuwa.jp##.widget_bbearad
 weekly-jitsuwa.jp##.widget_bbearad-recommend
 weekly-jitsuwa.jp##.widget_bbearad-single-bottom
@@ -8521,7 +8524,7 @@ rdlp.jp##.hint01_ad
 bitwave.showcase-tv.com,rdlp.jp##.pr-box
 ! blocked to fix layout
 ||rdlp.jp/wp/wp-content/themes/rdlp/header/img/header_haikei.png
-hamlife.jp,ichinuke.com,jyosotalk.com,anime-torrent.com###media_image-2
+ichinuke.com,jyosotalk.com,anime-torrent.com###media_image-2
 battlecats-db.com##.raku
 ap-siken.com,db-siken.com,fe-siken.com,itpassportsiken.com,nw-siken.com,pm-siken.com,sc-siken.com,sg-siken.com##.img_margin[style="min-height:265px"]
 ap-siken.com,db-siken.com,fe-siken.com,itpassportsiken.com,nw-siken.com,pm-siken.com,sc-siken.com,sg-siken.com##.ad.double
@@ -11066,6 +11069,7 @@ re-file.com###mainWrap > center:has(div[id^="div_fam8"]) + br
 re-file.com##.sideWrapFrame > ul > li ~ center:has(> a[href^="http://smalog.jp/"])
 w.atwiki.jp###wikibody > div:not([id], [class]):nth-last-of-type(2):has(> a):contains(<PR>)
 yakuji.co.jp##.aside > div.category-list > span.ad-text03:upward(2)
+hamlife.jp##.widget-right.widget_text:has(a[href^="https://amzn.to"])
 hamlife.jp##.widget-right.widget_text:has(a[href^="https://www.amazon.co.jp"])
 minaminumaebi.blogmimi.com##div[style^="float:"] > p:contains(スポンサードリンク)
 zuuonline.com##.aside-banner > div[id^="div-gpt-"]:upward(1)
