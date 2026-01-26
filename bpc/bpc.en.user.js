@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.9.2
+// @version         4.2.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -319,8 +319,12 @@ if (matchDomain('afr.com')) {
                             if (item.data.url)
                               result = '<a href="' + item.data.url + '" target="_blank">' + item.data.url + '</a>';
                           } else if (item.type === 'iframe') {
-                            if (item.data.url)
-                              result = '<iframe src="' + item.data.url + '" style="width: 100%; height: 400px; border: none;"></iframe>';
+                            if (item.data.url) {
+                              let height = 400;
+                              if (item.data.url.includes('/headshots/'))
+                                height = 100;
+                              result = '<iframe src="' + item.data.url + '" style="width: 100%; height: ' + height + 'px; border: none;"></iframe>';
+                            }
                           } else if (!['callout', 'quote', 'relatedStory', 'video'].includes(item.type)) {
                             console.log(item);
                           }
@@ -369,7 +373,7 @@ if (matchDomain('afr.com')) {
                             header.innerText = asset.headlines.headline;
                             header.id = post.id;
                           }
-                          let byline;
+                          let byline = document.createTextNode('');
                           if (asset.byline) {
                             byline = document.createElement('p');
                             byline.innerText = asset.byline;
