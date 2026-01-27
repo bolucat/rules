@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.9.3
+// @version         4.2.9.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -403,28 +403,33 @@ if (matchDomain('afr.com')) {
 }
 
 else if (matchDomain('businessdesk.co.nz')) {
-  let paywall = document.querySelector('div.paywall');
-  if (paywall) {
-    paywall.classList.remove('paywall');
-    let signup_box = document.querySelector('div.signup-box-container');
-    removeDOMElement(signup_box);
-    let url = window.location.href.split(/[#\?]/)[0];
-    fetch(url, {headers: {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"}})
-    .then(response => {
-      if (response.ok) {
-        response.text().then(html => {
-          let match = html.match(/:query="'([^"]+)'"/);
-          if (match) {
-            let parser = new DOMParser();
-            let src_text = breakText(parseHtmlEntities(match[1])).replace(/\n\n/g, '<br><br>').replace(/\.([^\s\d]|&)/g, ". $1");
-            let doc = parser.parseFromString('<div>' + src_text + '</div>', 'text/html');
-            let content_new = doc.querySelector('div');
-            paywall.innerHTML = '';
-            paywall.appendChild(content_new);
-          }
-        })
-      }
-    })
+  if (mobile) {
+    let url = window.location.href;
+    getArchive(url, 'div.signup-box-container', '', 'main > section > div > div > div');
+  } else {
+    let paywall = document.querySelector('div.paywall');
+    if (paywall) {
+      paywall.classList.remove('paywall');
+      let signup_box = document.querySelector('div.signup-box-container');
+      removeDOMElement(signup_box);
+      let url = window.location.href.split(/[#\?]/)[0];
+      fetch(url)
+      .then(response => {
+        if (response.ok) {
+          response.text().then(html => {
+            let match = html.match(/:query="'([^"]+)'"/);
+            if (match) {
+              let parser = new DOMParser();
+              let src_text = breakText(parseHtmlEntities(match[1])).replace(/\n\n/g, '<br><br>').replace(/\.([^\s\d]|&)/g, ". $1");
+              let doc = parser.parseFromString('<div>' + src_text + '</div>', 'text/html');
+              let content_new = doc.querySelector('div');
+              paywall.innerHTML = '';
+              paywall.appendChild(content_new);
+            }
+          })
+        }
+      })
+    }
   }
 }
 
@@ -853,7 +858,7 @@ else if (matchDomain('fnlondon.com')) {
         if (article_id_dom) {
           let article_id = article_id_dom.content;
           let url_src = 'https://fn.djmedia.djservices.io/apps/finnews/theaters/default-article?screen_ids=' + article_id;
-          let x_access_token = cs_param['x-access-token'] || "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJBVVRIX1BIUkFTRV9QUk9EX0lPUyI6IlZlRXRaemRIaGF4bzhKRWpzaHlEIn0.bxWGVMaft1RN0_qWAnzoNBLx12sc0Jt4rLBaoG5n08AQTS9RibwlJlZrqUca_tm0lSCwl3Z1ehJcVepVH_YcNgRJsujt49JVFSGBO8B69zFDERS05x2RM_n0k8Jg9cyErhfsgWTsb8ObR6iRhHmw702_VcEzJrmdXwq44Bw3NgkBPOgIAZn37SA7hx__gvd8Hdxd5LLgZwxXTG1kWFW4S--vf4CxUt-uEY94m1VqaUyyMTEMvXTmktS2wReBH8mawDvBdyBDkQrPx7oaFP1zq4h-B1mQCj_wMRfR-QUls6BTpBPQUjO02FaTf-2RbHzAYn3xTpmxs0GE12iD4QBSbg";
+          let x_access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJBVVRIX1BIUkFTRV9QUk9EX0lPUyI6IlZlRXRaemRIaGF4bzhKRWpzaHlEIn0.bxWGVMaft1RN0_qWAnzoNBLx12sc0Jt4rLBaoG5n08AQTS9RibwlJlZrqUca_tm0lSCwl3Z1ehJcVepVH_YcNgRJsujt49JVFSGBO8B69zFDERS05x2RM_n0k8Jg9cyErhfsgWTsb8ObR6iRhHmw702_VcEzJrmdXwq44Bw3NgkBPOgIAZn37SA7hx__gvd8Hdxd5LLgZwxXTG1kWFW4S--vf4CxUt-uEY94m1VqaUyyMTEMvXTmktS2wReBH8mawDvBdyBDkQrPx7oaFP1zq4h-B1mQCj_wMRfR-QUls6BTpBPQUjO02FaTf-2RbHzAYn3xTpmxs0GE12iD4QBSbg";
           getExtFetch(url_src, '', {"app-identifier": "com.news.screens", "device-type": "phone", "x-access-token": x_access_token}, fix_dowjones_fetch, data_ext_fetch_id++, [article]);
         }
       }
