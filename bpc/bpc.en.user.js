@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.9.4
+// @version         4.2.9.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -404,8 +404,14 @@ if (matchDomain('afr.com')) {
 
 else if (matchDomain('businessdesk.co.nz')) {
   if (mobile) {
+    func_post = function () {
+      let article = document.querySelector(article_sel);
+      if (article)
+        article.style = 'width: 90%; margin: 20px;';
+    }
     let url = window.location.href;
-    getArchive(url, 'div.signup-box-container', '', 'main > section > div > div > div');
+    let article_sel = 'main > section > div > div > div';
+    getArchive(url, 'div.signup-box-container', '', article_sel);
   } else {
     let paywall = document.querySelector('div.paywall');
     if (paywall) {
@@ -1326,6 +1332,12 @@ if (matchDomain(usa_adv_local_domains)) {
   }
   let ads = 'div.ad, div.ad-inner, div.ad-unit, div#below-toprail, div[id^="taboola"]';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('abqjournal.com')) {
+  let paywall = document.querySelector('div.lab-paywall-locked');
+  if (paywall)
+    paywall.classList.remove('lab-paywall-locked');
 }
 
 else if (matchDomain('adweek.com')) {
@@ -3431,6 +3443,11 @@ else if (matchDomain('reuters.com')) {
   hideDOMStyle(ads);
 }
 
+else if (matchDomain('reviewjournal.com')) {
+  let ads = 'div.ads-insert, div.rj-ads-wrapper';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('rugbypass.com')) {
   if (window.location.pathname.match(/^\/plus\/\w/)) {
     let paywall = document.querySelector('.premium-fold-bottom');
@@ -4951,7 +4968,7 @@ else if (matchDomain(usa_hearst_comm_domains) || document.querySelector('head > 
   hideDOMStyle(ads);
 }
 
-else if (matchDomain(usa_lee_ent_domains.concat(ca_torstar_domains, ['abqjournal.com'])) || document.querySelector('head > meta[name="tncms-access-version"]')) {
+else if (matchDomain(usa_lee_ent_domains.concat(ca_torstar_domains)) || document.querySelector('head > meta[name="tncms-access-version"]')) {
   if (window.location.pathname.endsWith('.amp.html')) {
     amp_unhide_access_hide('="hasAccess"', '="NOT hasAccess"', '.amp-ads-container');
     let elem_hidden = document.querySelectorAll('html[class], body[class]');
