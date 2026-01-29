@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.9.6
+// @version         4.2.9.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -17,6 +17,7 @@
 // @match           *://*.net.au/*
 // @match           *://*.org/*
 // @match           *://*.pub/*
+// @match           *://*.businessday.co.za/*
 // @match           *://*.businessdesk.co.nz/*
 // @match           *://*.businesspost.ie/*
 // @match           *://*.businesstimes.com.sg/*
@@ -46,6 +47,7 @@
 // @match           *://*.sloanreview.mit.edu/*
 // @match           *://*.stcatharinesstandard.ca/*
 // @match           *://*.theleaflet.in/*
+// @match           *://*.timeslive.co.za/*
 // @match           *://*.uxdesign.cc/*
 // @match           *://*.wellandtribune.ca/*
 // @connect         archive.fo
@@ -224,6 +226,7 @@ var usa_nymag_domains = ['curbed.com', 'grubstreet.com', 'nymag.com', 'thecut.co
 var usa_outside_mag_domains = ["backpacker.com", "betamtb.com", "betternutrition.com", "cleaneatingmag.com", "climbing.com", "outsideonline.com", "oxygenmag.com", "skimag.com", "trailrunnermag.com", "triathlete.com", "vegetariantimes.com", "womensrunning.com", "yogajournal.com"];
 var usa_penske_media_domains = ['billboard.com', 'rollingstone.com', 'sourcingjournal.com', 'sportico.com', 'variety.com', 'wwd.com'];
 var usa_tribune_domains = ['baltimoresun.com', 'capitalgazette.com', 'chicagotribune.com', 'courant.com', 'dailypress.com', 'mcall.com', 'nydailynews.com', 'orlandosentinel.com', 'pilotonline.com', 'sun-sentinel.com'];
+var za_arena_domains = ['businessday.co.za', 'timeslive.co.za'];
 
 if (matchDomain('gitflic.ru')) {
   if (window.location.pathname.startsWith('/project/magnolia1234/bpc_uploads') && document.head) {
@@ -406,8 +409,10 @@ else if (matchDomain('businessdesk.co.nz')) {
   if (mobile) {
     func_post = function () {
       let article = document.querySelector(article_sel);
-      if (article)
+      if (article) {
         article.style = 'width: 90%; margin: 20px;';
+        article.querySelectorAll('img[loading="lazy"]').forEach(e => e.style = 'width: 100%;');
+      }
     }
     let url = window.location.href;
     let article_sel = 'main > section > div > div > div';
@@ -4941,6 +4946,14 @@ else if (matchDomain(ke_nation_media_domains)) {
     replaceDomElementExt(url, false, false, 'div.blk-txt');
   }
   let banners = 'div.banner, div.spinner';
+  hideDOMStyle(banners);
+}
+
+else if (matchDomain(za_arena_domains)) {
+  let noscroll = document.querySelector('html[style]');
+  if (noscroll)
+    noscroll.removeAttribute('style');
+  let banners = 'section.b-paywall__overlay, div.b-ads-block';
   hideDOMStyle(banners);
 }
 

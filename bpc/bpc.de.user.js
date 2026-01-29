@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.9.0
+// @version         4.2.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -210,8 +210,14 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
 }
 
 else if (matchDomain('berliner-zeitung.de')) {
+  func_post = function () {
+    let pars = document.querySelectorAll(article_sel + ' > div:not(:empty)');
+    if (pars.length < 3)
+      header_nofix(article_sel, '', 'BPC > no archive-fix');
+  }
   let url = window.location.href;
-  getArchive(url, 'div[class^="soft-paywall_wrapper_"]', '', 'div#articleBody');
+  let article_sel = 'div#articleBody';
+  getArchive(url, 'div[class^="soft-paywall_wrapper_"]', '', article_sel);
   let ads = 'div[class^="traffective_"], div[class^="article_billboard-"], div[class*="_ad_"], div[class^="outbrain_"], div[id^="qmn-ad-"], div[style]:empty, div[data-height]';
   hideDOMStyle(ads);
 }
@@ -703,16 +709,17 @@ else if (matchDomain('sueddeutsche.de')) {
 
 else if (matchDomain('suedkurier.de')) {
   func_post = function () {
-    let article = document.querySelector(article_sel);
-    if (article) {
-      let pars = article.querySelectorAll('section > div > div[style^="box-sizing:"]');
-      if (pars && pars.length < 3)
-        header_nofix(article_sel, '', 'BPC > no archive-fix');
+    let paywall = document.querySelector(paywall_sel);
+    if (paywall) {
+      let article = document.querySelector(article_sel);
+      if (article)
+        article.firstChild.before(googleSearchToolLink(url));
     }
   }
   let url = window.location.href;
-  let article_sel = 'main > article';
-  getArchive(url, 'aside.article-paywall', '', article_sel);
+  let paywall_sel = 'div#piano-inline-paywall';
+  let article_sel = 'div#article-body-paid-content';
+  getArchive(url, paywall_sel, '', article_sel);
 }
 
 else if (matchDomain('t3n.de')) {
