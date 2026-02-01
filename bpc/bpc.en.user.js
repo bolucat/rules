@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.9.7
+// @version         4.2.9.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3434,10 +3434,19 @@ else if (matchDomain('project-syndicate.org')) {
 }
 
 else if (matchDomain('puck.news')) {
+  func_post = function () {
+    let pars = document.querySelectorAll(article_sel + ' > div:not([id]) > div:not([style*="background-color:"]) > div');
+    if (pars.length && pars.length < 5)
+      header_nofix(article_sel, '', 'BPC > no archive-fix');
+  }
   let url = window.location.href;
-  getArchive(url, 'div[class*="paywall"]', '', 'article');
-  let modal = document.querySelector('div#paywall-modal');
-  removeDOMElement(modal);
+  let article_sel = 'article';
+  getArchive(url, 'div[data-puck-paywall]', '', article_sel);
+  let modals = 'div#paywall-modal, div.paywall-gradient';
+  hideDOMStyle(modals);
+  let pw_banner = document.querySelector('div[data-dd="paywall"]:not(.hidden) > div > div.max-w-paywall-body');
+  if (pw_banner)
+    removeDOMElement(pw_banner.parentNode);
   let overlay = document.querySelector('body.paywall-active');
   if (overlay)
     overlay.classList.remove('paywall-active');
@@ -4192,6 +4201,9 @@ else if (matchDomain('theinformation.com')) {
       if (comments)
         comments.style['margin-right'] = '0px';
     }
+    let article = document.querySelector(article_sel);
+    if (article)
+      article.style['padding-top'] = '100px';
     header_nofix(article_sel + ' > div', article_sel + ' aside div[style*="align-items:"] > button', 'BPC > no archive-fix');
   }
   let article_sel = 'article';
