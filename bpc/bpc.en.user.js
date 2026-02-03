@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.2.9.8
+// @version         4.2.9.9
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3318,13 +3318,16 @@ else if (matchDomain('nytimes.com')) {
 
 else if (matchDomain('on3.com')) {
   let url = window.location.href;
-  getArchive(url, 'div[data-template-type="barrier"]', '', 'article');
-  let noscroll = document.querySelectorAll('html.scroll-lock, body.scroll-lock');
-  for (let elem of noscroll) {
-    elem.removeAttribute('class');
-    elem.removeAttribute('style');
-  }
-  hideDOMStyle('div#blocker');
+  let paywall_sel = 'div[data-template-type="barrier"]';
+  window.setTimeout(function () {
+    getArchive(url, paywall_sel + '[class]', {rm_attrib: 'class'}, 'article');
+    let noscroll = document.querySelectorAll('html.scroll-lock, body.scroll-lock');
+    for (let elem of noscroll) {
+      elem.removeAttribute('class');
+      elem.removeAttribute('style');
+    }
+  }, 0);
+  hideDOMStyle('div#blocker, div[data-ui="ad"], ' + paywall_sel);
 }
 
 else if (matchDomain('outlookbusiness.com')) {
@@ -4162,7 +4165,22 @@ else if (matchDomain('theglobeandmail.com')) {
 }
 
 else if (matchDomain('thehill.com')) {
-  let banners = 'div.civic-science-article-container:empty, aside.ad-unit, iframe#instaread_iframe:not([src])';
+  if (!window.location.pathname.match(/^(video|hilltv)/)) {
+    let lead_video = document.querySelector('div.wp-block-nexstar-video > div#lead-media-1.nexstar-video');
+    if (lead_video) {
+      let json_script = getArticleJsonScript();
+      if (json_script) {
+        let json = JSON.parse(json_script.text);
+        if (json && json.image && json.image.url) {
+          let lead_fig = makeFigure(json.image.url, json.image.name, '', {class: 'caption'});
+          if (mobile)
+            lead_fig.style = 'width:90%; margin: 0px 20px;';
+          lead_video.parentNode.parentNode.replaceChild(lead_fig, lead_video.parentNode);
+        }
+      }
+    }
+  }
+  let banners = 'div[data-civicscience-widget]:empty, aside.ad-unit, iframe#instaread_iframe:not([src])';
   hideDOMStyle(banners);
 }
 
