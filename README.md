@@ -158,6 +158,7 @@
 - [openclash_custom_localnetwork_ipv4.list](https://rules.neuq.de/clash/openclash/openclash_custom_localnetwork_ipv4.list)
 - [openclash_custom_localnetwork_ipv6.list](https://rules.neuq.de/clash/openclash/openclash_custom_localnetwork_ipv6.list)
 - [openclash_custom_overwrite.sh](https://rules.neuq.de/clash/openclash/openclash_custom_overwrite.sh)
+- [openclash_custom_proxy_server_dns_policy.list](https://rules.neuq.de/clash/openclash/openclash_custom_proxy_server_dns_policy.list)
 - [openclash_custom_rules.list](https://rules.neuq.de/clash/openclash/openclash_custom_rules.list)
 - [openclash_custom_rules_2.list](https://rules.neuq.de/clash/openclash/openclash_custom_rules_2.list)
 - [openclash_custom_sniffer.yaml](https://rules.neuq.de/clash/openclash/openclash_custom_sniffer.yaml)
