@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.9.0
+// @version         4.2.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -638,7 +638,7 @@ else if (matchDomain('jeuneafrique.com')) {
   let ls_json_urls = {};
   function show_data(article, body, ls_json_urls) {
     let parser = new DOMParser();
-    let doc = parser.parseFromString('<div>' + body + '</div>', 'text/html');
+    let doc = parser.parseFromString('<div>' + parseHtmlEntities(body) + '</div>', 'text/html');
     let article_new = doc.querySelector('div');
     let readmore_links = article_new.querySelectorAll('div.sc-lire-aussi');
     for (let elem of readmore_links) {
@@ -1235,7 +1235,7 @@ else if (matchDomain('lequipe.fr')) {
   if (paywall) {
     removeDOMElement(paywall);
     hideDOMStyle('div.Article__paywall', 2);
-    addStyle('div.Article__paragraph--limited {visibility: visible !important; height: auto !important; margin: 0 0 20px !important;}');
+    addStyle('div.Article__paragraph--limited {visibility: visible !important; height: auto !important; margin: 0px 0px 20px !important;}');
     let article_id = window.location.pathname.match(/\d+$/)[0];
     let article = document.querySelector('div.article__body');
     if (article_id && article) {
@@ -1249,7 +1249,7 @@ else if (matchDomain('lequipe.fr')) {
               pars.shift();
               article.innerHTML = '';
               article.style = 'margin: 20px;';
-              addStyle('div.article__body > div.Paragraph {font-family: "DINNextLTPro-Regular", sans-serif; font-size: 18px; font-weight: 400; line-height: 26px;}', 2);
+              addStyle('div.article__body > div.Paragraph {font-family: "DINNextLTPro-Regular", sans-serif; font-size: 18px; font-weight: 400; line-height: 26px; margin: 20px 0px;}', 2);
               let parser = new DOMParser();
               for (let par of pars) {
                 let elem;

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.0.0
+// @version         4.3.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4202,7 +4202,7 @@ else if (matchDomain('thehill.com')) {
       if (json_script) {
         let json = JSON.parse(json_script.text);
         if (json && json.image && json.image.url) {
-          let lead_fig = makeFigure(json.image.url, json.image.name, '', {class: 'caption'});
+          let lead_fig = makeFigure(json.image.url, parseHtmlEntities(json.image.name || ''), '', {class: 'caption'});
           if (mobile)
             lead_fig.style = 'width:90%; margin: 0px 20px;';
           lead_video.parentNode.parentNode.replaceChild(lead_fig, lead_video.parentNode);
