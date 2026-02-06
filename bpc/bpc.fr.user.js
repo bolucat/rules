@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.2.9.1
+// @version         4.3.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1574,8 +1574,9 @@ else if (matchDomain('loeildelaphotographie.com')) {
 
 else if (matchDomain('lopinion.fr')) {
   let url = window.location.href;
-  getArchive(url, 'div.paywall-premium', '', 'div.mainBody', '', 'div[style*=";line-height:1.8;"] div[style*=";line-height:1.8;"]');
-  let ads = 'div.ResponsiveAd';
+  getArchive(url, 'div.paywall-premium:empty', '', 'div.mainBody', '', 'div[style*=";line-height:1.8;"] div[style*=";line-height:1.8;"]');
+  document.querySelectorAll('img.Image:not([data-lazy-false], [style*="opacity:"])').forEach(e => e.style.opacity = 1);
+  let ads = 'div.ResponsiveAd, div[id^="div-gpt-ad-"], div.Article-abonne';
   hideDOMStyle(ads);
 }
 
@@ -1930,6 +1931,7 @@ else if (matchDomain('telerama.fr')) {
             if (article_new && article.parentNode) {
               article_new.querySelectorAll('a[href^="tlrm://element?id="]').forEach(e => e.href = decodeURIComponent(e.href.split('tlrm://element?id=')[1]));
               article_new.querySelectorAll('figure > img[data-src]:not([src])').forEach(e => e.src = e.getAttribute('data-src'));
+              article_new.querySelectorAll('section.video > iframe[data-src]:not([src])').forEach(e => e.src = e.getAttribute('data-src'));
               article.parentNode.replaceChild(article_new, article);
             }
           }
