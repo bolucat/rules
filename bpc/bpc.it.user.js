@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.2.8.0
+// @version         4.2.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -8,6 +8,7 @@
 // @homepageURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @supportURL      https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
+// @noframes
 // @match           *://*.it/*
 // @match           *://*.eastwest.eu/*
 // @match           *://*.ilsole24ore.com/*

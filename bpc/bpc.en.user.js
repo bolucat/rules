@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.0.1
+// @version         4.3.0.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -922,24 +922,25 @@ else if (matchDomain('fnlondon.com')) {
 
 else if (matchDomain('ft.com')) {
   func_post = function () {
-    let lazy_images = document.querySelectorAll('figure > picture > img[loading="lazy"][src^="data:image/gif"][new-cursrc]');
-    for (let elem of lazy_images) {
-      elem.removeAttribute('loading');
-      elem.style = 'width: 100%;';
-      let figure = elem.parentNode.parentNode;
-      if (figure.parentNode && figure.parentNode.nodeName === 'DIV')
-        figure.parentNode.removeAttribute('style');
-      elem.src = elem.getAttribute('new-cursrc');
-    }
     if (mobile) {
-      let grids = document.querySelectorAll('div[style*="grid-template-areas"], article#site-content');
-      for (let elem of grids)
-        elem.style = 'margin: 10px;';
+      document.querySelectorAll('figure > picture > img[loading="lazy"]').forEach(e => e.style = 'width: 100%;');
+      document.querySelectorAll('div[style*="grid-template-areas"], article#site-content').forEach(e => e.style = 'margin: 10px;');
+      document.querySelectorAll('aside[style], ul#onward-journey-collection > li[style]').forEach(e => e.removeAttribute('style'));
     }
+    let charts = document.querySelectorAll('figure > div > div[old-src][frameborder]');
+    for (let elem of charts) {
+      let iframe = document.createElement('iframe');
+      iframe.src = elem.getAttribute('old-src');
+      iframe.style = 'width: 100%; height: 500px; border: none;';
+      elem.parentNode.replaceChild(iframe, elem);
+    }
+    let title = document.querySelector('head > meta[property="og:title"][content]');
+    if (title)
+      document.title = title.content;
   }
   let url = window.location.href;
   getArchive(url, 'div#barrier-page', '', 'div.n-layout__row--content', '', 'div[style*="article-body"]', 'body');
-  let banners = '.js-article-ribbon, div.o-ads, pg-slot';
+  let banners = '.js-article-ribbon, div.o-ads, pg-slot, div#o-topper ~ figure';
   hideDOMStyle(banners);
 }
 
@@ -4195,7 +4196,7 @@ else if (matchDomain('theglobeandmail.com')) {
 }
 
 else if (matchDomain('thehill.com')) {
-  if (!window.location.pathname.match(/^(video|hilltv)/)) {
+  if (!window.location.pathname.match(/^\/(video|hilltv)\//)) {
     let lead_video = document.querySelector('div.wp-block-nexstar-video > div#lead-media-1.nexstar-video');
     if (lead_video) {
       let json_script = getArticleJsonScript();
