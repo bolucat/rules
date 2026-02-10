@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.0.3
+// @version         4.3.0.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -923,16 +923,22 @@ else if (matchDomain('fnlondon.com')) {
 else if (matchDomain('ft.com')) {
   func_post = function () {
     if (mobile) {
+      document.querySelectorAll('div[style^="z-index:"][style*=";width:"]').forEach(e => e.removeAttribute('style'));
       document.querySelectorAll('figure > picture > img[loading="lazy"]').forEach(e => e.style = 'width: 100%;');
       document.querySelectorAll('div[style*="grid-template-areas"], article#site-content').forEach(e => e.style = 'margin: 10px;');
       document.querySelectorAll('aside[style], ul#onward-journey-collection > li[style]').forEach(e => e.removeAttribute('style'));
     }
-    let charts = document.querySelectorAll('figure > div > div[old-src][frameborder]');
+    let charts = document.querySelectorAll('div[frameborder][old-src]:not([src])');
     for (let elem of charts) {
       let iframe = document.createElement('iframe');
       iframe.src = elem.getAttribute('old-src');
-      iframe.style = 'width: 100%; height: 500px; border: none;';
+      iframe.style = 'width: 100%; height: 600px; border: none;';
       elem.parentNode.replaceChild(iframe, elem);
+    }
+    let tables = document.querySelectorAll('div[style]:not([id]) > table:not([id])');
+    for (let elem of tables) {
+      elem.parentNode.removeAttribute('style');
+      elem.querySelectorAll('tr[style*="visibility:hidden"]').forEach(e => e.style.visibility = 'visible');
     }
     let title = document.querySelector('head > meta[property="og:title"][content]');
     if (title)
@@ -940,12 +946,12 @@ else if (matchDomain('ft.com')) {
   }
   let url = window.location.href;
   getArchive(url, 'div#barrier-page', '', 'div.n-layout__row--content', '', 'div[style*="article-body"]', 'body');
-  let banners = '.js-article-ribbon, div.o-ads, pg-slot, div#o-topper ~ figure';
+  let banners = '.js-article-ribbon, div.o-ads, pg-slot';
   hideDOMStyle(banners);
 }
 
 else if (matchDomain('gbnews.com')) {
-  let ads = 'div.ad--billboard, div.ad--placeholder, div.video-inbody';
+  let ads = 'div.ad--billboard, div[class^="ad--placeholder"], div.video-inbody, div.sticky-banner-wrapper, div.sidebar-ad-wrapper, div.vf3-conversations-list__promo';
   hideDOMStyle(ads);
 }
 
