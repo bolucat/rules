@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.3.0.1
+// @version         4.3.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1171,63 +1171,8 @@ else if (matchDomain('leparisien.fr')) {
 }
 
 else if (matchDomain('lepoint.fr')) {
-  function lepoint_main() {
-    function decryptVariable(a) {
-      var t = ["point", "les", "payants", "top"],
-      n = ["le", "avec", "articles", "c"],
-      o = (function () {
-        var o = [];
-        for (var e = 0; e < 4; e++)
-          o.push(n[e]), o.push(t[e]);
-        return o
-      })(),
-      e = {
-        stringify: function (o) {
-          var e = {
-            ct: o.ciphertext.toString(CryptoJS.enc.Base64)
-          };
-          return o.iv && (e.iv = o.iv.toString()),
-          o.salt && (e.s = o.salt.toString()),
-          JSON.stringify(e)
-        },
-        parse: function (o) {
-          var e = JSON.parse(o),
-          t = CryptoJS.lib.CipherParams.create({
-            ciphertext: CryptoJS.enc.Base64.parse(e.ct)
-          });
-          return e.iv && (t.iv = CryptoJS.enc.Hex.parse(e.iv)),
-          e.s && (t.salt = CryptoJS.enc.Hex.parse(e.s)),
-          t
-        }
-      };
-      return JSON.parse(CryptoJS.AES.decrypt(JSON.stringify(a), o.join(" "), {
-          format: e
-        }).toString(CryptoJS.enc.Utf8))
-    }
-    let article = document.querySelector('div#contenu');
-    if (article && window.variable_article_poool) {
-      article.innerHTML = decryptVariable(window.variable_article_poool);
-      let videos = document.querySelectorAll('figure.video-dailymotion > blockquote[data-videoid]');
-      for (let elem of videos) {
-        let elem_new = document.createElement('iframe');
-        elem_new.src = 'https://www.dailymotion.com/embed/video/' + elem.getAttribute('data-videoid');
-        elem_new.style = 'height: 400px;';
-        elem.parentNode.replaceChild(elem_new, elem);
-      }
-    }
-  }
-  if (!matchDomain(['journal.lepoint.fr'])) {
-    let paywall = document.querySelectorAll('aside.paywall');
-    if (paywall.length) {
-      removeDOMElement(...paywall);
-      insert_script(lepoint_main);
-    }
-    let ads = 'div[id*="WRAP_"], div#StickyPaywall, div#paywall-sticky, #article-body div.slotpub, div.sticky-block';
-    hideDOMStyle(ads);
-  } else {
-    let url = window.location.href;
-    getArchive(url, 'div.accnt-cmp', '', 'article');
-  }
+  let ads = 'div.ad-slot-container';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('lequipe.fr')) {

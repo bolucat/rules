@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: rzfoJPP3u9GC7UZWiDKaKA
-! Diff-Path: ../patches/7/7-s-1770823745-3600.patch
+! Checksum: wyc+7fdNA6lfyQMsEium4A
+! Diff-Path: ../patches/7/7-s-1770913706-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.72.28
-! TimeUpdated: 2026-02-11T15:25:45+00:00
+! Version: 2.0.72.31
+! TimeUpdated: 2026-02-12T16:24:56+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1098,7 +1098,7 @@ anacap.doorblog.jp##+js(addEventListener-defuser, scroll, b.type)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/144212
 anianierosuki.work##+js(addEventListener-defuser, click, event)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/142720
-ikaskey.bktsk.com,live-theater.net,misskey.resonite.love,misskeytsf.love,misskirara.net,p1.a9z.dev,takusuki.com,trpger.us,mk.yopo.work,sushi.ski,warpday.net,zadankai.club,misskey.*##+js(json-prune, ads.[].imageUrl)
+signalskey.signal-st.com,empire.miyaco.moe,stormskey.works,m.eskey.click,labo.wovs.tk,nukers-misskey.hpc-densi.f5.si,msk.kitamiss.com,uneune.one,posskey.com,redfuku.com,misskey.secinet.jp,msk.ilnk.info,uttaeruyo.com,ikaskey.bktsk.com,live-theater.net,misskey.resonite.love,misskeytsf.love,misskirara.net,p1.a9z.dev,takusuki.com,trpger.us,mk.yopo.work,sushi.ski,warpday.net,zadankai.club,misskey.*##+js(json-prune, ads.[].imageUrl)
 ! https://github.com/AdguardTeam/AdguardFilters/pull/136936
 agora-web.jp##+js(abort-current-script, document.currentScript, insertAdjacentHTML)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/136491
@@ -1866,6 +1866,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+nieru.net###nieru-support-banner
+gazo-chat.net##.attention-info-panel
 vague.style##body > .add-container
 baseballchannel.jp##a[href^="https://prf.hn/"]
 good-apps.jp###custom_html-5
@@ -1911,6 +1913,7 @@ okinawatimes.co.jp##body > .l-wrapper > div[class^="l-"]:has(> .OUTBRAIN)
 femimatsu.com##div[id^="ad"][id$="-div-id"]
 femimatsu.com##.Side > section.Module:not(.Twitterarea):has(> div.FreeArea > script)
 umk.co.jp##div[id^="fourm"]
+nlab.itmedia.co.jp###kyujin-widget-container
 nlab.itmedia.co.jp##.post-contents > div.justify-between.items-start.border-\[5px\].border-\[\#eee\].my-\[20px\]
 doujinnote.com##.ai-track
 doujinnote.com##.block-widget
@@ -4350,6 +4353,7 @@ rikujyokyogi.co.jp##.code-block[style$="text-align: center; display: block; clea
 /adframes.js$domain=biz-journal.jp|g-journal.jp
 watch2chan.com,2ji.pink###execphp-15
 2ji.pink###execphp-16
+eroanime-movie.com##.sale-url
 eroanime-movie.com##.section-header:has(+ ul[class^="campain-list-"])
 eroanime-movie.com##ul[class^="campain-list-"]
 eroanime-movie.com##div[class^="rectangle"]
@@ -5386,7 +5390,7 @@ totoneko.net###pc_text-19
 totoneko.net###pc_text-23
 free.foto.ne.jp##.list_row3_ad_2column
 ||zadankai.club/ads/
-ikaskey.bktsk.com,live-theater.net,misskey.resonite.love,misskeytsf.love,misskirara.net,p1.a9z.dev,takusuki.com,trpger.us,mk.yopo.work,sushi.ski,warpday.net,zadankai.club,misskey.*##.xsAPm
+signalskey.signal-st.com,empire.miyaco.moe,stormskey.works,m.eskey.click,labo.wovs.tk,nukers-misskey.hpc-densi.f5.si,msk.kitamiss.com,uneune.one,posskey.com,redfuku.com,misskey.secinet.jp,msk.ilnk.info,uttaeruyo.com,ikaskey.bktsk.com,live-theater.net,misskey.resonite.love,misskeytsf.love,misskirara.net,p1.a9z.dev,takusuki.com,trpger.us,mk.yopo.work,sushi.ski,warpday.net,zadankai.club,misskey.*##.xsAPm
 aaieba.livedoor.biz###more > div[align="center"]:last-of-type > table
 aaieba.livedoor.biz###scroll
 aaieba.livedoor.biz##.aaieba-e
@@ -5487,8 +5491,6 @@ genxy-net.com,naga-ken.info##.bnr01
 naga-ken.info##.card02
 naga-ken.info##.no-icon[rel="nofollow"]
 wazap.com##.bodyFootBanner
-||nieru.net/*/ad$subdocument,~3p
-||nieru.net/view/data/ad/
 mudainodocument.com,nieru.net###float-bnr2
 ||urasma.com^$subdocument
 blog.jp##.advArea
@@ -9177,6 +9179,7 @@ kaikore.blogspot.com##.bar-ads
 teach-me.biz,appget.com##.adsence
 san-tatsu.jp##.adsence2clm
 okwave.jp##+js(set-cookie-reload, okwave_rwd, true)
+okwave.jp##.adfunnel_osusume_box_pc
 okwave.jp##.adfunnel_video
 okwave.jp##.ad_related_qa_list
 okwave.jp##.ad_over_header
@@ -9467,7 +9470,7 @@ recordchina.co.jp##.ad-outer
 recordchina.co.jp##.right-ranking
 kobe-np.co.jp##.bottomPrArea
 kobe-np.co.jp##li.active.native
-wikiwiki.jp##.iminterstitial
+wikiwiki.jp,saitama-city-marathon.jp##.iminterstitial
 wikiwiki.jp###pc-bottom-grandparent-ad-wrapper
 wikiwiki.jp###pc-caption-ad-container
 wikiwiki.jp##.fluct-overlay-container
