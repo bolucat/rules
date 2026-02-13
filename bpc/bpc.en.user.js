@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.0.5
+// @version         4.3.0.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -732,7 +732,7 @@ else if (matchDomain('autosport.com')) {
   header_nofix('div.ms-article-content > p', 'div.ms-piano_article-banner');
 }
 
-else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
+else if (matchDomain('independent.ie')) {
   let paywall = document.querySelector('div[class*="_fadetowhite"]');
   if (paywall) {
     let content = document.querySelector('script[data-fragment-type="ArticleContent"]');

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.2.9.2
+// @version         4.3.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -1129,13 +1129,28 @@ else if (matchDomain(de_vrm_domains) || matchDomain(de_vrm_custom_domains)) {
     let article = document.querySelector(article_sel);
     if (article) {
       article.querySelectorAll('div > div[role="button"]').forEach(e => removeDOMElement(e.parentNode));
+      let art_width = article.offsetWidth;
+      let img_style = 'width: 95%; margin: 10px;';
+      let galleries = article.querySelectorAll('div[elementname="gallery"]');
+      for (let elem of galleries) {
+        let gal_images = elem.querySelectorAll('img[src]');
+        let container = document.createElement('div');
+        container.style = 'width: ' + 0.7 * art_width + 'px; margin: auto;';
+        for (item of gal_images) {
+          let figure = makeFigure(item.src, item.alt, {style: img_style});
+          container.appendChild(figure);
+        }
+        elem.parentNode.replaceChild(container, elem);
+      }
       if (mobile) {
         let pictures = document.querySelectorAll('picture > img[style]');
         for (let elem of pictures) {
-          elem.style = 'width: 95%; margin: 10px;';
+          elem.style = img_style;
           elem.parentNode.removeAttribute('style');
         }
       }
+      let ads = article_sel + ' div:empty:not([class])';
+      hideDOMStyle(ads, 2);
     }
   }
   let article_sel = 'article section';

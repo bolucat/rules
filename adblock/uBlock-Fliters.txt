@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Thu, 12 Feb 2026 15:44:11 +0000
-! Diff-Path: ../patches/2026.2.12.963.patch#ublock-filters
+! Last modified: Fri, 13 Feb 2026 15:45:26 +0000
+! Diff-Path: ../patches/2026.2.13.1072.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -10272,6 +10272,17 @@ steamverde.net##+js(acs, addEventListener, bait)
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$redirect=noopjs,domain=envivo.tvazteca.com
 novelaplay.com##+js(aeld, DOMContentLoaded, bait)
 novelaplay.com##+js(nowoif)
+@@||vix.com^$ghide
+vix.com##+js(json-prune, breaks interstitials info, interstitials)
+vix.com##+js(xml-prune, 'xpath(//*[name()="Period"][.//*[name()="BaseURL" and contains(text(),".mp.lura.live/prod/")]] | //*[name()="MPD"]/@mediaPresentationDuration)', , .mpd)
+vix.com##+js(json-prune-xhr-response, ads, , propsToMatch, /play)
+||mp.lura.live/vod/vast.info/
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=vix.com
+@@||imasdk.googleapis.com/js/sdkloader/ima3_dai.js$script,3p,domain=vix.com
+vix.com##+js(json-prune, ad_slots)
+vix.com##+js(json-prune, plugins.dfp)
+vix.com##+js(m3u-prune, lura.live/prod/, /prog.m3u8)
+vix.com###video-player-track[style*="display: block"]:style(visibility: visible !important;)
 ! NOTE: Thai
 steamseries88.com##+js(rpnt, script, let playerType, 'window.addEventListener("load",()=>{if(typeof playMovie==="function"){playMovie()}});let playerType')
 ! NOTE: Turkish
@@ -10364,13 +10375,6 @@ ios.codevn.net##+js(nowoif, _blank)
 watch.rkplayer.xyz##+js(set, adsPlayer, undefined)
 lokhung888.com##+js(rmnt, script, /popup|arrDirectLink/)
 lokhung888.com##+js(nowoif, _blank)
-##html[lang="vi"] > body.home > .mmo-fixbot
-##html[lang="vi"] > body[class] .mmo
-##html[lang="vi"] > body[class] > .mmo + .mzdal
-##html[lang="vi"] > body[class] > div.container[style^="margin-bottom:"] + header#header + .bg-overlay.active
-||4shares.live/90link/videoplayback.mp4$media
-||4shares.live/90link/tc-banner-$image
-||4shares.live/90link/8/$image
 ||pagead2.googlesyndication.com^$script,domain=vnjpclub.com,important
 vnjpclub.com##+js(rmnt, script, /adblock/i)
 vnjpclub.com##.vnjp-ad-slot
@@ -10382,6 +10386,7 @@ animevietsub.*##.pc-catfixx
 animevietsub.*##.Ads
 animevietsub.*##.Adv
 /player/jwplayer-*/vast.js$script
+||imasdk.googleapis.com/js/sdkloader/ima3.js$redirect=noopjs,domain=vtvgo.vn,important
 ! !SECTION: Non-English sites
 ! noadblocker.js "Enhanced Ad Blocker Detection Script"
 /^https:\/\/[a-z0-9]{6,10}\.[a-z]{2,3}\/js\d?\/noadblocker\.js(?:\?v=\d)?$/$script,1p,match-case
@@ -11279,15 +11284,6 @@ hentaifreak.org##+js(nostif, popState)
 pimylifeup.com##+js(aopr, adthrive.config)
 @@||chronicle.com/dg/default/rest/$xhr,1p
 chronicle.com##.GoogleDfpAd-container
-@@||vix.com^$ghide
-vix.com##+js(json-prune, breaks interstitials info, interstitials)
-vix.com##+js(xml-prune, xpath(//*[name()="Period"][.//*[name()="AdaptationSet"][@contentType="video"][not(@bitstreamSwitching="true")]]), , .mpd)
-||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=vix.com
-@@||imasdk.googleapis.com/js/sdkloader/ima3_dai.js$script,3p,domain=vix.com
-vix.com##+js(json-prune, ad_slots)
-vix.com##+js(json-prune, plugins.dfp)
-vix.com##+js(m3u-prune, lura.live/prod/, /prog.m3u8)
-vix.com###video-player-track[style*="display: block"]:style(visibility: visible !important;)
 animepahe.*##+js(aopw, __C)
 ||uii.io^$3p
 tecnotutoshd.net##+js(acs, eval, replace)
@@ -22543,8 +22539,6 @@ sxyprn.*##.cbd
 ||sxyprn.*/js/epo.js
 ! END: Rules from filters.txt
 ! START: Regional lists
-! <<<<< ABPVN >>>>>
-||imasdk.googleapis.com/js/sdkloader/ima3.js$script,redirect=google-ima.js,domain=vtvgo.vn
 ! <<<<< AG Chinese >>>>>
 m.shuhaige.net##+js(rmnt, script, return a.split)
 m.shuhaige.net##^script:has-text(return a.split)
@@ -24010,6 +24004,10 @@ myhentaigallery.com##li.image-block.item:has-text(Ad)
 zkillboard.com##.pbcen,#adsensebottom:style(position:absolute !important;left:-3000px !important;visibility:visible !important)
 ! @@||cdn.fuseplatform.net^$script,domain=zkillboard.com
 zkillboard.com##+js(trusted-create-html, body, <img src='/n5dev.png' onerror="setTimeout(function(){if(typeof startWebSocket==='function'){startWebSocket();document.querySelectorAll('.liveupdates').forEach(el=>el.classList.remove('hidden'));const nl=document.getElementById('noliveupdates');if(nl)nl.classList.add('hidden');}window.showAdblockedMessage=()=>{};}\, 2000);">)
+zkillboard.com##center > div[style="background-color: #223800; color: white; border-radius: 1em; width: 100%; max-width: 100%"]
+zkillboard.com##a[href^="http://store.markeedragon.com/affiliate.php"]
+zkillboard.com##a[href^="https://jitarun.com/?r="]
+zkillboard.com##div.alert-info:has([href^="https://www.eveonline.com/signup?"])
 thessdreview.com##.e3lan
 thessdreview.com##body:style(background-image: none !important)
 @@||manhuarmmtl.com^$ghide
