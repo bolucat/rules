@@ -213,6 +213,7 @@ var uk_dmg_media_domains = ['dailymail.co.uk', 'mailonsunday.co.uk', 'thisismone
 var uk_iconic_media_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
 var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntraveler.com', 'epicurious.com', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.co.uk', 'vogue.com', 'wired.com'];
+var usa_cox_first_media_domains = ['daytondailynews.com', 'journal-news.com', 'springfieldnewssun.com'];
 var usa_craincomm_domains = ['360dx.com', 'adage.com', 'autonews.com', 'chicagobusiness.com', 'crainscleveland.com', 'crainsdetroit.com', 'crainsgrandrapids.com', 'crainsnewyork.com', 'european-rubber-journal.com', 'genomeweb.com', 'modernhealthcare.com', 'pionline.com', 'plasticsnews.com', 'precisionmedicineonline.com', 'rubbernews.com', 'tirebusiness.com', 'utech-polyurethane.com'];
 var usa_gannett_domains = ['azcentral.com', 'cincinnati.com', 'commercialappeal.com', 'courier-journal.com', 'democratandchronicle.com', 'desmoinesregister.com', 'detroitnews.com', 'dispatch.com', 'freep.com', 'indystar.com', 'jacksonville.com', 'jsonline.com', 'knoxnews.com', 'news-press.com', 'northjersey.com', 'oklahoman.com', 'palmbeachpost.com', 'tennessean.com'];
 var usa_hearst_comm_domains = ['ctpost.com', 'expressnews.com', 'houstonchronicle.com', 'nhregister.com', 'sfchronicle.com', 'statesman.com', 'timesunion.com'];
@@ -4681,6 +4682,11 @@ else if (matchDomain(usa_conde_nast_domains)) {
     elem.style.visibility = 'visible';
   let banners = 'div.ad, aside.paywall-bar, div[class^="MessageBannerWrapper-"], div.ad-stickyhero, div.ad_wrapper';
   hideDOMStyle(banners);
+}
+
+else if (matchDomain(usa_cox_first_media_domains)) {
+  let ads = document.querySelectorAll('div.arc_ad');
+  removeDOMElement(...ads);
 }
 
 else if (matchDomain(usa_craincomm_domains)) {
