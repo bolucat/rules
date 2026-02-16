@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.0.0
+// @version         4.3.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -256,6 +256,16 @@ else if (matchDomain('blick.ch')) {
 
 else if (matchDomain('bnn.de')) {
   func_post = function () {
+    let summary = document.querySelector('summary');
+    if (summary) {
+      let gradient = summary.querySelector('span[style*="background-image:linear-gradient"]');
+      if (gradient) {
+        gradient.removeAttribute('style');
+        gradient.click();
+      }
+      let sum_button = summary.parentNode.parentNode.querySelector('button');
+      removeDOMElement(sum_button);
+    }
     if (mobile) {
       document.querySelectorAll('picture img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
     }

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.0.6
+// @version         4.3.0.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -5044,50 +5044,31 @@ else if (matchDomain(usa_hearst_comm_domains) || document.querySelector('head > 
 }
 
 else if (matchDomain(usa_lee_ent_domains.concat(ca_torstar_domains)) || document.querySelector('head > meta[name="tncms-access-version"]')) {
-  if (window.location.pathname.endsWith('.amp.html')) {
-    amp_unhide_access_hide('="hasAccess"', '="NOT hasAccess"', '.amp-ads-container');
-    let elem_hidden = document.querySelectorAll('html[class], body[class]');
-    for (let elem of elem_hidden)
-      elem.removeAttribute('class');
-    let amp_images = document.querySelectorAll('div.main-content amp-img[src^="https://"]');
-    for (let amp_image of amp_images) {
-      let elem = document.createElement('img');
-      Object.assign(elem, {
-        src: amp_image.getAttribute('src'),
-        alt: amp_image.getAttribute('alt'),
-        height: '400'
-      });
-      amp_image.parentNode.replaceChild(elem, amp_image);
+  function unscramble(t) {
+    for (var n = "", i = 0, r = t.length; i < r; i++) {
+      var s = t.charCodeAt(i);
+      if (s >= 33 && s <= 126) {
+        var sTmp = String.fromCharCode(33 + (s - 33 + 47) % 94);
+        n += sTmp;
+      } else
+        n += t.charAt(i);
     }
-  } else {
-    if (true) {
-      function unscramble(t) {
-        for (var n = "", i = 0, r = t.length; i < r; i++) {
-          var s = t.charCodeAt(i);
-          if (s >= 33 && s <= 126) {
-            var sTmp = String.fromCharCode(33 + (s - 33 + 47) % 94);
-            n += sTmp;
-          } else
-            n += t.charAt(i);
-        }
-        return n;
-      }
-      let paywall = document.querySelector('div.subscriber-offers');
-      removeDOMElement(paywall);
-      let subscriber_only = document.querySelectorAll('div.subscriber-only');
-      for (let elem of subscriber_only) {
-        if (elem.classList.contains('encrypted-content')) {
-          elem.innerHTML = unscramble(elem.textContent);
-        }
-        elem.removeAttribute('style');
-        elem.removeAttribute('class');
-      }
-      let banners = document.querySelectorAll('div.subscription-required, div.redacted-overlay');
-      removeDOMElement(...banners);
-    }
-    let ads = 'div.tnt-ads-container, div[class*="adLabelWrapper"], div.globalHeaderBillboard';
-    hideDOMStyle(ads);
+    return n;
   }
+  let paywall = document.querySelector('div.subscriber-offers');
+  removeDOMElement(paywall);
+  let subscriber_only = document.querySelectorAll('div.subscriber-only');
+  for (let elem of subscriber_only) {
+    if (elem.classList.contains('encrypted-content')) {
+      elem.innerHTML = unscramble(elem.textContent);
+    }
+    elem.removeAttribute('style');
+    elem.removeAttribute('class');
+  }
+  let banners = document.querySelectorAll('div.subscription-required, div.redacted-overlay');
+  removeDOMElement(...banners);
+  let ads = 'div.tnt-ads-container, div[class*="adLabelWrapper"], div.globalHeaderBillboard';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(usa_mcc_domains) || document.querySelector('head > link[href^="https://mcclatchy-d.openx.net"], footer a[href^="https://www.mcclatchy.com/privacy-policy"]')) {
