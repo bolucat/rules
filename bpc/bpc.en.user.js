@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.0.7
+// @version         4.3.0.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2277,7 +2277,7 @@ else if (matchDomain('economictimes.indiatimes.com')) {
       else {
         let amphtml = document.querySelector('head > link[rel="amphtml"]');
         if (amphtml)
-          amp_redirect_not_loop(amphtml)
+          amp_redirect_not_loop(amphtml);
       }
     }
     addStyle('div.pageContent {height: auto !important;}');
@@ -2938,7 +2938,7 @@ else if (matchDomain('livelaw.in')) {
       } else if (!amp) {
         let amphtml = document.querySelector('head > link[rel="amphtml"]');
         if (amphtml)
-          window.location.href = amphtml.href;
+          amp_redirect_not_loop(amphtml);
       }
     }
   }
