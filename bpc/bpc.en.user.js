@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.0.8
+// @version         4.3.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -21,6 +21,7 @@
 // @match           *://*.businesspost.ie/*
 // @match           *://*.businesstimes.com.sg/*
 // @match           *://*.capital.bg/*
+// @match           *://*.caravanmagazine.in/*
 // @match           *://*.denik.cz/*
 // @match           *://*.dnevnik.bg/*
 // @match           *://*.epoch.org.il/*
@@ -1905,6 +1906,29 @@ else if (matchDomain('capital.bg')) {
   hideDOMStyle(ads);
 }
 
+else if (matchDomain('caravanmagazine.in')) {
+  func_post = function () {
+    let footer = document.querySelector(article_src_sel + ' footer');
+    removeDOMElement(footer);
+  }
+  let url = url_old = window.location.href;
+  let paywall_sel = 'div.pay_wall, div.reg_wall';
+  let article_sel = 'div.article_content';
+  let article_src_sel = 'div#app > header ~ div';
+  setInterval(function () {
+    url = window.location.href;
+    if (url !== url_old) {
+      url_old = url;
+      if (url.match(/(\w+-){3,}/))
+        refreshCurrentTab();
+    }
+    getArchive(url, paywall_sel, '', article_sel, '', article_src_sel);
+    let subscr_button = document.querySelector('button[aria-label="Close subscription prompt"]');
+    if (subscr_button)
+      subscr_button.click();
+  }, 1000);
+}
+
 else if (matchDomain(['chronicle.com', 'philanthropy.com'])) {
   let preview = document.querySelector('div[data-content-summary]');
   removeDOMElement(preview);
@@ -2901,28 +2925,6 @@ else if (matchDomain('latimes.com')) {
     removeDOMElement(subscribers[0].parentNode);
   let ads = 'div.google-dfp-ad-wrapper, div.revcontent';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('law.com')) {
-  func_post = function () {
-    let pars = document.querySelectorAll(article_sel + ' div[style*="font-family:"]');
-    if (pars.length < 5)
-      pars[0].after(googleSearchToolLink(url));
-    let banner = document.querySelector(article_sel + ' div > div > div > a[href="https://store.law.com/Registration/default.aspx"]');
-    if (banner)
-      removeDOMElement(banner.parentNode.parentNode.parentNode);
-  }
-  let url = window.location.href;
-  let paywall_sel = 'div.paywall-content';
-  let article_sel = 'main:not(:has(main))';
-  let paywall = document.querySelector(paywall_sel);
-  if (paywall) {
-    let podcast = document.querySelector('article > a[href="/podcast/"]');
-    if (podcast)
-      paywall.removeAttribute('class');
-    else
-      getArchive(url, paywall_sel, {rm_atrrib: 'class'}, article_sel);
-  }
 }
 
 else if (matchDomain('livelaw.in')) {
@@ -4987,6 +4989,8 @@ else if (matchDomain('ynet.co.il')) {
     removeDOMElement(paywall);
     window.location.href = window.location.pathname + '?rel=plus';
   }
+  let overlay = document.querySelector('#yitwall');
+  removeDOMElement(overlay);
 }
 
 else if (matchDomain(ke_nation_media_domains)) {

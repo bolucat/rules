@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.2.8.0
+// @version         4.3.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -187,12 +187,12 @@ else if (matchDomain('elpais.com')) {
 }
 
 else if (matchDomain(es_grupo_vocento_domains)) {
-  let paywall_sel = 'div.voc-paywall, div.container-wall-exclusive__content-login';
-  let paywall = document.querySelector(paywall_sel);
+  let paywall_sel = 'div.voc-paywall, div.container-wall-exclusive__content-login, ev-engagement[group-name^="paywall-"]';
+  let paywall = document.querySelectorAll(paywall_sel);
   if (!window.location.pathname.endsWith('_amp.html')) {
-    if (paywall) {
+    if (paywall.length) {
       let span_break = document.querySelector('span.c-text');
-      removeDOMElement(paywall, span_break);
+      removeDOMElement(...paywall, span_break);
       let art_hidden = document.querySelectorAll('.paywall, div.wpb_column > span');
       for (let elem of art_hidden) {
         let attributes = [...elem.attributes];
@@ -409,7 +409,7 @@ else if (matchDomain('abril.com.br')) {
     let paywall = document.querySelector('.piano-modal');
     removeDOMElement(paywall);
   } else {
-    let ads = 'div.ads, div[class^="ads-"], div.MGID';
+    let ads = 'div.ads, div.ads-bilboards, div.MGID';
     hideDOMStyle(ads);
   }
 }
@@ -726,8 +726,10 @@ else if (matchDomain('gauchazh.clicrbs.com.br')) {
   let div_hidden = document.querySelector('div.m-paid-content > div.hidden');
   if (div_hidden)
     div_hidden.removeAttribute('class');
-  let ads = 'div.ad-banner, div.animate-pulse, div.slot-superbanner, div.overflow-hidden:has(div.bg-ad-placeholder), section.ads-section-area';
+  let ads = 'div.ad-banner, div.animate-pulse, div.overflow-hidden:has(div.bg-ad-placeholder), section.ads-section-area';
   hideDOMStyle(ads);
+  let ads_rem = document.querySelectorAll('div[class^="superbaner"]');
+  removeDOMElement(...ads_rem);
 }
 
 else if (matchDomain('gazetadopovo.com.br')) {
