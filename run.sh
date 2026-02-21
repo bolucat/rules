@@ -315,14 +315,14 @@ list() {
       		echo "- [${file}](https://rules.neuq.de/clash/Loyalsoldier/${file})" >> ${CUR}/README.md
     	done
     	popd || exit 1
-    	# clash/DivineEngine
+    # clash/DivineEngine
     	pushd clash/DivineEngine/RuleSet || exit 1
 	echo "# clash/DivineEngine" >> ${CUR}/README.md
     	for file in $(tree -f -J | grep "yaml" | cut -d\" -f8 | sed $'s/^.\///g' | sort | xargs); do
       		echo "- [${file}](https://rules.neuq.de/clash/DivineEngine/RuleSet/${file})" >> ${CUR}/README.md
     	done
     	popd || exit 1
-     	# clash/meta-rules-dat
+    # clash/meta-rules-dat
 	pushd clash/meta-rules-dat || exit 1
 	echo "# clash/meta-rules-dat" >> ${CUR}/README.md
     	for file in $(ls); do
@@ -364,13 +364,20 @@ list() {
       		echo "- [${file}](https://rules.neuq.de/clash/cf-ip/${file})" >> ${CUR}/README.md
     	done
     	popd || exit 1
-     	# clash/a-dove-is-dumb
+    # clash/a-dove-is-dumb
     	pushd clash/a-dove-is-dumb || exit 1
 	echo "# clash/a-dove-is-dumb" >> ${CUR}/README.md
     	for file in $(ls); do
       		echo "- [${file}](https://rules.neuq.de/clash/a-dove-is-dumb/${file})" >> ${CUR}/README.md
     	done
     	popd || exit 1
+	# moedove
+		pushd clash/moedove || exit 1
+	echo "# clash/moedove" >> ${CUR}/README.md
+		for file in $(ls); do
+	  		echo "- [${file}](https://rules.neuq.de/clash/moedove/${file})" >> ${CUR}/README.md
+		done
+		popd || exit 1
 	# seo
     	pushd seo || exit 1
 	echo "# seo" >> ${CUR}/README.md
@@ -422,14 +429,14 @@ purge() {
       		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/Loyalsoldier/${file}"
     	done
     	popd || exit 1
-    	# clash/DivineEngine
+    # clash/DivineEngine
     	pushd clash/DivineEngine/RuleSet || exit 1
     	for file in $(tree -f -J | grep "yaml" | cut -d\" -f8 | sed $'s/^.\///g' | sort | xargs); do
       		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/DivineEngine/RuleSet/${file}"
     	done
     	popd || exit 1
-     	# clash/meta-rules-dat
-	pushd clash/meta-rules-dat || exit 1
+    # clash/meta-rules-dat
+		pushd clash/meta-rules-dat || exit 1
     	for file in $(ls); do
       		curl -i  "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/meta-rules-dat/${file}"
     	done
@@ -452,7 +459,7 @@ purge() {
       		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/openclash/${file}"
     	done
     	popd || exit 1
-     	# clash/ip-show-list
+    # clash/ip-show-list
     	pushd clash/ip-show-list || exit 1
     	for file in $(ls); do
       		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/ip-show-list/${file}"
@@ -464,12 +471,17 @@ purge() {
       		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/cf-ip/${file}"
     	done
     	popd || exit 1
-     	# clash/a-dove-is-dumb
+    # clash/a-dove-is-dumb
     	pushd clash/a-dove-is-dumb || exit 1
     	for file in $(ls); do
       		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/a-dove-is-dumb/${file}"
     	done
     	popd || exit 1
+	# clash/moedove
+		pushd clash/moedove || exit 1
+		for file in $(ls); do
+	  		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/moedove/${file}"
+		done
 	# seo
     	pushd seo || exit 1
     	for file in $(ls); do
@@ -509,15 +521,15 @@ purge() {
 }
 
 case "$OPTION" in
-    	--clean)
-        	clean
-        	;;
-    	--clash)
-        	clash
-        	;;
-    	--seo)
-        	seo
-        	;;
+    --clean)
+        clean
+        ;;
+    --clash)
+        clash
+        ;;
+    --seo)
+        seo
+        ;;
 	--adblock)
 		adblock
 		;;
@@ -528,7 +540,7 @@ case "$OPTION" in
 		purge
 		;;	
 	--all)
-        	clean
+        clean
 		clash
 		seo
 		adblock
