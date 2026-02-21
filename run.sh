@@ -1,5 +1,5 @@
 #!/bin/bash
-# 2021-2025 @bolucat 
+# 2021-2026 @bolucat 
 # Credits: https://github.com/Loyalsoldier/clash-rules
 # 	   https://github.com/DivineEngine/Profiles
 #	   https://github.com/cobaltdisco/Google-Chinese-Results-Blocklist
@@ -30,6 +30,7 @@
 #	   https://github.com/gkd-kit/subscription
 #	   https://github.com/MetaCubeX/meta-rules-dat
 #	   https://github.com/ignaciocastro/a-dove-is-dumb
+#      https://cira.moedove.com/
 
 OPTION=$1
 CUR=${PWD}
@@ -180,6 +181,28 @@ clash() {
 	rm -rf ios-rule-script/.git
  	git clone --depth 1 https://github.com/ignaciocastro/a-dove-is-dumb a-dove-is-dumb
 	rm -rf a-dove-is-dumb/.git
+	popd || exit 1
+	# https://cira.moedove.com/
+	pushd clash || exit 1
+	mkdir -p moedove
+	wget https://cira.moedove.com/china_all_v4.txt -O moedove/china_all_v4.txt
+	wget https://cira.moedove.com/china_all_v6.txt -O moedove/china_all_v6.txt
+	wget https://cira.moedove.com/china_domestic_backbone_v4.txt -O moedove/china_domestic_backbone_v4.txt
+	wget https://cira.moedove.com/china_domestic_backbone_v6.txt -O moedove/china_domestic_backbone_v6.txt
+	wget https://cira.moedove.com/chinatelecom_global_v4.txt -O moedove/chinatelecom_global_v4.txt
+	wget https://cira.moedove.com/chinatelecom_global_v6.txt -O moedove/chinatelecom_global_v6.txt
+	wget https://cira.moedove.com/chinatelecom_v4.txt -O moedove/chinatelecom_v4.txt
+	wget https://cira.moedove.com/chinatelecom_v6.txt -O moedove/chinatelecom_v6.txt
+	wget https://cira.moedove.com/chinaunicom_global_v4.txt -O moedove/chinaunicom_global_v4.txt
+	wget https://cira.moedove.com/chinaunicom_global_v6.txt -O moedove/chinaunicom_global_v6.txt
+	wget https://cira.moedove.com/chinaunicom_v4.txt -O moedove/chinaunicom_v4.txt
+	wget https://cira.moedove.com/chinaunicom_v6.txt -O moedove/chinaunicom_v6.txt
+	wget https://cira.moedove.com/chinamobile_global_v4.txt -O moedove/chinamobile_global_v4.txt
+	wget https://cira.moedove.com/chinamobile_global_v6.txt -O moedove/chinamobile_global_v6.txt
+	wget https://cira.moedove.com/chinamobile_v4.txt -O moedove/chinamobile_v4.txt
+	wget https://cira.moedove.com/chinamobile_v6.txt -O moedove/chinamobile_v6.txt
+	wget https://cira.moedove.com/cernet_edu_v4.txt -O moedove/cernet_edu_v4.txt
+	wget https://cira.moedove.com/cernet_edu_v6.txt -O moedove/cernet_edu_v6.txt
 	popd || exit 1
 }
 
