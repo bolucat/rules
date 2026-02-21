@@ -482,6 +482,7 @@ purge() {
 		for file in $(ls); do
 	  		curl -i "https://purge.jsdelivr.net/gh/bolucat/rules@master/clash/moedove/${file}"
 		done
+		popd || exit 1
 	# seo
     	pushd seo || exit 1
     	for file in $(ls); do
