@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.0.4
+// @version         4.3.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -485,74 +485,78 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
 
 else if (matchDomain('linda.nl')) {
   window.setTimeout(function () {
-    let paywall = document.querySelector('div.premium-login-box_loginBox');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let article = document.querySelector('div[class*="_loginRequired"]');
-      if (article) {
-        let filter = /^window\.__INITIAL_PROPS__\s?=\s?/;
-        let json_script = getSourceJsonScript(filter);
-        if (json_script) {
-          try {
-            let json = JSON.parse(json_script.text.split(filter)[1]);
-            if (json) {
-              let slug = json.slug;
-              if ((slug && !window.location.pathname.includes(slug)) || !json.viewData)
-                refreshCurrentTab();
-              if (json && json.viewData.article) {
-                function replace_also_read(str) {
-                  return str.replace(/{also-read title="([^}]+)" url="([^}]+)" [^}]+"}/g, "<div style='margin: 15px 0px'><a href=\"$2\">Lees ook: $1</a></div>");
-                }
-                article.className = article.className.replace(/[-\w]+_loginRequired/, '');
-                if (json.viewData.article.modules) {
-                  let modules = json.viewData.article.modules;
-                  article.innerHTML = '';
-                  for (let elem of modules) {
-                    let type = elem.acf_fc_layout;
-                    if (type) {
-                      let item = document.createElement('div');
-                      if (['body_text', 'intro', 'quote'].includes(type)) {
-                        if (elem.text) {
-                          let parser = new DOMParser();
-                          let doc = parser.parseFromString('<div style="margin: 20px;">' + replace_also_read((elem.title ? elem.title : '') + elem.text.replace(/\r\n/g, '<br>')) + '</div>', 'text/html');
-                          item = doc.querySelector('div');
-                          if (type === 'intro') {
-                            let intro = item.querySelector('p');
-                            if (intro)
-                              intro.style = 'font-weight: bold; ';
-                          } else if (type === 'quote')
-                            item.style['text-align'] = 'center';
+    let article_sel = 'div.premium-article_main-content, div.article-content_htmlContent';
+    let article = document.querySelector(article_sel);
+    if (article) {
+      let pars = article.querySelectorAll('p');
+      if (pars.length > 5)
+        return;
+      let paywall_sel = 'div.premium-login-box_loginBox';
+      hideDOMStyle(paywall_sel);
+      let filter = /^window\.__INITIAL_PROPS__\s?=\s?/;
+      let json_script = getSourceJsonScript(filter);
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text.split(filter)[1]);
+          if (json) {
+            let slug = json.slug;
+            if ((slug && !window.location.pathname.includes(slug)) || !json.viewData)
+              refreshCurrentTab();
+            if (json.viewData.article) {
+              function replace_also_read(str) {
+                return str.replace(/{also-read title="([^}]+)" url="([^}]+)" [^}]+"}/g, "<div style='margin: 15px 0px'><a href=\"$2\">Lees ook: $1</a></div>");
+              }
+              let fade = document.querySelector('div[class*="_loginRequired"]');
+              if (fade)
+                fade.className = article.className.replace(/[-\w]+_loginRequired/, '');
+              if (json.viewData.article.modules) {
+                let modules = json.viewData.article.modules;
+                article.innerHTML = '';
+                for (let elem of modules) {
+                  let type = elem.acf_fc_layout;
+                  if (type) {
+                    let item = document.createElement('div');
+                    if (['body_text', 'intro', 'quote'].includes(type)) {
+                      if (elem.text) {
+                        let parser = new DOMParser();
+                        let doc = parser.parseFromString('<div style="margin: 20px;">' + replace_also_read((elem.title ? elem.title : '') + elem.text.replace(/\r\n/g, '<br>')) + '</div>', 'text/html');
+                        item = doc.querySelector('div');
+                        if (type === 'intro') {
+                          let intro = item.querySelector('p');
+                          if (intro)
+                            intro.style = 'font-weight: bold; ';
+                        } else if (type === 'quote')
+                          item.style['text-align'] = 'center';
+                        article.append(item);
+                      }
+                    } else if (type === 'image') {
+                      let elem_images = elem.images_portrait || elem.images_landscape;
+                      if (elem_images && elem_images.length) {
+                        for (let img of elem_images) {
+                          let url = img.image.sizes.large;
+                          let caption_text = img.credits ? img.credits.replace(/(\n|<[^<]*>)/g, '') : '';
+                          item = makeFigure(url, caption_text, {style: 'width: 100%;'});
                           article.append(item);
                         }
-                      } else if (type === 'image') {
-                        let elem_images = elem.images_portrait || elem.images_landscape;
-                        if (elem_images && elem_images.length) {
-                          for (let img of elem_images) {
-                            let url = img.image.sizes.large;
-                            let caption_text = img.credits ? img.credits.replace(/(\n|<[^<]*>)/g, '') : '';
-                            item = makeFigure(url, caption_text, {style: 'width: 100%;'});
-                            article.append(item);
-                          }
-                        }
-                      } else
-                        console.log(elem);
-                    }
+                      }
+                    } else
+                      console.log(elem);
                   }
-                } else if (json.viewData.article.body) {
-                  let parser = new DOMParser();
-                  let doc = parser.parseFromString('<div>' + replace_also_read(json.viewData.article.body) + '</div>', 'text/html');
-                  let article_new = doc.querySelector('div');
-                  if (article_new) {
-                    article.innerHTML = '';
-                    article.appendChild(article_new);
-                  }
-                } else
-                  header_nofix('div.article-content_base');
-              }
+                }
+              } else if (json.viewData.article.body) {
+                let parser = new DOMParser();
+                let doc = parser.parseFromString('<div>' + replace_also_read(json.viewData.article.body) + '</div>', 'text/html');
+                let article_new = doc.querySelector('div');
+                if (article_new) {
+                  article.innerHTML = '';
+                  article.appendChild(article_new);
+                }
+              } else
+                header_nofix('div.article-content_base');
             }
-          } catch (err) {
-            console.log(err);
           }
+        } catch (err) {
+          console.log(err);
         }
       }
     }
