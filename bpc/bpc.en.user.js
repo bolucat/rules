@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.1.0
+// @version         4.3.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -130,6 +130,7 @@
 // @exclude         *://*.marianne.net/*
 // @exclude         *://*.parismatch.com/*
 // @exclude         *://*.parkiet.com/*
+// @exclude         *://*.philomag.com/*
 // @exclude         *://*.politicaexterior.com/*
 // @exclude         *://*.pourleco.com/*
 // @exclude         *://*.projectcargojournal.com/*
@@ -508,11 +509,8 @@ else if (matchDomain('thesaturdaypaper.com.au')) {
 }
 
 else if (matchDomain(['brisbanetimes.com.au', 'smh.com.au', 'theage.com.au', 'watoday.com.au'])) {
-  if (!window.location.hostname.startsWith('amp.')) {
-    amp_redirect('head > meta[content^="FOR SUBSCRIBERS"], #paywall_prompt');
-  } else {
-    amp_unhide_subscr_section();
-  }
+  let ads = 'div[data-testid="ad"]';
+  hideDOMStyle(ads);
 }
 
 else {
@@ -3345,6 +3343,29 @@ else if (matchDomain('nypost.com')) {
   hideDOMStyle(ads);
 }
 
+else if (matchDomain('nysun.com')) {
+  let paywall = document.querySelector('p > a[href^="/login?"]');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.article-wrapper > div:last-child');
+    if (article) {
+      let json_script = getArticleJsonScript();
+      if (json_script) {
+        let json = JSON.parse(json_script.text);
+        if (json) {
+          let json_text = json.articleBody;
+          if (json_text) {
+            article.innerHTML = '';
+            let article_new = document.createElement('div');
+            article_new.innerText = breakText(json_text);
+            article.appendChild(article_new);
+          }
+        }
+      }
+    }
+  }
+}
+
 else if (matchDomain('nytimes.com')) {
   if (!window.location.pathname.startsWith('/athletic/')) {
     waitDOMElement('div#dock-container', 'DIV', removeDOMElement, false);
@@ -4979,7 +5000,7 @@ else if (matchDomain('wsj.com')) {
       }
     }
   }
-  let ads = 'div.wsj-ad, div.adWrapper, div.css-xgokil-Box, div#cx-article-cover-overlay';
+  let ads = 'div.wsj-ad, div.adWrapper, div.css-xgokil-Box, div#cx-article-cover-overlay, div#dianomi-module';
   hideDOMStyle(ads);
 }
 

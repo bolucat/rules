@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.0.1
+// @version         4.3.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -519,6 +519,32 @@ else if (matchDomain(['mittelbayerische.de', 'pnp.de'])) {
 else if (matchDomain('motorradonline.de')) {
   if (window.location.pathname.endsWith('/amp/'))
     ampToHtml();
+}
+
+else if (matchDomain(['noz.de', 'shz.de'])) {
+  func_post = function () {
+    let podcasts = document.querySelectorAll('div > div[allow][old-src]');
+    for (let elem of podcasts) {
+      let iframe = document.createElement('iframe');
+      iframe.src = elem.getAttribute('old-src');
+      iframe.style = 'width: 100%; height: 300px;';
+      elem.parentNode.replaceChild(iframe, elem);
+    }
+    if (mobile) {
+      document.querySelectorAll('section#c2, section#c4, ' + article_arch_sel).forEach(e => e.style = 'margin: 20px');
+      let lazy_images = document.querySelectorAll('div > figure > picture > img[loading="lazy"][style]');
+      for (let elem of lazy_images) {
+        elem.style = 'width: 95%;';
+        elem.parentNode.parentNode.parentNode.removeAttribute('style');
+      }
+    }
+    header_nofix(article_arch_sel, 'section#c3', 'BPC > no archive-fix');
+  }
+  let url = window.location.href;
+  let article_arch_sel = 'section#c2 > div:last-child';
+  getArchive(url, 'div.paywall', '', 'article', '', 'article', article_arch_sel);
+  let ads = 'div.ad_label';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('nw.de')) {
@@ -1093,7 +1119,27 @@ else if (matchDomain(de_rp_medien_domains)) {
       if (article)
         article.firstChild.before(googleSearchToolLink(url));
     }
-    let videos = 'glomex-player';
+    let audio_tts = document.querySelector('div#article-audio-player > div > div');
+    if (audio_tts) {
+      let audio_script = document.querySelector('script[type="application/ld+json"]');
+      if (audio_script) {
+        try {
+          let audio_json = JSON.parse(audio_script.text);
+          if (audio_json) {
+            let audio_src = audio_json.audio || audio_json.id;
+            if (audio_src) {
+              let audio_new = document.createElement('audio');
+              audio_new.src = audio_src;
+              audio_new.setAttribute('controls', '');
+              audio_tts.parentNode.replaceChild(audio_new, audio_tts);
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+    let videos = 'glomex-player, aside:has(div#glomexdiv)';
     hideDOMStyle(videos, 5);
   }
   let url = window.location.href;

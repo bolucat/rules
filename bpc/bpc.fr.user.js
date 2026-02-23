@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.3.0.3
+// @version         4.3.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -42,6 +42,7 @@
 // @match           *://*.moustique.be/*
 // @match           *://*.next.ink/*
 // @match           *://*.parismatch.com/*
+// @match           *://*.philomag.com/*
 // @match           *://*.philonomist.com/fr/*
 // @match           *://*.pourleco.com/*
 // @match           *://*.science-et-vie.com/*
@@ -1771,6 +1772,24 @@ else if (matchDomain('ouest-france.fr')) {
   hideDOMStyle(ads);
   let banner = document.querySelector('div#pub_megabanner');
   removeDOMElement(banner);
+}
+
+else if (matchDomain('philomag.com')) {
+  if (!window.location.search.startsWith('?amp')) {
+    amp_redirect('div.paywall-content');
+  } else {
+    let amp_script = document.querySelector('amp-script');
+    if (amp_script) {
+      amp_script.removeAttribute('class');
+      amp_script.removeAttribute('layout');
+      let empty_sizer = amp_script.querySelector('i-amphtml-sizer:empty');
+      removeDOMElement(empty_sizer);
+      let overlay = amp_script.querySelector('div.i-amphtml-fill-content');
+      if (overlay)
+        overlay.removeAttribute('class');
+      amp_script.style.opacity = 1;
+    }
+  }
 }
 
 else if (matchDomain('philonomist.com')) {
