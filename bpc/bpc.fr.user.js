@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.3.1.0
+// @version         4.3.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -40,7 +40,6 @@
 // @match           *://*.marianne.net/*
 // @match           *://*.monacomatin.mc/*
 // @match           *://*.moustique.be/*
-// @match           *://*.next.ink/*
 // @match           *://*.parismatch.com/*
 // @match           *://*.philomag.com/*
 // @match           *://*.philonomist.com/fr/*
@@ -1620,21 +1619,6 @@ else if (matchDomain('marianne.net')) {
   }
   let ads = 'div[class*="--placeholder"]';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('next.ink')) {
-  func_post = function () {
-    let title = document.querySelector(article_sel + ' > p > strong');
-    removeDOMElement(title.parentNode);
-    document.querySelectorAll('figure > img[src^="data:image/"][fifu-data-src]').forEach(e => e.src = e.getAttribute('fifu-data-src'));
-  }
-  let art_id = 'next-single-post';
-  let article_sel = 'div#' + art_id;
-  let article = document.querySelector(article_sel + '[class]');
-  if (article) {
-    let art_class = article.className.split(' ')[0];
-    getJsonUrl('div#next-paywall-separator', '', article_sel + '.next-have-paywall-content', {art_id: art_id, art_class: art_class});
-  }
 }
 
 else if (matchDomain('ouest-france.fr')) {
