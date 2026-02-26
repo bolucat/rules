@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.1.1
+// @version         4.3.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -45,6 +45,7 @@
 // @match           *://*.nzherald.co.nz/*
 // @match           *://*.puck.news/*
 // @match           *://*.sloanreview.mit.edu/*
+// @match           *://*.standardmedia.co.ke/*
 // @match           *://*.stcatharinesstandard.ca/*
 // @match           *://*.theleaflet.in/*
 // @match           *://*.uxdesign.cc/*
@@ -218,7 +219,7 @@ var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntr
 var usa_cox_first_media_domains = ['daytondailynews.com', 'journal-news.com', 'springfieldnewssun.com'];
 var usa_craincomm_domains = ['360dx.com', 'adage.com', 'autonews.com', 'chicagobusiness.com', 'crainscleveland.com', 'crainsdetroit.com', 'crainsgrandrapids.com', 'crainsnewyork.com', 'european-rubber-journal.com', 'genomeweb.com', 'modernhealthcare.com', 'pionline.com', 'plasticsnews.com', 'precisionmedicineonline.com', 'rubbernews.com', 'tirebusiness.com', 'utech-polyurethane.com'];
 var usa_gannett_domains = ['azcentral.com', 'cincinnati.com', 'commercialappeal.com', 'courier-journal.com', 'democratandchronicle.com', 'desmoinesregister.com', 'detroitnews.com', 'dispatch.com', 'freep.com', 'indystar.com', 'jacksonville.com', 'jsonline.com', 'knoxnews.com', 'news-press.com', 'northjersey.com', 'oklahoman.com', 'palmbeachpost.com', 'tennessean.com'];
-var usa_hearst_comm_domains = ['ctpost.com', 'expressnews.com', 'houstonchronicle.com', 'nhregister.com', 'sfchronicle.com', 'statesman.com', 'timesunion.com'];
+var usa_hearst_comm_domains = ['ctinsider.com', 'ctpost.com', 'expressnews.com', 'houstonchronicle.com', 'nhregister.com', 'sfchronicle.com', 'statesman.com', 'timesunion.com'];
 var usa_hearst_comm_mag_domains = ['oprahdaily.com', 'popularmechanics.com'];
 var usa_lee_ent_domains = ['buffalonews.com', 'journalnow.com', 'journalstar.com', 'madison.com', 'nwitimes.com', 'omaha.com', 'richmond.com', 'stltoday.com', 'tucson.com', 'tulsaworld.com'];
 var usa_mcc_domains = ['bnd.com', 'charlotteobserver.com', 'elnuevoherald.com', 'fresnobee.com', 'kansas.com', 'kansascity.com', 'kentucky.com', 'mcclatchydc.com', 'miamiherald.com', 'newsobserver.com', 'sacbee.com', 'star-telegram.com', 'thestate.com', 'tri-cityherald.com'];
@@ -2463,6 +2464,11 @@ else if (matchDomain('financialexpress.com')) {
   hideDOMStyle(register + ', ' + ads_selector);
 }
 
+else if (matchDomain('firstthings.com')) {
+  let paywall = 'div.leaky_paywall_message_wrap';
+  hideDOMStyle(paywall);
+}
+
 else if (matchDomain('fmrmagazine.com')) {
   let paywall = document.querySelector('div.fr-gate-overlay');
   if (paywall) {
@@ -2687,12 +2693,6 @@ else if (matchDomain('hindustantimes.com')) {
 }
 
 else if (matchDomain('historyextra.com')) {
-  let article_masked = document.querySelector('.template-article__masked');
-  if (article_masked) {
-    let extra_pars = document.querySelectorAll('div.template-article__masked > p');
-    removeDOMElement(...extra_pars);
-    article_masked.classList.remove('template-article__masked');
-  }
   let ads = 'div.ad-slot, div.ad-banner, div.stitcher-ad--dai-placeholder';
   hideDOMStyle(ads);
 }
@@ -3747,7 +3747,7 @@ else if (matchDomain(sg_sph_media_domains)) {
 
 else if (matchDomain('slate.com')) {
   let slate_roadblock = '.slate-roadblock';
-  let ads = 'section[class*="-ad"]';
+  let ads = 'section[class*="-ad"], div.slate-ad';
   hideDOMStyle(slate_roadblock + ', ' + ads);
 }
 
@@ -3957,45 +3957,6 @@ else if (matchDomain('the-scientist.com')) {
     let fader = document.querySelector('div.gated-fader');
     let modal = document.querySelector('div#Modal');
     removeDOMElement(fader, modal);
-  }
-}
-
-else if (matchDomain('the-star.co.ke')) {
-  if (window.location.pathname.match(/(\d+-){3}/)) {
-    let paywall = document.querySelector('div.bg-gradient-to-b');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let article = document.querySelector('div.story-content');
-      if (article) {
-        article.removeAttribute('class');
-        let scripts = document.querySelectorAll('script');
-        let json_script
-        let script_start = 'self.__next_f.push([1,"';
-        for (let script of scripts) {
-          if (script.text.startsWith(script_start) && script.text.includes('\\"initialCanonicalUrl\\":\\"')) {
-            let json_url = script.text.split('\\"initialCanonicalUrl\\":\\"')[1].split('\\"')[0];
-            if (json_url && window.location.pathname !== json_url)
-              refreshCurrentTab();
-            break;
-          }
-        }
-        for (let script of scripts) {
-          if (script.text.startsWith(script_start) && script.text.length > 1000 && !script.text.match(/({|\],?[\[\\]|data:image)/)) {
-            json_script = script;
-            break;
-          }
-        }
-        if (json_script) {
-          let intro_pars = article.querySelectorAll('p');
-          removeDOMElement(...intro_pars);
-          let json_text = json_script.text.split('self.__next_f.push([1,"')[1].split('"])')[0].replace(/^.+\\n{4,}/, '').replace(/\.\\n((\\r\\n)+)?/g, '.\r\n\r\n').replace(/(\\r)?\\n/g, ' ').replace(/\\"/g, '"').replace(/\\u0026/g, '&');
-          let article_new = document.createElement('div');
-          article_new.style = 'margin: 20px 0px;';
-          article_new.innerText = parseHtmlEntities(json_text);
-          article.appendChild(article_new);
-        }
-      }
-    }
   }
 }
 
