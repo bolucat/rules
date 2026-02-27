@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.1.3
+// @version         4.3.1.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -701,7 +701,7 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['autosport.com', 'decanter.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'iai.tv', 'irishexaminer.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'the-tls.com', 'thelawyer.com', 'thetimes.com', 'unherd.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['autosport.com', 'decanter.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'iai.tv', 'irishexaminer.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'the-tls.com', 'thelawyer.com', 'thetimes.com', 'unherd.com', 'worldeconomics.com'])) {//united kingdom/ireland
 
 if (matchDomain('autocar.co.uk')) {
   let paywall = document.querySelector('div.ms-block, div.register-block');
@@ -1345,6 +1345,20 @@ else if (matchDomain('unherd.com')) {
     if (premium)
       premium.removeAttribute('id');
   }
+}
+
+else if (matchDomain('worldeconomics.com')) {
+  let paywall = document.querySelector('div#paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    document.querySelectorAll('div.blurred').forEach(e => e.classList.remove('blurred'));
+    document.querySelectorAll('div.blurredImage').forEach(e => e.classList.remove('blurredImage'));
+  }
+  let noscroll = document.querySelector('body.noscroll');
+  if (noscroll)
+    noscroll.classList.remove('noscroll');
+  let banners = 'div.StickyFooter, div#scrollable';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain(uk_dmg_media_domains)) {
