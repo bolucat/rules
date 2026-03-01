@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.1.4
+// @version         4.3.1.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -180,6 +180,8 @@ else if (matchDomain('nzherald.co.nz')) {
   window.setTimeout(function () {
     insert_script(nzherald_main);
   }, 100);
+  let banners = '#premium-toaster, div[id$="article-body-ad"]';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
@@ -249,7 +251,7 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || document.
     paywall.removeAttribute('class');
     let header = paywall.querySelector('h1');
     if (header)
-      header.before(externalLink(['freedium.cfd', 'freedium-mirror.cfd', 'readmedium.com', 'archive.today'], 'https://{domain}/{url}', url, 'BPC > Try for full article text:'));
+      header.before(externalLink(['freedium-mirror.cfd', 'readmedium.com', 'archive.today'], 'https://{domain}/{url}', url, 'BPC > Try for full article text:'));
   }
   window.setTimeout(function () {
     let banner = pageContains('div > div > p', /author made this story available to/);
@@ -2030,6 +2032,13 @@ else if (matchDomain('dailyherald.com')) {
 }
 
 else if (matchDomain('dailywire.com')) {
+  let paywall = document.querySelector('div#payed-article-paywall');
+  if (paywall) {
+    let fade = paywall.parentNode.querySelector('div[class]');
+    if (fade)
+      fade.removeAttribute('class');
+    removeDOMElement(paywall);
+  }
   window.localStorage.removeItem('article-gate-data');
   let ads = 'div.ad-wrapper, div.css-1d84fd8';
   hideDOMStyle(ads);
@@ -4894,8 +4903,22 @@ else if (matchDomain('washingtonpost.com')) {
   if (paywall) {
     let article = document.querySelector('div:not(.teaser-content) > div.article-body');
     if (!article) {
+      func_post = function () {
+        if (mobile) {
+          let article = document.querySelector(article_src_sel.split(' ').pop());
+          if (article) {
+            let topper = document.querySelector('div#default-topper');
+            if (topper) {
+              let art_width = topper.offsetWidth;
+              article.style.width = art_width;
+              article.querySelectorAll('div[style*="max-width:"]').forEach(e => e.style = 'margin: 0px 20px; width: ' + 0.9 * art_width);
+            }
+          }
+        }
+      }
       let url = window.location.href;
-      getArchive(url, paywall_sel, {rm_class: 'meteredContent'}, 'div.teaser-content', '', 'article > div > div[style*="grid-column-end"]');
+      let article_src_sel = 'article > div > div[style*="grid-column-end"]';
+      getArchive(url, paywall_sel, {rm_class: 'meteredContent'}, 'div.teaser-content', '', article_src_sel);
     }
   }
   let ads = 'wp-ad-wrapper, div[data-qa$="-ad"], div[data-component="Ad"], div[data-qa="outbrain"], div.PJLV-ifmxCWD-css';

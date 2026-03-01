@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.1.1
+// @version         4.3.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -699,35 +699,79 @@ else if (matchDomain('nrc.nl')) {
 }
 
 else if (matchDomain('telegraaf.nl')) {
+  func_post = function () {
+    if (mobile) {
+      let article = document.querySelector('article');
+      let body = document.querySelector('body');
+      if (article && body) {
+        article.style.width = body.offsetWidth * 0.95;
+        let lazy_images = document.querySelectorAll('button > img[loading="lazy"]');
+        for (let elem of lazy_images) {
+          elem.style = 'width: 100%;';
+          elem.parentNode.style['min-height'] = 'auto';
+        }
+      }
+    }
+    let gallery, img_width, captions, next, next_images, next_img_width;
+    let gallery_new = document.createElement('div');
+    let figure_nr = 0;
+    let gallery_figures = document.querySelectorAll('div > ul > li > figure');
+    for (let figure of gallery_figures) {
+      if (!figure_nr) {
+        gallery = figure.parentNode.parentNode.parentNode;
+        captions = Array.from(gallery.querySelectorAll('span')).filter(e => e.innerText.includes('©'));
+        next = gallery.nextSibling;
+        if (next)
+          next_images = next.querySelectorAll('img[currentsourceurl]');
+      }
+      let img = figure.querySelector('img[currentsourceurl]');
+      if (img && next_images) {
+        let img_src = img.getAttribute('currentsourceurl');
+        if (img_src) {
+          if (img_src.includes('/alternates/'))
+            img_width = img_src.split('/alternates/')[1].split('/')[0];
+        } else if (img_width && next_images[figure_nr]) {
+          img_src = next_images[figure_nr].getAttribute('currentsourceurl');
+          if (img_src && img_src.includes('/alternates/')) {
+            next_img_width = img_src.split('/alternates/')[1].split('/')[0];
+            img_src = img_src.replace(next_img_width, img_width);
+          }
+        }
+        let figure_new = makeFigure(img_src, captions && captions[figure_nr] ? captions[figure_nr].parentNode.innerText: '', {style: 'width: 100%;'});
+        figure_new.style = 'margin: 20px 0px;';
+        gallery_new.appendChild(figure_new);
+      }
+      figure_nr++;
+    }
+    if (gallery && next) {
+      next.after(gallery_new);
+      removeDOMElement(gallery, next);
+    }
+    let iframes = pageContains('div[style]', /^<iframe/);
+    for (let elem of iframes) {
+      let parser = new DOMParser();
+      let doc = parser.parseFromString('<div>' + elem.innerText.replace(/”/g, '"') + '</div>', 'text/html');
+      let elem_new = doc.querySelector('div');
+      elem.parentNode.replaceChild(elem_new, elem);
+    }
+    let errors = document.querySelectorAll('div[old-src]:not([src]):has(div#__next_error__)');
+    for (let elem of errors) {
+      let elem_new = document.createElement('iframe');
+      elem_new.src = elem.getAttribute('old-src');
+      elem_new.style = 'width: 100%; height: ' + elem.getAttribute('height') + 'px;';
+      elem.parentNode.replaceChild(elem_new, elem);
+    }
+    document.querySelectorAll('div > div[style^="min-height:"] > div[id^="player_"]').forEach(e => hideDOMElement(e.parentNode.parentNode));
+  }
   let url = window.location.href.split(/[#\?]/)[0];
   window.setTimeout(function () {
     let paywall_sel = 'div[data-testid="paywall-position-popover"]:not(:empty)';
     let paywall = document.querySelector(paywall_sel);
     if (paywall) {
-      removeDOMElement(paywall);
-      let article = document.querySelector('article');
-      if (article) {
-        let url_postfix = '-30-web';
-        if (window.location.pathname.startsWith('/video/') && document.querySelector('div[data-testid="article-video"]')) {
-          window.location.href = url + url_postfix;
-        } else {
-          let url_src = url + url_postfix;
-          fetch(url_src)
-          .then(response => {
-            if (response.ok) {
-              response.text().then(html => {
-                let parser = new DOMParser();
-                let doc = parser.parseFromString(html, 'text/html');
-                let article_new = doc.querySelector('article');
-                if (article_new.querySelector('div[class^="gallery_wrapper"], div[id^="player_"], div[data-testid="social-embed-fallbackmessage"], div[class^="map_"]'))
-                  window.location.href = url + url_postfix;
-                else
-                  article.parentNode.replaceChild(article_new, article);
-              })
-            }
-          })
-        }
-      }
+      if (window.location.pathname.startsWith('/video/') && document.querySelector('div[data-testid="article-video"]'))
+        removeDOMElement(paywall);
+      else
+        getArchive(url, paywall_sel, '', 'article');
       let noscroll = document.querySelector('body[class]');
       if (noscroll)
         noscroll.removeAttribute('class');
