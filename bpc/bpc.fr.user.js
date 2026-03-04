@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.3.1.1
+// @version         4.3.1.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -54,6 +54,7 @@
 // @connect         archive.ph
 // @connect         archive.vn
 // @connect         apps.lemonde.fr
+// @connect         mediafin.be
 // @exclude         *://*.poool.fr/*
 // @exclude         *://*.weborama.fr/*
 // @grant           GM.xmlHttpRequest
@@ -821,55 +822,63 @@ else if (domain = matchDomain('lamanchelibre.fr') || matchDomain(fr_groupe_la_ma
 }
 
 else if (matchDomain('lecho.be')) {
-  let url = window.location.href;
-  func_post = function () {
-    if (mobile) {
-      document.querySelectorAll('figure img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
-    }
-    let pars = document.querySelectorAll('div[itemprop="articleBody"] > div');
-    if (pars.length) {
-      if (pars.length < 5) {
-        let header = document.querySelector('article header');
-        if (header)
-          header.before(googleSearchToolLink(url));
+  let article_match = window.location.pathname.match(/\/(\d+)\.html$/);
+  if (article_match) {
+    let article_id = article_match[1];
+    let url = window.location.href;
+    let nofix_msg = 'BPC > no data yet (refresh page)';
+    if (matchDomain('investisseur.lecho.be')) {
+      let paywall = document.querySelector('html.paywalled');
+      if (paywall) {
+        paywall.classList.remove('paywalled');
+        let article = document.querySelector('main div.row > div');
+        if (article) {
+          let authorization = mediafin_get_auth();
+          if (authorization) {
+            let url_src = 'https://api.mediafin.be/content/article/urn:article:' + article_id;
+            getExtFetch(url_src, '', {headers: {authorization: authorization}}, mediafin_main, [article]);
+          } else {
+            header_nofix(article, '', nofix_msg);
+            article.before(googleSearchToolLink(url));
+          }
+        }
       }
+      addStyle('body {overflow: auto !important} ' + 'main div.row > div p {margin: 20px 0px}');
+      let banner = document.querySelector('div[data-id="react-paywall-auth0"]');
+      removeDOMElement(banner);
     } else {
-      let main = document.querySelector('main');
-      if (main)
-        main.after(googleSearchToolLink(url));
+      window.setTimeout(function () {
+        let close_button = document.querySelector('button.ds-modal__top-bar__closebutton');
+        if (close_button)
+          close_button.click();
+      }, 1000);
+      let paywall = document.querySelector('html.paywall-active');
+      if (paywall) {
+        paywall.classList.remove('paywall-active');
+        if (!(window.location.href.includes('/live-blog/') || document.querySelector('header.live-blog-header'))) {
+          let article = document.querySelector('div[itemprop="articleBody"]');
+          if (article) {
+            let authorization = mediafin_get_auth();
+            if (authorization) {
+              let url_src = 'https://api.mediafin.be/content/article/urn:article:' + article_id;
+              getExtFetch(url_src, '', {headers: {authorization: authorization}}, mediafin_main, [article]);
+            } else {
+              header_nofix(article, '', nofix_msg);
+              article.before(googleSearchToolLink(url));
+            }
+          }
+        } else {
+          let main = document.querySelector('main');
+          if (main)
+            main.after(googleSearchToolLink(url));
+        }
+      }
+    }
+    function clear_inert() {
+      document.querySelectorAll('[inert]').forEach(e => e.removeAttribute('inert'));
     }
     clear_inert();
   }
-  if (matchDomain('investisseur.lecho.be')) {
-    if (window.location.pathname.endsWith('.html')) {
-      getArchive(url, 'html.paywalled', {rm_class: 'paywalled'}, 'main');
-      addStyle('body {overflow: auto !important}');
-    }
-    let banner = document.querySelector('div[data-id="react-paywall-auth0"]');
-    removeDOMElement(banner);
-  } else {
-    window.setTimeout(function () {
-      let close_button = document.querySelector('button.ds-modal__top-bar__closebutton');
-      if (close_button)
-        close_button.click();
-    }, 1000);
-    let paywall_sel = 'html.paywall-active';
-    let paywall = document.querySelector(paywall_sel);
-    if (paywall) {
-      if (!window.location.href.includes('/live-blog/'))
-        getArchive(url, paywall_sel, {rm_class: 'paywall-active'}, 'article');
-      else {
-        paywall.classList.remove('paywall-active');
-        let main = document.querySelector('main');
-        if (main)
-          main.after(googleSearchToolLink(url));
-      }
-    }
-  }
-  function clear_inert() {
-    document.querySelectorAll('[inert]').forEach(e => e.removeAttribute('inert'));
-  }
-  clear_inert();
 }
 
 else if (matchDomain('lecourrierdesstrateges.fr')) {
@@ -1087,6 +1096,7 @@ else if (matchDomain('lemonde.fr')) {
               let article_new = doc.querySelector('.article_content');
               if (article_new) {
                 article_new.className = 'article__content';
+                article_new.style = 'margin: 50px 0px;';
                 article_new.querySelectorAll('p').forEach(e => e.className = 'article__paragraph');
                 article_new.querySelectorAll('h2').forEach(e => e.className = 'article__sub-title');
                 article_new.querySelectorAll('h3.question').forEach(e => e.className = 'article__question');
