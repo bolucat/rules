@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.1.7
+// @version         4.3.1.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -182,18 +182,6 @@ else if (matchDomain('nzherald.co.nz')) {
   }, 100);
   let banners = '#premium-toaster, div[id$="article-body-ad"]';
   hideDOMStyle(banners);
-}
-
-else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
-  function hindu_main() {
-    if (window) {
-      window.Adblock = false;
-      window.isNonSubcribed = false;
-    }
-  }
-  window.setTimeout(function () {
-    insert_script(hindu_main);
-  }, 100);
 }
 
 else if (matchDomain(usa_adv_local_domains)) {
@@ -3393,7 +3381,7 @@ else if (matchDomain('nysun.com')) {
 else if (matchDomain('nytimes.com')) {
   if (!window.location.pathname.startsWith('/athletic/')) {
     waitDOMElement('div#dock-container', 'DIV', removeDOMElement, false);
-    let ads = 'div[data-testid="inline-message"], div[id^="ad-"], div.pz-ad-box, div[class^="css-"]:has( > div#top-wrapper)';
+    let ads = 'div[data-testid="inline-message"], div[id^="ad-"], div.pz-ad-box, div[data-ad-element], div[class^="css-"]:has( > div#top-wrapper)';
     hideDOMStyle(ads);
   }
 }
@@ -4236,14 +4224,20 @@ else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
         if (!player)
           header_nofix(video, '', 'BPC > for videos disable extension');
       }
+    } else {
+      let paywall_sel = 'div#artmeterpv';
+      if (document.querySelector(paywall_sel) && !document.querySelector(paywall_sel + ' ~ div')) {
+        amp_redirect(paywall_sel);
+      } else {
+        let read_more = document.querySelector('div.paywallbox-btn > button');
+        if (read_more)
+          read_more.click();
+      }
     }
-    let read_more = document.querySelector('div.paywallbox-btn > button');
-    if (read_more)
-      read_more.click();
     let ads = 'div.ad, div.article-ad, div.dfp-ad, div#paywallbox, div[id^="piano-art-"], #test';
     hideDOMStyle(ads);
   } else {
-    let ads = '[class^="height"], [class^="advt"], [id^="piano"]';
+    let ads = 'div[class^="height"], div[class^="advt"], div[id^="piano"]';
     hideDOMStyle(ads);
   }
 }
