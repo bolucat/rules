@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.1.8
+// @version         4.3.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1032,6 +1032,12 @@ else if (matchDomain('irishexaminer.com')) {
 
 else if (matchDomain('literaryreview.co.uk')) {
   getJsonUrl('p.subscribe-for-more', '', 'div#_articlereview');
+}
+
+else if (matchDomain('lrb.co.uk')) {
+  let lrb_keys = Object.keys(window.localStorage).filter(x => x.match(/^lrb_/));
+  for (let item of lrb_keys)
+    window.localStorage.removeItem(item);
 }
 
 else if (matchDomain('motorsportmagazine.com')) {
@@ -2775,9 +2781,7 @@ else if (matchDomain('infzm.com')) {
     let container = document.querySelector('section.container');
     if (container)
       container.classList.remove('container');
-    let overlay = document.querySelector('div.article-content[style]');
-    if (overlay)
-      overlay.removeAttribute('style');
+    getArchive(url, 'div.infzm-content__payment-prompt', '', 'article');
   } else if (url.includes('.com/contents/')) {
     let paywall = document.querySelector('div.nfzm-article-jumbotron--unauth');
     if (paywall) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.1.0
+// @version         4.3.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -512,7 +512,7 @@ else if (matchDomain('kurier.at')) {
 else if (matchDomain(['mittelbayerische.de', 'pnp.de'])) {
   let url = window.location.href;
   getArchive(url, 'div.paywall-layer', '', 'div#article-body');
-  let ads = 'div.d-sm-block';
+  let ads = 'div.d-sm-block, div[id^="glomex_frame"]';
   hideDOMStyle(ads);
 }
 
@@ -643,6 +643,8 @@ else if (matchDomain('spiegel.de')) {
     header_nofix('article', 'svg[id*="-plus-paywall-"]', 'BPC > no archive-fix');
   }
   getArchive(url, 'div[data-area="paywall"]', '', 'article');
+  let ads = 'div[data-advertisement], div[x-data^="{adIndex:"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('springermedizin.de')) {
@@ -1042,7 +1044,7 @@ else if (matchDomain('zeit.de')) {
       let span_empty = document.querySelectorAll('span:empty');
       removeDOMElement(...span_empty);
     }
-    let ads = 'div[style*=";min-height:"]:has( > div[id^="iqadtile"])';
+    let ads = 'div.f2v-paywall-header, div[style*=";min-height:"]:has( > div[id^="iqadtile"])';
     hideDOMStyle(ads, 2);
   }
   let url = window.location.href.split(/[#\?]/)[0];
