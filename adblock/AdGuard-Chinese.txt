@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: FmBgxgWgg/jDM9BsFuO24Q
-! Diff-Path: ../patches/224/224-s-1773163491-3600.patch
+! Checksum: 8oek92S+e9Yxgd4YHnY+iQ
+! Diff-Path: ../patches/224/224-s-1773236171-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.55.64
-! TimeUpdated: 2026-03-10T17:21:27+00:00
+! Version: 2.1.55.71
+! TimeUpdated: 2026-03-11T13:32:55+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -20,6 +20,8 @@
 ! Bad: /banner.jpg (should be in general_url.txt)
 ! Bad: ||adssubdomain.legitwebsite.com^ (should be in adservers_firstparty.txt)
 !
+||fsuooh.cc^
+||hsehk.cn^
 ||upload.xchina.io^
 ||fancyapi.com^
 ||fancydsp.com^
@@ -1096,6 +1098,11 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 !
 ! NOTE: Specific rules
 !
+chuanghongjituan.com##.streamer-container2
+*$script,3p,domain=huanggua22.com
+.gif|$image,3p,domain=huanggua22.com
+huanggua22.com##[src^="https://tutu.facaiimage.com/"]
+huanggua22.com##[href^="https://oxs31.pdom3k.icu/"]
 vpstop.cn##a[target="_blank"] > img[style^="width: 100%;max-height:"]
 vpstop.cn##.sidebar > div.uk-card:contains(赞助商家)
 huavod.com##a[href^="https://lesi198.com"]
@@ -3985,10 +3992,6 @@ bmvc2020-conference.com#@#div[id][style="width: 100%;"] > iframe[scrolling="no"]
 /lapi/sign/phonegameapi/getinfo
 /lapi/sign/signapi/getinfo
 /lapi/sign/web/getinfo
-/lenovo/2021/all*.js
-/lenovo/pc/all*.js
-/lenovo/pc/piaofu2.js
-/lenovo/pc/top.js
 /letv-gug/*
 /live173/640320_
 /live173_*/46860.
@@ -5200,7 +5203,6 @@ newduba.cn###jq_youxi
 ##.video-ad-item
 ##.ceo_ads
 ##.yalayi_box
-##.uk-container.uk-container-expand
 ###side_promo.bc_dp
 ###fucku.col-md-8
 ###index_banner[src*=".imgdd.com"]
@@ -5251,6 +5253,29 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$3p
+||i12het785.com^
+||ryd626moj.com^
+||z0rto0758.com^
+||xscp03110xq.com^
+||mapbbqy.com^
+||ctirhpp.com^
+||fagmiethe.com^
+||nnuc.cn^
+||stringent19.com^
+||jpzbjh.icu^
+||xdyn03110jy.com^
+||pdhwzl.icu^
+##a[href*="/lesi151.cc"]
+##a[href*="/lesi198.com"]
+||i6nnwepgm.com^
+||xscp03111xq.com^
+||xdyn03111jy.com^
+||2ztav5r7r.com^
+||6knlhnjfv.com^
+||ojg8sflgl.com^
+||fbraaphra.com^
+||wlgjz02mo.com^
+||gtmajs.click^
 ||0wk6gdkg8r.com^
 ||j5sgdum5n4.com^
 ||lzdjxp.icu^
@@ -14337,7 +14362,10 @@ meijutt.*/js/pcjs/
 ||gliacloud.com^$domain=thisiscm.com
 ||cilipa.com^*0.js
 ||ttks.tw/js/otherad.
+||*.mp4$redirect=noop-0.1s.mp3,domain=huavod.com,media
+||pan0304.com/ads.
 zhihu.com##.Pc-word-new
+vpstop.cn##a[href*="/ClickAd"]
 joyacg.top##a[href^="http"] > .img-fluid
 ttks.tw##.txtcenter
 novel543.com,thisiscm.com##.gadBlock
@@ -14349,7 +14377,8 @@ iplark.com##div[style="position: relative;"]
 cngold.org##.w310:has(>.swiper-company)
 cngold.org##.headCompanys
 cngold.org##.mainRight > .border_top:first-child
-ping0.cc##.myeles
+ping0.cc##.xxeles
+ping0.cc###adxright
 cngold.org##.foot_megagame
 cngold.org##.fixed_jt
 hanime1.me##div[style*="text-align:"]:has(>div[style*="color: white"])
@@ -20481,7 +20510,6 @@ android-doc.com,apk.tw,chaojizhibo.net,chtoen.com,dizhishengcheng.com,doitwell.t
 @@||mm.maxthon.cn/ad/
 @@||mmaa99.xyz^$generichide
 @@||mmee04.com^$generichide
-@@||mmff30.com^$generichide
 @@||mmgd.xyz^$generichide
 @@||mmuu22.link^$generichide
 @@||mmy.la^*300*250
