@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.2.2
+// @version         4.3.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -159,7 +159,7 @@ else if (matchDomain(be_mediahuis_domains)) {
     if (popup)
       popup.click();
   }, 1500);
-  let ads = 'div[id^="ad_inline-"]';
+  let ads = 'div[id^="ad_inline-"], div.mh-ad-label';
   hideDOMStyle(ads);
 }
 
@@ -169,17 +169,11 @@ else if (matchDomain('businessam.be')) {
     removeDOMElement(paywall);
     let article = document.querySelector('div.text-gradient');
     if (article) {
-      let scripts = document.querySelectorAll('script:not([src]):not([type])');
-      let content_script;
-      for (let script of scripts) {
-        if (script.text.match(/window\.fullcontent64\s?=\s?"/)) {
-          content_script = script;
-          break;
-        }
-      }
+      let filter = /window\.fullcontent64\s?=\s?"/;
+      let content_script = getSourceJsonScript(filter);
       if (content_script) {
         try {
-          let content = decode_utf8(atob(content_script.text.split(/window\.fullcontent64\s?=\s?"/)[1].split('";')[0]));
+          let content = decode_utf8(atob(content_script.text.split(filter)[1].split('";')[0]));
           let parser = new DOMParser();
           let doc = parser.parseFromString('<div>' + content + '</div>', 'text/html');
           let content_new = doc.querySelector('div');
@@ -230,47 +224,6 @@ else if (matchDomain('doorbraak.be')) {
   }, 1000);
 }
 
-else if (matchDomain(be_roularta_domains)) {
-  if (matchDomain('beleggersbelangen.nl')) {
-    let paywall = document.querySelector('div.unlimited-access');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let no_account = document.querySelector('div.no-account');
-      if (no_account)
-        no_account.classList.remove('no-account');
-      let content_inner = document.querySelector('div.content-inner[style]');
-      if (content_inner)
-        content_inner.removeAttribute('style');
-    }
-  } else {
-    let paywall = document.querySelector('div[id*="wall-modal"]');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let html = document.querySelector('html[class]');
-      if (html)
-        html.removeAttribute('class');
-      function roularta_noscroll(node) {
-        node.removeAttribute('style');
-        node.removeAttribute('class');
-      }
-      waitDOMAttribute('html', 'html', 'class', roularta_noscroll, true);
-      let intro = document.querySelectorAll('div.article-body > p, div.article-body > style');
-      removeDOMElement(...intro);
-      let locked = document.querySelector('body.locked');
-      if (locked)
-        locked.classList.remove('locked');
-    }
-    if (!window.navigator.userAgent.toLowerCase().includes('chrome') && !matchDomain(['kw.be']) && window.location.href.match(/\/(\w+-){2,}/)) {
-      let lazy_images = document.querySelectorAll('img[src^="data:image/"][data-lazy-src]');
-      for (let elem of lazy_images) {
-        elem.src = elem.getAttribute('data-lazy-src');
-      }
-    }
-  }
-  let ads = 'div.rmgAd, div.c-header__ad';
-  hideDOMStyle(ads);
-}
-
 else if (matchDomain('fd.nl')) {
   if (window.location.hostname === 'specials.fd.nl') {
     document.querySelectorAll('div[class^="Opening_contentContainer"], section[class^="ScrollyText_"]').forEach(e => e.style = 'color: white;');
@@ -315,6 +268,47 @@ else if (matchDomain('ftm.nl')) {
   document.querySelectorAll('div.foldable').forEach(e => e.classList.remove('foldable'));
   let banners = 'div.banner-pp';
   hideDOMStyle(banners);
+}
+
+else if (matchDomain(be_roularta_domains)) {
+  if (matchDomain('beleggersbelangen.nl')) {
+    let paywall = document.querySelector('div.unlimited-access');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let no_account = document.querySelector('div.no-account');
+      if (no_account)
+        no_account.classList.remove('no-account');
+      let content_inner = document.querySelector('div.content-inner[style]');
+      if (content_inner)
+        content_inner.removeAttribute('style');
+    }
+  } else {
+    let paywall = document.querySelector('div[id*="wall-modal"]');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let html = document.querySelector('html[class]');
+      if (html)
+        html.removeAttribute('class');
+      function roularta_noscroll(node) {
+        node.removeAttribute('style');
+        node.removeAttribute('class');
+      }
+      waitDOMAttribute('html', 'html', 'class', roularta_noscroll, true);
+      let intro = document.querySelectorAll('div.article-body > p, div.article-body > style');
+      removeDOMElement(...intro);
+      let locked = document.querySelector('body.locked');
+      if (locked)
+        locked.classList.remove('locked');
+    }
+    if (!window.navigator.userAgent.toLowerCase().includes('chrome') && !matchDomain(['kw.be']) && window.location.href.match(/\/(\w+-){2,}/)) {
+      let lazy_images = document.querySelectorAll('img[src^="data:image/"][data-lazy-src]');
+      for (let elem of lazy_images) {
+        elem.src = elem.getAttribute('data-lazy-src');
+      }
+    }
+  }
+  let ads = 'div.rmgAd, div.c-header__ad';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('groene.nl')) {
@@ -690,7 +684,7 @@ else if (matchDomain(nl_mediahuis_region_domains)) {
             header.after(br, video, br);
         }
       }
-      article.querySelectorAll('hgroup, section:not(:empty)').forEach(e => e.removeAttribute('style'));
+      article.querySelectorAll('hgroup, section:not(:empty)').forEach(e => e.style = 'width: 95%;');
       if (mobile) {
         let div_next = document.querySelector('div[id="__next"]');
         if (div_next)
@@ -715,12 +709,13 @@ else if (matchDomain(nl_mediahuis_region_domains)) {
   let url = window.location.href;
   getArchive(url, paywall_sel, '', article_sel);
   window.setTimeout(function () {
-    let noscroll = document.querySelector('body[class*="style_disable-scroll-popup"]');
+    let noscroll_sel = 'body[style*="popover-top-position:"]';
+    let noscroll = document.querySelector(noscroll_sel);
     if (noscroll)
       noscroll.style = 'position: static !important; overflow: visible !important';
   }, 500);
-  let banners = 'div[class*="style_popover"]';;
-  hideDOMStyle(banners);
+  let ads = 'div.mh-ad-label';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('nrc.nl')) {
