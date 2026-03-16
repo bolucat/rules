@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: EJL5taHTvK72zMA+9NM4cQ
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1773594886-3600.patch
+! Checksum: 0VtsmcQuWk1YTP1ZEp0Z6A
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1773685755-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.53.65
-! TimeUpdated: 2026-03-15T17:11:01+00:00
+! Version: 2.4.53.89
+! TimeUpdated: 2026-03-16T18:25:44+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -23,6 +23,7 @@
 !
 !
 !
+||huldeeforgoer.com^
 ||baggyrepackingrocky.com^
 ||snappydirt.com^
 ||toodlerehouse.com^
@@ -10304,6 +10305,8 @@ uniquestream.net##+js(prevent-fetch, /pagead2\.googlesyndication\.com|googletags
 ! https://github.com/AdguardTeam/AdguardFilters/issues/226585
 myaew.com##+js(prevent-fetch, imasdk.googleapis.com)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/226686
+microsip.org##+js(no-setTimeout-if, link.onload, 100)
+microsip.org##.mc-ab-root
 microsip.org###msip-adialog-overlay
 ! https://github.com/AdguardTeam/AdguardFilters/issues/226595
 ||sub-vod.fr/static/monetag2.js
@@ -10340,8 +10343,6 @@ iptvpulse.top##+js(no-setTimeout-if, pagead2.googlesyndication.com)
 spotidown.app##+js(no-xhr-if, adsbygoogle)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/224995
 gupload.xyz##+js(no-setTimeout-if, detect)
-! https://github.com/AdguardTeam/AdguardFilters/issues/225168
-reallifecams.us#@#.AdsBox
 ! https://github.com/AdguardTeam/AdguardFilters/issues/224937
 ||acapellas.eu/ublock-only.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/224944
@@ -10380,11 +10381,9 @@ faucetcrypto.com##+js(no-xhr-if, /cdn\.bmcdn3\.com|appsha-pnd\.ctengine\.io/)
 tryigit.dev##+js(abort-on-stack-trace, console.log, checkAdBlockers)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/224490
 hitslink.xyz###adblock-overlay
-hitslink.xyz#@#.AdsBox
 ! https://github.com/AdguardTeam/AdguardFilters/issues/224389
 ||adultconfessions.com/js/abdetectorpro
 ! https://github.com/AdguardTeam/AdguardFilters/issues/224447
-bigshare.io#@#.AdsBox
 bigshare.io##+js(addEventListener-defuser, DOMContentLoaded, detectAdBlock)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/224412
 ! filemoon antiadb reproducible on frequent refresh
@@ -10483,7 +10482,6 @@ yrtourguide.com,technons.com,tournguide.com,digiztechno.com,shrtslug.biz##+js(no
 ! https://github.com/AdguardTeam/AdguardFilters/issues/221404
 ! https://github.com/AdguardTeam/AdguardFilters/issues/222092
 vidnest.io##+js(abort-on-stack-trace, document.querySelectorAll, blockVideoCompletely)
-vidnest.io#@#.AdsBox
 @@||vidnest.io^$generichide
 vidnest.io##+js(no-setTimeout-if, bait.remove)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/221824
@@ -11679,7 +11677,6 @@ cablevisionhd.com,telegratishd.com##.site-access-popup
 ! https://github.com/AdguardTeam/AdguardFilters/issues/180787
 freeminecrafthost.com#@#.textAds
 freeminecrafthost.com#@#.Textads
-freeminecrafthost.com#@#.AdsBox
 ! https://github.com/AdguardTeam/AdguardFilters/issues/180600
 newbharatyojna.com###adb
 ! https://github.com/AdguardTeam/AdguardFilters/issues/180610
@@ -15464,7 +15461,6 @@ desktophut.com##+js(abort-current-script, document.getElementById, test-block)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/154273
 ! https://github.com/AdguardTeam/AdguardFilters/issues/143181
 ! https://github.com/AdguardTeam/AdguardFilters/issues/66997
-vidmoly.biz,vidmoly.me,vidmoly.net,vidmoly.to#@#.AdsBox
 vidmoly.biz,vidmoly.me,vidmoly.net,vidmoly.to###adsblock
 vidmoly.biz,vidmoly.me,vidmoly.net,vidmoly.to###x-adb-root
 vidmoly.biz,vidmoly.me,vidmoly.net,vidmoly.to##body > div[style*="opacity:"][style*="position: fixed; width:"][style*="z-index:"]
@@ -18615,7 +18611,6 @@ th2plant.com##+js(abort-current-script, document.getElementById, innerHTML)
 wecima.click##a[href*="&utm_medium=banner"] > img
 ||wecima.click/static/js/adBlock.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/183251
-shamra.sy#@#.AdsBox
 shamra.sy##+js(no-setTimeout-if, .offsetHeight)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/182298
 ||rolpenszimocca.com^
@@ -23118,7 +23113,6 @@ hdblog.it###main_container > div[style^="width:"]:not([id]):not([class])
 ||hdblog.it/new_files/ajax/prime_bf.php
 capitolivm.it##.hb-ad-inpage
 ||milanworld.net/js/siropu/
-milanworld.net##div[aria-label="Advertisement"]
 patentati.it###footad-container
 ||gazzettinodelchianti.it/wp-content/uploads/pum/pum-site-scripts.js$domain=gazzettinodelchianti.it
 gazzettinodelchianti.it##+js(no-window-open-if)
@@ -23216,6 +23210,9 @@ smellyfisher.com##.providers
 bestmovie.it,treccani.it##.gmp
 forum.fibra.click##.FibraClickAds-fake-poststream-item
 open.online##a[rel="sponsored"]
+! https://github.com/AdguardTeam/AdguardFilters/issues/227119
+!+ NOT_OPTIMIZED
+milanworld.net##div[aria-label="Advertisement"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/215109
 htnovo.net##+js(no-setTimeout-if, baitElement.offsetHeight)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/214206
@@ -26274,6 +26271,7 @@ infoprzasnysz.com##.rimy
 ! https://github.com/AdguardTeam/AdguardFilters/issues/131077
 dziennikprawny.pl##article > div:not([class]) > a[target="_blank"][rel="noopener"] > img
 ! https://github.com/AdguardTeam/AdguardFilters/issues/221686
+!+ NOT_OPTIMIZED
 ithardware.pl###home-sliderBaner
 ! https://github.com/AdguardTeam/AdguardFilters/issues/218733
 ithardware.pl###special-section-4:style(background-image: none !important;)
@@ -26283,9 +26281,10 @@ ithardware.pl##+js(abort-current-script, document.getElementById, ad.doubleclick
 ! https://github.com/AdguardTeam/AdguardFilters/issues/131705
 ! https://github.com/AdguardTeam/AdguardFilters/issues/134017
 ! https://github.com/AdguardTeam/AdguardFilters/issues/131054
-||ithardware.pl/js/mediaexpert-widget.js
 ithardware.pl###t_subpage > .gray-section > .container:has(> .flex-column-full:only-child > div[id^="t_ads_banner"]:only-child)
 ithardware.pl##div[id^="t_ads_banner"]
+!+ NOT_OPTIMIZED
+||ithardware.pl/js/mediaexpert-widget.js
 !+ NOT_OPTIMIZED
 ithardware.pl##div[id^="art-"][id*="Baner"]
 !+ NOT_OPTIMIZED
@@ -28152,6 +28151,8 @@ mgsm.pl###left-con > .row > .columns > div[style="height: 336px;"]
 emonitoring.poczta-polska.pl###getbaner
 ! https://github.com/AdguardTeam/AdguardFilters/issues/41151
 expressilustrowany.pl##.componentsRecommendationsSimpleListing__content > .componentsRecommendationsSimpleListing__element[data-slot-show]:has(> #dfp-nativesrodek1)
+! https://github.com/AdguardTeam/AdguardFilters/issues/227011
+telepolis.pl##.article__body .sales
 ! https://github.com/AdguardTeam/AdguardFilters/issues/201771
 telepolis.pl##.banner--no-placeholder
 ! https://github.com/AdguardTeam/AdguardFilters/issues/212967
@@ -32028,6 +32029,8 @@ kat.*,kickass.*,kickass2.*,kickasstorrents.*,kat2.*,kattracker.*,thekat.*,thekic
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/226746
+!+ NOT_PLATFORM(ext_ff)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/225387
 camwhores.tv##+js(set-constant, flashvars.adv_post_src, '')
 camwhores.tv##+js(set-constant, flashvars.adv_post_url, '')
@@ -36348,9 +36351,10 @@ inverse.com##article .adWrapper
 ||minecraftskins.com/miscjs/as*.js
 ||loader.motor-talk.de^
 ||loader.nyitvatartas24.hu^
-||html-load.com^$important,domain=nikkansports.com|j-cast.com|picksandparlays.net|ranking.net|minkou.jp|aucfree.com|motor-talk.de|373news.com|northantstelegraph.co.uk|tavovaikas.lt|agriculture.com|travelandleisure.com|learnreligions.com|verywellhealth.com
+||html-load.com^$important,domain=nikkansports.com|j-cast.com|picksandparlays.net|ranking.net|minkou.jp|aucfree.com|motor-talk.de|373news.com|northantstelegraph.co.uk|tavovaikas.lt|agriculture.com|travelandleisure.com|learnreligions.com|verywellhealth.com|statecollege.com
 ||ad-shield.cc^
 scribd.com##+js(remove-node-text, script, await eval)
+programme-tv.net##+js(set-constant, as_retry, 0)
 ! Ad-Shield Essentials
 .com/script/*.js|$script,3p,domain=jmty.jp|dolldivine.com|knowt.com|thefreebieguy.com|blogmura.com|gruene-zitate.de|myforecast.com|jawapos.com|picks.my|gamewith.jp|motor-talk.de|worldhistory.org|kr-weathernews.com|nikkan-gendai.com|newser.com|zerogpt.com|smithsonianmag.com|slickdeals.net|signupgenius.com|saabcentral.com|reneweconomy.com.au|newser.com|laposte.net|deckshop.pro|auone.jp|emojipedia.org|nicovideo.jp
 ://www.*.xyz/script/$script,3p,domain=jmty.jp|dolldivine.com|knowt.com|thefreebieguy.com|blogmura.com|gruene-zitate.de|myforecast.com|jawapos.com|picks.my|gamewith.jp|motor-talk.de|worldhistory.org|kr-weathernews.com|nikkan-gendai.com|newser.com|zerogpt.com|smithsonianmag.com|slickdeals.net|signupgenius.com|saabcentral.com|reneweconomy.com.au|newser.com|laposte.net|deckshop.pro|auone.jp|emojipedia.org
@@ -36678,6 +36682,28 @@ techarmor.xyz##.my-ad-container
 !
 ! NOTE: Specific rules
 !
+templetoons.com##+js(no-window-open-if)
+||templetoons.com/api/ads/
+wildtangent.com##aside.md\:flex > .mx-auto:has(div[id$="side-skyscraper"])
+wildtangent.com##div[class^="container mx-auto"] > div > .justify-center.flex:has(> div[id$="top-banner"])
+playhop.com##.aab-adv
+playhop.com##.google-sticky-adv-banner
+||yandex.com/ads/$domain=playhop.com
+save-editor.com##.set_wrapper_absolute_right
+123av.fun##a[href^="https://qz.run/"]
+123av.fun##a[href="https://missav.run"]
+attractionsmagazine.com##a[href^="https://mousefantravel.com/"]
+missav.run##a[href="https://whos.tv"]
+missav.run##.banner-box
+missav.run##.grid > div.video-card:not([id])
+winaero.com###indbl
+winaero.com##.windiv
+javxxx.me###menu-main > li.nav-item:has(> a[rel^="sponsored"])
+viexx.com##.info-banner
+||static.opensubtitles.org/libs/js/ray-announcement-bar.js
+statecollege.com##div[class^="adapex"]
+statecollege.com##div[class^="ad_code_"]
+fxempire.com###__next > div[height]:not([id]):has(> section[style^="height:"] > #trade-with-broker)
 gizmodo.com##+js(remove-class, dld-cta__link, , stay)
 24timezones.com##.ad-container-wtd
 blooloop.com##.topbarplaceholder
@@ -36711,8 +36737,8 @@ nelomanga.net,mangakakalove.com,mangabats.com,manganato.gg##.ads-contain-v2
 ||manganato.gg/js/ads/clck-adu-ntgg.js
 mangapill.com##div.items-center:has(> div.mx-auto > div.border > div.relative > div[id^="bg-ssp-"])
 .gif|$image,domain=mj859.com|qmtrd.com
-||cache.sgvafs.top/base/aHR0cHM6Ly9pY28uZGFnZS50b3Avc3RvcmFnZS91cGxvYWQvMjAyNTEwMTQvNjhlZDg3NWU2NTM2Zi53ZWJw.cache$image,domain=mj859.com|avx21.com|qmtrd.com
-mj859.com,avx21.com,qmtrd.com##div[id]:has(> div.streamer-container2)
+||cache.sgvafs.top/base/aHR0cHM6Ly9pY28uZGFnZS50b3Avc3RvcmFnZS91cGxvYWQvMjAyNTEwMTQvNjhlZDg3NWU2NTM2Zi53ZWJw.cache$image,domain=missav81.top|mj859.com|avx21.com|qmtrd.com
+missav81.top,mj859.com,avx21.com,qmtrd.com##div[id]:has(> div.streamer-container2)
 lesbigo.com,porn-latina.com,shemalez.com,voyeurhit.com,tubepornclassic.com##div[class^="underplayer"]
 tporn.*,tporn.xxx,tubepornclassic.com###app > .no-touch > a.top-bar:remove()
 thisav2.com##div[style="width: 300px; height: 250px;"]
@@ -36853,7 +36879,7 @@ softpedia.com###sjmp > div.grid_48:has(> div[class^="mgtop_"] > div[id^="Softped
 softpedia.com###sjmp > div.grid_48:has(> div[class^="mgtop_"] > div[id] > iframe[id^="google_ads_iframe"])
 atlaq.com##+js(abort-on-property-write, flaged)
 manytoon.com##+js(abort-on-property-write, adsConfig)
-||lh3.googleusercontent.com^$domain=manytoon.com
+||lh3.googleusercontent.com^$domain=manytoon.com|freemanga.me
 snexplores.org##.ad-block__mq-wrapper
 getyarn.io###filtered-top
 yeon.one,bibien.tv##.r34-banner
@@ -37741,7 +37767,7 @@ tabootube.*###list_videos_most_recent_videos_items > div.widget-wrap
 ||cdn.jsdelivr.net/npm/ima-ad-player
 hentaihaven.xxx##+js(no-window-open-if)
 hentaihaven.xxx##+js(remove-node-text, script, /popup|Script_Manager/)
-homejav.com,xmorex.com##+js(no-window-open-if, /pop?)
+exojav.com,homejav.com,xmorex.com##+js(no-window-open-if, /pop?)
 ||ninekon.com/spots/
 solarmovie.fi,flixtor.mov,1movies.bz,movhub.ws,yflix.to##div[class^="text-center"]:has(a[href*="?utm_source="])
 dopebox.to##+js(abort-on-property-read, _g_sb_click)
@@ -39319,7 +39345,7 @@ godlikeproductions.com##.rightpanel_ipad > div:has(> center > [data-type="_mgwid
 ||nhentai.com/r34games.gif
 nhentai.com##main > .row:has(> a[target="_blank"])
 gamesofdesire.com###maincol > div.game_box:has(> a[href="https://www.mnfclub.com"])
-xv-ru.com,xvideos.com,xnxx.com,pmvhaven.com##+js(abort-on-property-read, exoJsPop101)
+pornjav.tv,xv-ru.com,xvideos.com,xnxx.com,pmvhaven.com##+js(abort-on-property-read, exoJsPop101)
 ||imglnkx.com/*/*_BannersWebinar_*.gif
 ||imglnkx.com/*/*_banner*.gif
 yapornsexer.*,m.tub6exer.com,m.4obstub.com,pornsexer.*,m.peb5r.me###pre-1adv
@@ -41243,7 +41269,7 @@ rahim-soft.com##.theiaStickySidebar > .widget_text:has(> .textwidget > p > .adsb
 allegiantair.com##a[data-hook="header-merchandise-banner_link"]
 convertio.co##.softobar-container
 vidsrc2.*##body > div[style*="position: absolute;"][style*="inset:"][style*="z-index:"]
-funlove.info,javsubidn.tv,streamvid.dev,vidnest.live,vidnest.io,katfile.online,familyporn.tv,5play.app,bingespree.net,spencerdevs.xyz,easyvidplayer.com,cloudhostingz.com,sharedwebs.com,fitnessplanss.com,porn4days.blue,embedplayer.site,animahd.com,exposestrat.com,embedsports.top,vidplayer.live,vik1ngfile.site,fbol.top,sterham.net,embed4me.com,megatukmax.xyz,primewire.tf,ytapi.cc,mygomp3.com,imagebam.com,ezplayer.me,datavaults.co,clickapi.net,y2down.cc,themezon.net,serverguidez.com,streamup.ws,vidlink.pro,cdn.hentaianimezone.com,themezon.net,galaxyporn.net,teknoasian.com,downloadyoutubesubtitles.com,alex71.com,kecapku.com,vidfast.pro,pornharlot.net,meong.club,hianimez.*,travelironguide.com,kreditexperte.online,shortnest.com,vikingf1le.us.to,mixzdrive.com,get.linkbulks.com,play.upns.live,dropzy.io,dayuploads.com,filespayouts.com,ranoz.gg,zovo.ink,manhwahentai.me,filespayout.com,1movielinkbd.com,ytmp3.la,swiftuploads.com,techbloogs.com,oii.la,englismovies.pro,tpi.li,go.cloutgist.com,brbeast.com,vidsrc2.*,tutwuri.id,lokerwfh.net,insmyst.com,iir.la,tvi.la,cosplay18.pics,hianime.*,mobiletvshows.site,movies4u.*,x-x-x.tube,pornx.to,4khd.com,dlhd.*,kissanime.*,vidsrc.*,pahe.*##+js(no-window-open-if)
+freemanga.me,funlove.info,javsubidn.tv,streamvid.dev,vidnest.live,vidnest.io,katfile.online,familyporn.tv,5play.app,bingespree.net,spencerdevs.xyz,easyvidplayer.com,cloudhostingz.com,sharedwebs.com,fitnessplanss.com,porn4days.blue,embedplayer.site,animahd.com,exposestrat.com,embedsports.top,vidplayer.live,vik1ngfile.site,fbol.top,sterham.net,embed4me.com,megatukmax.xyz,primewire.tf,ytapi.cc,mygomp3.com,imagebam.com,ezplayer.me,datavaults.co,clickapi.net,y2down.cc,themezon.net,serverguidez.com,streamup.ws,vidlink.pro,cdn.hentaianimezone.com,themezon.net,galaxyporn.net,teknoasian.com,downloadyoutubesubtitles.com,alex71.com,kecapku.com,vidfast.pro,pornharlot.net,meong.club,hianimez.*,travelironguide.com,kreditexperte.online,shortnest.com,vikingf1le.us.to,mixzdrive.com,get.linkbulks.com,play.upns.live,dropzy.io,dayuploads.com,filespayouts.com,ranoz.gg,zovo.ink,manhwahentai.me,filespayout.com,1movielinkbd.com,ytmp3.la,swiftuploads.com,techbloogs.com,oii.la,englismovies.pro,tpi.li,go.cloutgist.com,brbeast.com,vidsrc2.*,tutwuri.id,lokerwfh.net,insmyst.com,iir.la,tvi.la,cosplay18.pics,hianime.*,mobiletvshows.site,movies4u.*,x-x-x.tube,pornx.to,4khd.com,dlhd.*,kissanime.*,vidsrc.*,pahe.*##+js(no-window-open-if)
 hogwarts.cafe##body[class*="adthrive-"]:not(.home) .site-footer-wrap:style(margin-bottom: 0 !important;)
 retromania.gg##.banner > *
 startpage.com##:matches-path(/search) #main > div[class^="css-"]:has(> div[class^="css-"] > p[class^="css-"]:contains(/Annoncer|Anzeigen|Ads|Anuncios|Publicités|Advertenties|Annonser|Reklamy|Anúncios/))
@@ -52462,7 +52488,7 @@ pervclips.com,alphaporno.com,pornwhite.com##.advertising-side
 trekbbs.com##.mainContent > [style="width:970px;height:250px;"]
 trekbbs.com##.sidebar > [style="width:300px;height:1050px;"]
 trekbbs.com##.sidebar > [style="width:160px;margin:auto;height:600px;"]
-||bp.blogspot.com^$image,domain=seulink.net
+||bp.blogspot.com^$image,domain=seulink.net|freemanga.me
 sex3.com##.tall_advertising
 ||sex3.com/if*.html
 ||h2porn.com/aa*.js|
@@ -56847,6 +56873,7 @@ tr.myxh.today,tr.usbxh.life,xhamster44.desi,aawweb.beauty,colourxh.site,xhamster
 tr.myxh.today,tr.usbxh.life,xhamster44.desi,aawweb.beauty,colourxh.site,xhamster43.desi,fullxh.com,interxh.site,xhspot.com,xhwide5.com,xhchannel.com,xhtotal.com,xhtree.com,xhwide2.com,xhlease.world,xhamsterporno.mx,valuexh.life,xhdate.world,xhbranch5.com,galleryxh.site,xhbig.com,xhaccess.com,xhofficial.com,seexh.com,xhamster42.desi,xhvid.com,xhamster20.desi,xhamster19.desi,xhwebsite2.com,xhamster18.desi,xhadult3.com,xhadult2.com,xhmoon5.com,xhwide1.com,xhamster3.com,xhplanet2.com,megaxh.com,xhamster16.*,xhamster.com,xhamster2.com,xhamster7.com,xhamster8.com,xhamster9.com,xhamster10.com,xhamster12.com,xhamster13.*,xhamster14.com,xhamster15.com,xhamster17.*,xhamster18.*,xhamster19.com,xhamster1.desi,xhamster2.desi,xhamster3.*,xhamster4.desi,xhamster22.com,xhamster27.com,openxh.com,xhamster5.desi,xhopen.com,openxh1.com,xhamster40.com,xhamster.one,xhamster.desi,stripchat.com##+js(set-cookie-reload, pShow, true)
 ! back button manipulation
 tr.myxh.today,tr.usbxh.life,xhamster44.desi,krakenfiles.com,aawweb.beauty,colourxh.site,xhamster43.desi,fullxh.com,interxh.site,xhspot.com,xhwide5.com,xhchannel.com,xhtotal.com,xhtree.com,xhwide2.com,xhlease.world,xhamsterporno.mx,valuexh.life,xhdate.world,xhbranch5.com,galleryxh.site,xhbig.com,xhaccess.com,xhofficial.com,seexh.com,xhamster42.desi,xhvid.com,xhamster20.desi,xhamster19.desi,xhwebsite2.com,xhamster18.desi,xhadult3.com,xhadult2.com,xhmoon5.com,xhwide1.com,xhamster3.com,xhplanet2.com,megaxh.com,xhamster16.*,xhamster.com,xhamster2.com,xhamster7.com,xhamster8.com,xhamster9.com,xhamster10.com,xhamster12.com,xhamster13.*,xhamster14.com,xhamster15.com,xhamster17.*,xhamster18.*,xhamster19.com,xhamster1.desi,xhamster2.desi,xhamster3.*,xhamster4.desi,xhamster22.com,xhamster27.com,openxh.com,xhamster5.desi,xhopen.com,openxh1.com,xhamster40.com,xhamster.one,xhamster.desi,stripchat.com##+js(set-constant, history.replaceState, noopFunc)
+! https://github.com/AdguardTeam/AdguardFilters/issues/226833
 !
 moonbit.co.in,moondash.co.in##.flexContentAd
 moonbit.co.in,moondash.co.in##.btn-sm.btn-coin
@@ -58188,6 +58215,9 @@ $popup,3p,domain=dood.ws,badfilter
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/227099
+@@||go.trvdp.com/init/$domain=olhardigital.com.br
+@@||s.trvdp.com/scripts/*/ins.js$domain=olhardigital.com.br
 ! https://github.com/AdguardTeam/AdguardFilters/issues/225906
 @@||cdn*.anyclip.com^$domain=zerotackle.com
 @@||trafficmanager.anyclip.com^$domain=zerotackle.com
@@ -62225,6 +62255,7 @@ implbits.com#@#.banner_container
 !
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/227123
 ! https://github.com/AdguardTeam/AdguardFilters/issues/226983
 ! https://github.com/AdguardTeam/AdguardFilters/issues/226948
 ! https://github.com/AdguardTeam/AdguardFilters/issues/226951

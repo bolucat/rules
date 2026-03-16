@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.2.0
+// @version         4.3.2.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -762,28 +762,6 @@ else if (matchDomain('suedkurier.de')) {
   let paywall_sel = 'div#piano-inline-paywall';
   let article_sel = 'div#article-body-paid-content';
   getArchive(url, paywall_sel, '', article_sel);
-}
-
-else if (matchDomain('t3n.de')) {
-  let paywall = document.querySelector('div.c-paywall__wrapper');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let json_script = getArticleJsonScript();
-    if (json_script) {
-      let json = JSON.parse(json_script.text);
-      if (json) {
-        let json_text = json.articleBody;
-        if (json_text.includes('[embed]'))
-          json_text = json_text.replace(/\[embed\]([^\[]+)\[\/embed\]/g, '$1\n');
-        json_text = json_text.replace(/\[[^\]]+\]/g, '');
-        let article = document.querySelector('div.paywall-blur > p');
-        if (json_text && article) {
-          article.innerText = parseHtmlEntities(json_text);
-          article.parentNode.removeAttribute('class');
-        }
-      }
-    }
-  }
 }
 
 else if (matchDomain('tagesspiegel.de')) {

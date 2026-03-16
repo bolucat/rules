@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.2.5
+// @version         4.3.2.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2031,14 +2031,27 @@ else if (matchDomain('dailyherald.com')) {
 }
 
 else if (matchDomain('dailywire.com')) {
-  let paywall = document.querySelector('div#payed-article-paywall');
-  if (paywall) {
-    let fade = paywall.parentNode.querySelector('div[class]');
-    if (fade)
-      fade.removeAttribute('class');
-    removeDOMElement(paywall);
+  let article_sel = 'div[data-narration-container]';
+  let article = document.querySelector(article_sel);
+  if (article && article.querySelector('button')) {
+    let body = document.querySelector(article_sel + ' > div[class]:first-child');
+    if (body)
+      body.removeAttribute('class');
+    let banners = document.querySelectorAll(article_sel + ' > div:not(:first-child)');
+    removeDOMElement(...banners);
   }
-  window.localStorage.removeItem('article-gate-data');
+  if (window.localStorage.getItem('article-gate-data')) {
+    try {
+      let gate_data = JSON.parse(window.localStorage.getItem('article-gate-data'));
+      if (gate_data) {
+        gate_data.articlesViewed = 1;
+        gate_data.viewedArticles = {};
+        window.localStorage.setItem('article-gate-data', JSON.stringify(gate_data));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   let ads = 'div.ad-wrapper, div.css-1d84fd8';
   hideDOMStyle(ads);
 }
@@ -3915,12 +3928,16 @@ else if (matchDomain('study.com')) {
 
 else if (matchDomain('swarajyamag.com')) {
   if (!window.location.pathname.startsWith('/amp/')) {
-    let paywall = pageContains('h2', /Please Sign In To Continue Reading/);
-    let amphtml = document.querySelector('head > link[rel="amphtml"]');
-    if (paywall.length) {
-      removeDOMElement(...paywall);
-      if (amphtml)
-        amp_redirect_not_loop(amphtml);
+    window.setTimeout(function () {
+      amp_redirect('div#hide-partial-content', {rm_attrib: 'id'});
+    }, 1000);
+  } else {
+    let amp_images = document.querySelectorAll('amp-img[src*=".jpg"]');
+    for (let elem of amp_images) {
+      let img_new = document.createElement('img');
+      img_new.src = elem.getAttribute('src').split('?')[0];
+      img_new.alt = elem.getAttribute('alt');
+      elem.parentNode.replaceChild(img_new, elem);
     }
   }
 }

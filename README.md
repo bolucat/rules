@@ -12,6 +12,7 @@
 - [proxy.txt](https://rules.neuq.de/clash/Loyalsoldier/proxy.txt)
 - [reject.txt](https://rules.neuq.de/clash/Loyalsoldier/reject.txt)
 - [telegramcidr.txt](https://rules.neuq.de/clash/Loyalsoldier/telegramcidr.txt)
+- [tld-not-cn.txt](https://rules.neuq.de/clash/Loyalsoldier/tld-not-cn.txt)
 # clash/DivineEngine
 - [China.yaml](https://rules.neuq.de/clash/DivineEngine/RuleSet/China.yaml)
 - [Extra/Apple/AppStore.yaml](https://rules.neuq.de/clash/DivineEngine/RuleSet/Extra/Apple/AppStore.yaml)
