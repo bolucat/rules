@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.3.2.1
+// @version         4.3.2.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -17,8 +17,6 @@
 // @match           *://*.connaissancedesarts.com/*
 // @match           *://*.courrierinternational.com/*
 // @match           *://*.dhnet.be/*
-// @match           *://*.femmesdaujourdhui.be/*
-// @match           *://*.flair.be/fr/*
 // @match           *://*.jeuneafrique.com/*
 // @match           *://*.journaldunet.com/*
 // @match           *://*.la-croix.com/*
@@ -35,7 +33,6 @@
 // @match           *://*.lesinrocks.com/*
 // @match           *://*.lesoir.be/*
 // @match           *://*.letemps.ch/*
-// @match           *://*.levif.be/*
 // @match           *://*.loeildelaphotographie.com/*
 // @match           *://*.marianne.net/*
 // @match           *://*.monacomatin.mc/*
@@ -67,7 +64,6 @@
 window.setTimeout(function () {
 
 var be_groupe_ipm_domains = ['dhnet.be', 'lalibre.be', 'lavenir.net', 'moustique.be'];
-var be_roularta_domains = ['femmesdaujourdhui.be', 'flair.be', 'levif.be'];
 var fr_be_groupe_rossel_domains = ['aisnenouvelle.fr', 'courrier-picard.fr', 'lardennais.fr', 'lavoixdunord.fr', 'lemessager.fr', 'lesoir.be', 'lest-eclair.fr', 'liberation-champagne.fr', 'lunion.fr', 'nordlittoral.fr', 'paris-normandie.fr', 'sudinfo.be'];
 var fr_gcf_custom_domains = ['larep.fr', 'leberry.fr', 'lechorepublicain.fr', 'lejdc.fr', 'lepopulaire.fr', 'leveil.fr', 'lyonne.fr'];
 var fr_groupe_ebra_domains = ['bienpublic.com', 'dna.fr', 'estrepublicain.fr', 'lalsace.fr', 'ledauphine.com', 'lejsl.com', 'leprogres.fr', 'republicain-lorrain.fr', 'vosgesmatin.fr'];
@@ -1396,34 +1392,6 @@ else if (matchDomain('letemps.ch')) {
     fade.classList.remove('post__content--faded');
   let top_ad = document.querySelector('div.topad');
   removeDOMElement(top_ad);
-}
-
-else if (matchDomain(be_roularta_domains)) {
-  let paywall = document.querySelector('div[id*="wall-modal"]');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let html = document.querySelector('html[class]');
-    if (html)
-      html.removeAttribute('class');
-    function roularta_noscroll(node) {
-      node.removeAttribute('style');
-      node.removeAttribute('class');
-    }
-    waitDOMAttribute('html', 'html', 'class', roularta_noscroll, true);
-    let intro = document.querySelectorAll('div.article-body > p, div.article-body > style');
-    removeDOMElement(...intro);
-    let locked = document.querySelector('body.locked');
-    if (locked)
-      locked.classList.remove('locked');
-  }
-  if (!window.navigator.userAgent.toLowerCase().includes('chrome') && window.location.href.match(/\/(\w+-){2,}/)) {
-    let lazy_images = document.querySelectorAll('img[src^="data:image/"][data-lazy-src]');
-    for (let elem of lazy_images) {
-      elem.src = elem.getAttribute('data-lazy-src');
-    }
-  }
-  let ads = 'div.rmgAd, div.c-header__ad';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('lexpress.fr')) {

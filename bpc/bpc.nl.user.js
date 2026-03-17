@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.2.3
+// @version         4.3.2.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -13,14 +13,10 @@
 // @match           *://*.businessam.be/*
 // @match           *://*.demorgen.be/*
 // @match           *://*.doorbraak.be/*
-// @match           *://*.flair.be/nl/*
 // @match           *://*.gva.be/*
 // @match           *://*.hbvl.be/*
 // @match           *://*.hln.be/*
 // @match           *://*.humo.be/*
-// @match           *://*.knack.be/*
-// @match           *://*.kw.be/*
-// @match           *://*.libelle.be/*
 // @match           *://*.nieuwsblad.be/*
 // @match           *://*.projectcargojournal.com/*
 // @match           *://*.railfreight.cn/*
@@ -47,7 +43,6 @@
 window.setTimeout(function () {
 
 var be_mediahuis_domains = ['gva.be', 'hbvl.be', 'nieuwsblad.be', 'standaard.be'];
-var be_roularta_domains = ['beleggersbelangen.nl', 'flair.be', 'knack.be', 'kw.be', 'libelle.be'];
 var nl_dpg_adr_domains = ['ad.nl', 'bd.nl', 'bndestem.nl', 'destentor.nl', 'ed.nl', 'gelderlander.nl', 'pzc.nl', 'tubantia.nl'];
 var nl_dpg_media_domains = ['demorgen.be', 'flair.nl', 'humo.be', 'libelle.nl', 'margriet.nl', 'parool.nl', 'trouw.nl', 'volkskrant.nl'];
 var nl_mediahuis_region_domains = ['gooieneemlander.nl', 'haarlemsdagblad.nl', 'ijmuidercourant.nl', 'leidschdagblad.nl', 'limburger.nl', 'noordhollandsdagblad.nl'];
@@ -268,47 +263,6 @@ else if (matchDomain('ftm.nl')) {
   document.querySelectorAll('div.foldable').forEach(e => e.classList.remove('foldable'));
   let banners = 'div.banner-pp';
   hideDOMStyle(banners);
-}
-
-else if (matchDomain(be_roularta_domains)) {
-  if (matchDomain('beleggersbelangen.nl')) {
-    let paywall = document.querySelector('div.unlimited-access');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let no_account = document.querySelector('div.no-account');
-      if (no_account)
-        no_account.classList.remove('no-account');
-      let content_inner = document.querySelector('div.content-inner[style]');
-      if (content_inner)
-        content_inner.removeAttribute('style');
-    }
-  } else {
-    let paywall = document.querySelector('div[id*="wall-modal"]');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let html = document.querySelector('html[class]');
-      if (html)
-        html.removeAttribute('class');
-      function roularta_noscroll(node) {
-        node.removeAttribute('style');
-        node.removeAttribute('class');
-      }
-      waitDOMAttribute('html', 'html', 'class', roularta_noscroll, true);
-      let intro = document.querySelectorAll('div.article-body > p, div.article-body > style');
-      removeDOMElement(...intro);
-      let locked = document.querySelector('body.locked');
-      if (locked)
-        locked.classList.remove('locked');
-    }
-    if (!window.navigator.userAgent.toLowerCase().includes('chrome') && !matchDomain(['kw.be']) && window.location.href.match(/\/(\w+-){2,}/)) {
-      let lazy_images = document.querySelectorAll('img[src^="data:image/"][data-lazy-src]');
-      for (let elem of lazy_images) {
-        elem.src = elem.getAttribute('data-lazy-src');
-      }
-    }
-  }
-  let ads = 'div.rmgAd, div.c-header__ad';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('groene.nl')) {

@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 1C/zNVhT5L+PR8b+knLjQg
-! Diff-Path: ../patches/224/224-s-1773675116-3600.patch
+! Checksum: mjg9c7nZNV3hyYMElBaYjA
+! Diff-Path: ../patches/224/224-s-1773765199-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.56.7
-! TimeUpdated: 2026-03-16T15:28:42+00:00
+! Version: 2.1.56.14
+! TimeUpdated: 2026-03-17T16:30:28+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -285,6 +285,8 @@
 ! Bad: ||ad.doubleclick.net^ (should be in adservers.txt)
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/227233
+verb.tw##.adsbox.ad-placement.ad-banner.textad.sponsorad:style(display: block !important;)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/224352
 tstrs.me##+js(no-setTimeout-if, offsetHeight === 0)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/224000
@@ -444,7 +446,7 @@ rjno1.com##+js(addEventListener-defuser, error, event.target.tagName)
 @@||img3.126.net/ntesrich/*/adControl-indexx-$script,domain=rjno1.com
 ||cpro.baidu.com/cpro/ui/rt.js$script,redirect=noop.js,domain=rjno1.com
 ||googleads.g.doubleclick.net/pagead/ads$subdocument,redirect=noop.html,domain=rjno1.com,important
-!+ NOT_PLATFORM(windows, mac, android)
+!+ NOT_PLATFORM(windows, mac, android, cli)
 ||126.net^$script,redirect=noop.js,domain=rjno1.com
 rjno1.com#@#ins.adsbygoogle[data-ad-client]
 rjno1.com#@#ins.adsbygoogle[data-ad-slot]
@@ -633,7 +635,7 @@ ruanyifeng.com#@#a > img[src*="wangbase.com/blogimg/asset/"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/214685
 ! https://github.com/AdguardTeam/AdguardFilters/issues/196593
 t66y.com##+js(no-setTimeout-if, html)
-!+ NOT_PLATFORM(windows, mac, android, ext_chromium, ext_edge)
+!+ NOT_PLATFORM(windows, mac, android, cli, ext_chromium, ext_edge)
 t66y.com##.sptable_do_not_remove:style(display: block !important; visibility: hidden !important;)
 ||alicdn.com^$domain=t66y.com
 ||sinaimg.cn^$domain=t66y.com
@@ -1100,7 +1102,7 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 wikisport.cc##+js(addEventListener-defuser, click, window.open)
 wikisport.cc##+js(no-window-open-if)
 twmanga.com###baoziAdPopup
-eporner2.top,chuanghongjituan.com##.streamer-container2
+dgav17.com,eporner2.top,chuanghongjituan.com##.streamer-container2
 *$script,3p,domain=huanggua22.com
 .gif|$image,3p,domain=huanggua22.com
 huanggua22.com##[src^="https://tutu.facaiimage.com/"]
@@ -3118,7 +3120,7 @@ netfly.*,netfly.tv##div[class*="tt-"] > a[target="_blank"] + span.tt-icon-close
 ! https://github.com/AdguardTeam/AdguardFilters/issues/210237
 huavod.com,huaren.live##+js(set-constant, ConFig.config.ads, {})
 ! TODO: remove hints when this issue is resolved - https://github.com/AdguardTeam/Scriptlets/issues/517
-!+ NOT_PLATFORM(windows, mac, android)
+!+ NOT_PLATFORM(windows, mac, android, cli)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/177520
 ! https://github.com/AdguardTeam/AdguardFilters/issues/204700
 ! https://github.com/AdguardTeam/AdguardFilters/issues/202922
@@ -3394,7 +3396,7 @@ gamersglobal.de#@#.gg-box
 @@||520cc.cc/ad/520cc/images/logo3w.png
 @@||520cc.cc/ad/520cc/images/tw_search_s.gif
 ! https://github.com/AdguardTeam/AdguardFilters/issues/99153
-!+ NOT_PLATFORM(windows, mac, android, ext_chromium)
+!+ NOT_PLATFORM(windows, mac, android, cli, ext_chromium)
 @@||cnzz.com/z_stat.php?id=$domain=fapiao.bangnimang.net
 ! https://github.com/AdguardTeam/AdguardFilters/issues/97793
 fuzhou.baixing.com#@#.ad-title
@@ -3903,7 +3905,7 @@ bmvc2020-conference.com#@#div[id][style="width: 100%;"] > iframe[scrolling="no"]
 /html/709/*.js
 /html/taobao_focus_
 /huijiad/huijiad.
-/huya/main/widget/roomGg
+/huya/main3/widget_roomGaTop_
 /huya_promotion_content_
 /ifeng_jdttemplate.js
 /ifengRotatorAd.js
@@ -5254,6 +5256,18 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$3p
+||b4641y3dw.com^
+||vigyn4gpx.com^
+||nhlrzf.icu^
+||invocation22.com^
+||neraenyqq.com^
+||bfgu.cn^
+||trlzqly.com^
+||hyaplnr.com^
+||af1tsjdta.com^
+||cbhzxctgm.com^
+||d48paxyhx.com^
+||aiheatta.com^
 ||w97nv5ibv4.com^
 ||1tvg524vih.com^
 ||pepwpv.icu^
@@ -13041,7 +13055,6 @@ meijutt.*/js/pcjs/
 ||msdn.hk/templets/msdn/css/index.js
 ||msdn.hk/templets/msdn/css/msdng.js
 ||msstatic.com/huya/main/img/mc-recom_
-||msstatic.com/huya/main3/widget/roomGg
 ||msstatic.net/main3/common/assets/template/head/ad.
 ||mtime.cn/tg/
 ||muyuge.com/fw.html/
