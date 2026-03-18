@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.2.7
+// @version         4.3.2.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -204,6 +204,7 @@ var no_dn_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'hydroge
 var sg_sph_media_domains = ['businesstimes.com.sg', 'straitstimes.com'];
 var uk_dmg_media_domains = ['dailymail.co.uk', 'mailonsunday.co.uk', 'thisismoney.co.uk'];
 var uk_iconic_media_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
+var uk_reach_domains = ['dailyrecord.co.uk', 'express.co.uk'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
 var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntraveler.com', 'epicurious.com', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.co.uk', 'vogue.com', 'wired.com'];
 var usa_cox_first_media_domains = ['daytondailynews.com', 'journal-news.com', 'springfieldnewssun.com'];
@@ -1374,6 +1375,11 @@ else if (matchDomain(uk_iconic_media_domains) || document.querySelector('footer 
     premium.classList.remove('premium', 'no-entitlement');
   let ads = 'div[class^="MarkupAds__Container-"], div[class*="_AdContainer-"], div[class^="Dailymotion__Wrapper-"], div.banner, div#mantis-carousel-wrapper:has( > mantis-ui-widget:empty)';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain(uk_reach_domains) || document.querySelector('footer a[href="https://jobs.reachplc.com/jobs"]')) {
+  let ads = document.querySelectorAll('div#superbanner, div.ad-wrapper, div[id^="div-gpt-ad-"], div.taboola-above-article, div#mantis-recommender-top-placeholder, div#ovp-primis, div[data-testid^="commercial-"]');
+  removeDOMElement(...ads);
 }
 
 } else {
@@ -2719,12 +2725,23 @@ else if (matchDomain('hilltimes.com')) {
 }
 
 else if (matchDomain('hindustantimes.com')) {
-  document.querySelectorAll('.freemiumText').forEach(e => e.classList.remove('freemiumText'));
-  let noscroll = document.querySelector('body.open-popup');
-  if (noscroll)
-    noscroll.classList.remove('open-popup');
-  let banners = 'div[class^="sub-paywall-version"], div[class^="adHeight"], .closeStory';
-  hideDOMStyle(banners);
+  if (!window.location.pathname.endsWith('-amp.html')) {
+    let paywall = document.querySelector('.paywall');
+    if (paywall)
+      paywall.classList.remove('paywall');
+    document.querySelectorAll('.hide').forEach(e => e.classList.remove('hide'));
+    let trc_overlay = document.querySelector('section.trc_related_container > div[role="button"]');
+    if (trc_overlay)
+      trc_overlay.click();
+    let body_sticky = document.querySelector('body.desktopAdSticky');
+    if (body_sticky)
+      body_sticky.classList.remove('desktopAdSticky');
+    let banners = 'div.paywall-container, div[class^="adHeight"], div.desktopAd';
+    hideDOMStyle(banners);
+  } else {
+    let banners = 'div[class^="sub-paywall-version"], section[amp-access="NOT userSubscribed"], div.storyAd';
+    hideDOMStyle(banners);
+  }
 }
 
 else if (matchDomain('historyextra.com')) {
