@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.2.1
+// @version         4.3.2.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -644,7 +644,7 @@ else if (matchDomain('spiegel.de')) {
       for (let elem of lazy_images)
         elem.style = 'width: 95%;';
     }
-    header_nofix('article', 'svg[id*="-plus-paywall-"]', 'BPC > no archive-fix');
+    header_nofix('article', '*:not(.hidden) > svg[id*="-plus-paywall-"]', 'BPC > no archive-fix');
   }
   getArchive(url, 'div[data-area="paywall"]', '', 'article');
   let ads = 'div[data-advertisement], div[x-data^="{adIndex:"]';

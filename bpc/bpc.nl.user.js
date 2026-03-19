@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.2.5
+// @version         4.3.2.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -581,6 +581,8 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
       }
       let video_buttons = article.querySelectorAll('button[type="button"]');
       removeDOMElement(...video_buttons);
+      if (header_img && !article.querySelector('header figure'))
+        article.firstChild.before(header_img);
       if (comments)
         article.appendChild(comments);
       if (readmore)
@@ -592,6 +594,7 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
     let ads = 'span[style*="background-color:"]:has(> span[style*="min-height:"]), span > br, ' + article_sel + ' div:empty:not([class])';
     hideDOMStyle(ads, 2);
   }
+  let header_img = document.querySelector('div[data-content-type="MEDIA_TOP"]');
   let comments = document.querySelector('div[data-content-type="SHARE"]');
   let readmore = document.querySelector('div[data-content-type="CROSS_PROMOTION"]');
   let url = window.location.href;
