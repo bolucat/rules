@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.2.8
+// @version         4.3.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1291,8 +1291,9 @@ else if (matchDomain('thetimes.com')) {
             if (parent_node.tagName === 'PICTURE')
               parent_node = parent_node.parentNode;
             parent_node.removeAttribute('style');
+            elem.removeAttribute('sizes');
           }
-          article.querySelectorAll('div[style*="margin-left:"][style*="text-align:"]').forEach(e => e.style = 'margin: 0px 20px');
+          article.querySelectorAll('div[style*="margin-left:"][style*="text-align:"], div[style*="grid-template-columns:"]').forEach(e => e.style = 'margin: 0px 20px');
           article.querySelectorAll('div[style*=";width:"]').forEach(e => e.style.width = '90%');
           let author = document.querySelector(article_sel + ' div[style^="min-height:"]:has(a[href^="https://www.thetimes.com/profile/"])');
           if (author)
@@ -1321,19 +1322,22 @@ else if (matchDomain('thetimes.com')) {
           }
           elem.parentNode.parentNode.replaceChild(iframe_new, elem.parentNode);
         }
+        if (read_next) {
+          let art_bottom = article.querySelector('nav ~div');
+          if (art_bottom)
+            art_bottom.after(read_next);
+        }
       }
     }
+    let read_next = document.querySelector('div.article-previous-next--sticky');
     let paywall_sel = 'div#paywall-portal-article-footer, div#paywall-takeover';
     let article_sel = 'article[id]';
     if (window.location.pathname.includes('/article/') && !window.location.search.startsWith('?shareToken=')) {
       let url = window.location.href;
       getArchive(url, paywall_sel, '', article_sel);
-      let scroll_style = 'html, body {overflow: auto !important;}';
-      addStyle(scroll_style);
     }
-    let banners = 'div#paywall-portal-page-footer, .subscription-block';
     let ads = 'div.channel-header-ad, div[id^="advert-"], div[class*="InlineAdWrapper"], div[id^="ad-article-inline"], div:has(> div > div#ad-header)';
-    hideDOMStyle(banners + ', ' + ads);
+    hideDOMStyle(ads);
   }
 }
 
@@ -4756,10 +4760,6 @@ else if (matchDomain(usa_craincomm_domains)) {
       if (truncated)
         truncated.classList.remove('truncated');
     }
-  } else {
-    let sponsored_article = document.querySelector('div.sponsored-article');
-    if (sponsored_article)
-      sponsored_article.classList.remove('sponsored-article');
   }
   let ads = 'div.footer__ads-footer';
   hideDOMStyle(ads);
