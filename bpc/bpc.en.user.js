@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.3.0
+// @version         4.3.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3262,7 +3262,7 @@ else if (matchDomain('newscientist.com')) {
 }
 
 else if (matchDomain('newsday.com')) {
-  let listen_button = document.querySelector('div.listen-button > button[disabled]');
+  let listen_button = document.querySelector('div.listen-button > button[disabled], div.listen-button > div.loader');
   if (listen_button) {
     let audio_src_dom = listen_button.parentNode.querySelector('audio > source[src]');
     if (audio_src_dom) {
@@ -4750,7 +4750,7 @@ else if (matchDomain(usa_cox_first_media_domains)) {
   removeDOMElement(...ads);
 }
 
-else if (matchDomain(usa_craincomm_domains)) {
+else if (domain = matchDomain(usa_craincomm_domains)) {
   if (matchDomain('european-rubber-journal.com')) {
     let paywall = document.querySelector('div.article-overlay');
     if (paywall) {
@@ -4759,6 +4759,78 @@ else if (matchDomain(usa_craincomm_domains)) {
       let truncated = document.querySelector('div.truncated');
       if (truncated)
         truncated.classList.remove('truncated');
+    }
+  } else {
+    let fusion_script = document.querySelector('script#fusion-metadata');
+    if (fusion_script && fusion_script.text.includes('Fusion.globalContent=')) {
+      let paywall = document.querySelector('div#piano-paywall-container');
+      let article = document.querySelector('article.b-article-body');
+      if (paywall && article) {
+        removeDOMElement(paywall);
+        try {
+          let json = JSON.parse(fusion_script.text.split('Fusion.globalContent=')[1].split(';Fusion.')[0]);
+          if (json) {
+            article.innerHTML = '';
+            let parser = new DOMParser();
+            let pars = json.content_elements;
+            for (let par of pars) {
+              let par_new;
+              if (['header', 'text'].includes(par.type)) {
+                if (par.content) {
+                  let doc = parser.parseFromString('<p class="c-paragraph">' + par.content + '</p>', 'text/html');
+                  par_new = doc.querySelector('p');
+                }
+              } else if (par.type === 'image') {
+                if (par.url) {
+                  let caption_text = par.caption;
+                  if (par.credits && par.credits.affiliation && par.credits.affiliation[0] && par.credits.affiliation[0].name)
+                    caption_text += ' (' + par.credits.affiliation[0].name + ')';
+                  par_new = makeFigure(par.url, caption_text);
+                }
+              } else if (par.type === 'raw_html') {
+                let doc = parser.parseFromString('<div>' + parseHtmlEntities(par.content) + '</div>', 'text/html');
+                par_new = doc.querySelector('div');
+              } else if (par.raw_oembed) {
+                if (par.raw_oembed._id) {
+                  par_new = document.createElement('p');
+                  let par_link = document.createElement('a');
+                  par_link.href = par_link.innerText = par.raw_oembed._id.replace(/\/$/, '');
+                  par_link.target = '_blank';
+                  par_new.appendChild(par_link);
+                }
+              } else if (par.type === 'video') {
+                if (par.canonical_url) {
+                  if (domain.startsWith(par.canonical_website)) {
+                    par_new = document.createElement('p');
+                    let par_link = document.createElement('a');
+                    par_link.href = par_link.innerText = 'https://www.' + domain + par.canonical_url.replace(/\/$/, '');
+                    par_link.target = '_blank';
+                    par_new.appendChild(par_link);
+                  } else
+                    console.log(par);
+                }
+              } else if (par.type === 'list') {
+                if (par.items) {
+                  par_new = document.createElement('ul');
+                  for (let item of par.items) {
+                    let li = document.createElement('li');
+                    let doc = parser.parseFromString('<span>' + item.content + '</span>', 'text/html');
+                    let span = doc.querySelector('span');
+                    li.appendChild(span);
+                    par_new.appendChild(li);
+                  }
+                }
+              } else if (!['custom_embed'].includes(par.type)) {
+                console.log(par);
+              }
+              if (par_new)
+                article.appendChild(par_new);
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
     }
   }
   let ads = 'div.footer__ads-footer';
