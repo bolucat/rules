@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.3.1
+// @version         4.3.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4205,6 +4205,15 @@ else if (matchDomain('thediplomat.com')) {
   }
   let ads = 'aside.td-ad-container--labeled, div[data-actirise]';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('thedispatch.com')) {
+  let audio_tts = document.querySelector('button#audio-play-button[style]');
+  if (audio_tts) {
+    audio_tts.removeAttribute('style');
+    let button_inactive = audio_tts.parentNode.querySelector('button:not([id])');
+    removeDOMElement(button_inactive);
+  }
 }
 
 else if (matchDomain('theglobeandmail.com')) {
