@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.3.2
+// @version         4.3.3.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1335,9 +1335,12 @@ else if (matchDomain('thetimes.com')) {
     if (window.location.pathname.includes('/article/') && !window.location.search.startsWith('?shareToken=')) {
       let url = window.location.href;
       getArchive(url, paywall_sel, '', article_sel);
+      let scroll_style = 'html, body {overflow: auto !important; height: auto !important;}';
+      addStyle(scroll_style);
     }
+    let banners = 'div#paywall-portal-page-footer';
     let ads = 'div.channel-header-ad, div[id^="advert-"], div[class*="InlineAdWrapper"], div[id^="ad-article-inline"], div:has(> div > div#ad-header)';
-    hideDOMStyle(ads);
+    hideDOMStyle(banners + ', ' + ads);
   }
 }
 
@@ -3543,6 +3546,8 @@ else if (matchDomain('project-syndicate.org')) {
           header_nofix(article_sel, '', 'BPC > no archive-fix');
       }
     }
+    if (!art_bodies.length)
+      header_nofix(article_sel, '', 'BPC > no archive-fix');
   }
   let url = window.location.href;
   let article_sel = 'main > article';
