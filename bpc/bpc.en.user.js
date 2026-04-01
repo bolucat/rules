@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.3.3
+// @version         4.3.3.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -69,6 +69,7 @@
 // @exclude         *://*.google.com/*
 // @exclude         *://*.googleapis.com/*
 // @exclude         *://*.googletagmanager.com/*
+// @exclude         *://*.gracenote.com/*
 // @exclude         *://*.instagram.com/*
 // @exclude         *://*.klarna.com/*
 // @exclude         *://*.mediafire.com/*
@@ -876,6 +877,8 @@ else if (matchDomain('decanter.com')) {
 }
 
 else if (matchDomain('fnlondon.com')) {
+  if (window.location.pathname.startsWith('/amp/'))
+    ampToHtml();
   let paywall = document.querySelector('div#cx-snippet');
   if (paywall) {
     removeDOMElement(paywall);
@@ -1618,9 +1621,22 @@ else if (matchDomain('barrons.com')) {
           }
         }
         if (article) {
-          let article_id_dom = document.querySelector('head > meta[name="article.id"][content]');
+          let bic_blur = document.querySelector('div[data-id="BICPaywall_index_Paywall"] > div[data-id="BICPaywall_index_BlurWrapper"]');
+          if (bic_blur) {
+            bic_blur.removeAttribute('class');
+            bic_blur.removeAttribute('inert');
+            bic_blur.parentNode.removeAttribute('class');
+            let modal = document.querySelector('div[class] > div#cx-div-bic');
+            if (modal)
+              modal.parentNode.removeAttribute('class');
+            let banners = 'div[data-id="BICPaywall_index_ModalContainer"]';
+            hideDOMStyle(banners, 2);
+          }
+          let article_id_dom = document.querySelector('head > meta[name="article.id"][content], head > meta[name="ChosenAdTarget"][content]');
           if (article_id_dom) {
             let article_id = article_id_dom.content;
+            if (article_id.includes(';id:'))
+              article_id = article_id.split(';id:')[1].split(';')[0];
             let url_src = 'https://barrons.djmedia.djservices.io/apps/barrons/theaters/default-article?screen_ids=' + article_id;
             let x_access_token = "eyJhbGciOiJSUzI1NiJ9.WFZsaHN3MXd3Smw0V3kwRXBzclQ.qwwBedAUNXHTQchowQZ5zMwmnXqDKeMhoRJlkB7drjWmb0ktZCScIhq5lpIiWaMyNJA_ODYgHAfIoi7DKWkS8g8GunFNAXpJDUOLdI2rtQkTEi_E3o90rdZHunPR7p0ULjRmHCnDofAdpTQdJtTXjQ9eEDZT2xoooVGdBpoVKhE";
             getExtFetch(url_src, '', {headers: {"app-identifier": "http://com.news.screens", "device-type": "phone", "x-access-token": x_access_token}}, fix_dowjones_fetch, [article]);
@@ -3373,8 +3389,7 @@ else if (matchDomain('nypost.com')) {
       if (article) {
         article.classList.remove('entry-content-exclusive-covered');
         if (window.navigator.userAgent.toLowerCase().includes('chrome')) {
-          let url = window.location.href;
-          article.before(googleSearchToolLink(url));
+          header_nofix(article);
         } else {
           let json_url_dom = document.querySelector('head > link[rel="alternate"][type="application/json"][href]'); ;
           if (json_url_dom) {
@@ -5355,11 +5370,11 @@ function fix_dowjones_live() {
                 }
                 let date = document.createElement('p');
                 if (par.dateModified && par.datePublished) {
-                  date.innerText = 'Updated ' + par.dateModified.replace(/(T|:\d+\.\d+Z$)/g, ' ') + ' ET / Original ' + par.datePublished.replace(/(T|:\d+\.\d+Z$)/g, ' ') + ' ET';
+                  date.innerText = 'Updated ' + new Intl.DateTimeFormat("en-US", {dateStyle: "long", timeStyle: "short", timeZone: "America/New_York"}).format(new Date(par.dateModified)) + ' ET / Original ' + new Intl.DateTimeFormat("en-US", {dateStyle: "long", timeStyle: "short", timeZone: "America/New_York"}).format(new Date(par.datePublished)) + ' ET';
                 }
                 let body = document.createElement('p');
                 body.innerText = par.articleBody;
-                article.after(headline, author, date, body);
+                article.after(document.createElement('br'), headline, author, date, document.createElement('br'), body);
               }
             }
           }
@@ -5391,6 +5406,7 @@ function fix_dowjones_fetch(url_src, data, article) {
               par_class = par_first.className;
           }
         }
+        let bic_blur;
         if (matchDomain('barrons.com')) {
           let style_fl = document.querySelector('head > style[data-emotion-css]');
           if (style_fl && style_fl.innerHTML.includes(':first-letter')) {
@@ -5398,6 +5414,32 @@ function fix_dowjones_fetch(url_src, data, article) {
             for (let style of styles_fl) {
               if (style.innerHTML.includes(':first-letter'))
                 removeDOMElement(style);
+            }
+          }
+          bic_blur = document.querySelector('div[data-id="BICPaywall_index_Paywall"]');
+          if (bic_blur) {
+            if (json.screens[0].metadata) {
+              let metadata = json.screens[0].metadata;
+              if (metadata.title) {
+                document.title = metadata.title + ' - Barrons\'s';
+                let header = document.querySelector('section[data-testid="headline"] > h1');
+                if (header && header.innerText !== metadata.title) {
+                  header.innerText = metadata.title;
+                  if (metadata.author) {
+                    let byline = document.querySelector('div[data-testid="byline"]');
+                    if (byline)
+                      byline.parentNode.replaceChild(document.createTextNode('By ' + metadata.author), byline);
+                  }
+                  if (metadata.createdAt && metadata.updatedAt) {
+                    let date = document.querySelector('p[data-testid="timestamp-text"]');
+                    if (date) {
+                      date.parentNode.replaceChild(document.createTextNode('Updated ' + new Intl.DateTimeFormat("en-US", {dateStyle: "long", timeStyle: "short", timeZone: "America/New_York"}).format(new Date(metadata.updatedAt)) + ' ET / Original ' + new Intl.DateTimeFormat("en-US", {dateStyle: "long", timeStyle: "short", timeZone: "America/New_York"}).format(new Date(metadata.createdAt)) + ' ET'), date);
+                    }
+                  }
+                  let bug_elem = 'span[data-testid="article-hero"], div[data-id="Flashline_index_FlashlineWrapper"], h2[data-id="immersive_index_Dek"]';
+                  hideDOMStyle(bug_elem, 3);
+                }
+              }
             }
           }
         }
@@ -5444,7 +5486,7 @@ function fix_dowjones_fetch(url_src, data, article) {
             elem.className = par_class;
           if (par.type === 'body') {
             if (par.body && par.styleID.match(/(default|bodyFrame|article-body)/)) {
-              if (body_first && intro) {
+              if (body_first && intro && !bic_blur) {
                 elem = intro;
                 body_first = false;
               } else
@@ -5458,9 +5500,8 @@ function fix_dowjones_fetch(url_src, data, article) {
           } else if (par.type === 'image') {
             if (par.image && par.image.url && !(img_lead_url && par.image.url.startsWith(img_lead_url))) {
               let caption = (par.caption ? par.caption.text + ' - ' : '') + (par.credit ? par.credit.text : '');
-              elem = makeFigure(par.image.url, caption, {
-                style: 'width: 80%; margin: auto;'
-              });
+              elem = makeFigure(par.image.url, caption, {style: 'width: 80%; margin: auto;'});
+              elem.style = 'margin: 20px 0px;';
             }
           } else if (['article', 'inlineArticle'].includes(par.type) && par.title && par.title.text && par.shareUrl) {
             let sub_elem = document.createElement('a');
@@ -5469,7 +5510,7 @@ function fix_dowjones_fetch(url_src, data, article) {
             sub_elem.style = 'font-weight: bold;';
             elem.appendChild(sub_elem);
           } else if (par.type === 'dynamicinset') {
-            if (par.webview && par.webview.value) {
+            if (par.webview && par.webview.value && par.webview.value !== window.location.href.split('?')[0]) {
               let iframe = document.createElement('iframe');
               iframe.src = par.webview.value;
               iframe.style = 'height: 600px; width: 100%; border: none;';

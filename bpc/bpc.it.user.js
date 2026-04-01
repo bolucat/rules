@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.3.3.1
+// @version         4.3.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -144,13 +144,15 @@ else if (matchDomain('ilfattoquotidiano.it')) {
 }
 
 else if (matchDomain('ilfoglio.it')) {
-  if (window.location.pathname.endsWith('/amp/')) {
-    amp_unhide_subscr_section('amp-ad, [class^="adv-"], div#gmpVideoContainer');
-  } else {
-    amp_redirect('div.paywall');
-    let ads = '.advertisement';
-    hideDOMStyle(ads);
+  let paywall = document.querySelector('div.paywall');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let div_hidden = document.querySelector('div.paywall-wrapper__story-content');
+    if (div_hidden)
+      div_hidden.removeAttribute('class');
   }
+  let ads = '.advertisement';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('ilmanifesto.it')) {
