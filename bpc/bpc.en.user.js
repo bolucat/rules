@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.3.4
+// @version         4.3.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1296,7 +1296,7 @@ else if (matchDomain('thetimes.com')) {
             parent_node.removeAttribute('style');
             elem.removeAttribute('sizes');
           }
-          article.querySelectorAll('div[style*="margin-left:"][style*="text-align:"], div[style*="grid-template-columns:"]').forEach(e => e.style = 'margin: 0px 20px');
+          article.querySelectorAll('div[style*="margin-left:"][style*="text-align:"], div[style*="grid-template-columns:"], figcaption, figure > span[style]').forEach(e => e.style = 'margin: 0px 20px');
           article.querySelectorAll('div[style*=";width:"]').forEach(e => e.style.width = '90%');
           let author = document.querySelector(article_sel + ' div[style^="min-height:"]:has(a[href^="https://www.thetimes.com/profile/"])');
           if (author)
@@ -1323,7 +1323,8 @@ else if (matchDomain('thetimes.com')) {
             iframe_new.href = iframe_new.innerText = iframe_src;
             iframe_new.target = '_blank';
           }
-          elem.parentNode.parentNode.replaceChild(iframe_new, elem.parentNode);
+          elem.parentNode.removeAttribute('style');
+          elem.parentNode.replaceChild(iframe_new, elem);
         }
         if (read_next) {
           let art_bottom = article.querySelector('nav ~div');
@@ -2884,6 +2885,19 @@ else if (matchDomain('inkl.com')) {
   }
 }
 
+else if (matchDomain('inquirer.com')) {
+  let audio_paywall = document.querySelector('button.audio-paywall-trigger');
+  if (audio_paywall) {
+    let audio = audio_paywall.parentNode.querySelector('audio[src]');
+    if (audio) {
+      audio.setAttribute('controls', '');
+      audio_paywall.parentNode.parentNode.replaceChild(audio, audio_paywall.parentNode);
+    }
+  }
+  let ads = 'div[data-ad-name]';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('insidehighered.com')) {
   let ads = 'div[id^="block-dfptag"], div.wp-block-ihe-ad, section.section-ad_slot, div#roadblock';
   hideDOMStyle(ads);
@@ -3440,11 +3454,8 @@ else if (matchDomain('nysun.com')) {
 }
 
 else if (matchDomain('nytimes.com')) {
-  if (!window.location.pathname.startsWith('/athletic/')) {
-    waitDOMElement('div#dock-container', 'DIV', removeDOMElement, false);
-    let ads = 'div[data-testid="inline-message"], div[id^="ad-"], div.pz-ad-box, div[data-ad-element], div[class^="css-"]:has( > div#top-wrapper)';
-    hideDOMStyle(ads);
-  }
+  let ads = 'div#top-wrapper, div#bottom-wrapper, div#dock-container, div[class$="ad-wrapper"], div[class^="adunit_"], div[data-testid^="Dropzone-"], div[class^="css-"]:has( > div[data-testid="StandardAd"])';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('on3.com')) {
@@ -3596,6 +3607,16 @@ else if (matchDomain('reuters.com')) {
 else if (matchDomain('reviewjournal.com')) {
   let ads = 'div.ads-insert, div.rj-ads-wrapper';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('rotowire.com')) {
+  let paywall = document.querySelector('div.pw-content, div.article__body > div[class^="img_"]');
+  if (paywall) {
+    paywall.removeAttribute('class');
+    let banners = 'div.article-preview-fader, div.paywall-full';
+    hideDOMStyle(banners);
+  }
+  document.querySelectorAll('img.lozad[data-src]:not([src])').forEach(e => e.src = e.getAttribute('data-src'));
 }
 
 else if (matchDomain('rugbypass.com')) {
@@ -4698,12 +4719,20 @@ else if (matchDomain(no_dn_media_domains)) {
                     elem.appendChild(video);
                   }
                 } else if (type === 'factbox') {
-                  elem = document.createElement('p');
-                  if (par.title)
-                    elem.innerText = pars[par.title];
+                  elem = document.createElement('div');
+                  elem.className = 'dn-factbox';
+                  addStyle('div.dn-factbox p {margin: 20px 0px;}');
+                  if (par.title) {
+                    let title = document.createElement('p');
+                    title.innerText = pars[par.title];
+                    title.className = 'dn-text';
+                    title.style = 'font-weight: bold;';
+                    elem.appendChild(title);
+                  }
                   if (par.html) {
                     let content_new = parser.parseFromString('<div>' + pars[par.html] + '</div>', 'text/html');
                     let box = content_new.querySelector('div');
+                    box.querySelectorAll('p').forEach(e => e.className = 'dn-text');
                     elem.appendChild(box);
                   }
                 } else if (type === 'summary') {
