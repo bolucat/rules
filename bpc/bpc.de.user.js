@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.2.3
+// @version         4.3.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -516,7 +516,7 @@ else if (matchDomain('kurier.at')) {
 else if (matchDomain(['mittelbayerische.de', 'pnp.de'])) {
   let url = window.location.href;
   getArchive(url, 'div.paywall-layer', '', 'div#article-body');
-  let ads = 'div.d-sm-block, div[id^="glomex_frame"]';
+  let ads = 'div.d-sm-block, div[id^="glomex_frame"], glomex-integration';
   hideDOMStyle(ads);
 }
 
@@ -1051,6 +1051,12 @@ else if (matchDomain('zeit.de')) {
   if (document.querySelector('head > link[rel="next"]'))
     url += '/komplettansicht';
   getArchive(url, 'aside#paywall', '', 'main', '', 'main', 'article > div');
+  let duv_paywall = document.querySelector('div.duv-paywall-preview');
+  if (duv_paywall) {
+    duv_paywall.querySelectorAll('[disabled]').forEach(e => e.removeAttribute('disabled'));
+    let fader = 'div.duv-fader';
+    hideDOMStyle(fader, 3);
+  }
   let ads = 'div[id^="iqadtile"], .iqdcontainer';
   hideDOMStyle(ads);
 }
