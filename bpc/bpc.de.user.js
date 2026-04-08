@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.4.0
+// @version         4.3.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -106,13 +106,12 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
   window.setTimeout(function () {
   let paywall = document.querySelector('div#piano-inlined');
   if (paywall) {
-    removeDOMElement(paywall);
     let fade = document.querySelector('div.article-body > div.paywall-wrapper-with-print-info');
     removeDOMElement(paywall, fade);
     let json_script = document.querySelector('script#hydrationdata');
     if (json_script) {
       try {
-        let json = JSON.parse(json_script.text);
+        let json = JSON.parse(decodeURIComponent(escape(atob(json_script.text))));
         if (json) {
           let url_id = json_script.text.includes('"gcid":"') ? json_script.text.split('"gcid":"')[1].split('"')[0] : '';
           if (url_id && !window.location.pathname.endsWith(url_id))
@@ -137,7 +136,7 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
                 let content_new = parser.parseFromString('<div>' + par_elem.text + '</div>', 'text/html');
                 sub_elem = content_new.querySelector('div');
               } else if (par_elem.__typename === 'EmbedParagraph' && par_elem.embedCode) {
-                let content_new = parser.parseFromString('<div>' + par_elem.embedCode + '</div>', 'text/html');
+                let content_new = parser.parseFromString('<div>' + par_elem.embedCode.split('<embeddedscript')[0] + '</div>', 'text/html');
                 sub_elem = content_new.querySelector('div');
                 let iframe = sub_elem.querySelector('iframe[width]');
                 if (iframe) {
@@ -145,6 +144,9 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
                   iframe.width = iframe.width / ratio;
                   iframe.height = iframe.height / ratio;
                 }
+                let iframe_fullscreen = sub_elem.querySelector('iframe[allow*="fullscreen"][allowfullscreen]');
+                if (iframe_fullscreen)
+                  iframe_fullscreen.removeAttribute('allowfullscreen');
               } else if (par_elem.__typename === 'ImageFile') {
                 if (par_elem.origin) {
                   if (!img_first) {
