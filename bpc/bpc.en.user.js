@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.4.1
+// @version         4.3.4.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1766,7 +1766,7 @@ else if (matchDomain('bizjournals.com')) {
                       article.appendChild(figure);
                     }
                   }
-                  if (typeof par === 'string' && !['default', 'embed', 'horizontal_line', 'image', 'list', 'media', 'top25list'].includes(par)) {
+                  if (typeof par === 'string' && !['default', 'embed', 'gallery', 'horizontal_line', 'image', 'list', 'media', 'top25list'].includes(par)) {
                     if (par.match(/^\d{4}-\d{2}-/))
                       break;
                     let doc = parser.parseFromString('<div class="' + par_class + '">' + par + '</div>', 'text/html');
@@ -1779,12 +1779,26 @@ else if (matchDomain('bizjournals.com')) {
                     break;
                 }
               }
+              let audio_tts = document.querySelector('div[data-dev="ArticlePlayer"]');
+              if (audio_tts) {
+                let audio_src = json.find(x => x && typeof x === 'string' && x.endsWith('.mp3'));
+                if (audio_src) {
+                  let audio_new = document.createElement('audio');
+                  audio_new.src = 'https://audiop.bizjournals.com' + audio_src;
+                  audio_new.setAttribute('controls', '');
+                  audio_tts.parentNode.replaceChild(audio_new, audio_tts);
+                }
+              }
             }
           } catch (err) {
             console.log(err);
           }
         }
       }
+    } else if (window.location.pathname.endsWith('.html')) {
+      let main_content = document.querySelector('div.main-content');
+      if (main_content && !main_content.querySelector('div'))
+        header_nofix(main_content, '', 'BPC > go to main page to pass Cloudflare check', window.location.href.split(/\/(news|stories)\//)[0]);
     }
     window.setTimeout(function () {
       let dialog = document.querySelector('div[id^="headlessui-dialog-"], div.sheet-overlay');
@@ -4652,6 +4666,13 @@ else if (matchDomain('epaper.indiatimes.com')) {
       }
     }
   }
+}
+
+else if (matchDomain('tomshardware.com')) {
+  let paywall = document.querySelector('div.paywall-locker');
+  if (paywall)
+    paywall.classList.remove('paywall-locker');
+  hideDOMStyle('div#kiosq-app-paywall-js, div.dfp-leaderboard-container');
 }
 
 else if (matchDomain(no_dn_media_domains)) {
