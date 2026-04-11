@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.4.4
+// @version         4.3.4.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2546,6 +2546,7 @@ else if (matchDomain('financialexpress.com')) {
 else if (matchDomain('firstthings.com')) {
   let paywall = 'div.leaky_paywall_message_wrap';
   hideDOMStyle(paywall);
+  leaky_paywall_unhide_disable = true;
 }
 
 else if (matchDomain('fmrmagazine.com')) {
@@ -5388,7 +5389,8 @@ else if (document.querySelector('head > link[href$=".wallkit.net"]')) {
 }
 
 ads_hide();
-if (!matchDomain(['firstthings.com']))
+var leaky_paywall_unhide_disable;
+if (!leaky_paywall_unhide_disable)
   leaky_paywall_unhide();
 
 }, 1000);
