@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.4.1
+// @version         4.3.4.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -701,7 +701,7 @@ else if (matchDomain('stern.de')) {
         if (article_opulent) {
           article_opulent.removeAttribute('style');
           let gradient = 'span[style*="linear-gradient"]';
-          hideDOMStyle(gradient);
+          hideDOMStyle(gradient, 2);
         }
       }
     }
@@ -720,6 +720,8 @@ else if (matchDomain('stern.de')) {
   let link_sel = 'div.page__content-inner, div.page-opulent';
   let url = window.location.href;
   getArchive(url, paywall_sel, '', article_sel, '', article_src_sel, link_sel);
+  let ads = 'section.ad-container';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('sueddeutsche.de')) {
@@ -958,7 +960,8 @@ else if (matchDomain('welt.de')) {
   }
   let url = window.location.href;
   getArchive(url, 'div.contains_walled_content, div.c-article-paywall', '', 'main header + div');
-  let ads = 'div[data-component="Outbrain"], div[class*="c-ad"]';
+  addStyle('div.page-content-wrapper {overflow: auto !important; height: auto !important;}');
+  let ads = 'div[data-component="Outbrain"], div[class*="c-ad"], div.q-grey-background';
   hideDOMStyle(ads);
 }
 

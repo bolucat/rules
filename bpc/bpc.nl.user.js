@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.4.0
+// @version         4.3.4.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -280,7 +280,7 @@ else if (matchDomain('groene.nl')) {
 }
 
 else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > link[href*=".ndcmediagroep.nl/"]')) {
-  let paywall = document.querySelector('div.signupPlus, div.pw-wrapper:not(.pw-none)');
+  let paywall = document.querySelector('div.signupPlus, div.pw-wrapper:not(.pw-none, .pw-pending');
   if (paywall && !window.location.pathname.includes('/live-')) {
     let intro = document.querySelector('div.startPayWall');
     let html = document.documentElement.outerHTML;
@@ -371,7 +371,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
                 if (child.relation.photographer) {
                   if (child.relation.photographer.length <= 2)
                     child.relation.photographer = findNuxtText(child.relation.photographer).replace(/\\u002F/g, '/');
-                  child.relation.caption += ' - ' + child.relation.photographer;
+                  child.relation.caption += ' ' + child.relation.photographer;
                 }
                 let caption = document.createElement('figcaption');
                 caption.innerText = child.relation.caption;
@@ -413,7 +413,8 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
               }
             }
             for (let par of pars) {
-              let elem = document.createElement('p');
+              let par_type = par.type ? findNuxtText(par.type) : '';
+              let elem = document.createElement(par_type === 'h2' ? 'h2': 'p');
               if (par.code) {
                 if (par.code.includes('flourish-embed') && par.code.includes(' data-src=\"')) {
                   elem = document.createElement('div');
@@ -436,7 +437,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
                   }
                 }
               } else if (par.text) {
-                if (findNuxtText(par.type) !== 'streamer')
+                if (par_type !== 'streamer')
                   addParText(elem, par.text);
               } else if (par.children) {
                 addChildren(elem, par.children);
