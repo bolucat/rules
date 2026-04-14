@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.4.1
+// @version         4.3.4.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -281,7 +281,12 @@ else if (matchDomain('groene.nl')) {
 
 else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > link[href*=".ndcmediagroep.nl/"]')) {
   let paywall = document.querySelector('div.signupPlus, div.pw-wrapper:not(.pw-none, .pw-pending');
-  if (paywall && !window.location.pathname.includes('/live-')) {
+  if (paywall) {
+    if (window.location.pathname.match(/\/(live|sportblog)-/)) {
+      header_nofix(paywall, '', 'BPC > try to remove cookies for site');
+      removeDOMElement(paywall);
+      return;
+    }
     let intro = document.querySelector('div.startPayWall');
     let html = document.documentElement.outerHTML;
     if (html.includes('window.__NUXT__=')) {
@@ -460,14 +465,19 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
 
 else if (matchDomain('linda.nl')) {
   window.setTimeout(function () {
+    let premium_sel = 'div[class$="premiumlabel" i], article.premium-article_container';
+    let premium = window.location.pathname.startsWith('/premium/') || document.querySelector(premium_sel);
     let article_sel = 'div.premium-article_main-content, div.article-content_htmlContent';
     let article = document.querySelector(article_sel);
-    if (article) {
+    if (premium && article) {
+      let paywall_sel = cs_param.paywall_sel || 'div.premium-login-box_loginBox';
+      hideDOMStyle(paywall_sel);
+      let fade = document.querySelector('div[class*="_loginRequired"]');
+      if (fade)
+        fade.className = article.className.replace(/[-\w]+_loginRequired/, '');
       let pars = article.querySelectorAll('p');
       if (pars.length > 5)
         return;
-      let paywall_sel = 'div.premium-login-box_loginBox';
-      hideDOMStyle(paywall_sel);
       let filter = /^window\.__INITIAL_PROPS__\s?=\s?/;
       let json_script = getSourceJsonScript(filter);
       if (json_script) {
@@ -481,9 +491,6 @@ else if (matchDomain('linda.nl')) {
               function replace_also_read(str) {
                 return str.replace(/{also-read title="([^}]+)" url="([^}]+)" [^}]+"}/g, "<div style='margin: 15px 0px'><a href=\"$2\">Lees ook: $1</a></div>");
               }
-              let fade = document.querySelector('div[class*="_loginRequired"]');
-              if (fade)
-                fade.className = article.className.replace(/[-\w]+_loginRequired/, '');
               if (json.viewData.article.modules) {
                 let modules = json.viewData.article.modules;
                 article.innerHTML = '';

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.4.2
+// @version         4.3.4.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -561,15 +561,16 @@ else if (matchDomain(['noz.de', 'shz.de'])) {
 }
 
 else if (matchDomain('nw.de')) {
-  let paywall = document.querySelector('div[class*="paywall-overlay"]');
-  if (paywall) {
-    paywall.removeAttribute('class');
+  let paywall = document.querySelector('div.abo-container');
+  let article = document.querySelector('div#paywall');
+  if (paywall && article) {
+    removeDOMElement(paywall);
     let json_script = getArticleJsonScript();
     if (json_script) {
       try {
-        let json = JSON.parse(json_script.text);
-        let json_text = parseHtmlEntities(json.articleBody.replace(/\n/g, '\n\n').replace(/\.responsive[-@%{}()\.:;\w\s]+}\s?}/g, ''));
-        paywall.innerText = json_text;
+        let json = JSON.parse(json_script.text.replace(/""/g, '"'));
+        let json_text = parseHtmlEntities(json.articleBody.replace(/\\n/g, '\n\n').replace(/\\\//g, '/').replace(/\.responsive[-@%{}()\.:;\w\s]+}\s?}/g, ''));
+        article.innerText = json_text;
       } catch (err) {
         console.log(err);
       }
