@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.3.1.1
+// @version         4.3.4.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -701,24 +701,28 @@ else if (matchDomain('exame.com')) {
 }
 
 else if (matchDomain('uol.com.br')) {
-  if (matchDomain('folha.uol.com.br')) {
-    if (matchDomain('piaui.folha.uol.com.br')) {
-      let audio = document.querySelector('div.audio-player-container:has(audio[src])');
+ if (matchDomain('piaui.uol.com.br')) {
+    let audio_cont = document.querySelector('div.audio-player-container:has(audio[src])');
+    if (audio_cont) {
+      let audio = audio_cont.querySelector('audio[src]');
       if (audio) {
         let audio_new = document.createElement('audio');
-        audio_new.src = audio.querySelector('audio').src;
+        audio_new.src = audio.src;
         audio_new.setAttribute('controls', '');
-        audio.parentNode.replaceChild(audio_new, audio);
+        audio_cont.parentNode.replaceChild(audio_new, audio_cont);
       }
-      header_nofix('div.paywall__content', 'div.revista--interna__assineonly', 'BPC > no fix' + (audio ? ' (audio-only)' : ''));
-    } else if (window.location.pathname.startsWith('/amp/')) {
+    }
+    let ads = 'div[class^="piaui-interna-"], div.main__advert';
+    hideDOMStyle(ads, 2);
+  } else if (matchDomain('folha.uol.com.br')) {
+    if (window.location.pathname.startsWith('/amp/')) {
       amp_unhide_subscr_section('amp-sticky-ad');
     } else {
       let signup = document.querySelector('.c-top-signup');
       removeDOMElement(signup);
     }
   }
-  let ads = 'div[class*="advertising"], div.jupiter-ads, div.up-floating, div[data-cp-id$="asfads"], div.ms-hapb, div.ms-apb';
+  let ads = 'div[class*="advertising"], div.jupiter-ads, div.up-floating, div[data-cp-id$="asfads"], div.ms-hapb, div.ms-apb, div.cardAd';
   hideDOMStyle(ads);
 }
 

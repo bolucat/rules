@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.2.4
+// @version         4.3.4.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -280,8 +280,13 @@ else if (matchDomain('groene.nl')) {
 }
 
 else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > link[href*=".ndcmediagroep.nl/"]')) {
-  let paywall = document.querySelector('div.signupPlus, div.pw-wrapper:not(.pw-none)');
-  if (paywall && !window.location.pathname.includes('/live-')) {
+  let paywall = document.querySelector('div.signupPlus, div.pw-wrapper:not(.pw-none, .pw-pending');
+  if (paywall) {
+    if (window.location.pathname.match(/\/(live|sportblog)-/)) {
+      header_nofix(paywall, '', 'BPC > try to remove cookies for site');
+      removeDOMElement(paywall);
+      return;
+    }
     let intro = document.querySelector('div.startPayWall');
     let html = document.documentElement.outerHTML;
     if (html.includes('window.__NUXT__=')) {
@@ -315,7 +320,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
           refreshCurrentTab();
         else if (json.includes(',body:')) {
           let nuxt_vars = json.split(/^\(function\(/)[1].split('){')[0].split(',');
-          let nuxt_values = json.split('}}(')[1].split('));')[0].replace(/(^|,)(true|false|\.?\d+|{}),/g, ',"$1$2",').replace(/,(null),/g, ',"$1",').replace(/,(void\s\d),/g, ',"$1",').split(/\\?",\\?"/);
+          let nuxt_values = json.split('}}(')[1].split('));')[0].replace(/(^|,)(true|false|\.?\d+|{}),/g, ',"$1$2",').replace(/(^|,)(null),/g, ',"$1$2",').replace(/,(void\s\d),/g, ',"$1",').split(/\\?",\\?"/);
           function findNuxtText(str, attributes = false) {
             if (nuxt_vars.length && nuxt_values.length && !(attributes && str.length === 1 && str === str.toUpperCase())) {
               let index = nuxt_vars.indexOf(str);
@@ -353,7 +358,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
             function addLink(elem, link_text, href, add_br = false) {
               let par_link = document.createElement('a');
               par_link.href = href;
-              par_link.innerText = link_text.replace(/\\n$/, '');
+              par_link.innerText = link_text.replace(/(\\n|\\t|\s)+$/g, '');
               elem.appendChild(par_link);
               if (add_br)
                 elem.appendChild(document.createElement('br'));
@@ -371,7 +376,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
                 if (child.relation.photographer) {
                   if (child.relation.photographer.length <= 2)
                     child.relation.photographer = findNuxtText(child.relation.photographer).replace(/\\u002F/g, '/');
-                  child.relation.caption += ' - ' + child.relation.photographer;
+                  child.relation.caption += ' ' + child.relation.photographer;
                 }
                 let caption = document.createElement('figcaption');
                 caption.innerText = child.relation.caption;
@@ -392,8 +397,6 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
                     child.relation.link = findNuxtText(child.relation.link).replace(/\\u002F/g, '/');
                   if (child.relation.title.length <= 2)
                     child.relation.title = findNuxtText(child.relation.title);
-                  if (matchDomain('frieschdagblad.nl'))
-                    child.relation.title = child.relation.link;
                   addLink(elem, child.relation.title, child.relation.link);
                 } else if (child.children) {
                   if (child.children.length) {
@@ -415,7 +418,8 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
               }
             }
             for (let par of pars) {
-              let elem = document.createElement('p');
+              let par_type = par.type ? findNuxtText(par.type) : '';
+              let elem = document.createElement(par_type === 'h2' ? 'h2': 'p');
               if (par.code) {
                 if (par.code.includes('flourish-embed') && par.code.includes(' data-src=\"')) {
                   elem = document.createElement('div');
@@ -438,7 +442,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
                   }
                 }
               } else if (par.text) {
-                if (findNuxtText(par.type) !== 'streamer')
+                if (par_type !== 'streamer')
                   addParText(elem, par.text);
               } else if (par.children) {
                 addChildren(elem, par.children);
@@ -461,14 +465,19 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
 
 else if (matchDomain('linda.nl')) {
   window.setTimeout(function () {
+    let premium_sel = 'div[class$="premiumlabel" i], article.premium-article_container';
+    let premium = window.location.pathname.startsWith('/premium/') || document.querySelector(premium_sel);
     let article_sel = 'div.premium-article_main-content, div.article-content_htmlContent';
     let article = document.querySelector(article_sel);
-    if (article) {
+    if (premium && article) {
+      let paywall_sel = cs_param.paywall_sel || 'div.premium-login-box_loginBox';
+      hideDOMStyle(paywall_sel);
+      let fade = document.querySelector('div[class*="_loginRequired"]');
+      if (fade)
+        fade.className = article.className.replace(/[-\w]+_loginRequired/, '');
       let pars = article.querySelectorAll('p');
       if (pars.length > 5)
         return;
-      let paywall_sel = 'div.premium-login-box_loginBox';
-      hideDOMStyle(paywall_sel);
       let filter = /^window\.__INITIAL_PROPS__\s?=\s?/;
       let json_script = getSourceJsonScript(filter);
       if (json_script) {
@@ -482,9 +491,6 @@ else if (matchDomain('linda.nl')) {
               function replace_also_read(str) {
                 return str.replace(/{also-read title="([^}]+)" url="([^}]+)" [^}]+"}/g, "<div style='margin: 15px 0px'><a href=\"$2\">Lees ook: $1</a></div>");
               }
-              let fade = document.querySelector('div[class*="_loginRequired"]');
-              if (fade)
-                fade.className = article.className.replace(/[-\w]+_loginRequired/, '');
               if (json.viewData.article.modules) {
                 let modules = json.viewData.article.modules;
                 article.innerHTML = '';
@@ -583,6 +589,8 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
       }
       let video_buttons = article.querySelectorAll('button[type="button"]');
       removeDOMElement(...video_buttons);
+      if (header_img && !article.querySelector('header figure, figure > div > svg'))
+        article.firstChild.before(header_img);
       if (comments)
         article.appendChild(comments);
       if (readmore)
@@ -594,6 +602,7 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
     let ads = 'span[style*="background-color:"]:has(> span[style*="min-height:"]), span > br, ' + article_sel + ' div:empty:not([class])';
     hideDOMStyle(ads, 2);
   }
+  let header_img = document.querySelector('div[data-content-type="MEDIA_TOP"]');
   let comments = document.querySelector('div[data-content-type="SHARE"]');
   let readmore = document.querySelector('div[data-content-type="CROSS_PROMOTION"]');
   let url = window.location.href;
@@ -615,7 +624,7 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
 
 else if (matchDomain(nl_dpg_media_domains)) {
   setCookie('TID_ID', '', '', '/', 0);
-  let banners = 'aside[data-temptation-position^="ARTICLE_"], div[data-temptation-position^="PAGE_"], div[class^="ad--"], div[id^="article_paragraph_"]';
+  let banners = 'aside[data-temptation-position^="ARTICLE_"], div[data-temptation-position^="PAGE_"], div[class^="ad--"], div[id^="article_paragraph_"], div[data-advert-orig-id], div[class$="1-container"]';
   hideDOMStyle(banners);
   window.setTimeout(function () {
     document.querySelectorAll('[class^="artstyle__"][style="display: none;"]').forEach(e => e.removeAttribute('style'));
@@ -680,7 +689,7 @@ else if (matchDomain('nrc.nl')) {
 
 else if (matchDomain('telegraaf.nl')) {
   func_post = function () {
-    let article = document.querySelector('article');
+    let article = document.querySelector(article_sel);
     if (article) {
       if (mobile) {
         let body = document.querySelector('body');
@@ -692,6 +701,7 @@ else if (matchDomain('telegraaf.nl')) {
             elem.parentNode.style['min-height'] = 'auto';
           }
         }
+        article.querySelectorAll('section[style*=";width:"]').forEach(e => e.removeAttribute('style'));
       }
       let gallery, img_width, captions, next, next_images, next_img_width;
       let gallery_new = document.createElement('div');
@@ -769,12 +779,15 @@ else if (matchDomain('telegraaf.nl')) {
         elem.parentNode.replaceChild(elem_new, elem);
       }
       document.querySelectorAll('div > div[style^="min-height:"] > div[id^="player_"]').forEach(e => hideDOMElement(e.parentNode.parentNode));
-      let pars = document.querySelectorAll('article section > div[style*="font-family:"]:not(:empty)');
+      let pars = document.querySelectorAll(article_sel + ' section > div[style*="font-family:"]:not(:empty)');
       if (pars.length < 5)
         article.after(googleSearchToolLink(url));
+      let ads = article_sel + ' div:empty';
+      hideDOMStyle(ads, 2);
     }
   }
   let url = window.location.href.split(/[#\?]/)[0];
+  let article_sel = 'article';
   window.setTimeout(function () {
     let paywall_sel = 'div[data-testid="paywall-position-popover"]:not(:empty)';
     let paywall = document.querySelector(paywall_sel);
@@ -782,7 +795,7 @@ else if (matchDomain('telegraaf.nl')) {
       if (window.location.pathname.startsWith('/video/') && document.querySelector('div[data-testid="article-video"]'))
         removeDOMElement(paywall);
       else
-        getArchive(url, paywall_sel, '', 'article');
+        getArchive(url, paywall_sel, '', article_sel);
       let noscroll = document.querySelector('body[class]');
       if (noscroll)
         noscroll.removeAttribute('class');

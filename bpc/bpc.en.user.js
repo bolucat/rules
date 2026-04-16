@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.4.5
+// @version         4.3.4.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1821,18 +1821,192 @@ else if (matchDomain('bizjournals.com')) {
 }
 
 else if (matchDomain('bloomberg.com')) {
-  let paywall_sel = 'div[id^="fortress-"]';
-  waitDOMElement(paywall_sel, 'DIV', removeDOMElement, true);
-  waitDOMAttribute('body', 'BODY', 'data-paywall-overlay-status', node => node.removeAttribute('data-paywall-overlay-status'), true);
+  document.querySelectorAll('html[class], body[class]').forEach(e => e.removeAttribute('class'));
+  waitDOMAttribute('html', 'HTML', 'class', node => node.removeAttribute('class'), true);
+  waitDOMAttribute('body', 'BODY', 'class', node => node.removeAttribute('class'), true);
+  let url = window.location.href;
+  if (url.match(/s\/\d{4}-/)) {
+    let json_next_script = document.querySelector('script#__NEXT_DATA__');
+    if (json_next_script) {
+      try {
+        let json = JSON.parse(json_next_script.text);
+        let json_pars = json.props.pageProps.story.body.content;
+        let article_pars = document.querySelectorAll('div > p[class^="ArticleBodyText_"]');
+        let article;
+        if (article_pars.length && (article_pars.length < 5) && json_pars.length) {
+          let par_class = article_pars[0].getAttribute('class');
+          article = article_pars[0].parentNode;
+          article.style = '-webkit-mask-image: none !important; mask-image: none !important;';
+          if (json.props.pageProps.story.readingUrl) {
+            let audio_tts = document.createElement('audio');
+            audio_tts.src = json.props.pageProps.story.readingUrl;
+            audio_tts.setAttribute('controls', '');
+            article.before(audio_tts);
+          }
+          function addLink(item_text, item_href, elem) {
+            let sub_elem = document.createElement('a');
+            sub_elem.innerText = item_text;
+            sub_elem.href = item_href;
+            sub_elem.style = 'text-decoration: underline;';
+            if (!item_href.startsWith('https://www.bloomberg.com'))
+              sub_elem.target = '_blank';
+            elem.appendChild(sub_elem);
+          }
+          function addEntity(item, elem) {
+            if (item.content && item.content[0] && item.content[0].value) {
+              if (['person', 'security'].includes(item.subType)) {
+                elem.appendChild(document.createTextNode(item.content[0].value));
+              } else if (item.subType === 'story' && item.data && item.data.link) {
+                if (item.data.link.destination && item.data.link.destination.web)
+                  addLink(item.content[0].value, item.data.link.destination.web, elem);
+                else if (item.data.link.title)
+                  elem.appendChild(document.createTextNode(item.data.link.title));
+              } else
+                console.log(item);
+            }
+          }
+          function addList(content, elem) {
+            let ul = document.createElement('ul');
+            ul.setAttribute('style', 'list-style-type: disc; padding: 5px;');
+            for (let item of content) {
+              if (item.type === 'listItem') {
+                let li = document.createElement('li');
+                for (let list_item of item.content) {
+                  if (list_item.type === 'text') {
+                    if (list_item.value) {
+                      li.appendChild(document.createTextNode(list_item.value));
+                    }
+                  } else if (list_item.type === 'link' && list_item.data && list_item.data.href) {
+                    if (list_item.content && list_item.content[0] && list_item.content[0].value)
+                      addLink(list_item.content[0].value, list_item.data.href, li);
+                  } else if (list_item.type = 'entity' && list_item.content && list_item.content[0] && list_item.content[0].value) {
+                    addEntity(list_item, li);
+                  } else if (list_item.type === 'list') {
+                    if (list_item.content) {
+                      console.log('sub_list'); //addList(list_item.content, li);
+                      console.log(list_item);
+                    }
+                  } else
+                    console.log(list_item);
+                }
+                ul.appendChild(li);
+              }
+            }
+            elem.appendChild(ul);
+          }
+          for (let par of json_pars) {
+            let elem = document.createElement('p');
+            elem.setAttribute('class', par_class);
+            elem.setAttribute('data-component', 'paragraph');
+            if (['heading', 'paragraph'].includes(par.type)) {
+              for (let item of par.content) {
+                if (item.type === 'text' && item.value) {
+                  elem.appendChild(document.createTextNode(item.value));
+                } else if (item.type === 'br') {
+                  elem.appendChild(document.createElement('br'));
+                } else if (item.type === 'link' && item.data && item.data.href) {
+                  if (item.content && item.content[0] && item.content[0].value)
+                    addLink(item.content[0].value, item.data.href, elem);
+                } else if (item.type === 'entity') {
+                  addEntity(item, elem);
+                } else
+                  console.log(item);
+              }
+            } else if (par.type.endsWith('quote') && par.content) {
+              elem.appendChild(document.createElement('br'));
+              for (let item of par.content) {
+                if (item.type === 'paragraph' && item.content) {
+                  for (let sub_item of item.content) {
+                    if (sub_item.type === 'text' && sub_item.value)
+                      elem.appendChild(document.createTextNode(sub_item.value + ' '));
+                    else if (sub_item.type = 'entity')
+                      addEntity(sub_item, elem);
+                  }
+                }
+              }
+              elem.setAttribute('style', 'font-style: italic;');
+            } else if (par.type === 'media' && par.subType === 'video') {
+              if (par.data && par.data.video && par.data.video.src) {
+                let video = document.createElement('video');
+                video.src = par.data.video.src;
+                video.setAttribute('controls', '');
+                elem.appendChild(video);
+                if (par.data.video.caption) {
+                  let caption = document.createElement('span');
+                  caption.innerText = parseHtmlEntities(par.data.video.caption) + (par.data.video.credit ? ' ' + par.data.video.credit : '');
+                  elem.appendChild(caption);
+                }
+              }
+            } else if (par.type === 'media' && par.subType === 'photo') {
+              if (par.data && par.data.photo && par.data.photo.src) {
+                let figure = makeFigure(par.data.photo.src, parseHtmlEntities(par.data.photo.caption.replace(/<\/?\w+>/g, '')) + ' ' + par.data.photo.credit);
+                elem.appendChild(figure);
+              }
+            } else if (par.type === 'media' && par.subType === 'chart') {
+              if (par.data && par.data.chart) {
+                let figure = document.createElement('figure');
+                if (par.data.attachment && par.data.attachment.title)
+                  figure.appendChild(document.createTextNode(par.data.attachment.title));
+                let img = document.createElement('img');
+                img.src = par.data.chart.fallback;
+                figure.appendChild(img);
+                if (par.data.attachment && (par.data.attachment.source || par.data.attachment.footnote)) {
+                  let caption = document.createElement('figcaption');
+                  caption.innerText = par.data.attachment.source + '\r\n' + par.data.attachment.footnote;
+                  figure.appendChild(caption);
+                }
+                elem.appendChild(figure);
+              }
+            } else if (par.type === 'embed') {
+              if (par.iframeData && par.iframeData.html) {
+                let parser = new DOMParser();
+                let doc = parser.parseFromString('<div>' + par.iframeData.html + '</div>', 'text/html');
+                let embed_elem = doc.querySelector('div');
+                elem.appendChild(embed_elem);
+              }
+            } else if (par.type === 'div') {
+              if (par.content && par.content[0]) {
+                let item = par.content[0];
+                if (item.type === 'media' && item.subType === 'audio' && item.data) {
+                  let data = item.data;
+                  if (data.attachment && data.attachment.url && data.attachment.title && data.attachment.description) {
+                    let title = document.createTextNode(data.attachment.title);
+                    let audio = document.createElement('audio');
+                    audio.src = data.attachment.url;
+                    audio.setAttribute('controls', '');
+                    let parser = new DOMParser();
+                    let doc = parser.parseFromString('<div>' + data.attachment.description.replace(/\n\n/g, '<br><br>') + '</div>', 'text/html');
+                    let description = doc.querySelector('div');
+                    description.style = 'margin: 20px 0px; padding: 20px; border: 1px solid black;';
+                    description.firstChild.before(title, audio);
+                    elem.appendChild(description);
+                  }
+                } else
+                  console.log(par);
+              }
+            } else if (par.type === 'list' && par.content) {
+              addList(par.content, elem);
+            } else if (!['ad', 'inline-newsletter', 'inline-recirc', 'tabularData'].includes(par.type))
+              console.log(par);
+            if (elem.hasChildNodes)
+              article.appendChild(elem);
+          }
+          removeDOMElement(...article_pars);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
   if (window.location.pathname.startsWith('/live/')) {
     setInterval(function () {
       window.localStorage.clear();
     }, 15 * 60 * 1000);
-  } else
-    window.localStorage.clear();
+  }
+  let paywall_sel = 'div[id^="fortress-"]';
   let leaderboard = 'div[id^="leaderboard"], div[class^="leaderboard"], div.canopy-container';
   let shimmering = 'article.first-story div[class*="Placeholder_placeholderParagraphWrapper-"]';
-  let ads = 'div[data-ad-status], div[data-ad-type], div[class*="FullWidthAd_"], div.adWrapper';
+  let ads = 'div[data-ad-status], div[data-ad-type], div[class*="FullWidthAd_"], div.adWrapper, div.dvz-v0-ad';
   hideDOMStyle([paywall_sel, leaderboard, shimmering, ads].join(','));
 }
 
