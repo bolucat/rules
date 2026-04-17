@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.4.6
+// @version         4.3.4.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1997,8 +1997,11 @@ else if (matchDomain('bloomberg.com')) {
         console.log(err);
       }
     }
-  }
-  if (window.location.pathname.startsWith('/live/')) {
+  } else if (window.location.pathname.startsWith('/quote/')) {
+    let blur_chart = document.querySelector('div[class^="summary_contentBlur_"]');
+    if (blur_chart)
+      blur_chart.removeAttribute('class');
+  } else if (window.location.pathname.startsWith('/live/')) {
     setInterval(function () {
       window.localStorage.clear();
     }, 15 * 60 * 1000);

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.3.3.0
+// @version         4.3.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -426,6 +426,30 @@ else if (matchDomain('elle.fr')) {
   }
   let ads = 'div[class*="--placeholder"]';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('franc-tireur.fr')) {
+  let paywall = document.querySelector('div#poool-widget-content');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('section.article-body');
+    if (article) {
+      let json_script = getArticleJsonScript();
+      if (json_script) {
+        let json = JSON.parse(json_script.text);
+        if (json) {
+          let json_text = json.articleBody;
+          if (json_text) {
+            let parser = new DOMParser();
+            let doc = parser.parseFromString('<p>' + breakText(json_text.replace(/\s\?/g, '?')).replace(/\n\n/g, '<br><br>') + '</p>', 'text/html');
+            let article_new = doc.querySelector('p');
+            article.innerHTML = '';
+            article.appendChild(article_new);
+          }
+        }
+      }
+    }
+  }
 }
 
 else if (matchDomain(fr_be_groupe_rossel_domains)) {

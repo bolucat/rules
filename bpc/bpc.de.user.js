@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.4.4
+// @version         4.3.4.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -568,7 +568,7 @@ else if (matchDomain('nw.de')) {
     let json_script = getArticleJsonScript();
     if (json_script) {
       try {
-        let json = JSON.parse(json_script.text.replace(/""/g, '"'));
+        let json = JSON.parse(json_script.text);
         let json_text = parseHtmlEntities(json.articleBody.replace(/\\n/g, '\n\n').replace(/\\\//g, '/').replace(/\.responsive[-@%{}()\.:;\w\s]+}\s?}/g, ''));
         article.innerText = json_text;
       } catch (err) {
@@ -852,10 +852,10 @@ else if (matchDomain('vn.at')) {
 
 else if (matchDomain('vol.at')) {
   window.setTimeout(function () {
-    let art_pars_sel = cs_param.art_pars_sel || 'article div.content-block--wrapper';
+    let art_pars_sel = 'article div.content-block--wrapper';
     let art_pars = document.querySelectorAll(art_pars_sel);
     if (art_pars.length && (art_pars.length < 3)) {
-      let article_sel = cs_param.article_sel || 'div.vodl-paywall';
+      let article_sel = 'div.vodl-paywall';
       let article = document.querySelector(article_sel);
       if (article) {
         article.classList.remove('vodl-paywall');
