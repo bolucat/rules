@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.4.7
+// @version         4.3.4.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1844,10 +1844,7 @@ else if (matchDomain('bloomberg.com')) {
             article.before(audio_tts);
           }
           function addLink(item_text, item_href, elem) {
-            let sub_elem = document.createElement('a');
-            sub_elem.innerText = item_text;
-            sub_elem.href = item_href;
-            sub_elem.style = 'text-decoration: underline;';
+            let sub_elem = makeLink(item_href, item_text, 'text-decoration: underline;');
             if (!item_href.startsWith('https://www.bloomberg.com'))
               sub_elem.target = '_blank';
             elem.appendChild(sub_elem);
@@ -1894,24 +1891,48 @@ else if (matchDomain('bloomberg.com')) {
             }
             elem.appendChild(ul);
           }
+          function addPar(content, elem) {
+            for (let item of content) {
+              if (item.type === 'text' && item.value) {
+                elem.appendChild(document.createTextNode(item.value));
+              } else if (item.type === 'br') {
+                elem.appendChild(document.createElement('br'));
+              } else if (item.type === 'link' && item.data && item.data.href) {
+                if (item.content && item.content[0] && item.content[0].value)
+                  addLink(item.content[0].value, item.data.href, elem);
+              } else if (item.type === 'entity') {
+                addEntity(item, elem);
+              } else if (item.type === 'footnoteRef') {
+                if (item.data && item.data.footnoteContent && item.data.footnoteContent[0]) {
+                  let sub_item = item.data.footnoteContent[0];
+                  if (sub_item.type === 'paragraph') {
+                    footnote_nr++;
+                    let footnote_link = makeLink('#footer-ref-footnote-' + footnote_nr, footnote_nr, 'font-size: smaller; vertical-align: super; margin: 0px 5px; text-decoration: underline;');
+                    footnote_link.id = 'inline-ref-footnote-' + footnote_nr;
+                    elem.appendChild(footnote_link);
+                    let footnote_bottom = document.createElement('li');
+                    footnote_bottom.id = 'footer-ref-footnote' + footnote_nr;
+                    addPar(sub_item.content, footnote_bottom);
+                    let footnote_bottom_link = makeLink('#inline-ref-footnote-' + footnote_nr, 'View in article', 'margin: 0px 5px; text-decoration: underline;');
+                    footnote_bottom_link.id = 'footer-ref-footnote-' + footnote_nr;
+                    footnote_bottom.appendChild(footnote_bottom_link);
+                    footnotes.appendChild(footnote_bottom);
+                  } else
+                    console.log(sub_item);
+                }
+              } else
+                console.log(item);
+            }
+          }
+          let footnote_nr = 0;
+          let footnotes = document.createElement('ol');
+          footnotes.style = 'font-style: italic; margin: 20px 0px; list-style-type: decimal;';
           for (let par of json_pars) {
             let elem = document.createElement('p');
             elem.setAttribute('class', par_class);
             elem.setAttribute('data-component', 'paragraph');
             if (['heading', 'paragraph'].includes(par.type)) {
-              for (let item of par.content) {
-                if (item.type === 'text' && item.value) {
-                  elem.appendChild(document.createTextNode(item.value));
-                } else if (item.type === 'br') {
-                  elem.appendChild(document.createElement('br'));
-                } else if (item.type === 'link' && item.data && item.data.href) {
-                  if (item.content && item.content[0] && item.content[0].value)
-                    addLink(item.content[0].value, item.data.href, elem);
-                } else if (item.type === 'entity') {
-                  addEntity(item, elem);
-                } else
-                  console.log(item);
-              }
+              addPar(par.content, elem);
             } else if (par.type.endsWith('quote') && par.content) {
               elem.appendChild(document.createElement('br'));
               for (let item of par.content) {
@@ -1992,6 +2013,8 @@ else if (matchDomain('bloomberg.com')) {
               article.appendChild(elem);
           }
           removeDOMElement(...article_pars);
+          if (footnote_nr)
+            article.appendChild(footnotes);
         }
       } catch (err) {
         console.log(err);

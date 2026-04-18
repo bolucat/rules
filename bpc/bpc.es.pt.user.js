@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.3.4.0
+// @version         4.3.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -810,7 +810,7 @@ else if (matchDomain('lasegunda.com')) {
                       intro.firstChild.before(figure);
                     }
                     function make_fig(p1, p2 = '') {
-                      let result = '<figure style="margin: 15px 0px"><img src="' + p1 + '"><figcaption>' + (p2 ? p2.replace(/^;\s/, '') : '') + '</figcaption></figure>';
+                      let result = '<figure style="margin: 15px 0px"><img src="' + p1 + '"><figcaption>' + (p2 ? p2.replace(/^;\s?/, '') : '') + '</figcaption></figure>';
                       return result;
                     }
                     function make_imagen(match, p1, offset, string) {
@@ -822,9 +822,13 @@ else if (matchDomain('lasegunda.com')) {
                     function make_video(match, p1, offset, string) {
                       return '<video controls src="' + p1 + '" style="width: 100%; margin: 15px 0px;">';
                     }
+                    function make_cifra(match, p1, p2, offset, string) {
+                      return p1 + p2.replace(/^;\s?/, ' ');
+                    }
                     let art_text = art_source.texto.replace(/&nbsp;/g, ' ').replace(/{IMAGEN?\s([^}]+)}/g, make_imagen);
-                    art_text = art_text.replace(/{IMAGENCREDITO\s([^;]+)(;\s[^}]+)}/g, make_imagen_credito);
+                    art_text = art_text.replace(/{IMAGENCREDITO\s([^;]+)(;\s?[^}]+)}/g, make_imagen_credito);
                     art_text = art_text.replace(/{VIDEO?\s([^}]+)}/g, make_video);
+                    art_text = art_text.replace(/{CIFRA\s([^;]+)(;\s?[^}]+)}/g, make_cifra);
                     art_text = art_text.replace(/{CITA[^}]+}/g, '').replace(/{DESTACAR\s/g, '').replace(/}/g, '');
                     if (!art_text.includes('{'))
                       art_text = art_text.replace(/}/g, '');
@@ -833,7 +837,7 @@ else if (matchDomain('lasegunda.com')) {
                     let parser = new DOMParser();
                     let doc = parser.parseFromString('<div style="margin: 20px 0px;">' + art_text + '<br></div>', 'text/html');
                     let article_new = doc.querySelector('div');
-                    page.appendChild(article_new);
+                    page.append(article_new, document.createElement('br'));
                   }
                 } catch (err) {
                   console.log(err);
