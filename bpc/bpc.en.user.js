@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.4.8
+// @version         4.3.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1821,9 +1821,132 @@ else if (matchDomain('bizjournals.com')) {
 }
 
 else if (matchDomain('bloomberg.com')) {
-  document.querySelectorAll('html[class], body[class]').forEach(e => e.removeAttribute('class'));
-  waitDOMAttribute('html', 'HTML', 'class', node => node.removeAttribute('class'), true);
-  waitDOMAttribute('body', 'BODY', 'class', node => node.removeAttribute('class'), true);
+  if (true) {
+    document.querySelectorAll('html[class], body[class]').forEach(e => e.removeAttribute('class'));
+    waitDOMAttribute('html', 'HTML', 'class', node => node.removeAttribute('class'), true);
+    waitDOMAttribute('body', 'BODY', 'class', node => node.removeAttribute('class'), true);
+  }
+  function addLink(item_text, item_href, elem) {
+    let sub_elem = makeLink(item_href, item_text, 'text-decoration: underline;');
+    if (item_href.startsWith('http') && !item_href.startsWith(window.location.origin))
+      sub_elem.target = '_blank';
+    elem.appendChild(sub_elem);
+  }
+  function addEmbed(item, elem) {
+    if (item.iframeData && item.iframeData.html) {
+      let parser = new DOMParser();
+      let doc = parser.parseFromString('<div>' + item.iframeData.html + '</div>', 'text/html');
+      let embed_elem = doc.querySelector('div');
+      elem.appendChild(embed_elem);
+    }
+  }
+  function addPodcast(data, elem) {
+    if (data.attachment && data.attachment.url && data.attachment.title && data.attachment.description) {
+      let title = document.createTextNode(data.attachment.title);
+      let audio = document.createElement('audio');
+      audio.src = data.attachment.url;
+      audio.setAttribute('controls', '');
+      let parser = new DOMParser();
+      let doc = parser.parseFromString('<div>' + DOMPurify.sanitize(data.attachment.description.replace(/\n\n/g, '<br><br>'), dompurify_options) + '</div>', 'text/html');
+      let description = doc.querySelector('div');
+      description.style = 'margin: 20px 0px; padding: 20px; border: 1px solid black;';
+      description.firstChild.before(title, audio);
+      elem.appendChild(description);
+    }
+  }
+  function addEntity(item, elem) {
+    if (item.content && item.content[0] && item.content[0].value) {
+      if (['person', 'security'].includes(item.subType)) {
+        elem.appendChild(document.createTextNode(item.content[0].value));
+      } else if (item.subType === 'story' && item.data && item.data.link) {
+        if (item.data.link.destination && item.data.link.destination.web)
+          addLink(item.content[0].value, item.data.link.destination.web, elem);
+        else if (item.data.link.title)
+          elem.appendChild(document.createTextNode(item.data.link.title));
+      } else
+        console.log(item);
+    }
+  }
+  function addList(content, elem) {
+    let ul = document.createElement('ul');
+    ul.setAttribute('style', 'list-style-type: disc; padding: 5px;');
+    for (let item of content) {
+      if (item.type === 'listItem') {
+        let li = document.createElement('li');
+        for (let list_item of item.content) {
+          if (list_item.type === 'text' && list_item.value) {
+            li.appendChild(document.createTextNode(list_item.value));
+          } else if (list_item.type === 'link' && list_item.data && list_item.data.href) {
+            if (list_item.data.href.startsWith('bbg:') && list_item.data.webUrl)
+              list_item.data.href = list_item.data.webUrl;
+            if (list_item.content && list_item.content[0] && list_item.content[0].value)
+              addLink(list_item.content[0].value, list_item.data.href, li);
+          } else if (list_item.type === 'entity' && list_item.content && list_item.content[0] && list_item.content[0].value) {
+            addEntity(list_item, li);
+          } else if (list_item.type === 'div' && list_item.content) {
+            addPar(list_item.content, li);
+          } else
+            console.log(list_item);
+        }
+        ul.appendChild(li);
+      }
+    }
+    elem.appendChild(ul);
+  }
+  function addPar(content, elem) {
+    for (let item of content) {
+      if (item.type === 'text' && item.value) {
+        let span = document.createElement('span');
+        span.innerText = item.value;
+        if (item.attributes) {
+          if (item.attributes.strong)
+            span.style = 'font-weight: bold';
+          else if (item.attributes.emphasis)
+            span.style = 'font-style: italic';
+          else
+            console.log(item);
+        }
+        elem.appendChild(span);
+      } else if (item.type === 'br') {
+        elem.appendChild(document.createElement('br'));
+      } else if (item.type === 'link' && item.data && item.data.href) {
+        if (item.data.href.startsWith('bbg:') && item.data.webUrl)
+          item.data.href = item.data.webUrl;
+        if (item.content && item.content[0] && item.content[0].value)
+          addLink(item.content[0].value, item.data.href, elem);
+      } else if (item.type === 'entity') {
+        addEntity(item, elem);
+      } else if (item.type === 'div') {
+        addPar(item.content, elem);
+      } else if (item.type === 'list' && item.content) {
+        addList(item.content, elem);
+      } else if (item.type === 'embed') {
+        addEmbed(item, elem);
+      } else if (item.type === 'footnoteRef') {
+        if (item.data && item.data.footnoteContent && item.data.footnoteContent[0]) {
+          let sub_item = item.data.footnoteContent[0];
+          if (sub_item.type === 'paragraph') {
+            footnote_nr++;
+            let footnote_link = makeLink('#footer-ref-footnote-' + footnote_nr, footnote_nr, 'font-size: smaller; vertical-align: super; margin: 0px 5px; text-decoration: underline;');
+            footnote_link.id = 'inline-ref-footnote-' + footnote_nr;
+            elem.appendChild(footnote_link);
+            let footnote_bottom = document.createElement('li');
+            footnote_bottom.id = 'footer-ref-footnote' + footnote_nr;
+            addPar(sub_item.content, footnote_bottom);
+            let footnote_bottom_link = makeLink('#inline-ref-footnote-' + footnote_nr, 'View in article', 'margin: 0px 5px; text-decoration: underline;');
+            footnote_bottom_link.id = 'footer-ref-footnote-' + footnote_nr;
+            footnote_bottom.appendChild(footnote_bottom_link);
+            footnotes.appendChild(footnote_bottom);
+          } else
+            console.log(sub_item);
+        }
+      } else
+        console.log(item);
+    }
+  }
+  let footnote_nr = 0;
+  let footnotes = document.createElement('ol');
+  footnotes.style = 'font-style: italic; margin: 20px 0px; list-style-type: decimal;';
   let url = window.location.href;
   if (url.match(/s\/\d{4}-/)) {
     let json_next_script = document.querySelector('script#__NEXT_DATA__');
@@ -1843,90 +1966,6 @@ else if (matchDomain('bloomberg.com')) {
             audio_tts.setAttribute('controls', '');
             article.before(audio_tts);
           }
-          function addLink(item_text, item_href, elem) {
-            let sub_elem = makeLink(item_href, item_text, 'text-decoration: underline;');
-            if (!item_href.startsWith('https://www.bloomberg.com'))
-              sub_elem.target = '_blank';
-            elem.appendChild(sub_elem);
-          }
-          function addEntity(item, elem) {
-            if (item.content && item.content[0] && item.content[0].value) {
-              if (['person', 'security'].includes(item.subType)) {
-                elem.appendChild(document.createTextNode(item.content[0].value));
-              } else if (item.subType === 'story' && item.data && item.data.link) {
-                if (item.data.link.destination && item.data.link.destination.web)
-                  addLink(item.content[0].value, item.data.link.destination.web, elem);
-                else if (item.data.link.title)
-                  elem.appendChild(document.createTextNode(item.data.link.title));
-              } else
-                console.log(item);
-            }
-          }
-          function addList(content, elem) {
-            let ul = document.createElement('ul');
-            ul.setAttribute('style', 'list-style-type: disc; padding: 5px;');
-            for (let item of content) {
-              if (item.type === 'listItem') {
-                let li = document.createElement('li');
-                for (let list_item of item.content) {
-                  if (list_item.type === 'text') {
-                    if (list_item.value) {
-                      li.appendChild(document.createTextNode(list_item.value));
-                    }
-                  } else if (list_item.type === 'link' && list_item.data && list_item.data.href) {
-                    if (list_item.content && list_item.content[0] && list_item.content[0].value)
-                      addLink(list_item.content[0].value, list_item.data.href, li);
-                  } else if (list_item.type = 'entity' && list_item.content && list_item.content[0] && list_item.content[0].value) {
-                    addEntity(list_item, li);
-                  } else if (list_item.type === 'list') {
-                    if (list_item.content) {
-                      console.log('sub_list'); //addList(list_item.content, li);
-                      console.log(list_item);
-                    }
-                  } else
-                    console.log(list_item);
-                }
-                ul.appendChild(li);
-              }
-            }
-            elem.appendChild(ul);
-          }
-          function addPar(content, elem) {
-            for (let item of content) {
-              if (item.type === 'text' && item.value) {
-                elem.appendChild(document.createTextNode(item.value));
-              } else if (item.type === 'br') {
-                elem.appendChild(document.createElement('br'));
-              } else if (item.type === 'link' && item.data && item.data.href) {
-                if (item.content && item.content[0] && item.content[0].value)
-                  addLink(item.content[0].value, item.data.href, elem);
-              } else if (item.type === 'entity') {
-                addEntity(item, elem);
-              } else if (item.type === 'footnoteRef') {
-                if (item.data && item.data.footnoteContent && item.data.footnoteContent[0]) {
-                  let sub_item = item.data.footnoteContent[0];
-                  if (sub_item.type === 'paragraph') {
-                    footnote_nr++;
-                    let footnote_link = makeLink('#footer-ref-footnote-' + footnote_nr, footnote_nr, 'font-size: smaller; vertical-align: super; margin: 0px 5px; text-decoration: underline;');
-                    footnote_link.id = 'inline-ref-footnote-' + footnote_nr;
-                    elem.appendChild(footnote_link);
-                    let footnote_bottom = document.createElement('li');
-                    footnote_bottom.id = 'footer-ref-footnote' + footnote_nr;
-                    addPar(sub_item.content, footnote_bottom);
-                    let footnote_bottom_link = makeLink('#inline-ref-footnote-' + footnote_nr, 'View in article', 'margin: 0px 5px; text-decoration: underline;');
-                    footnote_bottom_link.id = 'footer-ref-footnote-' + footnote_nr;
-                    footnote_bottom.appendChild(footnote_bottom_link);
-                    footnotes.appendChild(footnote_bottom);
-                  } else
-                    console.log(sub_item);
-                }
-              } else
-                console.log(item);
-            }
-          }
-          let footnote_nr = 0;
-          let footnotes = document.createElement('ol');
-          footnotes.style = 'font-style: italic; margin: 20px 0px; list-style-type: decimal;';
           for (let par of json_pars) {
             let elem = document.createElement('p');
             elem.setAttribute('class', par_class);
@@ -1940,12 +1979,12 @@ else if (matchDomain('bloomberg.com')) {
                   for (let sub_item of item.content) {
                     if (sub_item.type === 'text' && sub_item.value)
                       elem.appendChild(document.createTextNode(sub_item.value + ' '));
-                    else if (sub_item.type = 'entity')
+                    else if (sub_item.type === 'entity')
                       addEntity(sub_item, elem);
                   }
                 }
               }
-              elem.setAttribute('style', 'font-style: italic;');
+              elem.style = 'font-style: italic';
             } else if (par.type === 'media' && par.subType === 'video') {
               if (par.data && par.data.video && par.data.video.src) {
                 let video = document.createElement('video');
@@ -1979,29 +2018,14 @@ else if (matchDomain('bloomberg.com')) {
                 elem.appendChild(figure);
               }
             } else if (par.type === 'embed') {
-              if (par.iframeData && par.iframeData.html) {
-                let parser = new DOMParser();
-                let doc = parser.parseFromString('<div>' + par.iframeData.html + '</div>', 'text/html');
-                let embed_elem = doc.querySelector('div');
-                elem.appendChild(embed_elem);
-              }
+              addEmbed(par, elem);
+            } else if (par.type === 'media' && par.subType === 'audio' && par.data) {
+              addPodcast(par.data, elem);
             } else if (par.type === 'div') {
               if (par.content && par.content[0]) {
                 let item = par.content[0];
                 if (item.type === 'media' && item.subType === 'audio' && item.data) {
-                  let data = item.data;
-                  if (data.attachment && data.attachment.url && data.attachment.title && data.attachment.description) {
-                    let title = document.createTextNode(data.attachment.title);
-                    let audio = document.createElement('audio');
-                    audio.src = data.attachment.url;
-                    audio.setAttribute('controls', '');
-                    let parser = new DOMParser();
-                    let doc = parser.parseFromString('<div>' + data.attachment.description.replace(/\n\n/g, '<br><br>') + '</div>', 'text/html');
-                    let description = doc.querySelector('div');
-                    description.style = 'margin: 20px 0px; padding: 20px; border: 1px solid black;';
-                    description.firstChild.before(title, audio);
-                    elem.appendChild(description);
-                  }
+                  addPodcast(item.data, elem);
                 } else
                   console.log(par);
               }
@@ -2018,6 +2042,65 @@ else if (matchDomain('bloomberg.com')) {
         }
       } catch (err) {
         console.log(err);
+      }
+    }
+  } else if (window.location.pathname.includes('/live-blog/')) {
+    let paywall = document.querySelector('div[class*="Liveblog_regwallWaiting_"]');
+    if (paywall) {
+      paywall.removeAttribute('class');
+      let json_next_script = document.querySelector('script#__NEXT_DATA__');
+      if (json_next_script) {
+        try {
+          let json = JSON.parse(json_next_script.text);
+          let liveblog = json.props.pageProps.liveblog;
+          if (liveblog) {
+            paywall.innerHTML = '';
+            let posts = liveblog.posts;
+            for (let post of posts) {
+              let elem = document.createElement('div');
+              elem.style = 'margin: 20px;';
+              elem.style.width = document.querySelector('main') ? document.querySelector('main').offsetWidth * 0.8 + 'px' : '400px';
+              if (post.body && post.body.content && post.body.content[0] && post.body.content[0].content) {
+                let header = post.header;
+                if (header) {
+                  if (header.contributorName) {
+                    if (header.contributorThumbnailUrl) {
+                      let author_img = document.createElement('img');
+                      author_img.src = header.contributorThumbnailUrl;
+                      elem.appendChild(author_img);
+                    }
+                    if (header.contributorSlug) {
+                      let author_link = makeLink('/authors/' + header.contributorSlug, header.contributorName, 'text-decoration: underline;');
+                      elem.appendChild(author_link);
+                    } else
+                      elem.append(document.createTextNode(header.contributorName), document.createElement('br'));
+                    if (header.timestamp && header.timestamp.raw)
+                      elem.append(document.createTextNode(' - ' + new Intl.DateTimeFormat("en-US", {dateStyle: "long", timeStyle: "short", timeZone: "America/New_York"}).format(new Date(header.timestamp.raw))), document.createElement('br'));
+                  }
+                }
+                let pars = post.body.content[0].content;
+                for (let par of pars) {
+                  if (par.type === 'text' && par.value) {
+                    elem.appendChild(document.createTextNode(par.value));
+                  } else if (par.type.endsWith('quote') && par.content) {
+                    elem.appendChild(document.createElement('br'));
+                    elem.style['font-style'] = 'italic';
+                    addPar(par.content, elem);
+                  } else if (par.type === 'div') {
+                    elem.appendChild(document.createElement('br'));
+                    addPar(par.content, elem);
+                  } else
+                    console.log(par);
+                }
+                elem.appendChild(document.createElement('hr'));
+              }
+              if (elem.hasChildNodes())
+                paywall.appendChild(elem);
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
       }
     }
   } else if (window.location.pathname.startsWith('/quote/')) {
@@ -2276,8 +2359,9 @@ else if (matchDomain('dailyherald.com')) {
 
 else if (matchDomain('dailywire.com')) {
   let article_sel = 'div[data-narration-container]';
-  let article = document.querySelector(article_sel);
-  if (article && article.querySelector('button')) {
+  let article = document.querySelector(article_sel + ':not(.done)');
+  if (article) {
+    article.classList.add('done');
     let body = document.querySelector(article_sel + ' > div[class]:first-child');
     if (body)
       body.removeAttribute('class');
