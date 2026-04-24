@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.5.1
+// @version         4.3.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -37,6 +37,8 @@
 // @match           *://*.intrafish.no/*
 // @match           *://*.ipolitics.ca/*
 // @match           *://*.japantimes.co.jp/*
+// @match           *://*.kathimerini.gr/*
+// @match           *://*.kompas.id/*
 // @match           *://*.livelaw.in/*
 // @match           *://*.nation.africa/*
 // @match           *://*.nautil.us/*
@@ -1826,7 +1828,17 @@ else if (matchDomain('bloomberg.com')) {
     waitDOMAttribute('html', 'HTML', 'class', node => node.removeAttribute('class'), true);
     waitDOMAttribute('body', 'BODY', 'class', node => node.removeAttribute('class'), true);
   }
-  function addLink(item_text, item_href, elem) {
+  function addLink(item, elem) {
+    if (item.data && item.content) {
+      if (!item.data.href.startsWith('http') && item.data.webUrl)
+        item.data.href = item.data.webUrl;
+      if (item.content && item.content[0] && item.content[0].value) {
+        let item_value = item.content[1] ? item.content.map(x => x.value).join('') : item.content[0].value;
+        addLinkValue(item_value, item.data.href, elem);
+      }
+    }
+  }
+  function addLinkValue(item_text, item_href, elem) {
     let sub_elem = makeLink(item_href, item_text, 'text-decoration: underline;');
     if (item_href.startsWith('http') && !item_href.startsWith(window.location.origin))
       sub_elem.target = '_blank';
@@ -1847,7 +1859,7 @@ else if (matchDomain('bloomberg.com')) {
       audio.src = data.attachment.url;
       audio.setAttribute('controls', '');
       let parser = new DOMParser();
-      let doc = parser.parseFromString('<div>' + DOMPurify.sanitize(data.attachment.description.replace(/\n\n/g, '<br><br>'), dompurify_options) + '</div>', 'text/html');
+      let doc = parser.parseFromString('<div>' + data.attachment.description.replace(/\n\n/g, '<br><br>') + '</div>', 'text/html');
       let description = doc.querySelector('div');
       description.style = 'margin: 20px 0px; padding: 20px; border: 1px solid black;';
       description.firstChild.before(title, audio);
@@ -1860,7 +1872,7 @@ else if (matchDomain('bloomberg.com')) {
         elem.appendChild(document.createTextNode(item.content[0].value));
       } else if (item.subType === 'story' && item.data && item.data.link) {
         if (item.data.link.destination && item.data.link.destination.web)
-          addLink(item.content[0].value, item.data.link.destination.web, elem);
+          addLinkValue(item.content[0].value, item.data.link.destination.web, elem);
         else if (item.data.link.title)
           elem.appendChild(document.createTextNode(item.data.link.title));
       } else
@@ -1876,11 +1888,10 @@ else if (matchDomain('bloomberg.com')) {
         for (let list_item of item.content) {
           if (list_item.type === 'text' && list_item.value) {
             li.appendChild(document.createTextNode(list_item.value));
+          } else if (list_item.type === 'paragraph' && list_item.content) {
+            addPar(list_item.content, li);
           } else if (list_item.type === 'link' && list_item.data && list_item.data.href) {
-            if (list_item.data.href.startsWith('bbg:') && list_item.data.webUrl)
-              list_item.data.href = list_item.data.webUrl;
-            if (list_item.content && list_item.content[0] && list_item.content[0].value)
-              addLink(list_item.content[0].value, list_item.data.href, li);
+            addLink(list_item, li);
           } else if (list_item.type === 'entity' && list_item.content && list_item.content[0] && list_item.content[0].value) {
             addEntity(list_item, li);
           } else if (list_item.type === 'div' && list_item.content) {
@@ -1910,10 +1921,7 @@ else if (matchDomain('bloomberg.com')) {
       } else if (item.type === 'br') {
         elem.appendChild(document.createElement('br'));
       } else if (item.type === 'link' && item.data && item.data.href) {
-        if (item.data.href.startsWith('bbg:') && item.data.webUrl)
-          item.data.href = item.data.webUrl;
-        if (item.content && item.content[0] && item.content[0].value)
-          addLink(item.content[0].value, item.data.href, elem);
+        addLink(item, elem);
       } else if (item.type === 'entity') {
         addEntity(item, elem);
       } else if (item.type === 'div') {
@@ -1970,7 +1978,7 @@ else if (matchDomain('bloomberg.com')) {
             let elem = document.createElement('p');
             elem.setAttribute('class', par_class);
             elem.setAttribute('data-component', 'paragraph');
-            if (['heading', 'paragraph'].includes(par.type)) {
+            if (['heading', 'paragraph'].includes(par.type) && par.content) {
               addPar(par.content, elem);
             } else if (par.type.endsWith('quote') && par.content) {
               elem.appendChild(document.createElement('br'));
@@ -3294,6 +3302,35 @@ else if (matchDomain('kompas.id')) {
         let art_hidden = document.querySelector('div.non-paywall[style]');
         if (art_hidden)
           art_hidden.removeAttribute('style');
+        let audio_tts = document.querySelector('button.button-play-audio');
+        if (audio_tts) {
+          let audio_src_dom = document.querySelector('audio > source[src$=".mp3"]');
+          if (audio_src_dom) {
+            let audio_new = document.createElement('audio');
+            audio_new.src = audio_src_dom.src;
+            audio_new.setAttribute('controls', '');
+            audio_tts.parentNode.replaceChild(audio_new, audio_tts);
+          }
+        }
+        let gallery = document.querySelector('div.mx-auto > div > div.swiper-free-mode');
+        if (gallery) {
+          let article = gallery.parentNode.parentNode;
+          article.innerHTML = '';
+          let json_script = document.querySelector('script#__NUXT_DATA__');
+          if (json_script) {
+            try {
+              let pars = JSON.parse(json_script.text);
+              let img_pars = pars.filter(x => x && (typeof x === 'object') && x.src && x.caption);
+              for (let elem of img_pars) {
+                let figure = makeFigure(pars[elem.src], pars[elem.caption] + (elem.credit ? ' ' + pars[elem.credit] : ''), {alt: pars[elem.alt]});
+                figure.style = 'width: 80%; margin: 50px;';
+                article.appendChild(figure);
+              }
+            } catch (err) {
+              console.log(err);
+            }
+          }
+        }
       } else {
         let art_hidden = document.querySelector('section.paywall.hidden');
         if (art_hidden)
