@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.5.2
+// @version         4.3.5.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1952,6 +1952,21 @@ else if (matchDomain('bloomberg.com')) {
         console.log(item);
     }
   }
+  function addDiv(content, elem) {
+    for (let item of content) {
+      if (item.type === 'media' && item.subType === 'audio' && item.data) {
+        addPodcast(item.data, elem);
+      } else if (item.type === 'div') {
+        addDiv(item.content, elem);
+        elem.appendChild(document.createElement('br'));
+      } else if (item.type === 'text' && item.value) {
+        elem.appendChild(document.createTextNode(item.value));
+      } else if (item.type === 'entity') {
+        addEntity(item, elem);
+      } else
+        console.log(item);
+    }
+  }
   let footnote_nr = 0;
   let footnotes = document.createElement('ol');
   footnotes.style = 'font-style: italic; margin: 20px 0px; list-style-type: decimal;';
@@ -2029,16 +2044,21 @@ else if (matchDomain('bloomberg.com')) {
               addEmbed(par, elem);
             } else if (par.type === 'media' && par.subType === 'audio' && par.data) {
               addPodcast(par.data, elem);
-            } else if (par.type === 'div') {
-              if (par.content && par.content[0]) {
-                let item = par.content[0];
-                if (item.type === 'media' && item.subType === 'audio' && item.data) {
-                  addPodcast(item.data, elem);
-                } else
-                  console.log(par);
-              }
+            } else if (par.type === 'div' && par.content) {
+              addDiv(par.content, elem);
             } else if (par.type === 'list' && par.content) {
               addList(par.content, elem);
+            } else if (par.type === 'byTheNumbers' && par.content) {
+              for (let item of par.content) {
+                if (item.type === 'byTheNumbersItem' && item.content) {
+                  for (let sub_item of item.content) {
+                    if (sub_item.content) {
+                      addPar(sub_item.content, elem);
+                      elem.appendChild(document.createElement('br'));
+                    }
+                  }
+                }
+              }
             } else if (!['ad', 'inline-newsletter', 'inline-recirc', 'tabularData'].includes(par.type))
               console.log(par);
             if (elem.hasChildNodes)
@@ -4660,29 +4680,26 @@ else if (matchDomain('thehill.com')) {
 
 else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
   if (!window.location.pathname.endsWith('/amp/')) {
-    if (window.location.pathname.match(/\/videos\/[-\/\w]+\.ece/)) {
-      let video = document.querySelector('div.lead-video-cont');
-      if (video) {
-        let player = video.querySelector('div.jwplayer');
-        if (!player)
-          header_nofix(video, '', 'BPC > for videos disable extension');
-      }
-    } else {
+    if (matchDomain('www.thehindu.com')) {
       let paywall_sel = 'div#artmeterpv';
-      if (document.querySelector(paywall_sel) && !document.querySelector(paywall_sel + ' ~ div')) {
+      if (document.querySelector(paywall_sel) && !document.querySelector(paywall_sel + ' ~ div.also-read'))
         amp_redirect(paywall_sel);
-      } else {
-        let read_more = document.querySelector('div.paywallbox-btn > button');
-        if (read_more)
-          read_more.click();
-      }
+    } else if (matchDomain('frontline.thehindu.com')) {
+      let paywall = document.querySelector('body.articlepaywall');
+      if (paywall)
+        paywall.classList.remove('articlepaywall');
+      hideDOMStyle('div[class^="article-standard_piano-inline"]', 2);
     }
     let ads = 'div.ad, div.article-ad, div.dfp-ad, div#paywallbox, div[id^="piano-art-"], #test';
     hideDOMStyle(ads);
   } else {
+    addStyle('body {scrollbar-width: thin;}')
     let ads = 'div[class^="height"], div[class^="advt"], div[id^="piano"]';
     hideDOMStyle(ads);
   }
+  let read_more = document.querySelector('div.paywallbox-btn > button');
+  if (read_more)
+    read_more.click();
 }
 
 else if (matchDomain('theinformation.com')) {
