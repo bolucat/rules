@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.3.5.0
+// @version         4.3.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1224,10 +1224,9 @@ else if (matchDomain('lepoint.fr')) {
 }
 
 else if (matchDomain('lequipe.fr')) {
-  let paywall = document.querySelector('article.Article--limited div.Article__gradient');
+  let paywall = document.querySelector('article.Article--limited div.Article__paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    hideDOMStyle('div.Article__paywall', 2);
     addStyle('div.Article__paragraph--limited {visibility: visible !important; height: auto !important; margin: 0px 0px 20px !important;}');
     let article_id = window.location.pathname.match(/\d+$/)[0];
     let article = document.querySelector('div.article__body');
@@ -1273,7 +1272,7 @@ else if (matchDomain('lequipe.fr')) {
                       ratio = 1.5;
                     let url = par.media.url.replace(/\\u002F/g, '/').replace('{width}', '400').replace('{height}', parseInt(400 / ratio)).replace('{quality}', '75');
                     let caption = par.media.legende && par.media.legende.length > 2 ? par.media.legende : '';
-                    elem = makeFigure(url, caption, {}, {'style': 'font-weight: bold;'});
+                    elem = makeFigure(url, caption, {'style': 'width: 100%;'}, {'style': 'font-weight: bold;'});
                   } else if (par.media.__type === 'video' && par.media.id) {
                     let url = par.media.image.url.replace('{width}', '400').replace('{height}', 400).replace('{quality}', '75');
                     elem = makeFigure(url, par.media.legend, {'style': 'width: 100%;'});
@@ -1323,7 +1322,7 @@ else if (matchDomain('lequipe.fr')) {
       }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
     }
   }
-  let ads = 'div.AmPlaceholder, div.Modal[data-modal="amsBlock"]';
+  let ads = 'div.AmPlaceholder, div.Modal[data-modal="amsBlock"], div#tbl-next-up';
   hideDOMStyle(ads);
   let noscroll = document.querySelector('html');
   if (noscroll)
