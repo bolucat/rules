@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.4.2
+// @version         4.3.4.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -359,6 +359,8 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
               let par_link = document.createElement('a');
               par_link.href = href;
               par_link.innerText = link_text.replace(/(\\n|\\t|\s)+$/g, '');
+              if (href.startsWith('http') && !href.startsWith(window.location.origin))
+                par_link.target = '_blank';
               elem.appendChild(par_link);
               if (add_br)
                 elem.appendChild(document.createElement('br'));
@@ -403,8 +405,11 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
                     for (let item of child.children) {
                       if (item.text) {
                         if ((child.href && child.href.length > 2) || (child.relation && child.relation.follow && child.relation.follow.url)) {
-                          if (item.text.length > 2)
+                          if (item.text.length > 2) {
                             addLink(elem, item.text, child.href || child.relation.follow.url, add_br);
+                            if (item.text.endsWith(' '))
+                              elem.appendChild(document.createTextNode(' '));
+                          }
                         } else
                           addParText(elem, item.text, add_br, child.attributes && child.attributes.length);
                       } else if (findNuxtText(item.type) === 'br') {

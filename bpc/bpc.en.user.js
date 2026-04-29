@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.5.3
+// @version         4.3.5.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2416,6 +2416,8 @@ else if (matchDomain('dallasnews.com')) {
   if (window.location.search.startsWith('?outputType=amp')) {
     amp_unhide_subscr_section();
   }
+  let ads = 'div[data-block-type="ad"], div[data-pub-id]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('defector.com')) {
@@ -4361,40 +4363,44 @@ else if (matchDomain('swarajyamag.com')) {
 }
 
 else if (matchDomain('techinasia.com')) {
-  let paywall = document.querySelector('div.paywall-content');
+  let paywall_sel = 'div.paywall-content';
+  let paywall = document.querySelector(paywall_sel + ':not(.done)');
   if (paywall) {
-    hideDOMStyle('div.paywall-content');
+    paywall.classList.add('done');
+    hideDOMStyle(paywall_sel);
     let content_new = paywall.querySelector('div.content');
-    let empty_par = content_new.querySelector('a.flourish-credit:not(img), h2:not(:has(~ p))');
-    if (!empty_par) {
-      let div = document.createElement('div');
-      div.className = paywall.className.replace('paywall-content', '');
-      div.append(content_new);
-      paywall.before(div);
-      let container = document.querySelector('div.col div > div.container');
-      if (container)
-        container.classList.remove('container');
-    } else {
-      let url = window.location.href;
-      let url_xhr = url.replace('.com/', '.com/wp-json/techinasia/2.0/posts/').replace('/visual-story/', '/');
-      fetch(url_xhr)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(json => {
-            let json_text = json.posts[0].content;
-            json_text = json_text.replace(/width\=\"(\d){3,}\"/g, 'width="100%"').replace(/height\=\"(\d){3,}\"/g, 'height="100%"');
-            if (json_text) {
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div class="content">' + json_text + '</div>', 'text/html');
-              let content_new = doc.querySelector('div.content');
-              let content = document.querySelector('div.content');
-              if (content)
-                content_new.className = content.className;
-              paywall.before(content_new);
-            }
-          });
-        }
-      });
+    if (content_new) {
+      let empty_par = content_new.querySelector('a.flourish-credit:not(img), h2:not(:has(~ p))');
+      if (!empty_par) {
+        let div = document.createElement('div');
+        div.className = paywall.className.replace('paywall-content', '');
+        div.appendChild(content_new);
+        paywall.before(div);
+        let container = document.querySelector('div.col div > div.container');
+        if (container)
+          container.classList.remove('container');
+      } else {
+        let url = window.location.href;
+        let url_xhr = url.replace('.com/', '.com/wp-json/techinasia/2.0/posts/').replace('/visual-story/', '/');
+        fetch(url_xhr)
+        .then(response => {
+          if (response.ok) {
+            response.json().then(json => {
+              let json_text = json.posts[0].content;
+              json_text = json_text.replace(/width\=\"(\d){3,}\"/g, 'width="100%"').replace(/height\=\"(\d){3,}\"/g, 'height="100%"');
+              if (json_text) {
+                let parser = new DOMParser();
+                let doc = parser.parseFromString('<div class="content">' + json_text + '</div>', 'text/html');
+                let content_new = doc.querySelector('div.content');
+                let content = document.querySelector('div.content');
+                if (content)
+                  content_new.className = content.className;
+                paywall.before(content_new);
+              }
+            });
+          }
+        });
+      }
     }
   }
   let splash_subscribe = document.querySelector('div.splash-subscribe');

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.4.5
+// @version         4.3.5.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -852,9 +852,9 @@ else if (matchDomain('vn.at')) {
 
 else if (matchDomain('vol.at')) {
   window.setTimeout(function () {
-    let art_pars_sel = 'article div.content-block--wrapper';
+    let art_pars_sel = 'article div.content-block--wrapper:not(:empty)';
     let art_pars = document.querySelectorAll(art_pars_sel);
-    if (art_pars.length && (art_pars.length < 3)) {
+    if (art_pars.length && (art_pars.length < 5)) {
       let article_sel = 'div.vodl-paywall';
       let article = document.querySelector(article_sel);
       if (article) {

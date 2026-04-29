@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.3.5.0
+// @version         4.3.5.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -202,6 +202,14 @@ else if (matchDomain(es_grupo_vocento_domains)) {
           elem.className = 'paywall';
       }
     }
+    hideDOMStyle('figure.paywall2 img', 3);
+    let div_hidden = document.querySelectorAll('article div[hidden]');
+    for (let elem of div_hidden) {
+      elem.removeAttribute('hidden');
+      elem.style = 'display: block !important;';
+    }
+    if (window.location.pathname.match(/[-\/]directo-/) && !document.querySelector('div#firstPost'))
+      header_nofix('article h1');
     let ads = '.voc-advertising, div.voc-ob-wrapper, div.voc-discounts, div.ev-em-modal, span.mega-superior, div.v-adv';
     hideDOMStyle(ads, 2);
   } else {
