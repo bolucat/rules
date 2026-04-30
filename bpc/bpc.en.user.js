@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.5.4
+// @version         4.3.5.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -380,7 +380,7 @@ if (matchDomain('afr.com')) {
                           article.append(header, byline, par);
                         }
                       }
-                      addStyle('section:not([class]) > p {margin: 24px 0px;}');
+                      addStyle(article_sel + ' p, ' + article_sel + ' h2 {margin: 20px 0px !important;}');
                       let key_posts = document.querySelectorAll('li > a[href*="?post="]');
                       for (let elem of key_posts)
                         elem.href = elem.href.replace('?post=', '#');
@@ -3015,10 +3015,13 @@ else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
           article_link.before(archiveLink(url));
       }
     }
-  }
+  } else if (window.location.pathname.startsWith('/hblocked') && window.location.search.startsWith('?returnTo='))
+    header_nofix('main', '', 'BPC > go back to article', decodeURIComponent(window.location.search.split('?returnTo=')[1]));
   let history_keys = Object.keys(window.localStorage).filter(x => x.match(/^(reading(Count)?History|raData)/i));
   for (let item of history_keys)
     window.localStorage.removeItem(item);
+  let ads = 'div[data-testid="static-ad-slot"], div.fe-button-ruler';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('harpers.org')) {
