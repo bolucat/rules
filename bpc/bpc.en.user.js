@@ -380,7 +380,7 @@ if (matchDomain('afr.com')) {
                           article.append(header, byline, par);
                         }
                       }
-                      addStyle(article_sel + ' p, ' + article_sel + ' h2 {margin: 20px 0px !important;}');
+                      addStyle(article_sel + ' :is(p, h2) {margin: 20px 0px !important;}');
                       let key_posts = document.querySelectorAll('li > a[href*="?post="]');
                       for (let elem of key_posts)
                         elem.href = elem.href.replace('?post=', '#');
@@ -3016,7 +3016,7 @@ else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
       }
     }
   } else if (window.location.pathname.startsWith('/hblocked') && window.location.search.startsWith('?returnTo='))
-    header_nofix('main', '', 'BPC > go back to article', decodeURIComponent(window.location.search.split('?returnTo=')[1]));
+    header_nofix('main', '', 'BPC > return to article', decodeURIComponent(window.location.search.split('?returnTo=')[1]));
   let history_keys = Object.keys(window.localStorage).filter(x => x.match(/^(reading(Count)?History|raData)/i));
   for (let item of history_keys)
     window.localStorage.removeItem(item);
