@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.3.5.1
+// @version         4.3.5.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -51,6 +51,7 @@
 // @match           *://*.gestion.pe/*
 // @match           *://*.globo.com/*
 // @match           *://*.lanacion.com.ar/*
+// @match           *://*.lance.com.br/*
 // @match           *://*.larioja.com/*
 // @match           *://*.lasegunda.com/*
 // @match           *://*.latercera.com/*
@@ -781,6 +782,14 @@ else if (matchDomain('lanacion.com.ar')) {
   }
   let ads = 'div.ln-banner-container';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('lance.com.br')) {
+  let paywall = document.querySelector('div.paywall-content[class*="h-\["]');
+  if (paywall)
+    removeClassesByPrefix(paywall, 'h-\[');
+  let banners = 'div[class*="backdrop-blur-"], div.shadow-sticky, div[style*="repeating-linear-gradient"], span.mx-2, span.h-px';
+  hideDOMStyle(banners);
 }
 
 else if (matchDomain('lasegunda.com')) {
