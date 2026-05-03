@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.4.3
+// @version         4.3.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -344,11 +344,11 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
             if (intro)
               article.appendChild(intro);
             let pars = JSON.parse(json_text);
-            function addParText(elem, par_text, add_br = false, attributes = false) {
+            function addParText(elem, par_text, add_br = false, attributes = false, sup = false) {
               if (par_text) {
-                if (par_text.length <= 2)
+                if (par_text.length <= 2 && !sup)
                   par_text = findNuxtText(par_text, attributes);
-                let span = document.createElement('span');
+                let span = document.createElement(sup ? 'sup' : 'span');
                 span.innerText = par_text.replace(/\u00a0/g, ' '); //&nbsp;
                 elem.appendChild(span);
                 if (add_br)
@@ -386,10 +386,10 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
               }
               elem.appendChild(figure);
             }
-            function addChildren(elem, children, add_br = false, attributes = false) {
+            function addChildren(elem, children, add_br = false, attributes = false, sup = false) {
               for (let child of children) {
                 if (child.text) {
-                  addParText(elem, child.text, add_br, attributes);
+                  addParText(elem, child.text, add_br, attributes, sup);
                 } else if (child.relation && (child.type === 'img' || child.relation.caption) && child.relation.href) {
                   let img_par = document.createElement('p');
                   addImage(img_par, child);
@@ -415,7 +415,7 @@ else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > lin
                       } else if (findNuxtText(item.type) === 'br') {
                         elem.appendChild(document.createElement('br'));
                       } else
-                        addChildren(elem, item.children, false, item.attributes && item.attributes.length);
+                        addChildren(elem, item.children, false, item.attributes && item.attributes.length, item.type === 'sup');
                     }
                   } else
                     elem.appendChild(document.createElement('br'));
