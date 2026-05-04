@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.3.5.2
+// @version         4.3.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -542,10 +542,19 @@ else if (matchDomain(fr_groupe_ebra_domains)) {
             if (article) {
               article.classList.add('done');
               let intro = article.querySelectorAll('div.fullDetailActions, div.illustration, div.videoComponent');
-              removeDOMElement(...intro)
               let parser = new DOMParser();
               let doc = parser.parseFromString('<div>' + json.html + '</div>', 'text/html');
               let article_new = doc.querySelector('div');
+              let fda = article_new.querySelector('div.fullDetailActions');
+              for (let elem of intro) {
+                let elem_class = elem.className;
+                if (article_new.querySelector('[class="' + elem_class + '"]'))
+                  removeDOMElement(elem);
+                else if (fda)
+                  fda.after(elem);
+                else
+                  article_new.firstChild.before(elem);
+              }
               let infos = article.querySelector('div.infos');
               if (infos)
                 infos.after(article_new);
