@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.5.5
+// @version         4.3.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1868,8 +1868,13 @@ else if (matchDomain('bloomberg.com')) {
   }
   function addEntity(item, elem) {
     if (item.content && item.content[0] && item.content[0].value) {
-      if (['person', 'security'].includes(item.subType)) {
+      if (item.subType === 'person') {
         elem.appendChild(document.createTextNode(item.content[0].value));
+      } else if (item.subType === 'security') {
+        if (item.data && item.data.link && item.data.link.href && item.data.link.href.startsWith('bbg://securities/') && !item.data.link.href.split('bbg://securities/')[1].includes('/')) {
+          addLinkValue(item.content[0].value, 'https://www.bloomberg.com/quote/' + item.data.link.href.split('bbg://securities/')[1], elem);
+        } else
+          elem.appendChild(document.createTextNode(item.content[0].value));
       } else if (item.subType === 'story' && item.data && item.data.link) {
         if (item.data.link.destination && item.data.link.destination.web)
           addLinkValue(item.content[0].value, item.data.link.destination.web, elem);
@@ -1988,6 +1993,19 @@ else if (matchDomain('bloomberg.com')) {
             audio_tts.src = json.props.pageProps.story.readingUrl;
             audio_tts.setAttribute('controls', '');
             article.before(audio_tts);
+          }
+          if (json.props.pageProps.story.aiSummary) {
+            let ai_summary = document.querySelector('div[class^="SummaryOnlyTakeaways_takeaways_"]');
+            if (ai_summary) {
+              let ul = document.createElement('ul');
+              ul.style = 'margin: 20px 50px; list-style-type: disc;';
+              for (let elem of json.props.pageProps.story.aiSummary.text) {
+                let item = document.createElement('li');
+                item.innerText = elem;
+                ul.appendChild(item);
+              }
+              ai_summary.appendChild(ul);
+            }
           }
           for (let par of json_pars) {
             let elem = document.createElement('p');
@@ -4179,11 +4197,22 @@ else if (matchDomain('sfstandard.com')) {
 
 else if (matchDomain(sg_sph_media_domains)) {
   if (matchDomain('straitstimes.com')) {
-    func_post = function () {
-      header_nofix('main', 'div#sph_cdp_4:not(:empty)', 'BPC > no archive-fix');
+    let art_pars = document.querySelectorAll('div.storyline-wrapper > p');
+    if (window.location.pathname.startsWith('/opinion/') || window.location.search.startsWith('?rel=plus')) {
+      if (art_pars.length && art_pars.length < 5) {
+        func_post = function () {
+          header_nofix('main', '', 'BPC > no archive-fix');
+        }
+        let url = window.location.href;
+        getArchive(url, 'div.paywall', '', 'main');
+      }
+    } else {
+      let paywall = pageContains('div.headline-stack p', 'For subscribers');
+      if (paywall) {
+        if (art_pars.length && art_pars.length < 5)
+          window.location.href = window.location.pathname + '?rel=plus';
+      }
     }
-    let url = window.location.href;
-    getArchive(url, 'div[id][data-sdkids-campaigntype="pay_wall"]', '', 'main');
   } else if (matchDomain('businesstimes.com.sg')) {
     let article = document.querySelector('div.body-content > div[class]');
     if (article) {
