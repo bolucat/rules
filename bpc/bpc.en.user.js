@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.6.0
+// @version         4.3.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1839,8 +1839,16 @@ else if (matchDomain('bloomberg.com')) {
     }
   }
   function addLinkValue(item_text, item_href, elem) {
+    if (item_href.startsWith('bbg://securities/') && !item_href.split('bbg://securities/')[1].includes('/')) {
+      let path = '/quote/';
+      if (item_href.match(/\/\d+[A-Z]%20[A-Z]{2}%20Equity/)) {
+        path = '/profile/company/';
+        item_href = item_href.replace('%20Equity', '').replace('%20', ':');
+      }
+      item_href = 'https://www.bloomberg.com' + path + item_href.split('bbg://securities/')[1];
+    }
     let sub_elem = makeLink(item_href, item_text, 'text-decoration: underline;');
-    if (item_href.startsWith('http') && !item_href.startsWith(window.location.origin))
+    if (item_href.startsWith('http') && (!item_href.startsWith(window.location.origin) || item_href.match(/\.bloomberg\.com\/(quote|profile\/company)\//)))
       sub_elem.target = '_blank';
     elem.appendChild(sub_elem);
   }
@@ -1871,9 +1879,9 @@ else if (matchDomain('bloomberg.com')) {
       if (item.subType === 'person') {
         elem.appendChild(document.createTextNode(item.content[0].value));
       } else if (item.subType === 'security') {
-        if (item.data && item.data.link && item.data.link.href && item.data.link.href.startsWith('bbg://securities/') && !item.data.link.href.split('bbg://securities/')[1].includes('/')) {
-          addLinkValue(item.content[0].value, 'https://www.bloomberg.com/quote/' + item.data.link.href.split('bbg://securities/')[1], elem);
-        } else
+        if (item.data && item.data.link && item.data.link.href)
+          addLinkValue(item.content[0].value, item.data.link.href, elem);
+        else
           elem.appendChild(document.createTextNode(item.content[0].value));
       } else if (item.subType === 'story' && item.data && item.data.link) {
         if (item.data.link.destination && item.data.link.destination.web)
@@ -1997,6 +2005,8 @@ else if (matchDomain('bloomberg.com')) {
           if (json.props.pageProps.story.aiSummary) {
             let ai_summary = document.querySelector('div[class^="SummaryOnlyTakeaways_takeaways_"]');
             if (ai_summary) {
+              ai_summary.removeAttribute('class');
+              ai_summary.style = 'border: solid;';
               let ul = document.createElement('ul');
               ul.style = 'margin: 20px 50px; list-style-type: disc;';
               for (let elem of json.props.pageProps.story.aiSummary.text) {
@@ -2153,6 +2163,62 @@ else if (matchDomain('bloomberg.com')) {
     let blur_chart = document.querySelector('div[class^="summary_contentBlur_"]');
     if (blur_chart)
       blur_chart.removeAttribute('class');
+  } else if (window.location.pathname.startsWith('/profile/company/')) {
+    let scripts = document.querySelectorAll('script[type="application/ld+json"]');
+    let json_script;
+    for (let script of scripts) {
+      if (script.innerText.includes(',"@type":"Organization",')) {
+        json_script = script;
+        break;
+      }
+    }
+    if (json_script) {
+      try {
+        let json = JSON.parse(json_script.text);
+        let article = document.querySelector('section[class^="info__"]');
+        if (article) {
+          let data = document.createElement('div');
+          data.style = 'margin: 20px;';
+          let br = document.createElement('br');
+          let json_items = ['address', 'telephone', 'url', 'foundingDate', 'numberOfEmployees', 'employee'];
+          for (let item of json_items) {
+            if (json[item]) {
+              let div = document.createElement('div');
+              div.style = 'margin: 20px 0px;';
+              if (item === 'employee') {
+                if (json[item].length) {
+                  div.innerText = 'EXECUTIVES/BOARD' + '\r\n';
+                  for (let person of json[item]) {
+                    if (person.name) {
+                      let sub_div = document.createElement('div');
+                      sub_div.innerText = person.name + (person.jobTitle ? ' - ' + person.jobTitle : (person.worksFor ? ' - ' + person.worksFor : ''));
+                      div.appendChild(sub_div);
+                    }
+                  }
+                }
+              } else if (item === 'url') {
+                div.innerText = 'WEBSITE' + '\r\n';
+                let sub_div = document.createElement('a');
+                sub_div.innerText = json[item];
+                if (!json[item].startsWith('https://'))
+                  json[item] = 'https://' + json[item];
+                sub_div.href = json[item];
+                sub_div.target = '_blank';
+                div.appendChild(sub_div);
+              } else
+                div.innerText = item.toUpperCase() + '\r\n' + json[item];
+              data.appendChild(div);
+            }
+          }
+          article.appendChild(data);
+        }
+        removeDOMElement(json_script);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    let profile_shimmering = 'div[class^="shimmering"]';
+    hideDOMStyle(profile_shimmering);
   } else if (window.location.pathname.startsWith('/live/')) {
     setInterval(function () {
       window.localStorage.clear();

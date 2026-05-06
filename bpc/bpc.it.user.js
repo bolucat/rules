@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.3.4.0
+// @version         4.3.6.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -305,6 +305,11 @@ else if (matchDomain('milanofinanza.it')) {
       }
     }
   }
+}
+
+else if (matchDomain('nationalgeographic.it')) {
+  document.querySelectorAll('section[style]').forEach(e => e.removeAttribute('style'));
+  hideDOMStyle('section.paywall-container');
 }
 
 else if (matchDomain('sky.it')) {
