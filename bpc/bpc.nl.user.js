@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.6.1
+// @version         4.3.6.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -562,10 +562,8 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
       if (mobile) {
         document.querySelectorAll('div[style*="grid-column-end:"]').forEach(e => e.style.width = article.offsetWidth + 'px');
       }
-      let shades = article.querySelectorAll('div[style*="background-color"][style*=";width"]');
-      for (let elem of shades)
-        elem.style.width = '85%';
-      let lazy_images = article.querySelectorAll('img[loading="lazy"][style]');
+      article.querySelectorAll('div[style*="background-color:"][style*="width:"]:not(:has(> figure))').forEach(e => e.style.width = '85%'); //shades
+      let lazy_images = article.querySelectorAll('img[loading="lazy"][style]:not([style*=";width:100%;"])');
       for (let elem of lazy_images) {
         elem.style = 'width: 95%;';
         if (elem.parentNode.style && elem.parentNode.getAttribute('style').includes('min-height:')) {
@@ -617,7 +615,7 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
   let readmore = document.querySelector('div[data-content-type="CROSS_PROMOTION"]');
   let url = window.location.href;
   let article_sel = 'article';
-  let paywall_sel = article_sel + ' div[data-content-type="MEDIA_TOP"] svg.premium-indicator';
+  let paywall_sel = article_sel + ' svg.premium-indicator[class*="article-premium-indicator-"]';
   let paywall_action = {rm_class: 'premium-indicator'};
   if (window.location.pathname.includes('~') && !document.querySelector(paywall_sel)) { // regwall
     let pars = document.querySelectorAll(article_sel + ' div[data-content-type="PARAGRAPH"]');

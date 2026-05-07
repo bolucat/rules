@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.6.2
+// @version         4.3.6.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2741,9 +2741,9 @@ else if (matchDomain('economictimes.com')) {
       let intro = document.querySelector('.art_wrap');
       let article_blocker = document.querySelector('.articleBlocker');
       removeDOMElement(paywall, intro, article_blocker);
-      let ads = 'amp-ad';
-      hideDOMStyle(ads);
     }
+    let ads = 'amp-ad, amp-fx-flying-carpet, div.ads, div.taboolaAd';
+    hideDOMStyle(ads);
   } else {
     window.setTimeout(function () {
       let paywall = document.querySelector('div#blocker_layer');
@@ -2796,7 +2796,7 @@ else if (matchDomain('economictimes.indiatimes.com')) {
       removeDOMElement(f_col);
     }
   }
-  let ads = 'div.topAdContainer, div.vdo_ai_can_ani, div[data-ad-slot]';
+  let ads = 'div.topAdContainer, div.vdo_ai_can_ani, div[data-ad-slot], div#topAd, div.stickyAd, div.blocker_wrap';
   hideDOMStyle(ads);
 }
 
