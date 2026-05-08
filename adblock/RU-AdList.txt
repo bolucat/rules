@@ -1,8 +1,8 @@
 [Adblock Plus 2.0]
-! Checksum: +pHpOa7SPlvCXz2fbWf+oA
-! Version: 202605071932
+! Checksum: dnA7r2DLmH4IOc63tMB0Kg
+! Version: 202605081901
 ! Title: RU, UA, UZ, KZ
-! Last modified: 07 May 2026 19:32 UTC
+! Last modified: 08 May 2026 19:01 UTC
 ! Expires: 1 days (фильтр обновляется автоматически каждые 2 дня)
 ! Homepage: https://forums.lanik.us/viewforum.php?f=102
 !
@@ -25,7 +25,7 @@
 ! = Сайты-попапы (самостоятельно открываются в новом окне) ====================
 ! *** advblock/popup.txt ***
 ! - Частные правила -----------------------------------------------------------
-$popup,domain=176.114.0.126|176.114.0.132|37.220.36.15|assiatv.com|cdnpotok.com|cdntvpotok.com|freescreens.ru|imgbase.ru|imgcach.ru|imgclick.ru|kolikbolik.top|oneliketv.com|payforpic.ru|picclick.ru|picclock.ru|picforall.ru|protonvideo.to|telecdn.net|tv-assia.org
+$popup,domain=176.114.0.126|176.114.0.132|37.220.36.15|assiatv.com|cdnpotok.com|cdntvpotok.com|fastpic.org|freescreens.ru|imgbase.ru|imgcach.ru|imgclick.ru|kolikbolik.top|oneliketv.com|payforpic.ru|picclick.ru|picclock.ru|picforall.ru|protonvideo.to|telecdn.net|tv-assia.org
 $third-party,popup,domain=2ip.ru
 &utm_campaign=$popup,domain=itc.ua|sc2tv.ru|www.film.ru
 /*utm_$popup,domain=stratege.ru
@@ -221,6 +221,7 @@ $third-party,popup,domain=2ip.ru
 ||dominantroute.com^$popup
 ||download/*rd.php?id=$third-party,popup
 ||drako.ru/refredirect$popup
+||dsbuiu.com^$popup
 ||dxasracer.bid^$popup
 ||dyshagi.ru^$popup
 ||earnshill.com/images/sp/$popup
@@ -12208,7 +12209,6 @@ megalyrics.ru###header_bottom
 sitepartners.ru###header_center
 radidomapro.ru###header_partenaire
 pesiq.ru###header_right_cell
-fastpic.org###headermenu a[target="_blank"]
 gzt-sv.ru###headerq
 bigkyiv.com.ua###headlessui-portal-root
 chess-samara.ru###headlineAdv
@@ -15296,6 +15296,8 @@ videochart.net##.mv-advert-position
 moevideo.net,playvideolink.com,thesame.tv,videochart.net##.mv-advert-position__pause
 beremennost.net,imolodost.com,menportal.info,nmedic.info##.mv-content
 infosmi.net#?#.mvp-widget-home-title:-abp-contains(Реклама)
+repack.me##.my > .ads
+repack.me##.my > .ads + br
 glavred.info,glavred.net,teleport2001.ru##.my-3
 ip.osnova.news##.my-4
 mymsk.online##.my-5
@@ -15322,9 +15324,9 @@ drive.ru##.nav-menu > li > a[href][target="_blank"]
 webmasters.ru##.nav_we > a:not([href^="http://webmasters.ru/"]):not([href^="/"]):not([href^="."])
 forum.soft4dle.com##.navbar > br
 forum.soft4dle.com##.navbar > center
+fastpic.org##.navbar > div:not([class])
 nalogikz.kz##.navbar-fixed-bottom
 newkaliningrad.ru##.navbar-nav > .important
-fastpic.org##.navbar-nav > a[target="_blank"]
 forum.fonarevka.ru##.navbar_banners
 srtclub.ru##.navbar_notice a[href][target="_blank"]
 mobile-review.com##.navmenu__advert
@@ -19732,7 +19734,6 @@ comss.ru##html:not([style]) > body getsitecontrol-widget:not(#getsitecontrol-766
 4pda.to##html[style] > body[style="background-color: rgb(230, 231, 233) !important;"] [id][class][style^="overflow: hidden; height:"] > div[style*="display: block;"]
 4pda.to##html[style] > body[style="background-color: rgb(230, 231, 233) !important;"] article ~ article:nth-child(3)
 4pda.to##html[style] > body[style="background-color: rgb(230, 231, 233) !important;"] article:not([id]):not([itemid]):first-child + article
-fastpic.org##i[tabindex][role]
 s13.ru##iframe[data-src*="/icontent/"]
 sarov.info##iframe[data-src*="/reklama."]
 ek.ua,m.ua##iframe[name*="banner"]
@@ -24842,14 +24843,6 @@ rbc.ru##div[class^="styles_okko"]
 ||utro.ru/*/banners/
 ||zoom.cnews.ru/inc/bpic/
 !
-! REPAK.me
-repack.me#?#div:first-child > .panel:-abp-has(> .panel-body > p > a)
-! блокировки, добавленные из-за агрессивного обхода >
-||t.me/neovpnbot?$third-party,popup
-||telegram.me/neovpnbot?$third-party,popup
-||waicore.com^$third-party,popup
-||waicore.net^$third-party,popup
-!
 ! Spaces и зеркала
 google-cloud.services,spac.me,spaces.im,spcs.bio,strip2.co,strip2.*,usersporn.com###sidebar > div[class]:last-child
 google-cloud.services,spac.me,spaces.im,spcs.bio,strip2.co,strip2.*,usersporn.com###siteContent > div:not([id]):not([class]) ~ div[class]
@@ -25228,7 +25221,7 @@ tv.yandex.ru,tv.yandex.*##script[nonce] + script[nonce] + div[class]
 ! Дзен Yandex-edition
 dzen.ru###branded-banner
 dzen.ru##.adv-skeleton___main
-dzen.ru##.mini-suggest__popup-extra
+dzen.ru##.mini-suggest__popup-extra .slices
 dzen.ru##[aria-label^="Peкл"]
 dzen.ru##[aria-label^="Карточк"][aria-label*=" p"][aria-label*="кл"]
 dzen.ru##[aria-label^="Карточк"][aria-label*=" рекл"]
