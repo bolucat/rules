@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.6.0
+// @version         4.3.6.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -394,6 +394,8 @@ else if (matchDomain('handelsblatt.com')) {
   let noscroll = document.querySelector('html[class]');
   if (noscroll)
     noscroll.removeAttribute('class');
+  let ads = 'app-commercial-teaser-group';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('heise.de')) {

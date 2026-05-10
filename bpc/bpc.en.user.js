@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.6.3
+// @version         4.3.6.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1648,7 +1648,7 @@ else if (matchDomain('barrons.com')) {
       }, 2000);
     }
   }
-  let signin_links = document.querySelectorAll('div[class] > div#duplicated-paywall');
+  let signin_links = document.querySelectorAll('div[class] > div#duplicated-paywall-shell');
   for (let elem of signin_links) {
     let link_new = document.createElement('a');
     link_new.href = '#';

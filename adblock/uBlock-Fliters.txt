@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Sat, 09 May 2026 16:28:41 +0000
-! Diff-Path: ../patches/2026.5.9.1027.patch#ublock-filters
+! Last modified: Sun, 10 May 2026 12:42:01 +0000
+! Diff-Path: ../patches/2026.5.10.1081.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -4078,8 +4078,7 @@ duden.de##[id*="billboard"]
 duden.de##.tabloid__side-column
 duden.de##body:style(margin-top: 0px !important;)
 @@||duden.de^$ghide
-duden.de##+js(no-fetch-if, googlesyndication, length:40000-60000)
-duden.de##+js(aeld, DOMContentLoaded, adsbygoogle)
+duden.de##+js(aeld, , adsbygoogle)
 faresgame.com##+js(aopr, adBlockDetected)
 shemalepower.xyz##+js(nobab)
 shemalepower.xyz##+js(nowoif)
@@ -4609,7 +4608,7 @@ allporncomic.com##+js(aopw, ExoSupport)
 allporncomic.com##+js(aopr, exoJsPop101)
 allporncomic.com##.ad
 allporncomic.com##iframe
-allporncomic.com##[href^="https://s.zlink0.com/"]
+allporncomic.com##[href^="https://s.zlink0.com/"], [href^="https://s.zline0.com/"]
 *$script,3p,domain=allporncomic.com,denyallow=cloudflare.com
 ||pmdipads-a.akamaihd.net^$media,redirect=noopmp3-0.1s
 @@||reactgo.com^$ghide
@@ -7817,13 +7816,13 @@ file-upload.org##+js(acs, JSON.parse, document.head.appendChild)
 flashbang.sh##+js(nowoif, !/(flashbang\.sh|dl\.buzzheavier\.com)/)
 trashbytes.net##+js(nowoif, !dl.buzzheavier.com)
 buzzheavier.com,flashbang.sh,trashbytes.net##+js(aeld, DOMContentLoaded, location.href)
-buzzheavier.com##+js(set, window.adLink, null)
+buzzheavier.com,bzzhr.co,bzzhr.to##+js(set, AdLink, '')
 buzzheavier.com##+js(acs, String.fromCharCode, atob)
 buzzheavier.com##+js(nowoif, !buzzheavier.com)
 buzzheavier.com##+js(aeld, click, removeChild)
 buzzheavier.com###unclear2
 buzzheavier.com##div.mx-auto.text-center > a[href][target="_blank"]
-bzzhr.co,buzzheavier.com##+js(acs, setTimeout, decodeURIComponent(escape)
+buzzheavier.com,bzzhr.co,bzzhr.to##+js(acs, setTimeout, decodeURIComponent(escape)
 akirabox.com,akirabox.to##[href*="nordvpn.net"]
 akirabox.com,akirabox.to##+js(aeld, DOMContentLoaded, open)
 akirabox.com,akirabox.to##+js(nowoif, _blank)
@@ -9793,6 +9792,8 @@ usatoday.com##body > div.gnt_n_w_w:style(margin-bottom: 0 !important;)
 kinobox.cz##+js(prevent-innerHTML, script, .cmd.unshift)
 ranker.com##+js(aeld, /admiral/)
 ranker.com##+js(set, runtimeConfig.AM_PATH, undefined)
+lostcoastoutpost.com##+js(aost, decodeURI, CACHE)
+lostcoastoutpost.com##+js(rmnt, script, /\.cmd\.unshift|adblockerDisabled/, excludes, \,\")
 ! Sinclair sites
 komonews.com,wpgh53.com##+js(json-edit, ..props[?.id=="admiral-initializer"].children)
 athlonsports.com,autoblog.com,bikemag.com,dengarden.com,mensfitness.com,mensjournal.com,parade.com,paradehomeandgarden.com,paradepets.com,pethelpful.com,powder.com,shophq.com,surfer.com,thespun.com,thestreet.com,travelhost.com##+js(json-edit, ..props.children.*[?.key=="admiral-script"])
@@ -10680,6 +10681,8 @@ daemon-hentai.com##+js(nostif, openPopunder)
 daemon-hentai.com##+js(aeld, load, .getComputedStyle)
 daemonanime.net##+js(aeld, , STORAGE2)
 daemonanime.net##+js(aeld, DOMContentLoaded, app_advert)
+||google-analytics.com^$3p,image,redirect=1x1.gif,from=daemon-hentai.com
+daemon-hentai.com##+js(rmnt, script, adblock)
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$redirect=google-ima.js,domain=cooperativa.cl
 lared.cl##+js(no-fetch-if, doubleclick)
 lared.cl##+js(set, googletag._loaded_, true)
@@ -19751,7 +19754,6 @@ satdl.com##+js(set, xtime, 0)
 easybib.com##+js(trusted-click-element, button[data-test="watch-ad-button"])
 easybib.com##+js(nano-sib)
 realmadryt.pl##+js(no-fetch-if, method:GET)
-realmadryt.pl##+js(aeld, , adb)
 ! filmydown .site/fast-dl .co/.biz popups
 fast-dl.*,filmydown.*##+js(nowoif)
 ||toptdspup.com^
@@ -25015,5 +25017,4 @@ stereogum.com##+js(trusted-json-edit, .props.pageProps.globalData.publisherFeatu
 @@||stereogum.com^$ghide
 hyperosthemes.org##+js(no-fetch-if, adsbygoogle)
 scloud.ws##a[class*="download"]
-||google-analytics.com^$3p,image,redirect=1x1.gif,from=daemon-hentai.com
-bzzhr.to##+js(set, AdLink, '')
+purediablo.com##+js(set, nitroAds.abp, true)
