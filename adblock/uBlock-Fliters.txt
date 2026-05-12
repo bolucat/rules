@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Mon, 11 May 2026 13:21:39 +0000
-! Diff-Path: ../patches/2026.5.11.1082.patch#ublock-filters
+! Last modified: Tue, 12 May 2026 16:30:01 +0000
+! Diff-Path: ../patches/2026.5.12.1039.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -1745,6 +1745,7 @@ avoiderrors.com##[href^="https://www.avoiderrors.com/robinhood"]
 slate.com##+js(aeld, , /adbl/i)
 slate.com##+js(nostif, /adbl/i)
 slate.com##.slate-ad
+slate.com##+js(aeld, error, /[src=/)
 4tests.com##+js(set, adblock, false)
 @@||farmeramania.de^$ghide
 farmeramania.de##+js(acs, $, show)
@@ -7919,12 +7920,11 @@ bigbtc.win##div:has(> div[style] > div[id] > script[src^="//ads.themoneytizer.co
 *$object,domain=torupload.com|nathanmichaelphoto.com
 torupload.com,nathanmichaelphoto.com##+js(nowoif, , 10, obj)
 @@||googleads.g.doubleclick.net/pagead/ads$subdocument,domain=nathanmichaelphoto.com
-@@||pagead2.googlesyndication.com^$script,domain=nathanmichaelphoto.com
-@@||securepubads.g.doubleclick.net/tag/js/gpt.js$script,domain=nathanmichaelphoto.com
-@@||securepubads.g.doubleclick.net/pagead/managed/js/gpt/*/pubads_impl.js$script,domain=nathanmichaelphoto.com
-!@@||cdn4ads.com^$script,domain=nathanmichaelphoto.com
-!@@||adsco.re^$script,domain=nathanmichaelphoto.com
+@@||googlesyndication.com^$subdocument,domain=nathanmichaelphoto.com
+@@*$script,xhr,from=nathanmichaelphoto.com,to=cdn4ads.com|doubleclick.net|cloudfront.net|googlesyndication.com|adtrafficquality.google
 @@||dash.ezmob.com/ss/js/ads.js$script,domain=nathanmichaelphoto.com
+nathanmichaelphoto.com##+js(rpnt, script, /^([^{])/, `(function(){'use strict';const internalKey=Symbol.for('resource_integrity_check');if(window[internalKey])return;window[internalKey]=true;const _e=[{url:"https://s0-greate.net/p/2507871",type:"script",d:1058},{url:"https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516",type:"script",d:36},{url:"https://cdn.jsdelivr.net/npm/disable-devtool",type:"script",d:47},{url:"https://c.adsco.re/",type:"script",d:55},{url:"https://adsco.re/p",type:"script",d:190},{url:"https://adsco.re:2087/t",type:"script",d:175},{url:"https://adsco.re/t",type:"script",d:180}];const generateEntry=(item)=>({name:item.url,initiatorType:item.type,duration:item.d,startTime:Math.random()*100,entryType:"resource",nextHopProtocol:"h2",renderBlockingStatus:"non-blocking",workerStart:0,redirectStart:0,redirectEnd:0,fetchStart:10,domainLookupStart:10,domainLookupEnd:12,connectStart:12,connectEnd:15,secureConnectionStart:13,requestStart:16,responseStart:20,responseEnd:item.d+20,transferSize:Math.floor(Math.random()*5000)+1000,encodedBodySize:1000,decodedBodySize:3000,serverTiming:[]});const _p=Performance.prototype;const _getEntries=_p.getEntries;const _getEntriesByType=_p.getEntriesByType;const _getEntriesByName=_p.getEntriesByName;_p.getEntries=function(){const original=_getEntries.apply(this,arguments);const fakes=_e.map(generateEntry);return[...original,...fakes];};_p.getEntriesByType=function(type){if(type==='resource'){const original=_getEntriesByType.apply(this,arguments);const fakes=_e.map(generateEntry);return[...original,...fakes];}return _getEntriesByType.apply(this,arguments);};_p.getEntriesByName=function(name){const item=_e.find(x=>x.url===name);if(item)return[generateEntry(item)];return _getEntriesByName.apply(this,arguments);};})();$1`, sedCount, 3)
+nathanmichaelphoto.com#@##gdpr-cookie-notice
 torupload.com##+js(nano-sib, /seconds--|timeLeft--/, *)
 torupload.com##+js(trusted-replace-argument, document.addEventListener, 0, json:"click", condition, visibilitychange)
 torupload.com##+js(set, document.hidden, true)
@@ -7934,6 +7934,8 @@ torupload.com,nathanmichaelphoto.com##+js(trusted-replace-argument, document.que
 torupload.com,nathanmichaelphoto.com##+js(trusted-replace-argument, document.querySelectorAll, 0, json:"main", condition, /div-gpt-ad-|\.adsbygoogle/)
 torupload.com,nathanmichaelphoto.com##+js(trusted-replace-argument, document.getElementById, 0, json:"container", condition, adblock_detected)
 torupload.com,nathanmichaelphoto.com##+js(prevent-fetch, /pub\.clickadu|bing\.com/)
+||youweepingt.org^$popup
+||cdclub.net^$popup
 ||oundhertobeconsist.org^$popup
 ||vampyrejibmen.com^$popup
 avnsgames.com,healthmyst.com##+js(rmnt, script, /detectAdBlock|checkFakeAd|adBlockNotDetected/)
@@ -8899,7 +8901,7 @@ saint2.cr##+js(acs, WebAssembly, Promise)
 !#endif
 ! !SECTION: popMagic-sites
 ! SECTION: hilltopads-sites
-10convert.com,2girls1cup.ca,7bit.link,animez.org,aninavi.blog,ansuko.net,apnablogs.in,areabokep.com,asiangaysex.net,asmroger.*,axomtube.in,banglachotigolpo.xyz,bellezashot.com,besthdgayporn.com,braflix.win,bigojav.com,bookfrom.net,boysxclusive.com,chikianimation.org,coomer1.net,ddd-smart.net,desikamababa.com,dojing.net,drivenime.com,dtupgames.blogspot.com,earnfromarticles.com,easyvidplayer.com,echiman.com,erokomiksi.com,favoyeurtube.net,fucksporn.com,fullxcinema1.com,fxpornhd.com,gayfor.us,gayxx.net,gdrivelatinohd.net,gigmature.com,gomuraw.blog,gosexy.mobi,hachiraw.net,hanime1-me.top,hentaianimezone.com,hentaiasmr.moe,hentairead.io,homemoviestube.com,hornyfap.tv,huurshe.com,incgrepacks.com,isekaitube.com,japangaysex.com,javboys.*,javbraze.com,javdoe.sh,javhat.tv,javhd.*,javhdz.today,javseen.tv,javsubindo.com,javtiful.com,javup.org,jojolandsmanga.com,jpopsingles.eu,kahanighar.com,kaliscan.*,kfapfakes.com,kiradream.blog,kisscos.net,kisshentaiz.com,kmansin09.*,kuronavi.blog,leakav.com,leermanga.net,lustesthd.makeup,mangakoma01.*,mangamovil.net,mangaraw.*,mangaraw1001.cc,mangaraw18.net,mangarawad.fit,mangarawjp.me,mangatv.net,manhuarmtl.com,manhuatop.org,manhwa68.com,manhwatop.com,mikohub.blog,milfnut.*,movibd.com,mmsbee47.com,mmsmasala27.com,naijauncut.com,nicomanga.com,nlcosplay.com,nontonvidoy.online,novelaplay.com,nudeslegion.com,odiafresh.com,onlinework4all.com,otomi-games.com,paipancon.com,pandamovies.org,pantieshub.net,pastelink.net,pelimeli.com,pelis182.net,pinayflix.me,piratehaven.xyz,pitube.net,poapan.xyz,porn00.org,pornobae.com,pornohubonline.com,pornosubtitula2.com,pornxp.com,primewire.*,raw1001.net,raw18.*,rawinu.com,rawkuro.net,rebahin.pw,redretti.com,rentry.co,safefileku.com,sexdiaryz.*,sexpin.net,shemale6.com,shemaleup.net,sharinghubs.com,shinshi-manga.net,smarttrend.xyz,socigames.com,spotidownloader.com,streamup.ws,sweeteroticart.com,tabooporn.tv,taboodude.com,tatli.biz,tesbox.my.id,thebarchive.com,theblank.net,transflix.net,turboimagehost.com,veo-hentai.com,veronica.uk,vintagepornfun.com,weloma.art,worthcrete.com,xhamster.fm,xmegadrive.com,yabaisub.cloud,yesjavplease.fun##+js(acs, document.createElement, l.parentNode.insertBefore(s)
+10convert.com,2girls1cup.ca,7bit.link,animez.org,aninavi.blog,ansuko.net,apnablogs.in,areabokep.com,asiangaysex.net,asmroger.*,axomtube.in,banglachotigolpo.xyz,bellezashot.com,besthdgayporn.com,braflix.win,bigojav.com,bookfrom.net,boysxclusive.com,chikianimation.org,coomer1.net,ddd-smart.net,desikamababa.com,dojing.net,drivenime.com,dtupgames.blogspot.com,earnfromarticles.com,easyvidplayer.com,echiman.com,erokomiksi.com,favoyeurtube.net,fucksporn.com,fullxcinema1.com,fxpornhd.com,gayfor.us,gayxx.net,gdrivelatinohd.net,gigmature.com,gomuraw.blog,gosexy.mobi,hachiraw.net,hanime1-me.top,hentaianimezone.com,hentaiasmr.moe,hentairead.io,homemoviestube.com,hornyfap.tv,huurshe.com,incgrepacks.com,isekaitube.com,japangaysex.com,javboys.*,javbraze.com,javdoe.sh,javhat.tv,javhd.*,javhdz.today,javseen.tv,javsubindo.com,javtiful.com,javup.org,jojolandsmanga.com,jpopsingles.eu,kahanighar.com,kaliscan.*,kfapfakes.com,kiradream.blog,kisscos.net,kisshentaiz.com,kmansin09.*,kuronavi.blog,leakav.com,leermanga.net,lustesthd.makeup,mangakoma01.*,mangamovil.net,mangaraw.*,mangaraw1001.cc,mangaraw18.net,mangarawad.fit,mangarawjp.me,mangatv.net,manhuarmtl.com,manhuatop.org,manhwa68.com,manhwatop.com,mikohub.blog,milfnut.*,movibd.com,mmsbee47.com,mmsmasala27.com,naijauncut.com,nicomanga.com,nlcosplay.com,nontonvidoy.online,novelaplay.com,nudeslegion.com,odiafresh.com,onlinework4all.com,otomi-games.com,paipancon.com,pandamovies.org,pantieshub.net,pastelink.net,pelimeli.com,pelis182.net,pinayflix.me,piratehaven.xyz,pitube.net,poapan.xyz,porn00.org,pornobae.com,pornohubonline.com,pornosubtitula2.com,pornxp.com,primewire.*,raw1001.net,raw18.*,rawinu.com,rawkuro.net,rebahin.pw,redretti.com,rentry.co,safefileku.com,sexdiaryz.*,sexpin.net,shemale6.com,shemaleup.net,sharinghubs.com,shinshi-manga.net,smarttrend.xyz,socigames.com,spotidownloader.com,streamup.ws,sweeteroticart.com,tabooporn.tv,taboodude.com,tatli.biz,tesbox.my.id,thebarchive.com,theblank.net,thotchicks.com,transflix.net,turboimagehost.com,veo-hentai.com,veronica.uk,vintagepornfun.com,weloma.art,worthcrete.com,xhamster.fm,xmegadrive.com,yabaisub.cloud,yesjavplease.fun##+js(acs, document.createElement, l.parentNode.insertBefore(s)
 panuvideo.com##+js(acs, setTimeout, l.parentNode.insertBefore(s)
 mangaplus.shueisha.tv,shueisharaw.tv##+js(acs, matchMedia, l.parentNode.insertBefore(s)
 asiangay.tv,bootstrample.com,deephot.link,gayxx.net,hentairead.io,japangaysex.com,justthegays.tv,mangagun.net,mangayy.org,nicomanga.com,nlcosplay.com,nudeslegion.com,paipancon.com,premiumporn.org,rawinu.com,veo-hentai.com,watchsouthpark.tv,weloma.art,xpicu.store##+js(aopr, popns)
@@ -9020,6 +9022,7 @@ pictoa.com###tab-footer
 ||bobs-tube.com/sw$script,1p
 ||checking-your-browser.com^
 ||crentgate.com^
+||applzr.com^
 ||obitube.com^$frame,1p
 ||redtub3xxx.com^$frame,1p
 ##.bloc-pub
@@ -9039,6 +9042,7 @@ pictoa.com###tab-footer
 *.gif$domain=javbobo.com,image
 /frtd_ldr_$script,1p
 /bknd_ldr_$script,1p
+.go?pid=*&spaceid=*&ctrlid=
 pornoplum.com,vulgarmilf.com,oldgirlsporn.com,maturell.com,nakedolders.com,widewifes.com##iframe:upward(2)
 besttwinkass.com##[class*="_Bns"]
 nylonbabez.net,nylonpornpictures.net,stockingspornpics.com##.preview:has(.nat-block)
@@ -9267,7 +9271,7 @@ aagmaal.*##+js(rpnt, script, break;case $.)
 ! !SECTION: Propeller ads
 ! SECTION: Clickadu
 ! Clickadu reinjection
-18comic.vip,18comic-gquu.vip,adictox.com,anchira.to,animebr.org,animeworld.ac,anizm.net,archivebate.*,asiaon.*,asianporn.li,asiaontop.com,asmr18.fans,b-hentai.com,bebasbokep.online,bokepsin.in.net,bos21.site,bunkrr.*,cat3movie.org,cdn1.site,celebritydeeplink.com,comohoy.com,cyberdrop.me,daftporn.com,daftsex.net,datawav.club,ddd-smart.net,depvailon.com,desifakes.com,dvdgayonline.com,easyvidplayer.com,embedseek.online,fapeza.com,fapfappy.com,g-porno.com,g-streaming.com,gelbooru.com,goctruyentranhvui17.com,hhkungfu.*,hentai2read.com,hentai2w.com,hentaipaw.com,hitomi.la,homemoviestube.com,imgbox.com,imx.to,japaneseholes.com,jav-fun.cc,jav.direct,jav.si,javboys.com,javbraze.com,javdoe.sh,javfan.one,javfc2.xyz,javfor.tv,javhat.tv,javhd.*,javhdz.today,javlab.net,javideo.net,javmenu.com,javmeta.com,javmix.tv,javpas.com,javseen.tv,javtiful.com,javx357.com,jmanga.*,jpg6.su,klmanga.*,komikmanhwa.me,lovingsiren.com,luluvdoo.com,luluvids.top,madouqu.com,manga1001.*,mangago.me,mangakakalot.gg,manganato.gg,mangaraw.*,mangarawjp.*,movieffm.net,muchohentai.com,myvidplay.com,natomanga.com,nekopoi.*,nelomanga.*,netfapx.com,niyaniya.*,nlcosplay.com,nontonhentai.net,novelcrow.com,nsfwr34.com,nsfwyoutube.com,nudogram.com,nukibooks.com,paipancon.com,phimlongtieng.net,player4me.online,play.playkrx18.site,poapan.xyz,popjav.in,odporn.com,porn4fans.com,pornslash.com,porntin.com,qmh.sex,rawkuma.net,rpmplay.online,rule34.xyz,rule34vault.com,savefiles.com,sendvid.com,sexdicted.com,shinshi-manga.net,simpcity.*,spoilerplus.tv,stream18.net,streampoi.com,sxyprn.*,syosetu.*,taboodude.com,taxi69.com,teenager365.to,thefappening.pro,thefappeningblog.com,tojav.net,turbocloud.xyz,turbovid.*,twitchnosub.com,upload18.com,upns.online,ups2up.fun,vegamoviese.*,veronica.uk,vidara.so,vidara.to,vide0.net,videplay.us,vids.st,vik1ngfile.site,vipserije.com,watchhentai.net,x-fetish.tube,x-tg.tube,x-x-x.video,xanimeporn.com,xxgasm.com,xxxfree.watch,youwatch.monster##+js(acs, WebAssembly, atob)
+18comic.vip,18comic-gquu.vip,adictox.com,anchira.to,animebr.org,animeworld.ac,anizm.net,archivebate.*,asiaon.*,asianporn.li,asiaontop.com,asmr18.fans,b-hentai.com,bebasbokep.online,bokepsin.in.net,bos21.site,bunkrr.*,cat3movie.org,cdn1.site,celebritydeeplink.com,comohoy.com,cyberdrop.me,daftporn.com,daftsex.net,datawav.club,ddd-smart.net,depvailon.com,desifakes.com,dvdgayonline.com,easyvidplayer.com,embedseek.online,fapeza.com,fapfappy.com,g-porno.com,g-streaming.com,gelbooru.com,goctruyentranhvui17.com,hhkungfu.*,hentai2read.com,hentai2w.com,hentaipaw.com,hitomi.la,homemoviestube.com,imgbox.com,imx.to,japaneseholes.com,jav-fun.cc,jav.direct,jav.si,javboys.com,javbraze.com,javdoe.sh,javfan.one,javfc2.xyz,javfor.tv,javhat.tv,javhd.*,javhdz.today,javlab.net,javideo.net,javmenu.com,javmeta.com,javmix.tv,javpas.com,javseen.tv,javtiful.com,javx357.com,jmanga.*,jpg6.su,klmanga.*,komikmanhwa.me,lovingsiren.com,luluvdoo.com,luluvids.top,madouqu.com,manga1001.*,mangago.me,mangakakalot.gg,manganato.gg,mangaraw.*,mangarawjp.*,movieffm.net,muchohentai.com,myvidplay.com,natomanga.com,nekopoi.*,nelomanga.*,netfapx.com,niyaniya.*,nlcosplay.com,nontonhentai.net,novelcrow.com,nsfwr34.com,nsfwyoutube.com,nudogram.com,nukibooks.com,paipancon.com,phimlongtieng.net,player4me.online,play.playkrx18.site,poapan.xyz,popjav.in,odporn.com,porn4fans.com,pornslash.com,porntin.com,qmh.sex,rawkuma.net,rpmplay.online,rule34.xyz,rule34vault.com,savefiles.com,sendvid.com,sexdicted.com,shinshi-manga.net,simpcity.*,spoilerplus.tv,stream18.net,streampoi.com,sxyprn.*,syosetu.*,taboodude.com,taxi69.com,teenager365.to,thefappening.pro,thefappeningblog.com,thotchicks.com,tojav.net,turbocloud.xyz,turbovid.*,twitchnosub.com,upload18.com,upns.online,ups2up.fun,vegamoviese.*,veronica.uk,vidara.so,vidara.to,vide0.net,videplay.us,vids.st,vik1ngfile.site,vipserije.com,watchhentai.net,x-fetish.tube,x-tg.tube,x-x-x.video,xanimeporn.com,xxgasm.com,xxxfree.watch,youwatch.monster##+js(acs, WebAssembly, atob)
 filmisub.cc##+js(acs, WebAssembly, atob, /^data:/)
 /aas/r45d/vki/*$script,redirect=noop.js
 /^https:\/\/[a-z]{8,12}\.com\/en\/(?:[a-z]{2,10}\/){0,2}[a-z]{2,}\?(?:[a-z]+=[^&=?\s]*?&)*?id=[12]\d{6}\b/$script,3p,match-case,to=com
@@ -9291,6 +9295,7 @@ filmisub.cc##+js(acs, WebAssembly, atob, /^data:/)
 ||rule34vault.com/ngsw-worker.js
 ! Ads servers
 ||briarcostshadow.com^
+||egotisticexcavateplywood.com^
 novelcrow.com##.widget_custom_html
 novelcrow.com##[href^="https://landing.candynetwork.ai/"]
 novelcrow.com##[href="https://theporndude.com/"]
@@ -20573,10 +20578,10 @@ embedme.*,filemooon.top,finfang.*,hellnaw.*,moonembed.*,z12z0vla.*##+js(noeval-i
 2fb9tsgn.fun##+js(acs, Math, localStorage['\x)
 @@?*=$xhr,1p,strict1p,method=get,domain=2fb9tsgn.fun
 ! Byse - related to filemoon
-arbitrarydecisions.com,bysebuho.com,bysedikamoum.com,bysefujedu.com,bysejikuar.com,bysekoze.com,byseqekaho.com,byseraguci.com,bysesayeveum.com,bysesukior.com,bysetayico.com,bysewihe.com,dramathical.stream,filemoon.*,g9r6.com##+js(acs, EventTarget.prototype.addEventListener, delete window)
-0vg9r.com,398fitus.com,arbitrarydecisions.com,bysebuho.com,bysedikamoum.com,bysefujedu.com,bysejikuar.com,bysekoze.com,byseqekaho.com,byseraguci.com,bysesayeveum.com,bysesukior.com,bysetayico.com,bysewihe.com,dramathical.stream,f16px.com,f75s.com,filemoon.*,g9r6.com##+js(nostif, readyWait)
-g9r6.com##+js(nowoif)
-g9r6.com##body.video-embed-mode > div[class][style]:not(#root)
+arbitrarydecisions.com,bysebuho.com,bysedikamoum.com,bysefujedu.com,bysejikuar.com,bysekoze.com,byseqekaho.com,byseraguci.com,bysesayeveum.com,bysesukior.com,bysetayico.com,bysewihe.com,dramathical.stream,filemoon.*,g9r6.com,ystream.id##+js(acs, EventTarget.prototype.addEventListener, delete window)
+0vg9r.com,398fitus.com,arbitrarydecisions.com,bysebuho.com,bysedikamoum.com,bysefujedu.com,bysejikuar.com,bysekoze.com,byseqekaho.com,byseraguci.com,bysesayeveum.com,bysesukior.com,bysetayico.com,bysewihe.com,dramathical.stream,f16px.com,f75s.com,filemoon.*,g9r6.com,ystream.id##+js(nostif, readyWait)
+0vg9r.com,398fitus.com,arbitrarydecisions.com,bysebuho.com,bysedikamoum.com,bysefujedu.com,bysejikuar.com,bysekoze.com,byseqekaho.com,byseraguci.com,bysesayeveum.com,bysesukior.com,bysetayico.com,bysewihe.com,dramathical.stream,f16px.com,f75s.com,g9r6.com,ystream.id##+js(nowoif)
+0vg9r.com,398fitus.com,arbitrarydecisions.com,bysebuho.com,bysedikamoum.com,bysefujedu.com,bysejikuar.com,bysekoze.com,byseqekaho.com,byseraguci.com,bysesayeveum.com,bysesukior.com,bysetayico.com,bysewihe.com,dramathical.stream,f16px.com,f75s.com,filemoon.*,g9r6.com,ystream.id##body.video-embed-mode > div[class][style]:not(#root)
 ! ads servers
 ||358g46.fun^$popup,doc
 ||dfuybl-bclxb.love^$popup,doc
@@ -21590,33 +21595,33 @@ taste.com.au##.main-header:style(top: 0 !important)
 @@||topcountry.eu^$script,domain=decompiler.com
 @@||topsong.eu^$script,domain=decompiler.com
 @@||topsongs.eu^$script,domain=decompiler.com
+@@||topcountries.eu^$script,domain=decompiler.com
 @@||codicibancari.it^$script,domain=decompiler.com
 @@||scuolamaternamaffei.it^$script,domain=decompiler.com
-decompiler.com##+js(trusted-replace-node-text, script, /if.*?\(.*?\)/, if(false), condition, /\.style\.pointerEvents|\.style\.opacity|\.setAttribute\('hr'|\.createElement\("button"\)|\.addEventListener\("click"|window\['al'\+'ert'\]|oldButton\['replaceWith'\]|' \+ '|replaceSubmit|replaceSubmitWithWarnButton|'pointerEvents'|disableLink/)
-decompiler.com##+js(rmnt, script, if (itepux[sbbig]))
-decompiler.com##+js(rmnt, script, var zxmyqjej = function(ghmwa))
-decompiler.com##+js(rmnt, script, var blzpkliz = zxmyqjej(['get', 'Elemen', 't', 'ById']))
-decompiler.com##+js(rmnt, script, var leplcmy = zxmyqjej(['pointerE', 'vents']))
-decompiler.com##+js(rmnt, script, var ooqicknj = zxmyqjej(['opa', 'ci', 'ty']))
-decompiler.com##+js(rmnt, script, var nkgubfci = zxmyqjej(['c', 'reateEl', 'ement']))
-decompiler.com##+js(rmnt, script, var harxiiwu = zxmyqjej(['addEventList', 'ener']))
-decompiler.com##+js(rmnt, script, var onnphem = zxmyqjej(['al', 'e', 'r', 't']))
-decompiler.com##+js(rmnt, script, var cgkogtcy = function(ghmwa))
-decompiler.com##+js(rmnt, script, jbuts.style[leplcmy] = 'none')
-decompiler.com##+js(rmnt, script, jbuts.style[ooqicknj] = '.65')
-decompiler.com##+js(rmnt, script, jbuts.href = 'javascript:void 0')
-decompiler.com##+js(rmnt, script, jbuts.setAttribute('aria-disabled', 'true'))
-decompiler.com##+js(rmnt, script, var jkziz = function(ghmwa, ngulnp))
-decompiler.com##+js(rmnt, script, var wwrylnxy = document[blzpkliz])
-decompiler.com##+js(rmnt, script, var ljdlu = document[nkgubfci]('button'))
-decompiler.com##+js(rmnt, script, ljdlu.appendChild(document.createTextNode(wwrylnxy.value)))
-decompiler.com##+js(rmnt, script, ljdlu[harxiiwu]('click', function()))
-decompiler.com##+js(rmnt, script, itepux[onnphem](ngulnp))
-decompiler.com##+js(rmnt, script, wwrylnxy.parentNode.replaceChild(ljdlu, wwrylnxy))
-decompiler.com##+js(rmnt, script, jkziz(['download_z', 'ip_b', 'utton']))
-decompiler.com##+js(rmnt, script, cgkogtcy(['f', 'irstDo', 'wnloadFileLi', 'nk']))
-decompiler.com##+js(rmnt, script, cgkogtcy(['secondDo', 'wnloadFileLink']))
-decompiler.com##+js(rmnt, script, }).call(null, window, 'qlhac'))
+!||ethicalads.io^$script,domain=decompiler.com,important
+!||googletagmanager.com^$script,domain=decompiler.com,important
+!@@*$script,3p,domain=decompiler.com
+decompiler.com##+js(rmnt, script, var ibavml = document.currentScript;)
+decompiler.com##+js(rmnt, script, var cflkj = ibavml.ownerDocument.defaultView;)
+decompiler.com##+js(rmnt, script, var yidmtwt = ibavml.getAttribute('data-d');)
+decompiler.com##+js(rmnt, script, if (true === cflkj[yidmtwt]))
+decompiler.com##+js(rmnt, script, function becsr(tclyoh))
+decompiler.com##+js(rmnt, script, var hkjgab = becsr(['getEle', 'mentById']);)
+decompiler.com##+js(rmnt, script, var swfpj = becsr(['po', 'interEvents']);)
+decompiler.com##+js(rmnt, script, var fjbxh = becsr(['opac', 'it', 'y']);)
+decompiler.com##+js(rmnt, script, var szywvvoh = becsr(['cr', 'eate', 'E', 'lement']);)
+decompiler.com##+js(rmnt, script, var bhnyxg = becsr(['addEventL', 'istener']);)
+decompiler.com##+js(rmnt, script, var yjagtor = becsr(['a', 'l', 'e', 'rt']);)
+decompiler.com##+js(rmnt, script, function mvwflzd(tclyoh))
+decompiler.com##+js(rmnt, script, yrfjqrqf.style[swfpj] = 'none';)
+decompiler.com##+js(rmnt, script, yrfjqrqf.style[fjbxh] = '.65';)
+decompiler.com##+js(rmnt, script, yrfjqrqf.href = 'javascript:void 0';)
+decompiler.com##+js(rmnt, script, function olsskmkz(tclyoh, nwelsk))
+decompiler.com##+js(rmnt, script, var ocebooiw = documentszywvvoh;)
+decompiler.com##+js(rmnt, script, cflkj.setTimeout(function()))
+decompiler.com##+js(rmnt, script, olsskmkz(['download_z', 'ip', '_button']))
+decompiler.com##+js(rmnt, script, mvwflzd(['f', 'irst', 'DownloadFileLink']))
+decompiler.com##+js(rmnt, script, mvwflzd(['secon', 'dDownload', 'Fi', 'leLink']))
 ! ytlarge detection
 @@||ytlarge.com^$ghide
 @@||googlesyndication.com^$script,xhr,domain=ytlarge.com
