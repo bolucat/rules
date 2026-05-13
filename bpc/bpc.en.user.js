@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.6.4
+// @version         4.3.6.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2649,6 +2649,8 @@ else if (matchDomain('dnevnik.bg')) {
         addGST();
     }
   }, 1000);
+  let ads = 'div[data-ad-page]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('dwell.com')) {
@@ -3316,6 +3318,92 @@ else if (matchDomain('inquirer.com')) {
 
 else if (matchDomain('insidehighered.com')) {
   let ads = 'div[id^="block-dfptag"], div.wp-block-ihe-ad, section.section-ad_slot, div#roadblock';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('insights.citeline.com')) {
+  let paywall = document.querySelector('div.paywall-wrap');
+  let article = document.querySelector('article.b-article-body');
+  if (paywall && article) {
+    removeDOMElement(paywall);
+    let fusion_script = document.querySelector('script#fusion-metadata');
+    if (fusion_script && fusion_script.text.includes('Fusion.contentCache=')) {
+      try {
+        let json = JSON.parse(fusion_script.text.split('Fusion.contentCache=')[1].split(';Fusion.')[0]);
+        if (json && json['content-api']) {
+          let pars;
+          let content_api = json['content-api'];
+          for (let key in content_api) {
+            let content = content_api[key];
+            if (content.data && content.data.content_elements && content.data.content_restrictions) {
+              pars = content.data.content_elements;
+              break;
+            }
+          }
+          if (pars && pars.length) {
+            article.innerHTML = '';
+            let parser = new DOMParser();
+            for (let par of pars) {
+              let elem;
+              if (['header', 'text'].includes(par.type)) {
+                if (par.content) {
+                  let doc = parser.parseFromString('<p class="c-paragraph">' + par.content + '</p>', 'text/html');
+                  elem = doc.querySelector('p');
+                  if (par.type === 'header')
+                    elem.style = 'font-weight: bold;';
+                }
+              } else if (par.type === 'image') {
+                if (par.url) {
+                  let caption_text = par.caption;
+                  if (par.credits && par.credits.affiliation && par.credits.affiliation[0] && par.credits.affiliation[0].name)
+                    caption_text += ' (' + par.credits.affiliation[0].name + ')';
+                  elem = makeFigure(par.url, caption_text);
+                }
+              } else if (par.type === 'raw_html') {
+                let doc = parser.parseFromString('<div>' + parseHtmlEntities(par.content) + '</div>', 'text/html');
+                elem = doc.querySelector('div');
+                let infogram = elem.querySelector('div.infogram-embed[data-id]');
+                if (infogram) {
+                  elem.innerHTML = '';
+                  let iframe = document.createElement('iframe');
+                  iframe.src = 'https://e.infogram.com/' + infogram.getAttribute('data-id');
+                  iframe.style = 'width: 100%; aspect-ratio: 4 / 3;';
+                  elem.appendChild(iframe);
+                } else
+                  elem.querySelectorAll('iframe[allow*="fullscreen"][allowfullscreen]').forEach(e => e.removeAttribute('allowfullscreen'));
+              } else if (par.type === 'custom_embed') {
+                let html = getNestedKeys(par, 'embed.config.html');
+                if (html) {
+                  elem = document.createElement('div');
+                  elem.className = 'key-takeaways align-right';
+                  let headline = getNestedKeys(par, 'embed.config.headline');
+                  if (headline) {
+                    let embed_headline = document.createElement('h6');
+                    embed_headline.innerText = headline;
+                    elem.appendChild(embed_headline);
+                  }
+                  let doc = parser.parseFromString(html, 'text/html');
+                  let elem_type_match = html.match(/^<(\w+)/);
+                  if (elem_type_match) {
+                    let elem_type = elem_type_match[1];
+                    let embed_content = doc.querySelector(elem_type);
+                    if (embed_content)
+                      elem.appendChild(embed_content);
+                  }
+                }
+              } else if (!['divider'].includes(par.type))
+                console.log(par);
+              if (elem)
+                article.appendChild(elem);
+            }
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+  let ads = 'div[id^="arcad-"]';
   hideDOMStyle(ads);
 }
 
@@ -4402,15 +4490,8 @@ else if (matchDomain('startribune.com')) {
 }
 
 else if (matchDomain('statnews.com')) {
-  let paywall = document.querySelector('div.restricted-content-breaker');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.entry-content, section.the-content');
-    if (article) {
-      let url = window.location.href;
-      article.before(googleSearchToolLink(url));
-    }
-  }
+  let url = window.location.href;
+  getArchive(url, 'div.restricted-content-breaker', '', '.the-content', '', 'main section, div[style*="counter-reset:"]');
   let ads = 'div.header-ad-wrap, div[class*="dfp-ad"]';
   hideDOMStyle(ads);
 }
