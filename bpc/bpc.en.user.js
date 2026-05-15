@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.6.8
+// @version         4.3.6.9
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1860,6 +1860,44 @@ else if (matchDomain('bloomberg.com')) {
       elem.appendChild(embed_elem);
     }
   }
+  function addMedia(par, elem) {
+    if (par.subType === 'video') {
+      if (par.data.video && par.data.video.src) {
+        let video = document.createElement('video');
+        video.src = par.data.video.src;
+        video.setAttribute('controls', '');
+        elem.appendChild(video);
+        if (par.data.video.caption) {
+          let caption = document.createElement('span');
+          caption.innerText = parseHtmlEntities(par.data.video.caption) + (par.data.video.credit ? ' ' + par.data.video.credit : '');
+          elem.appendChild(caption);
+        }
+      }
+    } else if (par.subType === 'photo') {
+      if (par.data.photo && par.data.photo.src) {
+        let figure = makeFigure(par.data.photo.src, parseHtmlEntities(par.data.photo.caption.replace(/<\/?\w+>/g, '')) + ' ' + par.data.photo.credit);
+        elem.appendChild(figure);
+      }
+    } else if (par.subType === 'chart') {
+      if (par.data.chart) {
+        let figure = document.createElement('figure');
+        if (false && par.data.attachment && par.data.attachment.title)
+          figure.appendChild(document.createTextNode(par.data.attachment.title));
+        let img = document.createElement('img');
+        img.src = par.data.chart.fallback;
+        figure.appendChild(img);
+        if (false && par.data.attachment && (par.data.attachment.source || par.data.attachment.footnote)) {
+          let caption = document.createElement('figcaption');
+          caption.innerText = par.data.attachment.source + '\r\n' + par.data.attachment.footnote;
+          figure.appendChild(caption);
+        }
+        elem.appendChild(figure);
+      }
+    } else if (par.subType === 'audio') {
+      addPodcast(par.data, elem);
+    } else
+      console.log(par);
+  }
   function addPodcast(data, elem) {
     if (data.attachment && data.attachment.url && data.attachment.title && data.attachment.description) {
       let title = document.createTextNode(data.attachment.title);
@@ -1903,7 +1941,7 @@ else if (matchDomain('bloomberg.com')) {
             li.appendChild(document.createTextNode(list_item.value));
           } else if (list_item.type === 'paragraph' && list_item.content) {
             addPar(list_item.content, li);
-          } else if (list_item.type === 'link' && list_item.data && list_item.data.href) {
+          } else if (list_item.type === 'link') {
             addLink(list_item, li);
           } else if (list_item.type === 'entity' && list_item.content && list_item.content[0] && list_item.content[0].value) {
             addEntity(list_item, li);
@@ -1933,7 +1971,7 @@ else if (matchDomain('bloomberg.com')) {
         elem.appendChild(span);
       } else if (item.type === 'br') {
         elem.appendChild(document.createElement('br'));
-      } else if (item.type === 'link' && item.data && item.data.href) {
+      } else if (item.type === 'link') {
         addLink(item, elem);
       } else if (item.type === 'entity') {
         addEntity(item, elem);
@@ -1941,6 +1979,8 @@ else if (matchDomain('bloomberg.com')) {
         addPar(item.content, elem);
       } else if (item.type === 'list' && item.content) {
         addList(item.content, elem);
+      } else if (item.type === 'media' && item.data) {
+        addMedia(item, elem);
       } else if (item.type === 'embed') {
         addEmbed(item, elem);
       } else if (item.type === 'footnoteRef') {
@@ -2002,25 +2042,38 @@ else if (matchDomain('bloomberg.com')) {
             audio_tts.setAttribute('controls', '');
             article.before(audio_tts);
           }
-          if (json.props.pageProps.story.aiSummary) {
-            let ai_summary = document.querySelector('div[class^="SummaryOnlyTakeaways_takeaways_"]');
-            if (ai_summary) {
-              ai_summary.removeAttribute('class');
-              ai_summary.style = 'border: solid;';
-              let ul = document.createElement('ul');
-              ul.style = 'margin: 20px 50px; list-style-type: disc;';
-              for (let elem of json.props.pageProps.story.aiSummary.text) {
-                let item = document.createElement('li');
-                item.innerText = elem;
-                ul.appendChild(item);
+          if (json.props.pageProps.story.aiSummary && json.props.pageProps.story.aiSummary.text) {
+            window.setTimeout(function () {
+              let ai_summary = document.querySelector('div[class^="SummaryOnlyTakeaways_takeaways_"], div.done');
+              if (!ai_summary) {
+                ai_summary = document.createElement('div');
+                ai_summary.style = 'width: 80%; margin: auto;';
+                let title = document.createElement('div');
+                title.innerText = 'Takeaways';
+                title.style = 'font-weight: bold; margin: 20px;';
+                ai_summary.appendChild(title);
+                article.firstChild.before(ai_summary);
               }
-              ai_summary.appendChild(ul);
-            }
+              if (ai_summary.className !== 'done') {
+                ai_summary.className = 'done';
+                ai_summary.style.border = 'solid';
+                let ul = document.createElement('ul');
+                ul.style = 'margin: 20px 50px; list-style-type: disc;';
+                for (let elem of json.props.pageProps.story.aiSummary.text) {
+                  let item = document.createElement('li');
+                  item.innerText = elem;
+                  ul.appendChild(item);
+                }
+                ai_summary.appendChild(ul);
+              }
+            }, 2000);
           }
           for (let par of json_pars) {
             let elem = document.createElement('p');
             elem.setAttribute('class', par_class);
             elem.setAttribute('data-component', 'paragraph');
+            if (par.type === 'heading')
+              elem.style = 'font-weight: bold;';
             if (['heading', 'paragraph'].includes(par.type) && par.content) {
               addPar(par.content, elem);
             } else if (par.type.endsWith('quote') && par.content) {
@@ -2036,42 +2089,10 @@ else if (matchDomain('bloomberg.com')) {
                 }
               }
               elem.style = 'font-style: italic';
-            } else if (par.type === 'media' && par.subType === 'video') {
-              if (par.data && par.data.video && par.data.video.src) {
-                let video = document.createElement('video');
-                video.src = par.data.video.src;
-                video.setAttribute('controls', '');
-                elem.appendChild(video);
-                if (par.data.video.caption) {
-                  let caption = document.createElement('span');
-                  caption.innerText = parseHtmlEntities(par.data.video.caption) + (par.data.video.credit ? ' ' + par.data.video.credit : '');
-                  elem.appendChild(caption);
-                }
-              }
-            } else if (par.type === 'media' && par.subType === 'photo') {
-              if (par.data && par.data.photo && par.data.photo.src) {
-                let figure = makeFigure(par.data.photo.src, parseHtmlEntities(par.data.photo.caption.replace(/<\/?\w+>/g, '')) + ' ' + par.data.photo.credit);
-                elem.appendChild(figure);
-              }
-            } else if (par.type === 'media' && par.subType === 'chart') {
-              if (par.data && par.data.chart) {
-                let figure = document.createElement('figure');
-                if (par.data.attachment && par.data.attachment.title)
-                  figure.appendChild(document.createTextNode(par.data.attachment.title));
-                let img = document.createElement('img');
-                img.src = par.data.chart.fallback;
-                figure.appendChild(img);
-                if (par.data.attachment && (par.data.attachment.source || par.data.attachment.footnote)) {
-                  let caption = document.createElement('figcaption');
-                  caption.innerText = par.data.attachment.source + '\r\n' + par.data.attachment.footnote;
-                  figure.appendChild(caption);
-                }
-                elem.appendChild(figure);
-              }
+            } else if (par.type === 'media' && par.data) {
+              addMedia(par, elem);
             } else if (par.type === 'embed') {
               addEmbed(par, elem);
-            } else if (par.type === 'media' && par.subType === 'audio' && par.data) {
-              addPodcast(par.data, elem);
             } else if (par.type === 'div' && par.content) {
               addDiv(par.content, elem);
             } else if (par.type === 'list' && par.content) {
@@ -2138,6 +2159,8 @@ else if (matchDomain('bloomberg.com')) {
                 for (let par of pars) {
                   if (par.type === 'text' && par.value) {
                     elem.appendChild(document.createTextNode(par.value));
+                  } else if (par.type === 'link') {
+                    addLink(par, elem);
                   } else if (par.type.endsWith('quote') && par.content) {
                     elem.appendChild(document.createElement('br'));
                     elem.style['font-style'] = 'italic';
@@ -2145,6 +2168,8 @@ else if (matchDomain('bloomberg.com')) {
                   } else if (par.type === 'div') {
                     elem.appendChild(document.createElement('br'));
                     addPar(par.content, elem);
+                  } else if (par.type === 'br') {
+                    elem.appendChild(document.createElement('br'));
                   } else
                     console.log(par);
                 }
@@ -2224,11 +2249,10 @@ else if (matchDomain('bloomberg.com')) {
       window.localStorage.clear();
     }, 15 * 60 * 1000);
   }
-  let paywall_sel = 'div[id^="fortress-"]';
   let leaderboard = 'div[id^="leaderboard"], div[class^="leaderboard"], div.canopy-container';
   let shimmering = 'article.first-story div[class*="Placeholder_placeholderParagraphWrapper-"]';
   let ads = 'div[data-ad-status], div[data-ad-type], div[class*="FullWidthAd_"], div.adWrapper, div.dvz-v0-ad';
-  hideDOMStyle([paywall_sel, leaderboard, shimmering, ads].join(','));
+  hideDOMStyle([leaderboard, shimmering, ads].join(','));
 }
 
 else if (matchDomain('bloombergadria.com')) {

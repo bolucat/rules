@@ -1,8 +1,8 @@
 [Adblock Plus 2.0]
-! Checksum: 3dHrxS/jIkSx03OZgrJUvA
-! Version: 202605141931
+! Checksum: Q+CD5ZXgiaxBiskDiWqDZg
+! Version: 202605151922
 ! Title: RU, UA, UZ, KZ
-! Last modified: 14 May 2026 19:31 UTC
+! Last modified: 15 May 2026 19:22 UTC
 ! Expires: 1 days (фильтр обновляется автоматически каждые 2 дня)
 ! Homepage: https://forums.lanik.us/viewforum.php?f=102
 !
@@ -17467,6 +17467,7 @@ pechera.info##[src*="/storage/banner_upload/"]
 promin.cv.ua##[src*="/uploads/banner"]
 kuban24.tv##[src*="/uploads/banners/"]
 bidbaits.ru##[src*="/uploads/commerce/"]
+rusport.live##[src*="/wpadcenter_uploads/"]
 73online.ru##[src*="://73online.ru/advert/"]
 happymodern.ru##[src*="://pagead2.googlesyndication.com/"]
 hi-fi-forum.net##[src*="_partners/"]
@@ -20324,8 +20325,7 @@ $csp=script-src-attr 'none',domain=volyn.com.ua
 .softoroom.org^$csp=default-src 'unsafe-inline',domain=~gzip.softoroom.org|~m.softoroom.org
 /bens/vinos.js$csp=sandbox allow-same-origin;
 /gateway/aHR0c$csp=script-src
-|http*//fastpic.org/$csp=frame-src 'self'
-|http*//fastpic.org/$csp=script-src 'self' 'unsafe-inline' 'unsafe-eval' static.fastpic.org
+|http*://fastpic.org/$csp=script-src 'self' 'unsafe-inline' 'unsafe-eval' static.fastpic.org; connect-src 'self'; frame-src 'self'
 ||24click.*/top/$csp=script-src
 ||24smi-*/top/$csp=script-src
 ||24smi.*/top/$csp=script-src
@@ -22858,6 +22858,8 @@ igdz1.ru^$script,domain=igdz.ru
 ||ruspdd.ru/*.php?$script
 ||ruspicbox.ru/tpl/
 ||ruspicbox.ru^*/clicunder.js
+||rusport.live/wp-content/uploads/*/branding_
+||rusport.live/wp-content/uploads/wpadcenter_uploads/
 ||rusradio.ru/uploads/pixel.js
 ||russian.fi/include/banners.php
 ||russian.rt.com/static/views/wMainBannerTop.
@@ -23809,9 +23811,9 @@ mail.ru##[href*="https://dzen.ru"]
 vk.com,vk.ru##[id^="post-"] > ._post_content > :only-child
 levik.blog,livejournal.com,olegmakarenko.ru,periskop.su,shakko.ru,shiro-kino.ru,vadimrazumov.ru##[role="banner"] > .s-header-extra + div[class]
 livejournal.com#?#a:-abp-has(span:-abp-contains(Реклама))
+pikabu.ru#?#article:-abp-has(> .story__left > span:only-child)
 pikabu.ru#?#article:-abp-has(> .story__main > div > header + div[class^="story"] > div:not([id]))
 pikabu.ru#?#article:-abp-has(> .story__main > div > header + div[class^="story"]:not(:-abp-has(*)))
-pikabu.ru#?#article:-abp-has(> .story__main > div:empty)
 pikabu.ru#?#article:-abp-has(> .story__main:not(:-abp-has(*)))
 kp.kg,kp.kz,kp.ru,md.kp.media#?#body > #app div:-abp-properties(background-color: rgb(225, 231, 235))
 sdamgia.ru##center > div[id][style]
