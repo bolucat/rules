@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.6.9
+// @version         4.3.7.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1304,6 +1304,7 @@ else if (matchDomain('thetimes.com')) {
           if (author)
             author.style = 'width: 90%; margin: 20px;';
         }
+        article.querySelectorAll('img[src^="data:image/"][currentsourceurl]').forEach(e => e.src = e.getAttribute('currentsourceurl'));
         let embed_iframes = article.querySelectorAll('div > times-embed-iframe-max[src]');
         for (let elem of embed_iframes) {
           let iframe_new;
@@ -1975,7 +1976,7 @@ else if (matchDomain('bloomberg.com')) {
         addLink(item, elem);
       } else if (item.type === 'entity') {
         addEntity(item, elem);
-      } else if (item.type === 'div') {
+      } else if (['paragraph', 'div'].includes(item.type)) {
         addPar(item.content, elem);
       } else if (item.type === 'list' && item.content) {
         addList(item.content, elem);
@@ -1986,7 +1987,7 @@ else if (matchDomain('bloomberg.com')) {
       } else if (item.type === 'footnoteRef') {
         if (item.data && item.data.footnoteContent && item.data.footnoteContent[0]) {
           let sub_item = item.data.footnoteContent[0];
-          if (sub_item.type === 'paragraph') {
+          if (['paragraph', 'div'].includes(sub_item.type)) {
             footnote_nr++;
             let footnote_link = makeLink('#footer-ref-footnote-' + footnote_nr, footnote_nr, 'font-size: smaller; vertical-align: super; margin: 0px 5px; text-decoration: underline;');
             footnote_link.id = 'inline-ref-footnote-' + footnote_nr;
@@ -2052,7 +2053,7 @@ else if (matchDomain('bloomberg.com')) {
                 title.innerText = 'Takeaways';
                 title.style = 'font-weight: bold; margin: 20px;';
                 ai_summary.appendChild(title);
-                article.firstChild.before(ai_summary);
+                article.firstChild.before(document.createElement('br'), ai_summary);
               }
               if (ai_summary.className !== 'done') {
                 ai_summary.className = 'done';
@@ -4815,6 +4816,7 @@ else if (matchDomain('thediplomat.com')) {
 
 else if (matchDomain('thedispatch.com')) {
   setCookie('xbc', '', 'thedispatch.com', '/', 0);
+  header_nofix('section#article-body > div > p', 'section.newsletter-paywall-divider:not(:empty)');
   hideDOMStyle('div.tp-container-inner');
 }
 
