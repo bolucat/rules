@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.7.0
+// @version         4.3.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -323,7 +323,7 @@ if (matchDomain('afr.com')) {
                                 height = 100;
                               result = '<iframe src="' + item.data.url + '" style="width: 100%; height: ' + height + 'px; border: none;"></iframe>';
                             }
-                          } else if (!['callout', 'quote', 'relatedStory', 'video'].includes(item.type)) {
+                          } else if (!['callout', 'domainListing', 'quote', 'relatedStory', 'video'].includes(item.type)) {
                             console.log(item);
                           }
                         }
@@ -1725,6 +1725,16 @@ else if (matchDomain('bizjournals.com')) {
     let paywall = document.querySelector('div.paywall-content:empty');
     if (paywall) {
       paywall.classList.remove('paywall-content');
+      if (!window.location.search.startsWith('?rel=plus')) {
+        window.location.href = window.location.pathname + '?rel=plus';
+        return;
+      }
+      let header_images = document.querySelectorAll('img[loading][width][src]');
+      for (let img of header_images) {
+        let img_width_match = img.src.match(/(\*\d+xx)/);
+        if (img_width_match)
+          img.src = img.src.replace(img_width_match[1], '*' + img.width + 'xx');
+      }
       let article = document.querySelector('div#ContentTease');
       if (article) {
         let json_script = document.querySelector('script#__NUXT_DATA__');
@@ -1769,7 +1779,7 @@ else if (matchDomain('bizjournals.com')) {
                       article.appendChild(figure);
                     }
                   }
-                  if (typeof par === 'string' && !['default', 'embed', 'gallery', 'horizontal_line', 'image', 'list', 'media', 'top25list'].includes(par)) {
+                  if (typeof par === 'string' && !['blockquote', 'default', 'embed', 'gallery', 'horizontal_line', 'image', 'list', 'media', 'top25list'].includes(par)) {
                     if (par.match(/^\d{4}-\d{2}-/))
                       break;
                     let doc = parser.parseFromString('<div class="' + par_class + '">' + par + '</div>', 'text/html');
