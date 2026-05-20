@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.7.1
+// @version         4.3.7.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -32,7 +32,6 @@
 // @match           *://*.gitflic.ru/*
 // @match           *://*.haaretz.co.il/*
 // @match           *://*.iai.tv/*
-// @match           *://*.independent.ie/*
 // @match           *://*.indiatoday.in/*
 // @match           *://*.intrafish.no/*
 // @match           *://*.ipolitics.ca/*
@@ -725,86 +724,6 @@ if (matchDomain('autocar.co.uk')) {
 
 else if (matchDomain('autosport.com')) {
   header_nofix('div.ms-article-content > p', 'div.ms-piano_article-banner');
-}
-
-else if (matchDomain('independent.ie')) {
-  let paywall = document.querySelector('div[class*="_fadetowhite"]');
-  if (paywall) {
-    let content = document.querySelector('script[data-fragment-type="ArticleContent"]');
-    if (content) {
-      removeDOMElement(paywall);
-      let flip_pay = 'div#flip-pay';
-      hideDOMStyle(flip_pay, 5);
-      let intro = document.querySelector('div > div[data-auth-intro="article"]');
-      if (intro) {
-        let intro_par = intro.querySelector('p[class]');
-        let intro_par_class;
-        if (intro_par)
-          intro_par_class = intro_par.getAttribute('class');
-        let content_text = content.innerText;
-        if (content_text.includes('__PRELOADED_STATE_GRAPH')) {
-          content_text = content_text.replace(/window\["__PRELOADED_STATE_GRAPH__.+"\]\s=\s/, '');
-          try {
-            let json = JSON.parse(content_text);
-            if (Object.keys(json).length) {
-              let key = Object.keys(json)[0];
-              let pars = json[key].data.article.body;
-              let parser = new DOMParser();
-              for (let par of pars) {
-                for (let type in par) {
-                  let item = par[type];
-                  let elem = document.createElement('p');
-                  elem.setAttribute('style', "margin: 10px;");
-                  if (type === 'bullet_list') {
-                    let ul = document.createElement('ul');
-                    for (let sub_item of item) {
-                      li.innerText = parseHtmlEntities(sub_item.replace(/<[^<]*>/g, ''));
-                      li.innerText = sub_item;
-                      ul.appendChild(li);
-                    }
-                    elem.appendChild(ul);
-                  } else if (type === 'image') {
-                    let url = item.url;
-                    if (item.cropped && item.cropped.url)
-                      url = item.cropped.url;
-                    let figure = makeFigure(url, item.caption);
-                    elem.appendChild(figure);
-                  } else if (type === 'related') {
-                    if (item.articles) {
-                      let articles = item.articles;
-                      for (let article of articles) {
-                        let elem_link = document.createElement('a');
-                        elem_link.href = article.webcmsRelativeUrl;
-                        elem_link.innerText = article.title;
-                        elem_link.style = 'text-decoration: underline;';
-                        elem.append(elem_link, document.createElement('br'));
-                      }
-                    }
-                  } else if (!['ad', 'quote', 'streamone'].includes(type)) {
-                    let html = parser.parseFromString('<p class="' + intro_par_class + '">' + item + '</p>', 'text/html');
-                    elem = html.querySelector('p');
-                    elem.querySelectorAll('iframe[allow*="fullscreen"][allowfullscreen]').forEach(e => e.removeAttribute('allowfullscreen'));
-                    if (!['p', 'subhead', 'legacy-ml'].includes(type)) {
-                      console.log(type);
-                      console.log(item);
-                    }
-                  }
-                  window.setTimeout(function () {
-                    if (elem)
-                      intro.parentNode.appendChild(elem);
-                  }, 500);
-                }
-              }
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
-    }
-  }
-  let ads = 'div.ad';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('businesspost.ie')) {
@@ -1725,10 +1644,17 @@ else if (matchDomain('bizjournals.com')) {
     let paywall = document.querySelector('div.paywall-content:empty');
     if (paywall) {
       paywall.classList.remove('paywall-content');
-      if (!window.location.search.startsWith('?rel=plus')) {
+      let gallery_intro = document.querySelector('header div[data-dev="MediaGallery"]');
+      if (window.location.search.startsWith('?rel=gallery')) {
+        if (gallery_intro)
+          header_nofix('header', '', 'BPC > go to full article', window.location.href.split('?')[0] + '?rel=plus');
+        return;
+      } else if (!window.location.search.startsWith('?rel=plus')) {
         window.location.href = window.location.pathname + '?rel=plus';
         return;
       }
+      if (gallery_intro)
+        header_nofix('header', '', 'BPC > show intro gallery', window.location.href.split('?')[0] + '?rel=gallery');
       let header_images = document.querySelectorAll('img[loading][width][src]');
       for (let img of header_images) {
         let img_width_match = img.src.match(/(\*\d+xx)/);
@@ -1771,12 +1697,28 @@ else if (matchDomain('bizjournals.com')) {
                     style = 'font-weight: bold;';
                     i++;
                     par = json[i];
-                  } else if (par.type && json[par.type] === 'media') {
+                  } else if (par.type && json[par.type] === 'media' && par.ord) {
                     let json_img = json_images.find(x => x.ord === par.ord);
                     if (json_img) {
-                      let figure = makeFigure(json[json_img.url], json[json_img.caption] + (json[json_img.byline] ? '\r\n' + json[json_img.byline].toUpperCase() : ''));
+                      let figure = makeFigure(json[json_img.url], json[json_img.caption].replace(/<br>/g, '') + (json[json_img.byline] ? '\r\n' + json[json_img.byline].toUpperCase() : ''), {alt: json[json_img.altText]});
                       figure.className = par_class;
                       article.appendChild(figure);
+                    }
+                  } else if (par.type && json[par.type] === 'gallery' && par.id) {
+                    let gallery = json.find(x => x && x.media && x.id === par.id && x.type && json[x.type] === 'gallery');
+                    if (gallery) {
+                      if (gallery.title) {
+                        let title = document.createElement('p');
+                        title.innerText = json[gallery.title];
+                        title.style = 'font-weight: bold;';
+                        article.appendChild(title);
+                      }
+                      for (let img of json[gallery.media]) {
+                        let json_img = json[img];
+                        let figure = makeFigure(json[json_img.url], json[json_img.caption].replace(/<br>/g, '') + (json[json_img.byline] ? '\r\n' + json[json_img.byline].toUpperCase() : ''), {alt: json[json_img.altText]});
+                        figure.className = par_class;
+                        article.appendChild(figure);
+                      }
                     }
                   }
                   if (typeof par === 'string' && !['blockquote', 'default', 'embed', 'gallery', 'horizontal_line', 'image', 'list', 'media', 'top25list'].includes(par)) {
