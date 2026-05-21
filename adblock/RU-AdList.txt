@@ -1,8 +1,8 @@
 [Adblock Plus 2.0]
-! Checksum: tvP9fh3zZq39/n9wlEb7BQ
-! Version: 202605202001
+! Checksum: j5fh4ExLX8f5x76+W5QOZw
+! Version: 202605211941
 ! Title: RU, UA, UZ, KZ
-! Last modified: 20 May 2026 20:01 UTC
+! Last modified: 21 May 2026 19:41 UTC
 ! Expires: 1 days (фильтр обновляется автоматически каждые 2 дня)
 ! Homepage: https://forums.lanik.us/viewforum.php?f=102
 !
@@ -439,7 +439,7 @@ $third-party,popup,domain=2ip.ru
 ||toolsins.com^$popup
 ||top/*rd.php?id=$third-party,popup
 ||torvind.com^$popup
-||tp.media^$popup
+||tp.media^$popup,domain=~aviasales.ru
 ||tptrk.ru^$popup
 ||track.adwad.ru^$popup
 ||tracka58563945.com^$popup
@@ -1715,7 +1715,10 @@ ac,ag,biz,buzz,by,city,club,co,com,fi,in,ink,kim,loan,me,name,net,org,pub,rest,r
 ac,ag,biz,buzz,by,city,club,co,com,fi,in,ink,kim,loan,me,name,net,org,pub,rest,run,sh,si,so,space,su,today,tv,vip,website,win##body[class^="has-brand"][class*=" active-brand"][class*="fixed-header"] {padding-top:0;background-color:inherit;}
 ! Моносериальные домены HDrezka
 net##body.branded:not([id]):not([style]) > #wrapper:not([class]):not([style]) {margin-top:unset;}
-!
+! ---
+! Shkulev Media
+ru##[data-ns-portal] .branding[data-page] {margin-top:unset;width:100%;}
+! ---
 ex-fs.net###content {margin-top:0;}
 respawn.media#?#article:has(> div span:has-text(/РЕКЛАМА: ЕРИД/i)) a[href^="http"]:not([href*="respawn.media/"]) {pointer-events:none;border-bottom:none;color:inherit;}
 stratege.ru###globalcontent {margin-top:0;padding-top:0;}
@@ -13224,7 +13227,7 @@ qip.ru##.advertTop
 apostrophe.ua##.advertinline
 np.pl.ua,soft-i-kino.ru##.advertise
 kyiv.media##.advertise-section
-almodi.org,expres.online,fightnews.info,kun.uz,liveinternet.ru##.advertisement
+almodi.org,expres.online,fightnews.info,kun.uz,liveinternet.ru,respawn.media##.advertisement
 dzr.by##.advertisements
 diary.ru,fireman.club,ku66.ru,pershij.com.ua,prostoprosport.ru,qrz.ru,track24.ru,ufanet.ru,xsport.ua##.advertising
 podolsk.ru##.advertising > span.title
@@ -23681,8 +23684,8 @@ igdz1.ru^$script,domain=igdz.ru
 ||dzen.ru/articles$csp=script-src 'unsafe-inline' 'unsafe-eval' data: static.dzeninfra.ru/react/ static.dzeninfra.ru/s3/zen-apps/ static.dzeninfra.ru/s3/zen-lib/ yandex.ru/ads/ vk.com/dist/ vk.com/js/api/videoplayer.js vk.com/dist/public/api/
 ||dzen.ru/news$csp=script-src 'unsafe-inline' 'unsafe-eval' data: static.dzeninfra.ru/react/ static.dzeninfra.ru/s3/zen-apps/ static.dzeninfra.ru/s3/zen-lib/ yandex.ru/ads/ vk.com/dist/ vk.com/js/api/videoplayer.js vk.com/dist/public/api/
 ||dzen.ru/pogoda/$script
-||static.dzeninfra.ru/s3/zen-apps/dzen-mobile/*/*/$script
-||static.dzeninfra.ru/s3/zen-apps/mobile/*/*/$script
+||static.dzeninfra.ru/s3/zen-apps/dzen-layout/*/*/$script
+||static.dzeninfra.ru/s3/zen-apps/subscriptions/*/*/$script
 !
 $csp=script-src-attr 'none',domain=eurointegration.com.ua|sportanalytic.com|notebookcheck-ru.com
 /^https?://24smi\.org/*[/]*[/][^\s]{8,}/$xmlhttprequest,domain=24smi.org
@@ -23803,6 +23806,8 @@ mail.ru##[href*="https://dzen.ru"]
 vk.com,vk.ru##[id^="post-"] > ._post_content > :only-child
 levik.blog,livejournal.com,olegmakarenko.ru,periskop.su,shakko.ru,shiro-kino.ru,vadimrazumov.ru##[role="banner"] > .s-header-extra + div[class]
 livejournal.com#?#a:-abp-has(span:-abp-contains(Реклама))
+pikabu.ru#?#article:-abp-has(> .story__left > .story__pin)
+pikabu.ru#?#article:-abp-has(> .story__left > span:first-child)
 pikabu.ru#?#article:-abp-has(> .story__left > span:only-child)
 pikabu.ru#?#article:-abp-has(> .story__main:not(:-abp-has(*)))
 kp.kg,kp.kz,kp.ru,md.kp.media#?#body > #app div:-abp-properties(background-color: rgb(225, 231, 235))
@@ -24425,6 +24430,8 @@ fontanka.ru,ngs.ru,ngs55.ru#?#[class*="pictureDayBlock_"] li:-abp-has(> a[href*=
 fontanka.ru##[data-io-article-url] > [itemprop="articleBody"] ~ p[class]
 ru##[data-ns-portal] .gridContainer div[class^="benefitsBlock_"]
 ru##[data-ns-portal] .notify-messages-popups
+ru##[data-ns-portal] [class*="hasBranding"] div[class^="benefitsBlock_"]
+ru##[data-ns-portal] [class^="asideContent"] div[class^="benefitsBlock_"]
 ru##[data-ns-portal] [data-adv-mark]
 ru##[data-ns-portal] [data-creative]
 ru##[data-ns-portal] a[href*="://auto.ru"][href*="utm_"]
@@ -25067,7 +25074,7 @@ ya.ru##[style*="feed"][style*="min-height:"]
 ya.ru##body > div[data-hydration-id] > [href^="https://yabs.yandex.ru/count/"] + div
 ya.ru##body > div[data-hydration-id] > div > [src^="https://yabs.yandex.ru/count/"] + div
 ya.ru##section[class^="reaso"]
-ya.ru##section[style*="ekktion-items-count:"]
+ya.ru##section[style*="sectlon-items-count:"]
 ya.ru##ul[class*="-section__list"]
 ya.ru,yandex.ru,yandex.*##.AdvProductGallery
 ya.ru,yandex.ru,yandex.*##.layout__banner
