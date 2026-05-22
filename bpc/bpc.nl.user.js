@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.7.0
+// @version         4.3.7.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -820,10 +820,10 @@ else if (matchDomain('tijd.be')) {
     let url = window.location.href;
     let nofix_msg = 'BPC > no data yet (refresh page)';
     if (matchDomain('belegger.tijd.be')) {
-      let paywall = document.querySelector('html.paywalled');
+      let paywall = document.querySelector('div[class^="ArticleTemplate_paywallContainer_"]');
       if (paywall) {
-        paywall.classList.remove('paywalled');
-        let article = document.querySelector('main div.row > div');
+        removeDOMElement(paywall);
+        let article = document.querySelector('div[class^="ArticleTemplate_articleBodyCenter_"]');
         if (article) {
           let authorization = mediafin_get_auth();
           if (authorization) {
