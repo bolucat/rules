@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.7.3
+// @version         4.3.7.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4768,8 +4768,35 @@ else if (matchDomain('thediplomat.com')) {
 
 else if (matchDomain('thedispatch.com')) {
   setCookie('xbc', '', 'thedispatch.com', '/', 0);
-  header_nofix('section#article-body > div > p', 'section.newsletter-paywall-divider:not(:empty)');
-  hideDOMStyle('div.tp-container-inner');
+  let paywall_sel = 'section.piano-paywall--active';
+  let paywall = document.querySelector(paywall_sel);
+  if (paywall) {
+    if (window.location.pathname.startsWith('/podcast/')) {
+      let tablist = document.querySelector('div[role="tablist"]');
+      if (tablist) {
+        let yoast_script = document.querySelector('script.yoast-schema-graph[type="application/ld+json"]');
+        if (yoast_script) {
+          try {
+            let json = JSON.parse(yoast_script.text);
+            if (json['@graph']) {
+              let audio_src_obj = json['@graph'].find(x => x['@type'] && x['@type'] === 'PodcastEpisode' && x.associatedMedia && x.associatedMedia.contentUrl);
+              if (audio_src_obj) {
+                let audio_new = document.createElement('audio');
+                audio_new.src = audio_src_obj.associatedMedia.contentUrl;
+                audio_new.setAttribute('controls', '');
+                tablist.before(audio_new);
+              }
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+    }
+    header_nofix('section#article-body > div > p', paywall_sel);
+    document.querySelectorAll('[style*="overflow: hidden"]:is(html, body)').forEach(e => e.removeAttribute('style'));
+  }
+  hideDOMStyle('div.tp-container-inner, section.piano-fixed-bottom-overlay');
 }
 
 else if (matchDomain('theglobeandmail.com')) {
