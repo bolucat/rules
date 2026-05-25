@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.7.4
+// @version         4.3.7.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1828,7 +1828,7 @@ else if (matchDomain('bloomberg.com')) {
       }
     } else if (par.subType === 'photo') {
       if (par.data.photo && par.data.photo.src) {
-        let figure = makeFigure(par.data.photo.src, parseHtmlEntities(par.data.photo.caption.replace(/<\/?\w+>/g, '')) + ' ' + par.data.photo.credit);
+        let figure = makeFigure(par.data.photo.src, parseHtmlEntities((par.data.photo.caption + ' ' + par.data.photo.credit).replace(/<\/?\w+>/g, '')));
         elem.appendChild(figure);
       }
     } else if (par.subType === 'chart') {
@@ -1922,8 +1922,8 @@ else if (matchDomain('bloomberg.com')) {
             console.log(item);
         }
         elem.appendChild(span);
-      } else if (item.type === 'br') {
-        elem.appendChild(document.createElement('br'));
+      } else if (['br', 'hr'].includes(item.type)) {
+        elem.appendChild(document.createElement(item.type));
       } else if (item.type === 'link') {
         addLink(item, elem);
       } else if (item.type === 'entity') {
@@ -1954,21 +1954,6 @@ else if (matchDomain('bloomberg.com')) {
           } else
             console.log(sub_item);
         }
-      } else
-        console.log(item);
-    }
-  }
-  function addDiv(content, elem) {
-    for (let item of content) {
-      if (item.type === 'media' && item.subType === 'audio' && item.data) {
-        addPodcast(item.data, elem);
-      } else if (item.type === 'div') {
-        addDiv(item.content, elem);
-        elem.appendChild(document.createElement('br'));
-      } else if (item.type === 'text' && item.value) {
-        elem.appendChild(document.createTextNode(item.value));
-      } else if (item.type === 'entity') {
-        addEntity(item, elem);
       } else
         console.log(item);
     }
@@ -2047,7 +2032,8 @@ else if (matchDomain('bloomberg.com')) {
             } else if (par.type === 'embed') {
               addEmbed(par, elem);
             } else if (par.type === 'div' && par.content) {
-              addDiv(par.content, elem);
+              addPar(par.content, elem);
+              elem.appendChild(document.createElement('br'));
             } else if (par.type === 'list' && par.content) {
               addList(par.content, elem);
             } else if (par.type === 'byTheNumbers' && par.content) {
