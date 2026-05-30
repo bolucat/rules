@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.7.7
+// @version         4.3.7.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -837,9 +837,16 @@ else if (matchDomain('ft.com')) {
   func_post = function () {
     if (mobile) {
       document.querySelectorAll('div[style^="z-index:"][style*=";width:"]').forEach(e => e.removeAttribute('style'));
-      document.querySelectorAll('figure > picture > img[loading="lazy"]').forEach(e => e.style = 'width: 100%;');
+      document.querySelectorAll('section[style^="column-gap:"] > figure').forEach(e => e.parentNode.removeAttribute('style'));
       document.querySelectorAll('div[style*="grid-template-areas"], article#site-content').forEach(e => e.style = 'margin: 10px;');
       document.querySelectorAll('aside[style], ul#onward-journey-collection > li[style]').forEach(e => e.removeAttribute('style'));
+    }
+    let lazy_images = document.querySelectorAll('figure > picture > img[loading="lazy"]');
+    for (let elem of lazy_images) {
+      elem.style = 'width: 100%;';
+      elem.parentNode.parentNode.removeAttribute('style');
+      if (elem.src.startsWith('data:image/') && elem.getAttribute('currentsourceurl'))
+        elem.src = elem.getAttribute('currentsourceurl')
     }
     let charts = document.querySelectorAll('div[frameborder][old-src]:not([src])');
     for (let elem of charts) {
@@ -847,6 +854,16 @@ else if (matchDomain('ft.com')) {
       iframe.src = elem.getAttribute('old-src');
       iframe.style = 'width: 100%; height: 600px; border: none;';
       elem.parentNode.replaceChild(iframe, elem);
+    }
+    let videos = document.querySelectorAll('div > video > source[src^="data:image/"][old-src]');
+    for (let elem of videos) {
+      let video_new = document.createElement('video');
+      video_new.src = elem.getAttribute('old-src');
+      video_new.setAttribute('controls', '');
+      video_new.style = 'width: 100%;';
+      let container = elem.parentNode.parentNode;
+      container.parentNode.style = 'margin: 20px;';
+      container.parentNode.replaceChild(video_new, container);
     }
     let tables = document.querySelectorAll('div[style]:not([id]) > table:not([id])');
     for (let elem of tables) {
