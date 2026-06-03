@@ -112,6 +112,7 @@
 - [geosite-lite.db](https://rules.neuq.de/clash/meta-rules-dat/geosite-lite.db)
 - [geosite.dat](https://rules.neuq.de/clash/meta-rules-dat/geosite.dat)
 - [geosite.db](https://rules.neuq.de/clash/meta-rules-dat/geosite.db)
+- [meta-rules-mrs.7z](https://rules.neuq.de/clash/meta-rules-dat/meta-rules-mrs.7z)
 # clash/my
 - [Country.mmdb](https://rules.neuq.de/clash/my/Country.mmdb)
 - [GeoIP2.mmdb](https://rules.neuq.de/clash/my/GeoIP2.mmdb)
