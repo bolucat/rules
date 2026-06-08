@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: Kq6FvE9dQomgpQISygVJqg
-! Diff-Path: ../patches/224/224-s-1780832508-3600.patch
+! Checksum: q6KcjdzkJxTAIGeVjbu98g
+! Diff-Path: ../patches/224/224-s-1780925947-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.60.12
-! TimeUpdated: 2026-06-07T11:38:57+00:00
+! Version: 2.1.60.17
+! TimeUpdated: 2026-06-08T13:36:21+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -291,6 +291,8 @@
 ! Bad: ||ad.doubleclick.net^ (should be in adservers.txt)
 !
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/233129
+laosu.tech##+js(addEventListener-defuser, DOMContentLoaded, detectAdBlocker)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/230872
 freedidi.com##+js(abort-on-property-read, SPM_CONFIG.adblockOnly)
 ||freedidi.com/wp-content/plugins/abn-wall/assets/abn-wall.
@@ -1119,6 +1121,17 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 !
 ! NOTE: Specific rules
 !
+||pic.deueza.cn/*.gif$domain=mqoeomads.cc
+mqoeomads.cc##div.dx-banner-item
+mqoeomads.cc##.dx-recommend-icons
+mqoeomads.cc##ul.video-items > li:has(> [data-ad_id])
+mqoeomads.cc##.md\:block.hidden:has([data-ad_id])
+mqoeomads.cc##.ad-dialog
+mqoeomads.cc##.modal-backdrop
+mqoeomads.cc##.md\:bg-inherit
+mqoeomads.cc###tip_modal > .modal-dialog
+mqoeomads.cc##.dx-modal
+mqoeomads.cc##.dx-ad-plugin
 aramgg.com##.bg-red-950
 aramgg.com##a[rel^="sponsored"]
 x6g.com##.news-article_container > ul > li[class]:has(> a[href^="/ad.php?aHR0c"])
@@ -1524,6 +1537,8 @@ ibbs.pro##div.mt-2:has( > ins):style(display: none !important;)
 115cdn.com##.feature-float
 papalah.com##.sponsor-outer
 4275.com##div[style="width:580px;margin:0 auto;"]
+m.shuhaige.net##+js(no-setTimeout-if, parentNode.insertBefore, 1000)
+m.shuhaige.net##+js(no-setTimeout-if, parentNode.insertBefore, 1500)
 m.shuhaige.net##+js(abort-current-script, navigator, location.href)
 m.shuhaige.net##+js(abort-current-script, Math.random, parentNode.insertBefore)
 m.shuhaige.net##+js(abort-current-script, document.createElement, return a.split)
@@ -3202,7 +3217,6 @@ netfly.*,netfly.tv##div[class*="tt-"] > a[target="_blank"] + span.tt-icon-close
 ! https://github.com/AdguardTeam/AdguardFilters/issues/210237
 ||static.okokserver.com/uploads/lesi/$xhr,redirect=noop.txt,domain=huaren.live|huavod.net|huavod.com|huavod.top|huavod.cc
 huavod.cc,huavod.top,huavod.net,huavod.com,huaren.live##+js(set-constant, ConFig.ad_duration_ms, 0)
-!+ NOT_PLATFORM(ext_chromium_mv3, ext_ff)
 ! TODO: remove hints when this issue is resolved - https://github.com/AdguardTeam/Scriptlets/issues/517
 !+ NOT_PLATFORM(windows, mac, android, cli)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/177520
@@ -5349,6 +5363,15 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$3p
+||4f8g9foqwy.com^
+||zu9srbxg0t.com^
+||34dcvgw197.com^
+||satinwood84.com^
+||pwvlthpqzonnfe.com^
+||m8qk101065.com^
+||79ssr9d244.com^
+||uevrhqra7u.com^
+||qf51ho9qtz.com^
 ||7da1aovz6.com^
 ||d5092moci.com^
 ||q0m9dkp5c.com^
