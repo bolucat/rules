@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: LyntCIqdrXbAjU4LHym+dA
-! Diff-Path: ../patches/224/224-s-1781018528-3600.patch
+! Checksum: WLSU7Cq4/Qxqelgz6JmRmA
+! Diff-Path: ../patches/224/224-s-1781118220-3600.patch
 ! Title: AdGuard Chinese filter
 ! Description: EasyList China + AdGuard Chinese filter. Filter list that specifically removes ads on websites in Chinese language.
-! Version: 2.1.60.20
-! TimeUpdated: 2026-06-09T15:19:13+00:00
+! Version: 2.1.60.26
+! TimeUpdated: 2026-06-10T19:00:47+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1121,6 +1121,10 @@ ipv6.baidu.com,www.baidu.com,www1.baidu.com,xueshu.baidu.com###content_left > .r
 !
 ! NOTE: Specific rules
 !
+techorange.com##div.elementor-widget > div.elementor-widget-container:has(> a[href*="utm_campaign"] > img)
+techorange.com##a[href^="https://supr.link/"]
+supertaste.tvbs.com.tw##.min-h-\[15\.625rem\]
+supertaste.tvbs.com.tw##div[class]:has(> div[id^="supertaste_"])
 ||pic.deueza.cn/*.gif$domain=mqoeomads.cc
 mqoeomads.cc##div.dx-banner-item
 mqoeomads.cc##.dx-recommend-icons
@@ -5341,6 +5345,7 @@ newduba.cn###jq_youxi
 ##div[role="listitem"] .bannerliststyle
 ##.socialmedia > #middletextbanner
 ##a[href^="java"][onclick^="gogogoto"]
+##a[data-ad_type="1"]
 ###float-ad
 ###index-ad-banner
 ##.newsAD
@@ -5363,6 +5368,16 @@ newduba.cn###jq_youxi
 .z.dkt-ib.com
 ||cnzz.trafficmanager.net^
 ||cupfox.app^$3p
+||whkhct2lnf.com^
+||5ipifco2tf.com^
+||4uitrrt700.com^
+||lpxyrjholunvdk.com^
+||theorem12.top^
+||jfffe1o97b.com^
+||kf4kwomxhl.com^
+||xjl2ts2q6a.com^
+||guulgakv.com^
+||dwh3rjyzxj.com^
 ||mathematics34.com^
 ||nzrdfrlsfrznrk.com^
 ||bncqucpia.com^
@@ -10555,7 +10570,7 @@ $popup,3p,domain=76fengyun.com|avsdown.com|downdv.com|downdvs.com|downhhh.com|im
 ||xiyouence.com^$popup,3p
 ||yy18.info^*thanks$popup
 $image,3p,domain=lady1.top
-$script,3p,domain=xiaoyakankan.com|52movieba.com|audio699.com|kan-tv.com|m.supfree.net|movieffm.net|xiaoxintv.cc|xiaoxintv.com|xiaoxintv.net
+$script,3p,domain=xiaoyakankan.com|52movieba.com|audio699.com|kan-tv.com|m.supfree.net|movieffm.net|xiaoheimi.cc
 $script,3p,websocket,domain=52codes.net
 $3p,websocket,xhr,domain=qiyoudy2.com|qiyoudy4.com
 $3p,xhr,domain=subhd.tv|subhdtw.com|zzzzz688.com
@@ -14991,11 +15006,11 @@ twkan.com###mobile-ad
 axiang.cc###achang-related-adsense
 hcbbs.com##.plc > .pct + :last-child
 mysteel.com###float-adv
-91porna.com##.dx-banner-item
+91porna.com,evgpopxb.cc##.dx-banner-item
 91porna.com##.checkNum[target="_blank"]:not([href*="91porna.com"])
 91porna.com##.h-full.swiper
-91porna.com##.ad-dialog
-91porna.com##.modal-backdrop
+91porna.com,evgpopxb.cc##.ad-dialog
+91porna.com,evgpopxb.cc##.modal-backdrop
 avbebe.com##.footer_column:nth-child(n+2)
 xchina.co##.block-overlay
 baozimh.org##.relative:has(>.bg-red-500)
@@ -20587,6 +20602,8 @@ android-doc.com,apk.tw,chaojizhibo.net,chtoen.com,dizhishengcheng.com,doitwell.t
 @@.adserver.$domain=litv.tv
 @@||holmesmind.com/js/drawV2.$domain=bingfong.com
 @@||hkcards.com^$generichide
+@@||laosu.tech^$generichide
+@@||laosu.cf^$generichide
 @@||huavod.com^$generichide
 @@||mytvsuper.com^$generichide
 @@||tvb.com^$generichide
