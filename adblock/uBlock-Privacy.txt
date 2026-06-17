@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Privacy
 ! Expires: 7 days
-! Last modified: Mon, 15 Jun 2026 16:18:01 +0000
-! Diff-Path: ../patches/2026.6.16.1037.patch#ublock-privacy
+! Last modified: Wed, 17 Jun 2026 12:01:55 +0000
+! Diff-Path: ../patches/2026.6.17.1037.patch#ublock-privacy
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/privacy.txt ***
@@ -578,6 +578,7 @@ www.youtube.com##+js(no-xhr-if, /\/api\/stats\/atr\?.+?&rt=\d+\.\d+.+?&volume=\d
 ||zoom.us/*/app-telemetry.
 ||zoom.us/*/fingerprintjs-
 ||zoom.us/user/anonymous/telemetry
+||observe.runpod.io/static/web-vitals.js
 ! petametrics
 ||petametrics.com^$~script
 !#endif
@@ -1789,7 +1790,6 @@ abs-cbn.com##+js(set-session-storage-item, VR-INJECTOR-INSTANCES-MAP, $remove$)
 /ingest/*^ip=
 /ingress/*^ip=
 /hog/*^ip=
-/flags/*^ip=
 ||rldcr.madeincookware.com/tag?name=
 edikted.com##+js(remove-cookie, /_shopify_y|yotpo_pixel/, when, scroll keydown)
 ||api.bilibili.com/x/web-frontend/data/collector^
@@ -1973,6 +1973,7 @@ webex.com##+js(no-xhr-if, svc.webex.com/metrics)
 ||acapellas.eu/track.php
 ||tracking.cds.dmm.co.jp/v1/tracking/click?ic_key=$urlskip=/\?ic_key=ey[^.]+\.(ey[^.]+)\./ -base64 /"link_url":"([^"]+)"/
 ||tracking.cds.dmm.com/v1/tracking/click?ic_key=$urlskip=/\?ic_key=ey[^.]+\.(ey[^.]+)\./ -base64 /"link_url":"([^"]+)"/
+||awin1.com/cread.php?awinmid=*&awinaffid=*&ued=$urlskip=?ued -blocked
 ! Merge in resource-abuse.txt
 ! *** uAssets:filters/resource-abuse.txt ***
 /edgemesh.*.js$script,domain=~edgemesh.com|~edgeno.de
