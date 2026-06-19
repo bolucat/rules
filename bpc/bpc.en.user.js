@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.7.8
+// @version         4.3.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2967,6 +2967,8 @@ else if (matchDomain('fmrmagazine.com')) {
 else if (matchDomain('forbes.com')) {
   waitDOMAttribute('html', 'HTML', 'class', node => node.removeAttribute('class'), true);
   waitDOMAttribute('body', 'BODY', 'class', node => node.removeAttribute('class'), true);
+  let hardwall = document.querySelectorAll('div.halfway-hardwall-insertion-point');
+  removeDOMElement(...hardwall);
   if (window.location.pathname.startsWith('/newsletters/')) {
     let paywall = document.querySelector('div > div.newsletter-teaser');
     if (paywall) {
