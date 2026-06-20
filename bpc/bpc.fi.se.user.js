@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         4.1.8.2
+// @version         4.3.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fi.se.user.js
@@ -11,7 +11,6 @@
 // @noframes
 // @match           *://*.berlingske.dk/*
 // @match           *://*.dn.se/*
-// @match           *://*.etc.se/*
 // @match           *://*.suomensotilas.fi/*
 // @match           *://*.weekendavisen.dk/*
 // @connect         archive.fo
@@ -145,24 +144,6 @@ if (matchDomain('dn.se')) {
   getArchive(url, 'div.paywall-wrapper', '', 'article');
   let ads = 'div.bad';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('etc.se')) {
-  let paywall = document.querySelector('section.prose-feature > section.teaser-section');
-  if (paywall) {
-    paywall.classList.remove('teaser-section');
-    paywall.parentNode.querySelectorAll('.hidden').forEach(e => e.classList.remove('hidden'));
-  }
-  let ads = 'div[class$="-ad"], article section.font-sans';
-  hideDOMStyle(ads);
-  let video_iframes = document.querySelectorAll('div.embed-block > iframe[width][height]');
-  for (let elem of video_iframes) {
-    if (elem.width > 1000) {
-      let ratio = elem.width / (mobile ? 320 : 640);
-      elem.width = elem.width / ratio;
-      elem.height = elem.height / ratio;
-    }
-  }
 }
 
 }

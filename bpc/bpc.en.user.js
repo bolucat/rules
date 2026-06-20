@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.8.0
+// @version         4.3.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -130,7 +130,6 @@
 // @exclude         *://*.levante-emv.com/*
 // @exclude         *://*.loeildelaphotographie.com/*
 // @exclude         *://*.marca.com/*
-// @exclude         *://*.marianne.net/*
 // @exclude         *://*.parismatch.com/*
 // @exclude         *://*.parkiet.com/*
 // @exclude         *://*.philomag.com/*
@@ -4325,13 +4324,8 @@ else if (matchDomain('seattletimes.com')) {
 }
 
 else if (matchDomain('sfstandard.com')) {
-  setCookie('zephr-session', '', 'sfstandard.com', '/', 0);
-  let paywall = document.querySelector('div#paywall-container');
-  if (paywall) {
-    removeDOMElement(paywall);
-    refreshCurrentTab();
-  }
-  let ads = 'div.sticky';
+  setCookie('sfs-experiment-bucketing', '', 'sfstandard.com', '/', 0);
+  let ads = 'div.sticky, div#__next > div[style="display:inline"]';
   hideDOMStyle(ads);
 }
 
