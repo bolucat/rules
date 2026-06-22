@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Privacy
 ! Expires: 7 days
-! Last modified: Sun, 21 Jun 2026 04:04:02 +0000
-! Diff-Path: ../patches/2026.6.21.965.patch#ublock-privacy
+! Last modified: Mon, 22 Jun 2026 05:49:52 +0000
+! Diff-Path: ../patches/2026.6.22.1065.patch#ublock-privacy
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/privacy.txt ***
@@ -452,7 +452,7 @@ bing.com##+js(href-sanitizer, body a[href^="/rebates/welcome?url=http"], ?url)
 ||sofi.com/atr/p/v1/a?u=http$doc,urlskip=?u
 ||justwatch.com/a?*^r=http$doc,urlskip=?r
 ||click.trafficguard.ai/*^lpurl=http$doc,urlskip=?lpurl
-||awstrack.me/L0/http$doc,urlskip=/\/L0\/(http[^\/?#]+)/ -uricomponent
+||awstrack.me/L0/http$doc,urlskip=/\/L0\/(http[^\/?#]+)/ -uricomponent -blocked
 ||gate.sc^*url=http$doc,urlskip=?url
 !#if !env_mobile
 ||page.link/*^ofl=http$doc,urlskip=?ofl
@@ -1980,6 +1980,7 @@ webex.com##+js(no-xhr-if, svc.webex.com/metrics)
 ||af.moshimo.com/af/c/click?*&url=$doc,urlskip=?url
 ||analytics.dawg.network^
 ||media.storiesig.info/get?__sig=*&uri=$urlskip=?uri,doc
+||click.convertkit-mail4.com/$doc,urlskip=/([^/]+$)/ -base64
 ! Merge in resource-abuse.txt
 ! *** uAssets:filters/resource-abuse.txt ***
 /edgemesh.*.js$script,domain=~edgemesh.com|~edgeno.de
