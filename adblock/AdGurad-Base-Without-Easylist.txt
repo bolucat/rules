@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: eDBCYIx8OkaMZYvbLQFfpA
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1782155714-3600.patch
+! Checksum: 0wEbNbqNDbV5DSB6IJ1z4w
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1782240754-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.73.13
-! TimeUpdated: 2026-06-22T19:11:51+00:00
+! Version: 2.4.73.28
+! TimeUpdated: 2026-06-23T18:48:58+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -10803,6 +10803,11 @@ youporn.com##+js(remove-node-text, script, /window\.[\s\S]*?_zone_[\s\S]*?{"zone
 !
 ! NOTE: Regular rules
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/234173
+vnjpclub.com##+js(no-setTimeout-if, detectAdBlock)
+! https://github.com/AdguardTeam/AdguardFilters/issues/233875
+cinehd.app##+js(prevent-fetch, /doubleclick|ads-twitter.com|google-analytics.com|adsbygoogle/)
+@@||cinehd.app^$generichide
 ! https://github.com/AdguardTeam/AdguardFilters/issues/233959
 luciferdonghua.in##+js(abort-current-script, document.getElementById, afu)
 luciferdonghua.in###afu-ab
@@ -18998,6 +19003,9 @@ bigbrothercanada.ca##+js(set-constant, video_player_config.players.0.adblock, fa
 !
 ! NOTE: Albanian
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/233991
+koha.net##body > div.container:has(> div.d-flex > div.reklame_live)
+koha.net##.reklama_holder
 ! https://github.com/AdguardTeam/AdguardFilters/issues/226528
 ||animeshqip.org/kira.php
 ||animeshqip.org/security_check.php
@@ -26685,9 +26693,8 @@ portalochronysrodowiska.pl##.container-content > .nf-box[class*="layout"]:has(> 
 forum.benchmark.pl##div[id][style*="min-height:"]:has(> img[src="https://std.wpcdn.pl/images/adv/placeholder_wp.svg"])
 ! https://github.com/AdguardTeam/AdguardFilters/issues/141564
 ||buybox.click^$domain=benchmark.pl
-benchmark.pl##.wp-billboard
 benchmark.pl##.wp-screening-placeholder-container
-benchmark.pl##div[class*=" "]:has(>div[class*=" "]:first-child + script:last-child)
+benchmark.pl##div[class*=" "]:has(> div[class*=" "]:first-child + script:last-child)
 benchmark.pl##.hidden-lg-up
 benchmark.pl##.hidden-tb-up
 benchmark.pl##.hidden-tb-down
@@ -29024,11 +29031,12 @@ wirtualnemedia.pl##div[class*=" "]:has(> img[src^="/staticfiles/wm-placeholder.p
 wirtualnemedia.pl###article-content > .border-b:has(> div[class*=" "]:only-child > img[src^="/staticfiles/wm-placeholder.png"]:first-child + div[class] + script:last-child)
 wirtualnemedia.pl###article-content > .wm-bordered-section:has(> div[class*=" "]:only-child > img[src^="/staticfiles/wm-placeholder.png"]:first-child + div[class] + script:last-child)
 wiadomosci.wp.pl##body > #root > div[class]:empty
-benchmark.pl,dobreprogramy.pl,so-magazyn.pl,parenting.pl,fotoblogia.pl,kafeteria.pl,pudelek.pl,genialne.pl,money.pl,abczdrowie.pl,autokult.pl,gadzetomania.pl,jastrzabpost.pl,komorkomania.pl,polygamia.pl,pysznosci.pl,o2.pl,wp.pl##div[class*=" "]:has(> img:is([src^="https://v.wpimg.pl/"], [src*="/images/adv/placeholder"]):first-child + div[class*=" "] + div[class*=" "] + script:last-child)
-benchmark.pl,dobreprogramy.pl,so-magazyn.pl,parenting.pl,fotoblogia.pl,kafeteria.pl,pudelek.pl,genialne.pl,money.pl,abczdrowie.pl,autokult.pl,gadzetomania.pl,jastrzabpost.pl,komorkomania.pl,polygamia.pl,pysznosci.pl,o2.pl,wp.pl##div[class*=" "]:has(> img:is([src^="https://v.wpimg.pl/"], [src*="/images/adv/placeholder"]):first-child + div[class*=" "] + script:last-child)
+ipolska24.pl,benchmark.pl##.wp-billboard
+ipolska24.pl,benchmark.pl,dobreprogramy.pl,so-magazyn.pl,parenting.pl,fotoblogia.pl,kafeteria.pl,pudelek.pl,genialne.pl,money.pl,abczdrowie.pl,autokult.pl,gadzetomania.pl,jastrzabpost.pl,komorkomania.pl,polygamia.pl,pysznosci.pl,o2.pl,wp.pl##div[class*=" "]:has(> img:is([src^="https://v.wpimg.pl/"], [src*="/images/adv/placeholder"]):first-child + div[class*=" "] + div[class*=" "] + script:last-child)
+ipolska24.pl,benchmark.pl,dobreprogramy.pl,so-magazyn.pl,parenting.pl,fotoblogia.pl,kafeteria.pl,pudelek.pl,genialne.pl,money.pl,abczdrowie.pl,autokult.pl,gadzetomania.pl,jastrzabpost.pl,komorkomania.pl,polygamia.pl,pysznosci.pl,o2.pl,wp.pl##div[class*=" "]:has(> img:is([src^="https://v.wpimg.pl/"], [src*="/images/adv/placeholder"]):first-child + div[class*=" "] + script:last-child)
 benchmark.pl,wplatform.media,staszownews.pl,zdrowienews.pl,kurierostrowiecki.pl,ostrowiec24.info,kielce112.pl,lublinnews.pl,lovelifestyle.pl,telefan24.pl,marketing-zone.pl,panoramaplock.pl,dzieckopoznan.pl,historiapoznania.pl,sportpoznan.pl,kultura.wp.pl,facet.wp.pl,ipolska24.pl,wiadomosci.wp.pl,pysznosci.pl,open.fm,fotoblogia.pl,autokult.pl,money.pl,pudelek.pl##style + div[class*=" "]:has(> img:is([src^="https://v.wpimg.pl/"], [src*="/images/adv/placeholder"]) + div:last-child)
 kultura.wp.pl###root > div[class] > div[class]:only-child:has(> style:first-child + div[class*=" "]:last-child)
-jastrzabpost.pl,money.pl,o2.pl,wp.pl##article aside > .flex-none > div[class*=" "]:has(> div[class*=" "]:first-child + script:last-child)
+ipolska24.pl,jastrzabpost.pl,money.pl,o2.pl,wp.pl##article aside > .flex-none > div[class*=" "]:has(> div[class*=" "]:first-child + script:last-child)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/179793
 www.o2.pl,rozrywka.o2.pl##.w-full[class*="bg-"] > div[class*="w-"][class*="px"] > div[class][style="width:100%"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/55606
@@ -31227,6 +31235,8 @@ asilmedia.org###banner
 !
 ! NOTE: Vietnamese
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/234173
+vnjpclub.com##.vnjp-ad-slot
 ! https://github.com/AdguardTeam/AdguardFilters/issues/232865
 rophim1.vip##a[href="https://colatv99.live"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/229946
@@ -32017,6 +32027,8 @@ truyenqqhot.com##div[id^="ads_"]
 !
 !
 !
+!+ NOT_OPTIMIZED
+##.adthrive-placeholder-content
 !+ NOT_OPTIMIZED
 ##.addbanner
 !+ NOT_OPTIMIZED
@@ -37093,6 +37105,8 @@ endfield.gg,expedition33.gg,cookierun.gg,dcworldscollide.gg,destiny2zone.com,dig
 !
 ! Future PLC
 !
+! Advergame Technologies Pvt. Ltd
+!
 ! iOS/Safari compatible rules
 !
 !+ NOT_OPTIMIZED
@@ -37408,6 +37422,19 @@ $subdocument,3p,denyallow=disqus.com,domain=love4u.net
 !
 ! NOTE: Specific rules
 !
+justwatch.com##div[class*="sr-campaign"]
+justwatch.com##.offers.buybox-selector
+justwatch.com##.sponsored-recommendation
+justwatch.com##.buybox-selector > div[class="offer-container"]
+thesun.co.uk##.article-boxout
+androidexperto.com##div[class^="ym-p"][class*="-server-"]
+speedof.me##.mezgopv-zone
+cinehd.app##section[aria-label^="Sponsored"]
+techrepublic.com##div[data-ad-slot]
+techrepublic.com##sticky-footer-ad
+techrepublic.com##.ad-container
+techrepublic.com##.prose > div.has-data-empty\:hidden
+foodrepublic.com##.raptive-video-player
 newscentermaine.com##.grid > div.grid__section_theme_below-article:has(> div.grid__content div.grid__module-sizer_name_ad)
 newscentermaine.com##.grid__main > div.grid__cell:has(> div.grid__module > div.grid__module-sizer_name_ad)
 ||cdn77.ashemaletube.com/ast/www/js-v*.min.js?url=
@@ -42365,7 +42392,7 @@ pornpics.com##li[class*="r"][class$="-frame"]
 ||cdn.jsdelivr.net/gh/prebid/currency-file@1/latest.json
 teamoney.site,lookmovie2.to,lilymanga.net##html > iframe[id][style*="position:"][style*="display:"]
 lilymanga.net##.reading-content > .chapter-warning:has(> p > span > strong > a[target="_blank"])
-islands.com##.article > .under-art:has(> .zergnet-widget)
+foodrepublic.com,islands.com##.article > .under-art:has(> .zergnet-widget)
 teamoney.site,lookmovie2.to,hdtodayz.to##html > iframe[style*="position:"]:remove()
 hdtodayz.to##html > div[style*="position:"][style*="pointer-events:"][style*="z-index:"]
 myflixerz.to,hdtodayz.to,moviesjoy.is##div:is([id$="top"], [id$="middle"]) > a[target="_blank"] > img
@@ -49515,7 +49542,7 @@ news18.com##.pani-wid
 ||camcam.cc/wp-content/plugins/dh-anti-adblocker/
 videosdemadurasx.com,an1.com,getsetclean.in,sexgames.cc##a[rel^="sponsored"]
 ||mycartoonsexgames.com/thumbs/*/$image
-technologymagazine.com,fintechmagazine.com,zerohedge.com##div[class^="Advert_"]
+telcomagazine.com,technologymagazine.com,fintechmagazine.com,zerohedge.com##div[class^="Advert_"]
 dfiles.eu##iframe[width="240px"][height="800px"]
 getnada.com###__layout > div > div > .pb-4.justify-center.w-full
 washingtonpost.com###fusion-app > div:not([class]):not([id]) > div.bb[style^="padding-left:"][style*="min-height:"]
@@ -51258,7 +51285,8 @@ eroticmv.com,xfantazy.com,analdin.com,xtits.com,sexu.com,javrave.club,mangamelon
 iframeplayer.tubepornstreaming.com##.video-container > .inner-wrap[style="display: flex;"]
 bitetheass.com,nitroflare-porn.com##center > noindex
 nitroflare-porn.com##center > a[href^="https://www.nitroflare.com/view/"]
-||rainmaker.production-public.tubi.io/rev/WEB?app_id=tubitv*&pub_id=*&*vpaid_enabled=true
+||tubi.io/api/v*/ad_override?
+||rainmaker.production-public.tubi.io/*/WEB?app_id=tubitv*&pub_id=*&*vpaid_enabled=
 ||ark.tubi.video/*.mp4$redirect=noop-1s.mp4,media
 ||paella.adrise.tv/*.mp4$redirect=noop-1s.mp4,media
 ||isohunt2.net/nordvpn/
@@ -58678,7 +58706,7 @@ tickle.porn##.fp-ui-block
 !+ NOT_OPTIMIZED
 tickle.porn##.fp-player > div[style^="inset"]:not([class])
 !+ NOT_OPTIMIZED
-pcgamesn.com,ign.com,theatlantic.com##.ad-wrapper
+rscripts.net,pcgamesn.com,ign.com,theatlantic.com##.ad-wrapper
 !+ NOT_OPTIMIZED
 troypoint.com##.entry-content > div[style*="background-color:"][style*="border:"]:has(> span > a[target="_blank"])
 !+ NOT_OPTIMIZED
@@ -59857,6 +59885,12 @@ $popup,3p,domain=dood.ws,badfilter
 !
 ! NOTE: Regular rules
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/234000
+@@||airfind.com^$image,domain=headlinelogic.com
+! https://github.com/AdguardTeam/AdguardFilters/issues/234039
+@@||cdn.adsninja.ca/v*/an.js$domain=thegamer.com
+@@||cdn.adsninja.ca/v*/init.js$domain=thegamer.com
+@@||cdn.adsninja.ca/v*/valstream.js$domain=thegamer.com
 ! https://github.com/AdguardTeam/AdguardFilters/issues/234024
 leaflet.pub#@#.pubContent
 ! https://github.com/AdguardTeam/AdguardFilters/issues/233839
@@ -63937,6 +63971,7 @@ implbits.com#@#.banner_container
 ! https://github.com/AdguardTeam/AdguardFilters/issues/234122
 ! https://github.com/AdguardTeam/AdguardFilters/issues/233911
 ! https://github.com/AdguardTeam/AdguardFilters/issues/233881
+! https://github.com/AdguardTeam/AdguardFilters/issues/234157
 ! https://github.com/AdguardTeam/AdguardFilters/issues/233892
 ! https://github.com/AdguardTeam/AdguardFilters/issues/233859
 ! https://github.com/AdguardTeam/AdguardFilters/issues/233830

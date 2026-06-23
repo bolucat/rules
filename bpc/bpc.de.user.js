@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.7.3
+// @version         4.3.8.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -518,6 +518,30 @@ else if (matchDomain('kleinezeitung.at')) {
                     if (item.type === 'image' && item.webUrl)
                       elem.appendChild(makeImage(item));
                   }
+                } else if (par.type === 'download') {
+                  if (par.title && getNestedKeys(par, 'content.binary.href_download')) {
+                    elem = document.createElement('div');
+                    elem.style = 'margin: 20px 0px;';
+                    let sub_elem = document.createElement('a');
+                    sub_elem.innerText = par.title;
+                    sub_elem.href = getNestedKeys(par, 'content.binary.href_download');
+                    elem.appendChild(sub_elem);
+                  } else
+                    console.log(par);
+                } else if (par.type === 'map') {
+                  if (par.zoom && par.marker && par.marker[0]) {
+                    let marker = par.marker[0];
+                    if (marker.latitude && marker.longitude) {
+                      elem = document.createElement('div');
+                      let sub_elem = document.createElement('iframe');
+                      sub_elem.src = 'https://www.google.com/maps?q=' + marker.latitude + ',' + marker.longitude + '&z=' + par.zoom + '&hl=de&output=embed';
+                      sub_elem.style = 'width: 100%; aspect-ratio: 16 / 9;';
+                      elem.appendChild(sub_elem);
+                      if (marker.title)
+                        sub_elem.before(document.createTextNode(marker.title));
+                    }
+                  } else
+                    console.log(par);
                 } else if (par.type === 'free_html' && par.freeHtml) {
                   let doc = parser.parseFromString('<div>' + par.freeHtml + '</div>', 'text/html');
                   elem = doc.querySelector('div');

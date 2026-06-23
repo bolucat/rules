@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.8.2
+// @version         4.3.8.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -803,9 +803,10 @@ else if (matchDomain('fnlondon.com')) {
   if (paywall) {
     removeDOMElement(paywall);
     window.setTimeout(function () {
-      let article_sel = 'article section';
+      let article_sel = 'div[data-article-id] section';
       let article = document.querySelector(article_sel);
       if (article) {
+        article.removeAttribute('class');
         addStyle(article_sel + ' p {margin: 20px 0px !important;}');
         let article_id_dom = document.querySelector('head > meta[name="article.id"][content]');
         if (article_id_dom) {
@@ -1547,31 +1548,13 @@ else if (matchDomain('barrons.com')) {
       fix_dowjones_live();
     }, 1500);
   } else {
-    let paywall = document.querySelector('div#cx-interstitial-snippet, div[data-id^="ArticleRoadblock_"]');
+    let paywall = document.querySelector('div#cx-interstitial-snippet-container, div[data-id^="ArticleRoadblock_"]');
     if (paywall) {
       removeDOMElement(paywall);
       window.setTimeout(function () {
-        let articles = document.querySelectorAll('article > div.crawler');
-        let article;
-        for (let elem of articles) {
-          let paragraph = elem.querySelector('p[class*="Paragraph"]');
-          if (paragraph) {
-            article = elem;
-            break;
-          }
-        }
+        let article = document.querySelector('article > div.crawler > [data-testid="article-body"]');
         if (article) {
-          let bic_blur = document.querySelector('div[data-id="BICPaywall_index_Paywall"] > div[data-id="BICPaywall_index_BlurWrapper"]');
-          if (bic_blur) {
-            bic_blur.removeAttribute('class');
-            bic_blur.removeAttribute('inert');
-            bic_blur.parentNode.removeAttribute('class');
-            let modal = document.querySelector('div[class] > div#cx-div-bic');
-            if (modal)
-              modal.parentNode.removeAttribute('class');
-            let banners = 'div[data-id="BICPaywall_index_ModalContainer"]';
-            hideDOMStyle(banners, 2);
-          }
+          article = article.parentNode;
           let article_id_dom = document.querySelector('head > meta[name="article.id"][content], head > meta[name="ChosenAdTarget"][content]');
           if (article_id_dom) {
             let article_id = article_id_dom.content;
@@ -5979,17 +5962,18 @@ function fix_dowjones_fetch(url_src, data, article) {
       if (json && json.screens && json.screens[0] && json.screens[0].frames) {
         let pars = json.screens[0].frames;
         let par_class;
-        let intro = article.querySelector('p[class], [data-type="hed"]');
+        let intro = article.querySelector('p[class*="Paragraph"], [data-type="hed"]');
         if (intro) {
           if (intro.tagName === 'P')
             par_class = intro.className;
           else {
-            let par_first = article.querySelector('p[class]');
+            let par_first = article.querySelector('p[class*="Paragraph"]');
             if (par_first)
               par_class = par_first.className;
           }
         }
-        let bic_blur;
+        if (!par_class)
+          addStyle('div.crawler p:not([class]) {margin: 20px 0px;}');
         if (matchDomain('barrons.com')) {
           let style_fl = document.querySelector('head > style[data-emotion-css]');
           if (style_fl && style_fl.innerHTML.includes(':first-letter')) {
@@ -5999,41 +5983,22 @@ function fix_dowjones_fetch(url_src, data, article) {
                 removeDOMElement(style);
             }
           }
-          bic_blur = document.querySelector('div[data-id="BICPaywall_index_Paywall"]');
-          if (bic_blur) {
+          if (document.title.startsWith('Sign in or subscribe')) {
             if (json.screens[0].metadata) {
               let metadata = json.screens[0].metadata;
-              if (metadata.title) {
+              if (metadata.title)
                 document.title = metadata.title + ' - Barrons\'s';
-                let header = document.querySelector('section[data-testid="headline"] > h1');
-                if (header && header.innerText !== metadata.title) {
-                  header.innerText = metadata.title;
-                  if (metadata.author) {
-                    let byline = document.querySelector('div[data-testid="byline"]');
-                    if (byline)
-                      byline.parentNode.replaceChild(document.createTextNode('By ' + metadata.author), byline);
-                  }
-                  if (metadata.createdAt && metadata.updatedAt) {
-                    let date = document.querySelector('p[data-testid="timestamp-text"]');
-                    if (date) {
-                      date.parentNode.replaceChild(document.createTextNode('Updated ' + new Intl.DateTimeFormat("en-US", {dateStyle: "long", timeStyle: "short", timeZone: "America/New_York"}).format(new Date(metadata.updatedAt)) + ' ET / Original ' + new Intl.DateTimeFormat("en-US", {dateStyle: "long", timeStyle: "short", timeZone: "America/New_York"}).format(new Date(metadata.createdAt)) + ' ET'), date);
-                    }
-                  }
-                  let bug_elem = 'span[data-testid="article-hero"], div[data-id="Flashline_index_FlashlineWrapper"], h2[data-id="immersive_index_Dek"]';
-                  hideDOMStyle(bug_elem, 3);
-                }
-              }
             }
           }
         }
         let body_first = true;
-        let img_lead = document.querySelector('div.img__lead img[src], div.featured-image img[src]');
+        let img_lead = document.querySelector('div.img__lead img[src], div.featured-image img[src], div.media-layout img[src]');
         let img_lead_url;
         if (img_lead)
           img_lead_url = img_lead.src.split('?')[0];
         article.innerHTML = '';
         function addBodyText(elem, par) {
-          if (par.body && par.body.text) {
+          if (par.body && par.body.text && (par.body.text !== 'Visit page')) {
             if (par.body.additions) {
               let items = par.body.additions.filter(x => x.type === 'link' && x.value && x.hasOwnProperty('rangeStart') && x.rangeLength);
               if (items.length) {
@@ -6069,7 +6034,7 @@ function fix_dowjones_fetch(url_src, data, article) {
             elem.className = par_class;
           if (par.type === 'body') {
             if (par.body && par.styleID.match(/(default|bodyFrame|article-body)/)) {
-              if (body_first && intro && !bic_blur) {
+              if (body_first && intro) {
                 elem = intro;
                 body_first = false;
               } else
@@ -6139,7 +6104,14 @@ function fix_dowjones_fetch(url_src, data, article) {
                sub_elem.style = 'width: 100%; height: 400px;';
                elem.appendChild(sub_elem);
              }
-          } else if (!['ad', 'audioplayer', 'authorBios', 'byline', 'caption', 'columnistHeader', 'divider', 'inlineComment', 'paywall-promotion', 'pullquote', 'pullquotebody', 'scrollinggallery', 'sectionTitle', 'tagCloud', 'tags', 'title', 'verticalContainer', 'webview'].includes(par.type)) {
+          } else if (par.type === 'audioplayer') {
+            if (par.media && par.media.contentUrl) {
+              let audio_tts = document.createElement('audio');
+              audio_tts.src = par.media.contentUrl;
+              audio_tts.setAttribute('controls', '');
+              elem.appendChild(audio_tts);
+            }
+          } else if (!['ad', 'authorBios', 'byline', 'caption', 'columnistHeader', 'divider', 'inlineComment', 'paywall-promotion', 'pullquote', 'pullquotebody', 'scrollinggallery', 'sectionTitle', 'tagCloud', 'tags', 'title', 'verticalContainer', 'webview'].includes(par.type)) {
             console.log(par);
           }
           if (elem.hasChildNodes())
