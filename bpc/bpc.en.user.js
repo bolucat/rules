@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.8.3
+// @version         4.3.8.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -813,7 +813,7 @@ else if (matchDomain('fnlondon.com')) {
           let article_id = article_id_dom.content;
           let url_src = 'https://fn.djmedia.djservices.io/apps/finnews/theaters/default-article?screen_ids=' + article_id;
           let x_access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJBVVRIX1BIUkFTRV9QUk9EX0lPUyI6IlZlRXRaemRIaGF4bzhKRWpzaHlEIn0.bxWGVMaft1RN0_qWAnzoNBLx12sc0Jt4rLBaoG5n08AQTS9RibwlJlZrqUca_tm0lSCwl3Z1ehJcVepVH_YcNgRJsujt49JVFSGBO8B69zFDERS05x2RM_n0k8Jg9cyErhfsgWTsb8ObR6iRhHmw702_VcEzJrmdXwq44Bw3NgkBPOgIAZn37SA7hx__gvd8Hdxd5LLgZwxXTG1kWFW4S--vf4CxUt-uEY94m1VqaUyyMTEMvXTmktS2wReBH8mawDvBdyBDkQrPx7oaFP1zq4h-B1mQCj_wMRfR-QUls6BTpBPQUjO02FaTf-2RbHzAYn3xTpmxs0GE12iD4QBSbg";
-          getExtFetch(url_src, '', {headers: {"app-identifier": "com.news.screens", "device-type": "phone", "x-access-token": x_access_token}}, fix_dowjones_fetch, [article]);
+          getExtFetch(url_src, '', {headers: {"app-identifier": "com.news.screens", "device-type": "phone", "x-access-token": x_access_token}}, fix_dowjones_fetch, [article, 'div.media-layout img[src]']);
         }
       }
     }, 1000);
@@ -1554,7 +1554,6 @@ else if (matchDomain('barrons.com')) {
       window.setTimeout(function () {
         let article = document.querySelector('article > div.crawler > [data-testid="article-body"]');
         if (article) {
-          article = article.parentNode;
           let article_id_dom = document.querySelector('head > meta[name="article.id"][content], head > meta[name="ChosenAdTarget"][content]');
           if (article_id_dom) {
             let article_id = article_id_dom.content;
@@ -1562,8 +1561,9 @@ else if (matchDomain('barrons.com')) {
               article_id = article_id.split(';id:')[1].split(';')[0];
             let url_src = 'https://barrons.djmedia.djservices.io/apps/barrons/theaters/default-article?screen_ids=' + article_id;
             let x_access_token = "eyJhbGciOiJSUzI1NiJ9.WFZsaHN3MXd3Smw0V3kwRXBzclQ.qwwBedAUNXHTQchowQZ5zMwmnXqDKeMhoRJlkB7drjWmb0ktZCScIhq5lpIiWaMyNJA_ODYgHAfIoi7DKWkS8g8GunFNAXpJDUOLdI2rtQkTEi_E3o90rdZHunPR7p0ULjRmHCnDofAdpTQdJtTXjQ9eEDZT2xoooVGdBpoVKhE";
-            getExtFetch(url_src, '', {headers: {"app-identifier": "http://com.news.screens", "device-type": "phone", "x-access-token": x_access_token}}, fix_dowjones_fetch, [article]);
+            getExtFetch(url_src, '', {headers: {"app-identifier": "http://com.news.screens", "device-type": "phone", "x-access-token": x_access_token}}, fix_dowjones_fetch, [article, 'div.media-layout img[src], div[data-block="big-top-media"] img[src]']);
           }
+          removeDOMElement(...article.parentNode.querySelectorAll('div:empty'));
         }
       }, 2000);
     }
@@ -3587,7 +3587,7 @@ else if (matchDomain('marketwatch.com')) {
             let article_id = article_id_dom.content;
             let url_src = 'https://mwatch.djmedia.djservices.io/apps/marketwatch/theaters/article?screen_ids=' + article_id;
             let x_access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJBVVRIX1BIUkFTRV9QUk9EX0FORFJPSUQiOiJjWXhLbURPOENOcm9wOEZINmtkTyJ9.xozUBM2fH4fY5JvdSrpvesZHeNFqS9aIFSZdXsvty5tgE1qb5w26I5Fe-FGQTYQdfPCQmJ60dh-QsxPKmsm3J0l50zF5CiiTAzmvD5D_XWkV_sa_L5eMqLvLyV2Wcrld9-LhKfmyqQlqDSU79276_sgo6yxDA2xqKDzFzwoOj3OILFKdkXvZNbN9NGapoTEV6z8CWt2nOxnBsN-_cXjpeDE_Al2EgWtSLA32nlRcbJ9Nm4ZRpZzCr5AKaUtysnjiAFpWyp1MSnYMJEZImYbt7nm9k2qd3ResXx0vZu-PZkr9bi4zprCUmvbLzopRbVbDwcDJowWpwyo3DnrjOhBKgw";
-            getExtFetch(url_src, '', {headers: {"app-identifier": "com.news.screens", "device-type": "phone", "x-access-token": x_access_token}}, fix_dowjones_fetch, [article]);
+            getExtFetch(url_src, '', {headers: {"app-identifier": "com.news.screens", "device-type": "phone", "x-access-token": x_access_token}}, fix_dowjones_fetch, [article, 'div.img__lead img[src]']);
           }
         }
       }, 2000);
@@ -3915,7 +3915,7 @@ else if (matchDomain('nypost.com')) {
               let article_id = match[0];
               let url_src = 'https://nypost.nypost.djservices.io/apps/nypost-v3/theaters/sports?screen_ids=' + article_id;
               let x_access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJBVVRIX1BIUkFTRV9QUk9EX0FORFJPSUQiOiJGNGYzYnhzZGlIa1M1QzVIWUxUNSJ9.OGooBqisVQznx2FDxZpHAqWu-oG1wPJLUxYBMd3xOKiLakoR2XQC2hXnyS3zb1Dw6AkKcMhWyZfRerUckFjga8Ii59lZtP8Xt92iCUyJjs0yjmLJgkZWEGqZ8szM2UK7jZJ5SsHaYfe2V3c7KrtfbY74aWGwddvg-Ex4O5hwv3aiAJpI_aZMFqniClGM2pYbGNSPxH-I0PMuwTzt-oyofhQsRJWOQES8fmQz1H-opqQVr3B0-ev4MxYZjfk8kKnXxRbf7tDbQvastQh8kLe3KN90ptSp_LWbkPgo0G8Vw9Jzxy1TUd_VNgTE21uNdRAoZbxDly7aw-9CTDtb1OtXVg";
-              getExtFetch(url_src, '', {headers: {"app-identifier": "com.news.screens", "device-type": "phone", "x-access-token": x_access_token, "user-agent": "okhttp/4.12.0"}}, fix_dowjones_fetch, [article]);
+              getExtFetch(url_src, '', {headers: {"app-identifier": "com.news.screens", "device-type": "phone", "x-access-token": x_access_token, "user-agent": "okhttp/4.12.0"}}, fix_dowjones_fetch, [article, 'div.featured-image img[src]']);
               article.querySelectorAll('p[class]').forEach(e => e.removeAttribute('class'));
               if (footer) {
                 window.setTimeout(function () {
@@ -5992,7 +5992,7 @@ function fix_dowjones_fetch(url_src, data, article) {
           }
         }
         let body_first = true;
-        let img_lead = document.querySelector('div.img__lead img[src], div.featured-image img[src], div.media-layout img[src]');
+        let img_lead = document.querySelector(img_lead_sel);
         let img_lead_url;
         if (img_lead)
           img_lead_url = img_lead.src.split('?')[0];
@@ -6097,13 +6097,27 @@ function fix_dowjones_fetch(url_src, data, article) {
               elem.appendChild(video);
             }
           } else if (par.type === 'youtube') {
-             if (par.videoId) {
-               elem = document.createElement('p');
-               let sub_elem = document.createElement('iframe');
-               sub_elem.src = 'https://www.youtube.com/embed/' + par.videoId;
-               sub_elem.style = 'width: 100%; height: 400px;';
-               elem.appendChild(sub_elem);
-             }
+            if (par.videoId) {
+              elem = document.createElement('p');
+              let sub_elem = document.createElement('iframe');
+              sub_elem.src = 'https://www.youtube.com/embed/' + par.videoId;
+              sub_elem.style = 'width: 100%; height: 400px;';
+              elem.appendChild(sub_elem);
+            }
+          } else if (par.type === 'jwplayer') {
+            if (par.videos && par.videos[0] && par.videos[0].url) {
+              if (window.navigator.userAgent.toLowerCase().includes('chrome')) {
+                let video = document.createElement('video');
+                video.src = par.videos[0].url;
+                video.setAttribute('controls', '');
+                video.style = 'width: 100%;';
+                elem.appendChild(video);
+              } else {
+                let sub_elem = document.createElement('a');
+                sub_elem.href = sub_elem.innerText = par.videos[0].url;
+                elem.appendChild(sub_elem);
+              }
+            }
           } else if (par.type === 'audioplayer') {
             if (par.media && par.media.contentUrl) {
               let audio_tts = document.createElement('audio');
