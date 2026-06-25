@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.8.0
+// @version         4.3.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -376,6 +376,36 @@ else if (matchDomain('faz.net')) {
     }
   }
   let ads = 'div.lay-PaySocial, div.iqadtile_wrapper, div.iqdcontainer';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('freiepresse.de')) {
+  func_post = function () {
+    if (mobile) {
+      pageContains('div[style]:not([id])', 'Hier verpassen Sie spannende Inhalte!').forEach(e => e.removeAttribute('style'));
+    }
+    let gallery_images = document.querySelectorAll(article_sel + ' div[style] > div[style] > div[style*=";opacity:"]');
+    if (gallery_images.length) {
+      gallery_images[0].parentNode.parentNode.removeAttribute('style');
+      for (let elem of gallery_images) {
+        elem.removeAttribute('style');
+        elem.parentNode.removeAttribute('style');
+      }
+    }
+  }
+  let url = url_old = window.location.href;
+  let paywall_sel = 'div.default-paywall, div.upscore-paywall-placeholder';
+  let article_sel = 'div#artikel-content';
+  setInterval(function () {
+    url = window.location.href;
+    if (url !== url_old) {
+      url_old = url;
+      if (window.location.pathname.match(/-artikel\d+$/))
+        refreshCurrentTab();
+    }
+    getArchive(url, paywall_sel, '', article_sel);
+  }, 1000);
+  let ads = 'div#BSB, div.taboola-endless-feed';
   hideDOMStyle(ads);
 }
 
