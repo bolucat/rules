@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.3.8.0
+// @version         4.3.8.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -633,49 +633,6 @@ else if (matchDomain(fr_groupe_nice_matin_domains)) {
   }
   let ads = 'div[class^="ad-slot-"]';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('humanite.fr')) {
-  let paywall = document.querySelector('div.message-paywall');
-  if (paywall) {
-    let js_vars_script = document.querySelector('script[id="module-sage-index.js-js-extra"]');
-    if (js_vars_script && js_vars_script.text.match(/js_vars\s?=\s?/)) {
-      removeDOMElement(paywall);
-      let js_vars = js_vars_script.text.split(/js_vars\s?=\s?/)[1].split('};')[0] + '}';
-      try {
-        let json = JSON.parse(js_vars);
-        if (json && json.ajaxUrl && json.ajaxNonce && json.postId) {
-          fetch(json.ajaxUrl, {
-            method: "POST",
-            body: new URLSearchParams({
-              action: 'unlock-post-content',
-              security: json.ajaxNonce,
-              post_id: json.postId
-            })
-          }).then(response => {
-            if (response.ok) {
-              response.json().then(json => {
-                if (json.success) {
-                  let article = document.querySelector('div#post-content');
-                  if (article) {
-                    let parser = new DOMParser();
-                    let doc = parser.parseFromString('<div>' + json.data + '</div>', 'text/html');
-                    let article_new = doc.querySelector('div');
-                    article.innerHTML = '';
-                    article.appendChild(article_new);
-                  }
-                }
-              })
-            }
-          })
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }
-  let banners = 'div#form_don';
-  hideDOMStyle(banners);
 }
 
 else if (matchDomain('jeuneafrique.com')) {
