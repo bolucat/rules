@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.8.5
+// @version         4.3.8.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -5526,37 +5526,41 @@ else if (matchDomain('vice.com')) {
 
 else if (matchDomain('vikatan.com')) {
   window.setTimeout(function () {
-    let paywall = document.querySelector('div#paywallDisplay');
+    let paywall_sel = cs_param.paywall_sel || 'div[class^="styles-m__paywall-main-wrapper_"]';
+    let paywall = document.querySelector(paywall_sel);
     if (paywall) {
       removeDOMElement(paywall);
-      let json_script = getArticleJsonScript();
-      if (json_script) {
-        try {
-          let json = JSON.parse(json_script.text);
-          if (json) {
-            let article = document.querySelector('div.story-element');
-            if (article) {
-              let parser = new DOMParser();
-              let json_text = parseHtmlEntities(json.articleBody);
-              let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-              let content_new = doc.querySelector('div');
-              let content = document.querySelector('div.story-element > div');
-              if (content)
-                content.parentNode.replaceChild(content_new, content);
-              else
-                article.appendChild(content_new);
+      if (!window.location.pathname.startsWith('/amp/')) {
+        let json_script = getArticleJsonScript();
+        if (json_script) {
+          try {
+            let json = JSON.parse(json_script.text);
+            if (json) {
+              let article = document.querySelector('div.story-element');
+              if (article) {
+                let parser = new DOMParser();
+                let json_text = parseHtmlEntities(json.articleBody).replace(/>\.</g, '><br><');
+                let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+                let content_new = doc.querySelector('div');
+                let content = document.querySelector('div.story-element > div');
+                if (content)
+                  content.parentNode.replaceChild(content_new, content);
+                else
+                  article.appendChild(content_new);
+              }
             }
+          } catch (err) {
+            console.log(err);
           }
-        } catch (err) {
-          console.log(err);
         }
-      }
-      let story_hidden = document.querySelector('div[class^="styles-m__story-card-wrapper_"]');
-      if (story_hidden)
-        story_hidden.removeAttribute('class');
+        let story_hidden = document.querySelector('div[class^="styles-m__story-card-wrapper_"]');
+        if (story_hidden)
+          story_hidden.removeAttribute('class');
+      } else
+        ampToHtml();
     }
   }, 1500);
-  let ads = 'div[class^="styles-m__popup-wrapper-adb"]';
+  let ads = 'div[class^="styles-m__popup-wrapper-adb_"], div[class^="styles-m__subscribe-banner-wrapper_"], div[id^="ps-floating-container-"], div[id^="div-ad-desk-"], div[data-type="_mgwidget"]';
   hideDOMStyle(ads);
 }
 
