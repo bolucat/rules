@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.8.6
+// @version         4.3.8.7
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4922,34 +4922,6 @@ else if (matchDomain(['thehindu.com', 'thehindubusinessline.com'])) {
     read_more.click();
 }
 
-else if (matchDomain('theinformation.com')) {
-  func_post = function () {
-    if (mobile) {
-      document.querySelectorAll('img[loading="lazy"][style], article:has(> a)').forEach(e => e.style = 'width: 95%;');
-      let flex_shrink = document.querySelectorAll('div[style] > div[style*="flex-shrink:"]');
-      for (let elem of flex_shrink) {
-        elem.style = 'width: 95%;';
-        elem.parentNode.removeAttribute('style');
-        removeDOMElement(elem.parentNode.querySelector('aside'));
-      }
-      let comments = document.querySelector('div[style*="display:block;margin-right:"]');
-      if (comments)
-        comments.style['margin-right'] = '0px';
-    }
-    let article = document.querySelector(article_sel);
-    if (article)
-      article.style['padding-top'] = '100px';
-    let pars = document.querySelectorAll(article_sel + ' div[style*="font-family:"]');
-    if (pars.length < 5)
-      header_nofix(article_sel + ' > div', '', 'BPC > no archive-fix');
-  }
-  let article_sel = 'article';
-  if (window.location.pathname.startsWith('/forum/'))
-    article_sel = 'section';
-  let url = window.location.href;
-  getArchive(url, 'aside[data-testid="paywall"]', '', article_sel);
-}
-
 else if (matchDomain(['thejuggernaut.com', 'jgnt.co'])) {
   let paywall = pageContains('div.font-mono', /(Read this article and many more by subscribing today|Join today to read the full story)/);
   if (paywall.length) {
@@ -5526,7 +5498,7 @@ else if (matchDomain('vice.com')) {
 
 else if (matchDomain('vikatan.com')) {
   window.setTimeout(function () {
-    let paywall_sel = cs_param.paywall_sel || 'div[class^="styles-m__paywall-main-wrapper_"]';
+    let paywall_sel = 'div[class^="styles-m__paywall-main-wrapper_"]';
     let paywall = document.querySelector(paywall_sel);
     if (paywall) {
       removeDOMElement(paywall);
