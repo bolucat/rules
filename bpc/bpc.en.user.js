@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.8.7
+// @version         4.3.8.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -494,11 +494,8 @@ else if (matchDomain('nzherald.co.nz')) {
 }
 
 else if (matchDomain('thesaturdaypaper.com.au')) {
-  let hide_end = document.querySelector('div.hide-end');
-  if (hide_end)
-    refreshCurrentTab();
-  let paywall = document.querySelector('div.paywall-hard-always-show');
-  removeDOMElement(paywall);
+  let ads = 'div[data-ad-type]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain(['brisbanetimes.com.au', 'smh.com.au', 'theage.com.au', 'watoday.com.au'])) {
@@ -1235,6 +1232,9 @@ else if (matchDomain('thetimes.com')) {
     func_post = function () {
       let article = document.querySelector(article_sel);
       if (article) {
+        let pars = article.querySelectorAll('div[style*="font-family:"]:not(:empty)');
+        if (pars.length < 5)
+          header_nofix('article', '', 'BPC > no archive-fix');
         if (mobile) {
           let figure_div = article.querySelector('figure > div[style] > div[style^="min-height:"]');
           if (figure_div) {
@@ -5633,6 +5633,11 @@ else if (matchDomain('warontherocks.com')) {
     let article_sel = 'div.tw\\:container.tw\\:mb-20>div';
     getJsonUrl(paywall_sel, '', article_sel);
   }
+}
+
+else if (matchDomain('washingtonexaminer.com')) {
+  let ads = 'div.wex-inarticle-ad';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('washingtonpost.com')) {
