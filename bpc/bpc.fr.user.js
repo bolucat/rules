@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.3.8.1
+// @version         4.3.8.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -548,7 +548,7 @@ else if (matchDomain(fr_groupe_ebra_domains)) {
               for (let elem of intro) {
                 let elem_class = elem.className;
                 if (article_new.querySelector('[class="' + elem_class + '"]'))
-                  removeDOMElement(elem);
+                  elem.remove();
                 else if (fda)
                   fda.after(elem);
                 else
@@ -565,7 +565,8 @@ else if (matchDomain(fr_groupe_ebra_domains)) {
               }
               article.classList.remove('locked');
               let preview = document.querySelector('div.previewContent');
-              removeDOMElement(preview);
+              if (preview)
+                preview.remove();
               if (typeof $ !== 'undefined') {
                 $("head").append(json.js);
                 formatWsContent();
@@ -574,7 +575,9 @@ else if (matchDomain(fr_groupe_ebra_domains)) {
                 if (carousel) {
                   carousel.removeAttribute('class');
                   carousel.querySelectorAll('li > figure').forEach(e => e.removeAttribute('class'));
-                  removeDOMElement(carousel.querySelector('figure:has(img[src^="data:image"])'));
+                  let img_empty = carousel.querySelector('figure:has(img[src^="data:image"])');
+                  if (img_empty)
+                    img_empty.remove();
                 }
               }
               let accroche = document.querySelector('.mainContent .accroche');
