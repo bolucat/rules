@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.8.9
+// @version         4.3.9.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1235,7 +1235,7 @@ else if (matchDomain('thetimes.com')) {
       if (article) {
         let pars = article.querySelectorAll('div[style*="font-family:"]:not(:empty)');
         if (pars.length < 5)
-          header_nofix('article', '', 'BPC > no archive-fix');
+          article.before(googleSearchToolLink(url));
         if (mobile) {
           let figure_div = article.querySelector('figure > div[style] > div[style^="min-height:"]');
           if (figure_div) {
@@ -1292,8 +1292,8 @@ else if (matchDomain('thetimes.com')) {
     let read_next = document.querySelector('div.article-previous-next--sticky');
     let paywall_sel = 'div#paywall-portal-article-footer, div#paywall-takeover';
     let article_sel = 'article[id]';
+    let url = window.location.href;
     if (window.location.pathname.includes('/article/') && !window.location.search.startsWith('?shareToken=')) {
-      let url = window.location.href;
       getArchive(url, paywall_sel, '', article_sel);
       let scroll_style = 'html, body {overflow: auto !important; height: auto !important;}';
       addStyle(scroll_style);

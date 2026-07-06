@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.7.2
+// @version         4.3.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -45,7 +45,6 @@ window.setTimeout(function () {
 var be_mediahuis_domains = ['gva.be', 'hbvl.be', 'nieuwsblad.be', 'standaard.be'];
 var nl_dpg_adr_domains = ['ad.nl', 'bd.nl', 'bndestem.nl', 'destentor.nl', 'ed.nl', 'gelderlander.nl', 'pzc.nl', 'tubantia.nl'];
 var nl_dpg_media_domains = ['demorgen.be', 'flair.nl', 'humo.be', 'libelle.nl', 'margriet.nl', 'parool.nl', 'trouw.nl', 'volkskrant.nl'];
-var nl_mediahuis_region_domains = ['gooieneemlander.nl', 'haarlemsdagblad.nl', 'ijmuidercourant.nl', 'leidschdagblad.nl', 'limburger.nl', 'noordhollandsdagblad.nl'];
 
 if (matchDomain('adformatie.nl')) {
   document.querySelectorAll('iframe[uc-src]').forEach(e => e.src = e.getAttribute('uc-src'));
@@ -149,12 +148,14 @@ else if (matchDomain(be_mediahuis_domains)) {
     let article_main = document.querySelector(article_sel);
     if (!article_main)
       article_sel = 'article[role="article"] div[id]';
-    getArchive(url, paywall_sel, '', article_sel);
+    let free = pageContains('div[data-testid="paywall-position-sticky-banner-top"]:not(:empty) span', 'gratis');
+    if (!free.length)
+      getArchive(url, paywall_sel, '', article_sel);
     let popup = document.querySelector('div[data-testid="close-popup-button"]');
     if (popup)
       popup.click();
   }, 1500);
-  let ads = 'div[id^="ad_inline-"], div.mh-ad-label';
+  let ads = 'div[id^="ad_inline-"], div.mh-ad-label, div[data-testid="paywall-position-sticky-banner-bottom"], section[data-theme-sponsored-content], div[data-pym-src]';
   hideDOMStyle(ads);
 }
 
@@ -277,195 +278,6 @@ else if (matchDomain('groene.nl')) {
     pop.appendChild(pop_link);
     login.parentNode.after(pop);
   }
-}
-
-else if (matchDomain(['lc.nl', 'dvhn.nl']) || document.querySelector('head > link[href*=".ndcmediagroep.nl/"]')) {
-  let paywall = document.querySelector('div.signupPlus, div.pw-wrapper:not(.pw-none, .pw-pending');
-  if (paywall) {
-    if (window.location.pathname.match(/\/(live|sportblog)-/)) {
-      header_nofix(paywall, '', 'BPC > try to remove cookies for site');
-      removeDOMElement(paywall);
-      return;
-    }
-    let intro = document.querySelector('div.startPayWall');
-    let html = document.documentElement.outerHTML;
-    if (html.includes('window.__NUXT__=')) {
-      removeDOMElement(paywall, intro);
-      try {
-        let json = html.split('window.__NUXT__=')[1].split('</script>')[0].trim();
-        let json_match = json.includes('type:"article",');
-        if (json_match) {
-          let path_match = window.location.pathname.match(/-(\d+)\./);
-          if (path_match) {
-            let article_id = path_match[1];
-            json_match = json.includes(',id:"' + article_id + '",');
-            if (!json_match) {
-              let path_regex_str = '-' + article_id + '\\.';
-              if (json.match(/[(,]null,/)) {
-                let art_match = json.split(/[(,]null,/)[1].match(new RegExp(path_regex_str, 'g'));
-                json_match = art_match && art_match.length > 1;
-              }
-              if (!json_match) {
-                if (json.includes(',routePath:"')) {
-                  json_match = json.split(',routePath:"')[1].split('"')[0].match(new RegExp(path_regex_str));
-                } else if (json.includes(',relativeUrl:"')) {
-                  let json_split = json.split(',relativeUrl:"');
-                  json_match = json_split.some(e => e.split(/[",]/)[0].match(new RegExp(path_regex_str)));
-                }
-              }
-            }
-          }
-        }
-        if (!json_match)
-          refreshCurrentTab();
-        else if (json.includes(',body:')) {
-          let nuxt_vars = json.split(/^\(function\(/)[1].split('){')[0].split(',');
-          let nuxt_values = json.split('}}(')[1].split('));')[0].replace(/(^|,)(true|false|\.?\d+|{}),/g, ',"$1$2",').replace(/(^|,)(null),/g, ',"$1$2",').replace(/,(void\s\d),/g, ',"$1",').split(/\\?",\\?"/);
-          function findNuxtText(str, attributes = false) {
-            if (nuxt_vars.length && nuxt_values.length && !(attributes && str.length === 1 && str === str.toUpperCase())) {
-              let index = nuxt_vars.indexOf(str);
-              if (nuxt_values[index])
-                str = nuxt_values[index].replace(/\\u002F/g, '/');
-            }
-            return str;
-          }
-          let intro;
-          let intro_match = json.match(/,leadtext_raw:"([^"]+)",/);
-          let intro_meta_dom = document.querySelector('head > meta[data-hid="description"][content]');
-          if (intro_match || intro_meta_dom) {
-            intro = document.createElement('p');
-            intro.innerText = intro_match ? intro_match[1].replace(/\\u002F/g, '/') : intro_meta_dom.content;
-            intro.style = 'font-weight: bold;';
-          }
-          let json_text = json.split(',body:')[1].split(/,(leadText|brand_key|tts|pianoKeywords):/)[0].replace(/([{,])(\w+)(?=:(["\{\[]|[\w$]{1,2}[,\}]))/g, "$1\"$2\"").replace(/(Image\\":)(\d)([,}])/g, '$1\\"$2\\"$3').replace(/\":(\[)?([\w\$\.]+)([\]},])/g, "\":$1\"$2\"$3");
-          let article = document.querySelector('div.content');
-          if (article) {
-            article.innerHTML = '';
-            if (intro)
-              article.appendChild(intro);
-            let pars = JSON.parse(json_text);
-            function addParText(elem, par_text, add_br = false, attributes = false, sup = false) {
-              if (par_text) {
-                if (par_text.length <= 2 && !sup)
-                  par_text = findNuxtText(par_text, attributes);
-                let span = document.createElement(sup ? 'sup' : 'span');
-                span.innerText = par_text.replace(/\u00a0/g, ' '); //&nbsp;
-                elem.appendChild(span);
-                if (add_br)
-                  elem.appendChild(document.createElement('br'));
-              }
-            }
-            function addLink(elem, link_text, href, add_br = false) {
-              let par_link = document.createElement('a');
-              par_link.href = href;
-              par_link.innerText = link_text.replace(/(\\n|\\t|\s)+$/g, '');
-              if (href.startsWith('http') && !href.startsWith(window.location.origin))
-                par_link.target = '_blank';
-              elem.appendChild(par_link);
-              if (add_br)
-                elem.appendChild(document.createElement('br'));
-            }
-            function addImage(elem, child) {
-              let figure = document.createElement('figure');
-              let img = document.createElement('img');
-              if (child.relation.href.length <= 2)
-                child.relation.href = findNuxtText(child.relation.href);
-              img.src = child.relation.href;
-              figure.appendChild(img);
-              if (child.relation.caption) {
-                if (child.relation.caption.length <= 2)
-                  child.relation.caption = findNuxtText(child.relation.caption).replace(/\\"/g, '"').replace(/\\n/g, ' - ').replace(/\\u002F/g, '/');
-                if (child.relation.photographer) {
-                  if (child.relation.photographer.length <= 2)
-                    child.relation.photographer = findNuxtText(child.relation.photographer).replace(/\\u002F/g, '/');
-                  child.relation.caption += ' ' + child.relation.photographer;
-                }
-                let caption = document.createElement('figcaption');
-                caption.innerText = child.relation.caption;
-                figure.appendChild(caption);
-              }
-              elem.appendChild(figure);
-            }
-            function addChildren(elem, children, add_br = false, attributes = false, sup = false) {
-              for (let child of children) {
-                if (child.text) {
-                  addParText(elem, child.text, add_br, attributes, sup);
-                } else if (child.relation && (child.type === 'img' || child.relation.caption) && child.relation.href) {
-                  let img_par = document.createElement('p');
-                  addImage(img_par, child);
-                  elem.appendChild(img_par);
-                } else if (child.relation && child.relation.link) {
-                  if (child.relation.link.length <= 2)
-                    child.relation.link = findNuxtText(child.relation.link).replace(/\\u002F/g, '/');
-                  if (child.relation.title.length <= 2)
-                    child.relation.title = findNuxtText(child.relation.title);
-                  addLink(elem, child.relation.title, child.relation.link);
-                } else if (child.children) {
-                  if (child.children.length) {
-                    for (let item of child.children) {
-                      if (item.text) {
-                        if ((child.href && child.href.length > 2) || (child.relation && child.relation.follow && child.relation.follow.url)) {
-                          if (item.text.length > 2) {
-                            addLink(elem, item.text, child.href || child.relation.follow.url, add_br);
-                            if (item.text.endsWith(' '))
-                              elem.appendChild(document.createTextNode(' '));
-                          }
-                        } else
-                          addParText(elem, item.text, add_br, child.attributes && child.attributes.length);
-                      } else if (findNuxtText(item.type) === 'br') {
-                        elem.appendChild(document.createElement('br'));
-                      } else
-                        addChildren(elem, item.children, false, item.attributes && item.attributes.length, item.type === 'sup');
-                    }
-                  } else
-                    elem.appendChild(document.createElement('br'));
-                }
-              }
-            }
-            for (let par of pars) {
-              let par_type = par.type ? findNuxtText(par.type) : '';
-              let elem = document.createElement(par_type === 'h2' ? 'h2': 'p');
-              if (par.code) {
-                if (par.code.includes('flourish-embed') && par.code.includes(' data-src=\"')) {
-                  elem = document.createElement('div');
-                  let sub_elem = document.createElement('iframe');
-                  sub_elem.src = 'https://public.flourish.studio/' + par.code.split(' data-src=\"')[1].split('"')[0];
-                  sub_elem.style = 'width: 100%; height: 600px;';
-                  elem.appendChild(sub_elem);
-                } else {
-                  let parser = new DOMParser();
-                  let doc = parser.parseFromString('<div>' + par.code + '</div>', 'text/html');
-                  elem = doc.querySelector('div');
-                }
-              } else if (par.insertbox_head || par.insertbox_text) {
-                if (par.insertbox_head && par.insertbox_head.length > 2)
-                  addParText(elem, par.insertbox_head, true);
-                if (par.insertbox_text) {
-                  for (let item of par.insertbox_text) {
-                    if (item.children)
-                      addChildren(elem, item.children, true);
-                  }
-                }
-              } else if (par.text) {
-                if (par_type !== 'streamer')
-                  addParText(elem, par.text);
-              } else if (par.children) {
-                addChildren(elem, par.children);
-              } else if (par.typename.length > 2)
-                console.log(par);
-              if (elem.hasChildNodes()) {
-                article.appendChild(elem);
-              }
-            }
-          }
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }
-  let ads = 'div.top__ad, div.marketingblock-article';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('linda.nl')) {
@@ -642,56 +454,6 @@ else if (matchDomain(nl_dpg_media_domains)) {
   window.setTimeout(function () {
     document.querySelectorAll('[class^="artstyle__"][style="display: none;"]').forEach(e => e.removeAttribute('style'));
   }, 500);
-}
-
-else if (matchDomain(nl_mediahuis_region_domains)) {
-  let video = document.querySelector('div.video, div[data-testid="article-video"]');
-  func_post = function () {
-    let article = document.querySelector(article_sel);
-    if (article) {
-      if (video) {
-        let video_new = article.querySelector('div[id$="-streamone"], div[id^="video-player-"], div[id^="player_"]');
-        if (video_new && video_new.parentNode)
-          video_new.parentNode.replaceChild(video, video_new);
-        else {
-          let header = article.querySelector('h1');
-          let br = document.createElement('br');
-          if (header)
-            header.after(br, video, br);
-        }
-      }
-      article.querySelectorAll('hgroup, section:not(:empty)').forEach(e => e.style = 'width: 95%;');
-      if (mobile) {
-        let div_next = document.querySelector('div[id="__next"]');
-        if (div_next)
-          article.style.width = div_next.offsetWidth - 20 + 'px';
-        article.querySelectorAll('figure img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
-        let figures = article.querySelectorAll('figure div');
-        for (let elem of figures) {
-          elem.removeAttribute('style');
-          let svg = elem.querySelector('svg');
-          removeDOMElement(svg);
-        }
-      }
-      if (article.innerText.length < 1000) {
-        let header = article.querySelector('hgroup');
-        if (header)
-          header.before(googleSearchToolLink(url));
-      }
-    }
-  }
-  let paywall_sel = 'head > meta[name$="article_ispaidcontent"][content="true"]';
-  let article_sel = 'main > article';
-  let url = window.location.href;
-  getArchive(url, paywall_sel, '', article_sel);
-  window.setTimeout(function () {
-    let noscroll_sel = 'body[style*="popover-top-position:"]';
-    let noscroll = document.querySelector(noscroll_sel);
-    if (noscroll)
-      noscroll.style = 'position: static !important; overflow: visible !important';
-  }, 500);
-  let ads = 'div.mh-ad-label';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('nrc.nl')) {
