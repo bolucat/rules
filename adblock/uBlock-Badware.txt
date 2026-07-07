@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Sat, 04 Jul 2026 12:25:46 +0000
-! Diff-Path: ../patches/2026.7.6.547.patch#ublock-badware
+! Last modified: Tue, 07 Jul 2026 15:02:15 +0000
+! Diff-Path: ../patches/2026.7.7.1044.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -2317,12 +2317,15 @@ ondigitalocean.app##body#mycanvas.map[style="cursor:none"]
 ||on-forge.com/win*/alert-en.wav
 z13.web.core.windows.net##+js(aeld, DOMContentLoaded, fullscreenEnabled)
 ! ClickFix
-/?js*&f=*&t=$xhr,redirect=noop.txt
-/submit.php?i=*&t=$xhr
-/^https:\/\/api\.[a-z]{2,}\.[a-z]{2,}\/\?[a-z]{2,3}=[0-9a-f]{32}$/$doc,match-case
-://api.*/?zrs=$doc
-://api.*/?zqs=$doc
-||bsc-testnet.bnbchain.org^$xhr
+/^https:\/\/[0-9a-z]{4}\.[a-z]{15,}\.monster\/\?[0-9a-f]{16,}$/$doc
+!#if env_safari
+/^https:\/\/[0-9a-z][0-9a-z][0-9a-z][0-9a-z]\.[a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z][a-z]+\.monster\/\?[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]$/$doc
+!#endif
+/api.php?s=*&_v=$script
+/api.php?k=*&d=$xhr,redirect=noop.txt
+||authorization-cdn-press-enter.info^
+monster###bw-rc-host[style="position: fixed !important; inset: 0px !important; z-index: 2147483647 !important;"]
+.monster/index*.php?flow_id=$doc
 ||cracksway.com^$all
 ||gamingdebates.com^$all
 ||bonzi.link^$all
@@ -2344,12 +2347,16 @@ z13.web.core.windows.net##+js(aeld, DOMContentLoaded, fullscreenEnabled)
 /antivirus/main/cleaner-default/*$doc
 ! Copycat and fake sites
 ! FitGirl Repacks - Official site: fitgirl-repacks.site
-||fitgirl-repacks.*^$all,domain=~fitgirl-repacks.site,to=~fitgirl-repacks.site
 ||fitgirl-repack.*^$all,domain=~fitgirl-repacks.site
 ||fitgirlrepacks.*^$all,domain=~fitgirl-repacks.site
 ||fitgirlrepack.*^$all,domain=~fitgirl-repacks.site
 ||fitgirls-repack.*^$all,domain=~fitgirl-repacks.site
 ||fitgirl-repacks-site.org^$doc,domain=~fitgirl-repacks.site
+!#if ext_ubol
+||fitgirl-repacks.$doc,frame,xhr,script,css,to=~fitgirl-repacks.site
+!#else
+||fitgirl-repacks.$all,from=~fitgirl-repacks.site,to=~fitgirl-repacks.site
+!#endif
 ||fitgirl.cc^$all,domain=~fitgirl-repacks.site
 ||fitgirlrepackz.*^$all,domain=~fitgirl-repacks.site
 ||fitgirltorrent.*^$all,domain=~fitgirl-repacks.site
@@ -3809,7 +3816,8 @@ rapidkil.com.au##+js(aost, XMLHttpRequest, /wp-content)
 ||snapdrop.net^$all
 ||usadeepseek.com^$all
 ||gg.deepseek.$doc,to=~deepseek.com
-||deepseek.$all,to=deepseek.app|deepseek.top|~deepseek.com
+||deepseek.app^$all
+||deepseek.top^$all
 ||paytoll*.top/ezdrivema^$all
 -ez-pass.com^$doc
 ||thetollroads-$doc,to=top|xin|world
@@ -4473,3 +4481,4 @@ longhall.consulting##+js(rmnt, script, /document\.currentScript\.remove|0x0/)
 ||imtolenplex.com^$all
 ||immanitys.com^$all
 ||tagesschau.tech^$doc
+||shuru-baidu.com.cn^$all
