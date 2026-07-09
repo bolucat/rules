@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.9.0
+// @version         4.3.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1256,8 +1256,22 @@ else if (matchDomain('thetimes.com')) {
           let author = document.querySelector(article_sel + ' div[style^="min-height:"]:has(a[href^="https://www.thetimes.com/profile/"])');
           if (author)
             author.style = 'width: 90%; margin: 20px;';
+          let header = article.querySelector('div[style] > h1');
+          if (header)
+            header.parentNode.removeAttribute('style');
         }
         article.querySelectorAll('img[src^="data:image/"][currentsourceurl]').forEach(e => e.src = e.getAttribute('currentsourceurl'));
+        let charts = document.querySelectorAll('times-datawrapper[embed-code]');
+        for (let elem of charts) {
+          let div = document.createElement('div');
+          if (!mobile)
+            div.style = 'margin: 0px 20%;';
+          let iframe = document.createElement('iframe');
+          iframe.src = decodeURIComponent(elem.getAttribute('embed-code'));
+          iframe.style = 'width: 80%; height: 400px; border: none;';
+          div.appendChild(iframe);
+          elem.parentNode.replaceChild(div, elem);
+        }
         let embed_iframes = article.querySelectorAll('div > times-embed-iframe-max[src]');
         for (let elem of embed_iframes) {
           let iframe_new;
