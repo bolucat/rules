@@ -3839,6 +3839,7 @@ else if (matchDomain('newslaundry.com')) {
       }
     }
   }
+  hideDOMStyle('div.story-card div[role="dialog"]');
 }
 
 else if (matchDomain('newsweek.com')) {
