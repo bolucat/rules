@@ -1,9 +1,9 @@
 [Adblock Plus 1.1]
-! Version: 202607101907
+! Version: 202607111847
 ! Title: EasyPrivacy
-! Last modified: 10 Jul 2026 19:07 UTC
+! Last modified: 11 Jul 2026 18:47 UTC
 ! Expires: 4 days (update frequency)
-! Commit: 99ea1971fe937dd0e191e0aa76c571d1a0b36a6b
+! Commit: 4e7dbdd892fc98fe7d5a0497987afff3e401f779
 ! *** easylist:template_header.txt ***
 ! 
 ! Please report any unblocked adverts or problems
@@ -6938,6 +6938,7 @@ omni.soundestlink.com$image
 ||cannonchange.com^
 ||canvasandsocks.com^
 ||canyonpizza.net^
+||capitalopera.com^
 ||capriciouscorn.com^
 ||captainstick.com^
 ||captivatingcanyon.com^
@@ -7916,6 +7917,7 @@ omni.soundestlink.com$image
 ||onedropocean.com^
 ||onekindmarket.com^
 ||onespecify.com^
+||onioncomic.com^
 ||onlinestarten.net^
 ||onlywoofs.com^
 ||opalquill.com^
@@ -16770,6 +16772,7 @@ $third-party,xmlhttprequest,domain=opensubtitles.org
 ||x.com/1.1/graphql/user_flow.json
 ||x.com/1.1/jot
 ||x.com/9/measurement/
+||x.com/i/api/1.1/flow/viewer.json
 ||x.com/i/api/1.1/graphql/app_context.json
 ||x.com/i/api/1.1/graphql/error_log.json
 ||x.com/i/api/1.1/graphql/user_flow.json
@@ -17294,6 +17297,12 @@ bitdefender.com##body[style="opacity: 0;"]:style(opacity: 1 !important;)
 ||curos.ca/res/*/resources/scripts/lib/fingerprint.js$important,redirect=fingerprint2.js,script
 ! https://github.com/uBlockOrigin/uAssets/issues/31330
 ||metrics.streaks.jp^$redirect=noop.txt,xmlhttprequest
+! https://github.com/uBlockOrigin/uAssets/issues/33072
+x.com##+js(set, __INITIAL_STATE__.featureSwitch.defaultConfig.rweb_home_jot_context_enabled.value, false)
+x.com##+js(set, __INITIAL_STATE__.featureSwitch.user.config.rweb_home_jot_context_enabled.value, false)
+! #if env_firefox
+||abs.twimg.com/responsive-web/client-web/main.$script,replace=/t\.isTrue\("rweb_home_jot_context_enabled"\)/false/
+! #endif
 ! -----------------Individual cname tracking systems-----------------!
 ! *** easylist:easyprivacy/easyprivacy_specific_cname_dataunlocker.txt ***
 ! easyprivacy_specific_cname_dataunlocker.txt
