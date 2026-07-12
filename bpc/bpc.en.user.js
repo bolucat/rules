@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.9.2
+// @version         4.3.9.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -48,6 +48,7 @@
 // @match           *://*.sloanreview.mit.edu/*
 // @match           *://*.standardmedia.co.ke/*
 // @match           *://*.stcatharinesstandard.ca/*
+// @match           *://*.the-star.co.ke/*
 // @match           *://*.theleaflet.in/*
 // @match           *://*.uxdesign.cc/*
 // @match           *://*.wellandtribune.ca/*
@@ -4559,6 +4560,13 @@ else if (matchDomain('the-scientist.com')) {
     let modal = document.querySelector('div#Modal');
     removeDOMElement(fader, modal);
   }
+}
+
+else if (matchDomain('the-star.co.ke')) {
+  let paywall = document.querySelector('div.premium-gate__content');
+  if (paywall)
+    paywall.removeAttribute('class');
+  hideDOMStyle('div.premium-gate__paywall, div.in-article-ad, div.tbl-feed-container, iframe[src*="/ads-iframe/"], div.premium-content figure:not(:has(img))');
 }
 
 else if (matchDomain('theamericanconservative.com')) {
