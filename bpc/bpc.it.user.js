@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.3.9.0
+// @version         4.3.9.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -24,7 +24,7 @@
 
 window.setTimeout(function () {
 
-var it_gedi_domains = ['italian.tech', 'lastampa.it', 'lescienze.it', 'moda.it', 'repubblica.it'];
+var it_gedi_domains = ['italian.tech', 'lastampa.it', 'lescienze.it', 'repubblica.it'];
 var it_ilmessaggero_domains = ['corriereadriatico.it', 'ilgazzettino.it', 'ilmattino.it', 'ilmessaggero.it', 'quotidianodipuglia.it'];
 var it_quotidiano_domains = ['ilgiorno.it', 'ilrestodelcarlino.it', 'iltelegrafolivorno.it', 'lanazione.it', 'quotidiano.net'];
 
