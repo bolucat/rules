@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.9.1
+// @version         4.3.9.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -9,23 +9,46 @@
 // @supportURL      https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters
 // @license         MIT; https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=LICENSE
 // @noframes
-// @match           *://*.nl/*
+// @match           *://*.ad.nl/*
+// @match           *://*.adformatie.nl/*
+// @match           *://*.bd.nl/*
+// @match           *://*.bndestem.nl/*
 // @match           *://*.businessam.be/*
+// @match           *://*.businessinsider.nl/*
 // @match           *://*.demorgen.be/*
+// @match           *://*.destentor.nl/*
 // @match           *://*.doorbraak.be/*
+// @match           *://*.ed.nl/*
+// @match           *://*.flair.nl/*
+// @match           *://*.ftm.nl/*
+// @match           *://*.gelderlander.nl/*
+// @match           *://*.groene.nl/*
 // @match           *://*.gva.be/*
 // @match           *://*.hbvl.be/*
 // @match           *://*.hln.be/*
 // @match           *://*.humo.be/*
+// @match           *://*.libelle.nl/*
+// @match           *://*.linda.nl/*
+// @match           *://*.margriet.nl/*
+// @match           *://*.nationalgeographic.nl/*
 // @match           *://*.nieuwsblad.be/*
+// @match           *://*.nrc.nl/*
+// @match           *://*.parool.nl/*
 // @match           *://*.projectcargojournal.com/*
+// @match           *://*.pzc.nl/*
 // @match           *://*.railfreight.cn/*
 // @match           *://*.railfreight.com/*
 // @match           *://*.railtech.be/*
 // @match           *://*.railtech.com/*
 // @match           *://*.standaard.be/*
 // @match           *://*.taxipro.be/*
+// @match           *://*.telegraaf.nl/*
 // @match           *://*.tijd.be/*
+// @match           *://*.trouw.nl/*
+// @match           *://*.tubantia.nl/*
+// @match           *://*.vn.nl/*
+// @match           *://*.volkskrant.nl/*
+// @match           *://specials.fd.nl/*
 // @connect         archive.fo
 // @connect         archive.is
 // @connect         archive.li
@@ -220,26 +243,8 @@ else if (matchDomain('doorbraak.be')) {
   }, 1000);
 }
 
-else if (matchDomain('fd.nl')) {
-  if (window.location.hostname === 'specials.fd.nl') {
-    document.querySelectorAll('div[class^="Opening_contentContainer"], section[class^="ScrollyText_"]').forEach(e => e.style = 'color: white;');
-  } else {
-    func_post = function () {
-      if (mobile) {
-        let art_width = document.body.offsetWidth;
-        document.querySelectorAll('article:not([id])').forEach(e => e.style = 'width: ' + art_width * 0.90 + 'px; margin: 20px;');
-        document.querySelectorAll('figure img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
-      }
-      let paywall = pageContains('section > h1', 'Lees direct het artikel');
-      if (paywall.length) {
-        let div_empty = document.querySelectorAll('div:empty');
-        removeDOMElement(paywall[0].parentNode.parentNode, ...div_empty);
-        header_nofix('main header', '', 'BPC > no archive-fix');
-      }
-    }
-    let url = window.location.href;
-    getArchive(url, 'section.upsell, div.upsell-modal-background', '', 'main');
-  }
+else if (matchDomain('specials.fd.nl')) {
+  document.querySelectorAll('div[class^="Opening_contentContainer"], section[class^="ScrollyText_"]').forEach(e => e.style = 'color: white;');
   let header = document.querySelector('div.header-placeholder');
   if (header)
     header.style.top = 0;
@@ -478,6 +483,7 @@ else if (matchDomain('telegraaf.nl')) {
         }
         article.querySelectorAll('section[style*=";width:"]').forEach(e => e.removeAttribute('style'));
       }
+      article.querySelectorAll('img[src^="data:image/"][currentsourceurl]').forEach(e => e.src = e.getAttribute('currentsourceurl'));
       let gallery, img_width, captions, next, next_images, next_img_width;
       let gallery_new = document.createElement('div');
       let figure_nr = 0;

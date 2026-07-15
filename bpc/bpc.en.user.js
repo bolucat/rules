@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.9.3
+// @version         4.3.9.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -850,8 +850,6 @@ else if (matchDomain('ft.com')) {
         elem.parentNode.parentNode.removeAttribute('style');
         elem.parentNode.parentNode.querySelectorAll('figcaption').forEach(e => e.removeAttribute('style'));
       }
-      if (elem.src.startsWith('data:image/') && elem.getAttribute('currentsourceurl'))
-        elem.src = elem.getAttribute('currentsourceurl')
     }
     let charts = document.querySelectorAll('div[frameborder][old-src]:not([src])');
     for (let elem of charts) {
@@ -1261,7 +1259,6 @@ else if (matchDomain('thetimes.com')) {
           if (header)
             header.parentNode.removeAttribute('style');
         }
-        article.querySelectorAll('img[src^="data:image/"][currentsourceurl]').forEach(e => e.src = e.getAttribute('currentsourceurl'));
         let charts = document.querySelectorAll('times-datawrapper[embed-code]');
         for (let elem of charts) {
           let div = document.createElement('div');
@@ -2850,7 +2847,11 @@ else if (matchDomain('entrepreneur.com')) {
 }
 
 else if (matchDomain('epoch.org.il')) {
-  getJsonUrl('div.register-login-box', '', 'div.paywall');
+  let match = window.location.pathname.match(/\/(\d+)\//);
+  if (match) {
+    let article_id = match[1];
+    getJsonUrl('div.register-login-box', '', 'div.paywall', {}, article_id);
+  }
 }
 
 else if (matchDomain('espn.com')) {
@@ -3234,11 +3235,16 @@ else if (matchDomain('inc42.com')) {
 
 else if (matchDomain('indianexpress.com')) {
   if (window.location.pathname.endsWith('/lite/'))
-    amp_unhide_access_hide('="metering.result=\'ALLOW_ACCESS\'"');
+    amp_unhide_access_hide('="(usertrace.ruleEngineResponseDto.actionName = \'allow_access\')"', '', 'div.ev-premium-paywall');
   else {
-    let ads = 'div[class^="adsbox"], div.adboxtop, div.add-first, div.osv-ad-class, div.ie-int-campign-ad';
-    hideDOMStyle(ads);
+    let paywall = document.querySelector('div.paywall[style]');
+    if (paywall) {
+      paywall.removeAttribute('class');
+      paywall.removeAttribute('style');
+    }
   }
+  let ads = 'div[class^="adsbox"], div.adboxtop, div[class^="o-ad"], div.desktop-full-ad, div.ads-container, div.register-box';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('indiatoday.in')) {
