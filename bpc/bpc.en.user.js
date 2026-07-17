@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.9.5
+// @version         4.3.9.6
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2571,10 +2571,6 @@ else if (matchDomain('dnevnik.bg')) {
       }
       let article_lock = document.querySelector('div.article-lock');
       if (article_lock) {
-        let intro = article_lock.querySelector('div[role="paragraph"]');
-        let intro_start;
-        if (intro)
-          intro_start = intro.innerText.substring(0, 25);
         let scripts = document.querySelectorAll('script:not([src], [type])');
         let json_script;
         let link_script;
@@ -2583,7 +2579,7 @@ else if (matchDomain('dnevnik.bg')) {
           if (script.text.startsWith(script_start)) {
             if (!link_script && script.text.includes('significantLink\\":'))
               link_script = script;
-            else if (!json_script && (script.text.includes('[storyid:') || (intro_start && script.text.replace(/\\u003c/g, '<').replace(/\\u003e/g, '>').replace(/<[^<]*>\s?/g, '').replace(/\\"/g, '"').startsWith(script_start + intro_start))))
+            else if (!json_script && script.text.includes('story_content\\":'))
               json_script = script;
             if (json_script && link_script)
               break;
@@ -2597,53 +2593,58 @@ else if (matchDomain('dnevnik.bg')) {
           let links;
           if (link_script)
             links = link_script.text.split('significantLink\\":[')[1].split('\\"],')[0].replace(/\\"/g, '').split(',');
-          let json_pars = json_script.text.split('self.__next_f.push([1,"')[1].split('"])')[0].replace(/\\u003c/g, '<').replace(/\\u003e/g, '>').replace(/\\"/g, '"').replace(/<br \/>/g, '').split(/[\[\]]{2}/);
-          if (json_pars.length) {
-            article_lock.innerHTML = '';
-            if (json_pars.find(x => x.includes('embed:') || x === 'gallery'))
-              addGST();
-          }
-          let parser = new DOMParser();
-          for (let elem of json_pars) {
-            let par;
-            if (!elem.match(/[\[\]]{2}/)) {
-              if (elem.match(/img:\d+/)) {
-                if (img_main) {
-                  let img_new_id = elem.split('img:')[1];
-                  if (img_new_id) {
-                    par = document.createElement('img');
-                    par.src = img_main.src.replace(/_\d+\./, '_' + img_new_id + '.').split('?')[0];
-                    par.style = 'margin: 20px; width: 90%;';
-                  }
-                }
-              } else if (elem.match(/storyid:\d+/)) {
-                if (links) {
-                  let story_id = elem.split('storyid:')[1];
-                  if (story_id) {
-                    let story = links.find(x => x.includes(story_id + '_'));
-                    if (story) {
-                      par = document.createElement('a');
-                      par.href = story;
-                      par.innerText = story.split(story_id + '_')[1].replace(/_/g, ' ').replace('/', '');
-                      par.className = 'story-related';
-                      if (!matchUrlDomain(window.location.hostname, story))
-                        par.target = '_blank';
+          try {
+            let json_pars_text = json_script.text.split('story_content\\":')[1].split('}]},')[0].replace(/\\u003c/g, '<').replace(/\\u003e/g, '>').replace(/\\"/g, '"').replace(/\\\\/g, '\\').replace(/<br \/>/g, '') + '}]}';
+            let json_pars = JSON.parse(json_pars_text);
+            if (json_pars && json_pars.parsed && json_pars.parsed.length) {
+              article_lock.innerHTML = '';
+              if (json_pars.parsed.find(x => x.type && ['embed', 'gallery'].includes(x.type)))
+                addGST();
+              let parser = new DOMParser();
+              for (let elem of json_pars.parsed) {
+                let par;
+                if (elem.value && !elem.value.match(/[\[\]]{2}/)) {
+                  if (elem.type === 'img') {
+                    if (img_main) {
+                      let img_new_id = elem.value;
+                      if (img_new_id) {
+                        par = document.createElement('img');
+                        par.src = img_main.src.replace(/_\d+\./, '_' + img_new_id + '.').split('?')[0];
+                        par.style = 'margin: 20px; width: 90%;';
+                      }
                     }
+                  } else if (elem.type === 'storyid') {
+                    if (links) {
+                      let story_id = elem.value;
+                      if (story_id) {
+                        let story = links.find(x => x.includes(story_id + '_'));
+                        if (story) {
+                          par = document.createElement('a');
+                          par.href = story;
+                          par.innerText = story.split(story_id + '_')[1].replace(/_/g, ' ').replace('/', '');
+                          par.className = 'story-related';
+                          if (!matchUrlDomain(window.location.hostname, story))
+                            par.target = '_blank';
+                        }
+                      }
+                    }
+                  } else if (elem.type && !['embed', 'gallery', 'quote'].includes(elem.type)) {
+                    let doc = parser.parseFromString('<div role="paragraph">' + elem.value + '</div>', 'text/html');
+                    par = doc.querySelector('div');
                   }
+                  if (par)
+                    article_lock.appendChild(par);
                 }
-              } else if (!elem.match(/quote:\d+/)) {
-                let doc = parser.parseFromString('<div role="paragraph">' + elem + '</div>', 'text/html');
-                par = doc.querySelector('div');
               }
-              if (par)
-                article_lock.appendChild(par);
             }
+          } catch (err) {
+            console.log(err);
           }
         }
       } else
         addGST();
     }
-  }, 1000);
+  }, 2000);
   let ads = 'div[data-ad-page]';
   hideDOMStyle(ads);
 }
