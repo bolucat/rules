@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.3.5.2
+// @version         4.4.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -341,7 +341,7 @@ else if (matchDomain(['lavanguardia.com', 'mundodeportivo.com'])) {
 }
 
 else if (matchDomain('observador.pt')) {
-  let ads = 'div.obs-ad-placeholder, obs-toaster-seats, obs-moa-btn-seats';
+  let ads = 'div.obs-ad-placeholder, obs-toaster, obs-moa-btn-seats, obs-moa-new';
   hideDOMStyle(ads);
 }
 
