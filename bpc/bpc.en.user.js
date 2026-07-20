@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.9.7
+// @version         4.3.9.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3972,17 +3972,34 @@ else if (matchDomain('ogj.com')) {
 }
 
 else if (matchDomain('on3.com')) {
+  func_post = function () {
+    let article = document.querySelector(article_sel);
+    if (article) {
+      let par = article.querySelector('figure ~ div[style*="max-height:"]');
+      if (par) {
+        if (par.innerText.match(/^\s*<p>/)) {
+          let parser = new DOMParser();
+          let doc = parser.parseFromString('<div>' + par.innerText + '</div>', 'text/html');
+          let par_new = doc.querySelector('div');
+          par.parentNode.replaceChild(par_new, par);
+          addStyle(article_sel + ' p {margin: 20px;}');
+        } else if (par.innerText.length < 5)
+          header_nofix(article, '', 'BPC > no archive-fix');
+      }
+    }
+  }
   let url = window.location.href;
   let paywall_sel = 'div[data-template-type="barrier"]';
+  let article_sel = 'article';
   window.setTimeout(function () {
-    getArchive(url, paywall_sel + '[class]', {rm_attrib: 'class'}, 'article');
+    getArchive(url, paywall_sel + '[class]', {rm_attrib: 'class'}, article_sel);
     let noscroll = document.querySelectorAll('html.scroll-lock, body.scroll-lock');
     for (let elem of noscroll) {
       elem.removeAttribute('class');
       elem.removeAttribute('style');
     }
   }, 0);
-  hideDOMStyle('div#blocker, div[data-ui="ad"], ' + paywall_sel);
+  hideDOMStyle('div#blocker, div[data-ui="ad"], div[class^="RegWallBarrier_container_"], ' + paywall_sel);
 }
 
 else if (matchDomain('outlookbusiness.com')) {
@@ -5473,7 +5490,7 @@ else if (matchDomain(usa_nymag_domains)) {
 }
 
 else if (matchDomain(usa_outside_mag_domains)) {
-  let ads = 'div.js-ad';
+  let ads = 'div.ad-placeholder-wrapper, div.prestitial-ad';
   hideDOMStyle(ads);
 }
 
