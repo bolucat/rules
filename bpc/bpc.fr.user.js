@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.3.8.2
+// @version         4.4.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1810,14 +1810,26 @@ else if (matchDomain('telerama.fr')) {
 }
 
 else if (matchDomain('valeursactuelles.com')) {
-  let paywall = document.querySelector('div.qiota');
+  let paywall = document.querySelector('div.va-paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    let qiota_hidden = document.querySelector('div.qiota_reserve');
-    if (qiota_hidden)
-      qiota_hidden.removeAttribute('class');
+    let json_script = getArticleJsonScript();
+    if (json_script) {
+      try {
+        let json = JSON.parse(json_script.text);
+        if (json && json['@graph'] && json['@graph'][0] && json['@graph'][0].articleBody) {
+          let article = document.querySelector('div.post__content');
+          if (article) {
+            let json_text = json['@graph'][0].articleBody;
+            article.innerText = json_text
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
-  let banners = 'div.subscription-banner, div.stick-sidebar';
+  let banners = 'div.subscription-banner, div.stick-sidebar, div[data-od-slot-key]';
   hideDOMStyle(banners);
 }
 

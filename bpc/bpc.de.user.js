@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.3.8.2
+// @version         4.4.0.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -505,10 +505,11 @@ else if (matchDomain('jacobin.de')) {
 }
 
 else if (matchDomain('kleinezeitung.at')) {
-  let paywall = document.querySelector('div.article-body.paywally');
+  window.setTimeout(function () {
+  let paywall = document.querySelector('div.klz-paywalled-content');
   if (paywall) {
-    paywall.classList.remove('paywally');
-    let article = paywall.querySelector('div');
+    paywall.classList.remove('klz-paywalled-content');
+    let article = paywall;
     if (article) {
       let art_match = window.location.pathname.match(/\/artikel\/(\d+)\//);
       if (art_match) {
@@ -603,10 +604,12 @@ else if (matchDomain('kleinezeitung.at')) {
                   }
                   if (elem.hasChildNodes())
                     elem.style = 'border: solid; padding: 20px;';
-                } else if (par.type === 'element_video' && par.androidUrl) {
-                  elem = document.createElement('video');
-                  elem.src = par.androidUrl;
-                  elem.setAttribute('controls', '');
+                } else if (par.type === 'element_video') {
+                  if (par.androidUrl) {
+                    elem = document.createElement('video');
+                    elem.src = par.androidUrl;
+                    elem.setAttribute('controls', '');
+                  }
                 } else if (par.type === 'social_media_oembed' && par.embeddedLink) {
                   if (par.provider && par.html && ['youtube', 'glomex', 'instagram'].includes(par.provider.toLowerCase())) {
                     let doc = parser.parseFromString('<div>' + par.html + '</div>', 'text/html');
@@ -624,7 +627,7 @@ else if (matchDomain('kleinezeitung.at')) {
                     sub_elem.target = '_blank';
                     elem.appendChild(sub_elem);
                   }
-                } else if (par.type === 'more_topic' && par.items) {
+                } else if ([ 'more_topic', 'inline_gallery'].includes(par.type) && par.items) {
                   elem = document.createElement('div');
                   if (par.title) {
                     let title = document.createElement('span');
@@ -657,6 +660,7 @@ else if (matchDomain('kleinezeitung.at')) {
       }
     }
   }
+  }, 2000);
   let ads = 'div.js-ad, div#adArticleBottomWrapper, aside[class~="lg:sticky"]';
   hideDOMStyle(ads);
 }

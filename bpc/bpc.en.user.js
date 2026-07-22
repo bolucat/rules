@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.3.9.8
+// @version         4.3.9.9
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3427,9 +3427,38 @@ else if (matchDomain('insights.citeline.com')) {
 }
 
 else if (matchDomain('interestingengineering.com')) {
-  addStyle('body {overflow: auto !important; position: relative !important; top: unset !important;}');
-  let banners = 'main > div[class*="t-hidden"], div.t-bg-black';
-  hideDOMStyle(banners);
+  let article = document.querySelector('div.body-content');
+  if (article) {
+    let art_pars = article.querySelectorAll('p');
+    let paywall = document.querySelector('div#paywall-div');
+    if (paywall || art_pars.length < 5) {
+      removeDOMElement(paywall);
+      let scripts = document.querySelectorAll('script:not([src], [type])');
+      let json_script;
+      let script_start = 'self.__next_f.push([1,"\\';
+      let script_len = 0;
+      for (let script of scripts) {
+        if (script.text.startsWith(script_start) && script.text.length > script_len) {
+          json_script = script;
+          script_len = script.text.length;
+        }
+      }
+      if (json_script) {
+        try {
+          let json_text = parseHtmlEntities('\\' + json_script.text.split(script_start)[1].split('"])')[0].replace(/\\u003c/g, '<').replace(/\\u003e/g, '>').replace(/\\u0026/g, '&').replace(/\\"/g, '"')).replace(/\\n/g, '');
+          let parser = new DOMParser();
+          let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
+          let article_new = doc.querySelector('div');
+          article_new.className = article.className;
+          article.parentNode.replaceChild(article_new, article);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  }
+  let ads = 'div[id^="harz"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('investors.com')) {
