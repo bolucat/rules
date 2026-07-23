@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.0.0
+// @version         4.4.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -576,6 +576,9 @@ else if (matchDomain('kleinezeitung.at')) {
                 } else if (par.type === 'free_html' && par.freeHtml) {
                   let doc = parser.parseFromString('<div>' + par.freeHtml + '</div>', 'text/html');
                   elem = doc.querySelector('div');
+                  let iframe = elem.querySelector('iframe[width]');
+                  if (iframe)
+                    iframe.style.width = '100%';
                 } else if (par.type === 'interview' && par.content) {
                   elem = document.createElement('div');
                   for (let item of par.content) {

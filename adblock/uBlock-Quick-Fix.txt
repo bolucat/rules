@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Tue, 21 Jul 2026 12:08:37 +0000
-! Diff-Path: ../patches/2026.7.22.999.patch#ublock-quick-fixes
+! Last modified: Thu, 23 Jul 2026 12:02:28 +0000
+! Diff-Path: ../patches/2026.7.23.865.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -89,7 +89,7 @@ web.facebook.com,www.facebook.com##div[role="complementary"] div[data-visualcomp
 web.facebook.com,www.facebook.com##div[role="complementary"] div[data-visualcompletion="ignore-dynamic"] a[rel="nofollow noreferrer tag"][aria-labelledby^="_R_"]
 web.facebook.com,www.facebook.com##div[role="complementary"] a[attributionsrc][href^="http"][target="_blank"][role="link"][rel*="noreferrer"]:has(img[src])
 web.facebook.com,www.facebook.com##div[role="complementary"] h3 span[style^="-webkit-box-orient:vertical"]:has-text(/^Sponsored$/)
-web.facebook.com,www.facebook.com##+js(rpnt, script, "x3m9kf2n":true\,, , condition, compat_iframe_token)
+! web.facebook.com,www.facebook.com##+js(rpnt, script, "x3m9kf2n":true\,, , condition, compat_iframe_token)
 web.facebook.com,www.facebook.com##+js(json-prune, require.0.3.0.__bbox.require.[].3.1.__bbox.result.data.serpResponse.results.edges.[-].rendering_strategy.view_model.story.sponsored_data.ad_id)
 web.facebook.com,www.facebook.com##+js(json-edit, ..node[?.*.__typename=="SponsoredData"])
 web.facebook.com,www.facebook.com##+js(json-edit, ..nodes.*[?.sponsored_data])
@@ -106,12 +106,12 @@ web.facebook.com,www.facebook.com##+js(trusted-prevent-dom-bypass, Element.proto
 web.facebook.com,www.facebook.com##+js(trusted-prevent-dom-bypass, Element.prototype.append, Function.prototype.toString)
 ||static.xx.fbcdn.net/rsrc.php/$script,domain=web.facebook.com|www.facebook.com,replace=/return r instanceof ArrayBuffer/return r.constructor.name==="ArrayBuffer"/
 ! VOE sites
-||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=caseyimpactstation.com,important
-caseyimpactstation.com##+js(nowoif)
-caseyimpactstation.com##+js(set, console.clear, undefined)
-caseyimpactstation.com##+js(acs, globalThis, break;case)
-caseyimpactstation.com##+js(acs, WebAssembly, atob)
-||caseyimpactstation.com^$badfilter
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=matthewhotelscience.com,important
+matthewhotelscience.com##+js(nowoif)
+matthewhotelscience.com##+js(set, console.clear, undefined)
+matthewhotelscience.com##+js(acs, globalThis, break;case)
+matthewhotelscience.com##+js(acs, WebAssembly, atob)
+||matthewhotelscience.com^$badfilter
 ! next-episode .net
 !next-episode.net##+js(rmnt, script, '/[\s\S]{0,}head[\s\S]{1900,}/')
 !next-episode.net##+js(rpnt, script, '/.then[\s\S]{0,}?;/g')
@@ -399,3 +399,4 @@ javmix.*#@#+js(acs, addEventListener, style.display)
 !#endif
 twitch.tv##.stream-display-ad__wrapper + div > div[style^="position:"] > div[class^="Layout-sc-"]:has(video[src^="https://m.media-amazon.com"])
 twitch.tv##.chat-shell > div[class^="Layout-sc-"]  > div[style^="transition:"]:has(video[src^="https://m.media-amazon.com"])
+||vk.com/images/$third-party,badfilter
