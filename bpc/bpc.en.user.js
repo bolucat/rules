@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.0.0
+// @version         4.4.0.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2461,33 +2461,6 @@ else if (matchDomain('cyclingnews.com')) {
 
 else if (matchDomain('dailyherald.com')) {
   let ads = 'div.dhTopAd, div[data-widget-host="revcontent"]';
-  hideDOMStyle(ads);
-}
-
-else if (matchDomain('dailywire.com')) {
-  let article_sel = 'div[data-narration-container]';
-  let article = document.querySelector(article_sel + ':not(.done)');
-  if (article) {
-    article.classList.add('done');
-    let body = document.querySelector(article_sel + ' > div[class]:first-child');
-    if (body)
-      body.removeAttribute('class');
-    let banners = document.querySelectorAll(article_sel + ' > div:not(:first-child)');
-    removeDOMElement(...banners);
-  }
-  if (window.localStorage.getItem('article-gate-data')) {
-    try {
-      let gate_data = JSON.parse(window.localStorage.getItem('article-gate-data'));
-      if (gate_data) {
-        gate_data.articlesViewed = 1;
-        gate_data.viewedArticles = {};
-        window.localStorage.setItem('article-gate-data', JSON.stringify(gate_data));
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  let ads = 'div.ad-wrapper, div.css-1d84fd8';
   hideDOMStyle(ads);
 }
 

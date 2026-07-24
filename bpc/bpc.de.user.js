@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.0.1
+// @version         4.4.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -827,6 +827,8 @@ else if (matchDomain('spektrum.de')) {
   let paywall = document.querySelector('article.pw-premium');
   if (paywall)
     paywall.classList.remove('pw-premium');
+  document.querySelectorAll('iframe:not([src])[data-src]').forEach(e => e.src = e.getAttribute('data-src'));
+  waitDOMAttribute('body', 'BODY', 'style', node => node.removeAttribute('style'), true);
 }
 
 else if (matchDomain('spiegel.de')) {
