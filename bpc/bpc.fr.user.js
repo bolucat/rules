@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.0.1
+// @version         4.4.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1404,6 +1404,7 @@ else if (matchDomain('lexpress.fr')) {
 }
 
 else if (matchDomain('liberation.fr')) {
+  window.setTimeout(function () {
   let paywall = document.querySelector('div.article-body-paywall');
   if (paywall) {
     removeDOMElement(paywall);
@@ -1437,8 +1438,17 @@ else if (matchDomain('liberation.fr')) {
                   }
                 } else if (par.type === 'image') {
                   if (par.url) {
-                    sub_elem = document.createElement('img');
-                    sub_elem.src = par.url;
+                    let caption;
+                    if (par.caption) {
+                      caption = par.caption;
+                      if (par.credits) {
+                        if (par.credits.by && par.credits.by[0] && par.credits.by[0].name)
+                          caption += ' ' + par.credits.by[0].name;
+                        if (par.credits.affiliation && par.credits.affiliation[0] && par.credits.affiliation[0].name)
+                          caption += '/' + par.credits.affiliation[0].name;
+                      }
+                    }
+                    sub_elem = makeFigure(par.url, caption);
                   }
                 } else if (par.type === 'custom_embed') {
                   if (par.embed && par.embed.config) {
@@ -1501,6 +1511,7 @@ else if (matchDomain('liberation.fr')) {
       }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
     }
   }
+  }, 1000);
   let ads = 'div[class^="StickyAd"], div[class^="default__OutbrainWrapper"]';
   hideDOMStyle(ads);
 }

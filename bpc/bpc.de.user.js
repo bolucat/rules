@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.0.3
+// @version         4.4.0.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -843,8 +843,9 @@ else if (matchDomain('spiegel.de')) {
     let charts = document.querySelectorAll('section div[x-data*="{isLoaded:"]');
     for (let elem of charts)
       elem.style.height = elem.offsetHeight + 'px';
+    document.querySelectorAll('figure > div > img.lazyload[src^="data:image/"][data-src').forEach(e => e.src = e.getAttribute('data-src')); //games
     if (mobile) {
-      document.querySelectorAll('picture img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
+      document.querySelectorAll('picture img[loading="lazy"][style]:not([src^="data:image/"])').forEach(e => e.style = 'width: 95%;');
       let header_img = document.querySelector('header div[style*=";width:"]');
       if (header_img)
         header_img.style.width = 'unset';
