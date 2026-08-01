@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: zKA0vpF+zNuB8PxjfJcMRQ
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1785523159-3600.patch
+! Checksum: nU3VprgnvPs68IEJB/HIGw
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1785605263-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.80.73
-! TimeUpdated: 2026-07-31T18:35:44+00:00
+! Version: 2.4.80.94
+! TimeUpdated: 2026-08-01T17:24:09+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -37661,6 +37661,7 @@ $subdocument,3p,denyallow=disqus.com,domain=love4u.net
 !
 ! NOTE: Specific rules
 !
+star-history.com##div.lg\:block > div.w-full:has(> a[href*="?utm_source"] img)
 leeapk.com##+js(abort-on-property-write, AcrpConfig)
 history.com##div[data-sentry-element="Component"]:has(> span:contains(Advertisement))
 prydwen.gg##div[data-banner-location]
@@ -60374,6 +60375,11 @@ outlookindia.com##a[rel="sponsored nofollow"]
 ! ATTENTION: The rules in this section must be accompanied by a link of an issue, where the problem will be fixed
 ! or with clear description what to do next
 !
+! Non ad site is blocked
+! Reported to EasyList
+||bmtmicro.com^$popup,badfilter
+! https://github.com/AdguardTeam/AdguardFilters/issues/237249
+! aglint-disable-next-line
 ! https://github.com/AdguardTeam/AdguardFilters/issues/234345
 ! https://github.com/AdguardTeam/PopupBlocker/issues/347
 ! TODO: remove it after the issue above has been fixed
@@ -60497,10 +60503,11 @@ collider.com#@#.adsninja-ad-zone
 collider.com#@#.ad-zone-container
 ! https://github.com/AdguardTeam/AdguardFilters/issues/234491
 ! Ad-Shield generic rules problems
+! https://github.com/AdguardTeam/AdguardFilters/issues/237209
 ! https://github.com/AdguardTeam/AdguardFilters/issues/236826
 ! https://github.com/AdguardTeam/AdguardFilters/issues/234817
 ! https://github.com/AdguardTeam/AdguardFilters/issues/235352
-nordicsemi.com,learngerman.dw.com,jamf.com#@#div.rendered[id][class*=" "]:not([id*="captcha"]):not(.cell-container)
+windguru.cz,nordicsemi.com,learngerman.dw.com,jamf.com#@#div.rendered[id][class*=" "]:not([id*="captcha"]):not(.cell-container)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/234825
 ! It looks like a website issue. Injecting any stylesheet (even if not via an ad blocker)
 ! containing "[style]" inside ":has()" causes the website to freeze when the copy button is clicked
