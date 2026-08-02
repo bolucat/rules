@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.3.9.3
+// @version         4.4.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -377,17 +377,17 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
     let article = document.querySelector(article_sel);
     if (article) {
       if (mobile) {
-        document.querySelectorAll('div[style*="grid-column-end:"]').forEach(e => e.style.width = article.offsetWidth + 'px');
+        article.querySelectorAll('div[style*="grid-column-end:"]').forEach(e => e.style.width = article.offsetWidth + 'px');
       }
       article.querySelectorAll('div[style*="background-color:"][style*="width:"]:not(:has(> figure))').forEach(e => e.style.width = '85%'); //shades
-      let lazy_images = article.querySelectorAll('img[loading="lazy"][style]:not([style*=";width:100%;"])');
+      let lazy_images = article.querySelectorAll('img[loading="lazy"][style]:not([style*=";min-width:38px;"])');
       for (let elem of lazy_images) {
         elem.style = 'width: 95%;';
         if (elem.parentNode.style && elem.parentNode.getAttribute('style').includes('min-height:')) {
           elem.parentNode.removeAttribute('style');
           elem.parentNode.parentNode.removeAttribute('style');
         }
-        if ((!elem.src || elem.src.startsWith('data:image/')) && elem.getAttribute('currentsourceurl'))
+        if (!elem.src && elem.getAttribute('currentsourceurl'))
           elem.src = elem.getAttribute('currentsourceurl');
       }
       let widgets = article.querySelectorAll('div > div > div[old-src]:not([src])');
@@ -412,14 +412,9 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
         elem.parentNode.removeAttribute('style');
         removeDOMElement(elem);
       }
-      let video_buttons = article.querySelectorAll('button[type="button"]');
+      let video_buttons = article.querySelectorAll('div > button[type="button"]');
       removeDOMElement(...video_buttons);
-      let media = article.querySelectorAll('div[style*="aspect-ratio:"]');
-      for (let elem of media) {
-        if (elem.innerText.trim().length < 3)
-          removeDOMElement(elem);
-      }
-      if (header_img && !article.querySelector('header figure, figure > div > svg'))
+      if (header_img && !article.querySelector('header figure, article > figure, figure > div > svg'))
         article.firstChild.before(header_img);
       if (comments)
         article.appendChild(comments);
@@ -429,7 +424,7 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
     let article_divs = document.querySelectorAll(article_sel + ' > div:not(:empty)');
     if (article_divs.length < 3)
       article.before(googleSearchToolLink(url));
-    let ads = 'span[style*="background-color:"]:has(> span[style*="min-height:"]), span > br, ' + article_sel + ' div:empty:not([class])';
+    let ads = 'span[style*="background-color:"]:has(> span[style*="min-height:"]), span > br, ' + article_sel + ' div:empty:not([class]), div[style*=";isolation:isolate;"]';
     hideDOMStyle(ads, 2);
   }
   let header_img = document.querySelector('div[data-content-type="MEDIA_TOP"]');
@@ -483,7 +478,6 @@ else if (matchDomain('telegraaf.nl')) {
         }
         article.querySelectorAll('section[style*=";width:"]').forEach(e => e.removeAttribute('style'));
       }
-      article.querySelectorAll('img[src^="data:image/"][currentsourceurl]').forEach(e => e.src = e.getAttribute('currentsourceurl'));
       let gallery, img_width, captions, next, next_images, next_img_width;
       let gallery_new = document.createElement('div');
       let figure_nr = 0;

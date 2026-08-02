@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.0.4
+// @version         4.4.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -372,7 +372,8 @@ else if (matchDomain('faz.net')) {
             }
           }
         }
-      }
+      } else
+        header_nofix('div.story-content[data-module="text"]');
     }
   }
   let ads = 'div.lay-PaySocial, div.iqadtile_wrapper, div.iqdcontainer';
