@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.1.0
+// @version         4.4.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -1286,7 +1286,7 @@ else if (matchDomain('zeit.de')) {
     }
     let audio_tts = document.querySelector('div.audio-player');
     if (audio_tts) {
-      let audio_src = document.querySelector('head > meta[property="og:audio"][content]');
+      let audio_src = document.querySelector('head > meta[property="og:audio"][content]:not([content^="https://media-delivery.zeit.de/"])');
       if (audio_src) {
         let audio_new = document.createElement('audio');
         audio_new.src = audio_src.content;

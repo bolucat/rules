@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: +My+keFMUEgcUZPH/ZbAyQ
-! Diff-Path: ../patches/7/7-s-1785634922-3600.patch
+! Checksum: w7wdfYM+ZOxOI+33ewhFXw
+! Diff-Path: ../patches/7/7-s-1785769712-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.75.27
-! TimeUpdated: 2026-08-02T01:38:38+00:00
+! Version: 2.0.75.32
+! TimeUpdated: 2026-08-03T15:05:16+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1914,10 +1914,18 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+gfoodd.com##a[href^="https://amzn.to/"]
+||kurashi-tips.com/ads/manifest.js
+reddit-matome.com##.amazon-sidebar
+reddit-matome.com##.article-affiliate
+hamusoku.com##div[class^="article-body"] a[href^="https://link.amazon/"]
+itmedia.co.jp##.p-header-banner
 jmedj.co.jp##.ad-data:not([href*="jmedj.co.jp"]):remove()
 famitsu.com##div[class^="ArticleDetail_articleMainFooter"] > div[class^="CommonParts_commonPartsContainer"]:has(a[href^="https://amzn.to"])
 arekore.app##div[class^="ads"]
 automaton-media.com##div[class^="ai-viewport-"]
+retty.me##.sidebar__ad-content
+retty.me##.cassettes__between-ad
 9-gld.net##.catpost-cards > .c_linkto:has(> .adsbygoogle)
 9-gld.net##.normal-sidebar > .widget_text:has(> .textwidget > .adsbygoogle)
 tuma.jp##.pr-section
@@ -12074,13 +12082,15 @@ dova-s.jp##.add-DLaddarea
 dova-s.jp##.add-homesubmenu
 dova-s.jp##.add-header
 ! itest.5ch.*,itest.bbspink.com
+||itest.5ch.io/kn/widget?
 ||itest.5ch.*/assets/css/ads.css
 ||itest.5ch.*/ads.json
 ||itest.5ch.*/assets/js/ad-manager-5ch.js
 ||itest.bbspink.com/assets/js/ad-manager-bbs.js
 itest.bbspink.com##.ad_subb_ls
 itest.bbspink.com##div[id^="ad_special"]
-itest.5ch.io###subback-ad-top
+itest.5ch.io###creative-player
+itest.5ch.io##div[id^="subback-ad-"]
 itest.5ch.io##.ad_300x250_maintap
 itest.5ch.io###browsifixedatf
 itest.5ch.io##.ad_nth:not([style])
@@ -12223,7 +12233,7 @@ kojodan.jp##+js(remove-attr, height, iframe[id^="google_ads_iframe"], stay)
 @@||tpc.googlesyndication.com/pagead/imgad?$xhr,domain=kojodan.jp
 safeframe.googlesyndication.com##+js(href-sanitizer, a[href^="https://adclick.g.doubleclick.net/"][href*="adurl="], ?adurl)
 ! temporally hidden for GTM
-car-me.jp,paiza.jp,qa.weblio.jp,okinawatimes.co.jp,rank-king.jp,uwl.weblio.jp,chugoku-np.co.jp,minato-yamaguchi.co.jp,kyoto-np.co.jp,raysee.jp,j-cast.com,medicalnote.jp,kurashi-to-oshare.jp,ar-mag.jp,ben54.jp,anikore.jp##html[class*="loading"]:style(visibility: visible !important;)
+thetv.jp,car-me.jp,paiza.jp,qa.weblio.jp,okinawatimes.co.jp,rank-king.jp,uwl.weblio.jp,chugoku-np.co.jp,minato-yamaguchi.co.jp,kyoto-np.co.jp,raysee.jp,j-cast.com,medicalnote.jp,kurashi-to-oshare.jp,ar-mag.jp,ben54.jp,anikore.jp##html[class*="loading"]:style(visibility: visible !important;)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/208209
 mobilegadget.jp#@#.header-ad
 ! https://github.com/AdguardTeam/AdguardFilters/issues/208191
