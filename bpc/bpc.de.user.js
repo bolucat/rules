@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.1.1
+// @version         4.4.1.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -444,7 +444,7 @@ else if (matchDomain('heise.de')) {
   let paywall_sel = 'a-gift:has(div.paywall-delimiter)';
   let url = window.location.href;
   getArchive(url, paywall_sel, '', 'article');
-  let ads = 'div.ad-ldb-container, div.inread-cls-reduc, aside.img-ad';
+  let ads = 'div.ad-ldb-container, div.inread-cls-reduc, aside.img-ad, a-opt-in';
   hideDOMStyle(ads);
 }
 

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.0.4
+// @version         4.4.0.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1597,7 +1597,7 @@ else if (matchDomain('ouest-france.fr')) {
       insert_script(ouest_france_sub);
     }
   }
-  let ads = 'div.pub, div.feed-taboola';
+  let ads = 'div.pub, div.feed-taboola, div[id^="pub_pave_article"]';
   hideDOMStyle(ads);
   let banner = document.querySelector('div#pub_megabanner');
   removeDOMElement(banner);

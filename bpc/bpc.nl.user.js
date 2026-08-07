@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.4.1.0
+// @version         4.4.1.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -387,8 +387,6 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
           elem.parentNode.removeAttribute('style');
           elem.parentNode.parentNode.removeAttribute('style');
         }
-        if (!elem.src && elem.getAttribute('currentsourceurl'))
-          elem.src = elem.getAttribute('currentsourceurl');
       }
       let widgets = article.querySelectorAll('div > div > div[old-src]:not([src])');
       for (let elem of widgets) {

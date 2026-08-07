@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.4.0.1
+// @version         4.4.0.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -59,6 +59,8 @@
 // @match           *://*.levante-emv.com/*
 // @match           *://*.losandes.com.ar/*
 // @match           *://*.marca.com/*
+// @match           *://*.milenio.com/*
+// @match           *://*.nacion.com/*
 // @match           *://*.nsctotal.com.br/*
 // @match           *://*.observador.pt/*
 // @match           *://*.ole.com.ar/*
@@ -390,7 +392,7 @@ else if (window.location.hostname.endsWith('.es')) {// Sport Life Ibérica sites
   }
 }
 
-} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['abcmais.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'eluniverso.com', 'exame.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'revistaoeste.com', 'semana.com'])) {//south america
+} else if (window.location.hostname.match(/\.(ar|br|cl|pe|uy)$/) || matchDomain(['abcmais.com', 'clarin.com', 'cronista.com', 'elespectador.com', 'elmercurio.com', 'eltiempo.com', 'eltribuno.com', 'eluniverso.com', 'exame.com', 'globo.com', 'lasegunda.com', 'latercera.com', 'nacion.com', 'revistaoeste.com', 'semana.com'])) {//south america
 
 if (matchDomain('abcmais.com')) {
   if (!window.location.pathname.endsWith('/amp/')) {
@@ -870,6 +872,18 @@ else if (matchDomain('lasegunda.com')) {
 
 else if (matchDomain('latercera.com')) {
   let ads = 'div.ads-block';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('milenio.com')) {
+  if (window.location.pathname.startsWith('/milenio-plus'))
+    header_nofix('main');
+  let ads = 'aside[data-camus-module-type="ad"], aside#taboola-below-article-thumbnails-no-feed';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('nacion.com')) {
+  let ads = 'div[data-ad-label]';
   hideDOMStyle(ads);
 }
 
