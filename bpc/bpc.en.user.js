@@ -133,6 +133,7 @@
 // @exclude         *://*.marca.com/*
 // @exclude         *://*.milenio.com/*
 // @exclude         *://*.nacion.com/*
+// @exclude         *://*.ostdeutscheallgemeine.com/*
 // @exclude         *://*.parismatch.com/*
 // @exclude         *://*.parkiet.com/*
 // @exclude         *://*.philomag.com/*

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.1.2
+// @version         4.4.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -19,6 +19,7 @@
 // @match           *://*.kleinezeitung.at/*
 // @match           *://*.kurier.at/*
 // @match           *://*.nzz.ch/*
+// @match           *://*.ostdeutscheallgemeine.com/*
 // @match           *://*.profil.at/*
 // @match           *://*.schweizermonat.ch/*
 // @match           *://*.themarket.ch/*
@@ -207,15 +208,9 @@ else if (matchDomain(['beobachter.ch', 'handelszeitung.ch'])) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('berliner-zeitung.de')) {
-  func_post = function () {
-    let pars = document.querySelectorAll(article_sel + ' > div:not(:empty)');
-    if (pars.length < 3)
-      header_nofix(article_sel, '', 'BPC > no archive-fix');
-  }
+else if (matchDomain(['berliner-zeitung.de', 'ostdeutscheallgemeine.com'])) {
   let url = window.location.href;
-  let article_sel = 'div#articleBody';
-  getArchive(url, 'div[class^="soft-paywall_wrapper_"]', '', article_sel);
+  getArchive(url, 'div#paywall-tabs', '', 'article');
   let ads = 'div[class^="traffective_"], div[class^="article_billboard-"], div[class*="_ad_"], div[class^="outbrain_"], div[id^="qmn-ad-"], div[style]:empty, div[data-height]';
   hideDOMStyle(ads);
 }
@@ -852,6 +847,8 @@ else if (matchDomain('spiegel.de')) {
         header_img.style.width = 'unset';
     }
     header_nofix('article', '*:not(.hidden) > svg[id*="-plus-paywall-"]', 'BPC > no archive-fix');
+    if (document.querySelector('head > link[type="application/rss+xml"][href="https://www.spiegel.de/thema/liveblogs/index.rss"]'))
+      header_nofix('article', 'div[x-embed-bridge-handler] > div[x-show="!isInitialized"]', 'BPC > for liveblogs use archive-link');
   }
   getArchive(url, 'div[data-area="paywall"]', '', 'article');
   let ads = 'div[data-advertisement], div[x-data^="{adIndex:"]';
