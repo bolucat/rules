@@ -129,6 +129,7 @@ clash() {
 	# exception
 	sed '/herokuapp.com/d' -i domain-list-temp.txt
 	sed '/cloud.tencent.com/d' -i domain-list-temp.txt
+	sed '/redditmedia.com/d' -i domain-list-temp.txt
 	# domain-list
 	cat domain-list-temp.txt | sort | uniq > domain-list.txt
 	echo "payload:" > my-reject-domain.yaml && cat domain-list.txt | sed $'s/^/  - \'+\./g' | sed $'s/$/&\'/g' >> my-reject-domain.yaml
