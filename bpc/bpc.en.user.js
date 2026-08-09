@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.1.2
+// @version         4.4.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -48,6 +48,7 @@
 // @match           *://*.sloanreview.mit.edu/*
 // @match           *://*.standardmedia.co.ke/*
 // @match           *://*.stcatharinesstandard.ca/*
+// @match           *://*.telegram.hr/*
 // @match           *://*.the-star.co.ke/*
 // @match           *://*.theleaflet.in/*
 // @match           *://*.uxdesign.cc/*
@@ -4619,6 +4620,24 @@ else if (matchDomain(['techtarget.com', 'computerweekly.com'])) {
     let banners = document.querySelectorAll('p#firstP, div#inlineRegistrationWrapper');
     removeDOMElement(...banners);
   }
+}
+
+else if (matchDomain('telegram.hr')) {
+  let audio_wrapper = document.querySelector('div.audio-wrapper');
+  if (audio_wrapper) {
+    let audio_disabled = audio_wrapper.querySelector('div.play-button-wrap > button.disabled');
+    if (audio_disabled) {
+      let audio_src_dom = audio_wrapper.querySelector('audio > source[src]');
+      if (audio_src_dom) {
+        let audio_new = document.createElement('audio');
+        audio_new.src = audio_src_dom.src;
+        audio_new.setAttribute('controls', '');
+        audio_disabled.parentNode.parentNode.replaceChild(audio_new, audio_disabled.parentNode);
+      }
+    }
+  }
+  let ads = 'div.banner-slot, div#intext_midas';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('the-american-interest.com')) {
