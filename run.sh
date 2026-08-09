@@ -169,10 +169,8 @@ clash() {
 	wget https://www.baipiao.eu.org/cloudflare/ips-v6 -O ips-v6.txt
 	wget https://www.baipiao.eu.org/cloudflare/colo -O colo.txt
 	wget https://www.baipiao.eu.org/cloudflare/url -O url.txt
-	wget https://raw.githubusercontent.com/badafans/better-cloudflare-ip/master/shell/cf.sh -O cf.sh
-	wget "https://raw.githubusercontent.com/badafans/better-cloudflare-ip/master/batch/CF%E4%BC%98%E9%80%89IP-UTF8.bat" -O "CF.bat"
-	wget https://raw.githubusercontent.com/badafans/better-cloudflare-ip/master/batch/RTT.bat -O "RTT.bat"
-	wget https://raw.githubusercontent.com/badafans/better-cloudflare-ip/master/batch/CR2CRLF.exe -O "CR2CRLF.exe"
+	export CF_IP=$(wget -qO- https://api.github.com/repos/badafans/better-cloudflare-ip/tags | grep 'name' | cut -d\" -f4 | head -1)
+    wget -qO- https://api.github.com/repos/badafans/better-cloudflare-ip/releases/tags/${CF_IP} | jq ".assets[] | {browser_download_url}" -c | jq .browser_download_url -r | wget -q -i -
 	popd || exit 1
 	# import other repositories
 	pushd clash || exit 1
