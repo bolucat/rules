@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.0.5
+// @version         4.4.1.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -34,6 +34,7 @@
 // @match           *://*.lesoir.be/*
 // @match           *://*.letemps.ch/*
 // @match           *://*.loeildelaphotographie.com/*
+// @match           *://*.macg.co/*
 // @match           *://*.monacomatin.mc/*
 // @match           *://*.moustique.be/*
 // @match           *://*.parismatch.com/*
@@ -68,6 +69,7 @@ var fr_gcf_custom_domains = ['larep.fr', 'leberry.fr', 'lechorepublicain.fr', 'l
 var fr_groupe_ebra_domains = ['bienpublic.com', 'dna.fr', 'estrepublicain.fr', 'lalsace.fr', 'ledauphine.com', 'lejsl.com', 'leprogres.fr', 'republicain-lorrain.fr', 'vosgesmatin.fr'];
 var fr_groupe_la_depeche_domains = ['centrepresseaveyron.fr', 'journaldemillau.fr', 'ladepeche.fr', 'lindependant.fr', 'midilibre.fr', 'nrpyrenees.fr', 'petitbleu.fr', 'rugbyrama.fr'];
 var fr_groupe_la_manche_libre_custom_domains = ['echoancenis.fr', 'echoduberry.fr', 'hautanjou.fr', 'larenaissancehebdo.fr', 'lecourriercauchois.fr', 'lecourrierdelamayenne.fr'];
+var fr_groupe_macg_domains = ['igen.fr', 'macg.co', 'watchgeneration.fr'];
 var fr_groupe_nice_matin_domains = ['monacomatin.mc', 'nicematin.com', 'varmatin.com'];
 
 if (matchDomain('alternatives-economiques.fr')) {
@@ -618,6 +620,43 @@ else if (matchDomain(fr_groupe_la_depeche_domains)) {
     }
   }
   let ads = 'div.ad';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain(fr_groupe_macg_domains)) {
+  if (window.location.search.startsWith('?amp')) {
+    ampToHtml();
+  } else {
+    let paywall_sel = 'main section.border-club';
+    let paywall = document.querySelector(paywall_sel);
+    let article = document.querySelector('div.news-body');
+    if (paywall && article) {
+      removeDOMElement(paywall);
+      let match = window.location.pathname.match(/-(\d+)$/);
+      if (match) {
+        let article_id = match[1];
+        let url_src = window.location.origin + '/api/article/' + article_id;
+        let json_key = 'data.0.content';
+        getExtFetch(url_src, json_key, {}, main_macg);
+        function main_macg(url, data) {
+          try {
+            if (data) {
+              let parser = new DOMParser();
+              let doc = parser.parseFromString('<div>' + data + '</div>', 'text/html');
+              let article_new = doc.querySelector('div');
+              if (article_new) {
+                article.innerHTML = '';
+                article.appendChild(article_new);
+              }
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+    }
+  }
+  let ads = 'div[data-optidigital-slot], div[class*="min-h-"]';
   hideDOMStyle(ads);
 }
 

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.1.3
+// @version         4.4.1.4
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -131,6 +131,7 @@
 // @exclude         *://*.lesinrocks.com/*
 // @exclude         *://*.levante-emv.com/*
 // @exclude         *://*.loeildelaphotographie.com/*
+// @exclude         *://*.macg.co/*
 // @exclude         *://*.marca.com/*
 // @exclude         *://*.milenio.com/*
 // @exclude         *://*.nacion.com/*
@@ -5447,8 +5448,10 @@ else if (domain = matchDomain(usa_craincomm_domains)) {
   } else {
     let fusion_script = document.querySelector('script#fusion-metadata');
     if (fusion_script && fusion_script.text.includes('Fusion.globalContent=')) {
-      let paywall = document.querySelector('div#piano-paywall-container');
-      let article = document.querySelector('article.b-article-body');
+      let paywall_sel = 'div[data-paywall-template]';
+      let paywall = document.querySelector(paywall_sel);
+      let article_sel = 'article.b-article-body';
+      let article = document.querySelector(article_sel);
       if (paywall && article) {
         removeDOMElement(paywall);
         try {
