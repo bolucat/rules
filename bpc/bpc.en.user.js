@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.1.4
+// @version         4.4.1.5
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1858,6 +1858,13 @@ else if (matchDomain('bloomberg.com')) {
           caption.innerText = parseHtmlEntities(par.data.video.caption) + (par.data.video.credit ? ' ' + par.data.video.credit : '');
           elem.appendChild(caption);
         }
+        if (!window.navigator.userAgent.toLowerCase().includes('chrome') && video.src.includes('.m3u8')) {
+          let video_link = document.createElement('a');
+          video_link.href = video.src;
+          video_link.innerText = 'Open video(m3u8)-link in media player';
+          video_link.target = '_blank';
+          video.before(video_link);
+        }
       }
     } else if (par.subType === 'photo') {
       if (par.data.photo && par.data.photo.src) {
@@ -2227,10 +2234,11 @@ else if (matchDomain('bloomberg.com')) {
       window.localStorage.clear();
     }, 15 * 60 * 1000);
   }
+  let paywall_sel = 'div#fortress-container-root';
   let leaderboard = 'div[id^="leaderboard"], div[class^="leaderboard"], div.canopy-container';
   let shimmering = 'article.first-story div[class*="Placeholder_placeholderParagraphWrapper-"]';
   let ads = 'div[data-ad-status], div[data-ad-type], div[class*="FullWidthAd_"], div.adWrapper, div.dvz-v0-ad';
-  hideDOMStyle([leaderboard, shimmering, ads].join(','));
+  hideDOMStyle([paywall_sel, leaderboard, shimmering, ads].join(','));
 }
 
 else if (matchDomain('bloombergadria.com')) {
@@ -2479,7 +2487,7 @@ else if (matchDomain('dallasnews.com')) {
   if (window.location.search.startsWith('?outputType=amp')) {
     amp_unhide_subscr_section();
   }
-  let ads = 'div[data-block-type="ad"], div[data-pub-id]';
+  let ads = 'div[data-block-type="ad"], div[data-pub-id], article div.b-gray300';
   hideDOMStyle(ads);
 }
 
