@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.1.0
+// @version         4.4.1.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -863,10 +863,10 @@ else if (matchDomain('lecho.be')) {
     let nofix_msg = 'BPC > no data yet (refresh page)';
     if (matchDomain('investisseur.lecho.be')) {
       window.setTimeout(function () {
-      let paywall = document.querySelector('div[class^="ArticleTemplate_paywallContainer_"]');
+      let paywall = document.querySelector('div[class*="_paywallContainer"]');
       if (paywall) {
         removeDOMElement(paywall);
-		let article_sel = 'div[class^="ArticleTemplate_articleBodyCenter_"]';
+		let article_sel = 'div[class*="_articleBodyCenter"]';
         let article = document.querySelector(article_sel);
         if (article) {
           let authorization = mediafin_get_auth();
@@ -884,11 +884,7 @@ else if (matchDomain('lecho.be')) {
       }
       }, 1000);
     } else {
-      window.setTimeout(function () {
-        let close_button = document.querySelector('button.ds-modal__top-bar__closebutton');
-        if (close_button)
-          close_button.click();
-      }, 1000);
+      hideDOMStyle('div.ds-modal-wrapper');
       let paywall = document.querySelector('html.paywall-active');
       if (paywall) {
         paywall.classList.remove('paywall-active');
@@ -1444,7 +1440,7 @@ else if (matchDomain('lexpress.fr')) {
 
 else if (matchDomain('liberation.fr')) {
   window.setTimeout(function () {
-  let paywall = document.querySelector('div.article-body-paywall');
+  let paywall = document.querySelector('div#article-body-paywall');
   if (paywall) {
     removeDOMElement(paywall);
     let article = document.querySelector('article[data-datawall-status]') || document.querySelector('div[class^="default__Main-sc-"] div:empty:not([class], [style])');
@@ -1510,7 +1506,7 @@ else if (matchDomain('liberation.fr')) {
                     console.log(par);
                 } else if (par.type === 'oembed_response') {
                   if (par.raw_oembed && par.raw_oembed.html) {
-                    if (!par.subtype === 'twitter') {
+                    if (par.subtype !== 'twitter') {
                       let doc = parser.parseFromString('<div>' + par.raw_oembed.html + '</div>', 'text/html');
                       sub_elem = doc.querySelector('div');
                     } else if (par.raw_oembed.url) {
@@ -1551,7 +1547,7 @@ else if (matchDomain('liberation.fr')) {
     }
   }
   }, 1000);
-  let ads = 'div[class^="StickyAd"], div[class^="default__OutbrainWrapper"]';
+  let ads = 'div[class^="StickyAd"], div[class^="default__OutbrainWrapper"], div.kxhprn';
   hideDOMStyle(ads);
 }
 
