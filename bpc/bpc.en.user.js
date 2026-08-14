@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.1.6
+// @version         4.4.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -163,7 +163,7 @@
 (function() {
   //'use strict';
 
-if (window.top !== window.self && !matchDomain(['app.historytoday.com', 'appan.newscientist.com']))
+if (window.top !== window.self && !matchDomain(['app.historytoday.com', 'appan.newscientist.com', 'magazine.newstatesman.com']))
   return;
 
 var usa_adv_local_domains = ['al.com', 'cleveland.com', 'lehighvalleylive.com', 'masslive.com', 'mlive.com', 'nj.com', 'oregonlive.com', 'pennlive.com', 'silive.com', 'syracuse.com'];
@@ -1010,8 +1010,38 @@ else if (matchDomain('motorsportmagazine.com')) {
 }
 
 else if (matchDomain('newstatesman.com')) {
-  let ads = 'div.ad';
-  hideDOMStyle(ads);
+  if (window.location.hostname === 'magazine.newstatesman.com') {
+    restorePugpigPage();
+  } else {
+    let paywall = document.querySelectorAll('p[data-ct]');
+    if (paywall.length) {
+      removeDOMElement(...paywall);
+      let json_script = document.querySelector('script#tie-schema-json');
+      if (json_script) {
+        try {
+          let json = JSON.parse(json_script.text);
+          if (json && json.datePublished) {
+            let date = json.datePublished.split(/T\d/)[0].replace(/-/g, '/');
+            let path_new = window.location.pathname.split('/').pop();
+            if (path_new) {
+              let url = 'https://magazine.newstatesman.com/' + date + '/' + path_new + '/content.html';
+              let article_sel = 'div.c-article-content__container';
+              let pars_old = document.querySelectorAll(article_sel + ' > p:not([class])');
+              replaceDomElementExt(url, false, false, article_sel + ' > p.has-drop-cap', 'BPC > no fix (no magazine source file)', 'section.pp-article__body', article_sel);
+              window.setTimeout(function () {
+                if (!document.querySelector('div#bpc_fail'))
+                  removeDOMElement(...pars_old);
+              }, 1000);
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+    let ads = 'div.ad';
+    hideDOMStyle(ads);
+  }
 }
 
 else if (matchDomain('observer.co.uk')) {
