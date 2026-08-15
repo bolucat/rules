@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.4.0.2
+// @version         4.4.2.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -777,13 +777,20 @@ else if (matchDomain('lanacion.com.ar')) {
   if (matchDomain('suscripciones.lanacion.com.ar')) {
     let searchParams = new URLSearchParams(window.location.search);
     if (searchParams.get('callback')) {
-      let article_sel = 'main.paywall-container';
+      func_post = function () {
+        let title = document.querySelector('h1');
+        if (title)
+          document.title = title.innerText + ' - LA NACION';
+        let banners = 'header.ds-header, button#btnAudioSignature, div#v-share';
+        hideDOMStyle(banners, 2);
+      }
       let url = atob(searchParams.get('callback')).split('?')[0];
-      getArchive(url, article_sel + '> button', '', article_sel, '', 'div#fusion-app', 'div#wall');
+      getArchive(url, 'main > section > div', '', 'main', '', 'div#fusion-app');
     }
   }
   let ads = 'div.ln-banner-container';
   hideDOMStyle(ads);
+  removeDOMElement(...document.querySelectorAll('div.ds-banner'));
 }
 
 else if (matchDomain('lance.com.br')) {
