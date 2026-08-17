@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.2.2
+// @version         4.4.2.3
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -6104,7 +6104,7 @@ function fix_dowjones_fetch(url_src, data, article) {
   try {
     if (data) {
       let json = JSON.parse(data);
-      if (json && json.screens && json.screens[0] && json.screens[0].frames) {
+      if (json && json.screens && json.screens[0] && json.screens[0].frames && json.screens[0].frames.length > 1) {
         let pars = json.screens[0].frames;
         let par_class;
         let intro = article.querySelector('p[class*="Paragraph"], [data-type="hed"]');
@@ -6276,7 +6276,8 @@ function fix_dowjones_fetch(url_src, data, article) {
           if (elem.hasChildNodes())
             article.appendChild(elem);
         }
-      }
+      } else
+        header_nofix(article, '', 'BPC > no fix (source file)');
     }
   } catch (err) {
     console.log(err);
