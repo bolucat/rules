@@ -860,7 +860,7 @@ else if (matchDomain('ft.com')) {
     let charts = document.querySelectorAll('div[frameborder][old-src]:not([src])');
     for (let elem of charts) {
       let iframe = document.createElement('iframe');
-      iframe.src = elem.getAttribute('old-src');
+      iframe.src = elem.getAttribute('old-src').split('?')[0];
       iframe.style = 'width: 100%; height: 600px; border: none;';
       elem.parentNode.replaceChild(iframe, elem);
     }
@@ -901,6 +901,9 @@ else if (matchDomain('ft.com')) {
     header_nofix('body', '', 'BPC > open full article (app)', url_app);
     getArchive(url, paywall_sel, '', 'div.n-layout__row--content', '', 'div[style*="article-body"]', 'body');
   }
+  let html = document.querySelector('html[style*="overflow"]');
+  if (html)
+    html.style.overflow = 'visible';
   let banners = '.js-article-ribbon, div.o-ads, pg-slot';
   hideDOMStyle(banners);
 }
