@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.2.7
+// @version         4.4.2.8
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -5266,6 +5266,71 @@ else if (matchDomain('timeshighereducation.com')) {
   }
   let ads = 'div[data-ad-page], section.block-the-dfp';
   hideDOMStyle(ads);
+}
+
+else if (matchDomain('timesofindia.indiatimes.com')) {
+  if (!window.location.pathname.includes('/amp_')) {
+    if (window.location.pathname.startsWith('/toi-plus/')) {
+      window.setTimeout(function () {
+        let paywall = document.querySelector('div[id^="story-blocker"]');
+        let article = document.querySelector('div.paywall') || document.querySelector('article');
+        if (paywall && article) {
+          removeDOMElement(paywall);
+          let art_match = window.location.pathname.match(/\/(\d+)\.cms/);
+          if (art_match) {
+            let article_id = art_match[1];
+            let url_path = 'https://plus.timesofindia.com/aufs/feed/show/article/v1';
+            let url_search = '&fv=1495';
+            let url_src = url_path + '?id=' + article_id + url_search;
+            fetch(url_src)
+            .then(response => {
+              if (response.ok) {
+                response.json().then(json => {
+                  try {
+                    let json_text = getNestedKeys(json, 'it.Story').replace(/\n/g, '<br>');
+                    if (json_text) {
+                      let parser = new DOMParser();
+                      let doc = parser.parseFromString('<div style="font-size: 16px;"' + json_text + '</div>', 'text/html');
+                      let article_new = doc.querySelector('div');
+                      let videos_hidden = article_new.querySelectorAll('video[su]:not([src^="http"])');
+                      for (let elem of videos_hidden) {
+                        let video_link = document.createElement('a');
+                        video_link.href = elem.getAttribute('su');
+                        video_link.innerText = elem.getAttribute('caption') || elem.getAttribute('cap') || video_link.href;
+                        elem.before(document.createElement('br'));
+                        elem.parentNode.replaceChild(video_link, elem);
+                      }
+                      if (article.tagName === 'DIV') {
+                        article.innerHTML = '';
+                        article.removeAttribute('class');
+                      }
+                      article.appendChild(article_new);
+                    }
+                  } catch (err) {
+                    console.log(err);
+                  }
+                });
+              }
+            })
+          }
+          window.setTimeout(function () {
+            let popup_button = document.querySelector('div.primeshow button:not([data-type])');
+            if (popup_button)
+              popup_button.click();
+          }, 1000);
+        }
+      }, 1000);
+    } else if (!window.location.search.startsWith('?rel=plus')) {
+      waitDOMElement('div.popupoverlay', 'DIV', x => window.location.href = window.location.href.split(/[#?]/)[0] + '?rel=plus');
+    } else { // app-only
+      document.querySelectorAll('img[src$=".cms"][data-src]').forEach(e => e.src = e.getAttribute('data-src'));
+      hideDOMStyle('div[data-type="in_view"] > div[id^="toi-article-container-"], div.O6qEE', 2);
+    }
+    let ads = 'div.bannerBenefitsWrapper, div.paisa-wrapper, embed[type="mrecAd"], div.Wi1aZ';
+    hideDOMStyle(ads);
+  } else {
+    ampToHtml();
+  }
 }
 
 else if (matchDomain('epaper.indiatimes.com')) {
