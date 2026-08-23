@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.2.8
+// @version         4.4.3.1
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -943,6 +943,17 @@ else if (matchDomain('irishexaminer.com')) {
     function stripAppLinks(story) {
       story.querySelectorAll('a.readmore-event[href$="?type=app"]').forEach(e => e.href = e.href.split('?')[0]);
     }
+    let bbw_embed = document.querySelector('figure.bbw-embed');
+    if (bbw_embed) {
+      let json_script = bbw_embed.parentNode.querySelector('script[type="application/ld+json"]');
+      if (json_script && json_script.text.match(/"embedUrl":\s?"/)) {
+        let embed_url = json_script.text.split(/"embedUrl":\s?"/)[1].split('"')[0];
+        let iframe = document.createElement('iframe');
+        iframe.src = embed_url;
+        iframe.style = 'width: 100%;  aspect-ratio: 16 / 9; border: none;';
+        bbw_embed.parentNode.replaceChild(iframe, bbw_embed);
+      }
+    }
     let url = window.location.href;
     let app = window.location.search.startsWith('?type=app');
     if (!app) {
@@ -953,7 +964,7 @@ else if (matchDomain('irishexaminer.com')) {
         let url_src = url.split(/[#\?]/)[0] + '?type=app';
         let story = article.querySelector('story');
         if (story) {
-          let podcast = article.querySelector('.bbw-embed');
+          let podcast = article.querySelector('story > figure.bbw-embed');
           if (!podcast) {
             fetch(url_src)
             .then(response => {
@@ -971,8 +982,7 @@ else if (matchDomain('irishexaminer.com')) {
                 });
               }
             });
-          } else
-            window.location.href = url_src;
+          }
         } else
           window.location.href = url_src;
       }
@@ -994,10 +1004,12 @@ else if (matchDomain('irishexaminer.com')) {
         let story = article.querySelector('story');
         if (story)
           stripAppLinks(story);
-        hideDOMStyle('.bbw-embed');
+        hideDOMStyle('.bbw-embed', 2);
       }
     }
   }
+  let ads = 'div[data-ad-unit-id]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('literaryreview.co.uk')) {
@@ -1895,7 +1907,7 @@ else if (matchDomain('bloomberg.com')) {
         elem.appendChild(video);
         if (par.data.video.caption) {
           let caption = document.createElement('span');
-          caption.innerText = parseHtmlEntities(par.data.video.caption) + (par.data.video.credit ? ' ' + par.data.video.credit : '');
+          caption.innerText = parseHtmlEntities(par.data.video.caption.replace(/<\/?\w+>/g, '')) + (par.data.video.credit ? ' ' + par.data.video.credit : '');
           elem.appendChild(caption);
         }
         if (!window.navigator.userAgent.toLowerCase().includes('chrome') && video.src.includes('.m3u8')) {
@@ -1908,7 +1920,23 @@ else if (matchDomain('bloomberg.com')) {
       }
     } else if (par.subType === 'photo') {
       if (par.data.photo && par.data.photo.src) {
-        let figure = makeFigure(par.data.photo.src, parseHtmlEntities((par.data.photo.caption + ' ' + par.data.photo.credit).replace(/<\/?\w+>/g, '')));
+        let figure;
+        if (!par.data.photo.caption.includes('href=')) {
+          figure = makeFigure(par.data.photo.src, parseHtmlEntities((par.data.photo.caption + ' ' + par.data.photo.credit).replace(/<\/?\w+>/g, '')));
+        } else {
+          figure = document.createElement('figure');
+          let img = document.createElement('img');
+          img.src = par.data.photo.src;
+          figure.appendChild(img);
+          if (par.data.photo.caption) {
+            let caption = document.createElement('figcaption');
+            let parser = new DOMParser();
+            let doc = parser.parseFromString('<div>' + par.data.photo.caption + ' ' + par.data.photo.credit + '</div>', 'text/html');
+            let cap_div = doc.querySelector('div');
+            caption.appendChild(cap_div);
+            figure.appendChild(caption);
+          }
+        }
         elem.appendChild(figure);
       }
     } else if (par.subType === 'chart') {
@@ -2094,6 +2122,9 @@ else if (matchDomain('bloomberg.com')) {
               elem.style = 'font-weight: bold;';
             if (['heading', 'paragraph'].includes(par.type) && par.content) {
               addPar(par.content, elem);
+            } else if (par.type === 'hr') {
+              let sub_elem = document.createElement('hr');
+              elem.appendChild(sub_elem);
             } else if (par.type.endsWith('quote') && par.content) {
               elem.appendChild(document.createElement('br'));
               for (let item of par.content) {
