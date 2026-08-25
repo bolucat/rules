@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.3.9.1
+// @version         4.4.3.0
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -368,6 +368,11 @@ else if (matchDomain('tuttosport.com')) {
     let ads = 'div[class^="AdUnit_"]';
     hideDOMStyle(ads);
   }
+}
+
+else if (matchDomain('vanityfair.it')) {
+  let ads = 'div.ad';
+  hideDOMStyle(ads);
 }
 
 ads_hide();

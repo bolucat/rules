@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.3.1
+// @version         4.4.3.2
 // @description     Bypass Paywalls of news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1612,6 +1612,22 @@ else if (matchDomain('axios.com')) {
 
 else if (matchDomain('balkaninsight.com')) {
   getJsonUrl('div.subscribeWrapper', '', 'div.post_teaser', {art_append: 1, art_hold: 1});
+}
+
+else if (matchDomain('bangkokpost.com')) {
+  let paywall = document.querySelector('div.force_login--popup');
+  if (paywall) {
+    removeDOMElement(paywall);
+    let article = document.querySelector('div.article-content.is-paywalled');
+    if (article) {
+      article.className = 'article-content';
+      article.removeAttribute('style');
+      let pars_hidden = article.querySelectorAll('p');
+      for (let par of pars_hidden) {
+        par.innerText = [...par.innerText].reverse().join('');
+      }
+    }
+  }
 }
 
 else if (matchDomain(['barandbench.com', 'theleaflet.in', 'thenewsminute.com'])) {
