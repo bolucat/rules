@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.4.3.0
-// @description     Bypass Paywalls of news sites
+// @version         4.4.3.1
+// @description     Bypass Paywalls of Italian language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
 // @updateURL       https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js

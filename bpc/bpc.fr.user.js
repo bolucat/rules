@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.1.3
-// @description     Bypass Paywalls of news sites
+// @version         4.4.1.4
+// @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
 // @updateURL       https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1719,6 +1719,8 @@ else if (matchDomain('science-et-vie.com')) {
     if (replaced_content)
       replaced_content.removeAttribute('class');
   }
+  document.querySelectorAll('div[data-hbdbrk-parent], div[data-hbdbrk]').forEach(e => e.removeAttribute('style'));
+  removeDOMElement(...document.querySelectorAll('div.ads, div[data-actirise-template]'));
 }
 
 else if (matchDomain('sciencesetavenir.fr')) {
