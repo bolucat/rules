@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.3.0
+// @version         4.4.3.1
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -85,6 +85,11 @@ if (matchDomain('aerztezeitung.de')) {
       }
     }
   }
+}
+
+else if (matchDomain('augsburger-allgemeine.de')) {
+  let ads = 'div#paywall-fallback-content, div.pt_onlinestory, div.pt_home_page';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('automobilwoche.de')) {

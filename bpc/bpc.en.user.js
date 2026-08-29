@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.3.6
+// @version         4.4.3.7
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3325,22 +3325,8 @@ else if (matchDomain('interestingengineering.com')) {
 }
 
 else if (matchDomain('investors.com')) {
-  func_post = function () {
-    let videos = document.querySelectorAll('div.jwp-placement[data-jw-video_url]');
-    for (let video of videos) {
-      let video_new = document.createElement('video');
-      video_new.src = video.getAttribute('data-jw-video_url');
-      video_new.setAttribute('controls', '');
-      video_new.style = 'width: 100%;';
-      video.parentNode.replaceChild(video_new, video);
-    }
-  }
-  let paywall_sel = 'div.investors-paywall-overlay';
-  let paywall = document.querySelector(paywall_sel);
-  if (paywall)  {
-    setCookie('__tbc', '', 'investors.com', '/', 0);
-    getJsonUrl(paywall_sel, '', 'div.investors-paywall-excerpt');
-  }
+  setCookie('__tbc', '', 'investors.com', '/', 0);
+  header_nofix('div.single-post-content', 'div.investors-paywall-overlay', 'BPC > no fix');
   let ads = 'div.ads, div.headerAds';
   hideDOMStyle(ads);
 }
