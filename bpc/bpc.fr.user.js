@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.1.4
+// @version         4.4.3.0
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -72,7 +72,12 @@ var fr_groupe_la_manche_libre_custom_domains = ['echoancenis.fr', 'echoduberry.f
 var fr_groupe_macg_domains = ['igen.fr', 'macg.co', 'watchgeneration.fr'];
 var fr_groupe_nice_matin_domains = ['monacomatin.mc', 'nicematin.com', 'varmatin.com'];
 
-if (matchDomain('alternatives-economiques.fr')) {
+if (matchDomain('actu.fr')) {
+  let ads = 'div.ac-banner-ad';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('alternatives-economiques.fr')) {
   window.setTimeout(function () {
     let paywall = document.querySelector('#temp-paywall');
     removeDOMElement(paywall);

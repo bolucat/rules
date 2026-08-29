@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.4.1.3
+// @version         4.4.3.0
 // @description     Bypass Paywalls of Dutch language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -383,7 +383,8 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
       let lazy_images = article.querySelectorAll('img[loading="lazy"][style]:not([style*=";min-width:38px;"])');
       for (let elem of lazy_images) {
         elem.style = 'width: 95%;';
-        if (elem.parentNode.style && elem.parentNode.getAttribute('style').includes('min-height:')) {
+        let parent_style = elem.parentNode.getAttribute('style');
+        if (parent_style && parent_style.includes('min-height:')) {
           elem.parentNode.removeAttribute('style');
           elem.parentNode.parentNode.removeAttribute('style');
         }
@@ -422,7 +423,10 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
     let article_divs = document.querySelectorAll(article_sel + ' > div:not(:empty)');
     if (article_divs.length < 3)
       article.before(googleSearchToolLink(url));
-    let ads = 'span[style*="background-color:"]:has(> span[style*="min-height:"]), span > br, ' + article_sel + ' div:empty:not([class]), div[style*=";isolation:isolate;"]';
+    let premium_label = article.querySelector('svg[aria-label="Premium artikel"]');
+    if (premium_label)
+      premium_label.style = 'width: 10%;';
+    let ads = 'span[style*="background-color:"]:has(> span[style*="min-height:"]), span > br, ' + article_sel + ' div:empty:not([class]), div[style*=";isolation:isolate;"], a[href^="https://www.google.com/preferences/source"]';
     hideDOMStyle(ads, 2);
   }
   let header_img = document.querySelector('div[data-content-type="MEDIA_TOP"]');

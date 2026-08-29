@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.2.2
+// @version         4.4.3.0
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -67,20 +67,7 @@ var de_smn_custom_domains = ['cannstatter-zeitung.de', 'esslinger-zeitung.de', '
 var de_vrm_domains = ['allgemeine-zeitung.de', 'echo-online.de', 'wiesbadener-kurier.de'];
 var de_vrm_custom_domains = ['buerstaedter-zeitung.de', 'hochheimer-zeitung.de', 'lampertheimer-zeitung.de', 'lauterbacher-anzeiger.de', 'main-spitze.de', 'mittelhessen.de', 'oberhessische-zeitung.de', 'wormser-zeitung.de'];
 
-if (matchDomain('aachener-zeitung.de')) {
-  let url = window.location.href;
-  getArchive(url, 'div[data-testid="paywall-position-popover"]', '', 'article');
-  let shade = document.querySelector('div.paywalled-article');
-  if (shade)
-    shade.classList.remove('paywalled-article');
-  let noscroll = document.querySelectorAll('html[class], body[class]');
-  for (let elem of noscroll)
-    elem.removeAttribute('class');
-  let ads = 'section[data-theme-sponsored-content], div[id^="ad_"]';
-  hideDOMStyle(ads);
-}
-
-else if (matchDomain('aerztezeitung.de')) {
+if (matchDomain('aerztezeitung.de')) {
   let paywall = document.querySelector('div.AZLoginModule');
   if (paywall) {
     removeDOMElement(paywall);

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.3.5
+// @version         4.4.3.6
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1640,44 +1640,6 @@ else if (matchDomain(['barandbench.com', 'theleaflet.in', 'thenewsminute.com']))
         article.parentNode.replaceChild(article_new, article);
     }
   }
-}
-
-else if (matchDomain('barrons.com')) {
-  if (window.location.pathname.startsWith('/livecoverage/')) {
-    window.setTimeout(function () {
-      fix_dowjones_live();
-    }, 1500);
-  } else {
-    let paywall = document.querySelector('div#cx-interstitial-snippet-container, div[data-id^="ArticleRoadblock_"]');
-    if (paywall) {
-      removeDOMElement(paywall);
-      window.setTimeout(function () {
-        let article = document.querySelector('article > div.crawler > [data-testid="article-body"]');
-        if (article) {
-          let article_id_dom = document.querySelector('head > meta[name="article.id"][content], head > meta[name="ChosenAdTarget"][content]');
-          if (article_id_dom) {
-            let article_id = article_id_dom.content;
-            if (article_id.includes(';id:'))
-              article_id = article_id.split(';id:')[1].split(';')[0];
-            let url_src = 'https://barrons.djmedia.djservices.io/apps/barrons/theaters/default-article?screen_ids=' + article_id;
-            let x_access_token = "eyJhbGciOiJSUzI1NiJ9.WFZsaHN3MXd3Smw0V3kwRXBzclQ.qwwBedAUNXHTQchowQZ5zMwmnXqDKeMhoRJlkB7drjWmb0ktZCScIhq5lpIiWaMyNJA_ODYgHAfIoi7DKWkS8g8GunFNAXpJDUOLdI2rtQkTEi_E3o90rdZHunPR7p0ULjRmHCnDofAdpTQdJtTXjQ9eEDZT2xoooVGdBpoVKhE";
-            getExtFetch(url_src, '', {headers: {"app-identifier": "http://com.news.screens", "device-type": "phone", "x-access-token": x_access_token}}, fix_dowjones_fetch, [article, 'div.media-layout img[src], div[data-block="big-top-media"] img[src]']);
-          }
-          removeDOMElement(...article.parentNode.querySelectorAll('div:empty'));
-        }
-      }, 2000);
-    }
-  }
-  let signin_links = document.querySelectorAll('div[class] > div#duplicated-paywall-shell');
-  for (let elem of signin_links) {
-    let link_new = document.createElement('a');
-    link_new.href = '#';
-    link_new.innerText = 'Open article';
-    link_new.addEventListener('click', function () {window.location.reload();});
-    elem.parentNode.parentNode.replaceChild(link_new, elem.parentNode);
-  }
-  let ads = 'div[class]:has(> div.uds-ad-container)';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('benzinga.com')) {
@@ -6066,7 +6028,7 @@ function fix_dowjones_live() {
   }
 }
 
-function fix_dowjones_fetch(url_src, data, article) {
+function fix_dowjones_fetch(url_src, data, article, img_lead_sel) {
   try {
     if (data) {
       let json = JSON.parse(data);
@@ -6085,23 +6047,6 @@ function fix_dowjones_fetch(url_src, data, article) {
         }
         if (!par_class)
           addStyle('div.crawler p:not([class]) {margin: 20px 0px;}');
-        if (matchDomain('barrons.com')) {
-          let style_fl = document.querySelector('head > style[data-emotion-css]');
-          if (style_fl && style_fl.innerHTML.includes(':first-letter')) {
-            let styles_fl = document.querySelectorAll('head > style[data-emotion-css], head > style[data-emotion="emotion"]');
-            for (let style of styles_fl) {
-              if (style.innerHTML.includes(':first-letter'))
-                removeDOMElement(style);
-            }
-          }
-          if (document.title.startsWith('Sign in or subscribe')) {
-            if (json.screens[0].metadata) {
-              let metadata = json.screens[0].metadata;
-              if (metadata.title)
-                document.title = metadata.title + ' - Barrons\'s';
-            }
-          }
-        }
         let body_first = true;
         let img_lead = document.querySelector(img_lead_sel);
         let img_lead_url;
