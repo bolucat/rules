@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.3.7
+// @version         4.4.3.8
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -251,7 +251,7 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || document.
   }, 1000);
 }
 
-else if (window.location.hostname.match(/\.(au|nz)$/) || matchDomain(['afr.com'])) {//australia & new zealand
+else if (window.location.hostname.match(/\.(au|nz)$/) || matchDomain(['afr.com', 'nzgeo.com'])) {//australia & new zealand
 
 if (matchDomain('afr.com')) {
   let error = document.querySelector('div[data-testid="DefaultError"]');
@@ -486,6 +486,11 @@ else if (matchDomain('macrobusiness.com.au')) {
       }
     }
   }
+}
+
+else if (matchDomain('nzgeo.com')) {
+  setCookie('visits', '', 'nzgeo.com', '/', 0);
+  hideDOMStyle('div#paywall-bottom');
 }
 
 else if (matchDomain('nzherald.co.nz')) {
@@ -4174,11 +4179,32 @@ else if (matchDomain('sfstandard.com')) {
 
 else if (matchDomain(sg_sph_media_domains)) {
   if (matchDomain('straitstimes.com')) {
+    let audio_tts;
+    let audio_button = document.querySelector('button[aria-label="button for Unlock audio"]');
+    if (audio_button) {
+      let audio_script;
+      let scripts = document.querySelectorAll('script:not([id], [src], [type])');
+      for (let script of scripts) {
+        if (script.text.startsWith('window.__reactRouterContext.streamController') && script.text.includes(',\\"ttsUrl\\",\\"https')) {
+          audio_script = script;
+          break;
+        }
+      }
+      if (audio_script) {
+        audio_tts = document.createElement('audio');
+        audio_tts.src = 'https' + audio_script.text.split(',\\"ttsUrl\\",\\"https')[1].split('\\",')[0];
+        audio_tts.setAttribute('controls', '');
+        audio_button.parentNode.replaceChild(audio_tts, audio_button);
+      }
+    }
     let art_pars = document.querySelectorAll('div.storyline-wrapper > p');
     if (window.location.pathname.startsWith('/opinion/') || window.location.search.startsWith('?rel=plus')) {
       if (art_pars.length && art_pars.length < 5) {
         func_post = function () {
-          header_nofix('main', '', 'BPC > no archive-fix');
+          header_nofix('main', '', 'BPC > no archive-fix' + (audio_tts ? ' (audio-only)' : ''));
+          let audio_button = document.querySelector('button[aria-label="button for Unlock audio"]');
+          if (audio_button && audio_tts)
+            audio_button.parentNode.replaceChild(audio_tts, audio_button);
         }
         let url = window.location.href;
         getArchive(url, 'div.paywall', '', 'main');
@@ -4204,7 +4230,7 @@ else if (matchDomain(sg_sph_media_domains)) {
       }
     }
   }
-  let ads = 'div.ads, div[id^="dfp-ad-"], div.cx_paywall_placeholder, div[data-testid="cas-block-component"]';
+  let ads = 'div.ads, div[id^="dfp-ad-"], div.cx_paywall_placeholder, div[data-testid="cas-block-component"], div.sph-ads-shell';
   hideDOMStyle(ads);
 }
 
