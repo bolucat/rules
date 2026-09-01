@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.3.0
+// @version         4.4.3.1
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1448,8 +1448,10 @@ else if (matchDomain('liberation.fr')) {
   let paywall = document.querySelector('div#article-body-paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    let article = document.querySelector('article[data-datawall-status]') || document.querySelector('div[class^="default__Main-sc-"] div:empty:not([class], [style])');
+    let article = document.querySelector('article[data-datawall-status]') || document.querySelector('div[class^="default__Main-sc-"] div[class^="default__OutbrainWrapper-"]');
     if (article) {
+      if (article.tagName !== 'article')
+        article.removeAttribute('class');
       let url_src = 'https://arc.api.liberation.fr/content/v4/?website=liberation&website_url=' + encodeURIComponent(window.location.pathname);
       let x_api_key = 'a7X29mBvQeP1Ld98CgF2rK5uTzWY4h';
       fetch(url_src, {headers: {"x-api-key": x_api_key}})
@@ -1552,7 +1554,7 @@ else if (matchDomain('liberation.fr')) {
     }
   }
   }, 1000);
-  let ads = 'div[class^="StickyAd"], div[class^="default__OutbrainWrapper"], div.kxhprn';
+  let ads = 'div[class^="StickyAd"], div[class^="default__OutbrainWrapper"], article ~ div[class]:empty';
   hideDOMStyle(ads);
 }
 

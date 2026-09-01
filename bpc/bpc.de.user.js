@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.3.1
+// @version         4.4.3.2
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -960,21 +960,6 @@ else if (matchDomain('sueddeutsche.de')) {
   }
   let ads = 'er-ad-slot, div.iqdcontainer';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('suedkurier.de')) {
-  func_post = function () {
-    let paywall = document.querySelector(paywall_sel);
-    if (paywall) {
-      let article = document.querySelector(article_sel);
-      if (article)
-        article.firstChild.before(googleSearchToolLink(url));
-    }
-  }
-  let url = window.location.href;
-  let paywall_sel = 'div#piano-inline-paywall';
-  let article_sel = 'div#article-body-paid-content';
-  getArchive(url, paywall_sel, '', article_sel);
 }
 
 else if (matchDomain('tagesspiegel.de')) {
