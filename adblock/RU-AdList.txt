@@ -1,8 +1,8 @@
 [Adblock Plus 2.0]
-! Checksum: 4jDKxtV1bDQNr5xc2nyiyQ
-! Version: 202609012032
+! Checksum: /7337GIAobGKDsoL3yyyzA
+! Version: 202609021702
 ! Title: RU, UA, UZ, KZ
-! Last modified: 01 Sep 2026 20:32 UTC
+! Last modified: 02 Sep 2026 17:02 UTC
 ! Expires: 1 days (фильтр обновляется автоматически каждые 2 дня)
 ! Homepage: https://forums.lanik.us/viewforum.php?f=102
 !
@@ -11440,17 +11440,16 @@ _vodkov.net
 ||kipfilms.ru^$third-party
 !
 ! FastPic-partners
+/splash.php?*fastpic$document
+=*=*fastpic$document
 ||crmared.com^$document
-||dsazfk.com^$document
-||dteifi.com^$document
-||dtxelz.com^$document
-||dtyvtj.com^$document
 ||epicgameshubham.com^$document
 ||eprdl.online^$document
 ||exoclocks.com^$document
 ||goddess-game.com^$document
 ||gptgirlfriend.online^$document
 ||insta-cams.com^$document
+||lustgoddess.com^$document
 ||metricaops.com^$document
 ||myallz.com^$document
 ||ouraidream.com^$document
@@ -23966,11 +23965,13 @@ igdz1.ru^$script,domain=igdz.ru
 ! ловушка для обфускации дзена: главная, статьи, новости, погода
 /^https:\/\/static\.dzeninfra\.ru\/s3\/zen-apps\/[^?]+[^e]\.js(?:\?.*)?$/$script
 /^https:\/\/static\.dzeninfra\.ru\/s3\/zen-apps\/[^?]+\.[^/?.]{1,3}\.js(?:\?.*)?$/$script
+/^https:\/\/static\.dzeninfra\.ru\/s3\/zen-apps\/[^?]+\.[^/?]{1,5}\.js(?:\?.*)?$/$script
 /^https:\/\/static\.dzeninfra\.ru\/s3\/zen-apps\/[^?]+\.e\.js(?:\?.*)?$/$script
 ||dzen.ru/a/$csp=script-src 'unsafe-inline' 'unsafe-eval' data: static.dzeninfra.ru/react/ static.dzeninfra.ru/s3/zen-apps/ static.dzeninfra.ru/s3/zen-lib/ yandex.ru/ads/ vk.com/dist/ vk.com/js/api/videoplayer.js vk.com/dist/public/api/
 ||dzen.ru/articles$csp=script-src 'unsafe-inline' 'unsafe-eval' data: static.dzeninfra.ru/react/ static.dzeninfra.ru/s3/zen-apps/ static.dzeninfra.ru/s3/zen-lib/ yandex.ru/ads/ vk.com/dist/ vk.com/js/api/videoplayer.js vk.com/dist/public/api/
 ||dzen.ru/news$csp=script-src 'unsafe-inline' 'unsafe-eval' data: static.dzeninfra.ru/react/ static.dzeninfra.ru/s3/zen-apps/ static.dzeninfra.ru/s3/zen-lib/ yandex.ru/ads/ vk.com/dist/ vk.com/js/api/videoplayer.js vk.com/dist/public/api/
 ||dzen.ru/pogoda/$script
+||static.dzeninfra.ru/s3/zen-apps/*.wave.js$script
 ||static.dzeninfra.ru/s3/zen-apps/*/*/*/$script
 !
 $csp=script-src-attr 'none',domain=eurointegration.com.ua|sportanalytic.com|notebookcheck-ru.com|businessua.com
@@ -24128,7 +24129,7 @@ $popup,domain=rstprgapipt.com|temp2cdn.link|temptcdn.com
 .link/*/*/*?*=*-*-*-$third-party,xmlhttprequest
 .link/*?*=*-*-*-*-$third-party,xmlhttprequest
 .link/*?fre=$third-party,xmlhttprequest
-.link/2tjl3er?$third-party,xmlhttprequest
+.link/6p80h?$third-party,xmlhttprequest
 .txt?fre=$third-party,xmlhttprequest
 .txt?unique=$third-party,xmlhttprequest
 /ad-rotator/ad-list.json
@@ -24136,11 +24137,6 @@ $popup,domain=rstprgapipt.com|temp2cdn.link|temptcdn.com
 /api-integration/*?unique=$third-party,xmlhttprequest
 /api-integration/ad-rotator/*$third-party,xmlhttprequest
 /api-integration/assets/*.txt?*=$third-party,xmlhttprequest
-/files/episodes/*-RU.mp4|$third-party,media
-/files/episodes/*bet.mp4|$third-party,media
-/files/series/*).mp4|$third-party,media
-/files/series/*-RU.mp4|$third-party,media
-/files/series/*bet.mp4|$third-party,media
 /vast/ad-rotator/*
 ?utm_source=veoveo$popup
 ||cdn-global-mb.com^$third-party
@@ -24156,6 +24152,8 @@ $popup,domain=rstprgapipt.com|temp2cdn.link|temptcdn.com
 ||temptcdn.com/*.xml?$xmlhttprequest
 ||temptcdn.com/api-integration/
 ||temptcdn.com^$third-party,xmlhttprequest
+||vveu.*.link/$third-party,media
+||vvru.*.link/$third-party,media
 ||ykoza.com^$popup
 !
 ! Плеер venom, в основном для ua-юзеров, примеры >
@@ -25458,8 +25456,10 @@ ya.ru##.i-mini-bem[class*="banner"]
 ya.ru##[style*="feed"][style*="min-height:"]
 ya.ru##body > div[data-hydration-id] > [href^="https://yabs.yandex.ru/count/"] + div
 ya.ru##body > div[data-hydration-id] > div > [src^="https://yabs.yandex.ru/count/"] + div
+ya.ru##html[class*="sekdllliom_top"] aside + div
+ya.ru##html[class*="sekdllliom_top"] main > div[class*="__"] ~ div[class*="__"] ~ div[class*="__"] > div
 ya.ru##section[class^="reaso"]
-ya.ru##section[style*="sektllliom-items-count:"]
+ya.ru##section[style*="sekdllliom-items-count:"]
 ya.ru##ul[class*="-section__list"]
 ya.ru,yandex.ru,yandex.*##.AdvProductGallery
 ya.ru,yandex.ru,yandex.*##.Bno_isPromoSnippet

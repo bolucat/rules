@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.3.8
+// @version         4.4.3.9
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1288,9 +1288,6 @@ else if (matchDomain('thetimes.com')) {
     func_post = function () {
       let article = document.querySelector(article_sel);
       if (article) {
-        let pars = article.querySelectorAll('div[style*="font-family:"]:not(:empty)');
-        if (pars.length < 5)
-          article.before(googleSearchToolLink(url));
         if (mobile) {
           let figure_div = article.querySelector('figure > div[style] > div[style^="min-height:"]');
           if (figure_div) {
@@ -1362,7 +1359,13 @@ else if (matchDomain('thetimes.com')) {
     let article_sel = 'article[id]';
     let url = window.location.href;
     if (window.location.pathname.includes('/article/') && !window.location.search.startsWith('?shareToken=')) {
-      getArchive(url, paywall_sel, '', article_sel);
+      let paywall = document.querySelector(paywall_sel);
+      if (paywall) {
+        let article = document.querySelector(article_sel);
+        if (article)
+          article.before(googleSearchToolLink(url));
+        getArchive(url, paywall_sel, '', article_sel);
+      }
       let scroll_style = 'html, body {overflow: auto !important; height: auto !important;}';
       addStyle(scroll_style);
     }
@@ -1556,6 +1559,21 @@ else if (matchDomain('americanbanker.com') || matchDomain(usa_arizent_custom_dom
   }
   let ads = document.querySelectorAll('div.GoogleDfpAd');
   removeDOMElement(...ads);
+}
+
+else if (matchDomain('anandabazar.com')) {
+  let paywall = document.querySelector('div.readmoreouterbox');
+  if (paywall) {
+    paywall.removeAttribute('class');
+    let outerbox = document.querySelector('article#outerboxarticlebox');
+    if (outerbox)
+      outerbox.removeAttribute('id');
+  }
+  let expcontainer = document.querySelector('div.expcontainer');
+  if (expcontainer)
+    expcontainer.removeAttribute('class');
+  let ads = 'div.paywallouterbox, div.readarticlebox, div.showmorebox, div.adbox';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('artnet.com')) {
