@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: VayNt3mANWgJLQtWZKHhpg
-! Diff-Path: ../patches/7/7-s-1788376575-3600.patch
+! Checksum: XRiudIVRmcsf5JQb+dvF2Q
+! Diff-Path: ../patches/7/7-s-1788430792-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.76.13
-! TimeUpdated: 2026-09-02T19:12:38+00:00
+! Version: 2.0.76.17
+! TimeUpdated: 2026-09-03T10:15:49+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1600,6 +1600,7 @@ hostlove.com###index_nav > h1:style(padding-top: 30px!important;)
 /DxOoykKhIT/api?token=$xhr
 .com/security/ap/loginlogout/login/creditlimit/inquirycreditlimit/D10203840^$document
 /api/client/getConfig?siteCode=bot_verification_ja$xhr
+.com/jmp?x=|$document
 .club/jmp?x=|$document
 .site/jmp?x=|$document
 .xyz/jmp^$document
@@ -1927,8 +1928,13 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
-at-s.com##a[href^="https://t.afi-b.com/visit.php?"]
-animatetimes.com##.c-banner-aside
+play.rakuten.co.jp##div[data-gtm-ad-slot]
+news.tv-asahi.co.jp##aside.aside-container > div.aside-ranking:has(> div.ranking-container > a[href="/ranking/"]):style(min-height: auto !important;)
+cafe-cyakuero2.blog.jp##.sidetitlebody:has(+ div + div.side > a[href^="https://kingdom.vc/products/list.php"])
+cafe-cyakuero2.blog.jp##.sidetitlebody:has(+ div + div.side > a[href="https://www.idol-dvd.com/"])
+cafe-cyakuero2.blog.jp##.sidetitlebody:has(+ div + div.side > a[href^="http://otokogiya.com/index.html"])
+ben54.jp##.p-news__details > section .df:has(> div[id^="div-gpt-ad"])
+at-s.com##a[href^="https://t.afi-b.com/visit.php?"] > img
 momoclozamurai.xxxblog.jp##.right-column-inner > a[href*="://www.amazon.co.jp/gp/"]
 xn--h-k9tybb8g5ivhkczry701afhpm4sru6d.net##.toppr300
 blogterest.net##.blockSide > div.blockWrapper > div.blockBody > center > a[href^="https://al.fanza.co.jp"][rel="sponsored"] > img[src^="https://pix.cds.dmm.com/creatives/"]
@@ -1941,6 +1947,9 @@ skincare-univ.com##.side_list__wrap:has(> div.ads)
 voisjp.me##div[id^="yads"]
 kinarino.jp##div[class$="-nw-ad"]
 ||dengekionline.com/api/kyujinbox
+xtrend.nikkei.com##.article_adTextList
+xtrend.nikkei.com##li[class="articleList_item"]:has(> div[id^="div-gpt-"])
+xtrend.nikkei.com##section[aria-labelledby="aside-featuredPicks"]
 xtrend.nikkei.com##section[aria-labelledby="sec-special"]
 pointmall.aeon.co.jp##div.mb-10[style="display:flex;justify-content:center"]
 ||s.yimg.jp/images/job/search-canvas/ad/$domain=jobcatalog.yahoo.co.jp

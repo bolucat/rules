@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.3.2
+// @version         4.4.3.3
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -34,7 +34,6 @@
 // @connect         archive.vn
 // @connect         fnetcore-api-prod.azurewebsites.net
 // @connect         funkemedien.de
-// @connect         styria.com
 // @grant           GM.xmlHttpRequest
 // @require         https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc_func.js
 // ==/UserScript==
@@ -490,170 +489,6 @@ else if (matchDomain('jacobin.de')) {
       }
     }
   }
-}
-
-else if (matchDomain('kleinezeitung.at')) {
-  window.setTimeout(function () {
-  let paywall = document.querySelector('div.klz-paywalled-content');
-  if (paywall) {
-    paywall.classList.remove('klz-paywalled-content');
-    let article = paywall;
-    if (article) {
-      let art_match = window.location.pathname.match(/\/artikel\/(\d+)\//);
-      if (art_match) {
-        let article_id = art_match[1];
-        let url = window.location.href;
-        let url_src = 'https://patron-klz.tapps.styria.com/api/v5/content/generic/' + article_id;
-        getExtFetch(url_src, '', {}, main_kz);
-        function makeImage(par) {
-          let img = makeFigure(par.webUrl, par.caption + ' © ' + par.credit, {alt: par.alt});
-          img.style = 'margin: 20px 0px;';
-          return img;
-        }
-        function main_kz(url, data) {
-          try {
-            if (data) {
-              let json_data = JSON.parse(data);
-              let pars = json_data.content;
-              if (pars.length)
-                article.innerHTML = '';
-              let parser = new DOMParser();
-              let elem;
-              for (let par of pars) {
-                if (par.type === 'paragraph') {
-                  if (par.content) {
-                    let doc = parser.parseFromString('<p>' + par.content + '</p>', 'text/html');
-                    elem = doc.querySelector('p');
-                  }
-                } else if (par.type === 'sub_head' && par.content) {
-                  elem = document.createElement('p');
-                  elem.innerText = par.content;
-                  elem.style = 'font-weight: bold;';
-                } else if (par.type === 'image' && par.webUrl) {
-                  elem = makeImage(par);
-                } else if (par.type === 'element_gallery' && par.content) {
-                  elem = document.createElement('div');
-                  for (let item of par.content) {
-                    if (item.type === 'image' && item.webUrl)
-                      elem.appendChild(makeImage(item));
-                  }
-                } else if (par.type === 'download') {
-                  if (par.title && getNestedKeys(par, 'content.binary.href_download')) {
-                    elem = document.createElement('div');
-                    elem.style = 'margin: 20px 0px;';
-                    let sub_elem = document.createElement('a');
-                    sub_elem.innerText = par.title;
-                    sub_elem.href = getNestedKeys(par, 'content.binary.href_download');
-                    elem.appendChild(sub_elem);
-                  } else
-                    console.log(par);
-                } else if (par.type === 'map') {
-                  if (par.zoom && par.marker && par.marker[0]) {
-                    let marker = par.marker[0];
-                    if (marker.latitude && marker.longitude) {
-                      elem = document.createElement('div');
-                      let sub_elem = document.createElement('iframe');
-                      sub_elem.src = 'https://www.google.com/maps?q=' + marker.latitude + ',' + marker.longitude + '&z=' + par.zoom + '&hl=de&output=embed';
-                      sub_elem.style = 'width: 100%; aspect-ratio: 16 / 9;';
-                      elem.appendChild(sub_elem);
-                      if (marker.title)
-                        sub_elem.before(document.createTextNode(marker.title));
-                    }
-                  } else
-                    console.log(par);
-                } else if (par.type === 'free_html' && par.freeHtml) {
-                  let doc = parser.parseFromString('<div>' + par.freeHtml + '</div>', 'text/html');
-                  elem = doc.querySelector('div');
-                  let iframe = elem.querySelector('iframe[width]');
-                  if (iframe)
-                    iframe.style.width = '100%';
-                } else if (par.type === 'interview' && par.content) {
-                  elem = document.createElement('div');
-                  for (let item of par.content) {
-                    if (item.text) {
-                      let doc = parser.parseFromString('<p>' + item.text + '</p>', 'text/html');
-                      let sub_elem = doc.querySelector('p');
-                      if (item.type === 'question')
-                        sub_elem.style = 'font-weight: bold;';
-                      elem.appendChild(sub_elem);
-                    }
-                  }
-                } else if (par.type.endsWith('factbox') && par.content) {
-                  elem = document.createElement('div');
-                  if (par.title) {
-                    let title = document.createElement('p');
-                    title.innerText = par.title;
-                    title.style = 'font-weight: bold;';
-                    elem.appendChild(title);
-                  }
-                  for (item of par.content) {
-                    if (item.type === 'paragraph' && item.content) {
-                      let doc = parser.parseFromString('<p>' + item.content + '</p>', 'text/html');
-                      let sub_elem = doc.querySelector('p');
-                      elem.appendChild(sub_elem);
-                    }
-                  }
-                  if (elem.hasChildNodes())
-                    elem.style = 'border: solid; padding: 20px;';
-                } else if (par.type === 'element_video') {
-                  if (par.androidUrl) {
-                    elem = document.createElement('video');
-                    elem.src = par.androidUrl;
-                    elem.setAttribute('controls', '');
-                  }
-                } else if (par.type === 'social_media_oembed' && par.embeddedLink) {
-                  if (par.provider && par.html && ['youtube', 'glomex', 'instagram'].includes(par.provider.toLowerCase())) {
-                    let doc = parser.parseFromString('<div>' + par.html + '</div>', 'text/html');
-                    elem = doc.querySelector('div');
-                    let iframe = elem.querySelector('iframe');
-                    if (iframe) {
-                      iframe.style = 'width: 100%; aspect-ratio: 16 / 9';
-                      iframe.removeAttribute('width');
-                      iframe.removeAttribute('height');
-                    }
-                  } else {
-                    elem = document.createElement('p');
-                    let sub_elem = document.createElement('a');
-                    sub_elem.href = sub_elem.innerText = par.embeddedLink;
-                    sub_elem.target = '_blank';
-                    elem.appendChild(sub_elem);
-                  }
-                } else if ([ 'more_topic', 'inline_gallery'].includes(par.type) && par.items) {
-                  elem = document.createElement('div');
-                  if (par.title) {
-                    let title = document.createElement('span');
-                    title.innerText = par.title;
-                    title.style = 'font-weight: bold;';
-                    elem.appendChild(title);
-                  }
-                  for (let item of par.items) {
-                    if (item.title && item.fields && item.fields.canonicalUrl) {
-                      let sub_elem = document.createElement('a');
-                      sub_elem.href = item.fields.canonicalUrl;
-                      sub_elem.innerText = item.title;
-                      elem.append(document.createElement('br'), sub_elem);
-                    }
-                  }
-                } else if (par.relation && par.relation.embedLink) {
-                  elem = document.createElement('iframe');
-                  elem.src = par.relation.embedLink;
-                  elem.style = 'width: 100%; height: 500px;';
-                } else if (!['pull_quote', 'ad'].includes(par.type))
-                  console.log(par);
-                if (elem)
-                  article.appendChild(elem);
-              }
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
-    }
-  }
-  }, 2000);
-  let ads = 'div.js-ad, div#adArticleBottomWrapper, aside[class~="lg:sticky"]';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('krautreporter.de')) {

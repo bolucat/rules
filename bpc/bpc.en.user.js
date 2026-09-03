@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.3.9
+// @version         4.4.4.0
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1040,18 +1040,25 @@ else if (matchDomain('newstatesman.com')) {
       if (json_script) {
         try {
           let json = JSON.parse(json_script.text);
-          if (json && json.datePublished) {
-            let date = json.datePublished.split(/T\d/)[0].replace(/-/g, '/');
+          let date = json.datePublished;
+          let meta_date_dom = document.querySelector('head > meta[property="article:published_time"][content]');
+          if (meta_date_dom && meta_date_dom.content)
+            date = meta_date_dom.content;
+          if (json && date) {
+            date = date.split(/T\d/)[0].replace(/-/g, '/');
             let path_new = window.location.pathname.split('/').pop();
             if (path_new) {
               let url = 'https://magazine.newstatesman.com/' + date + '/' + path_new + '/content.html';
               let article_sel = 'div.c-article-content__container';
-              let pars_old = document.querySelectorAll(article_sel + ' > p:not([class])');
-              replaceDomElementExt(url, false, false, article_sel + ' > p.has-drop-cap', 'BPC > no fix (no magazine source file)', 'section.pp-article__body', article_sel);
-              window.setTimeout(function () {
-                if (!document.querySelector('div#bpc_fail'))
-                  removeDOMElement(...pars_old);
-              }, 1000);
+              let article = document.querySelector(article_sel);
+              if (article) {
+                let pars_old = article.querySelectorAll('p.wp-block-paragraph, iframe[id^="datawrapper-chart-"]');
+                replaceDomElementExt(url, false, false, article_sel + ' > p[class*="-drop-cap"]', 'BPC > no fix (no magazine source file)', 'section.pp-article__body');
+                window.setTimeout(function () {
+                  if (!document.querySelector('div#bpc_fail'))
+                    removeDOMElement(...pars_old);
+                }, 1000);
+              }
             }
           }
         } catch (err) {
