@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.4.0
+// @version         4.4.4.1
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2643,13 +2643,16 @@ else if (matchDomain('economictimes.com')) {
         }
         if (content_new && content.parentNode)
           content.parentNode.replaceChild(content_new, content);
-      } else
-        window.location.href = 'https://economictimes.indiatimes.com' + window.location.pathname.replace('amp_prime', 'prime');
+      } else {
+        let link_alt = document.querySelector('head > link[rel="alternate"][href]');
+        if (link_alt)
+          window.location.href = link_alt.href;
+      }
       let intro = document.querySelector('.art_wrap');
       let article_blocker = document.querySelector('.articleBlocker');
       removeDOMElement(paywall, intro, article_blocker);
     }
-    let ads = 'amp-ad, amp-fx-flying-carpet, div.ads, div.taboolaAd';
+    let ads = 'amp-ad, amp-fx-flying-carpet, div.ads, div.taboolaAd, amp-consent';
     hideDOMStyle(ads);
   } else {
     window.setTimeout(function () {
@@ -2676,21 +2679,26 @@ else if (matchDomain('economictimes.indiatimes.com')) {
   let paywall = document.querySelector('section.prime_paywall');
   if (paywall) {
     removeDOMElement(paywall);
-    let content = document.querySelector('div.content1, div.artText');
+    let content_sel = 'div.content1, div.artText';
+    let content = document.querySelector(content_sel);
     let full_text = document.querySelector('div.paywall.p1');
     if (content && full_text) {
-      if (!full_text.innerText.includes('["datawrapper-height"]'))
-        content.innerText = breakText(full_text.innerText);
-      else {
-        let amphtml = document.querySelector('head > link[rel="amphtml"]');
-        if (amphtml)
-          amp_redirect_not_loop(amphtml);
+      content.innerText = breakText(full_text.innerText);
+      if (full_text.innerText.match(/\[["`]datawrapper-height["`]\]/)) {
+        let amphtml = document.querySelector('head > link[rel="amphtml"][href]');
+        header_nofix(content_sel, '', 'BPC > for charts try amp-page', amphtml.href);
       }
     }
     addStyle('div.pageContent {height: auto !important;}');
     let article_wrap = document.querySelector('div.article_wrap[style]');
     if (article_wrap)
       article_wrap.removeAttribute('style');
+  } else {
+      let paywall = document.querySelector('article.primeArticle.paywall, div.paywall');
+      if (paywall) {
+        paywall.classList.remove('paywall');
+        header_nofix(paywall.querySelector('div'));
+      }
   }
   if (mobile) {
     let pageholder = document.querySelector('main.pageHolder');

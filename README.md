@@ -216,6 +216,7 @@
 - [clash.yaml](https://rules.neuq.de/clash/a-dove-is-dumb/clash.yaml)
 - [ipv6.txt](https://rules.neuq.de/clash/a-dove-is-dumb/ipv6.txt)
 - [list.txt](https://rules.neuq.de/clash/a-dove-is-dumb/list.txt)
+- [mini](https://rules.neuq.de/clash/a-dove-is-dumb/mini)
 - [pihole.txt](https://rules.neuq.de/clash/a-dove-is-dumb/pihole.txt)
 - [winhosts.txt](https://rules.neuq.de/clash/a-dove-is-dumb/winhosts.txt)
 # clash/moedove
