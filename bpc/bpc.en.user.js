@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.4.1
+// @version         4.4.4.3
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1551,9 +1551,17 @@ else if (matchDomain('al-monitor.com')) {
       }
     }
   }
+  let article_hidden = document.querySelector('div.ab-control');
+  let article_main = document.querySelector('div[class^="ab-variation"]');
+  if (article_hidden && article_main) {
+    removeDOMElement(article_hidden);
+    article_main.removeAttribute('class');
+    article_main.removeAttribute('style');
+  }
   let url = window.location.href;
+  let paywall_sel = 'div.node__paywall';
   let article_sel = 'article';
-  getArchive(url, 'div.node__paywall-cta', '', article_sel, '', article_sel, article_sel + ' > div');
+  getArchive(url, paywall_sel, '', article_sel, '', article_sel, article_sel + ' > div');
 }
 
 else if (matchDomain('americanbanker.com') || matchDomain(usa_arizent_custom_domains)) {
@@ -3779,7 +3787,7 @@ else if (matchDomain('newslaundry.com')) {
 }
 
 else if (matchDomain('newsweek.com')) {
-  let ads = 'div#topad, div[id^="dfp-ad-"]';
+  let ads = 'div#topad, div[id^="dfp-ad-"], div#piano-inline-engagement';
   hideDOMStyle(ads);
 }
 
@@ -5199,7 +5207,8 @@ else if (matchDomain('timeshighereducation.com')) {
 
 else if (matchDomain('timesofindia.indiatimes.com')) {
   if (!window.location.pathname.includes('/amp_')) {
-    if (window.location.pathname.startsWith('/toi-plus/')) {
+    let toi_plus = window.location.pathname.endsWith('.cms') && (window.location.pathname.startsWith('/toi-plus/') || document.querySelector('div.header-container a[aria-label="toi-plus"]'));
+    if (toi_plus) {
       window.setTimeout(function () {
         let paywall = document.querySelector('div[id^="story-blocker"]');
         let article = document.querySelector('div.paywall') || document.querySelector('article');
@@ -5219,15 +5228,34 @@ else if (matchDomain('timesofindia.indiatimes.com')) {
                     let json_text = getNestedKeys(json, 'it.Story').replace(/\n/g, '<br>');
                     if (json_text) {
                       let parser = new DOMParser();
-                      let doc = parser.parseFromString('<div style="font-size: 16px;"' + json_text + '</div>', 'text/html');
+                      let doc = parser.parseFromString('<div style="font-size: 16px;">' + json_text + '</div>', 'text/html');
                       let article_new = doc.querySelector('div');
                       let videos_hidden = article_new.querySelectorAll('video[su]:not([src^="http"])');
                       for (let elem of videos_hidden) {
                         let video_link = document.createElement('a');
                         video_link.href = elem.getAttribute('su');
                         video_link.innerText = elem.getAttribute('caption') || elem.getAttribute('cap') || video_link.href;
+                        video_link.target = '_blank';
                         elem.before(document.createElement('br'));
                         elem.parentNode.replaceChild(video_link, elem);
+                      }
+                      let charts = article_new.querySelectorAll('embed[type="webViewScript"][src]');
+                      for (let elem of charts) {
+                        if (elem.src.includes('/articleshow/')) {
+                          let elem_text = decodeURIComponent(elem.src.split('/articleshow/')[1]);
+                          let doc = parser.parseFromString('<div>' + elem_text + '</div>', 'text/html');
+                          let elem_new = doc.querySelector('div');
+                          elem.parentNode.replaceChild(elem_new, elem);
+                        } else
+                          console.log(elem);
+                      }
+                      let twitter_embeds = article_new.querySelectorAll('twitter[id]');
+                      for (let elem of twitter_embeds) {
+                        let twitter_link = document.createElement('a');
+                        twitter_link.href = 'https://x.com/user/status/' + elem.id;
+                        twitter_link.innerText = 'Embedded Twitter/X-link';
+                        twitter_link.target = '_blank';
+                        elem.parentNode.replaceChild(twitter_link, elem);
                       }
                       if (article.tagName === 'DIV') {
                         article.innerHTML = '';

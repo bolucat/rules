@@ -214,6 +214,7 @@
 - [_headers](https://rules.neuq.de/clash/a-dove-is-dumb/_headers)
 - [_redirects](https://rules.neuq.de/clash/a-dove-is-dumb/_redirects)
 - [clash.yaml](https://rules.neuq.de/clash/a-dove-is-dumb/clash.yaml)
+- [hagezi.json](https://rules.neuq.de/clash/a-dove-is-dumb/hagezi.json)
 - [ipv6.txt](https://rules.neuq.de/clash/a-dove-is-dumb/ipv6.txt)
 - [list.txt](https://rules.neuq.de/clash/a-dove-is-dumb/list.txt)
 - [mini](https://rules.neuq.de/clash/a-dove-is-dumb/mini)
