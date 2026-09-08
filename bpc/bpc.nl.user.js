@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.4.3.0
+// @version         4.4.3.1
 // @description     Bypass Paywalls of Dutch language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -292,7 +292,7 @@ else if (matchDomain('linda.nl')) {
     let article_sel = 'div.premium-article_main-content, div.article-content_htmlContent';
     let article = document.querySelector(article_sel);
     if (premium && article) {
-      let paywall_sel = cs_param.paywall_sel || 'div.premium-login-box_loginBox';
+      let paywall_sel = 'div.premium-login-box_loginBox';
       hideDOMStyle(paywall_sel);
       let fade = document.querySelector('div[class*="_loginRequired"]');
       if (fade)
@@ -556,9 +556,6 @@ else if (matchDomain('telegraaf.nl')) {
         elem.parentNode.replaceChild(elem_new, elem);
       }
       document.querySelectorAll('div > div[style^="min-height:"] > div[id^="player_"]').forEach(e => hideDOMElement(e.parentNode.parentNode));
-      let pars = document.querySelectorAll(article_sel + ' section > div[style*="font-family:"]:not(:empty)');
-      if (pars.length < 5)
-        article.after(googleSearchToolLink(url));
       let ads = article_sel + ' div:empty';
       hideDOMStyle(ads, 2);
     }
@@ -571,8 +568,12 @@ else if (matchDomain('telegraaf.nl')) {
     if (paywall) {
       if (window.location.pathname.startsWith('/video/') && document.querySelector('div[data-testid="article-video"]'))
         removeDOMElement(paywall);
-      else
+      else {
+        let article = document.querySelector(article_sel);
+        if (article)
+          article.firstChild.before(googleSearchToolLink(url));
         getArchive(url, paywall_sel, '', article_sel);
+      }
       let noscroll = document.querySelector('body[class]');
       if (noscroll)
         noscroll.removeAttribute('class');
