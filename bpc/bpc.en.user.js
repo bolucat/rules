@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.4.5
+// @version         4.4.4.6
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -5887,30 +5887,14 @@ else if (matchDomain(ke_nation_media_domains)) {
   let paywall = document.querySelectorAll('div.modal, [id*="wall"], section.wall-guard');
   if (paywall.length) {
     removeDOMElement(...paywall);
-    func_post = function () {
-      let div_hidden = document.querySelectorAll('div.article-page .nmgp');
-      for (let elem of div_hidden)
-        elem.classList.remove('nmgp');
-      let page_hidden = document.querySelector('div.article-page .hidden');
-      if (page_hidden)
-        page_hidden.classList.remove('hidden');
-      let lazy_images = document.querySelectorAll('img.lazy-img[data-srcset]:not([src])');
-      for (let elem of lazy_images) {
-        elem.src = elem.getAttribute('data-srcset').split(',').pop().split(' ')[0];
-        elem.classList.remove('lazy-img');
-        elem.style = 'margin: 0px 20px';
-      }
-      let videos = document.querySelectorAll('iframe.lazy-iframe_iframe[data-src]:not([src])');
-      for (let elem of videos) {
-        elem.src = elem.getAttribute('data-src');
-        elem.removeAttribute('class');
-      }
+    let article = document.querySelector('div.article-page');
+    if (article) {
+      article.querySelectorAll('.nmgp').forEach(e => e.classList.remove('nmgp'));
+      article.querySelectorAll('aside[hidden]').forEach(e => e.removeAttribute('hidden'));
     }
-    let url = window.location.href;
-    replaceDomElementExt(url, false, false, 'div.blk-txt');
   }
-  let banners = 'div.banner, div.spinner';
-  hideDOMStyle(banners);
+  let ads = 'div.banner, div.spinner, aside.promotion-banner, div.content-page-ad_wrap, div#subscription-renewal-widget';
+  hideDOMStyle(ads);
 }
 
 else if ((domain = matchDomain(usa_gannett_domains)) || document.querySelector('head > link[href*="/gannett_net.js"], footer a[href^="https://www.gannett.com"]')) {
