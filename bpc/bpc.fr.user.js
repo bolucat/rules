@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.4.0
+// @version         4.4.4.1
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -121,7 +121,7 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
           let nuxt_vars = json.split(/^\(function\(/)[1].split('){')[0].split(',');
           let nuxt_values = json.split('}}(')[1].split('));')[0].replace(/(^|,)(true|\.?\d+|{}),/g, ',"$1$2",').replace(/(^|,)(false),/g, ',"$1$2",').replace(/(^|,)(null),/g, ',"$1$2",').replace(/,(void\s\d|Array\(\d+\)),/g, ',"$1",').replace(/,(\.?\d+|{}|Array\(\d+\)),/g, ',"$1",').split(/\\?",\\?"/);
           if (nuxt_vars.length !== nuxt_values.length)
-            console.log('nuxt_vars: ' + nuxt_vars.length + ' != nuxt_values: ' + nuxt_values.length)
+            console.log('nuxt_vars: ' + nuxt_vars.length + ' != nuxt_values: ' + nuxt_values.length);
           function findNuxtText(str, attributes = false) {
             if (str && str.length < 4 && nuxt_vars.length && nuxt_values.length && !(attributes && str.length === 1 && str === str.toUpperCase())) {
               let index = nuxt_vars.indexOf(str);
@@ -154,7 +154,7 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
                       } else if (mark_type === 'italic') {
                         sub_elem.style['font-style'] = 'italic';
                       } else if (!['prefix', 'textStyle'].includes(mark_type))
-                        console.log(mark_type)
+                        console.log(mark_type);
                     }
                   }
                   sub_elem.innerText = findNuxtText(item.text);
@@ -173,9 +173,11 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
               let src = findNuxtText(attrs.src);
               let caption;
               let meta_img = getNestedKeys(attrs, 'meta.image');
-              if (meta_img)
-                caption = (meta_img.caption ? findNuxtText(meta_img.caption) : '') + (meta_img.copyright ? '\r\n' + findNuxtText(meta_img.copyright) : '');
-              let figure = makeFigure(src, caption);
+              if (meta_img) {
+                let img_caption = meta_img.caption ? findNuxtText(meta_img.caption) : '';
+                caption = (img_caption && !img_caption.match(/\.(jpg|png)$/)) ? img_caption + (meta_img.copyright ? '\r\n' + findNuxtText(meta_img.copyright) : '') : '';
+              }
+              let figure = makeFigure(src, caption, {alt: findNuxtText(meta_img.alt)});
               elem.appendChild(figure);
             }
           }
@@ -193,61 +195,89 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
               elem.appendChild(idiv);
             }
           }
+          function addTable(par, elem) {
+            if (par.content) {
+              let table = document.createElement('table');
+              for (let row_elem of par.content) {
+                if (row_elem.content && row_elem.content[0]) {
+                  let row_data = row_elem.content[0];
+                  if (row_data.type && row_data.content && row_data.attrs) {
+                    let row_type = findNuxtText(row_data.type);
+                    let tr = document.createElement('tr');
+                    for (let attr in row_data.attrs) {
+                      if (findNuxtText(row_data.attrs[attr]) !== 'null')
+                        tr.setAttribute(attr, findNuxtText(row_data.attrs[attr]));
+                    }
+                    if (['tableCell', 'tableHeader'].includes(row_type)) {
+                      let row_type_tag = (row_type === 'tableHeader') ? 'th' : 'td';
+                      let td = document.createElement(row_type_tag);
+                      for (let item of row_data.content)
+                        addElem(item, td);
+                      tr.appendChild(td);
+                    } else {
+                      console.log(row_type);
+                      console.log(row_data);
+                    }
+                    if (tr.hasChildNodes())
+                      table.appendChild(tr);
+                  }
+                }
+              }
+              elem.appendChild(table);
+            }
+          }
           function addVideo(par, elem) {
             let attrs = par.attrs;
             if (attrs && attrs.src) {
-              let video = document.createElement('iframe');
+              let video = document.createElement('embed');
               video.src = findNuxtText(attrs.src).replace('watch?v=', '/embed/').split('&')[0];
               video.style = 'width: 100%; aspect-ratio: 16 / 9; border: 0; margin: 20px 0px;';
               elem.appendChild(video);
             }
           }
+          function addElem(par, elem) {
+            let par_type = findNuxtText(par.type);
+            if (['paragraph', 'heading'].includes(par_type)) {
+              addPar(par, elem);
+            } else if (['figure', 'image'].includes(par_type)) {
+              addFigure(par, elem);
+            } else if (['vod', 'youtube'].includes(par_type)) {
+              addVideo(par, elem);
+            } else if (par_type === 'iframely') {
+              addIframely(par, elem);
+            } else if (par_type === 'table') {
+              addTable(par, elem);
+            } else if (!['profile'].includes(par_type)) {
+              console.log(par_type);
+              console.log(par);
+            }
+          }
           for (let par of pars) {
             let par_new = document.createElement('div');
             let par_type = findNuxtText(par.type);
-            if (['paragraph', 'heading'].includes(par_type)) {
-              addPar(par, par_new);
-            } else if (['figure', 'image'].includes(par_type)) {
-              addFigure(par, par_new);
-            } else if (par_type === 'youtube') {
-              addVideo(par, par_new);
-            } else if (par_type === 'iframely') {
-              addIframely(par, par_new);
-            } else if (par_type === 'preset') {
+            if (par_type === 'preset') {
               let content = par.content;
               if (content) {
                 let attrs_name = getNestedKeys(par, 'attrs.name');
                 if (attrs_name) {
                   attrs_name = findNuxtText(attrs_name);
-                  if (attrs_name === 'encadre')
+                  if (attrs_name === 'encadre') {
                     par_new.style = 'border: solid; padding: 20px;';
-                  else if (attrs_name === 'exergue') {
+                  } else if (attrs_name === 'exergue') {
                     par_new.appendChild(document.createElement('hr'));
                     par_new.style = 'margin: 0px 20px;';
                   }
-                  for (let elem of content) {
-                    let sub_type = findNuxtText(elem.type);
-                    if (['paragraph', 'heading'].includes(sub_type)) {
-                      addPar(elem, par_new);
-                    } else if (['figure', 'image'].includes(sub_type)) {
-                      addFigure(elem, par_new);
-                    } else if (sub_type === 'youtube') {
-                      addVideo(elem, par_new);
-                    } else if (sub_type === 'iframely') {
-                      addIframely(elem, par_new);
-                    } else if (sub_type === 'preset') {
-                      addPar(elem.content[0], par_new);
-                    } else {
-                      console.log(sub_type);
-                      console.log(elem);
-                    }
+                  for (let sub_elem of content) {
+                    let sub_type = findNuxtText(sub_elem.type);
+                    if (sub_type === 'preset') {
+                      addPar(sub_elem.content[0], par_new);
+                    } else
+                      addElem(sub_elem, par_new);
                   }
                 }
               }
-            } else if (!['profile'].includes(par_type)) {
-              console.log(par_type);
-              console.log(par);
-            }
+            } else
+              addElem(par, par_new);
             if (par_new.hasChildNodes())
               article.appendChild(par_new);
           }
@@ -261,7 +291,7 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
           let parts = json.split('html:"');
           parts.splice(0, 1);
           for (let part of parts)
-            content += part.split('",has_pre_content')[0];
+            content += part.split(/"[:,\w]*,has_pre_content/)[0];
         }
         if (content) {
           content = content.replace(/\\u003C/g, '<').replace(/\\u003E/g, '>').replace(/\\u002F/g, '/').replace(/\\"/g, '"').replace(/\\r\\n/g, '');
@@ -279,7 +309,7 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
             }
           }
           let table_app = content_new.querySelectorAll('table > thead');
-		  for (let elem of table_app) {
+          for (let elem of table_app) {
             if (elem.querySelector('a[href^="https://apps.apple.com/"]'))
               removeDOMElement(elem);
           }
@@ -1010,7 +1040,7 @@ else if (matchDomain('lecho.be')) {
       let paywall = document.querySelector('div[class*="_paywallContainer"]');
       if (paywall) {
         removeDOMElement(paywall);
-		let article_sel = 'div[class*="_articleBodyCenter"]';
+        let article_sel = 'div[class*="_articleBodyCenter"]';
         let article = document.querySelector(article_sel);
         if (article) {
           let authorization = mediafin_get_auth();
