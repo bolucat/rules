@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.4.1
+// @version         4.4.4.3
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -114,7 +114,8 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
       let content_new;
       let json_html_filter = /html:{type:["\w]+,content:\[{/;
       if (json.match(json_html_filter)) {
-        content = (json.match(json_html_filter)[0].replace(/html:/, '') + json.split(json_html_filter)[1].split('}]},has_pre_content')[0] + '}]}').replace(/:\[[,"\-\w]+\],/g, ':[],').replace(/([{,])(\w+)(?=:(["\{\[]|([\w$]{1,3}|[\d$]+)[,\}]))/g, "$1\"$2\"").replace(/\":(\[)?([\w\$\.]+)([\]},])/g, "\":$1\"$2\"$3");
+        let nuxt_content = json.match(json_html_filter)[0].replace(/html:/, '') + json.split(json_html_filter)[1].split('}]},has_pre_content')[0] + '}]}';
+        content = nuxt_content.replace(/:\[[,"\-\w]+\],/g, ':[],').replace(/([{,])(\w+)(?=:(["\{\[]|([\w$]{1,3}|[\d$]+)[,\}]))/g, "$1\"$2\"").replace(/\":(\[)?([\w\$\.]+)([\]},])/g, "\":$1\"$2\"$3");
         try {
           let pars = JSON.parse(content).content;
           article.innerHTML = '';
@@ -123,10 +124,10 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
           if (nuxt_vars.length !== nuxt_values.length)
             console.log('nuxt_vars: ' + nuxt_vars.length + ' != nuxt_values: ' + nuxt_values.length);
           function findNuxtText(str, attributes = false) {
-            if (str && str.length < 4 && nuxt_vars.length && nuxt_values.length && !(attributes && str.length === 1 && str === str.toUpperCase())) {
+		    if (str && str.length < 4 && nuxt_vars.length && nuxt_values.length && !(attributes && !getNestedKeys(attributes, '0.attrs.href') && nuxt_content.match(new RegExp(',text:"' + str + '"[,}]{1}')))) {
               let index = nuxt_vars.indexOf(str);
               if (nuxt_values[index])
-                str = nuxt_values[index].replace(/\\u002F/g, '/').replace(/^,/, '');
+                str = nuxt_values[index].replace(/\\u002F/g, '/').replace(/^,"?/, '');
             }
             return str;
           }
@@ -153,11 +154,16 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
                         sub_elem.style['font-weight'] = 'bold';
                       } else if (mark_type === 'italic') {
                         sub_elem.style['font-style'] = 'italic';
+                      } else if (mark_type === 'underline') {
+                        sub_elem.style['text-decoration'] = 'underline';
+                      } else if (['subscript', 'superscript'].includes(mark_type)) {
+                        sub_elem.style['font-size'] = '.83em';
+                        sub_elem.style['vertical-align'] = (mark_type === 'subscript') ? 'sub' : 'super';
                       } else if (!['prefix', 'textStyle'].includes(mark_type))
                         console.log(mark_type);
                     }
                   }
-                  sub_elem.innerText = findNuxtText(item.text);
+                  sub_elem.innerText = findNuxtText(item.text, item.marks);
                   if (par_type === 'heading')
                     sub_elem.style = 'font-weight: bold;';
                   elem.appendChild(sub_elem);
@@ -175,7 +181,7 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
               let meta_img = getNestedKeys(attrs, 'meta.image');
               if (meta_img) {
                 let img_caption = meta_img.caption ? findNuxtText(meta_img.caption) : '';
-                caption = (img_caption && !img_caption.match(/\.(jpg|png)$/)) ? img_caption + (meta_img.copyright ? '\r\n' + findNuxtText(meta_img.copyright) : '') : '';
+                caption = (img_caption && !img_caption.match(/(null|\.(jpg|png)$)/)) ? img_caption + (meta_img.copyright ? '\r\n' + findNuxtText(meta_img.copyright) : '') : '';
               }
               let figure = makeFigure(src, caption, {alt: findNuxtText(meta_img.alt)});
               elem.appendChild(figure);
