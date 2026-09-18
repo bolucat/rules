@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.4.8
+// @version         4.4.4.9
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2330,6 +2330,8 @@ else if (matchDomain('bloombergadria.com')) {
 else if (matchDomain('bostonglobe.com')) {
   if (window.location.search.startsWith('?outputType=amp'))
     amp_unhide_subscr_section();
+  let ads = 'div.width_full[style^="min-height:"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('business-standard.com')) {
@@ -3221,13 +3223,11 @@ else if (matchDomain('inkl.com')) {
 }
 
 else if (matchDomain('inquirer.com')) {
-  let audio_paywall = document.querySelector('button.audio-paywall-trigger');
+  let audio_paywall = document.querySelector('div.article-body-paywall button[aria-label^="Subscribe"]');
   if (audio_paywall) {
-    let audio = audio_paywall.parentNode.querySelector('audio[src]');
-    if (audio) {
+    let audio = document.querySelector('audio[src]');
+    if (audio)
       audio.setAttribute('controls', '');
-      audio_paywall.parentNode.parentNode.replaceChild(audio, audio_paywall.parentNode);
-    }
   }
   let ads = 'div[data-ad-name]';
   hideDOMStyle(ads);

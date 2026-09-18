@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.4.3
+// @version         4.4.4.5
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -124,7 +124,7 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
           if (nuxt_vars.length !== nuxt_values.length)
             console.log('nuxt_vars: ' + nuxt_vars.length + ' != nuxt_values: ' + nuxt_values.length);
           function findNuxtText(str, attributes = false) {
-		    if (str && str.length < 4 && nuxt_vars.length && nuxt_values.length && !(attributes && !getNestedKeys(attributes, '0.attrs.href') && nuxt_content.match(new RegExp(',text:"' + str + '"[,}]{1}')))) {
+            if (str && str.length < 4 && nuxt_vars.length && nuxt_values.length && !(attributes && !getNestedKeys(attributes, '0.attrs.href') && nuxt_content.match(new RegExp(',text:"' + str + '"[,}]{1}')))) {
               let index = nuxt_vars.indexOf(str);
               if (nuxt_values[index])
                 str = nuxt_values[index].replace(/\\u002F/g, '/').replace(/^,"?/, '');
@@ -296,14 +296,23 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
         } else {
           let parts = json.split('html:"');
           parts.splice(0, 1);
-          for (let part of parts)
-            content += part.split(/"[:,\w]*,has_pre_content/)[0];
+          for (let part of parts) {
+            let part_split = part.split(/",has_pre_content/)[0];
+            if (part_split.includes('\\u003E",'))
+              part_split = part_split.split(/\\u003E",/)[0] + '\u003E';
+            content += part_split;
+          }
         }
         if (content) {
           content = content.replace(/\\u003C/g, '<').replace(/\\u003E/g, '>').replace(/\\u002F/g, '/').replace(/\\"/g, '"').replace(/\\r\\n/g, '');
           let parser = new DOMParser();
           let doc = parser.parseFromString('<div class="html-content">' + content + '</div>', 'text/html');
           content_new = doc.querySelector('div');
+          let data_iframes = content_new.querySelectorAll('iframe[data-iframely-url]:not([src])');
+          for (let elem of data_iframes) {
+            elem.src = elem.getAttribute('data-iframely-url');
+            elem.parentNode.style.margin = '20px 0px';
+          }
           let iframely = content_new.querySelectorAll('div > div.fr-iframely');
           for (let elem of iframely) {
             let url_dom = elem.querySelector('[data-iframely-url]');
@@ -1134,7 +1143,7 @@ else if (matchDomain('lefigaro.fr')) {
     let article = document.querySelector('div[data-component="fig-content-body"]');
     if (article) {
       let resource_key = '34e68a3419a876e36729503e2107dfa556e1a105892e27010130a30018ccbe60';
-      let url = window.location.href.split([/\?#/])[0];
+      let url = window.location.href.split(/[?#]/)[0];
       let url_src = 'https://api-graphql.lefigaro.fr/graphql?id=FigaroCoreMobile_resourceByUrl_persistent_' + resource_key + '&variables={%22url%22:%20%22' + url + '%22}';
       fetch(url_src)
       .then(response => {
