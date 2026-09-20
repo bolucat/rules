@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.4.5
+// @version         4.4.4.6
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -84,7 +84,7 @@ else if (matchDomain('alternatives-economiques.fr')) {
     let data_ae_poool = document.querySelector('div[data-ae-poool]');
     if (data_ae_poool)
       data_ae_poool.removeAttribute('style');
-  }, 1000); // Delay (in milliseconds)
+  }, 1000);
 }
 
 else if (matchDomain('aoc.media')) {
@@ -97,7 +97,9 @@ else if (matchDomain('aoc.media')) {
 }
 
 else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
-  let paywall = document.querySelector('section#paywall-articles');
+  for (let i = 0; i < 2; i++) {// userscript-only
+  window.setTimeout(function () {
+  let paywall = document.querySelector('section#paywall-articles, div.component-paywall');
   if (paywall) {
     removeDOMElement(paywall);
     let url_id = window.location.pathname.match(/\d+$/).pop();
@@ -109,6 +111,11 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
         refreshCurrentTab();
     }
     let article = document.querySelector('div.html-content');
+    let no_intro = false;
+    if (!article) {
+      article = document.querySelector('div.container-mobile-full');
+      no_intro = true;
+    }
     if (article && json) {
       let content = '';
       let content_new;
@@ -197,7 +204,9 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
               let iframe = iframely.querySelector('iframe[data-iframely-url]:not([src])');
               if (iframe)
                 iframe.src = iframe.getAttribute('data-iframely-url');
-              idiv.append(document.createTextNode(attrs.embed.title), iframely);
+               if (attrs.embed.title && !findNuxtText(attrs.embed.title).startsWith('Untitled'))
+                idiv.appendChild(document.createTextNode(findNuxtText(attrs.embed.title)));
+              idiv.appendChild(iframely);
               elem.appendChild(idiv);
             }
           }
@@ -328,13 +337,19 @@ else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
             if (elem.querySelector('a[href^="https://apps.apple.com/"]'))
               removeDOMElement(elem);
           }
-          let article_top = article.parentNode.parentNode;
-          removeDOMElement(article.parentNode);
+          let article_top;
+          if (!no_intro) {
+            article_top = article.parentNode.parentNode;
+            removeDOMElement(article.parentNode);
+          } else
+            article_top = article;
           article_top.appendChild(content_new);
         } else
           header_nofix(article, '', 'BPC > no fix (page source)');
       }
     }
+  }
+  }, i*1000);
   }
   let ads = 'div.components-advertisement';
   hideDOMStyle(ads);

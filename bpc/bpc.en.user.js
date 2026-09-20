@@ -1710,6 +1710,8 @@ else if (matchDomain('benzinga.com')) {
     }
   }
   waitDOMElement('div.paywall-content', 'DIV', benz_main, false);
+  let ads = 'div[data-freestar-placement], div[class^="ConnatixBlock__ConnatixVideoWrapper-sc-"]';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('bhaskar.com')) {
