@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.4.9
+// @version         4.4.5.1
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -197,7 +197,7 @@ var no_dn_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'hydroge
 var sg_sph_media_domains = ['businesstimes.com.sg', 'straitstimes.com'];
 var uk_dmg_media_domains = ['dailymail.com', 'thisismoney.co.uk'];
 var uk_iconic_media_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
-var uk_reach_domains = ['dailyrecord.co.uk', 'express.co.uk'];
+var uk_reach_domains = ['dailyrecord.co.uk', 'express.co.uk', 'irishmirror.ie', 'mirror.co.uk'];
 var usa_arizent_custom_domains = ['accountingtoday.com', 'benefitnews.com', 'bondbuyer.com', 'dig-in.com', 'financial-planning.com', 'nationalmortgagenews.com'];
 var usa_conde_nast_domains = ['architecturaldigest.com', 'bonappetit.com', 'cntraveler.com', 'epicurious.com', 'gq.com' , 'newyorker.com', 'vanityfair.com', 'vogue.co.uk', 'vogue.com', 'wired.com'];
 var usa_cox_first_media_domains = ['daytondailynews.com', 'journal-news.com', 'springfieldnewssun.com'];
@@ -3629,7 +3629,7 @@ else if (matchDomain('nationalreview.com')) {
         getJsonUrl(paywall_sel, '', 'div.article-content', {art_class: 'article-content article-content--headless'});
     }
   }
-  let banners = 'div.zephr-wrapper, div#bc-root, div.cookie-text';
+  let banners = 'div#bc-root, aside[aria-label="Meter Ribbon"]';
   let ads = 'amp-ad, .ad-unit, .ad-skeleton, amp-connatix-player, div[class*="-connatix-"]';
   hideDOMStyle(banners + ', ' + ads);
 }
