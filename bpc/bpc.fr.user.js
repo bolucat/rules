@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.4.6
+// @version         4.4.4.7
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -28,6 +28,7 @@
 // @match           *://*.ledevoir.com/*
 // @match           *://*.legrandcontinent.eu/*
 // @match           *://*.lejsl.com/*
+// @match           *://*.lenordvaudois.ch/*
 // @match           *://*.lenouvelliste.ch/*
 // @match           *://*.lerevenu.com/*
 // @match           *://*.lesinrocks.com/*
@@ -96,7 +97,7 @@ else if (matchDomain('aoc.media')) {
   getJsonUrl('section.article-payant', '', 'div.premium-article');
 }
 
-else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenouvelliste.ch'])) {
+else if (matchDomain(['arcinfo.ch', 'lacote.ch', 'lenordvaudois.ch', 'lenouvelliste.ch'])) {
   for (let i = 0; i < 2; i++) {// userscript-only
   window.setTimeout(function () {
   let paywall = document.querySelector('section#paywall-articles, div.component-paywall');

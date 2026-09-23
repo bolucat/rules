@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.5.1
+// @version         4.4.5.2
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2526,6 +2526,13 @@ else if (matchDomain('dallasnews.com')) {
     amp_unhide_subscr_section();
   }
   let ads = 'div[data-block-type="ad"], div[data-pub-id], article div.b-gray300';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('deccanherald.com')) {
+  if (!window.location.href.startsWith('/amp/'))
+    amp_redirect('div.paywall');
+  let ads = 'div[class$="-amp-ad"], div[style^="min-height"]:has(> div > div[id*="-ad-separator"])';
   hideDOMStyle(ads);
 }
 
