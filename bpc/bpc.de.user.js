@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.4.0
+// @version         4.4.4.1
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -430,6 +430,15 @@ else if (matchDomain('heise.de')) {
 }
 
 else if (matchDomain('jacobin.de')) {
+  func_post = function () {
+    if (mobile) {
+      let article = document.querySelector(article_sel);
+      if (article) {
+        article.style = 'margin: 10px';
+        article.querySelectorAll('figure img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
+      }
+    }
+  }
   let url = window.location.href;
   let article_sel = 'article';
   getArchive(url, 'aside.paywall', '', article_sel, '', article_sel, 'main');

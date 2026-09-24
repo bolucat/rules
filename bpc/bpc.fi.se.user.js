@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         4.3.8.3
+// @version         4.4.5.0
 // @description     Bypass Paywalls of Danish, Finnish & Swedish language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fi.se.user.js
@@ -42,7 +42,7 @@ if (matchDomain(['berlingske.dk', 'weekendavisen.dk'])) {
       if (json_script) {
         try {
           let json = JSON.parse(json_script.text);
-          if (json && json.props.pageProps.article.body) {
+          if (json && getNestedKeys(json, 'props.pageProps.article.body')) {
             function getChildValue(child) {
               let value;
               if (child.children && child.children[0]) {
@@ -52,6 +52,16 @@ if (matchDomain(['berlingske.dk', 'weekendavisen.dk'])) {
                   value = child.children[0].children[0].value;
               }
               return value;
+            }
+            let audio_src = getNestedKeys(json, 'props.pageProps.article.audioArticle.mediaResource.mediaAssets.0.url');
+            if (audio_src) {
+              let audio_tts = document.querySelector('button.sp_audio_play');
+              if (audio_tts) {
+                let audio_new = document.createElement('audio');
+                audio_new.src = audio_src;
+                audio_new.setAttribute('controls', '');
+                audio_tts.parentNode.replaceChild(audio_new, audio_tts);
+              }
             }
             article.innerHTML = '';
             let parser = new DOMParser();
