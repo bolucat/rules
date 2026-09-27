@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.5.2
+// @version         4.4.5.3
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1626,17 +1626,72 @@ else if (matchDomain('asia.nikkei.com')) {
 }
 
 else if (matchDomain('axios.com')) {
-  function axios_noscroll(node) {
-    node.removeAttribute('style');
-    let overlay = 'div[class^="Modal_paywall"], div[class^="Modal_cta"]';
-    hideDOMStyle(overlay, 2);
+  if (window.location.pathname.startsWith('/pro/') || document.querySelector('div > span.text-rubric-executive-membership')) {
+    let paywall = document.querySelector('div#piano-wall');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let article = document.querySelector('div[data-cy="story-body"] > div');
+      if (article) {
+        let json_script = document.querySelector('script#__NEXT_DATA__');
+        if (json_script) {
+          try {
+            let json = JSON.parse(json_script.text);
+            if (json && getNestedKeys(json, 'props.pageProps.data.story.blocks')) {
+              let json_blocks = getNestedKeys(json, 'props.pageProps.data.story.blocks');
+              if (json_blocks.blocks) {
+                let blocks = json_blocks.blocks.filter(x => x.text);
+                let entity_map = json_blocks.entityMap;
+                let pars = article.querySelectorAll('p, h2, li');
+                let link_text = 'Go deeper';
+                let block_nr = 0;
+                for (let elem of blocks) {
+                  if (block_nr >= pars.length) {
+                    let par_type = 'p';
+                    let par_sub_type = 'span';
+                    if (elem.type) {
+                      if (elem.type === 'header-two')
+                        par_type = 'h2';
+                      else if (elem.type === 'unordered-list-item') {
+                        par_type = 'ul';
+                        par_sub_type = 'li';
+                      }
+                    }
+                    let par_new = document.createElement(par_type);
+                    let sub_elem = document.createElement(par_sub_type);
+                    let par_text = elem.text.replace(link_text, '').trim();
+                    sub_elem.innerText = par_text;
+                    if (entity_map && elem.entityRanges && elem.entityRanges.length) {
+                      for (let item of elem.entityRanges) {
+                        if (item.hasOwnProperty('key')) {
+                          let key = item.key;
+                          if (entity_map[key] && entity_map[key].data && (entity_map[key].data.url || entity_map[key].data.href)) {
+                            let link_new = document.createElement('a');
+                            link_new.innerText = link_text + ((elem.entityRanges.length > 1 && item.offset && item.length) ? ' - ' + par_text.substring(item.offset, item.offset + item.length) : '');
+                            let url = entity_map[key].data.url || entity_map[key].data.href;
+                            link_new.href = url;
+                            link_new.target = !url.startsWith('https://www.axios.com/') ? '_blank' : '_self';
+                            link_new.style.margin = '0px 5px';
+                            sub_elem.appendChild(link_new);
+                          }
+                        }
+                      }
+                    }
+                    par_new.appendChild(sub_elem);
+                    article.appendChild(par_new);
+                  }
+                  block_nr++;
+                }
+              }
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+    }
   }
-  let noscroll = document.querySelector('html[style]');
-  if (noscroll)
-    axios_noscroll(noscroll);
-  waitDOMAttribute('html', 'HTML', 'style', axios_noscroll, true);
-  let banners = 'div[data-cy="pro-paywall"], div.apexAd, div[class*="NativeAd"], span[data-ad-type]';
-  hideDOMStyle(banners);
+  let ads = 'div.apexAd';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('balkaninsight.com')) {
