@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.5.3
+// @version         4.4.5.4
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2784,7 +2784,9 @@ else if (matchDomain('economictimes.indiatimes.com')) {
 else if (matchDomain('economist.com')) {
   if (window.location.pathname.includes('/podcasts/')) {
     header_nofix('section[data-body-id]', 'div[aria-labelledby="paywall-heading"]');
-  } else if (!window.location.pathname.startsWith('/interactive/')) {
+  } else if (window.location.pathname.startsWith('/interactive/')) {
+    document.querySelectorAll('html, body').forEach(e => e.style = 'overflow: visible !important');
+  } else {
     let paywall_sel = 'div#tp-regwall';
     let article_sel = 'main';
     let video = document.querySelector('iframe[src^="https://www.youtube.com/"]');
@@ -2806,7 +2808,7 @@ else if (matchDomain('economist.com')) {
     let url = window.location.href;
     getArchive(url, paywall_sel, '', 'main');
   }
-  let ads = 'div[class*="adComponent"]';
+  let ads = 'div[class*="adComponent"], div.ad';
   hideDOMStyle(ads);
 }
 
