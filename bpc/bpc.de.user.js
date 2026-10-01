@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.4.1
+// @version         4.4.5.0
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -61,8 +61,7 @@ var de_lv_domains = ['profi.de', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de', 'saechsische.de'];
 var de_motor_presse_domains = ['aerokurier.de', 'auto-motor-und-sport.de', 'flugrevue.de', 'motorradonline.de', 'womenshealth.de'];
 var de_rp_medien_domains = ['ga.de', 'rp-online.de', 'saarbruecker-zeitung.de', 'volksfreund.de'];
-var de_smn_domains = ['schwarzwaelder-bote.de', 'stuttgarter-nachrichten.de', 'stuttgarter-zeitung.de'];
-var de_smn_custom_domains = ['cannstatter-zeitung.de', 'esslinger-zeitung.de', 'frankenpost.de', 'insuedthueringen.de', 'krzbb.de', 'kurier.de', 'np-coburg.de'];
+var de_smn_custom_domains = ['frankenpost.de', 'insuedthueringen.de', 'kurier.de', 'np-coburg.de'];
 var de_vrm_domains = ['allgemeine-zeitung.de', 'echo-online.de', 'wiesbadener-kurier.de'];
 var de_vrm_custom_domains = ['buerstaedter-zeitung.de', 'hochheimer-zeitung.de', 'lampertheimer-zeitung.de', 'lauterbacher-anzeiger.de', 'main-spitze.de', 'mittelhessen.de', 'oberhessische-zeitung.de', 'wormser-zeitung.de'];
 
@@ -1167,20 +1166,14 @@ else if (matchDomain(de_madsack_domains) || document.querySelector('head > link[
   }
 }
 
-else if (matchDomain(de_smn_domains) || matchDomain(de_smn_custom_domains)) {
-  if (matchDomain(de_smn_domains)) {
-    let restricted = document.querySelector('div.restricted-area');
-    if (restricted)
-      restricted.classList.remove('restricted-area');
-  } else {
-    func_post = function () {
-      if (mobile) {
-        document.querySelectorAll('figure > img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
-      }
+else if (matchDomain(de_smn_custom_domains)) {
+  func_post = function () {
+    if (mobile) {
+      document.querySelectorAll('figure > img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
     }
-    let url = window.location.href;
-    getArchive(url, 'div.mod-paywall, div.upscore-paywall-placeholder', '', 'article, div#article-container');
   }
+  let url = window.location.href;
+  getArchive(url, 'div.mod-paywall, div.upscore-paywall-placeholder', '', 'article, div#article-container');
   let ads = 'div.mod-paywall, div.Billboard, div[id*="board"], div.ad, div[id^="traffective-ad-"], div.glomex';
   hideDOMStyle(ads);
 }
