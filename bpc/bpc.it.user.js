@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.4.3.1
+// @version         4.4.5.0
 // @description     Bypass Paywalls of Italian language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -44,8 +44,12 @@ if (matchDomain('corriere.it')) {
 
 else if (matchDomain('corrieredellosport.it')) {
   if (!window.location.pathname.startsWith('/amp/')) {
-    amp_redirect('div[class^="MainTextTruncated_paragraph__"]');
+    let paywall_sel = 'div[class^="Paywall_section__"]';
+    amp_redirect(paywall_sel);
     let ads = 'div[class^="AdUnit_placeholder"]';
+    hideDOMStyle(ads);
+  } else {
+    let ads = 'amp-embed, amp-list';
     hideDOMStyle(ads);
   }
 }

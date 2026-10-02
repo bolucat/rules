@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.5.5
+// @version         4.4.5.7
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -28,6 +28,7 @@
 // @match           *://*.gitflic.ru/*
 // @match           *://*.haaretz.co.il/*
 // @match           *://*.iai.tv/*
+// @match           *://*.independent.ie/*
 // @match           *://*.indiatoday.in/*
 // @match           *://*.intrafish.no/*
 // @match           *://*.ipolitics.ca/*
@@ -447,13 +448,6 @@ else if (matchDomain(['crikey.com.au', 'smartcompany.com.au', 'themandarin.com.a
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('forbes.com.au')) {
-  setCookie('blaize_session', '', 'forbes.com.au', '/', 0);
-  getJsonUrl('div[class*="_gate"]', '', 'div.article-page__content-body');
-  let fade = document.querySelector('div[style*="background-image: linear-gradient"]');
-  removeDOMElement(fade);
-}
-
 else if (matchDomain('macrobusiness.com.au')) {
   let paywall = pageContains('div > p', 'The full text of this article is available');
   if (paywall[0]) {
@@ -721,6 +715,37 @@ if (matchDomain('autocar.co.uk')) {
 
 else if (matchDomain('autosport.com')) {
   header_nofix('div.ms-article-content > p', 'div.ms-piano_article-banner');
+}
+
+else if (matchDomain(['belfasttelegraph.co.uk', 'independent.ie'])) {
+  func_post = function () {
+    let article = document.querySelector(article_sel);
+    if (article) {
+      article.querySelectorAll('img[loading="lazy"][style][src$="-placeholder.svg"]').forEach(e => e.remove());
+      if (mobile) {
+        let next = document.querySelector('div#__next');
+        if (next)
+          article.style = 'margin: 10px; width: ' + (next.offsetWidth - 20) + 'px';
+        let lazy_images = article.querySelectorAll('img[loading="lazy"][style]');
+        for (let elem of lazy_images) {
+          elem.style = 'width: 95%;';
+          elem.parentNode.style = 'border: none;';
+        }
+      }
+    }
+  }
+  let url = window.location.href;
+  let paywall_sel = 'div#flip-pay:not(:empty)';
+  let paywall = document.querySelector(paywall_sel);
+  let article_sel = 'article section';
+  if (paywall) {
+    let article = document.querySelector(article_sel);
+    if (article)
+      article.before(googleSearchToolLink(url));
+    getArchive(url, paywall_sel, '', article_sel);
+  }
+  let ads = 'div.mh-ad-label';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('businesspost.ie')) {
