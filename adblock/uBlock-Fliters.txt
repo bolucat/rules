@@ -1,7 +1,7 @@
 ! Title: uBlock filters
 ! Expires: 5 days
-! Last modified: Fri, 02 Oct 2026 16:30:02 +0000
-! Diff-Path: ../patches/2026.10.2.1239.patch#ublock-filters
+! Last modified: Sat, 03 Oct 2026 13:55:02 +0000
+! Diff-Path: ../patches/2026.10.3.1032.patch#ublock-filters
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/filters.txt ***
@@ -31,6 +31,8 @@ youtube.com##.ytlr-horizontal-list-renderer__items > .yt-virtual-list__container
 ! Shorts Ad
 m.youtube.com,music.youtube.com,tv.youtube.com,www.youtube.com,youtubekids.com,youtube-nocookie.com##+js(json-prune-fetch-response, reelWatchSequenceResponse.entries.[-].command.reelWatchEndpoint.adClientParams.isAd entries.[-].command.reelWatchEndpoint.adClientParams.isAd, , propsToMatch, url:/reel_watch_sequence?)
 m.youtube.com,music.youtube.com,tv.youtube.com,www.youtube.com,youtubekids.com,youtube-nocookie.com##+js(json-prune, entries.[-].command.reelWatchEndpoint.adClientParams.isAd)
+! Sponsored
+m.youtube.com##+js(json-edit-fetch-response, ..itemSectionRenderer.contents.*[?.adSlotRenderer], propsToMatch, /get_watch)
 ||youtube.com/youtubei/v1/get_watch?$xhr,1p,replace=/"adPlacements"/"no_ads"/
 ||youtube.com/youtubei/v1/get_watch?$xhr,1p,replace=/"adSlots"/"no_ads"/
 newser.com##+js(aeld, load, Object)
@@ -7763,8 +7765,10 @@ swiftuploads.com##+js(rpnt, script, toUpperCase()+, toSomeCase()+)
 1cloudfile.com,akirabox.com,akirabox.to,bowfile.com,buzzheavier.com,bzzhr.co,bzzhr.to,cg-gamespc.net,datavaults.co,devuploads.com,dodi-repacks.site,file-me.top,file-upload.org,filemirage.com,fuckingfast.*,game-repack.site,gamedrive.*,getfreegames.net,go.zovo.ink,koramaup.com,mirrored.to,multiup.io,nathanmichaelphoto.com,ranoz.gg,repack-games.com,reloadedsteam.com,rootz.so,steam-repacks.net,steamgg.net,steamunderground.net,swiftuploads.com,torupload.com,up-4ever.net,uploadrar.*,usersdrive.com,vik1ngfile.site,worldofpcgames.com,zeilink.net,zovo2.top,zpaste.net,fileq.net##+js(aeld, click, /document.createElement|window.open/)
 1cloudfile.com,akirabox.com,akirabox.to,bowfile.com,buzzheavier.com,bzzhr.co,bzzhr.to,cg-gamespc.net,datavaults.co,devuploads.com,dodi-repacks.site,file-me.top,file-upload.org,filemirage.com,fuckingfast.*,game-repack.site,gamedrive.*,getfreegames.net,go.zovo.ink,koramaup.com,mirrored.to,multiup.io,nathanmichaelphoto.com,ranoz.gg,repack-games.com,reloadedsteam.com,rootz.so,steam-repacks.net,steamgg.net,steamunderground.net,swiftuploads.com,torupload.com,up-4ever.net,uploadrar.*,usersdrive.com,vik1ngfile.site,worldofpcgames.com,zeilink.net,zovo2.top,zpaste.net,fileq.net##+js(nowoif, .cfd)
 1cloudfile.com,akirabox.com,akirabox.to,bowfile.com,buzzheavier.com,bzzhr.co,bzzhr.to,cg-gamespc.net,datavaults.co,devuploads.com,dodi-repacks.site,file-me.top,file-upload.org,filemirage.com,fuckingfast.*,game-repack.site,gamedrive.*,getfreegames.net,go.zovo.ink,koramaup.com,mirrored.to,multiup.io,nathanmichaelphoto.com,ranoz.gg,repack-games.com,reloadedsteam.com,rootz.so,steam-repacks.net,steamgg.net,steamunderground.net,swiftuploads.com,torupload.com,up-4ever.net,uploadrar.*,usersdrive.com,vik1ngfile.site,worldofpcgames.com,zeilink.net,zovo2.top,zpaste.net,fileq.net##+js(rmnt, script, /"\+"g|"\+"'a|self\.__next.*?\,typeof document|self\.__next&&|\|\|self\.__next\,\(|\("\+"t|'\+'F|0\|\|window|\}\)\(\)\,typeof|'\+'s/g, excludes, /^self\.__next_f\.push/)
+gamedrive.org##+js(rmnt, script, "'+'", excludes, /^\(self\.__next/)
 ||dev^$3p,xhr,stylesheet,domain=1cloudfile.com|akirabox.com|akirabox.to|bowfile.com|buzzheavier.com|bzzhr.co|bzzhr.to|cg-gamespc.net|datavaults.co|devuploads.com|dodi-repacks.site|file-me.top|file-upload.org|filemirage.com|fuckingfast.*|game-repack.site|gamedrive.*|getfreegames.net|go.zovo.ink|koramaup.com|mirrored.to|multiup.io|nathanmichaelphoto.com|ranoz.gg|repack-games.com|reloadedsteam.com|rootz.so|steam-repacks.net|steamgg.net|steamunderground.net|swiftuploads.com|torupload.com|up-4ever.net|uploadrar.*|usersdrive.com|vik1ngfile.site|worldofpcgames.com|zeilink.net|zovo2.top|zpaste.net|fileq.net
 *$3p,popup,to=~com|~io|~net|~org|~to|~co|~mixdrop.ag|~vik1ngfile.site,from=1cloudfile.com|akirabox.com|akirabox.to|bowfile.com|buzzheavier.com|bzzhr.co|bzzhr.to|cg-gamespc.net|datavaults.co|devuploads.com|dodi-repacks.site|file-me.top|file-upload.org|filemirage.com|fuckingfast.*|game-repack.site|gamedrive.*|getfreegames.net|go.zovo.ink|koramaup.com|mirrored.to|multiup.io|nathanmichaelphoto.com|ranoz.gg|repack-games.com|reloadedsteam.com|rootz.so|steam-repacks.net|steamgg.net|steamunderground.net|swiftuploads.com|torupload.com|up-4ever.net|uploadrar.*|usersdrive.com|vik1ngfile.site|worldofpcgames.com|zeilink.net|zovo2.top|zpaste.net|fileq.net
+||link-file-*.sbs/*%3AeyJ*/$popup
 /^https:\/\/[a-z0-9]+\.[a-z0-9]+\.[a-z][a-z][a-z]+\/\?&?[a-z]+=[a-zA-Z0-9+\/%=:_-]+[$&]/$3p,popup,domain=gg|ink|site|so|to|top
 /^https:\/\/[a-z0-9]+\.[a-z0-9]+\.[a-z][a-z][a-z]+\/\?&?[a-z]+=[a-zA-Z0-9+\/%=:_-]+[$&]/$3p,popup,match-case,to=cfd|cyou|sbs|shop|space|website
 /^https:\/\/link[0-9]+\.[a-z0-9]+\.[a-z][a-z][a-z]+\/\?&?data=[a-zA-Z0-9+\/%=:_-]+[$&]/$3p,popup,match-case,to=~com|~edu|~gov|~net|~org
@@ -8711,9 +8715,9 @@ allcalidad.*,camarchive.tv,flixbaba.*,gntai.*,grantorrent.*,hentai2read.com,hent
 aznude.com,rule34ai.*##+js(aeld, , popMagic)
 gaygo.tv##+js(acs, $, popMagic)
 !#if cap_html_filtering
-cine-calidad.*,fastpic.org,forums.socialmediagirls.com,javtsunami.com,manwa.me,monoschino2.com,saradahentai.com,shemalegape.net,sxyprn.*,tabooporn.tv,veryfreeporn.com,x-video.tube##^script:has-text(popMagic)
+cine-calidad.*,forums.socialmediagirls.com,javtsunami.com,manwa.me,monoschino2.com,saradahentai.com,shemalegape.net,sxyprn.*,tabooporn.tv,veryfreeporn.com,x-video.tube##^script:has-text(popMagic)
 !#else
-cine-calidad.*,fastpic.org,forums.socialmediagirls.com,javtsunami.com,manwa.me,monoschino2.com,saradahentai.com,shemalegape.net,sxyprn.*,tabooporn.tv,veryfreeporn.com,x-video.tube##+js(rmnt, script, popMagic)
+cine-calidad.*,forums.socialmediagirls.com,javtsunami.com,manwa.me,monoschino2.com,saradahentai.com,shemalegape.net,sxyprn.*,tabooporn.tv,veryfreeporn.com,x-video.tube##+js(rmnt, script, popMagic)
 !#endif
 allporncomics.co,comicsvalley.com##.widget_custom_html
 ||xsportshd.com/bet.gif$image
@@ -8787,6 +8791,7 @@ brocoflix.com,brocoflix.xyz##+js(acs, document.createElement, l.appendChild(s))
 movielinkbd.*##+js(aeld, load, document.body.appendChild(s)
 pepperlive.info##+js(acs, document.createElement, no-referrer-when-downgrade)
 fireflix.pages.dev##+js(nostif, no-referrer-when-downgrade)
+xfeed.com##+js(set, Object.prototype.loadHillTopBanner, noopFunc)
 letsporn.com##+js(rmnt, script, /popns|\)\.substr/)
 ||letsporn.com/npadm/
 ||letsporn.com/abrk/
@@ -8864,7 +8869,6 @@ classicpornbest.com##.h-bns-bl
 ||pornpaw.com/never.js
 ||jizzberry.com/static/js/initsite.min.js
 ||akaihentai.com/fro_
-||fastpic.org/view/*.html|$script,1p
 ||javtsunami.com/cool-shadow-$script
 ||malluporno.com/red-sea-
 ||amateursubs.com/wp-content/special/
@@ -9221,9 +9225,9 @@ novelcrow.com##[href="https://theporndude.com/"]
 ! !SECTION: Clickadu
 ! SECTION: wpadmngr.com ads
 !#if cap_html_filtering
-aiblog.tv,amateurblog.tv,bokepsin.in.net,dojing.net,fastpic.org,femdom-joi.com,forums.socialmediagirls.com,fuckflix.click,gravureblog.tv,javsubindo.com,khatrimazafull.*,krx18.com,latinblog.tv,loadx.ws,mangaforfree.com,manhwaclub.net,mmsbee27.com,mmsbee47.com,movies123.*,mym-db.com,nekopoi.*,noindexscan.com,nupload.top,podjav.tv,pornx.to,rawdex.top,savefiles.*,sgpics.net,shavetape.cash,silverblog.tv,socialblog.tv,speedporn.net,starblog.tv,strcloud.club,strcloud.site,stream18.net,streampoi.com,streamtape.*,strmup.to,tapeadsenjoyer.com,tapepops.com,thefap.net,thothub.lol,up4stream.com,ups2up.fun,veronica.uk,videq.stream,xblog.tv,xmegadrive.com##^script:has-text(wpadmngr.com)
+aiblog.tv,amateurblog.tv,bokepsin.in.net,dojing.net,femdom-joi.com,forums.socialmediagirls.com,fuckflix.click,gravureblog.tv,javsubindo.com,khatrimazafull.*,krx18.com,latinblog.tv,loadx.ws,mangaforfree.com,manhwaclub.net,mmsbee27.com,mmsbee47.com,movies123.*,mym-db.com,nekopoi.*,noindexscan.com,nupload.top,podjav.tv,pornx.to,rawdex.top,savefiles.*,sgpics.net,shavetape.cash,silverblog.tv,socialblog.tv,speedporn.net,starblog.tv,strcloud.club,strcloud.site,stream18.net,streampoi.com,streamtape.*,strmup.to,tapeadsenjoyer.com,tapepops.com,thefap.net,thothub.lol,up4stream.com,ups2up.fun,veronica.uk,videq.stream,xblog.tv,xmegadrive.com##^script:has-text(wpadmngr.com)
 !#else
-aiblog.tv,amateurblog.tv,bokepsin.in.net,dojing.net,fastpic.org,femdom-joi.com,forums.socialmediagirls.com,fuckflix.click,gravureblog.tv,javsubindo.com,khatrimazafull.*,krx18.com,latinblog.tv,loadx.ws,mangaforfree.com,manhwaclub.net,mmsbee27.com,mmsbee47.com,movies123.*,mym-db.com,nekopoi.*,noindexscan.com,nupload.top,podjav.tv,pornx.to,rawdex.top,savefiles.*,sgpics.net,shavetape.cash,silverblog.tv,socialblog.tv,speedporn.net,starblog.tv,strcloud.club,strcloud.site,stream18.net,streampoi.com,streamtape.*,strmup.to,tapeadsenjoyer.com,tapepops.com,thefap.net,thothub.lol,up4stream.com,ups2up.fun,veronica.uk,videq.stream,xblog.tv,xmegadrive.com##+js(rmnt, script, wpadmngr.com)
+aiblog.tv,amateurblog.tv,bokepsin.in.net,dojing.net,femdom-joi.com,forums.socialmediagirls.com,fuckflix.click,gravureblog.tv,javsubindo.com,khatrimazafull.*,krx18.com,latinblog.tv,loadx.ws,mangaforfree.com,manhwaclub.net,mmsbee27.com,mmsbee47.com,movies123.*,mym-db.com,nekopoi.*,noindexscan.com,nupload.top,podjav.tv,pornx.to,rawdex.top,savefiles.*,sgpics.net,shavetape.cash,silverblog.tv,socialblog.tv,speedporn.net,starblog.tv,strcloud.club,strcloud.site,stream18.net,streampoi.com,streamtape.*,strmup.to,tapeadsenjoyer.com,tapepops.com,thefap.net,thothub.lol,up4stream.com,ups2up.fun,veronica.uk,videq.stream,xblog.tv,xmegadrive.com##+js(rmnt, script, wpadmngr.com)
 !#endif
 chaturflix.cam,mangakuri.online,niyaniya.moe##+js(acs, Date.prototype.toISOString, wpadmngr.com)
 ! !SECTION: wpadmngr.com ads
@@ -9594,7 +9598,7 @@ fcsnew.net##+js(rmnt, script, adsBlocked)
 liddread.com##+js(rmnt, style, min-height:300px)
 ! !SECTION: CHP
 ! SECTION: ai_front sites
-gekkonen.net,isbn.co.in,itpassportgokaku.com,legiongamesgod.com,mc-hacks.net,meicho.marcsimz.com,spa.center.ivof.com##+js(aopw, ai_front)
+gcinee.com,gekkonen.net,isbn.co.in,itpassportgokaku.com,legiongamesgod.com,mc-hacks.net,meicho.marcsimz.com,spa.center.ivof.com##+js(aopw, ai_front)
 adrianoluis.net,animecast.net,armyranger.com,articletz.com,bibliopanda.com,boxylucha.com,chibchat.com,doujinnote.com,duniailkom.com,ebooksyard.com,enciclopediaonline.com,entano.jp,eyalo.com,fotopixel.es,ichberlin.com,ireez.com,keepkoding.com,latribunadeautomocion.es,linemarlin.com,lumpiastudio.com,miaandme.org,mobility.com.ng,mygardening411.com,newstvonline.com,organismes.org,papagiovannipaoloii.altervista.org,rencah.com,riverdesdelatribuna.com.ar,rogoyume.jp,sakpot.com,sarkarinaukry.com,seamanmemories.com,swatalk.com,theorie-musik.de,topperpoint.com,torascripts.org,travel-the-states.com,vozz.vn##+js(aost, String.prototype.charCodeAt, ai_)
 thecakeboutiquect.com##+js(acs, b2a, ai_adb)
 daemon-hentai.com,pawastreams.pro##+js(acs, b2a, ai_adb, /^data:/)
@@ -9839,6 +9843,7 @@ dogdrip.net##ins.adsbygoogle:style(height: 1px !important; visibility: hidden !i
 ||html-load.com^$script,xhr,domain=pickleball.com|pickleballclubs.com|pickleballleagues.com|pickleballteamleagues.com|pickleballtournaments.com|ppatour.com
 ! Design by Purr sites
 ||html-load.com^$script,xhr,domain=365cincinnati.com|a-love-of-rottweilers.com|a-z-animals.com|acedarspoon.com|acouplecooks.com|addapinch.com|adrenaline.com.br|aheadofthyme.com|amandascookin.com|amybakesbread.com|andrewzimmern.com|androidheadlines.com|aprettylifeinthesuburbs.com|askpython.com|assessmentcentrehq.com|atlasandboots.com|averiecooks.com|awealthofcommonsense.com|awellstyledlife.com|backforseconds.com|bakedbree.com|bakedbyrachel.com|bakeitwithlove.com|barbarabakes.com|bible-knowledge.com|bombshellbling.com|breastfeedingplace.com|brighteyedbaker.com|browneyedbaker.com|businesswritingblog.com|budgetbytes.com|butterbeready.com|cadryskitchen.com|cafedelites.com|campsitephotos.com|canarystreetcrafts.com|celebritynetworth.com|chocolatecoveredkatie.com|chocolatewithgrace.com|chumplady.com|classyyettrendy.com|cleananddelicious.com|cleanandscentsible.com|closetcooking.com|connoisseurusveg.com|cookieandkate.com|cookiedoughandovenmitt.com|cookincanuck.com|cookingclassy.com|crayonsandcravings.com|creative-culinary.com|crunchycreamysweet.com|culinaryhill.com|curbsideclassic.com|currytrail.in|cyclingabout.com|dailydishrecipes.com|damndelicious.net|dancearoundthekitchen.com|diethood.com|dinneratthezoo.com|driveteslacanada.ca|eatingonadime.com|eatlittlebird.com|elliott.org|evolvingtable.com|extrapetite.com|emilybites.com|famivita.com|favfamilyrecipes.com|feastingathome.com|feedmephoebe.com|feelgoodfoodie.net|foodfaithfitness.com|forkknifeswoon.com|foxeslovelemons.com|foxyfolksy.com|framedcooks.com|freeride.com|fromvalerieskitchen.com|frvr.com|galonamission.com|gamingsmart.com|garminrumors.com|gcaptain.com|gearpatrol.com|gimmesomeoven.com|godairyfree.org|greaterlongisland.com|greensnchocolate.com|happyveggiekitchen.com|healthyfitnessmeals.com|healthylittlefoodies.com|homemadehome.com|hoosierhomemade.com|howsweeteats.com|hummingbirdhigh.com|hummusapien.com|hungrypaprikas.com|iambaker.net|iamhomesteader.com|ibreatheimhungry.com|idownloadblog.com|iheartnaptime.net|inspiralized.com|isabeleats.com|jocooks.com|joyfoodsunshine.com|juliasalbum.com|julieblanner.com|juliescafebakery.com|julieseatsandtreats.com|justonecookbook.com|kimscravings.com|kingshotcalculator.com|kirbiecravings.com|kitchendivas.com|kitchenfunwithmy3sons.com|laughingspatula.com|laurafuentes.com|leahingram.com|littlehouseliving.com|littlesunnykitchen.com|louisianacookin.com|makeitdairyfree.com|makingthymeforhealth.com|mamainastitch.com|marvel.church|medievalists.net|melskitchencafe.com|mexicanfoodjournal.com|minimalistbaker.com|momsdish.com|mountainmamacooks.com|mybakingaddiction.com|mycolombianrecipes.com|mygolfspy.com|myquietkitchen.com|natashaskitchen.com|neighborfoodblog.com|newlifeonahomestead.com|nocrumbsleft.net|nomnompaleo.com|nourishedbynic.com|nutmegnanny.com|ohsheglows.com|onceuponachef.com|onelittleproject.com|onionringsandthings.com|pancakerecipes.com|pantrymama.com|pinchofyum.com|pipandebby.com|platingsandpairings.com|premeditatedleftovers.com|pumpkinnspice.com|rdr2.org|recipetineats.com|redcurrantbakery.com|runningonrealfood.com|runningtothekitchen.com|runtothefinish.com|seededatthetable.com|shakentogetherlife.com|shugarysweets.com|simply-delicious-food.com|simplywhisked.com|skinnytaste.com|spicysouthernkitchen.com|studyfinds.org|stylegirlfriend.com|sundaysuppermovement.com|tasteandtellblog.com|the-girl-who-ate-everything.com|the5krunner.com|thebakermama.com|thebestideasforkids.com|theendlessmeal.com|thefitchen.com|thefoodieaffair.com|thekitchenmagpie.com|themediterraneandish.com|theplantbasedschool.com|therecipecritic.com|thescranline.com|thewanderlustkitchen.com|thewoksoflife.com|thurrott.com|tidymom.net|twopeasandtheirpod.com|umamigirl.com|unefemme.net|unixmen.com|vincenzosplate.com|visualcapitalist.com|wellnessbykay.com|wellplated.com|welt.de|whatgreatgrandmaate.com|whatjewwannaeat.com|whipperberry.com|workweeklunch.com|yourcupofcake.com|yourhomebasedmom.com
+||gamingsmart.com/abr.js
 ! Minute Media
 ||html-load.com^$script,xhr,domain=12thmanrising.com|allucanheat.com|aroundthefoghorn.com|arrowheadaddict.com|badgerofhonor.com|bamahammer.com|beargoggleson.com|beyondtheflag.com|birdswatcher.com|blackandteal.com|blogredmachine.com|bluemanhoop.com|boltbeat.com|bosoxinjection.com|buffalowdown.com|caneswarning.com|catcrave.com|chopchat.com|climbingtalshill.com|cubbiescrib.com|dailyknicks.com|dairylandexpress.com|dawgpounddaily.com|dawindycity.com|dawnofthedawg.com|detroitjockcity.com|dodgersway.com|ebonybird.com|fansided.com|flywareagle.com|gbmwolverine.com|gigemgazette.com|gmenhq.com|hailfloridahail.com|halohangout.com|hardwoodhoudini.com|horseshoeheroes.com|housethathankbuilt.com|huskercorner.com|insidetheiggles.com|jaysjournal.com|justblogbaby.com|kckingdom.com|kingjamesgospel.com|kingsofkauffman.com|lakeshowlife.com|lombardiave.com|mentalfloss.com|motorcitybengals.com|musketfire.com|nflspinzone.com|ninernoise.com|nugglove.com|onechicagocenter.com|phinphanatic.com|pistonpowered.com|predominantlyorange.com|ramblinfan.com|redbirdrants.com|reviewingthebrew.com|riggosrag.com|ripcityproject.com|risingapple.com|rumbunter.com|scarletandgame.com|section215.com|sidelionreport.com|slapthesign.com|sodomojo.com|southsideshowdown.com|stillcurtain.com|stormininnorman.com|stripehype.com|thatballsouttahere.com|thecelticbhoys.com|thejetpress.com|thelandryhat.com|thepewterplank.com|thesmokingcuban.com|thevikingage.com|thunderousintentions.com|undeadwalking.com|valleyofthesuns.com|whodatdish.com|winteriscoming.net|yanksgoyard.com
 ! Medium Large Sports Media
@@ -10502,16 +10507,16 @@ mixdrop.*##+js(set, MDCore.adblock, 0)
 mixdrop.*,mixdrp.*##+js(acs, $, String.fromCharCode)
 mdbekjwqa.pw##+js(noeval-if, setInterval)
 mdbekjwqa.pw##+js(acs, document.createElement, onerror)
-m1xdrop.*,m1xdrop.com,m1xdrop.net,md3b0j6hj.com,mdfx9dc8n.net,mdzsmutpcvykb.net,miixdrop.*,miiixdrop.*,miiiixdrop.net,miiiiixdrop.net,mixdrop21.net,mixdrop23.net,mixdropjmk.pw##+js(rmnt, script, /h=decodeURIComponent|popundersPerIP|dtnoppu|adserverDomain/)
-m1xdrop.*,m1xdrop.com,m1xdrop.net,md3b0j6hj.com,mdbekjwqa.pw,mdfx9dc8n.net,mdzsmutpcvykb.net,miixdrop.*,miiixdrop.*,miiiixdrop.net,miiiiixdrop.net,mixdroop.*,mixdrop.*,mixdrop21.net,mixdrop23.net,mixdropjmk.pw,mixdrp.*##+js(nowoif)
+m1xdrop.*,m1xdrop.com,m1xdrop.net,md3b0j6hj.com,mdfx9dc8n.net,mdzsmutpcvykb.net,miixdrop.*,miiixdrop.*,miiiixdrop.net,miiiiixdrop.net,mixdrop21.net,mixdrop23.net,mixdropjmk.pw,mxdrop.top##+js(rmnt, script, /h=decodeURIComponent|popundersPerIP|dtnoppu|adserverDomain/)
+m1xdrop.*,m1xdrop.com,m1xdrop.net,md3b0j6hj.com,mdbekjwqa.pw,mdfx9dc8n.net,mdzsmutpcvykb.net,miixdrop.*,miiixdrop.*,miiiixdrop.net,miiiiixdrop.net,mixdroop.*,mixdrop.*,mixdrop21.net,mixdrop23.net,mixdropjmk.pw,mixdrp.*,mxdrop.top##+js(nowoif)
 md3b0j6hj.com##+js(nano-stb, Please wait, *, 0.001)
 ||mixdrop.*/sw.js$script,1p
-m1xdrop.*,m1xdrop.com,m1xdrop.net,md3b0j6hj.com,mdbekjwqa.pw,mdfx9dc8n.net,miixdrop.*,miiixdrop.*,miiiixdrop.net,miiiiixdrop.net,mixdrop23.net,mixdroop.*,mixdrop.*,mixdrop21.net,mixdrop23.net,mixdropjmk.pw,mixdrp.*##body > div[style^="position: absolute;"][style*="z-index"]
+m1xdrop.*,m1xdrop.com,m1xdrop.net,md3b0j6hj.com,mdbekjwqa.pw,mdfx9dc8n.net,miixdrop.*,miiixdrop.*,miiiixdrop.net,miiiiixdrop.net,mixdrop23.net,mixdroop.*,mixdrop.*,mixdrop21.net,mixdrop23.net,mixdropjmk.pw,mixdrp.*,mxdrop.top##body > div[style^="position: absolute;"][style*="z-index"]
 *$script,3p,denyallow=google.com|gstatic.com|hwcdn.net|jquery.com,domain=m1xdrop.com|m1xdrop.net|mixdrop23.net|mixdrop.*|mixdrp.*|~mixdrop.one|mixdroop.*|m1xdrop.bz
 miixdrop.net,miiixdrop.net,miiiixdrop.net,miiiiixdrop.net##+js(acs, addEventListener, adserverDomain)
 ###videojs ~ div[style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 2147483646;"]
-milfnut.com>>,watch-movies.com.pk>>,~addtoany.com,~cloudflare.com,~google.com,~ok.ru##+js(rmnt, script, /h=decodeURIComponent|popundersPerIP|dtnoppu|adserverDomain/)
-milfnut.com>>,watch-movies.com.pk>>,~addtoany.com,~cloudflare.com,~google.com,~ok.ru##+js(nowoif)
+milfnut.com>>,roshy.tv>>,watch-movies.com.pk>>,~addtoany.com,~cloudflare.com,~google.com,~ok.ru##+js(rmnt, script, /h=decodeURIComponent|popundersPerIP|dtnoppu|adserverDomain/)
+milfnut.com>>,roshy.tv>>,watch-movies.com.pk>>,~addtoany.com,~cloudflare.com,~google.com,~ok.ru##+js(nowoif)
 ||brightadnetwork.com^
 ! !SECTION: Mixdrop
 ! SECTION: Streamtape
@@ -10587,10 +10592,10 @@ gayxx.net##+js(aopr, adsbyjuicy)
 explorecams.com,minecraft.buzz,rarepike.com##+js(aeld, np.detect)
 ! !SECTION: np.detect
 ! SECTION: Temporal
-*,~edu,~edu.cn,~127.0.0.1,~adobe.com,~addtoany.com,~amazon.*,~antiphishing.biz,~apple.com,~archlinux.org,~azure.com,~bsky.app,~bing.com,~bitwarden.com,~canva.com,~captcha-delivery.com,~cbox.ws,~chatango.com,~chatgpt.com,~chess.com,~chrome.com,~claude.ai,~claude.com,~cloudflare.com,~codeberg.org,~consentmanager.net,~costco.com,~dailymotion.com,~disqus.com,~duck.ai,~ebay.*,~facebook.com,~fbsbx.com,~flickr.com,~gitea.com,~github.com,~gitlab.com,~google.com,~hcaptcha.com,~huggingface.co,~instagram.com,~kagi.com,~kimi.com,~lichess.org,~linkedin.com,~live.com,~localhost,~mega.nz,~microsoft.com,~mistral.ai,~mozilla.org,~netflix.com,~ok.ru,~openrouter.ai,~piano.io,~pinterest.com,~powershell.org,~privacy-mgmt.com,~proton.me,~px-cloud.net,~rakuten.co.jp,~rakuten.com,~recaptcha.net,~reddit.com,~spotify.com,~stripe.com,~stripecdn.com,~tiktok.com,~tinypass.com,~trustpilot.com,~tumblr.com,~twitch.tv,~twitchcdn.net,~twitter.com,~vimeo.com,~virustotal.com,~vscode.dev,~vscode-cdn.net,~whatsapp.com,~wikipedia.org,~x.com,~yahoo.com,~yandex.*,~yandexcloud.net,~youtube.com,~youtube-nocookie.com,~www.digitalocean.com##+js(prevent-clipboard-write, /^ms(hta|iexec)(\.exe)? |^(bash <<<|curl -kfsSL) \$\(echo .+? base64 -d\b|^cmd \/c .*?\bcurl .+?(\.exe|\.bat)\b|^cmd .*?\bfor \/f .*?\bdelims .*?\bpow |(^|\\)powershell(\.exe)? .*?-w(indowStyle)? h(idden)?\b|(^|\\)powershell(\.exe)? .*?-w[a-z]* m[a-z]* |(^|\\)powershell(\.exe)? .*?-NoP\b|(^|\\)powershell(\.exe)? .*?-e(xecution)?p(olicy)? b(ypass)?\b|(^|\\)powershell(\.exe)? .*?-e(xecution)?p(olicy)? u(nrestricted)?\b|(^|\\)powershell(\.exe)? .*?\biex\(|(^|\\)powershell(\.exe)? .*?Invoke-Expression|(^|\\)powershell.+?Invoke-WebRequest|(^|\\)powershell.+?-UseBasicParsing|^cmd .*?\/c .+? -nop .+? iex\b|^(cmd|powershell)\b.+?recaptcha|^(cmd|powershell)\b.+?#(Verification|     )|^(cmd|powershell)\b.+?     #|^osascript .+?\bcurl http|^curl -s\b.+?\| (bash|sh|zsh)\b|^\/bin\/(bash|sh|zsh) -c\b.+?\bcurl|^bash -c\b.+?\$\(curl|^python3? -c\b.+?\b(exec|urllib|subprocess)\b|^echo .+?base64 .+?\b(bash|osascript|z?sh)\b|openssl base64 -d|^curl\b .+?chmod \+x.+?&&|^(bash|sh|osascript)\b.+?recaptcha|^(bash|sh|osascript)\b.+?#(Verification|     )|^(bash|sh|osascript)\b.+?     #|^wget .+?\| (bash|sh)\b|^curl\b.+?-o\b.+?\/tmp\/.+?&&|^nc .+?-e \/bin\/(bash|sh)\b|^\/tmp\/.+?chmod \+x.+?&&|^wget -q.+?\.(sh|py|bin|elf)\b|^cmd .+?\bcertutil .+?\b(\.exe|\.bat)\b|(^|\\)powershell(\.exe)? .+?\birm .+?\.[a-z]+\/.+?powershell|\bpcalua(\.exe)? .*?\b(curl|powershell|saps|cmd)\b|^cmd .+?\bcmdkey .+?\bschtasks|^Invoke-Command .+?Base64String|^c(onhost|md) .*?--headless |^iex\(i(rm|wr) |^\(?irm .+?\biex\b|^%COMSPEC% .*?\bstart .*?\/min\b|^cmd .*?\/c .*?%TEMP%.*?\.bat\b|\bconvert\b.*?\$env:ComSpec\b|^<#Verification|^Invoke-WebRequest .+?\bwscript(\.exe)?\b/msi, domAlert, 'Beware, uBlock Origin blocked a potential ClickFix attack: ${text}', excludeMatches, /Maintainer|Contributor|^\{|^http|^(git|import|require|use) /i)
-astral.sh,brew.sh,christitus.com,community-scripts.org,datadoghq.*,devaccellabs.com,jetbrains.com,massgrave.dev,natfrp.com#@#+js(prevent-clipboard-write, /^ms(hta|iexec)(\.exe)? |^(bash <<<|curl -kfsSL) \$\(echo .+? base64 -d\b|^cmd \/c .*?\bcurl .+?(\.exe|\.bat)\b|^cmd .*?\bfor \/f .*?\bdelims .*?\bpow |(^|\\)powershell(\.exe)? .*?-w(indowStyle)? h(idden)?\b|(^|\\)powershell(\.exe)? .*?-w[a-z]* m[a-z]* |(^|\\)powershell(\.exe)? .*?-NoP\b|(^|\\)powershell(\.exe)? .*?-e(xecution)?p(olicy)? b(ypass)?\b|(^|\\)powershell(\.exe)? .*?-e(xecution)?p(olicy)? u(nrestricted)?\b|(^|\\)powershell(\.exe)? .*?\biex\(|(^|\\)powershell(\.exe)? .*?Invoke-Expression|(^|\\)powershell.+?Invoke-WebRequest|(^|\\)powershell.+?-UseBasicParsing|^cmd .*?\/c .+? -nop .+? iex\b|^(cmd|powershell)\b.+?recaptcha|^(cmd|powershell)\b.+?#(Verification|     )|^(cmd|powershell)\b.+?     #|^osascript .+?\bcurl http|^curl -s\b.+?\| (bash|sh|zsh)\b|^\/bin\/(bash|sh|zsh) -c\b.+?\bcurl|^bash -c\b.+?\$\(curl|^python3? -c\b.+?\b(exec|urllib|subprocess)\b|^echo .+?base64 .+?\b(bash|osascript|z?sh)\b|openssl base64 -d|^curl\b .+?chmod \+x.+?&&|^(bash|sh|osascript)\b.+?recaptcha|^(bash|sh|osascript)\b.+?#(Verification|     )|^(bash|sh|osascript)\b.+?     #|^wget .+?\| (bash|sh)\b|^curl\b.+?-o\b.+?\/tmp\/.+?&&|^nc .+?-e \/bin\/(bash|sh)\b|^\/tmp\/.+?chmod \+x.+?&&|^wget -q.+?\.(sh|py|bin|elf)\b|^cmd .+?\bcertutil .+?\b(\.exe|\.bat)\b|(^|\\)powershell(\.exe)? .+?\birm .+?\.[a-z]+\/.+?powershell|\bpcalua(\.exe)? .*?\b(curl|powershell|saps|cmd)\b|^cmd .+?\bcmdkey .+?\bschtasks|^Invoke-Command .+?Base64String|^c(onhost|md) .*?--headless |^iex\(i(rm|wr) |^\(?irm .+?\biex\b|^%COMSPEC% .*?\bstart .*?\/min\b|^cmd .*?\/c .*?%TEMP%.*?\.bat\b|\bconvert\b.*?\$env:ComSpec\b|^<#Verification|^Invoke-WebRequest .+?\bwscript(\.exe)?\b/msi, domAlert, 'Beware, uBlock Origin blocked a potential ClickFix attack: ${text}', excludeMatches, /Maintainer|Contributor|^\{|^http|^(git|import|require|use) /i)
+*,~edu,~edu.cn,~127.0.0.1,~adobe.com,~addtoany.com,~amazon.*,~antiphishing.biz,~apple.com,~archlinux.org,~azure.com,~bsky.app,~bing.com,~bitwarden.com,~canva.com,~captcha-delivery.com,~cbox.ws,~chatango.com,~chatgpt.com,~chess.com,~chrome.com,~claude.ai,~claude.com,~cloudflare.com,~codeberg.org,~consentmanager.net,~costco.com,~dailymotion.com,~disqus.com,~duck.ai,~ebay.*,~facebook.com,~fbsbx.com,~flickr.com,~gitea.com,~github.com,~gitlab.com,~google.com,~hcaptcha.com,~huggingface.co,~instagram.com,~kagi.com,~kimi.com,~lichess.org,~linkedin.com,~live.com,~localhost,~mega.nz,~microsoft.com,~mistral.ai,~mozilla.org,~netflix.com,~ok.ru,~openrouter.ai,~piano.io,~pinterest.com,~powershell.org,~privacy-mgmt.com,~proton.me,~px-cloud.net,~rakuten.co.jp,~rakuten.com,~recaptcha.net,~reddit.com,~spotify.com,~stripe.com,~stripecdn.com,~tiktok.com,~tinypass.com,~trustpilot.com,~tumblr.com,~twitch.tv,~twitchcdn.net,~twitter.com,~vimeo.com,~virustotal.com,~vscode.dev,~vscode-cdn.net,~whatsapp.com,~wikipedia.org,~x.com,~yahoo.com,~yandex.*,~yandexcloud.net,~youtube.com,~youtube-nocookie.com,~www.digitalocean.com##+js(prevent-clipboard-write, /^ms(hta|iexec)(\.exe)? |^(bash <<<|curl -kfsSL) \$\(echo .+? base64 -d\b|^cmd \/c .*?\bcurl .+?(\.exe|\.bat)\b|^cmd .*?\bfor \/f .*?\bdelims .*?\bpow |(^|\\)powershell(\.exe)? .*?-w(indowStyle)? h(idden)?\b|(^|\\)powershell(\.exe)? .*?-w[a-z]* m[a-z]* |(^|\\)powershell(\.exe)? .*?-NoP\b|(^|\\)powershell(\.exe)? .*?-e(xecution)?p(olicy)? b(ypass)?\b|(^|\\)powershell(\.exe)? .*?-e(xecution)?p(olicy)? u(nrestricted)?\b|(^|\\)powershell(\.exe)? .*?\biex\(|(^|\\)powershell(\.exe)? .*?Invoke-Expression|(^|\\)powershell.+?Invoke-WebRequest|(^|\\)powershell.+?-UseBasicParsing|^cmd .*?\/c .+? -nop .+? iex\b|^(cmd|powershell)\b.+?recaptcha|^(cmd|powershell)\b.+?#(Verification|     )|^(cmd|powershell)\b.+?     #|^osascript .+?\bcurl http|^curl -s\b.+?\| (bash|sh|zsh)\b|^\/bin\/(bash|sh|zsh) -c\b.+?\bcurl|^bash -c\b.+?\$\(curl|^python3? -c\b.+?\b(exec|urllib|subprocess)\b|^echo .+?base64 .+?\b(bash|osascript|z?sh)\b|openssl base64 -d|^curl\b .+?chmod \+x.+?&&|^(bash|sh|osascript)\b.+?recaptcha|^(bash|sh|osascript)\b.+?#(Verification|     )|^(bash|sh|osascript)\b.+?     #|^wget .+?\| (bash|sh)\b|^curl\b.+?-o\b.+?\/tmp\/.+?&&|^nc .+?-e \/bin\/(bash|sh)\b|^\/tmp\/.+?chmod \+x.+?&&|^wget -q.+?\.(sh|py|bin|elf)\b|^cmd .+?\bcertutil .+?\b(\.exe|\.bat)\b|(^|\\)powershell(\.exe)? .+?\birm .+?\.[a-z]+\/.+?powershell|\bpcalua(\.exe)? .*?\b(curl|powershell|saps|cmd)\b|^cmd .+?\bcmdkey .+?\bschtasks|^Invoke-Command .+?Base64String|^c(onhost|md) .*?--headless |^iex\(i(rm|wr) |^\(?irm .+?\biex\b|^%COMSPEC% .*?\bstart .*?\/min\b|^cmd .*?\/c .*?%TEMP%.*?\.bat\b|\bconvert\b.*?\$env:ComSpec\b|^<#Verification|^Invoke-WebRequest .+?\bwscript(\.exe)?\b|^\$url.+?\n\$filename.+?\.exe/msi, domAlert, 'Beware, uBlock Origin blocked a potential ClickFix attack: ${text}', excludeMatches, /Maintainer|Contributor|^\{|^http|^(git|import|require|use) /i)
+astral.sh,brew.sh,christitus.com,community-scripts.org,datadoghq.*,devaccellabs.com,jetbrains.com,massgrave.dev,natfrp.com#@#+js(prevent-clipboard-write, /^ms(hta|iexec)(\.exe)? |^(bash <<<|curl -kfsSL) \$\(echo .+? base64 -d\b|^cmd \/c .*?\bcurl .+?(\.exe|\.bat)\b|^cmd .*?\bfor \/f .*?\bdelims .*?\bpow |(^|\\)powershell(\.exe)? .*?-w(indowStyle)? h(idden)?\b|(^|\\)powershell(\.exe)? .*?-w[a-z]* m[a-z]* |(^|\\)powershell(\.exe)? .*?-NoP\b|(^|\\)powershell(\.exe)? .*?-e(xecution)?p(olicy)? b(ypass)?\b|(^|\\)powershell(\.exe)? .*?-e(xecution)?p(olicy)? u(nrestricted)?\b|(^|\\)powershell(\.exe)? .*?\biex\(|(^|\\)powershell(\.exe)? .*?Invoke-Expression|(^|\\)powershell.+?Invoke-WebRequest|(^|\\)powershell.+?-UseBasicParsing|^cmd .*?\/c .+? -nop .+? iex\b|^(cmd|powershell)\b.+?recaptcha|^(cmd|powershell)\b.+?#(Verification|     )|^(cmd|powershell)\b.+?     #|^osascript .+?\bcurl http|^curl -s\b.+?\| (bash|sh|zsh)\b|^\/bin\/(bash|sh|zsh) -c\b.+?\bcurl|^bash -c\b.+?\$\(curl|^python3? -c\b.+?\b(exec|urllib|subprocess)\b|^echo .+?base64 .+?\b(bash|osascript|z?sh)\b|openssl base64 -d|^curl\b .+?chmod \+x.+?&&|^(bash|sh|osascript)\b.+?recaptcha|^(bash|sh|osascript)\b.+?#(Verification|     )|^(bash|sh|osascript)\b.+?     #|^wget .+?\| (bash|sh)\b|^curl\b.+?-o\b.+?\/tmp\/.+?&&|^nc .+?-e \/bin\/(bash|sh)\b|^\/tmp\/.+?chmod \+x.+?&&|^wget -q.+?\.(sh|py|bin|elf)\b|^cmd .+?\bcertutil .+?\b(\.exe|\.bat)\b|(^|\\)powershell(\.exe)? .+?\birm .+?\.[a-z]+\/.+?powershell|\bpcalua(\.exe)? .*?\b(curl|powershell|saps|cmd)\b|^cmd .+?\bcmdkey .+?\bschtasks|^Invoke-Command .+?Base64String|^c(onhost|md) .*?--headless |^iex\(i(rm|wr) |^\(?irm .+?\biex\b|^%COMSPEC% .*?\bstart .*?\/min\b|^cmd .*?\/c .*?%TEMP%.*?\.bat\b|\bconvert\b.*?\$env:ComSpec\b|^<#Verification|^Invoke-WebRequest .+?\bwscript(\.exe)?\b|^\$url.+?\n\$filename.+?\.exe/msi, domAlert, 'Beware, uBlock Origin blocked a potential ClickFix attack: ${text}', excludeMatches, /Maintainer|Contributor|^\{|^http|^(git|import|require|use) /i)
 ! Specific cases
-sites.google.com##+js(prevent-clipboard-write, /^ms(hta|iexec)(\.exe)? |^(bash <<<|curl -kfsSL) \$\(echo .+? base64 -d\b|^cmd \/c .*?\bcurl .+?(\.exe|\.bat)\b|^cmd .*?\bfor \/f .*?\bdelims .*?\bpow |(^|\\)powershell(\.exe)? .*?-w(indowStyle)? h(idden)?\b|(^|\\)powershell(\.exe)? .*?-w[a-z]* m[a-z]* |(^|\\)powershell(\.exe)? .*?-NoP\b|(^|\\)powershell(\.exe)? .*?-e(xecution)?p(olicy)? b(ypass)?\b|(^|\\)powershell(\.exe)? .*?-e(xecution)?p(olicy)? u(nrestricted)?\b|(^|\\)powershell(\.exe)? .*?\biex\(|(^|\\)powershell(\.exe)? .*?Invoke-Expression|(^|\\)powershell.+?Invoke-WebRequest|(^|\\)powershell.+?-UseBasicParsing|^cmd .*?\/c .+? -nop .+? iex\b|^(cmd|powershell)\b.+?recaptcha|^(cmd|powershell)\b.+?#(Verification|     )|^(cmd|powershell)\b.+?     #|^osascript .+?\bcurl http|^curl -s\b.+?\| (bash|sh|zsh)\b|^\/bin\/(bash|sh|zsh) -c\b.+?\bcurl|^bash -c\b.+?\$\(curl|^python3? -c\b.+?\b(exec|urllib|subprocess)\b|^echo .+?base64 .+?\b(bash|osascript|z?sh)\b|openssl base64 -d|^curl\b .+?chmod \+x.+?&&|^(bash|sh|osascript)\b.+?recaptcha|^(bash|sh|osascript)\b.+?#(Verification|     )|^(bash|sh|osascript)\b.+?     #|^wget .+?\| (bash|sh)\b|^curl\b.+?-o\b.+?\/tmp\/.+?&&|^nc .+?-e \/bin\/(bash|sh)\b|^\/tmp\/.+?chmod \+x.+?&&|^wget -q.+?\.(sh|py|bin|elf)\b|^cmd .+?\bcertutil .+?\b(\.exe|\.bat)\b|(^|\\)powershell(\.exe)? .+?\birm .+?\.[a-z]+\/.+?powershell|\bpcalua(\.exe)? .*?\b(curl|powershell|saps|cmd)\b|^cmd .+?\bcmdkey .+?\bschtasks|^Invoke-Command .+?Base64String|^c(onhost|md) .*?--headless |^iex\(i(rm|wr) |^\(?irm .+?\biex\b|^%COMSPEC% .*?\bstart .*?\/min\b|^cmd .*?\/c .*?%TEMP%.*?\.bat\b|\bconvert\b.*?\$env:ComSpec\b|^<#Verification|^Invoke-WebRequest .+?\bwscript(\.exe)?\b/msi, domAlert, 'Beware. uBlock Origin blocked a potential ClickFix attack: ${text}', excludeMatches, /Maintainer|Contributor|^\{|^http|^(git|import|require|use) /i)
+sites.google.com##+js(prevent-clipboard-write, /^ms(hta|iexec)(\.exe)? |^(bash <<<|curl -kfsSL) \$\(echo .+? base64 -d\b|^cmd \/c .*?\bcurl .+?(\.exe|\.bat)\b|^cmd .*?\bfor \/f .*?\bdelims .*?\bpow |(^|\\)powershell(\.exe)? .*?-w(indowStyle)? h(idden)?\b|(^|\\)powershell(\.exe)? .*?-w[a-z]* m[a-z]* |(^|\\)powershell(\.exe)? .*?-NoP\b|(^|\\)powershell(\.exe)? .*?-e(xecution)?p(olicy)? b(ypass)?\b|(^|\\)powershell(\.exe)? .*?-e(xecution)?p(olicy)? u(nrestricted)?\b|(^|\\)powershell(\.exe)? .*?\biex\(|(^|\\)powershell(\.exe)? .*?Invoke-Expression|(^|\\)powershell.+?Invoke-WebRequest|(^|\\)powershell.+?-UseBasicParsing|^cmd .*?\/c .+? -nop .+? iex\b|^(cmd|powershell)\b.+?recaptcha|^(cmd|powershell)\b.+?#(Verification|     )|^(cmd|powershell)\b.+?     #|^osascript .+?\bcurl http|^curl -s\b.+?\| (bash|sh|zsh)\b|^\/bin\/(bash|sh|zsh) -c\b.+?\bcurl|^bash -c\b.+?\$\(curl|^python3? -c\b.+?\b(exec|urllib|subprocess)\b|^echo .+?base64 .+?\b(bash|osascript|z?sh)\b|openssl base64 -d|^curl\b .+?chmod \+x.+?&&|^(bash|sh|osascript)\b.+?recaptcha|^(bash|sh|osascript)\b.+?#(Verification|     )|^(bash|sh|osascript)\b.+?     #|^wget .+?\| (bash|sh)\b|^curl\b.+?-o\b.+?\/tmp\/.+?&&|^nc .+?-e \/bin\/(bash|sh)\b|^\/tmp\/.+?chmod \+x.+?&&|^wget -q.+?\.(sh|py|bin|elf)\b|^cmd .+?\bcertutil .+?\b(\.exe|\.bat)\b|(^|\\)powershell(\.exe)? .+?\birm .+?\.[a-z]+\/.+?powershell|\bpcalua(\.exe)? .*?\b(curl|powershell|saps|cmd)\b|^cmd .+?\bcmdkey .+?\bschtasks|^Invoke-Command .+?Base64String|^c(onhost|md) .*?--headless |^iex\(i(rm|wr) |^\(?irm .+?\biex\b|^%COMSPEC% .*?\bstart .*?\/min\b|^cmd .*?\/c .*?%TEMP%.*?\.bat\b|\bconvert\b.*?\$env:ComSpec\b|^<#Verification|^Invoke-WebRequest .+?\bwscript(\.exe)?\b|^\$url.+?\n\$filename.+?\.exe/msi, domAlert, 'Beware. uBlock Origin blocked a potential ClickFix attack: ${text}', excludeMatches, /Maintainer|Contributor|^\{|^http|^(git|import|require|use) /i)
 ! !SECTION: Temporal
 ! SECTION: Placeholder by EasyPrivacy
 ! rcm.shinobi.jp and cnobi.jp
@@ -10913,6 +10918,7 @@ videonode.de##body > a[target="_blank"]
 ! NOTE: Japanese
 !bus-location.1507t.xyz##+js(nostif, ()=>{, 2501-)
 solispia.com##+js(trusted-rpnt, script, /document\.addEventListener\('DOMContentLoaded'\, function[\S\s]+?const novelId\s*=\s*(\d+);\s*const targetUrl\s*=.+?novel\\\/\d+";\s*const backToTitle[\S\s]+?SolispiaRewardedAdGate\.init\(\{\s*cancelUrl: backToTitle[\S\s]+/, !async function(){const e=$1\,t=`https://solispia.com/novel/${e}`\,o=document.querySelector('meta[name="csrf-token"]')?.getAttribute("content")||"";try{const a=await fetch(`/api/ad/rewarded/start/${e}`\,{method:"POST"\,headers:{"Content-Type":"application/json"\,"X-CSRF-TOKEN":o\,"X-Requested-With":"XMLHttpRequest"}\,body:JSON.stringify({})})\,i=await a.json();if(!i?.ok)return;await(n=5e3+Math.floor(1e3*Math.random())+500\,new Promise((e=>setTimeout(e\,n))));const d=await fetch("/api/ad/rewarded/complete"\,{method:"POST"\,headers:{"Content-Type":"application/json"\,"X-CSRF-TOKEN":o\,"X-Requested-With":"XMLHttpRequest"}\,body:JSON.stringify({challenge_id:i.challenge_id\,unlock_token:i.unlock_token\,event_key:i.event_key\,novel_id:e\,ad_meta:{}})})\,s=await d.json();s?.ok&&(window.location.href=t)}catch(e){}var n}();)
+monte-carlo-lab.pages.dev##+js(set, __ninjaAdMaxAbdLoaded, true)
 vk.sportsbull.jp##.hidden-by-ima:remove-class(hidden-by-ima)
 ! NOTE: Korean
 map.naver.com##+js(json-edit-xhr-response, .layers.*[?.metadata.name=="POI_Ads"], propsToMatch, /PCWeb_Real.json)
@@ -19623,9 +19629,10 @@ thothd.to##+js(nostif, offsetWidth)
 mediaset.es##+js(rmnt, script, adbl)
 embedrise.com,lulustream.com,lulustream.live,luluvdo.com,luluvid.com,playfmovies.*,viralvideotube.*,vtlinks.*,vtplayer.online,vvtlinks.*,vvtplayer.*##+js(nowoif)
 lulustream.com,lulustream.live,luluvdo.com##+js(aeld, click, popunder)
-lulu.st,lulustream.com,lulustream.live,luluvdo.com,luluvid.com##+js(acs, WebAssembly, Promise)
-lulu.st,lulustream.com,lulustream.live,luluvdo.com,luluvid.com##+js(acs, document.write, unescape)
-lulu.st,lulustream.com,lulustream.live,luluvdo.com,luluvid.com##+js(rmnt, script, /detect/i)
+lulu.st,lulust.com,lulustream.com,lulustream.live,luluvdo.com,luluvid.com##+js(rmnt, script, /h=decodeURIComponent|popundersPerIP/)
+lulu.st,lulust.com,lulustream.com,lulustream.live,luluvdo.com,luluvid.com##+js(acs, WebAssembly, Promise)
+lulu.st,lulust.com,lulustream.com,lulustream.live,luluvdo.com,luluvid.com##+js(acs, document.write, unescape)
+lulu.st,lulust.com,lulustream.com,lulustream.live,luluvdo.com,luluvid.com##+js(rmnt, script, /detect/i)
 luluvid.com##+js(rmnt, script, popundersPerIP)
 vtplayer.online,vvtplayer.*##+js(set, adblockcheck, false)
 ||unpkg.com/videojs-vast-vpaid@2.0.2/bin/videojs_5.vast.vpaid.min.js$script,domain=playfmovies.*|vtplayer.online|vvtplayer.*
@@ -21458,13 +21465,6 @@ zee5.com##.vjs-control-bar:style(display: flex !important;)
 ||imasdk.googleapis.com/js/sdkloader/ima3.js$xhr,redirect=google-ima.js,domain=zee5.com
 thejakartapost.com##.tjp-single__content-ads:remove()
 ||adconfig.ster.nl/adurl$xhr,3p,domain=nos.nl
-!#if !ext_ubol
-!#if env_firefox
-$frame,csp=sandbox allow-downloads allow-forms allow-modals allow-same-origin allow-scripts,to=~buymeacoffee.com|~cbox.ws|~chatango.com|~cloudflare.com|~d21.team|~dailymotion.com|~discord.com|~disqus.com|~dood.*|~edgecastcdn.net|~facebook.com|~filemoon.*|~frembed.*|~google.*|~hcaptcha.com|~kamehaus.net|~ko-fi.com|~mixdrop.*|~moviesapi.*|~nontongo.win|~ok.ru|~primewire.*|~recaptcha.net|~sport-tv-guide.live|~strcdn.org|~streamingnow.*|~twitter.com|~vidbinge.*|~vidfast.*|~vidlink.*|~vidmoly.*|~vidsrc.nl|~vixcloud.co|~youtu.be|~youtube.com|~youtube-nocookie.com,from=1jour1film.*|456movie.com|animefever.cc|animeunity.to|anitaku.bz|antennasports.ru|bingemaster.netlify.app|bluphim.*|broflix.cc|cinemadeck.com|dailypudding.com|detodopeliculas.nu|euro2024direct.ru|flickystream.com|freek.to|freeshot.live|hydrahd.cc|javx.*|kaas.ro|kickassanime.*|kipflix.vercel.app|kissanime.*|moflix-stream.day|movie3k.net|netplayz.ru|novafork.com|osteusfilmestuga.online|phimmoifhd.com|popcornmovies.to|primeflix-web.vercel.app|putlockers.*|roselife.site|roshy.tv|seriescultes.store|smashystream.com|soccerinhd.com|uira.live|watchf1full.com|xsportbox.com
-!#else
-$frame,csp=sandbox allow-downloads allow-forms allow-modals allow-same-origin allow-scripts,to=~buymeacoffee.com|~cbox.ws|~chatango.com|~cloudflare.com|~d21.team|~dailymotion.com|~discord.com|~disqus.com|~dood.*|~edgecastcdn.net|~embed.su|~emturbovid.com|~facebook.com|~filemoon.*|~frembed.*|~google.*|~hcaptcha.com|~kamehaus.net|~ko-fi.com|~mixdrop.*|~moviesapi.*|~nontongo.win|~ok.ru|~ply4.com|~primewire.*|~recaptcha.net|~sport-tv-guide.live|~strcdn.org|~streamingnow.*|~twitter.com|~vidbinge.*|~vidfast.*|~vidlink.*|~vidmoly.*|~vidsrc.*|~vixcloud.co|~youtu.be|~youtube.com|~youtube-nocookie.com,from=456movie.com|animefever.cc|animeunity.to|bluphim.*|broflix.cc|cinemadeck.com|dailypudding.com|detodopeliculas.nu|flickystream.com|freeshot.live|hydrahd.cc|kaas.ro|kickassanime.*|kipflix.vercel.app|kissanime.*|netplayz.ru|novafork.com|phimmoifhd.com|primeflix-web.vercel.app|seriescultes.store|soccerinhd.com|xsportbox.com
-!#endif
-!#endif
 euro2024direct.ru##+js(acs, document.createElement, break;case)
 ###video_player ~ div[id] div[style^="position:fixed;inset:0px;z-index:"]
 ||1winpb.com^$all
@@ -22730,6 +22730,8 @@ sbs.com.au##+js(m3u-prune, dclk_video_ads, .m3u8)
 sbs.com.au##+js(no-xhr-if, /redirector\.googlevideo\.com\/videoplayback[\s\S]*?dclk_video_ads/)
 sbs.com.au##+js(json-prune, ads breaks cuepoints times)
 sbs.com.au##+js(rc, ad-controls, .bitmovinplayer-container.ad-controls)
+sbs.com.au##+js(json-prune-fetch-response, streamProviders.[].adPlaylist streamProviders.[].ads, , propsToMatch, playback.)
+||pubads.g.doubleclick.net/ondemand/*/time-events.json$important,domain=sbs.com.au
 ||pubads.g.doubleclick.net/ondemand/hls/content/*/streams$xhr,redirect=noop.txt,domain=sbs.com.au
 ||redirector.googlevideo.com/*&source=dclk_video_ads&$redirect=noop.txt,domain=sbs.com.au,important,image,media,subdocument,stylesheet,script,xhr,other
 @@||pubads.g.doubleclick.net/ondemand/hls/content/*/vid/*/streams$domain=sbs.com.au
@@ -24199,6 +24201,7 @@ sextb.*#@#.ad-placeholder:not(#detect, #detect_ad_empire, #filter_ads_by_classna
 audinifer.com,vibuxer.com##+js(rmnt, script, window.open)
 audinifer.com,vibuxer.com##body > div[style*="2147483647"]
 avtub.*>>##+js(json-prune-fetch-response, custom_ads, , propsToMatch, /settings)
+gbsagbo.com##+js(rmnt, script, window.open)
 rockmods.net##.download-btn-group > a[href*="/4/"].simple-btn
 vegamoviese.blog##+js(nowoif)
 @@||madarascans.com^$ghide
@@ -24212,7 +24215,6 @@ wowtv.de##+js(set, window.__CONFIGURATION__.features.enableAdBlockerDetection, f
 jsfiddle.net##+js(set, _carbonads, {})
 jsfiddle.net##+js(set, _bsa, {})
 ||speechma.com/anti-adblocker.js
-fastpic.org##+js(trusted-set-cookie, k3a9q, $now$%7C1)
 ! nobledicion.yoveo.xyz detection
 nobledicion.yoveo.xyz##+js(noeval-if, googlesyndication)
 klouderr.com##+js(trusted-create-html, body, <div id="rpjMdOwCJNxQ" style="display: none;"></div>)
@@ -25115,9 +25117,16 @@ twitchnosub.com##section:nth-of-type(2) > .container > div:has(a[href^="https://
 *$script,redirect-rule=noopjs,domain=twitchnosub.com
 *$image,redirect-rule=32x32.png,domain=twitchnosub.com
 @@*$ghide,domain=twitchnosub.com
-! cinefreak.net (Popup)
 cinefreak.*##+js(aeld, click, openPopunder)
-cinecloud.*##+js(nostif, /window\.location\.href/)
+cinecloud.*##+js(nostif, location.href, 5000)
+cinecloud.*##+js(aost, Promise, imageProbe)
+cinefreak.net##+js(aost, Promise.all, imageProbe)
+cinefreak.net#@#.sponsored-ad
+cinefreak.net##+js(nowoif, _blank)
+||googleads.g.doubleclick.net/favicon.ico$image,redirect=2x2.png,domain=cinefreak.net|cinecloud.site
+||amazon-adsystem.com/favicon.ico$image,redirect=2x2.png,domain=cinefreak.net|cinecloud.site
+||static.criteo.net/favicon.ico$image,redirect=2x2.png,domain=cinefreak.net|cinecloud.site
+||ads.linkedin.com/favicon.ico$image,redirect=2x2.png,domain=cinefreak.net|cinecloud.site
 ! aznude.com (Popup, empty ad)
 aznude.com##^meta[content*="magsrv.com"]
 aznude.com##+js(set, AdProvider, noopFunc)
@@ -25922,6 +25931,10 @@ vikuy.click##.watch-ad-slot
 xfeed.com##+js(nowoif, _blank)
 xfeed.com##.prm-wrapper
 xfeed.com##[data-badge="Ad"]
-xfeed.com##div.column:has(div[class="spоns"])
+xfeed.com##div.column:has(div[class="spons"])
 xfeed.com##.hill-top-slot
 xfeed.com##.bottom-outstream
+xboxdynasty.de##+js(rmnt, script, /adblock/i)
+||xboxdynasty.de/wp-content/plugins/xd-performance/assets/ads.js
+1024teradl.com##+js(set-session-storage-item, 1024teradl:fetch-click-count, 1)
+1024teradl.com##span[class*="text-"]:has(+ .ad-unit-container)
