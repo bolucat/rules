@@ -1,0 +1,21 @@
+name: BoxJS
+desc: 安装后访问http://boxjs.com/进入
+
+http:
+  force-http-engine:
+    - "boxjs.com:80"
+    - "boxjs.net:80"
+  mitm:
+    - "boxjs.com"
+    - "boxjs.net"
+  script:
+    - match: ^https?://boxjs.com
+      name: boxjs
+      type: request
+      require-body: true
+      timeout: 120
+      
+script-providers:
+  boxjs:
+    url: https://raw.githubusercontent.com/chavyleung/scripts/master/chavy.box.js
+    interval: 86400
