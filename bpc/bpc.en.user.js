@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.5.7
+// @version         4.4.5.8
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -5159,31 +5159,21 @@ else if (matchDomain('thepointmag.com')) {
 }
 
 else if (matchDomain('thequint.com')) {
-  window.setTimeout(function () {
-    let lock = document.querySelector('div > img[alt^="lock"]');
-    if (lock) {
-      lock.removeAttribute('alt');
-      let paywall = document.querySelector('div#paywall-widget');
-      if (paywall) {
-        removeDOMElement(paywall);
-        let article = document.querySelector('div.story-element');
-        if (article) {
-          let article_new = getArticleQuintype();
-          if (article_new && article.parentNode)
-            article.parentNode.replaceChild(article_new, article);
-        }
-      }
-      let body_hidden = document.querySelector('div#story-body-wrapper');
-      if (body_hidden) {
-        body_hidden.removeAttribute('class');
-        body_hidden.removeAttribute('style');
-      }
-      function thequint_unhide(node) {
-        node.removeAttribute('style');
-      }
-      waitDOMAttribute('div#story-body-wrapper', 'DIV', 'style', thequint_unhide, true);
+  if (!window.location.pathname.startsWith('/amp/')) {
+    amp_redirect('div#paywall-widget', '', '/amp/story' + window.location.pathname);
+    let ads = 'div[class$="xQrn"], div#stickyBottomAd';
+    hideDOMStyle(ads);
+  } else {
+    let paywall = document.querySelector('div.paywall-card');
+    if (paywall) {
+      removeDOMElement(paywall);
+      let div_hidden = document.querySelector('div.qt-amp-story-container-class');
+      if (div_hidden)
+        div_hidden.classList.remove('qt-amp-story-container-class');
     }
-  }, 4000);
+    let ads = 'div.ad-wrapper, amp-fx-flying-carpet, center.amp-flying-carpet-text-border';
+    hideDOMStyle(ads);
+  }
 }
 
 else if (matchDomain('theweek.com')) {
