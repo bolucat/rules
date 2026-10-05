@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.5.8
+// @version         4.4.5.9
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1093,115 +1093,6 @@ else if (matchDomain('newstatesman.com')) {
 else if (matchDomain('observer.co.uk')) {
   let ads = 'div._minH-50px:has(> div#landing-top)';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('stylist.co.uk')) {
-  let paywall = document.querySelector('div[data-testid="paywall-component"]');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let paywall_inline = document.querySelector('div.paywall--inline');
-    if (paywall_inline)
-      paywall_inline.removeAttribute('class');
-    let json_script = document.querySelector('script#__NEXT_DATA__');
-    if (json_script) {
-      try {
-        let json = JSON.parse(json_script.text);
-        if (json.props.pageProps.data.post.acf.widgets) {
-          let url_next = json.props.pageProps.data.post.id;
-          if (url_next && !window.location.pathname.endsWith(url_next))
-            refreshCurrentTab();
-          let pars = json.props.pageProps.data.post.acf.widgets;
-          let first_par = document.querySelector('main div[data-column="true"] > p');
-          if (first_par) {
-            let article = first_par.parentNode;
-            let teaser = article.querySelectorAll('div > p:not([class])');
-            removeDOMElement(...teaser);
-            if (article) {
-              let parser = new DOMParser();
-              for (let par of pars) {
-                let elem = document.createElement('p');
-                if (par.paragraph) {
-                  let content = par.paragraph;
-                  let content_new = parser.parseFromString('<div>' + content + '</div>', 'text/html');
-                  elem = content_new.querySelector('div');
-                } else if (par.acf_fc_layout === 'heading') {
-                  if (par.text)
-                    elem.appendChild(document.createTextNode(par.text));
-                } else if (['image', 'interactive_image'].includes(par.acf_fc_layout)) {
-                  let image_array = [];
-                  if (par.image)
-                    image_array = [par.image];
-                  else if (par.image_collection)
-                    image_array = par.image_collection;
-                  for (let img_elem of image_array) {
-                    let figure = makeFigure(img_elem.url, img_elem.caption ? (img_elem.caption + ' ' + img_elem.description) : img_elem.alt, {alt: img_elem.alt, style: 'width: 95%;'});
-                    elem.appendChild(figure);
-                  }
-                } else if (par.acf_fc_layout === 'listicle') {
-                  let ul = document.createElement('ul');
-                  for (let sub_item of par.item) {
-                    let li = document.createElement('li');
-                    if (sub_item.url) {
-                      let par_link = document.createElement('a');
-                      par_link.href = sub_item.url;
-                      par_link.innerText = sub_item.title;
-                      par_link.target = '_blank';
-                      li.appendChild(par_link);
-                    } else
-                      li.innerText = sub_item.title;
-                    if (sub_item.paragraph) {
-                      let content = sub_item.paragraph;
-                      let content_new = parser.parseFromString('<div>' + content + '</div>', 'text/html');
-                      let par_elem = content_new.querySelector('div');
-                      li.appendChild(par_elem);
-                    }
-                    if (sub_item.image) {
-                      let img = document.createElement('img');
-                      img.src = sub_item.image.url;
-                      img.alt = sub_item.image.alt;
-                      img.style = 'width: 95%;';
-                      li.appendChild(img);
-                      li.appendChild(document.createElement('br'));
-                    }
-                    li.style = 'font-size: 20px; margin: 20px 0px;';
-                    ul.appendChild(li);
-                  }
-                  elem.appendChild(ul);
-                } else if (par.embed_link) {
-                  let par_link = document.createElement('a');
-                  par_link.href = par.embed_link;
-                  par_link.innerText = 'Embedded link: ' + par.embed_link;
-                  par_link.target = '_blank';
-                  elem.appendChild(par_link);
-                } else if (par.acf_fc_layout === 'divider') {
-                  elem.appendChild(document.createElement('hr'));
-                } else if (par.acf_fc_layout === 'related_articles') {
-                  if (par.posts) {
-                    for (let post of par.posts) {
-                      if (post.link && post.title.rendered) {
-                        let par_link = document.createElement('a');
-                        par_link.href = post.link;
-                        par_link.innerText = 'You may also like: ' + post.title.rendered;
-                        elem.appendChild(par_link);
-                        elem.appendChild(document.createElement('br'));
-                      }
-                    }
-                  }
-                } else if (!['newsletter_signup', 'pull-quote'].includes(par.acf_fc_layout))
-                  console.log(par);
-                if (elem.hasChildNodes()) {
-                  elem.style = 'font-family: "Source Serif Pro"; font-size: 20px; line-height: 34px;';
-                  article.appendChild(elem);
-                }
-              }
-            }
-          }
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  }
 }
 
 else if (matchDomain('telegraph.co.uk')) {
