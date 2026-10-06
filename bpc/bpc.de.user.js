@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.5.0
+// @version         4.4.5.1
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -606,7 +606,7 @@ else if (matchDomain('spektrum.de')) {
   waitDOMAttribute('body', 'BODY', 'style', node => node.removeAttribute('style'), true);
 }
 
-else if (matchDomain('spiegel.de')) {
+else if (matchDomain(['spiegel.de', 'manager-magazin.de'])) {
   let url = window.location.href;
   func_post = function () {
     let failed_iframes = document.querySelectorAll('div > div[x-show="!iframeIsLoaded"]');

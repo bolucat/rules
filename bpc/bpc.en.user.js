@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.5.9
+// @version         4.4.6.0
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -244,6 +244,12 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || document.
     if (banner.length)
       removeDOMElement(banner[0].parentNode.parentNode);
   }, 1000);
+}
+
+else if (window.location.hostname.match(/\.(uk|com|net)$/) && (matchDomain(uk_reach_domains) || document.querySelector('footer a[href="https://jobs.reachplc.com/jobs"]'))) {
+  let ads = document.querySelectorAll("div#superbanner, div.ad-wrapper, div[id^='div-gpt-ad-'], div.gpt");
+  removeDOMElement(...ads);
+  hideDOMStyle("div.taboola-above-article, div[id^='mantis-recommender-'], div#ovp-primis, div[data-testid^='commercial-'], div[data-tmdatatrack-type='commercial'], div#dd-placeholder:empty, div#pp-prompt");
 }
 
 else if (window.location.hostname.match(/\.(au|nz)$/) || matchDomain(['afr.com', 'nzgeo.com'])) {//australia & new zealand
@@ -1330,11 +1336,6 @@ else if (matchDomain(uk_iconic_media_domains) || document.querySelector('footer 
     premium.classList.remove('premium', 'no-entitlement');
   let ads = 'div[class^="MarkupAds__Container-"], div[class*="_AdContainer-"], div[class^="Dailymotion__Wrapper-"], div.banner, aside.sidebar, div#mantis-carousel-wrapper:has( > mantis-ui-widget:empty)';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain(uk_reach_domains) || document.querySelector('footer a[href="https://jobs.reachplc.com/jobs"]')) {
-  let ads = document.querySelectorAll('div#superbanner, div.ad-wrapper, div[id^="div-gpt-ad-"], div.taboola-above-article, div#mantis-recommender-top-placeholder, div#ovp-primis, div[data-testid^="commercial-"]');
-  removeDOMElement(...ads);
 }
 
 } else {
@@ -2697,21 +2698,6 @@ else if (matchDomain('economictimes.indiatimes.com')) {
     }
   }
   let ads = 'div.topAdContainer, div.vdo_ai_can_ani, div[data-ad-slot], div#topAd, div.stickyAd, div.blocker_wrap';
-  hideDOMStyle(ads);
-}
-
-else if (matchDomain('economist.com')) {
-  if (window.location.pathname.startsWith('/interactive/')) {
-    document.querySelectorAll('html, body').forEach(e => e.style = 'overflow: visible !important');
-  } else {
-    let paywall = document.querySelector('div#tp-regwall');
-    if (paywall) {
-      let url = window.location.href.split(/[#?]/)[0];
-      paywall.parentNode.before(googleSearchToolLink(url));
-      removeDOMElement(paywall);
-    }
-  }
-  let ads = 'div[class*="adComponent"], div.ad';
   hideDOMStyle(ads);
 }
 
