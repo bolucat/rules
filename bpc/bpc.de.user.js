@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.5.1
+// @version         4.4.5.2
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -606,31 +606,31 @@ else if (matchDomain('spektrum.de')) {
   waitDOMAttribute('body', 'BODY', 'style', node => node.removeAttribute('style'), true);
 }
 
-else if (matchDomain(['spiegel.de', 'manager-magazin.de'])) {
+else if (matchDomain(['spiegel.de', 'manager-magazin.de', '11freunde.de'])) {
   let url = window.location.href;
   func_post = function () {
-    let failed_iframes = document.querySelectorAll('div > div[x-show="!iframeIsLoaded"]');
-    for (let elem of failed_iframes)
-      hideDOMElement(elem.parentNode);
-    let body_dark = document.querySelector('body[class*="dark:"]');
-    if (body_dark)
-      removeClassesByPrefix(body_dark, 'dark:');
-    let charts = document.querySelectorAll('section div[x-data*="{isLoaded:"]');
-    for (let elem of charts)
-      elem.style.height = elem.offsetHeight + 'px';
-    document.querySelectorAll('figure > div > img.lazyload[src^="data:image/"][data-src').forEach(e => e.src = e.getAttribute('data-src')); //games
-    if (mobile) {
-      document.querySelectorAll('picture img[loading="lazy"][style]:not([src^="data:image/"])').forEach(e => e.style = 'width: 95%;');
-      let header_img = document.querySelector('header div[style*=";width:"]');
-      if (header_img)
-        header_img.style.width = 'unset';
+    let article = document.querySelector(article_sel);
+    if (article) {
+      article.querySelectorAll('div > div[x-show="!iframeIsLoaded"]').forEach(e => hideDOMElement(e.parentNode));
+      let body_dark = document.querySelector('body[class*="dark:"]');
+      if (body_dark)
+        removeClassesByPrefix(body_dark, 'dark:');
+      article.querySelectorAll('section div[x-data*="{isLoaded:"]').forEach(e => e.style.height = e.offsetHeight + 'px');
+      if (mobile) {
+        article.querySelectorAll('picture img[loading="lazy"][style]:not([src^="data:image/"])').forEach(e => e.style = 'width: 95%;');
+        let header_img = article.querySelector('header div[style*=";width:"]');
+        if (header_img)
+          header_img.style.width = 'unset';
+        article.querySelectorAll('section, aside').forEach(e => e.style = 'margin: auto; width: 80%;');
+      }
+      header_nofix('article', '*:not(.hidden) > svg[id*="-plus-paywall-"]', 'BPC > no archive-fix');
+      if (matchDomain('spiegel.de') && document.querySelector('head > link[type="application/rss+xml"][href="https://www.spiegel.de/thema/liveblogs/index.rss"]'))
+        header_nofix('article', 'div[x-embed-bridge-handler] > div[x-show="!isInitialized"]', 'BPC > for liveblogs use archive-link');
     }
-    header_nofix('article', '*:not(.hidden) > svg[id*="-plus-paywall-"]', 'BPC > no archive-fix');
-    if (document.querySelector('head > link[type="application/rss+xml"][href="https://www.spiegel.de/thema/liveblogs/index.rss"]'))
-      header_nofix('article', 'div[x-embed-bridge-handler] > div[x-show="!isInitialized"]', 'BPC > for liveblogs use archive-link');
   }
-  getArchive(url, 'div[data-area="paywall"]', '', 'article');
-  let ads = 'div[data-advertisement], div[x-data^="{adIndex:"]';
+  let article_sel = 'article';
+  getArchive(url, 'div[data-area="paywall"]', '', article_sel);
+  let ads = 'div[data-advertisement], div[x-data^="{adIndex:"], section[data-advertisement]';
   hideDOMStyle(ads);
 }
 

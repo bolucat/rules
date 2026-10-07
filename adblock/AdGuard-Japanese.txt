@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: ct+fST8FOKI8VUYL5bW5xw
-! Diff-Path: ../patches/7/7-s-1791306515-3600.patch
+! Checksum: sdszPpdv9jsAN6H0vh3L5Q
+! Diff-Path: ../patches/7/7-s-1791393500-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.77.17
-! TimeUpdated: 2026-10-06T17:05:28+00:00
+! Version: 2.0.77.23
+! TimeUpdated: 2026-10-07T17:14:09+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -882,8 +882,8 @@ connect.coron.tech##+js(abort-current-script, jQuery, decodeURIComponent)
 @@||ad-contents.jp^$generichide
 ! https://github.com/AdguardTeam/AdguardFilters/issues/51076
 ap-siken.com,db-siken.com,fe-siken.com,itpassportsiken.com,nw-siken.com,pm-siken.com,sc-siken.com,sg-siken.com##.ad2:style(display: none !important;)
-||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$script,redirect=googlesyndication_adsbygoogle.js,domain=ap-siken.com|db-siken.com|fe-siken.com|itpassportsiken.com|nw-siken.com|pm-siken.com|sc-siken.com|sg-siken.com|fp1-siken.com|fp2-siken.com|fp3-siken.com
-fp1-siken.com,fp2-siken.com,fp3-siken.com,ap-siken.com,db-siken.com,fe-siken.com,itpassportsiken.com,nw-siken.com,pm-siken.com,sc-siken.com,sg-siken.com##+js(no-setTimeout-if, _0x)
+||pagead2.googlesyndication.com/pagead/js/adsbygoogle.js$script,redirect=googlesyndication_adsbygoogle.js,domain=ap-siken.com|db-siken.com|fe-siken.com|itpassportsiken.com|nw-siken.com|pm-siken.com|sc-siken.com|sg-siken.com|fp1-siken.com|fp2-siken.com|fp3-siken.com|takken-siken.com
+fp1-siken.com,fp2-siken.com,fp3-siken.com,ap-siken.com,db-siken.com,fe-siken.com,itpassportsiken.com,nw-siken.com,pm-siken.com,sc-siken.com,sg-siken.com,takken-siken.com##+js(no-setTimeout-if, _0x)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/49430
 applion.jp#@#.ads-ad
 applion.jp###adcheck.ads-ad:style(display: block!important;)
@@ -1571,6 +1571,7 @@ hostlove.com###index_nav > h1:style(padding-top: 30px!important;)
 /wp-content/uploads/2024/09/fanza_ad$image
 !
 ! Malware/Phishing
+://*.*.com/*/%E6%A5%BD%E5%A4%A9%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E4%BF%9D%E8%AD%B7|$document
 /api/common/access-grant?token=go&originalUrl=$xhr
 _googlePlayNenkin_nenkin.apk.$document
 /sch_*/MyJCB-POINT.apk$document
@@ -1913,6 +1914,12 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+bestcalendar.jp##body > div[style^="min-height: "]:has(> ins.adsbygoogle):style(min-height: 0 !important; height: 0 !important;)
+baseballchannel.jp##.mlb-wrap > .mlb-card > div[style="width: 100%; min-height: 380px;"]:style(min-height: 0 !important;)
+baseballchannel.jp##div[id^="ats-insert_ads_"]
+news.cookpad.com##div[data-track-section="campaign_banner"]
+financial-field.com##.speee-logly
+tver.jp##main > div[class^="Series_svodLis"]:has(> div[class^="SvodList_caption"])
 sara-mac.com##.sara-mac-fftrans-banner
 lovelive-petitsoku.com##.content-bottom.wwa
 2nd-train.net##.adunder
@@ -1924,7 +1931,6 @@ mhw-blog.com##.bnr-fixed
 baseballchannel.jp###omc-full-article div:has(> a[href^="https://cl.link-ag.net/"])
 baseballchannel.jp###omc-full-article > div[style]:has(> div[id^="ats_news"])
 magmix.jp##.custom-button-wrap a[href^="//ck.jp.ap.valuecommerce.com/servlet/referral?"]
-magmix.jp##.content-box:has(> div[id^="div-gpt-ad-"])
 pricey.jp##.pricey-ad-area
 ||news.denfaminicogamer.jp/wp-content/uploads/pa-banners
 furusatohonpo.jp##.sprk-brand-ad-wrapper
@@ -2041,8 +2047,12 @@ bengo4.com##div[class^="p-static-banner-area"]
 javmix.tv###main > div.pop--excl > div[style*="margin: 0 auto 50px auto;"]
 momon-ga.com,javmix.tv##.pop--excl:has(div[id^="bnc_ad"])
 posfie.com,togetter.com##.amazon_bulk_box
+! aglint-disable no-invalid-modifiers
+! aglint-enable no-invalid-modifiers
+pdftoshokan.com##+js(set-constant, doAdRedirect, noopFunc)
 pdftoshokan.com##+js(no-window-open-if, /ok_|pemsrv\.com/)
-pdftoshokan.com##.post[style="margin-bottom: 1rem; opacity: 1; transition: opacity 0.5s ease-in;"]
+pdftoshokan.com##.post[style="margin-bottom:1rem;"]:has(> #myIframe2)
+pdftoshokan.com###ad-containerx
 hanasone.mainichi.jp##.p-article-trend-lists
 ai-ssr.com##.grid > div:has(> a[href^="https://al.fanza.co.jp"][target="_blank"])
 ai-ssr.com##section:has(> div > h2 + a[href="/fanza"])
@@ -11977,7 +11987,7 @@ youpouch.com##.widget_text:first-child
 ! https://github.com/AdguardTeam/AdguardFilters/issues/116832
 ! Duck DNS phishing domains
 !+ PLATFORM(ext_chromium_mv3, ext_ublock)
-/^https?:\/\/[0-9a-z-]{5,10}\.duckdns/$document,to=duckdns.org
+/^https?:\/\/[0-9a-z-]{5,12}\.duckdns/$document,to=duckdns.org
 !
 !
 blog.livedoor.jp###main > .column-inner > .column-inner-2 > span[style="font-size: 85%;"] + table[cellpadding="0"][cellspacing="0"]:has(> tbody > tr > td > a[href^="https://al."][target="_blank"] > img.pict)
@@ -12373,6 +12383,7 @@ drill-planet.kobun.co.jp#@#body[onbeforeunload="return myFunction()"]
 @@||safeframe.googlesyndication.com^$subdocument,domain=rakuten.dreamchance.net
 @@||googletagservices.com/tag/js/gpt.js$domain=rakuten.dreamchance.net
 ! kojodan.jp
+kojodan.jp#@#[id^="google_ads_iframe_"]
 kojodan.jp#@#div[id^="div-gpt-"]
 kojodan.jp#@#[id^="div-gpt-ad"]
 kojodan.jp##+js(remove-attr, height, iframe[id^="google_ads_iframe"], stay)

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.6.0
+// @version         4.4.6.2
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2971,12 +2971,13 @@ else if (matchDomain(['haaretz.co.il', 'haaretz.com', 'themarker.com'])) {
 
 else if (matchDomain('harpers.org')) {
   setCookie('hr_session', '', 'harpers.org', '/', 0);
-  let paywall = document.querySelector('div#full-paywall');
+  let paywall = document.querySelector('div.paywall-message-wrap');
   if (paywall) {
-    paywall.removeAttribute('id');
-    header_nofix(paywall, '', 'BPC > no fix (for older articles archive may work)');
-    let url = window.location.href;
-    paywall.before(archiveLink(url));
+    removeDOMElement(paywall, document.querySelector('div[data-preview-control]'));
+    let preview = document.querySelector('div[data-preview-treatment][hidden]');
+    if (preview)
+      preview.removeAttribute('hidden');
+    header_nofix('div.article-content');
   }
   let ads = 'div#ctas';
   hideDOMStyle(ads);
@@ -4389,60 +4390,80 @@ else if (matchDomain('stereogum.com')) {
               article.appendChild(iframe);
           }
         }
-        try {
-          let json = JSON.parse(json_script.text);
-          let json_slug = getNestedKeys(json, 'query.slug');
-          if (!json_slug) {
-            refreshCurrentTab();
-          } else if (json_slug && Array.isArray(json_slug) && json_slug.length) {
-            let url_next = json_slug[0];
-            if (url_next && !window.location.pathname.startsWith('/' + url_next + '/'))
-              refreshCurrentTab();
-          }
-          let pars = getNestedKeys(json, 'props.pageProps.blocks');
-          if (pars && pars.length) {
-            let intro = article.querySelector('p');
-            removeDOMElement(intro);
-            for (let par of pars) {
-              if (par.innerHTML && par.tagName) {
-                addPar(par, article);
-              } else if (par.name === 'lede/iframe') {
-                addIframe(par, article);
-              } else if (par.name === 'lede/flex-list-item') {
-                if (par.innerBlocks) {
-                  for (let item of par.innerBlocks) {
-                    if (item.attributes) {
-                      for (let att of item.attributes) {
-                        if (att.name === 'titleValue' && att.value) {
-                          let title = document.createElement('h2');
-                          title.innerText = att.value;
-                          article.appendChild(title);
-                        }
-                      }
-                    }
-                    if (item.name === 'lede/iframe')
-                      addIframe(item, article);
-                    else if (item.name === 'core/paragraph')
-                      addPar(item, article);
-                    else if (item.name === 'core/group') {
-                      if (item.innerBlocks) {
-                        for (let elem of item.innerBlocks) {
-                          if (elem.innerHTML && elem.tagName)
-                            addPar(elem, article);
-                          else
-                            console.log(elem);
-                        }
-                      }
-                    } else
-                      console.log(item);
-                  }
+        if (json_script.text) {
+          getArticle(json_script.text);
+        } else {
+          let url = window.location.href.split(/[#\?]/)[0];
+          fetch(url)
+          .then(response => {
+            if (response.ok) {
+              response.text().then(html => {
+                if (html.includes('<script id="__NEXT_DATA__" type="application/json">')) {
+                  let json_text = html.split('<script id="__NEXT_DATA__" type="application/json">')[1].split('</script>')[0];
+                  getArticle(json_text);
                 }
-              } else if (!['lede/affiliate', 'lede/review-card'].includes(par.name))
-                console.log(par);
+              })
             }
+          })
+        }
+        function getArticle(json_text) {
+          try {
+            let json = JSON.parse(json_text);
+            let json_slug = getNestedKeys(json, 'query.slug');
+            if (!json_slug) {
+              refreshCurrentTab();
+            } else if (json_slug && Array.isArray(json_slug) && json_slug.length) {
+              let url_next = json_slug[0];
+              if (url_next && !window.location.pathname.startsWith('/' + url_next + '/'))
+                refreshCurrentTab();
+            }
+            let pars = getNestedKeys(json, 'props.pageProps.blocks');
+            if (pars && pars.length) {
+              let intro = article.querySelector('p');
+              removeDOMElement(intro);
+              for (let par of pars) {
+                if (par.innerHTML && par.tagName) {
+                  addPar(par, article);
+                } else if (par.name === 'lede/iframe') {
+                  addIframe(par, article);
+                } else if (par.name === 'lede/flex-list-item') {
+                  if (par.innerBlocks) {
+                    for (let item of par.innerBlocks) {
+                      if (item.attributes) {
+                        for (let att of item.attributes) {
+                          if (att.name === 'titleValue' && att.value) {
+                            let title = document.createElement('h2');
+                            title.innerText = att.value;
+                            article.appendChild(title);
+                          }
+                        }
+                      }
+                      if (item.innerHTML && item.tagName) {
+                        addPar(item, article);
+                      } else if (item.name === 'lede/iframe')
+                        addIframe(item, article);
+                      else if (item.name === 'core/paragraph')
+                        addPar(item, article);
+                      else if (item.name === 'core/group') {
+                        if (item.innerBlocks) {
+                          for (let elem of item.innerBlocks) {
+                            if (elem.innerHTML && elem.tagName)
+                              addPar(elem, article);
+                            else
+                              console.log(elem);
+                          }
+                        }
+                      } else
+                        console.log(item);
+                    }
+                  }
+                } else if (!['lede/affiliate', 'lede/review-card'].includes(par.name))
+                  console.log(par);
+              }
+            }
+          } catch (err) {
+            console.log(err);
           }
-        } catch (err) {
-          console.log(err);
         }
       }
     }
