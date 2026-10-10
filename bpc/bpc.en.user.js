@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.6.2
+// @version         4.4.6.3
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -236,8 +236,10 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || document.
   if (paywall) {
     paywall.removeAttribute('class');
     let header = paywall.querySelector('h1');
-    if (header)
-      header.before(externalLink(['freedium-mirror.cfd', 'readmedium.com', 'archive.today'], 'https://{domain}/{url}', url, 'BPC > Try for full article text:'));
+    if (header) {
+      header.before(externalLink(['freedium-mirror.cfd'], 'https://{domain}/{url}', url, 'BPC > Try for full article text:'));
+      header.before(externalLink(['freedium-mirror-web.vercel.app'], 'https://{domain}/read?url={url}', url, 'BPC > Try for full article text:'));
+    }
   }
   window.setTimeout(function () {
     let banner = pageContains('div > div > p', /author made this story available to/);
@@ -4709,7 +4711,7 @@ else if (matchDomain('thediplomat.com')) {
         removeDOMElement(banner.parentNode);
     }
   }
-  let ads = 'aside.td-ad-container--labeled, div[data-actirise]';
+  let ads = 'aside.td-ad-container--labeled, div[data-actirise], div.td-ad, div.sparteo-corner';
   hideDOMStyle(ads);
 }
 

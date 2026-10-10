@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - it
-// @version         4.4.5.0
+// @version         4.4.5.1
 // @description     Bypass Paywalls of Italian language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.it.user.js
@@ -155,7 +155,7 @@ else if (matchDomain('ilfoglio.it')) {
     if (div_hidden)
       div_hidden.removeAttribute('class');
   }
-  let ads = '.advertisement';
+  let ads = 'div.ad-slot-root';
   hideDOMStyle(ads);
 }
 
