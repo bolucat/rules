@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.6.3
+// @version         4.4.6.4
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2481,16 +2481,16 @@ else if (matchDomain('csmonitor.com')) {
   window.localStorage.clear();
 }
 
-else if (matchDomain('cyclingnews.com')) {
+else if (matchDomain(['cyclingnews.com', 'livescience.com', 'theweek.com', 'tomshardware.com'])) {
   let paywall = document.querySelector('div.paywall-locker');
-  if (paywall) {
+  if (paywall)
     paywall.classList.remove('paywall-locker');
-    let banner = 'div.kiosq-main-layer';
-    hideDOMStyle(banner);
+  if (matchDomain('cyclingnews.com')) {
+    let metered_keys = Object.keys(window.localStorage).filter(x => x.match(/^kiosq_article/));
+    for (let item of metered_keys)
+      window.localStorage.removeItem(item);
   }
-  let metered_keys = Object.keys(window.localStorage).filter(x => x.match(/^kiosq_article/));
-  for (let item of metered_keys)
-    window.localStorage.removeItem(item);
+  hideDOMStyle('div.kiosq-main-layer, div#kiosq-app-paywall-js, div.dfp-leaderboard-container, div#paywall, div.paywall-fade-out');
 }
 
 else if (matchDomain('dailyherald.com')) {
@@ -5076,14 +5076,6 @@ else if (matchDomain('thequint.com')) {
   }
 }
 
-else if (matchDomain('theweek.com')) {
-  let paywall = document.querySelector('div.kiosq-main-layer');
-  removeDOMElement(paywall);
-  let locker = document.querySelector('div.paywall-locker');
-  if (locker)
-    locker.classList.remove('paywall-locker');
-}
-
 else if (matchDomain('thewrap.com')) {
   setCookie('blaize_session', '', 'thewrap.com', '/', 0);
   getJsonUrl('div#zephr-payment-form-root', '', 'div.entry-content', {art_append: 1});
@@ -5219,13 +5211,6 @@ else if (matchDomain('epaper.indiatimes.com')) {
       }
     }
   }
-}
-
-else if (matchDomain('tomshardware.com')) {
-  let paywall = document.querySelector('div.paywall-locker');
-  if (paywall)
-    paywall.classList.remove('paywall-locker');
-  hideDOMStyle('div#kiosq-app-paywall-js, div.dfp-leaderboard-container');
 }
 
 else if (matchDomain(no_dn_media_domains)) {
