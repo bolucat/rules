@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.6.4
+// @version         4.4.6.5
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -693,7 +693,7 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['autosport.com', 'dailymail.com', 'decanter.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'iai.tv', 'irishexaminer.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'the-tls.com', 'thelawyer.com', 'thetimes.com', 'unherd.com', 'worldeconomics.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['autosport.com', 'dailymail.com', 'decanter.com', 'economist.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'iai.tv', 'irishexaminer.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'the-tls.com', 'thelawyer.com', 'thetimes.com', 'unherd.com', 'worldeconomics.com'])) {//united kingdom/ireland
 
 if (matchDomain('autocar.co.uk')) {
   let paywall = document.querySelector('div.ms-block, div.register-block');
@@ -825,6 +825,46 @@ else if (matchDomain('decanter.com')) {
       }
     }
   }
+}
+
+else if (matchDomain('economist.com')) {
+  let url = window.location.href;
+  let paywall_sel = 'div#tp-regwall';
+  let article_sel = 'article > div > div';
+  if (window.location.pathname.startsWith('/interactive/')) {
+    document.querySelectorAll('html, body').forEach(e => e.style = 'overflow: visible !important');
+  } else if (window.location.pathname.includes('/podcasts/')) {
+    let paywall = document.querySelector(paywall_sel);
+    if (paywall) {
+      paywall.parentNode.before(googleSearchToolLink(url));
+      removeDOMElement(paywall);
+    }
+  } else if (!window.location.pathname.match(/\/(video|insider)\//)) {
+    let video = document.querySelector('iframe[src^="https://www.youtube.com/"]');
+    func_post = function () {
+      let article = document.querySelector(article_sel);
+      if (article) {
+        if (video) {
+          let video_new = article.querySelector('div[old-src^="https://www.youtube.com/"]');
+          if (video_new)
+            video_new.parentNode.replaceChild(video, video_new);
+        }
+        if (mobile) {
+          article.querySelectorAll('div[style*="grid-template-columns"]').forEach(e => e.removeAttribute('style'));
+          article.querySelectorAll('figure img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
+        }
+      }
+    }
+    let paywall = document.querySelector(paywall_sel);
+    if (paywall) {
+      let main = document.querySelector('main');
+      if (main)
+        main.before(externalLink(['freedium-mirror.cfd', 'wallhop.io'], 'https://{domain}/{url}', url, 'BPC > Try for full article text:'));
+      getArchive(url, paywall_sel, '', article_sel, '', article_sel, 'main');
+    }
+  }
+  let ads = 'div[class*="adComponent"], div.ad';
+  hideDOMStyle(ads);
 }
 
 else if (matchDomain('fnlondon.com')) {
