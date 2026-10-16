@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.6.8
+// @version         4.4.6.9
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -5455,6 +5455,13 @@ else if (domain = matchDomain(usa_craincomm_domains)) {
       let article = document.querySelector(article_sel);
       if (paywall && article) {
         removeDOMElement(paywall);
+        if (window.location.pathname.startsWith('/lists-rankings/')) {
+          document.querySelectorAll('html[style], body[style]').forEach(e => e.removeAttribute('style'));
+          let inert = document.querySelector('div#fusion-app[inert]');
+          if (inert)
+            inert.removeAttribute('inert');
+          hideDOMStyle('div[data-paywall-portal]', 2);
+        }
         try {
           let json = JSON.parse(fusion_script.text.split('Fusion.globalContent=')[1].split(';Fusion.')[0]);
           if (json) {
@@ -5762,21 +5769,21 @@ else if (matchDomain(ke_nation_media_domains)) {
   hideDOMStyle(ads);
 }
 
-else if ((domain = matchDomain(usa_gannett_domains)) || document.querySelector('head > link[href*="/gannett_net.js"], footer a[href^="https://www.gannett.com"]')) {
-  if (!domain)
-    domain = window.location.hostname.replace(/^(www|amp|eu)\./, '');
-  setCookie('firefly_akamai_meter', '', domain, '/', 0);
-  if (window.location.pathname.endsWith('/restricted/') && window.location.search.startsWith('?return=')) {
-    let url = decodeURIComponent(window.location.href.split('?return=')[1]);
-    let paywall = pageContains('div.message', 'This content is only available to subscribers.');
-    if (paywall.length) {
-      removeDOMElement(...paywall);
-      let article = document.querySelector('article');
-      if (article)
-        article.firstChild.before(archiveLink(url));
+else if (matchDomain(['usatoday.com'].concat(usa_gannett_domains)) || document.querySelector('head > link[href*="/gannett_net.js"], footer a[href^="https://www.gannett.com"]')) {
+  let video_sel = 'div#videoWrap';
+  let video = document.querySelector(video_sel);
+  func_post = function () {
+    if (video) {
+      video.style = 'width: 80%; margin: auto;';
+      let video_arch = document.querySelector(video_sel);
+      if (video_arch)
+        video_arch.parentNode.replaceChild(video, video_arch);
     }
   }
-  let ads = 'aside[aria-label="advertisement"], div.gnt_tb';
+  let url = window.location.href;
+  getArchive(url, 'aside.gnt_rb', '', 'article');
+  removeDOMElement(...document.querySelectorAll('div.ad-container'));
+  let ads = 'aside[aria-label="advertisement"], div.gnt_tb, partner-inline, iframe.flippxp-frame';
   hideDOMStyle(ads);
 }
 
