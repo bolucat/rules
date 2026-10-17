@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.4.2.1
+// @version         4.4.7.0
 // @description     Bypass Paywalls of Spanish & Portugese language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -773,24 +773,30 @@ else if (matchDomain('globo.com')) {
 }
 
 else if (matchDomain('lanacion.com.ar')) {
-  setCookie(/^metering_arc/, '', 'lanacion.com.ar', '/', 0);
-  if (matchDomain('suscripciones.lanacion.com.ar')) {
-    let searchParams = new URLSearchParams(window.location.search);
-    if (searchParams.get('callback')) {
-      func_post = function () {
-        let title = document.querySelector('h1');
-        if (title)
-          document.title = title.innerText + ' - LA NACION';
-        let banners = 'header.ds-header, button#btnAudioSignature, div#v-share';
-        hideDOMStyle(banners, 2);
+  window.localStorage.removeItem('metering');
+  let vshare_sel = 'div#v-share';
+  let vshare = document.querySelector(vshare_sel);
+  func_post = function () {
+    if (vshare) {
+      let vshare_new = document.querySelector(vshare_sel);
+      if (vshare_new)
+        vshare_new.parentNode.replaceChild(vshare, vshare_new);
+    }
+    if (mobile) {
+      let lazy_images = document.querySelectorAll('div > picture > img[loading="lazy"][style]');
+      for (let elem of lazy_images) {
+        elem.style = 'width: 95%;';
+        elem.parentNode.parentNode.removeAttribute('style');
       }
-      let url = atob(searchParams.get('callback')).split('?')[0];
-      getArchive(url, 'main > section > div', '', 'main', '', 'div#fusion-app');
+      document.querySelectorAll('div[style] > div[old-position="sticky"], div[style] > article').forEach(e => e.parentNode.removeAttribute('style'));
     }
   }
+  let url = window.location.href;
+  getArchive(url, 'div.blur-content-body', {rm_attrib: 'class'}, 'main');
+  let paywall = document.querySelector('div#ln-wall-scope');
+  removeDOMElement(paywall);
   let ads = 'div.ln-banner-container';
   hideDOMStyle(ads);
-  removeDOMElement(...document.querySelectorAll('div.ds-banner'));
 }
 
 else if (matchDomain('lance.com.br')) {

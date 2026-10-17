@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: VweTPM2SDNAw2+bzrXH6Jg
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1792178009-3600.patch
+! Checksum: nAeCNqzRNKaPh7TxgUKRUg
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1792264381-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.4.97.78
-! TimeUpdated: 2026-10-16T19:09:35+00:00
+! Version: 2.4.98.2
+! TimeUpdated: 2026-10-17T19:08:26+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -13241,6 +13241,8 @@ youporn.com##+js(remove-node-text, script, /window\.[\s\S]*?_zone_[\s\S]*?{"zone
 !
 ! NOTE: Regular rules
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/244577
+||textmatchcut.app/ad-gate.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/244488
 ||the-avatar.lol/api/pult/
 ! https://github.com/AdguardTeam/AdguardFilters/issues/244467
@@ -40460,6 +40462,13 @@ $image,3p,denyallow=googleapis.com,domain=vipbox1.org
 !
 ! NOTE: Specific rules
 !
+doctor.webmd.com##.seo-footerad
+webmd.com##div.container > div.pane > div.cpf-masthead:style(padding-top: 0 !important;)
+lofi-nopixel.com##div[data-testid="ad-anchor"]
+lofi-nopixel.com##div[data-testid="ad-in-feed"]
+lofi-nopixel.com##div[data-testid="ad-rail-tier"]
+akirabox.to##.hdm-banner
+akirabox.to##div.mx-auto > section.flex.text-sm:has(> p > a[href*="?utm_source=akirabox"])
 akirabox.to##+js(noeval-if, atob)
 aapalathakare.in###spa-popup-overlay
 abcnews.com##.navigation__stream
@@ -40518,7 +40527,7 @@ xflms.com##div[data-slot]
 lyricsly.in##.ad-console-box
 lyricsly.in##.sticky-anchor-ad
 ||estaticos01.gays-cruising.es/recursos/tres-doce.js
-4khd.com,wallpaperalchemy.com##+js(no-window-open-if, _blank)
+nexify-zone.com,4khd.com,wallpaperalchemy.com##+js(no-window-open-if, _blank)
 ||hockeyslovakia.sk/sk/bannerimg/
 fakta.id,datapendidikan.com,urlwebsite.com##div.mx-auto:has(> ins.adsbygoogle)
 mangaball.com##.w-full:has(> div[class] > span.uppercase > span:contains(Advertisement))

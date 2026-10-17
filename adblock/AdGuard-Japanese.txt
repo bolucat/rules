@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: Cc3f454XSMEocXBhVdirrQ
-! Diff-Path: ../patches/7/7-s-1792170826-3600.patch
+! Checksum: 67xiQveDywd8Nmi90ZZv9g
+! Diff-Path: ../patches/7/7-s-1792250033-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.77.57
-! TimeUpdated: 2026-10-16T17:10:05+00:00
+! Version: 2.0.77.61
+! TimeUpdated: 2026-10-17T15:09:40+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -27,6 +27,7 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$3p,domain=~rakuten-co.jp|~rakuten.ne.jp
 !
+||ad.001zb.com^
 ||onergogogo.com^$all
 ||hmshanyin.com^$all
 ||ee.nukido.net^$3p
@@ -1599,6 +1600,7 @@ hostlove.com###index_nav > h1:style(padding-top: 30px!important;)
 !
 ! Malware/Phishing
 ||amazonaws.com/Vpass.apk$document
+://*.*.com/*/e-tax|$document
 ://*.*.com/*/e-tax%E3%82%A2%E3%83%97%E3%83%AA|$document
 ://*.*.com/*/e-tax%E3%82%BD%E3%83%95%E3%83%88|$document
 ://*.*.com/*/rakuten%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88|$document
@@ -1920,7 +1922,7 @@ news23vip.livedoor.blog,konoyubitomare.jp,xn--dkqp0gri91r38rn1wmlurtz.com,nogiza
 ! ##.adsense
 hospita.jp,chirashi-guide.com,banner-hiroba.com,starblog.jp,uma-x.jp,motivation-up.com,cobwebs.jp,dacelo.space,gurum.biz,office-hack.com,haijin-boys.com,anke.jp,shin-shouhin.com,4ka.net,natsukimemo.com,travelbook.co.jp,otonasalone.jp##.adsense
 ! ##.banner
-nicola.jp,city.saku.nagano.jp,pachinkovillage.com,movie.golfdigest.co.jp,oggi.jp,money.smt.docomo.ne.jp,supari.jp,adaman-ero.com,city.muroran.lg.jp,storie.jp,city.yokkaichi.lg.jp,kabuyoho.jp,ichi-up.net,hayamimi-hobby.com,getchu.com,kitimama-matome.net,terakoya.asahi.com,newswitch.jp,demonition.com,fantage.co.jp,classmethod.jp,city.unnan.shimane.jp,pref.shiga.lg.jp,asajikan.jp,tanoshiiosake.jp,library.mitaka.tokyo.jp,climbing-net.com,tripnote.jp,allreviews.jp,smart-flash.jp,pakutaso.com,qoly.jp,ascii2d.net,hoikuen-ranking.com,wiki.seesaa.jp##.banner
+gossip-i.com,nicola.jp,city.saku.nagano.jp,pachinkovillage.com,movie.golfdigest.co.jp,oggi.jp,money.smt.docomo.ne.jp,supari.jp,adaman-ero.com,city.muroran.lg.jp,storie.jp,city.yokkaichi.lg.jp,kabuyoho.jp,ichi-up.net,hayamimi-hobby.com,getchu.com,kitimama-matome.net,terakoya.asahi.com,newswitch.jp,demonition.com,fantage.co.jp,classmethod.jp,city.unnan.shimane.jp,pref.shiga.lg.jp,asajikan.jp,tanoshiiosake.jp,library.mitaka.tokyo.jp,climbing-net.com,tripnote.jp,allreviews.jp,smart-flash.jp,pakutaso.com,qoly.jp,ascii2d.net,hoikuen-ranking.com,wiki.seesaa.jp##.banner
 ! ##.ads
 rkd3.dev,my-favorite-giants.net,weddingcard.jp,kanjitisiki.com,onasoku.net,webllica.com,health.eonet.jp,uwakich.com,bipblog.com,exile-fam.jp,ladytopi.jp,nijimen.kusuguru.co.jp,psychologicaltest.jp,sub.worldtimes.co.jp,manabi365.com,puzzcore.com,smhn.info,charat.me,no-genkin.com,alphapolis.co.jp,calorie.slism.jp,adultblogranking.com,hayamimi-gunpla.com,blog.wanichan.net,gamepedia.jp,on-ze.com,ecodb.net,febri.jp,postmap.org,efight.jp,cour89.com,city.kushiro.lg.jp,city.chitose.lg.jp,city.furano.hokkaido.jp,huyosoku.com,owata.chann.net,tanu-soku.com,ladytopi.jp,troutangler-s.com,pctrouble.net,adultgle.com,matomame.jp,pokemon-gsc.g-takumi.com,blog.with2.net,color-sample.com,8mato.jp,iromame-beans.jp,jocee.jp,gamebiz.jp,s8a.jp,gori.me,moraerumall.com,0taku.livedoor.biz,ginnga.blog.jp,tools4music.info,gaccom.jp,tagindex.com,flyteam.jp,keyakizaka46matomerabo.com,ryusoku.com,chixi.jp,chugoku-np.co.jp,2nn.jp##.ads
 ! ##.add
@@ -1944,13 +1946,19 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+bitcoinpost24.com##.block-area.mx-auto[style="width:300px;"]
+japan.storm.mg##.adGeneral
+japan.storm.mg##div[data-test-comp="AdTaboola"]
+gekiura.com###topSlideshowSpace
+naigaitimes.com##.nt-add-pc__wrapper
 pormo.me###hcStrip
 pormo.me###lcStrip
 pormo.me##.header-rec
 pormo.me##+js(set-constant, scPopped, true)
 pormo.me##+js(addEventListener-defuser, click, ad-nex.com)
 gofile-douga.com##[aria-label="広告"]
-gofile-douga.com##article:has(> div > a[href^="https://gofans-douga.com/pr/"])
+gofile-douga.com##article[aria-label="PR"]
+gofile-douga.com##.grid > div.col-span-2:has(> div.relative.max-w-full > div[aria-label="広告"])
 matomeantena.com###ranking_ad1
 matomeantena.com###ranking_ad2
 ||pormo.me/*/wipe.js
@@ -9889,6 +9897,7 @@ kurashi-no.jp##.u-bg-dgray.c-section
 ||i-section.net/ranklet/$3p
 saitama-np.co.jp##.pr-list
 webcartop.jp,financial-field.com,kanaloco.jp,webcartop.jp,lisani.jp,news.tv-aichi.co.jp,newsee-media.com,reader.futabanet.jp,maidonanews.jp,oricon.co.jp,htb.co.jp,saitama-np.co.jp,yomuno.jp##.ad_response
+recordchina.co.jp##.row > div[style^="height: 1000vh"]:empty
 recordchina.co.jp##.right-people[style^="min-width: 300px; min-height: 250px"]
 recordchina.co.jp##.ad-outer
 recordchina.co.jp##.right-ranking
@@ -12373,8 +12382,6 @@ adguard.info,adguard.com,adguard.app##.hello_from_adguard_japanese
 !
 !
 !
-! https://github.com/AdguardTeam/AdguardFilters/issues/244502
-@@||googletagmanager.com/gtm.js$script,domain=aeon.co.jp
 ! https://github.com/AdguardTeam/AdguardFilters/issues/244135
 utaten.com#@#a[href^="https://srv.clickfuse.com/"]
 ! https://github.com/AdguardTeam/AdguardFilters/issues/244323

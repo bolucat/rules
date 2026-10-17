@@ -5528,7 +5528,7 @@ else if (domain = matchDomain(usa_craincomm_domains)) {
       }
     }
   }
-  let ads = 'div.footer__ads-footer';
+  let ads = 'div.footer__ads-footer, div[aria-label="Advertisement"]';
   hideDOMStyle(ads);
 }
 
