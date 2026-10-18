@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Quick fixes
 ! Expires: 12 hours
-! Last modified: Thu, 15 Oct 2026 18:42:02 +0000
-! Diff-Path: ../patches/2026.10.17.1104.patch#ublock-quick-fixes
+! Last modified: Sun, 18 Oct 2026 11:14:28 +0000
+! Diff-Path: ../patches/2026.10.18.1036.patch#ublock-quick-fixes
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/quick-fixes.txt ***
@@ -134,12 +134,12 @@ web.facebook.com,www.facebook.com##+js(trusted-prevent-dom-bypass, Element.proto
 web.facebook.com,www.facebook.com##+js(trusted-prevent-dom-bypass, Element.prototype.prepend, XMLHttpRequest.prototype)
 ||static.xx.fbcdn.net/rsrc.php/$script,domain=web.facebook.com|www.facebook.com,replace=/return r instanceof ArrayBuffer/return r.constructor.name==="ArrayBuffer"/
 ! VOE sites
-||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=megankiddifference.com,important
-megankiddifference.com##+js(nowoif)
-megankiddifference.com##+js(set, console.clear, undefined)
-megankiddifference.com##+js(acs, globalThis, break;case)
-megankiddifference.com##+js(acs, WebAssembly, atob)
-||megankiddifference.com^$badfilter
+||imasdk.googleapis.com/js/sdkloader/ima3.js$script,3p,redirect=google-ima.js,domain=claireguessthousand.com,important
+claireguessthousand.com##+js(nowoif)
+claireguessthousand.com##+js(set, console.clear, undefined)
+claireguessthousand.com##+js(acs, globalThis, break;case)
+claireguessthousand.com##+js(acs, WebAssembly, atob)
+||claireguessthousand.com^$badfilter
 ! next-episode .net
 !next-episode.net##+js(rmnt, script, '/[\s\S]{0,}head[\s\S]{1900,}/')
 !next-episode.net##+js(rpnt, script, '/.then[\s\S]{0,}?;/g')
@@ -528,6 +528,12 @@ genshin-soku.com,monhan-soku.com,xn--gckdevd5myivf.site,yamiisoku.com##^script[i
 @@||monhan-soku.com/wp-content/plugins/yamiisoku-bbs-comments/assets/comments.js
 @@||monhan-soku.com/wp-content/plugins/yamiisoku-popular-posts/assets/script.js
 @@||monhan-soku.com/wp-content/themes/monhan-soku-theme/assets/js/comment-more.js
+@@||monhan-soku.com/wp-includes/js/jquery/jquery-migrate.min.js
+@@||monhan-soku.com/wp-includes/js/jquery/jquery.min.js
+@@||monhan-soku.com/wp-includes/js/mediaelement/mediaelement-and-player.min.js
+@@||monhan-soku.com/wp-includes/js/mediaelement/mediaelement-migrate.min.js
+@@||monhan-soku.com/wp-includes/js/mediaelement/renderers/vimeo.min.js
+@@||monhan-soku.com/wp-includes/js/mediaelement/wp-mediaelement.min.js
 @@||monhan-soku.com/wp-includes/js/wp-emoji-release.min.js
 @@||xn--gckdevd5myivf.site/wp-content/plugins/yamiisoku-popular-posts/assets/script.js
 @@||xn--gckdevd5myivf.site/wp-content/plugins/yamiisoku-bbs-comments/assets/comments.js
@@ -543,7 +549,28 @@ genshin-soku.com,monhan-soku.com,xn--gckdevd5myivf.site,yamiisoku.com##^script[i
 @@||yamiisoku.com/wp-content/plugins/yamiisoku-popular-posts/assets/script.js
 @@||yamiisoku.com/wp-content/themes/yamiisoku-matome-theme/assets/js/comment-more.js
 @@||yamiisoku.com/wp-content/plugins/yamiisoku-bbs-comments/assets/comments.js
+@@||yamiisoku.com/wp-includes/js/jquery/jquery-migrate.min.js
+@@||yamiisoku.com/wp-includes/js/jquery/jquery.min.js
+@@||yamiisoku.com/wp-includes/js/mediaelement/mediaelement-and-player.min.js
+@@||yamiisoku.com/wp-includes/js/mediaelement/mediaelement-migrate.min.js
+@@||yamiisoku.com/wp-includes/js/mediaelement/renderers/vimeo.min.js
+@@||yamiisoku.com/wp-includes/js/mediaelement/wp-mediaelement.min.js
 @@||yamiisoku.com/wp-includes/js/wp-emoji-release.min.js
+@@||ajax.googleapis.com/ajax/libs/jquery/*/jquery.min.js$domain=yamiisoku.com
+@@||cdnjs.cloudflare.com/ajax/libs/jquery-migrate/*/jquery-migrate.min.js$domain=yamiisoku.com
+@@||platform.twitter.com/widgets.js$domain=genshin-soku.com|monhan-soku.com|xn--gckdevd5myivf.site|yamiisoku.com
+@@||platform.x.com/widgets.js$domain=genshin-soku.com|monhan-soku.com|xn--gckdevd5myivf.site|yamiisoku.com
+@@||platform.twitter.com/js/tweet.$script,domain=genshin-soku.com|monhan-soku.com|xn--gckdevd5myivf.site|yamiisoku.com
+! subsites
+@@||yamiisoku.com/wp-content/plugins/antenna-portal/assets/portal.js
+@@||yamiisoku.com/wp-content/plugins/antenna-timeline/assets/timeline.js
+@@||yamiisoku.com/wp-content/themes/cocoon-child-master/javascript.js
+@@||yamiisoku.com/wp-content/themes/cocoon-master/javascript.js
+@@||yamiisoku.com/wp-content/themes/cocoon-master/js/group-link.js
+@@||yamiisoku.com/wp-content/themes/cocoon-master/plugins/baguettebox/dist/baguetteBox.min.js
+@@||yamiisoku.com/wp-content/themes/cocoon-master/plugins/lozad.js-master/dist/lozad.min.js
+@@||yamiisoku.com/wp-content/themes/cocoon-master/plugins/stickyfill/dist/stickyfill.min.js
+@@||yamiisoku.com/wp-includes/js/comment-reply.min.js
 *$script,xhr,domain=genshin-soku.com|monhan-soku.com|xn--gckdevd5myivf.site|yamiisoku.com
 ligainsider.de##+js(trusted-replace-argument, document.getElementById, 0, '', condition, /^wall-backdrop$/)
 ligainsider.de##+js(nostif, /unknown|BLOCKED/i)

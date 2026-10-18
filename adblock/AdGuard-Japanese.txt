@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: 67xiQveDywd8Nmi90ZZv9g
-! Diff-Path: ../patches/7/7-s-1792250033-3600.patch
+! Checksum: r+CLz5POFFxrj8fnzn5tMA
+! Diff-Path: ../patches/7/7-s-1792343494-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.77.61
-! TimeUpdated: 2026-10-17T15:09:40+00:00
+! Version: 2.0.77.64
+! TimeUpdated: 2026-10-18T17:08:50+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -481,6 +481,12 @@ mangaruu.com,rawfree.top,soraraw.*##+js(set-constant, navigator.brave, undefined
 @@||monhan-soku.com/wp-content/plugins/yamiisoku-bbs-comments/assets/comments.js
 @@||monhan-soku.com/wp-content/plugins/yamiisoku-popular-posts/assets/script.js
 @@||monhan-soku.com/wp-content/themes/monhan-soku-theme/assets/js/comment-more.js
+@@||monhan-soku.com/wp-includes/js/jquery/jquery-migrate.min.js
+@@||monhan-soku.com/wp-includes/js/jquery/jquery.min.js
+@@||monhan-soku.com/wp-includes/js/mediaelement/mediaelement-and-player.min.js
+@@||monhan-soku.com/wp-includes/js/mediaelement/mediaelement-migrate.min.js
+@@||monhan-soku.com/wp-includes/js/mediaelement/renderers/vimeo.min.js
+@@||monhan-soku.com/wp-includes/js/mediaelement/wp-mediaelement.min.js
 @@||monhan-soku.com/wp-includes/js/wp-emoji-release.min.js
 @@||xn--gckdevd5myivf.site/wp-content/plugins/yamiisoku-popular-posts/assets/script.js
 @@||xn--gckdevd5myivf.site/wp-content/plugins/yamiisoku-bbs-comments/assets/comments.js
@@ -496,7 +502,28 @@ mangaruu.com,rawfree.top,soraraw.*##+js(set-constant, navigator.brave, undefined
 @@||yamiisoku.com/wp-content/plugins/yamiisoku-popular-posts/assets/script.js
 @@||yamiisoku.com/wp-content/themes/yamiisoku-matome-theme/assets/js/comment-more.js
 @@||yamiisoku.com/wp-content/plugins/yamiisoku-bbs-comments/assets/comments.js
+@@||yamiisoku.com/wp-includes/js/jquery/jquery-migrate.min.js
+@@||yamiisoku.com/wp-includes/js/jquery/jquery.min.js
+@@||yamiisoku.com/wp-includes/js/mediaelement/mediaelement-and-player.min.js
+@@||yamiisoku.com/wp-includes/js/mediaelement/mediaelement-migrate.min.js
+@@||yamiisoku.com/wp-includes/js/mediaelement/renderers/vimeo.min.js
+@@||yamiisoku.com/wp-includes/js/mediaelement/wp-mediaelement.min.js
 @@||yamiisoku.com/wp-includes/js/wp-emoji-release.min.js
+@@||ajax.googleapis.com/ajax/libs/jquery/*/jquery.min.js$domain=yamiisoku.com
+@@||cdnjs.cloudflare.com/ajax/libs/jquery-migrate/*/jquery-migrate.min.js$domain=yamiisoku.com
+@@||platform.twitter.com/widgets.js$domain=genshin-soku.com|monhan-soku.com|xn--gckdevd5myivf.site|yamiisoku.com
+@@||platform.x.com/widgets.js$domain=genshin-soku.com|monhan-soku.com|xn--gckdevd5myivf.site|yamiisoku.com
+@@||platform.twitter.com/js/tweet.$script,domain=genshin-soku.com|monhan-soku.com|xn--gckdevd5myivf.site|yamiisoku.com
+! subsites
+@@||yamiisoku.com/wp-content/plugins/antenna-portal/assets/portal.js
+@@||yamiisoku.com/wp-content/plugins/antenna-timeline/assets/timeline.js
+@@||yamiisoku.com/wp-content/themes/cocoon-child-master/javascript.js
+@@||yamiisoku.com/wp-content/themes/cocoon-master/javascript.js
+@@||yamiisoku.com/wp-content/themes/cocoon-master/js/group-link.js
+@@||yamiisoku.com/wp-content/themes/cocoon-master/plugins/baguettebox/dist/baguetteBox.min.js
+@@||yamiisoku.com/wp-content/themes/cocoon-master/plugins/lozad.js-master/dist/lozad.min.js
+@@||yamiisoku.com/wp-content/themes/cocoon-master/plugins/stickyfill/dist/stickyfill.min.js
+@@||yamiisoku.com/wp-includes/js/comment-reply.min.js
 $script,xhr,domain=genshin-soku.com|monhan-soku.com|xn--gckdevd5myivf.site|yamiisoku.com
 genshin-soku.com,monhan-soku.com,xn--gckdevd5myivf.site,yamiisoku.com##+js(remove-node-text, script, /adsby|console|data-ad|modal|requestAnimationFrame|srcdoc|tagName|text\/html|userAgent|visibility|zucks|^[\S\s]{3200\,}$|\\u00|ブロッカ/)
 genshin-soku.com,monhan-soku.com,xn--gckdevd5myivf.site,yamiisoku.com##+js(set-constant, YAAB, undefined)
@@ -1600,11 +1627,12 @@ hostlove.com###index_nav > h1:style(padding-top: 30px!important;)
 !
 ! Malware/Phishing
 ||amazonaws.com/Vpass.apk$document
-://*.*.com/*/e-tax|$document
-://*.*.com/*/e-tax%E3%82%A2%E3%83%97%E3%83%AA|$document
-://*.*.com/*/e-tax%E3%82%BD%E3%83%95%E3%83%88|$document
-://*.*.com/*/rakuten%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88|$document
-://*.*.com/*/%E6%A5%BD%E5%A4%A9%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E4%BF%9D%E8%AD%B7|$document
+.com/*/e-tax%E5%9B%BD%E7%A8%8E|$document
+.com/*/e-tax|$document
+.com/*/e-tax%E3%82%A2%E3%83%97%E3%83%AA|$document
+.com/*/e-tax%E3%82%BD%E3%83%95%E3%83%88|$document
+.com/*/rakuten%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88|$document
+.com/*/%E6%A5%BD%E5%A4%A9%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E4%BF%9D%E8%AD%B7|$document
 /api/common/access-grant?token=go&originalUrl=$xhr
 _googlePlayNenkin_nenkin.apk.$document
 /sch_*/MyJCB-POINT.apk$document
@@ -2230,6 +2258,10 @@ genshin-soku.com,monhan-soku.com,xn--gckdevd5myivf.site,yamiisoku.com##[href*="l
 genshin-soku.com,monhan-soku.com,xn--gckdevd5myivf.site,yamiisoku.com##[id*="-sale"]
 genshin-soku.com,monhan-soku.com,xn--gckdevd5myivf.site,yamiisoku.com##[id*="-remote"]
 genshin-soku.com,monhan-soku.com,xn--gckdevd5myivf.site,yamiisoku.com##[class*="-remote"]
+genshin-soku.com,monhan-soku.com,xn--gckdevd5myivf.site,yamiisoku.com##.gs-between-ad
+yamiisoku.com##.gs-widget:has(> div > a[href^="https://amzn.to"])
+yamiisoku.com##.antt-side-ad
+matomepotal.yamiisoku.com##.ap-side-ad
 genshin-soku.com,monhan-soku.com,xn--gckdevd5myivf.site##.promo-box
 monhan-soku.com###ymsa-full-zucks
 xn--gckdevd5myivf.site##.custom-html-widget:has(> a[href^="https://amzn.to"])
@@ -5225,7 +5257,7 @@ fob.jp###sidebar > div.widget_custom_html:has(+ div#fix_sidebar)
 city.kamisu.ibaraki.jp###topsadbg
 saku-city.mamafre.jp###bottomBanner
 ||city.saku.nagano.jp/banner/
-jmanga.buzz##div[style^="max-width:700px"]
+jmanga.voto##div[style^="max-width:700px"]
 gihyo.jp##.m-listitem--ad
 musicman.co.jp##.bannerBox
 ||tool2.nan-net.com/doujin/depression1.jpg

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.5.2
+// @version         4.4.7.0
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -280,8 +280,7 @@ else if (matchDomain('diepresse.com')) {
   let paywall = document.querySelector('div.premium-content.hide');
   if (paywall)
     paywall.removeAttribute('class');
-  let fade = 'div.paywall-container--locked';
-  hideDOMStyle(fade);
+  hideDOMStyle('div.paywall-container, div.ad');
 }
 
 else if (matchDomain('faz.net')) {

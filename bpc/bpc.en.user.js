@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.6.9
+// @version         4.4.7.0
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1100,9 +1100,9 @@ else if (matchDomain('newstatesman.com')) {
   if (window.location.hostname === 'magazine.newstatesman.com') {
     restorePugpigPage();
   } else {
-    let paywall = document.querySelectorAll('p[data-ct]');
-    if (paywall.length) {
-      removeDOMElement(...paywall);
+    let paywall = document.querySelector('section.paywall__container');
+    if (paywall) {
+      removeDOMElement(paywall);
       let json_script = document.querySelector('script#tie-schema-json');
       if (json_script) {
         try {
@@ -1133,8 +1133,7 @@ else if (matchDomain('newstatesman.com')) {
         }
       }
     }
-    let ads = 'div.ad';
-    hideDOMStyle(ads);
+    hideDOMStyle('div.fp-fadeout, div.ad');
   }
 }
 
