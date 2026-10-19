@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.7.0
+// @version         4.4.7.1
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4693,6 +4693,7 @@ else if (matchDomain('thebulletin.org')) {
 }
 
 else if (matchDomain('thedailybeast.com')) {
+  setCookie('blaize_session', '', 'thedailybeast.com', '/', 0);
   document.querySelectorAll('div > div.tdb-ads-block').forEach(e => hideDOMElement(e.parentNode));
   let ads = 'aside.body-ad, aside.ad--outstream-video, aside[data-name="ADS"]';
   hideDOMStyle(ads);
