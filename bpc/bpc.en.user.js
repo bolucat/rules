@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.7.1
+// @version         4.4.7.2
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -5455,13 +5455,11 @@ else if (domain = matchDomain(usa_craincomm_domains)) {
       let article = document.querySelector(article_sel);
       if (paywall && article) {
         removeDOMElement(paywall);
-        if (window.location.pathname.startsWith('/lists-rankings/')) {
-          document.querySelectorAll('html[style], body[style]').forEach(e => e.removeAttribute('style'));
-          let inert = document.querySelector('div#fusion-app[inert]');
-          if (inert)
-            inert.removeAttribute('inert');
-          hideDOMStyle('div[data-paywall-portal]', 2);
-        }
+        document.querySelectorAll('html[style], body[style]').forEach(e => e.removeAttribute('style'));
+        let inert = document.querySelector('div#fusion-app[inert]');
+        if (inert)
+          inert.removeAttribute('inert');
+        hideDOMStyle('div[data-paywall-portal]', 2);
         try {
           let json = JSON.parse(fusion_script.text.split('Fusion.globalContent=')[1].split(';Fusion.')[0]);
           if (json) {

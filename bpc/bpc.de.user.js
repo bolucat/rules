@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.7.0
+// @version         4.4.7.1
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -1062,38 +1062,74 @@ else if (matchDomain('zeit.de')) {
 }
 
 else if (matchDomain(de_funke_medien_domains)) {
-  let paywall = document.querySelector('div#paywall-container');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let spark_script = document.querySelector('script#__SPARK__');
-    if (spark_script) {
-      let match = spark_script.text.match(/PUBLICATION:\s?'([\w-]+)',/);
-      if (match) {
-        func_post = function () {
-          document.querySelectorAll('div[data-carousel-id-slider]').forEach(x => x.removeAttribute('class'));
-          let embed_templates = document.querySelectorAll('div[data-embed-id] > template[data-embedbox-id-embed-template]');
-          for (let elem of embed_templates) {
-            let parser = new DOMParser();
-            let doc = parser.parseFromString('<div>' + elem.innerHTML + '</div>', 'text/html');
-            let blockquote = doc.querySelector('div');
-            elem.parentNode.before(blockquote);
-            removeDOMElement(elem.parentNode);
-          }
-          let charts = document.querySelectorAll('aside > div[id^="datawrapper-vis-"]');
-          for (let elem of charts) {
-            let img = elem.querySelector('noscript > img[src]');
-            if (img) {
-              elem.parentNode.before(img);
-              removeDOMElement(elem.parentNode);
+  let url = window.location.href;
+  let paywall_sel = 'div#paywall-container';
+  if (matchDomain(['waz.de', 'wp.de', 'wr.de'])) {
+    let paywall = document.querySelector(paywall_sel);
+    if (paywall) {
+      removeDOMElement(paywall);
+      let spark_script = document.querySelector('script#__SPARK__');
+      if (spark_script) {
+        let match = spark_script.text.match(/PUBLICATION:\s?'([\w-]+)',/);
+        if (match) {
+          func_post = function () {
+            let paywall_post = document.querySelector('div[data-module-id="ArticleAppPaywallModule"]');
+            if (paywall_post) {
+              paywall_post.before(archiveLink(url));
+              removeDOMElement(paywall_post);
+            } else {
+              document.querySelectorAll('div[data-carousel-id-slider]').forEach(x => x.removeAttribute('class'));
+              let embed_templates = document.querySelectorAll('div[data-embed-id] > template[data-embedbox-id-embed-template]');
+              for (let elem of embed_templates) {
+                let parser = new DOMParser();
+                let doc = parser.parseFromString('<div>' + elem.innerHTML + '</div>', 'text/html');
+                let blockquote = doc.querySelector('div');
+                elem.parentNode.before(blockquote);
+                removeDOMElement(elem.parentNode);
+              }
+              let charts = document.querySelectorAll('aside > div[id^="datawrapper-vis-"]');
+              for (let elem of charts) {
+                let img = elem.querySelector('noscript > img[src]');
+                if (img) {
+                  elem.parentNode.before(img);
+                  removeDOMElement(elem.parentNode);
+                }
+              }
             }
           }
+          let spark_domain = match[1];
+          let url_src = 'https://app-webview.sparknews.funkemedien.de/' + spark_domain + window.location.pathname;
+          fetch_headers = {
+            "Authorization": cs_param['authorization'] || "Basic YXBpOkNTeGxxRG1YM2xCTmRsS1l6allRcWZqTnFZMkhQVUVm"
+          };
+          replaceDomElementExt(url_src, true, false, 'div.article-body', 'BPC > no fix (source file)');
         }
-        let spark_domain = match[1];
-        let url_src = 'https://app-webview.sparknews.funkemedien.de/' + spark_domain + window.location.pathname;
-        fetch_headers = {"Authorization": "Basic YXBpOkNTeGxxRG1YM2xCTmRsS1l6allRcWZqTnFZMkhQVUVm"};
-        replaceDomElementExt(url_src, true, false, 'div.article-body', 'BPC > no fix (source file)');
       }
     }
+  } else {
+    func_post = function () {
+      let article = document.querySelector(article_sel);
+      if (article) {
+        if (mobile) {
+          article.querySelectorAll('picture > img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
+        }
+        let gallery = article.querySelector('div[style*="align-content:flex-start"]');
+        if (gallery) {
+          gallery.removeAttribute('style');
+          let hidden_images = gallery.querySelectorAll('img[src^="data:image/"]');
+          for (let elem of hidden_images) {
+            let source = elem.parentNode.querySelector('source[old-srcset]');
+            if (source)
+              elem.src = source.getAttribute('old-srcset').split(' ')[0];
+          }
+        }
+        let bt_player = article.querySelector('div[style] > div#bt-player');
+        if (bt_player)
+          removeDOMElement(bt_player.parentNode);
+      }
+    }
+    let article_sel = 'article';
+    getArchive(url, paywall_sel, '', article_sel);
   }
   let ads = 'aside[data-module-id="SparkAdSlotModule"]';
   hideDOMStyle(ads);
