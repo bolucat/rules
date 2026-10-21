@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.4.7
+// @version         4.4.7.0
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1056,7 +1056,7 @@ else if (domain = matchDomain('lamanchelibre.fr') || matchDomain(fr_groupe_la_ma
       }
     }
   }
-  let ads = 'div.class_pub, div#tbl-next-up';
+  let ads = 'div.class_pub, div#tbl-next-up, div#marketing';
   hideDOMStyle(ads);
 }
 
