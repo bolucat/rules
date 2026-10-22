@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.7.1
+// @version         4.4.7.2
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -527,10 +527,11 @@ else if (matchDomain(['noz.de', 'shz.de'])) {
 }
 
 else if (matchDomain('nw.de')) {
-  let paywall = document.querySelector('div.abo-container');
-  let article = document.querySelector('div#paywall');
+  let paywall = document.querySelector('div#paywall');
+  let article = document.querySelector('div.article-detail-entry-content > div.nw-overflow-hidden');
   if (paywall && article) {
     removeDOMElement(paywall);
+    article.removeAttribute('style');
     let json_script = getArticleJsonScript();
     if (json_script) {
       try {
