@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.7.3
+// @version         4.4.7.4
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -118,7 +118,6 @@
 // @exclude         *://*.globo.com/*
 // @exclude         *://*.handelsblatt.com/*
 // @exclude         *://*.ilsole24ore.com/*
-// @exclude         *://*.jeuneafrique.com/*
 // @exclude         *://*.journaldunet.com/*
 // @exclude         *://*.la-croix.com/*
 // @exclude         *://*.larioja.com/*
@@ -1364,13 +1363,13 @@ else if (matchDomain(uk_iconic_media_domains) || document.querySelector('footer 
   let premium = document.querySelector('div.premium.no-entitlement');
   if (premium)
     premium.classList.remove('premium', 'no-entitlement');
-  let ads = 'div[class^="MarkupAds__Container-"], div[class*="_AdContainer-"], div[class^="Dailymotion__Wrapper-"], div.banner, aside.sidebar, div#mantis-carousel-wrapper:has( > mantis-ui-widget:empty)';
+  let ads = 'div[class^="MarkupAds__Container-"], div[class*="_AdContainer-"], div[class^="Dailymotion__Wrapper-"], div.banner, aside.sidebar, iframe[aria-label="Advertisement"], div#mantis-carousel-wrapper:has( > mantis-ui-widget:empty)';
   hideDOMStyle(ads);
 }
 
 } else {
 
-else if (matchDomain(usa_adv_local_domains) || matchDomain(usa_adv_local_custom_reader_domains)) {
+if (matchDomain(usa_adv_local_domains) || matchDomain(usa_adv_local_custom_reader_domains)) {
   if (!window.location.search.startsWith('?outputType=amp')) {
     if (window.location.hostname.startsWith('reader.')) {
       if (window.location.pathname.startsWith('/full_page_image/')) {
@@ -3778,8 +3777,7 @@ else if (matchDomain('newsday.com')) {
   let nd_lock = document.querySelector('html[class]');
   if (nd_lock)
     nd_lock.removeAttribute('class');
-  let ads = 'div.ad';
-  hideDOMStyle(ads);
+  hideDOMStyle('div.ad, div[data-name="open-paywall-message"]');
 }
 
 else if (matchDomain('newslaundry.com')) {

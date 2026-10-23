@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.7.0
+// @version         4.4.7.1
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -17,7 +17,6 @@
 // @match           *://*.connaissancedesarts.com/*
 // @match           *://*.courrierinternational.com/*
 // @match           *://*.dhnet.be/*
-// @match           *://*.jeuneafrique.com/*
 // @match           *://*.journaldunet.com/*
 // @match           *://*.la-croix.com/*
 // @match           *://*.lacote.ch/*
@@ -880,121 +879,6 @@ else if (matchDomain(fr_groupe_nice_matin_domains)) {
   }
   let ads = 'div[class^="ad-slot-"]';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('jeuneafrique.com')) {
-  let now_date = (new Date()).toISOString().split('T')[0];
-  let ls_date = localStorage.getItem('###_json_date') || '';
-  let ls_json_articles = {};
-  let ls_json_urls = {};
-  function show_data(article, body, ls_json_urls) {
-    let parser = new DOMParser();
-    let doc = parser.parseFromString('<div>' + parseHtmlEntities(body) + '</div>', 'text/html');
-    let article_new = doc.querySelector('div');
-    let readmore_links = article_new.querySelectorAll('div.sc-lire-aussi');
-    for (let elem of readmore_links) {
-      elem.style = 'margin-bottom: 20px';
-      let app_link = elem.querySelector('a[href^="jeuneafrique://article/"');
-      if (app_link) {
-        let match = app_link.href.match(/\d+$/);
-        if (match && ls_json_urls[match[0]])
-          app_link.href = ls_json_urls[match[0]];
-      }
-    }
-    article.innerHTML = '';
-    article.parentNode.replaceChild(article_new, article);
-  }
-  function store_data(json, limit, limit_low = 100, article_id = '', article = '') {
-    try {
-      let src_articles = json.articles.filter(x => !x.content_status_open);
-      if (src_articles) {
-        if (article_id) {
-          let src_article = src_articles.filter(x => x.id == article_id)[0];
-          if (src_article)
-            show_data(article, src_article.content_full, ls_json_urls);
-          else
-            header_nofix(article, '', 'BPC > no fix (source file)');
-        }
-        if (!ls_date || limit > limit_low || now_date > ls_date) {
-          ls_json_articles = {};
-          ls_json_urls = {};
-        } else if (ls_date && !Object.keys(ls_json_articles).length) {
-          let ls_articles = localStorage.getItem('###_json');
-          ls_json_articles = JSON.parse(ls_articles);
-          let ls_urls = localStorage.getItem('###_json_urls') || {};
-          ls_json_urls = JSON.parse(ls_urls);
-        }
-        for (let art of src_articles)
-          ls_json_articles[art.id] = art.content_full;
-        for (let art of json.articles)
-          ls_json_urls[art.id] = art.url;
-        localStorage.setItem('###_json', JSON.stringify(ls_json_articles));
-        localStorage.setItem('###_json_date', now_date);
-        localStorage.setItem('###_json_urls', JSON.stringify(ls_json_urls));
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  if (true) {
-    let paywall = document.querySelector('div#poool-widget');
-    if (paywall) {
-      removeDOMElement(paywall);
-      let article = document.querySelector('div.article__content > div[data-mrf-recirculation]');
-      let article_id = window.location.pathname.split('/')[1];
-      if (article && article_id) {
-        let limit_low = 50 + randomInt(50);
-        let limit_high = 600 + randomInt(100);
-        function fetch_data(limit) {
-          let url_src = 'https://www.jeuneafrique.com/api/mobile/v6.0/featured/?limit=' + limit + '&rel=' + randomInt(100000);
-          fetch(url_src, {headers: {"x-exp": "1741079242710", "x-sig": "b431724e94023a6969c5427133e1614db2cbe90e"}})
-          .then(response => {
-            if (response.ok) {
-              response.json().then(json => {
-                store_data(json, limit, limit_low, article_id, article);
-              })
-            } else {
-              header_nofix(article, '', 'BPC > no fix (source file)');
-            }
-          }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
-        }
-        let json_date;
-        let json_script = document.querySelector('script[type="application/ld+json"]');
-        if (json_script) {
-          try {
-            let json = JSON.parse(json_script.text);
-            if (json && json['@graph']) {
-              let date_arr = json['@graph'].filter(x => x.datePublished);
-              if (date_arr.length)
-                json_date = date_arr[0].datePublished;
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
-        let art_date = json_date ? json_date.split('T')[0] : now_date;
-        if (ls_date) {
-          let ls_articles = localStorage.getItem('###_json');
-          ls_json_articles = JSON.parse(ls_articles);
-          let ls_urls = localStorage.getItem('###_json_urls') || {};
-          ls_json_urls = JSON.parse(ls_urls);
-          let art_data = ls_json_articles[article_id];
-          if (art_data)
-            show_data(article, art_data, ls_json_urls);
-          else if (ls_date < art_date)
-            fetch_data(limit_high);
-          else if (now_date === art_date)
-            fetch_data(limit_low);
-          else
-            header_nofix(article, '', 'BPC > no fix (source file)')
-        } else {
-          fetch_data(limit_high);
-        }
-      }
-    }
-    let ads = 'div.banner-ad, div.box-ad-brand';
-    hideDOMStyle(ads);
-  }
 }
 
 else if (matchDomain('journaldunet.com')) {
