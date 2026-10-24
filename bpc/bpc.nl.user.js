@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.4.7.0
+// @version         4.4.7.1
 // @description     Bypass Paywalls of Dutch language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -42,7 +42,6 @@
 // @match           *://*.railtech.com/*
 // @match           *://*.standaard.be/*
 // @match           *://*.taxipro.be/*
-// @match           *://*.telegraaf.nl/*
 // @match           *://*.tijd.be/*
 // @match           *://*.trouw.nl/*
 // @match           *://*.tubantia.nl/*
@@ -462,125 +461,6 @@ else if (matchDomain('nrc.nl')) {
   setCookie('counter', '', '', '/', 0, true);
   let banners = 'div[id$="modal__overlay"], div.header__subscribe-bar, div.banner, dialog.dmt-login-modal';
   hideDOMStyle(banners);
-}
-
-else if (matchDomain('telegraaf.nl')) {
-  func_post = function () {
-    let article = document.querySelector(article_sel);
-    if (article) {
-      if (mobile) {
-        let body = document.querySelector('body');
-        if (body) {
-          article.style.width = body.offsetWidth * 0.95 + 'px';
-          let lazy_images = document.querySelectorAll('button > img[loading="lazy"]');
-          for (let elem of lazy_images) {
-            elem.style = 'width: 100%;';
-            elem.parentNode.style['min-height'] = 'auto';
-          }
-        }
-        article.querySelectorAll('section[style*=";width:"]').forEach(e => e.removeAttribute('style'));
-      }
-      let gallery, img_width, captions, next, next_images, next_img_width;
-      let gallery_new = document.createElement('div');
-      let figure_nr = 0;
-      let gallery_figures = document.querySelectorAll('div > ul > li > figure');
-      for (let figure of gallery_figures) {
-        if (!figure_nr) {
-          gallery = figure.parentNode.parentNode.parentNode;
-          captions = Array.from(gallery.querySelectorAll('span')).filter(e => e.innerText.includes('©'));
-          next = gallery.nextSibling;
-          if (next)
-            next_images = next.querySelectorAll('img[currentsourceurl]');
-        }
-        let img = figure.querySelector('img[currentsourceurl]');
-        if (img && next_images) {
-          let img_src = img.getAttribute('currentsourceurl');
-          if (img_src) {
-            if (img_src.includes('/alternates/'))
-              img_width = img_src.split('/alternates/')[1].split('/')[0];
-          } else if (img_width && next_images[figure_nr]) {
-            img_src = next_images[figure_nr].getAttribute('currentsourceurl');
-            if (img_src && img_src.includes('/alternates/')) {
-              next_img_width = img_src.split('/alternates/')[1].split('/')[0];
-              img_src = img_src.replace(next_img_width, img_width);
-            }
-          }
-          let figure_new = makeFigure(img_src, captions && captions[figure_nr] ? captions[figure_nr].parentNode.innerText : '', {style: 'width: 100%;'});
-          figure_new.style = 'margin: 20px 0px;';
-          gallery_new.appendChild(figure_new);
-        }
-        figure_nr++;
-      }
-      if (gallery && next) {
-        next.after(gallery_new);
-        removeDOMElement(gallery, next);
-      }
-      let iframes = pageContains('div[style]', /^<iframe/);
-      if (iframes.length) {
-        let parser = new DOMParser();
-        for (let elem of iframes) {
-          let doc = parser.parseFromString('<div>' + elem.innerText.replace(/”/g, '"') + '</div>', 'text/html');
-          let elem_new = doc.querySelector('div');
-          elem.parentNode.replaceChild(elem_new, elem);
-        }
-      }
-      let social_media = article.querySelectorAll('div[style*="background-position:"] > button');
-      if (social_media.length) {
-        let json_script = document.querySelector('script#__NEXT_DATA__');
-        if (json_script) {
-          try {
-            let json = JSON.parse(json_script.text);
-            if (json) {
-              let embedcodes = getNestedKeys(json, 'props.pageProps.data.context.embedcodes');
-              if (embedcodes && embedcodes.length) {
-                let parser = new DOMParser();
-                for (let n = 0; n < social_media.length; n++) {
-                  if (embedcodes[n] && embedcodes[n].html) {
-                    let doc = parser.parseFromString('<div style="margin: 20px 0px;">' + embedcodes[n].html + '</div>', 'text/html');
-                    let embed_new = doc.querySelector('div');
-                    social_media[n].parentNode.parentNode.replaceChild(embed_new, social_media[n].parentNode);
-                  }
-                }
-              }
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
-      let errors = document.querySelectorAll('div[old-src]:not([src]):has(div#__next_error__)');
-      for (let elem of errors) {
-        let elem_new = document.createElement('iframe');
-        elem_new.src = elem.getAttribute('old-src');
-        elem_new.style = 'width: 100%; height: ' + elem.getAttribute('height') + 'px;';
-        elem.parentNode.replaceChild(elem_new, elem);
-      }
-      document.querySelectorAll('div > div[style^="min-height:"] > div[id^="player_"]').forEach(e => hideDOMElement(e.parentNode.parentNode));
-      let ads = article_sel + ' div:empty';
-      hideDOMStyle(ads, 2);
-    }
-  }
-  let url = window.location.href.split(/[#\?]/)[0];
-  let article_sel = 'article';
-  window.setTimeout(function () {
-    let paywall_sel = 'div[data-testid="paywall-position-popover"]:not(:empty)';
-    let paywall = document.querySelector(paywall_sel);
-    if (paywall) {
-      if (window.location.pathname.startsWith('/video/') && document.querySelector('div[data-testid="article-video"]'))
-        removeDOMElement(paywall);
-      else {
-        let article = document.querySelector('main');
-        if (article)
-          article.before(googleSearchToolLink(url));
-        getArchive(url, paywall_sel, '', article_sel);
-      }
-      let noscroll = document.querySelector('body[class]');
-      if (noscroll)
-        noscroll.removeAttribute('class');
-    }
-  }, 1000);
-  let ads = 'div[id^="ad_"], div[class^="scrollable-ads"], iframe#ecommerce-ad-iframe, div[data-pym-src], div.mh-ad-label';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('tijd.be')) {
