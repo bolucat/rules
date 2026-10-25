@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.4.7.0
+// @version         4.4.7.1
 // @description     Bypass Paywalls of Spanish & Portugese language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -133,10 +133,12 @@ else if (matchDomain('dn.pt')) {
 }
 
 else if (matchDomain('elconfidencial.com')) {
-  let premium = document.querySelector('div.newsType__content--closed');
-  if (premium)
+  let premium = document.querySelector('div#news-body-cc[hidden]');
+  if (premium) {
     premium.classList.remove('newsType__content--closed');
-  let ads = 'div[id^="mega_"], div[id^="roba_"]';
+    premium.removeAttribute('hidden');
+  }
+  let ads = 'div[id^="mega_"], div[id^="roba_"], div#hdr-bill';
   hideDOMStyle(ads);
 }
 
