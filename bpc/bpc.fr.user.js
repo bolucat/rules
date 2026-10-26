@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.7.1
+// @version         4.4.7.2
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -50,6 +50,7 @@
 // @connect         archive.md
 // @connect         archive.ph
 // @connect         archive.vn
+// @connect         api-graphql.lefigaro.fr
 // @connect         apps.lemonde.fr
 // @connect         mediafin.be
 // @exclude         *://*.poool.fr/*
@@ -1045,121 +1046,120 @@ else if (matchDomain('lefigaro.fr')) {
       let resource_key = '34e68a3419a876e36729503e2107dfa556e1a105892e27010130a30018ccbe60';
       let url = window.location.href.split(/[?#]/)[0];
       let url_src = 'https://api-graphql.lefigaro.fr/graphql?id=FigaroCoreMobile_resourceByUrl_persistent_' + resource_key + '&variables={%22url%22:%20%22' + url + '%22}';
-      fetch(url_src)
-      .then(response => {
-        if (response.ok) {
-          response.json().then(json => {
-            try {
-              let pars = json.data.resource.body.structured;
-              if (pars.length)
-                article.innerHTML = '';
-              let parser = new DOMParser();
-              for (let par of pars) {
-                let elem;
-                let sub_elem;
-                let par_type = par.__typename;
-                if (['Heading', 'Paragraph', 'ParagraphWithPaywall'].includes(par_type)) {
-                  if (par.paywall)
-                    par = par.paywall;
-                  if (par.text.replace(/&nbsp;/g, '')) {
-                    let doc = parser.parseFromString('<p class="fig-paragraph">' + par.text + '</p>', 'text/html');
-                    elem = doc.querySelector('p');
-                    if (par_type === 'Heading')
-                      elem.style = 'font-weight: bold; font-size: 1.85rem;';
-                  }
-                } else if (['Photo', 'VideoFigaro'].includes(par_type)) {
-                  if (par.thumbnail)
-                    par = par.thumbnail;
-                  if (par.image) {
-                    elem = document.createElement('p');
-                    elem.className = 'fig-paragraph';
-                    let img = makeFigure(par.image.url, par.caption.replace(/<[^<]*>/g, '') + ' ' + par.credit, '', {class: 'fig-media__legend'});
-                    elem.append(img, document.createElement('br'));
-                  }
-                } else if (par_type === 'Frame') {
-                  if (par.text) {
-                    elem = document.createElement('p');
-                    elem.className = 'fig-paragraph';
-                    let title = document.createElement('p');
-                    title.innerText = par.title;
-                    title.className = 'fig-paragraph';
-                    title.style = 'font-weight: bold;';
-                    let doc = parser.parseFromString('<div>' + par.text + '</div>', 'text/html');
-                    let text = doc.querySelector('div');
-                    elem.append(title, text);
-                  }
-                } else if (par_type.endsWith('Link')) {
-                  if (par.link)
-                    par = par.link;
-                  if (par.title && par.url) {
-                    elem = document.createElement('p');
-                    if (par.prefix) {
-                      let prefix = document.createElement('span');
-                      prefix.innerText = par.prefix + ' ';
-                      elem.append(prefix);
-                    }
-                    let link_elem = document.createElement('a');
-                    link_elem.href = par.url;
-                    link_elem.innerText = par.title.replace(/<[^<]*>/g, '');
-                    link_elem.target = '_blank';
-                    elem.append(link_elem);
-                  }
-                } else if (par.sourceCode) {
-                  if (par.sourceCode.includes(' data-url="https://podcasts.')) {
-                    elem = document.createElement('iframe');
-                    elem.src = par.sourceCode.split(' data-url="')[1].split('"')[0];
-                    elem.style = 'width: 100%; ' + (mobile ? 'aspect-ratio: 1 / 1' : 'height: 250px');
-                  } else {
-                    let doc = parser.parseFromString('<div>' + par.sourceCode + '</div>', 'text/html');
-                    elem = doc.querySelector('div');
-                    let tweet_link = elem.querySelector('a[href^="https://twitter.com/"], a[href^="https://x.com/"]');
-                    if (tweet_link) {
-                      tweet_link.innerText = tweet_link.href;
-                      tweet_link.target = '_blank';
-                    }
-                  }
-                } else if (par_type === 'Youtube') {
-                  if (par.id) {
-                    elem = document.createElement('iframe');
-                    elem.src = 'https://www.youtube.com/embed/' + par.id;
-                    elem.style = 'width: 100%; height: 400px;';
-                  }
-                } else if (par_type === 'List') {
-                  if (par.list) {
-                    elem = document.createElement('ul');
-                    elem.style = 'list-style: inside;';
-                    for (let item of par.list) {
-                      let li = document.createElement('li');
-                      li.style = 'margin: 10px 0px;';
-                      let doc = parser.parseFromString('<span>' + item + '</span>', 'text/html');
-                      let span = doc.querySelector('span');
-                      li.appendChild(span);
-                      elem.appendChild(li);
-                    }
-                  }
-                } else if (par_type === 'HorizontalRule') {
-                  elem = document.createElement('hr');
-                } else if (par_type === 'Quote') {
-                  elem = document.createElement('blockquote');
-                  elem.style = 'margin: 30px;';
-                  let qtext = document.createElement('p');
-                  qtext.innerText = parseHtmlEntities(par.text);
-                  qtext.style = 'font-weight: bold; font-size: 28px; margin: 15px 0px;';
-                  let qcredit = document.createElement('p');
-                  qcredit.innerText = par.credit ? parseHtmlEntities(par.credit) : '';
-                  elem.append(qtext, qcredit);
-                } else if (!['Brightcove'].includes(par_type)) {
-                  console.log(par);
+      let json_key = 'data.resource.body.structured';
+      getExtFetch(url_src, json_key, {}, main_lefigaro);
+      function main_lefigaro(url, data) {
+        try {
+          if (data) {
+            let pars = data;
+            if (pars && pars.length)
+              article.innerHTML = '';
+            let parser = new DOMParser();
+            for (let par of pars) {
+              let elem;
+              let sub_elem;
+              let par_type = par.__typename;
+              if (['Heading', 'Paragraph', 'ParagraphWithPaywall'].includes(par_type)) {
+                if (par.paywall)
+                  par = par.paywall;
+                if (par.text.replace(/&nbsp;/g, '')) {
+                  let doc = parser.parseFromString('<p class="fig-paragraph">' + par.text + '</p>', 'text/html');
+                  elem = doc.querySelector('p');
+                  if (par_type === 'Heading')
+                    elem.style = 'font-weight: bold; font-size: 1.85rem;';
                 }
-                if (elem)
-                  article.appendChild(elem);
+              } else if (['Photo', 'VideoFigaro'].includes(par_type)) {
+                if (par.thumbnail)
+                  par = par.thumbnail;
+                if (par.image) {
+                  elem = document.createElement('p');
+                  elem.className = 'fig-paragraph';
+                  let img = makeFigure(par.image.url, par.caption.replace(/<[^<]*>/g, '') + ' ' + par.credit, '', {class: 'fig-media__legend'});
+                  elem.append(img, document.createElement('br'));
+                }
+              } else if (par_type === 'Frame') {
+                if (par.text) {
+                  elem = document.createElement('p');
+                  elem.className = 'fig-paragraph';
+                  let title = document.createElement('p');
+                  title.innerText = par.title;
+                  title.className = 'fig-paragraph';
+                  title.style = 'font-weight: bold;';
+                  let doc = parser.parseFromString('<div>' + par.text + '</div>', 'text/html');
+                  let text = doc.querySelector('div');
+                  elem.append(title, text);
+                }
+              } else if (par_type.endsWith('Link')) {
+                if (par.link)
+                  par = par.link;
+                if (par.title && par.url) {
+                  elem = document.createElement('p');
+                  if (par.prefix) {
+                    let prefix = document.createElement('span');
+                    prefix.innerText = par.prefix + ' ';
+                    elem.append(prefix);
+                  }
+                  let link_elem = document.createElement('a');
+                  link_elem.href = par.url;
+                  link_elem.innerText = par.title.replace(/<[^<]*>/g, '');
+                  link_elem.target = '_blank';
+                  elem.append(link_elem);
+                }
+              } else if (par.sourceCode) {
+                if (par.sourceCode.includes(' data-url="https://podcasts.')) {
+                  elem = document.createElement('iframe');
+                  elem.src = par.sourceCode.split(' data-url="')[1].split('"')[0];
+                  elem.style = 'width: 100%; ' + (mobile ? 'aspect-ratio: 1 / 1' : 'height: 250px');
+                } else {
+                  let doc = parser.parseFromString('<div>' + par.sourceCode + '</div>', 'text/html');
+                  elem = doc.querySelector('div');
+                  let tweet_link = elem.querySelector('a[href^="https://twitter.com/"], a[href^="https://x.com/"]');
+                  if (tweet_link) {
+                    tweet_link.innerText = tweet_link.href;
+                    tweet_link.target = '_blank';
+                  }
+                }
+              } else if (par_type === 'Youtube') {
+                if (par.id) {
+                  elem = document.createElement('iframe');
+                  elem.src = 'https://www.youtube.com/embed/' + par.id;
+                  elem.style = 'width: 100%; height: 400px;';
+                }
+              } else if (par_type === 'List') {
+                if (par.list) {
+                  elem = document.createElement('ul');
+                  elem.style = 'list-style: inside;';
+                  for (let item of par.list) {
+                    let li = document.createElement('li');
+                    li.style = 'margin: 10px 0px;';
+                    let doc = parser.parseFromString('<span>' + item + '</span>', 'text/html');
+                    let span = doc.querySelector('span');
+                    li.appendChild(span);
+                    elem.appendChild(li);
+                  }
+                }
+              } else if (par_type === 'HorizontalRule') {
+                elem = document.createElement('hr');
+              } else if (par_type === 'Quote') {
+                elem = document.createElement('blockquote');
+                elem.style = 'margin: 30px;';
+                let qtext = document.createElement('p');
+                qtext.innerText = parseHtmlEntities(par.text);
+                qtext.style = 'font-weight: bold; font-size: 28px; margin: 15px 0px;';
+                let qcredit = document.createElement('p');
+                qcredit.innerText = par.credit ? parseHtmlEntities(par.credit) : '';
+                elem.append(qtext, qcredit);
+              } else if (!['Brightcove'].includes(par_type)) {
+                console.log(par);
               }
-            } catch (err) {
-              console.log(err);
+              if (elem)
+                article.appendChild(elem);
             }
-          })
+          }
+        } catch (err) {
+          console.log(err);
         }
-      }).catch(x => header_nofix(article, '', 'BPC > no fix (source file)'))
+      }
     }
   }
   let ads = 'div.fig-ad-content';

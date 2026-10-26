@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.7.4
+// @version         4.4.7.5
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3785,38 +3785,12 @@ else if (matchDomain('newslaundry.com')) {
   if (paywall) {
     let banner = document.querySelector('div.FrsvM');
     removeDOMElement(paywall.parentNode.parentNode, banner);
-    let json_script = getArticleJsonScript();
-    if (json_script) {
-      let json = JSON.parse(json_script.text);
-      if (json) {
-        let json_text = parseHtmlEntities(json.articleBody).replace(/<\/p>\./g, '</p>');
-        let article = document.querySelector('div.story-element-text');
-        if (json_text && article) {
-          let parser = new DOMParser();
-          let doc = parser.parseFromString('<div>' + json_text + '</div>', 'text/html');
-          let article_new = doc.querySelector('div');
-          article.innerHTML = '';
-          article.appendChild(article_new);
-        }
-      }
-    }
-    let video = document.querySelector('a:has(figure)');
-    if (video) {
-      let scripts = document.querySelectorAll('script[type="application/ld+json"]');
-      let video_script;
-      for (let script of scripts) {
-        if (script.innerText.includes('"embedUrl":"')) {
-          video_script = script;
-          break;
-        }
-      }
-      if (video_script) {
-        let video_new = document.createElement('iframe');
-        video_new.src = video_script.innerText.split('"embedUrl":"')[1].split('"')[0];
-        video_new.style = 'width: 100%; aspect-ratio: 16 / 9;';
-        video_new.setAttribute('frameborder', 0);
-        video.parentNode.replaceChild(video_new, video);
-      }
+    let article = document.querySelector('div.story-element-text');
+    if (article) {
+      let article_new = getArticleQuintype();
+      article_new.className = 'story-element-text';
+      if (article_new && article.parentNode)
+        article.parentNode.replaceChild(article_new, article);
     }
   }
   hideDOMStyle('div.story-card div[role="dialog"]');

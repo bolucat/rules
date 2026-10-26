@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.4.7.1
+// @version         4.4.7.2
 // @description     Bypass Paywalls of Spanish & Portugese language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -886,8 +886,10 @@ else if (matchDomain('lasegunda.com')) {
 }
 
 else if (matchDomain('latercera.com')) {
-  let ads = 'div.ads-block';
-  hideDOMStyle(ads);
+  let paywall = document.querySelector('div.article-body__teaser--locked');
+  if (paywall)
+    paywall.classList.remove('article-body__teaser--locked');
+  hideDOMStyle('div.ads-block, div#lt-paywall-slot');
 }
 
 else if (matchDomain('milenio.com')) {
