@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Annoyances
 ! Expires: 7 days
-! Last modified: Tue, 27 Oct 2026 13:54:23 +0000
-! Diff-Path: ../patches/2026.10.27.1274.patch#ublock-annoyances
+! Last modified: Wed, 28 Oct 2026 18:41:39 +0000
+! Diff-Path: ../patches/2026.10.28.1258.patch#ublock-annoyances
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/annoyances.txt ***
@@ -1417,7 +1417,7 @@ jagledam.com##+js(set, document.oncontextmenu, null)
 jagledam.com##+js(set, HTMLDivElement.prototype.oncontextmenu, null)
 vidara.*,gasobni.com,vidmoly.*,bysezejataos.com,n1mwq.org,firestream.*##+js(aeld, contextmenu)
 vidara.*,gasobni.com,vidmoly.*,bysezejataos.com,n1mwq.org,firestream.*##+js(aopr, HTMLElement.prototype.oncontextmenu)
-b98.tv,supercartoons.net,funniermoments.net,toontales.net##+js(set, HTMLDivElement.prototype.oncontextmenu, null)
+b98.tv,supercartoons.net,funniermoments.net,toontales.net,megacartoons.net##+js(set, HTMLDivElement.prototype.oncontextmenu, null)
 ! ================================================ END: Anti copy, right-click, devtools, text select etc. ==========================================================================
 ! ================================================================START: Anti-adblock ===============================================================================================
 @@||socialblade.com^$ghide
@@ -1446,7 +1446,7 @@ tides.net##+js(nostif, adsbygoogle)
 abcya.com##.modal-overlay.wrapper
 abcya.com##body:style(overflow: auto !important)
 abcya.com##.a-adhesion
-||2game.info/ad/failed_ad_view.js
+2game.info##div[id][style^="position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 2147483646;"]
 studydrive.net##.w-full.flex:has(> div[id^="billboard_btf"])
 videohelp.com###topmenu:has(> .contentlink[href="https://www.videohelp.com/donate"])
 /invoke.js^$script,3p,domain=asiaflix.net,redirect=noopjs
@@ -1497,6 +1497,8 @@ vsco.co##+js(set-local-storage-item, /^fs\./, $remove$)
 ! Enthusiast Gaming
 addictinggames.com,ev.io,fantasyfootballscout.co.uk,gameknot.com,icy-veins.com,plan.livefpl.net,pocketgamer.com,poe-vault.com,probuildstats.com,thesimsresource.com,tracklock.gg,u.gg##+js(rmnt, script, reviveScroll, excludes, self.__next)
 ftbucket.info###adblock-banner
+tftacademy.com##div[class="relative"][style="width: 160px; height: 600px;"]
+tftacademy.com##div.relative.flex.w-full.font-semibold[style^="height:"]:has(> div.relative[style^="width:"][style*="height:"])
 ! ================================================== END: Anti-adblock ==================================================================================
 ||holyclock.com^$3p
 ||shomershabes.com^$3p
@@ -4316,10 +4318,11 @@ investidor10.com.br##+js(trusted-set-local-storage-item, guest_user_banner_aon_c
 snowcrows.com##+js(rmnt, script, .onerror)
 dokkandb.com##+js(trusted-set-local-storage-item, adBlockPromptDismissedAt, $now$)
 ! flixnetwork.is/streamsource.ws bot check
-streamdumpling.cyou,flixdrop.cyou##+js(trusted-click-element, button#b, '', 750)
+streamdumpling.cyou,flixdrop.cyou##+js(trusted-click-element, button#b, '', 1750)
 flixdrop.cyou##+js(rmnt, script, location.pathname, includes, hv=)
 alensat.com##+js(aeld, contextmenu, preventDefault)
 firestream.site##+js(set, console.clear, trueFunc)
 firestream.site##+js(set, console.log, trueFunc)
 firestream.site##+js(set, console.table, trueFunc)
 firestream.site##+js(aeld, keydown, ||_0x)
+||thehindu.com/assets/deferred.min.js

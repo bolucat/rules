@@ -1,4 +1,5 @@
 <div align="center">
+   <!-- DNOS-AC099267 -->
   <a href=https://a.dove.isdumb.one><img src="https://cdn.jsdelivr.net/gh/ignaciocastro/a-dove-is-dumb@assets/header.webp"></a>
   
   <sub><sup>click to open</sup></sub>
@@ -6,7 +7,7 @@
 
 [/127](https://a.dove.isdumb.one/127 "Alternative using 127.0.0.1 instead of 0.0.0.0") [/cdn](https://a.dove.isdumb.one/cdn "Served from jsDelivr") [/fastly](https://a.dove.isdumb.one/fastly "Served from jsDelivr's Fastly mirror (对中国用户有用)") [/pihole](https://a.dove.isdumb.one/pihole "Optimized for Pi-hole users (No IP before domain)") [/winhosts](https://a.dove.isdumb.one/winhosts "Follows Microsoft Windows' default hosts file format") [/ipv6](https://a.dove.isdumb.one/ipv6 "List for IPv6 blocking") [/clash](https://a.dove.isdumb.one/clash "Formatted for Clash-based programs")
 
-_Latest update: Mon, 26 Oct 2026 12:49:51 UTC_
+_Latest update: Wed, 28 Oct 2026 16:24:27 UTC_
 
 <sub>_NEW: Join the Telegram channel for updates [here](https://a.dove.isdumb.one/telegram)._</sub>
 
@@ -119,6 +120,8 @@ They are not necessary, but always appreciated! Your contribution will help me p
 [Github Sponsors (+crypto wallets)](https://github.com/sponsors/ignaciocastro)
 
 </center>
+
+[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
 
 ##
  <div align="center"><img src="https://cdn.jsdelivr.net/gh/ignaciocastro/a-dove-is-dumb@assets/a-dove.png"></div>
