@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.7.2
+// @version         4.4.7.3
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -234,27 +234,6 @@ else if (matchDomain('bild.de')) {
 else if (matchDomain('blick.ch')) {
   let ads = 'aside[class*="slot-code"], aside[class*="_teaser_"][class*="slot-code"]';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('bnn.de')) {
-  func_post = function () {
-    let summary = document.querySelector('summary');
-    if (summary) {
-      let gradient = summary.querySelector('span[style*="background-image:linear-gradient"]');
-      if (gradient) {
-        gradient.removeAttribute('style');
-        gradient.click();
-      }
-      let sum_button = summary.parentNode.parentNode.querySelector('button');
-      removeDOMElement(sum_button);
-    }
-    if (mobile) {
-      document.querySelectorAll('picture img[loading="lazy"][style]').forEach(e => e.style = 'width: 95%;');
-    }
-    header_nofix('article section', 'section > span[style*="filter:blur"]', 'BPC > no archive-fix');
-  }
-  let url = window.location.href;
-  getArchive(url, 'section.paywall', '', 'article');
 }
 
 else if (matchDomain('boersen-zeitung.de')) {
