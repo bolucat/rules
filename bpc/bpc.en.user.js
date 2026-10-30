@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.7.7
+// @version         4.4.7.8
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -185,7 +185,6 @@ window.setTimeout(function () {
 var ca_torstar_domains = ['niagarafallsreview.ca', 'stcatharinesstandard.ca', 'thepeterboroughexaminer.com', 'therecord.com', 'thespec.com', 'thestar.com', 'wellandtribune.ca'];
 var ke_nation_media_domains = ['businessdailyafrica.com', 'nation.africa'];
 var medium_custom_domains = ['betterprogramming.pub', 'towardsdatascience.com'];
-var no_dn_media_domains = ['dn.no', 'europower.no', 'fiskeribladet.no', 'hydrogeninsight.com', 'intrafish.com', 'intrafish.no', 'kystens.no', 'rechargenews.com', 'tradewindsnews.com', 'upstreamonline.com'];
 var sg_sph_media_domains = ['businesstimes.com.sg', 'straitstimes.com'];
 var uk_dmg_media_domains = ['dailymail.com', 'thisismoney.co.uk'];
 var uk_iconic_media_domains = ['scotsman.com', 'yorkshirepost.co.uk'];
@@ -3991,12 +3990,14 @@ else if (matchDomain('project-syndicate.org')) {
           header_nofix(article_sel, '', 'BPC > no archive-fix');
       }
     }
-    if (!art_bodies.length)
-      header_nofix(article_sel, '', 'BPC > no archive-fix');
   }
   let url = window.location.href;
+  let paywall_sel = 'div.paywall--base';
   let article_sel = 'main > article';
-  getArchive(url, 'div.paywall--base', '', article_sel);
+  if (window.location.pathname.startsWith('/onpoint/'))
+    header_nofix('div.article__body', paywall_sel);
+  else
+    getArchive(url, paywall_sel, '', article_sel);
 }
 
 else if (matchDomain('puck.news')) {
@@ -5286,147 +5287,6 @@ else if (matchDomain('epaper.indiatimes.com')) {
       }
     }
   }
-}
-
-else if (matchDomain(no_dn_media_domains)) {
-  if (matchDomain('tradewindsnews.com') && window.location.pathname.startsWith('/markets/')) {
-    let paywall = document.querySelector('iframe[src]');
-    removeDOMElement(paywall);
-    let overflow = document.querySelector('body[style]');
-    if (overflow)
-      overflow.removeAttribute('style');
-    let blurred = document.querySelector('body > div[style]');
-    if (blurred)
-      blurred.removeAttribute('style');
-  } else {
-    window.setTimeout(function () {
-      function dn_main(node) {
-        let article = document.querySelector('div#dn-content');
-        let json_script = document.querySelector('script#__NUXT_DATA__');
-        if (article && json_script) {
-          removeDOMElement(node.parentNode);
-          try {
-            let pars = JSON.parse(json_script.text);
-            let article_id_index = (pars.indexOf('global-article') + 1) || (pars.indexOf('dn-article') + 1);
-            if (article_id_index) {
-              let article_id = pars[article_id_index];
-              if (article_id && !window.location.pathname.endsWith(article_id)) {
-                refreshCurrentTab();
-                return;
-              }
-            } else {
-              refreshCurrentTab();
-              return;
-            }
-            article.innerHTML = '';
-            article.classList.remove('shadow');
-            let img_first = true;
-            let parser = new DOMParser();
-            for (let par of pars) {
-              let elem;
-              if (par && par.type) {
-                let type = pars[par.type];
-                if (['text', 'subhead'].includes(type)) {
-                  if (par.html || par.value) {
-                    let index = par.html || par.value;
-                    let json_text = pars[index];
-                    let content_new = parser.parseFromString('<p class="dn-text">' + json_text + '</p>', 'text/html');
-                    elem = content_new.querySelector('p');
-                    if (par.value)
-                      elem.style = 'font-weight: bold;';
-                  }
-                } else if (type === 'picture') {
-                  if (img_first)
-                    img_first = false;
-                  else {
-                    let caption_text = pars[par.caption];
-                    if (par.credit)
-                      caption_text += ' (' + pars[par.credit] + ')';
-                    elem = makeFigure(pars[par.src], caption_text);
-                    elem.className = 'dn-image';
-                  }
-                } else if (type === 'embed') {
-                  elem = document.createElement('div');
-                  if (par.value) {
-                    let content_new = parser.parseFromString('<div>' + pars[par.value] + '</div>', 'text/html');
-                    let video = content_new.querySelector('div');
-                    elem.appendChild(video);
-                  }
-                } else if (type === 'factbox') {
-                  elem = document.createElement('div');
-                  elem.className = 'dn-factbox';
-                  addStyle('div.dn-factbox p {margin: 20px 0px;}');
-                  if (par.title) {
-                    let title = document.createElement('p');
-                    title.innerText = pars[par.title];
-                    title.className = 'dn-text';
-                    title.style = 'font-weight: bold;';
-                    elem.appendChild(title);
-                  }
-                  if (par.html) {
-                    let content_new = parser.parseFromString('<div>' + pars[par.html] + '</div>', 'text/html');
-                    let box = content_new.querySelector('div');
-                    box.querySelectorAll('p').forEach(e => e.className = 'dn-text');
-                    elem.appendChild(box);
-                  }
-                } else if (type === 'summary') {
-                  if (par.bullets) {
-                    elem = document.createElement('ul');
-                    for (let item of pars[par.bullets]) {
-                      let li = document.createElement('li');
-                      li.innerText = pars[item];
-                      elem.appendChild(li);
-                    }
-                  }
-                } else if (type === 'news' && par.title && par.url) {
-                  elem = document.createElement('p');
-                  let sub_elem = document.createElement('a');
-                  sub_elem.href = pars[par.url];
-                  sub_elem.innerText = 'Related: ' + pars[par.title];
-                  sub_elem.style = 'font-weight: bold;';
-                  elem.appendChild(sub_elem);
-                } else if (!['ad', 'ad_group', 'adobetarget', 'author', 'break', 'Emne', 'job', 'Location', 'ma_frame', 'news', 'Organisasjon', 'Organisation', 'Organization', 'promobox', 'Person', 'Personer', 'quote', 'readpeak', 'Region', 'Regions', 'related', 'Sector', 'Sectors', 'Selskap', 'Shiptype', 'Sted', 'Steder', 'Topic', 'ukens_stilling', 'video'].includes(type)) {
-                  for (let item in par) {
-                    console.log(item);
-                    console.log(pars[par[item]]);
-                  }
-                }
-                if (elem)
-                  article.appendChild(elem);
-              }
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
-      let paywall_sel = 'div#sub-paywall-container';
-      let paywall = document.querySelector(paywall_sel);
-      if (paywall) {
-        if (matchDomain('dn.no') && window.location.pathname.match(/^\/(d2|magasinet|smak)\//)) {
-          removeDOMElement(paywall);
-          let article = document.querySelector('article');
-          if (article) {
-            let url = window.location.href;
-            article.firstChild.before(googleSearchToolLink(url));
-            if (mobile) {
-              let body = document.querySelector('body');
-              if (body)
-                body.style.width = '80%';
-            }
-          }
-        } else {
-          if (window.location.pathname.match(/^\/(e-avis|editions)/)) {
-            removeDOMElement(paywall);
-            header_nofix('section.wrapper');
-          } else
-            dn_main(paywall);
-        }
-      }
-    }, 1000);
-  }
-  let ads = 'div.top-ad-placeholder, div.dn-dfp-container';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain(usa_conde_nast_domains)) {

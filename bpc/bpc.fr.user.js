@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.7.2
+// @version         4.4.7.3
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1175,14 +1175,15 @@ else if (matchDomain('legrandcontinent.eu')) {
 }
 
 else if (matchDomain(['lejdd.fr', 'parismatch.com', 'public.fr'])) {
-  let banners = '.forbidden';
-  let ads = 'div[class^="lmn-"], div.premium-hidden, div.p-aside--placeholder, section.outbrain-container';
-  hideDOMStyle(banners + ', ' + ads);
+  let locked = document.querySelector('div[data-poool-prelocked]');
+  if (locked)
+    locked.removeAttribute('class');
   let bottom_hide = document.querySelector('.cnt[data-poool-mode="hide"]');
   if (bottom_hide) {
     bottom_hide.removeAttribute('data-poool-mode');
     bottom_hide.removeAttribute('style');
   }
+  hideDOMStyle('div[class^="lmn-"], div.premium-hidden, div.p-aside--placeholder, div.ad-placeholder, section.outbrain-container, section.taboola, div.md\\:sticky, div[data-inread-slot], div#poool-widget, div#dead-poool, .forbidden')
 }
 
 else if (matchDomain('lemagit.fr')) {
