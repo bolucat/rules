@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.7.8
+// @version         4.4.7.9
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1956,6 +1956,7 @@ else if (matchDomain('bloomberg.com')) {
       let parser = new DOMParser();
       let doc = parser.parseFromString('<div>' + item.iframeData.html + '</div>', 'text/html');
       let embed_elem = doc.querySelector('div');
+      embed_elem.querySelectorAll('a[href]').forEach(e => e.target = '_blank');
       elem.appendChild(embed_elem);
     }
   }
@@ -2233,7 +2234,7 @@ else if (matchDomain('bloomberg.com')) {
       }
     }
   } else if (window.location.pathname.includes('/live-blog/')) {
-    let paywall = document.querySelector('div[class*="Liveblog_regwallWaiting_"]');
+    let paywall = document.querySelector('div[class*="Liveblog_blockedContentWrapper_"]');
     if (paywall) {
       paywall.removeAttribute('class');
       let json_next_script = document.querySelector('script#__NEXT_DATA__');
@@ -2242,7 +2243,9 @@ else if (matchDomain('bloomberg.com')) {
           let json = JSON.parse(json_next_script.text);
           let liveblog = json.props.pageProps.liveblog;
           if (liveblog) {
-            paywall.innerHTML = '';
+            let key_points = document.querySelector('div[class*="LiveblogKeypoints"]');
+            if (key_points)
+              key_points.removeAttribute('class');
             let posts = liveblog.posts;
             for (let post of posts) {
               let elem = document.createElement('div');

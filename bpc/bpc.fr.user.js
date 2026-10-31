@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.7.3
+// @version         4.4.7.4
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1174,16 +1174,8 @@ else if (matchDomain('legrandcontinent.eu')) {
   removeDOMElement(...banners);
 }
 
-else if (matchDomain(['lejdd.fr', 'parismatch.com', 'public.fr'])) {
-  let locked = document.querySelector('div[data-poool-prelocked]');
-  if (locked)
-    locked.removeAttribute('class');
-  let bottom_hide = document.querySelector('.cnt[data-poool-mode="hide"]');
-  if (bottom_hide) {
-    bottom_hide.removeAttribute('data-poool-mode');
-    bottom_hide.removeAttribute('style');
-  }
-  hideDOMStyle('div[class^="lmn-"], div.premium-hidden, div.p-aside--placeholder, div.ad-placeholder, section.outbrain-container, section.taboola, div.md\\:sticky, div[data-inread-slot], div#poool-widget, div#dead-poool, .forbidden')
+else if (matchDomain('lejdd.fr')) {
+  hideDOMStyle('div[class^="lmn-"], div#poool-widget');
 }
 
 else if (matchDomain('lemagit.fr')) {
@@ -1728,6 +1720,13 @@ else if (matchDomain('ouest-france.fr')) {
   hideDOMStyle(ads);
   let banner = document.querySelector('div#pub_megabanner');
   removeDOMElement(banner);
+}
+
+else if (matchDomain('parismatch.com')) {
+  let locked = document.querySelector('div[data-poool-prelocked]');
+  if (locked)
+    locked.removeAttribute('class');
+  hideDOMStyle('div.md\\:sticky, div[data-inread-slot], div#dead-poool');
 }
 
 else if (matchDomain('philomag.com')) {
