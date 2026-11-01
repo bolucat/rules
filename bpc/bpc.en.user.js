@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.7.9
+// @version         4.4.8.0
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -680,7 +680,7 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['autosport.com', 'dailymail.com', 'decanter.com', 'economist.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'iai.tv', 'irishexaminer.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'the-tls.com', 'thelawyer.com', 'thetimes.com', 'unherd.com', 'worldeconomics.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['autosport.com', 'dailymail.com', 'decanter.com', 'economist.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'iai.tv', 'irishexaminer.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'the-tls.com', 'thelawyer.com', 'unherd.com', 'worldeconomics.com'])) {//united kingdom/ireland
 
 if (matchDomain('autocar.co.uk')) {
   let paywall = document.querySelector('div.ms-block, div.register-block');
@@ -1236,98 +1236,6 @@ else if (matchDomain('thestage.co.uk')) {
 else if (matchDomain(['thesun.co.uk', 'thesun.ie', 'thescottishsun.co.uk'])) {
   let ads = 'div.billboard, div.advert-wrapper';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('thetimes.com')) {
-  if (!matchDomain('epaper.thetimes.com')) {
-    func_post = function () {
-      let article = document.querySelector(article_sel);
-      if (article) {
-        if (mobile) {
-          let figure_div = article.querySelector('figure > div[style] > div[style^="min-height:"]');
-          if (figure_div) {
-            figure_div.removeAttribute('style');
-            figure_div.parentNode.removeAttribute('style');
-          }
-          let inline_images = article.querySelectorAll('img[style]');
-          for (let elem of inline_images) {
-            elem.style = 'display: block; margin-left: auto; margin-right: auto; width: 90%;';
-            let parent_node = elem.parentNode;
-            if (parent_node.tagName === 'PICTURE')
-              parent_node = parent_node.parentNode;
-            parent_node.removeAttribute('style');
-            elem.removeAttribute('sizes');
-          }
-          article.querySelectorAll('div[style*="margin-left:"][style*="text-align:"], div[style*="grid-template-columns:"], figcaption, figure > span[style]').forEach(e => e.style = 'margin: 0px 20px');
-          article.querySelectorAll('div[style*=";width:"]').forEach(e => e.style.width = '90%');
-          let author = document.querySelector(article_sel + ' div[style^="min-height:"]:has(a[href^="https://www.thetimes.com/profile/"])');
-          if (author)
-            author.style = 'width: 90%; margin: 20px;';
-          let header = article.querySelector('div[style] > h1');
-          if (header)
-            header.parentNode.removeAttribute('style');
-        }
-        let charts = document.querySelectorAll('times-datawrapper[embed-code]');
-        for (let elem of charts) {
-          let div = document.createElement('div');
-          if (!mobile)
-            div.style = 'margin: 0px 20%;';
-          let iframe = document.createElement('iframe');
-          iframe.src = decodeURIComponent(elem.getAttribute('embed-code'));
-          iframe.style = 'width: 80%; height: 400px; border: none;';
-          div.appendChild(iframe);
-          elem.parentNode.replaceChild(div, elem);
-        }
-        let embed_iframes = article.querySelectorAll('div > times-embed-iframe-max[src]');
-        for (let elem of embed_iframes) {
-          let iframe_new;
-          let iframe_src = elem.getAttribute('src');
-          if (iframe_src.startsWith('https://youtube.com/')) {
-            iframe_new = document.createElement('iframe');
-            iframe_new.src = iframe_src;
-            iframe_new.style = 'width: 100%; aspect-ratio: 16 / 9; border: none;';
-          } else if (iframe_src.startsWith('https://www.tiktok.com/')) {
-            iframe_new = document.createElement('iframe');
-            iframe_new.src = iframe_src;
-            iframe_new.style = 'width: 400px; aspect-ratio: 1 / 2; border: none;';
-          } else if (iframe_src.startsWith('https://embed.acast.com/')) {
-            iframe_new = document.createElement('iframe');
-            iframe_new.src = iframe_src;
-            iframe_new.style = 'width: 100%; border: none;';
-          } else {
-            iframe_new = document.createElement('a');
-            iframe_new.href = iframe_new.innerText = iframe_src;
-            iframe_new.target = '_blank';
-          }
-          elem.parentNode.removeAttribute('style');
-          elem.parentNode.replaceChild(iframe_new, elem);
-        }
-        if (read_next) {
-          let art_bottom = article.querySelector('nav ~div');
-          if (art_bottom)
-            art_bottom.after(read_next);
-        }
-      }
-    }
-    let read_next = document.querySelector('div.article-previous-next--sticky');
-    let paywall_sel = 'div#paywall-portal-article-footer, div#paywall-takeover';
-    let article_sel = 'article[id]';
-    let url = window.location.href;
-    if (window.location.pathname.includes('/article/') && !window.location.search.startsWith('?shareToken=')) {
-      let paywall = document.querySelector(paywall_sel);
-      if (paywall) {
-        let article = document.querySelector(article_sel);
-        if (article)
-          article.before(googleSearchToolLink(url));
-        getArchive(url, paywall_sel, '', article_sel);
-      }
-      let scroll_style = 'html, body {overflow: auto !important; height: auto !important;}';
-      addStyle(scroll_style);
-    }
-    let banners = 'div#paywall-portal-page-footer';
-    let ads = 'div.channel-header-ad, div[id^="advert-"], div[class*="InlineAdWrapper"], div[id^="ad-article-inline"], div:has(> div > div#ad-header)';
-    hideDOMStyle(banners + ', ' + ads);
-  }
 }
 
 else if (matchDomain('unherd.com')) {
