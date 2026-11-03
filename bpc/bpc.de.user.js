@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.7.3
+// @version         4.4.7.4
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -602,7 +602,7 @@ else if (matchDomain(['spiegel.de', 'manager-magazin.de', '11freunde.de'])) {
           header_img.style.width = 'unset';
         article.querySelectorAll('section, aside').forEach(e => e.style = 'margin: auto; width: 80%;');
       }
-      header_nofix('article', '*:not(.hidden) > svg[id*="-plus-paywall-"]', 'BPC > no archive-fix');
+      header_nofix('article', '*:not(.hidden) > svg[id*="-plus-paywall-"], svg > use[href="#elf-elfclub-paywall"]', 'BPC > no archive-fix');
       if (matchDomain('spiegel.de') && document.querySelector('head > link[type="application/rss+xml"][href="https://www.spiegel.de/thema/liveblogs/index.rss"]'))
         header_nofix('article', 'div[x-embed-bridge-handler] > div[x-show="!isInitialized"]', 'BPC > for liveblogs use archive-link');
     }

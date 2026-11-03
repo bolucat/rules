@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.7.4
+// @version         4.4.7.5
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1056,14 +1056,15 @@ else if (matchDomain('lefigaro.fr')) {
               article.innerHTML = '';
             let parser = new DOMParser();
             for (let par of pars) {
-              let elem;
-              let sub_elem;
+              let elem = document.createElement('p');
+              let par_class = 'fig-paragraph';
+              elem.className = par_class;
               let par_type = par.__typename;
               if (['Heading', 'Paragraph', 'ParagraphWithPaywall'].includes(par_type)) {
                 if (par.paywall)
                   par = par.paywall;
                 if (par.text.replace(/&nbsp;/g, '')) {
-                  let doc = parser.parseFromString('<p class="fig-paragraph">' + par.text + '</p>', 'text/html');
+                  let doc = parser.parseFromString('<p class="' + par_class + '">' + par.text + '</p>', 'text/html');
                   elem = doc.querySelector('p');
                   if (par_type === 'Heading')
                     elem.style = 'font-weight: bold; font-size: 1.85rem;';
@@ -1072,28 +1073,23 @@ else if (matchDomain('lefigaro.fr')) {
                 if (par.thumbnail)
                   par = par.thumbnail;
                 if (par.image) {
-                  elem = document.createElement('p');
-                  elem.className = 'fig-paragraph';
                   let img = makeFigure(par.image.url, par.caption.replace(/<[^<]*>/g, '') + ' ' + par.credit, '', {class: 'fig-media__legend'});
                   elem.append(img, document.createElement('br'));
                 }
               } else if (par_type === 'Frame') {
                 if (par.text) {
-                  elem = document.createElement('p');
-                  elem.className = 'fig-paragraph';
                   let title = document.createElement('p');
                   title.innerText = par.title;
-                  title.className = 'fig-paragraph';
+                  title.className = par_class;
                   title.style = 'font-weight: bold;';
                   let doc = parser.parseFromString('<div>' + par.text + '</div>', 'text/html');
-                  let text = doc.querySelector('div');
-                  elem.append(title, text);
+                  let div_frame = doc.querySelector('div');
+                  elem.append(title, div_frame);
                 }
               } else if (par_type.endsWith('Link')) {
                 if (par.link)
                   par = par.link;
                 if (par.title && par.url) {
-                  elem = document.createElement('p');
                   if (par.prefix) {
                     let prefix = document.createElement('span');
                     prefix.innerText = par.prefix + ' ';
@@ -1142,17 +1138,18 @@ else if (matchDomain('lefigaro.fr')) {
                 elem = document.createElement('hr');
               } else if (par_type === 'Quote') {
                 elem = document.createElement('blockquote');
-                elem.style = 'margin: 30px;';
                 let qtext = document.createElement('p');
+                qtext.className = par_class;
                 qtext.innerText = parseHtmlEntities(par.text);
-                qtext.style = 'font-weight: bold; font-size: 28px; margin: 15px 0px;';
+                qtext.style = 'font-weight: bold; font-size: 28px;';
                 let qcredit = document.createElement('p');
+                qcredit.className = par_class;
                 qcredit.innerText = par.credit ? parseHtmlEntities(par.credit) : '';
                 elem.append(qtext, qcredit);
               } else if (!['Brightcove'].includes(par_type)) {
                 console.log(par);
               }
-              if (elem)
+              if (elem.hasChildNodes())
                 article.appendChild(elem);
             }
           }
