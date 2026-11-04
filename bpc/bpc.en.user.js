@@ -4488,6 +4488,11 @@ else if (matchDomain('swarajyamag.com')) {
   }
 }
 
+else if (matchDomain('tampabay.com')) {
+  let ads = 'div.html-advertisement, div.vf-ad-comments';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('techinasia.com')) {
   let paywall_sel = 'div.paywall-content';
   let paywall = document.querySelector(paywall_sel + ':not(.done)');
