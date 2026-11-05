@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.8.0
+// @version         4.4.8.1
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3000,17 +3000,6 @@ else if (matchDomain('hbr.org')) {
           download.setAttribute('download', '');
         }
       }
-    }
-  } else {
-    function hbr_main() {
-      window.top.postMessage({type: 'article-paywall:full-content'}, '*');
-    }
-    let popup = document.querySelector('.persistent-banner');
-    removeDOMElement(popup);
-    let paywall = document.querySelector('div[id^="paywall"]');
-    if (paywall) {
-      removeDOMElement(paywall);
-      insert_script(hbr_main);
     }
   }
 }

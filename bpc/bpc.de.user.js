@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.7.4
+// @version         4.4.8.0
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -1102,6 +1102,13 @@ else if (matchDomain(de_funke_medien_domains)) {
             if (source)
               elem.src = source.getAttribute('old-srcset').split(' ')[0];
           }
+        }
+        let charts = article.querySelectorAll('aside > div[id^="datawrapper-vis-"]');
+        for (let elem of charts) {
+          let iframe = document.createElement('iframe');
+          iframe.src = 'https://datawrapper.dwcdn.net/' + elem.id.replace('datawrapper-vis-', '');
+          iframe.style = 'width: 100%; height: 400px;';
+          elem.parentNode.parentNode.replaceChild(iframe, elem.parentNode);
         }
         let bt_player = article.querySelector('div[style] > div#bt-player');
         if (bt_player)
