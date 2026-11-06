@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.8.1
+// @version         4.4.8.2
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -390,42 +390,40 @@ if (matchDomain('afr.com')) {
 }
 
 else if (matchDomain('businessdesk.co.nz')) {
-  if (mobile) {
-    func_post = function () {
-      let article = document.querySelector(article_sel);
-      if (article) {
-        article.style = 'width: 90%; margin: 20px;';
-        article.querySelectorAll('img[loading="lazy"]').forEach(e => e.style = 'width: 100%;');
+  if (!window.location.search.startsWith('?rel=plus')) {
+    window.setTimeout(function () {
+      let paywall = document.querySelector('div#zephr-html-paywall');
+      if (paywall) {
+        removeDOMElement(paywall);
+        window.location.href = window.location.pathname + '?rel=plus';
       }
-    }
-    let url = window.location.href;
-    let article_sel = 'main > section > div > div > div';
-    getArchive(url, 'div.signup-box-container', '', article_sel);
+    }, 2000);
   } else {
-    let paywall = document.querySelector('div.paywall');
-    if (paywall) {
-      paywall.classList.remove('paywall');
-      let signup_box = document.querySelector('div.signup-box-container');
-      removeDOMElement(signup_box);
-      let url = window.location.href.split(/[#\?]/)[0];
-      fetch(url)
-      .then(response => {
-        if (response.ok) {
-          response.text().then(html => {
-            let match = html.match(/:query="'([^"]+)'"/);
-            if (match) {
-              let parser = new DOMParser();
-              let src_text = breakText(parseHtmlEntities(match[1])).replace(/\n\n/g, '<br><br>').replace(/\.([^\s\d]|&)/g, ". $1");
-              let doc = parser.parseFromString('<div>' + src_text + '</div>', 'text/html');
-              let content_new = doc.querySelector('div');
-              paywall.innerHTML = '';
-              paywall.appendChild(content_new);
-            }
-          })
+    let premium = document.querySelector('section.premium-content');
+    if (premium) {
+      premium.classList.remove('premium-content');
+      let hidden_pars = premium.querySelectorAll('[class][style]');
+      for (let par of hidden_pars) {
+        par.removeAttribute('class');
+        par.removeAttribute('style');
+      }
+      let span_cut = premium.querySelector('span.ellipsis');
+      if (span_cut)
+        span_cut.removeAttribute('class');
+      let hero_fig = document.querySelector('div.article-media__hero-wrapper.no-video > figure');
+      if (hero_fig) {
+        hero_fig.parentNode.removeAttribute('class');
+        let img_src_dom = document.querySelector('head > meta[property="og:image"][content]');
+        if (img_src_dom) {
+          let img_new = document.createElement('img');
+          img_new.src = img_src_dom.content;
+          hero_fig.firstChild.before(img_new);
         }
-      })
+      }
+      hideDOMStyle('div[id^="share-bar-"], span.react-loading-skeleton, button[data-test-ui$="-button"]', 2);
     }
   }
+  hideDOMStyle('div[data-test-ui="ad"]');
 }
 
 else if (matchDomain(['crikey.com.au', 'smartcompany.com.au', 'themandarin.com.au'])) {

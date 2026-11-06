@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: ErV0fy29hOH72VHc68o3gw
-! Diff-Path: ../patches/7/7-s-1793898793-3600.patch
+! Checksum: zQmczgDWcoQsFCYCGpnw7g
+! Diff-Path: ../patches/7/7-s-1793985173-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.78.21
-! TimeUpdated: 2026-11-05T17:09:17+00:00
+! Version: 2.0.78.27
+! TimeUpdated: 2026-11-06T17:08:32+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -27,6 +27,7 @@
 ! not for DNS
 ||ias.rakuten.co.jp^$3p,domain=~rakuten-co.jp|~rakuten.ne.jp
 !
+||re-n-ai.com^$3p
 ||kdrvs.online^$all
 ||hfgaw.online^$all
 ||jpvire.com^$all
@@ -1985,6 +1986,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+eigachannel.jp###main_content > div[style^="width:100%; min-height:3"]:has(> div[id^="ats_"])
+f1-gate.com##.ad-flex-group
 soraraw.com##section[class^="home-v2_adsSection"]
 doumori.com,mario2-3ds.net,mario-wiiu.net,mario3d-wiiu.net##.splink
 famitsu.com##div[class^="ArticleDetail-"][class$="column"]:has(> div > div > h2 > a[href="/ranking/amazon"])
@@ -12063,7 +12066,7 @@ tokai-tv.com##.contents_right > div.box > div#ad_rectangle_1:upward(1)
 wired.jp##div[class*="ContentFooterWrapper-"]:has(> div > div.wide-adrail)
 simtaro.com##.entry-content > div[style^="box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);"] > ins.adsbygoogle:upward(1)
 gamedbs.jp##div > div[style="text-align:center;"] > ins.adsbygoogle:upward(1)
-smhn.info##aside:has(> ins.adsbygoogle)
+tsurigu-np.jp,smhn.info##aside:has(> ins.adsbygoogle)
 onepiece-log.com##.entry_body > center:contains([スポンサーリンク])
 azby.fmworld.net###recommended > div > div.floatL > a > img[title^="[PR]"]:upward(3)
 viet-jo.com###irelated > div > ul > div.bds > div.bd_left1[name]:contains(PR):upward(4)
