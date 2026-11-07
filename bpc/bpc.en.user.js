@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.8.2
+// @version         4.4.8.3
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2050,7 +2050,7 @@ else if (matchDomain('bloomberg.com')) {
           let par_class = article_pars[0].getAttribute('class');
           article = article_pars[0].parentNode;
           article.style = '-webkit-mask-image: none !important; mask-image: none !important;';
-          if (json.props.pageProps.story.readingUrl) {
+          if (json.props.pageProps.story.readingUrl && !document.querySelector('audio[controls]')) {
             let audio_tts = document.createElement('audio');
             audio_tts.src = json.props.pageProps.story.readingUrl;
             audio_tts.setAttribute('controls', '');
@@ -2357,6 +2357,12 @@ else if (matchDomain('business-standard.com')) {
 }
 
 else if (matchDomain('businessinsider.com')) {
+  let lazy_images = document.querySelectorAll('section.post-story-body-content div.lazy-holder[style] > img[class]');
+  for (let elem of lazy_images) {
+    elem.removeAttribute('class');
+    elem.parentNode.removeAttribute('class');
+    elem.parentNode.removeAttribute('style');
+  }
   let ads = 'div.masthead-ad, div.l-ad, div.in-post-sticky, aside.has-video-ad, div.ad-callout-wrapper';
   hideDOMStyle(ads);
 }
@@ -3759,8 +3765,8 @@ else if (matchDomain('nypost.com')) {
 else if (matchDomain('nysun.com')) {
   let paywall = document.querySelector('p > a[href^="/login?"]');
   if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('div.article-wrapper > div:last-child');
+    removeDOMElement(paywall.parentNode.parentNode);
+    let article = document.querySelector('div.article-wrapper div[class*="__body"]');
     if (article) {
       let json_script = getArticleJsonScript();
       if (json_script) {
@@ -3769,13 +3775,15 @@ else if (matchDomain('nysun.com')) {
           let json_text = json.articleBody;
           if (json_text) {
             article.innerHTML = '';
-            let article_new = document.createElement('div');
-            article_new.innerText = breakText(json_text);
+            article.className = article.className.split(' ')[0];
+            let article_new = document.createElement('p');
+            article_new.innerText = parseHtmlEntities(breakText(json_text.replace(/\.\u00a0/g, '.\r\n\r\n')));
             article.appendChild(article_new);
           }
         }
       }
     }
+    hideDOMStyle('div.to-transparent');
   }
 }
 
