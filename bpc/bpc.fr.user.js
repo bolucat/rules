@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.8.0
+// @version         4.4.8.1
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -437,11 +437,13 @@ else if (matchDomain('challenges.fr')) {
   let paywall = document.querySelector('div.views-article__premium > img[alt="premium-icon"]');
   if (paywall) {
     paywall.removeAttribute('alt');
+    if (!window.location.search.startsWith('?rel=plus'))
+      window.location.href = window.location.pathname + '?rel=plus';
     let article = document.querySelector('div.amorce');
     if (article) {
       let pars = article.querySelectorAll('div.text');
       if (!pars.length)
-        pars = article.querySelectorAll('p[class], h2');
+        pars = article.querySelectorAll('p[class], :not(div, p, a, strong, em)');
       if (pars.length && pars.length < 4) {
         let json_script = document.querySelector('script#__NUXT_DATA__');
         if (json_script) {
@@ -462,6 +464,7 @@ else if (matchDomain('challenges.fr')) {
             }
             let pars_index = json.indexOf('article') + 1;
             if (pars_index) {
+              let elem_first = true;
               for (let i = pars_index; i < json.length; i++) {
                 let par = json[i];
                 if (par && typeof par === 'object' && !Array.isArray(par)) {
@@ -491,14 +494,14 @@ else if (matchDomain('challenges.fr')) {
                                 if (props_image.src) {
                                   let src = json[props_image.src].split('?')[0];
                                   let caption;
-                                  if (props_image.legend)
+                                  if (props_image.legend && json[props_image.legend])
                                     caption = json[props_image.legend] + (props_image.credits ? ' - ' + json[props_image.credits] : '');
                                   item = makeFigure(src, caption);
                                 }
                               } else if (props.link && props.htmlString) {
                                 item = document.createElement('a');
                                 item.href = json[props.link];
-                                item.innerText = 'Lire aussi: ' + json[props.htmlString];
+                                item.innerText = 'Lire aussi: ' + json[props.htmlString].replace(/<\/?\w+>/g, '');
                               } else if (props.value) {
                                 let parser = new DOMParser();
                                 let doc = parser.parseFromString('<div>' + json[props.value] + '</div>', 'text/html');
@@ -519,21 +522,26 @@ else if (matchDomain('challenges.fr')) {
                         if (par.props) {
                           let par_props = json[par.props];
                           for (let prop in par_props) {
-                            elem_new.setAttribute(prop, json[par_props[prop]]);
+                            let prop_value = json[par_props[prop]];
+                            elem_new.setAttribute(prop, prop_value);
+                            if (prop === 'href' && !par_props.target && !prop_value.startsWith('https://www.challenges.fr'))
+                              elem_new.target = '_blank';
                           }
                         }
                         addChildren(elem_new, json[par.children]);
                         elem.appendChild(elem_new);
                       }
                     }
-                    if (par_type === 'element') {
+                    if (par_type === 'element' && !par.props) {
                       elem = document.createElement('div');
                       addElement(elem, par);
                       window.setTimeout(function () {
-                        article.innerHTML = '';
+                        if (elem_first) {
+                          article.innerHTML = '';
+                          elem_first = false;
+                        }
                         article.appendChild(elem);
                       }, 1000);
-                      break;
                     }
                   }
                 }

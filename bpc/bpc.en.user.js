@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.8.4
+// @version         4.4.8.5
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3873,16 +3873,9 @@ else if (matchDomain('puck.news')) {
       header_nofix(article_sel, '', 'BPC > no archive-fix');
   }
   let url = window.location.href;
+  let paywall_sel = 'div.puck-article-page__paywall-slot';
   let article_sel = 'article';
-  getArchive(url, 'div[data-puck-paywall]', '', article_sel);
-  let modals = 'div#paywall-modal, div.paywall-gradient';
-  hideDOMStyle(modals);
-  let pw_banner = document.querySelector('div[data-dd="paywall"]:not(.hidden) > div > div.max-w-paywall-body');
-  if (pw_banner)
-    removeDOMElement(pw_banner.parentNode);
-  let overlay = document.querySelector('body.paywall-active');
-  if (overlay)
-    overlay.classList.remove('paywall-active');
+  getArchive(url, paywall_sel, '', article_sel);
 }
 
 else if (matchDomain('reuters.com')) {
