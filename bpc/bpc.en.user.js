@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.8.6
+// @version         4.4.8.7
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -525,7 +525,7 @@ else {
         let og_url_dom = document.querySelector('head > meta[property="og:url"][content]');
         if (og_url_dom) {
           let og_url = decodeURIComponent(og_url_dom.content);
-          if (!matchDomain(['cairnspost.com.au', 'geelongadvertiser.com.au', 'goldcoastbulletin.com.au', 'ntnews.com.au', 'thechronicle.com.au', 'themercury.com.au', 'townsvillebulletin.com.au'])) {
+          if (matchDomain('theaustralian.com.au')) {
             let og_url_obj = new URL(og_url);
             let url_new = og_url_obj.origin + '/' + og_url_obj.pathname.replace(/^\//, '').replace(/\//g, '%2F');
             window.setTimeout(function () {

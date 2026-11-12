@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: iF3BbFWIlnoGgAe1p08gbA
-! Diff-Path: ../patches/7/7-s-1794402771-3600.patch
+! Checksum: EzRzjGU8Zm5cMxTaebpopw
+! Diff-Path: ../patches/7/7-s-1794492787-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.78.36
-! TimeUpdated: 2026-11-11T13:08:41+00:00
+! Version: 2.0.78.39
+! TimeUpdated: 2026-11-12T14:09:05+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1637,6 +1637,7 @@ hostlove.com###index_nav > h1:style(padding-top: 30px!important;)
 ! Malware/Phishing
 /api/download.php?action=init|$xhr
 /download/cloud/c9_googlePlayCashBack_*.apk$document
+||amazonaws.com/SMBC-Card.apk$document
 ||amazonaws.com/Tiktok18.apk?$document
 ||amazonaws.com/*/e-Tax%E$document
 ||amazonaws.com/app.apk?id=$document
@@ -2043,6 +2044,7 @@ dengekionline.com##div[class^="InLead-"]
 ||socialxup.com/go/$urltransform=/go\/.*//
 ! aglint-enable no-invalid-modifiers
 socialxup.com##+js(addEventListener-defuser, click, /\[native code\]|^\s*e\s*=>\s*.+\(\s*e\s*\)\s*$/)
+socialxup.com##a[target][href^="https://socialxup.com/"]
 socialxup.com##a[target][href^="/"]
 socialxup.com##span:matches-css(cursor:pointer):empty
 socialxup.com##:not(a):matches-css(cursor:pointer):upward(1):xpath(div[not(ancestor::a)])
@@ -2055,7 +2057,7 @@ news.jp##.postFeed__item--ad
 news.jp##div[style^="min-width:"]:has(> .fundit-ad-placeholder)
 nijiurachan.net##aside[aria-label="DMM広告"]
 vid-snap-player.com##+js(no-window-open-if)
-syosetu.help###ipob
+syosetu.town###ipob
 umapch.blog.jp##.t_h ~ a[href^="https://link.amazon/"]
 umapch.blog.jp##.t_h ~ a[href^="https://link.amazon/"] + br
 umapch.blog.jp##.t_h ~ b > span[style="color: rgb(255, 0, 0);"]
@@ -2065,6 +2067,8 @@ polandball.jp##div[class^="myadd"]
 trogiupnhanh.com##.w-full[style="width: 100%; max-width: 728px; min-height: 90px; overflow: visible; box-sizing: border-box;"]
 trogiupnhanh.com##.max-w-full:has(> div[data-adsense-type])
 ||ftbucket.info/*/dmmrec_$script,stylesheet
+ftbucket.info##a[href^="https://al.dmm.co"]
+ftbucket.info###x-rec-rank
 ftbucket.info###dmm-ad-widget
 ftbucket.info###dmmrec-list-root
 ftbucket.info##a[href="https://fanza.ftbucket.info/"]
@@ -5350,7 +5354,7 @@ fob.jp###sidebar > div.widget_custom_html:has(+ div#fix_sidebar)
 city.kamisu.ibaraki.jp###topsadbg
 saku-city.mamafre.jp###bottomBanner
 ||city.saku.nagano.jp/banner/
-jmanga.cloud##div[style^="max-width:700px"]
+ww1.jmanga.cloud##div[style^="max-width:700px"]
 gihyo.jp##.m-listitem--ad
 musicman.co.jp##.bannerBox
 ||tool2.nan-net.com/doujin/depression1.jpg
