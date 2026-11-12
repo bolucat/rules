@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.8.5
+// @version         4.4.8.6
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -522,21 +522,21 @@ else {
     if (matchDomain(au_news_corp_domains)) {
       let url = window.location.href;
       if (window.location.pathname.startsWith('/subscribe/') && !url.includes('/digitalprinteditions')) {
-        let og_url = document.querySelector('head > meta[property="og:url"][content]');
-        if (og_url) {
-          let og_url_obj = new URL(decodeURIComponent(og_url.content));
-          let url_new = og_url_obj.origin + '/' + og_url_obj.pathname.replace(/^\//, '').replace(/\//g, '%2F');
-          window.setTimeout(function () {
-            window.location.href = url_new;
-          }, 500);
+        let og_url_dom = document.querySelector('head > meta[property="og:url"][content]');
+        if (og_url_dom) {
+          let og_url = decodeURIComponent(og_url_dom.content);
+          if (!matchDomain(['cairnspost.com.au', 'geelongadvertiser.com.au', 'goldcoastbulletin.com.au', 'ntnews.com.au', 'thechronicle.com.au', 'themercury.com.au', 'townsvillebulletin.com.au'])) {
+            let og_url_obj = new URL(og_url);
+            let url_new = og_url_obj.origin + '/' + og_url_obj.pathname.replace(/^\//, '').replace(/\//g, '%2F');
+            window.setTimeout(function () {
+              window.location.href = url_new;
+            }, 500);
+          } else {
+            let article = document.querySelector('div.page-heading');
+            if (article)
+              article.before(googleSearchToolLink(og_url));
+          }
         }
-      } else if (window.location.search.match(/[&\?]amp/)) {
-        amp_unhide_subscr_section('[id^="ad-mrec-"]', false);
-        let figure_stretch = document.querySelectorAll('figure.stretch');
-        for (let elem of figure_stretch)
-          elem.classList.remove('stretch');
-        let comments = document.querySelector('#comments-load, .comments-module');
-        removeDOMElement(comments);
       } else {
         if (window.location.pathname.includes('/video/') && document.querySelector('div.vms-premium-video'))
           header_nofix('div.video-hub');
