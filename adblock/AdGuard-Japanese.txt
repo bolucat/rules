@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: EzRzjGU8Zm5cMxTaebpopw
-! Diff-Path: ../patches/7/7-s-1794492787-3600.patch
+! Checksum: G3owsIpCXHQ3Szezof/nQw
+! Diff-Path: ../patches/7/7-s-1794593570-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.78.39
-! TimeUpdated: 2026-11-12T14:09:05+00:00
+! Version: 2.0.78.44
+! TimeUpdated: 2026-11-13T18:09:28+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -1637,6 +1637,7 @@ hostlove.com###index_nav > h1:style(padding-top: 30px!important;)
 ! Malware/Phishing
 /api/download.php?action=init|$xhr
 /download/cloud/c9_googlePlayCashBack_*.apk$document
+||amazonaws.com/VYYfqIKaL.apk$document
 ||amazonaws.com/SMBC-Card.apk$document
 ||amazonaws.com/Tiktok18.apk?$document
 ||amazonaws.com/*/e-Tax%E$document
@@ -1991,6 +1992,8 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+mangaraw.org.uk##+js(no-window-open-if, _blank)
+shikutoku.me##.talk-ad-slot
 hamusoku.com##div[class^="article-body"] > span[style="font-size: 150%;"]:has(> b > a[href^="https://www.amazon.co.jp/"])
 hamusoku.com##div[class^="article-body"] > span[style="color: #3300FF;"]:has(+ br + span[style="font-size: 150%;"] > b > a[href^="https://www.amazon.co.jp/"])
 hamusoku.com##div[class^="article-body"] > span[style="color: #3300FF;"]:has(> span[style="font-size: 150%;"] > b > a[href^="https://www.amazon.co.jp/"])
@@ -2043,7 +2046,9 @@ dengekionline.com##div[class^="InLead-"]
 !+ NOT_VALIDATE
 ||socialxup.com/go/$urltransform=/go\/.*//
 ! aglint-enable no-invalid-modifiers
+socialxup.com##+js(no-window-open-if, _blank)
 socialxup.com##+js(addEventListener-defuser, click, /\[native code\]|^\s*e\s*=>\s*.+\(\s*e\s*\)\s*$/)
+socialxup.com##a[href^="/"]:matches-attr("href"="/^\/[0-9A-Z_a-z]+-[0-9A-Z_a-z]+$/")
 socialxup.com##a[target][href^="https://socialxup.com/"]
 socialxup.com##a[target][href^="/"]
 socialxup.com##span:matches-css(cursor:pointer):empty
@@ -2248,7 +2253,7 @@ posfie.com,togetter.com##.amazon_bulk_box
 ! aglint-enable no-invalid-modifiers
 pdftoshokan.com##+js(set-constant, doAdRedirect, noopFunc)
 pdftoshokan.com##+js(no-window-open-if, /ok_|pemsrv\.com|window\.location\.href/)
-pdftoshokan.com##.post[style="margin-bottom:1rem;"]:has(> #myIframe2)
+pdftoshokan.com##article:not([class]):has(> #myIframe2)
 pdftoshokan.com###ad-containerx
 hanasone.mainichi.jp##.p-article-trend-lists
 ai-ssr.com##.grid > div:has(> a[href^="https://al.fanza.co.jp"][target="_blank"])
@@ -3349,7 +3354,6 @@ atodeyo.com##.banner_pc_side
 pex.jp##.campaign_area_fluct
 mangaraw.best###banner-raw-xyz
 kids.rurubu.jp##.archive__item--customHTML
-mangaraw.fish##body > div[style="height:250px"]
 erogazou.gallery##.mgs-ad
 gata21.jp##a[href="https://lp.gatacareer.com/niigata"]
 mi-mollet.com###MM_PC_Billboard
@@ -3799,7 +3803,6 @@ golfnetwork.co.jp##div[class^="ad_banner"]
 natuero-dougakan.com##.side-menu:has(> h4:contains(/^PR/))
 natuero-dougakan.com##p[align="center"] > a[target="_blank"] > img
 fukuishimbun.co.jp##.headline > li:has(> div[id^="div-gpt-ad-"])
-saikomangaraw.net##.text-center[style^=" height: 300px; overflow: hidden; max-width:"]:empty
 qiita.com##.style-uaiz0z
 qiita.com##article ~ div > section[class^="style-"]:has(div[id^="logly-lift-"])
 marushin-magazine.com###custom_html-1
@@ -12024,7 +12027,6 @@ hayamimi-hobby.com##.box-article > div.border-ao.text-center:contains(関連商�
 hayamimi-hobby.com##.page-desktop > div.text-dark:contains(/プレバン|楽天/)
 golfsapuri.com##.typeB_ttl:contains(記事)
 golfsapuri.com##.box > div[id^="pc_top_infeed"]:upward(1):remove()
-mangaraw.co##.my-2:not(:has(> div.card))
 socom.yokohama##.entry > h3:contains(こちらの記事も)
 yukkuri-futaba.sakura.ne.jp###amazonSelector:upward(1)
 yukkuri-futaba.sakura.ne.jp###wrapAmazon:upward(1)

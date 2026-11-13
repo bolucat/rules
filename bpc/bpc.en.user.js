@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.8.7
+// @version         4.4.9.0
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -238,7 +238,7 @@ if (matchDomain('medium.com') || matchDomain(medium_custom_domains) || document.
 else if (window.location.hostname.match(/\.(uk|com|net)$/) && (matchDomain(uk_reach_domains) || document.querySelector('footer a[href="https://jobs.reachplc.com/jobs"]'))) {
   let ads = document.querySelectorAll("div#superbanner, div.ad-wrapper, div[id^='div-gpt-ad-'], div.gpt");
   removeDOMElement(...ads);
-  hideDOMStyle("div.taboola-above-article, div[id^='mantis-recommender-'], div#ovp-primis, div[data-testid^='commercial-'], div[data-tmdatatrack-type='commercial'], div#dd-placeholder:empty, div#pp-prompt");
+  hideDOMStyle("div.taboola-above-article, div[id^='mantis-recommender-'], div#ovp-primis, div[data-testid^='commercial-'], div[data-tmdatatrack-type='commercial'], div[class*='_commercial_'], div[data-tmdatatrack='non-content-unit'], div#tbl-next-up, div#dd-placeholder:empty, div#pp-prompt");
 }
 
 else if (window.location.hostname.match(/\.(au|nz)$/) || matchDomain(['afr.com', 'nzgeo.com'])) {//australia & new zealand
@@ -678,7 +678,7 @@ else {
   }
 }
 
-} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['autosport.com', 'dailymail.com', 'decanter.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'iai.tv', 'irishexaminer.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'the-tls.com', 'thelawyer.com', 'unherd.com', 'worldeconomics.com'])) {//united kingdom/ireland
+} else if ((window.location.hostname.match(/\.(ie|uk)$/) && !matchDomain(['vogue.co.uk'])) || matchDomain(['autosport.com', 'dailymail.com', 'decanter.com', 'fnlondon.com', 'ft.com', 'gbnews.com', 'granta.com', 'iai.tv', 'irishexaminer.com', 'motorsportmagazine.com', 'newstatesman.com', 'scotsman.com', 'tes.com', 'the-independent.com', 'the-tls.com', 'thelawyer.com', 'unherd.com', 'worldeconomics.com'])) {//united kingdom/ireland
 
 if (matchDomain('autocar.co.uk')) {
   let paywall = document.querySelector('div.ms-block, div.register-block');
@@ -945,6 +945,41 @@ else if (matchDomain('iai.tv')) {
   }
 }
 
+else if (matchDomain(['independent.co.uk', 'the-independent.com'])) {
+  let paywall = document.querySelector('div.indy-paywall-banner');
+  if (paywall) {
+    removeDOMElement(paywall);
+    if (!window.location.search.startsWith('?rel=plus')) {
+      window.location.href = window.location.pathname + '?rel=plus';
+    } else {
+      let video_hidden = document.querySelector('video:not([src])');
+      if (video_hidden) {
+        let scripts = document.querySelectorAll('script[type="application/ld+json"]');
+        let json_script;
+        for (let script of scripts) {
+          if (script.text.includes(',"video":{') && script.text.includes(',"contentUrl":"')) {
+            json_script = script;
+            break;
+          }
+        }
+        if (json_script) {
+          try {
+            let json = JSON.parse(json_script.text);
+            let video_src = getNestedKeys(json, 'video.contentUrl');
+            if (video_src) {
+              video_hidden.src = video_src;
+              video_hidden.setAttribute('controls', '');
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+    }
+  }
+  hideDOMStyle('div[data-mos-ad]');
+}
+
 else if (matchDomain('irishexaminer.com')) {
   setCookie('blaize_session', '', 'irishexaminer.com', '/', 0);
   let premium = document.querySelector('head > meta[name="isPremium"][content="true"]');
@@ -1084,6 +1119,11 @@ else if (matchDomain('newstatesman.com')) {
 
 else if (matchDomain('observer.co.uk')) {
   let ads = 'div._minH-50px:has(> div#landing-top)';
+  hideDOMStyle(ads);
+}
+
+else if (matchDomain('standard.co.uk')) {
+  let ads = 'div#billboard, div[id^="sidebar"], div.ob-smartfeed-wrapper, div[class*="-only"], div[data-tile-name^="mpu"]';
   hideDOMStyle(ads);
 }
 
@@ -2703,35 +2743,6 @@ else if (matchDomain('espn.com')) {
   getArchive(url, 'aside.espn-plus-container-wrapper', '', 'section#article-feed > article');
 }
 
-else if (matchDomain('euobserver.com')) {
-  let paywall = pageContains('div > h4', 'To read this story, log in or subscribe');
-  if (paywall.length) {
-    removeDOMElement(paywall[0].parentNode);
-    let article = document.querySelector('div:has(> p.rte-p)');
-    if (article) {
-      let filter = /^window\.__basedcache__\s?=\s?/;
-      let json_script = getSourceJsonScript(filter);
-      if (json_script) {
-        try {
-          let json = JSON.parse(json_script.text.split(filter)[1]);
-          if (json) {
-            let body = findKeyJson(json, ['body']);
-            if (body) {
-              article.innerHTML = '';
-              let parser = new DOMParser();
-              let doc = parser.parseFromString('<div style="font-size: 18px; line-height: 30px; position: relative;">' + body + '</div>', 'text/html');
-              let article_new = doc.querySelector('div');
-              article.appendChild(article_new);
-            }
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    }
-  }
-}
-
 else if (matchDomain('fastcompany.com')) {
   let paywall = document.querySelector('div.paywall');
   if (paywall) {
@@ -3522,24 +3533,6 @@ else if (matchDomain('nationalgeographic.com')) {
   }, 2000);
   let ads = 'div.ad-slot, div.InsertedAd, div.natgeo-ad';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('nationalreview.com')) {
-  if (!window.location.pathname.endsWith('/amp/')) {
-    let paywall_sel = 'div.continue-reading';
-    let paywall = document.querySelector(paywall_sel);
-    if (paywall) {
-      let amphtml = document.querySelector('head > link[rel="amphtml"][href]');
-      if (amphtml && !amphtml.href.includes(window.location.pathname)) {
-        removeDOMElement(paywall);
-        refreshCurrentTab();
-      } else
-        getJsonUrl(paywall_sel, '', 'div.article-content', {art_class: 'article-content article-content--headless'});
-    }
-  }
-  let banners = 'div#bc-root, aside[aria-label="Meter Ribbon"]';
-  let ads = 'amp-ad, .ad-unit, .ad-skeleton, amp-connatix-player, div[class*="-connatix-"]';
-  hideDOMStyle(banners + ', ' + ads);
 }
 
 else if (matchDomain('nature.com')) {
