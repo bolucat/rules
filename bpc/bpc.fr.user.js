@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.8.1
+// @version         4.4.9.0
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -51,7 +51,9 @@
 // @connect         archive.ph
 // @connect         archive.vn
 // @connect         api-graphql.lefigaro.fr
+// @connect         apps.courrierinternational.com
 // @connect         apps.lemonde.fr
+// @connect         apps.telerama.fr
 // @connect         mediafin.be
 // @exclude         *://*.poool.fr/*
 // @exclude         *://*.weborama.fr/*

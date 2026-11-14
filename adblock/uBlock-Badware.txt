@@ -1,7 +1,7 @@
 ! Title: uBlock filters – Badware risks
 ! Expires: 5 days
-! Last modified: Fri, 13 Nov 2026 13:10:12 +0000
-! Diff-Path: ../patches/2026.11.13.1351.patch#ublock-badware
+! Last modified: Sat, 14 Nov 2026 14:53:53 +0000
+! Diff-Path: ../patches/2026.11.14.1283.patch#ublock-badware
 ! Diff-Expires: 317 minutes
 ! License: https://github.com/uBlockOrigin/uAssets/blob/master/LICENSE
 ! *** uAssets:filters/badware.txt ***
@@ -528,6 +528,7 @@ howtoremove.guide###gray_de
 ||projecthygieia.com^$all
 ||iridia.me^$doc
 ||nexusmops.com^$doc
+||nexusmcds.com^$doc
 ! fake software updaters /redirections
 ||atnpx.com^
 ||webpushcloud.top^
@@ -2975,6 +2976,9 @@ r2.dev##body > .main-wrapper > .main-content:has(> #checkbox-window.checkbox-win
 /^https:\/\/sites\.google\.com\/view\/antibot[0-9]+\b/$doc,match-case
 ||browse-cloud.codes^$all
 ||encodelp.com^$all
+||securedoc.*.workers.dev^$doc
+##body > #rcOverlay > #rcCard
+||microsoft-winupdate.com^$all
 ! !SECTION: ClickFix
 ||cracksway.com^$all
 ||gamingdebates.com^$all
@@ -4422,8 +4426,8 @@ rapidkil.com.au##+js(aost, XMLHttpRequest, /wp-content)
 ||duckdns.org/FAMOUS/Gens/$doc
 ||irs.gov.*.com^$doc
 ||evri.*.xyz^$doc
-||sharedrop.io^$all
-||snapdrop.net^$all
+! ||sharedrop.io^$all
+! ||snapdrop.net^$all
 ||usadeepseek.com^$all
 ||gg.deepseek.$doc,to=~deepseek.com
 ||deepseek.app^$all
@@ -4962,6 +4966,7 @@ top##body > center + .A + .post
 ||imtolenplex.com^$all
 ||immanitys.com^$all
 ||tagesschau.tech^$doc
+||gmai.com^$all
 ||shuru-baidu.com.cn^$all
 ||roblox.com.$all,to=~cloudflare.net
 ||lumennix.xyz^$all
@@ -5111,3 +5116,4 @@ msm-wroclaw.pl##+js(noeval-if, _0x)
 ||4kwallpapers.top^$all
 ||pcsofts.site^$all
 ||gover.top^$all
+||sumatrapdf.org^$all

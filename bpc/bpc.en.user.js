@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.9.0
+// @version         4.4.9.1
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -885,7 +885,7 @@ else if (matchDomain('ft.com')) {
       elem.before(title);
       removeDOMElement(elem.querySelector('div[style*="align-items:"]'));
     }
-    let videos = document.querySelectorAll('div > video > source[src^="data:image/"][old-src]');
+    let videos = document.querySelectorAll('div > video > source[src^="data:image/"][old-src]:first-child');
     for (let elem of videos) {
       let video_new = document.createElement('video');
       video_new.src = elem.getAttribute('old-src');
@@ -3343,7 +3343,7 @@ else if (matchDomain('kathimerini.gr')) {
 }
 
 else if (matchDomain('kompas.id')) {
-  let url_artikel = window.location.pathname.startsWith('/artikel/');
+  let url_artikel = window.location.pathname.includes('/artikel/');
   let delay = url_artikel ? 2500 : 0;
   window.setTimeout(function () {
     let paywall = document.querySelector('kompasid-paywall');
