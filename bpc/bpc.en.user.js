@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.9.1
+// @version         4.4.9.2
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -1118,7 +1118,7 @@ else if (matchDomain('newstatesman.com')) {
 }
 
 else if (matchDomain('observer.co.uk')) {
-  let ads = 'div._minH-50px:has(> div#landing-top)';
+  let ads = 'div[data-testid="ad-placeholder"]';
   hideDOMStyle(ads);
 }
 
