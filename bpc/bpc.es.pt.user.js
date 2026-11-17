@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.4.7.2
+// @version         4.4.9.0
 // @description     Bypass Paywalls of Spanish & Portugese language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -715,21 +715,21 @@ else if (matchDomain('exame.com')) {
 
 else if (matchDomain('uol.com.br')) {
  if (matchDomain('piaui.uol.com.br')) {
-    let audio_cont = document.querySelector('div.audio-player-container:has(audio[src])');
-    if (audio_cont) {
-      let audio = audio_cont.querySelector('audio[src]');
-      if (audio) {
-        let audio_new = document.createElement('audio');
-        audio_new.src = audio.src;
-        audio_new.setAttribute('controls', '');
-        audio_cont.parentNode.replaceChild(audio_new, audio_cont);
-      }
+    let audio_src = document.querySelector('div.audio-player > audio:not([src]) > source[src]');
+    if (audio_src) {
+      let audio_new = document.createElement('audio');
+      audio_new.src = audio_src.src;
+      audio_new.setAttribute('controls', '');
+      let audio_cont = audio_src.parentNode.parentNode;
+      audio_cont.parentNode.before(audio_new);
+      removeDOMElement(audio_cont);
     }
     let ads = 'div[class^="piaui-interna-"], div.main__advert';
     hideDOMStyle(ads, 2);
   } else if (matchDomain('folha.uol.com.br')) {
-    if (window.location.pathname.startsWith('/amp/')) {
-      amp_unhide_subscr_section('amp-sticky-ad');
+    if (window.location.pathname.startsWith('/paywall/login.shtml') && window.location.search.startsWith('?')) {
+      if (!check_loop())
+        window.location.href = window.location.href.split('?')[1];
     } else {
       let signup = document.querySelector('.c-top-signup');
       removeDOMElement(signup);
@@ -760,9 +760,7 @@ else if (matchDomain('gazetadopovo.com.br')) {
 
 else if (matchDomain('globo.com')) {
   if (matchDomain('valor.globo.com')) {
-    if (!window.location.pathname.startsWith('/google/amp/')) {
-      amp_redirect('div.paywall');
-    } else {
+    if (window.location.pathname.startsWith('/google/amp/')) {
       amp_unhide_subscr_section();
       amp_images_replace();
     }

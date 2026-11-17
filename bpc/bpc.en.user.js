@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.9.2
+// @version         4.4.9.3
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -525,17 +525,9 @@ else {
         let og_url_dom = document.querySelector('head > meta[property="og:url"][content]');
         if (og_url_dom) {
           let og_url = decodeURIComponent(og_url_dom.content);
-          if (matchDomain('theaustralian.com.au')) {
-            let og_url_obj = new URL(og_url);
-            let url_new = og_url_obj.origin + '/' + og_url_obj.pathname.replace(/^\//, '').replace(/\//g, '%2F');
-            window.setTimeout(function () {
-              window.location.href = url_new;
-            }, 500);
-          } else {
-            let article = document.querySelector('div.page-heading');
-            if (article)
-              article.before(googleSearchToolLink(og_url));
-          }
+          let article = document.querySelector('div.page-heading');
+          if (article)
+            article.before(googleSearchToolLink(og_url));
         }
       } else {
         if (window.location.pathname.includes('/video/') && document.querySelector('div.vms-premium-video'))

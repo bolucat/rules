@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fr
-// @version         4.4.9.0
+// @version         4.4.9.1
 // @description     Bypass Paywalls of French language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fr.user.js
@@ -1510,21 +1510,6 @@ else if (matchDomain('letemps.ch')) {
     fade.classList.remove('post__content--faded');
   let top_ad = document.querySelector('div.topad');
   removeDOMElement(top_ad);
-}
-
-else if (matchDomain('lexpress.fr')) {
-  let audio_tts = document.querySelector('div.etx_wrapper > div.etx_embed_player--disabled');
-  if (audio_tts) {
-    let audio_script = audio_tts.querySelector('script[type="module"]');
-    if (audio_script && audio_script.innerHTML.includes('audioUrl: "')) {
-      let audio_new = document.createElement('audio');
-      audio_new.src = audio_script.innerHTML.split('audioUrl: "')[1].split('"')[0];
-      audio_new.setAttribute('controls', '');
-      audio_tts.parentNode.replaceChild(audio_new, audio_tts);
-    }
-  }
-  let ads = 'div[class^="block_pub"], div[class^="bottom-bar"], div.teads__block, div.ban-bottom, div[class^="placeholder--ban-atf"]';
-  hideDOMStyle(ads);
 }
 
 else if (matchDomain('liberation.fr')) {
