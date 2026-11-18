@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - fi/se
-// @version         4.4.5.0
+// @version         4.4.9.0
 // @description     Bypass Paywalls of Danish, Finnish & Swedish language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.fi.se.user.js
@@ -11,7 +11,9 @@
 // @noframes
 // @match           *://*.berlingske.dk/*
 // @match           *://*.dn.se/*
+// @match           *://*.hd.se/*
 // @match           *://*.suomensotilas.fi/*
+// @match           *://*.sydsvenskan.se/*
 // @match           *://*.weekendavisen.dk/*
 // @connect         archive.fo
 // @connect         archive.is
@@ -149,10 +151,12 @@ if (matchDomain(['berlingske.dk', 'weekendavisen.dk'])) {
 
 } else if (window.location.hostname.endsWith('.se')) {
 
-if (matchDomain('dn.se')) {
+if (matchDomain(['dn.se', 'dagensmedicin.se', 'hd.se', 'sydsvenskan.se'])) {
   let url = window.location.href;
-  getArchive(url, 'div.paywall-wrapper', '', 'article');
-  let ads = 'div.bad';
+  let paywall_sel = 'div#tapet-paywall';
+  let article_sel = 'article';
+  getArchive(url, paywall_sel, '', article_sel, '', article_sel, 'main');
+  let ads = 'div.bad, div.panorama, lcl-ad, div.mob, div[data-bad-fullpage-container]';
   hideDOMStyle(ads);
 }
 
