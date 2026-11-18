@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.9.3
+// @version         4.4.9.4
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -4051,6 +4051,16 @@ else if (matchDomain('scmp.com')) {
                   if (elem.hasChildNodes())
                     article.appendChild(elem);
                 }
+                let audio_tts = document.querySelector('div[data-qa^="ArticleSpeechInlineWidget"]');
+                if (audio_tts) {
+                  let audio_src = getNestedKeys(json, 'props.pageProps.payload.json.data.article.articleSpeeches.0.url');
+                  if (audio_src) {
+                    let audio_new = document.createElement('audio');
+                    audio_new.src = audio_src;
+                    audio_new.setAttribute('controls', '');
+                    audio_tts.parentNode.replaceChild(audio_new, audio_tts);
+                  }
+                }
               }
             } catch (err) {
               console.log(err);
@@ -4260,7 +4270,17 @@ else if (matchDomain('startribune.com')) {
 
 else if (matchDomain('statnews.com')) {
   let url = window.location.href;
-  getArchive(url, 'div.restricted-content-breaker', '', '.the-content', '', 'main section, div[style*="counter-reset:"]');
+  let paywall_sel = 'div.restricted-content-breaker';
+  let article_sel = '.the-content';
+  let article_src_sel = 'main section, div[style*="counter-reset:"]';
+  let paywall = document.querySelector(paywall_sel);
+  if (paywall) {
+    let article = document.querySelector(article_sel);
+    if (article) {
+      getArchive(url, paywall_sel, '', article_sel, '', article_src_sel);
+      article.before(googleSearchToolLink(url));
+    }
+  }
   let ads = 'div.header-ad-wrap, div[class*="dfp-ad"]';
   hideDOMStyle(ads);
 }

@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: cH3RY9sR3LaUmUhEKE9/Jg
-! Diff-Path: ../patches/7/7-s-1794913955-3600.patch
+! Checksum: Egsi+iLNZJXhGaLXAHv8xA
+! Diff-Path: ../patches/7/7-s-1795018326-3600.patch
 ! Title: AdGuard Japanese filter
 ! Description: Filter that enables ad blocking on websites in Japanese language.
-! Version: 2.0.78.50
-! TimeUpdated: 2026-11-17T11:08:18+00:00
+! Version: 2.0.78.52
+! TimeUpdated: 2026-11-18T16:08:47+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -452,18 +452,19 @@
 ! Bad: ||ad.doubleclick.net^ (should be in adservers.txt)
 !
 !
-!
+! AdMax 広告ブロック検知スクリプト v1.0.0
+||adm.shinobi.jp/abd.js$script,xhr,redirect=noop.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/247367
-momoiroadult.com##+js(remove-node-text, script, bait)
+erotaredogaonly.xyz,hirotron.com,jyankuotakarakanteidan.blogspot.com,lyrics-jpop.net,marvelousact.hatenablog.jp,masa-web.jp,monte-carlo-lab.pages.dev,presscarry.com,travel-bookmark.net,momoiroadult.com##+js(set-constant, __ninjaAdMaxAbdLoaded, true)
+!
 ! https://github.com/AdguardTeam/AdguardFilters/issues/247280
 fujiyama.tv##.adblock-overlay
+fujiyama.tv#@#.ad-slot
 ! www.slorepo.com anti-adb
 slorepo.com##+js(no-setTimeout-if, bait)
 slorepo.com##+js(prevent-fetch, doubleclick.net)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/244783
 ||plicy.net/Js/pw-guard.js
-! AdMax 広告ブロック検知スクリプト v1.0.0
-||adm.shinobi.jp/abd.js$script,xhr,redirect=noop.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/242937
 onepiecelabs.tonuriaz.info##+js(no-setTimeout-if, /resolve|native/, 300)
 ! fuucdayo.com anti-adb
@@ -1641,13 +1642,9 @@ hostlove.com###index_nav > h1:style(padding-top: 30px!important;)
 ! Malware/Phishing
 /api/download.php?action=init|$xhr
 /download/cloud/c9_googlePlayCashBack_*.apk$document
-||amazonaws.com/VYYfqIKaL.apk$document
-||amazonaws.com/SMBC-Card.apk$document
-||amazonaws.com/Tiktok18.apk?$document
+||amazonaws.com/*.apk$document
 ||amazonaws.com/*/e-Tax%E$document
-||amazonaws.com/app.apk?id=$document
 .com/download.php?id=$subdocument
-||amazonaws.com/Vpass.apk$document
 .com/c*apk/e-tax%E$document
 .com/*tax%E3%82%A2%E3%83%97%E3%83%AA|$document
 .com/*/e-tax%E5%9B%BD%E7%A8%8E|$document
@@ -1996,6 +1993,7 @@ gundamlog.com###more > iframe[src^="https://richlink.blogsys.jp"]
 !
 ! NOTE: Specific rules
 !
+note.com##.external-article-widget--type_shopping
 ||mynvwm.com/wp-content/themes/mwp-parent/js/adfair/
 read.amazon.co.jp##.ad-wrapper
 ||cosxive.net/api/partner-content/
@@ -2050,11 +2048,10 @@ dengekionline.com##div[class^="ArticleDetailBody-"][class$="_buttonList"]:has(> 
 dengekionline.com##div[class$="rectangleBanner"]
 dengekionline.com##div[class^="InLead-"]
 ! aglint-disable no-invalid-modifiers
-!+ NOT_VALIDATE
-||socialxup.com/go/$urltransform=/go\/.*//
 ! aglint-enable no-invalid-modifiers
 socialxup.com##+js(no-window-open-if, _blank)
 socialxup.com##+js(addEventListener-defuser, click, /\[native code\]|^\s*e\s*=>\s*.+\(\s*e\s*\)\s*$/)
+socialxup.com##a[data-track="related_click"]:not([data-track-context="user_page_related"])
 socialxup.com##a[href^="/"]:not([data-track], :has(> img[src^="/avatar/"])):matches-attr("href"="/^\/(?=[A-Z_a-z]*[0-9])[0-9A-Z_a-z]+$/"):not(:contains(/注目|達成|凍結|増加|減少|フォロワー/))
 socialxup.com##a[href^="/"]:matches-attr("href"="/^\/(?=[0-9A-Z_a-z]*[A-Z])[0-9A-Z_a-z]+$/")
 socialxup.com##a[target][href^="https://socialxup.com/"]
@@ -2124,8 +2121,6 @@ volleyballking.jp##.free-input-container:has(a[href^="https://www.video.unext.jp
 emogram.sankei.com##div.area-kyujinbox
 matsukiyococokara-online.com##.p-section__inner[class$="-000"]:has(> div.p-contentblock > div.p-bgc div.p-contentblock__box > div.p-bnrlist > div[id^="div-gpt-ad"])
 ! aglint-disable no-invalid-modifiers
-!+ NOT_VALIDATE
-||vw.mangaz.com/navi/$urltransform=/navi(\/\d+(?:\/i:\d+)?)/virgo\/view\$1/
 ! aglint-enable no-invalid-modifiers
 /network-config.json$domain=soraraw.net|soraraw.site|rawfree.top|mangaruu.com|trogiupnhanh.com|wakuraw.com|klmanga.cloud
 mangaruu.com,rawfree.top,soraraw.*##div[class^="ReactionPanel_chapterEndAd"]
@@ -2254,10 +2249,6 @@ javmix.tv###main > div.pop--excl > div[style*="margin: 0 auto 50px auto;"]
 momon-ga.com,javmix.tv##.pop--excl:has(div[id^="bnc_ad"])
 posfie.com,togetter.com##.amazon_bulk_box
 ! aglint-disable no-invalid-modifiers
-!+ NOT_VALIDATE
-||pdftoshokan.com/window.location.href$urltransform=/window\.location\.href//
-!+ NOT_VALIDATE
-||pdftoshokan.com/manga/window.location.href$urltransform=/manga\/window\.location\.href//
 ! aglint-enable no-invalid-modifiers
 pdftoshokan.com##+js(set-constant, doAdRedirect, noopFunc)
 pdftoshokan.com##+js(no-window-open-if, /ok_|pemsrv\.com|window\.location\.href/)
@@ -2351,10 +2342,6 @@ fo76db.com###fo-ad-modal:style(display: none !important;)
 fo76db.com##body.swiper:style(overflow: auto !important; position: static !important;)
 fo76db.com##body > div#toast ~ *:not(div, link, script)
 ! aglint-disable no-invalid-modifiers
-!+ NOT_VALIDATE
-/?yaab_go=$urltransform=/\?yaab_go=.+//,domain=genshin-soku.com|monhan-soku.com|xn--gckdevd5myivf.site|xn--o9j0bk1l6d1bnv1as45bb2j.com|yamiisoku.com
-!+ NOT_VALIDATE
-/?catalog_visit=$urltransform=/\?catalog_visit=.+//,domain=genshin-soku.com|monhan-soku.com|xn--gckdevd5myivf.site|xn--o9j0bk1l6d1bnv1as45bb2j.com|yamiisoku.com
 ! aglint-enable no-invalid-modifiers
 genshin-soku.com,monhan-soku.com,xn--gckdevd5myivf.site,xn--o9j0bk1l6d1bnv1as45bb2j.com,yamiisoku.com##+js(prevent-fetch, method:POST)
 genshin-soku.com,monhan-soku.com,xn--gckdevd5myivf.site,xn--o9j0bk1l6d1bnv1as45bb2j.com,yamiisoku.com##+js(json-prune, html)
