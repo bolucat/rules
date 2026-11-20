@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.9.6
+// @version         4.4.9.7
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -524,8 +524,10 @@ else {
         if (og_url_dom) {
           let og_url = decodeURIComponent(og_url_dom.content);
           let article = document.querySelector('div.page-heading');
-          if (article)
+          if (article) {
             article.before(googleSearchToolLink(og_url));
+            article.before(externalLink(['unwall.app'], 'https://{domain}/{url}', og_url, 'BPC > Try for full article text:'));
+          }
         }
       } else {
         if (window.location.pathname.includes('/video/') && document.querySelector('div.vms-premium-video'))
@@ -5337,78 +5339,6 @@ else if (matchDomain('winnipegfreepress.com')) {
   hideDOMStyle(ads);
 }
 
-else if (matchDomain('wsj.com')) {
-  if (window.location.pathname.startsWith('/livecoverage/')) {
-    window.setTimeout(function () {
-      fix_dowjones_live();
-    }, 1500);
-  } else {
-    let paywall_sel = '.snippet-promotion, div[id*="-snippet-overlay"]';
-    let paywall = document.querySelector(paywall_sel);
-    if (paywall) {
-      let url = window.location.href;
-      let article_sel = 'article section';
-      let wsj_pro = paywall.querySelector('a[href^="https://wsjpro.com/"]');
-      if (wsj_pro)
-        article_sel = 'article';
-      let article = document.querySelector(article_sel);
-      if (article) {
-        let video_sel = 'div[data-type="video"]';
-        let video = document.querySelector(video_sel);
-        let schema_script = document.querySelector('script#articleschema');
-        func_post = function () {
-          let pars = document.querySelectorAll(article_sel + ' div[style*="font-family:"]');
-          if (pars.length < 5)
-            header_nofix(article_sel, '', 'BPC > no archive-fix');
-          if (video) {
-            let video_new = document.querySelector(video_sel);
-            if (video_new && video_new.parentNode)
-              video_new.parentNode.replaceChild(video, video_new);
-          }
-          let inline_videos = document.querySelectorAll('div[id^="video"]');
-          for (let inline_video of inline_videos) {
-            let video_id = inline_video.id.replace('video', '');
-            if (video_id && schema_script) {
-              try {
-                let video_data = JSON.parse(schema_script.text).find(x => x['@type'] === 'VideoObject' && x.embedUrl.includes(video_id));
-                if (video_data && inline_video.parentNode) {
-                  let elem = document.createElement('iframe');
-                  elem.src = video_data.embedUrl;
-                  elem.style = 'width: ' + inline_video.offsetWidth + 'px; height: ' + inline_video.offsetWidth * 3 / 4 + 'px;';
-                  inline_video.parentNode.replaceChild(elem, inline_video);
-                }
-              } catch (err) {
-                console.log(err);
-              }
-            }
-          }
-          if (mobile) {
-            let inline_images = document.querySelectorAll('div[style] > figure > picture > img');
-            for (let elem of inline_images) {
-              elem.style = 'width: 100%;';
-              elem.removeAttribute('height');
-              elem.removeAttribute('width');
-              elem.parentNode.removeAttribute('style');
-              elem.parentNode.parentNode.parentNode.removeAttribute('style');
-            }
-            let inline_data = document.querySelectorAll('div[data-layout="inline"][style]');
-            for (let elem of inline_data)
-              elem.removeAttribute('style');
-          }
-          let read_next = document.querySelector('div#cx-what-to-read-next');
-          removeDOMElement(read_next);
-          let inline_wrappers = document.querySelectorAll('div[style*="background-position"] > div[id^="wrapper-INLINEIMM_"]');
-          for (let elem of inline_wrappers)
-            removeDOMElement(elem.parentNode);
-        }
-        getArchive(url, paywall_sel, '', article_sel);
-      }
-    }
-  }
-  let ads = 'div.wsj-ad, div.adWrapper, div.css-xgokil-Box, div#cx-article-cover-overlay, div#dianomi-module';
-  hideDOMStyle(ads);
-}
-
 else if (matchDomain('ynet.co.il')) {
   let paywall = document.querySelector('div.paywall-wrapper');
   if (paywall) {
@@ -5599,6 +5529,8 @@ function fix_dowjones_live() {
         if (json) {
           let article = document.querySelector('div[data-id="StreamBody_index_MainContainer"]');
           if (article) {
+            let art_items = document.createElement('div');
+            art_items.style = 'margin: 50px;';
             let pars = json[0].liveBlogUpdate;
             for (let par of pars) {
               if (par.headline && par.articleBody) {
@@ -5616,18 +5548,22 @@ function fix_dowjones_live() {
                 }
                 let body = document.createElement('p');
                 body.innerText = par.articleBody;
-                article.after(document.createElement('br'), headline, author, date, document.createElement('br'), body);
+                art_items.append(document.createElement('br'), headline, author, date, document.createElement('br'), body);
               }
             }
+            article.appendChild(art_items);
           }
         }
       } catch (err) {
         console.log(err);
       }
     }
-    let fade = document.querySelectorAll('div[class*="-CardWrapper"]');
-    for (let elem of fade)
-      elem.removeAttribute('class');
+    let fades = document.querySelectorAll('div[class*="-CardWrapper"]');
+    if (fades.length) {
+      let fade = fades.item(fades.length - 1);
+      fade.removeAttribute('class');
+      fade.style = 'margin: 50px;';
+    }
   }
 }
 
