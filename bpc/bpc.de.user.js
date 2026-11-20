@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.8.1
+// @version         4.4.9.0
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -25,7 +25,6 @@
 // @match           *://*.themarket.ch/*
 // @match           *://*.vn.at/*
 // @match           *://*.vol.at/*
-// @match           *://*.wochenblatt.com/*
 // @connect         archive.fo
 // @connect         archive.is
 // @connect         archive.li
@@ -57,7 +56,6 @@ window.setTimeout(function () {
 
 var de_funke_medien_domains = ['abendblatt.de', 'braunschweiger-zeitung.de', 'harzkurier.de', 'ikz-online.de', 'morgenpost.de', 'nrz.de', 'otz.de', 'thueringer-allgemeine.de', 'tlz.de', 'waz.de', 'wp.de', 'wr.de'];
 var de_ippen_media_domains = ['fr.de', 'merkur.de', 'ovb-online.de'];
-var de_lv_domains = ['profi.de', 'wochenblatt.com'];
 var de_madsack_domains = ['haz.de', 'kn-online.de', 'ln-online.de', 'lvz.de', 'maz-online.de', 'neuepresse.de', 'ostsee-zeitung.de', 'rnd.de', 'saechsische.de'];
 var de_motor_presse_domains = ['aerokurier.de', 'auto-motor-und-sport.de', 'flugrevue.de', 'motorradonline.de', 'womenshealth.de'];
 var de_rp_medien_domains = ['ga.de', 'rp-online.de', 'saarbruecker-zeitung.de', 'volksfreund.de'];
@@ -1120,21 +1118,6 @@ else if (matchDomain(de_funke_medien_domains)) {
     getArchive(url, paywall_sel, '', article_sel);
   }
   let ads = 'aside[data-module-id="SparkAdSlotModule"]';
-  hideDOMStyle(ads);
-}
-
-else if (matchDomain(de_lv_domains)) {
-  let paywall = document.querySelector('div[id^="paymentprocess-"]');
-  if (paywall) {
-    let intro = document.querySelector('div.m-paywall__textFadeOut');
-    removeDOMElement(paywall, intro);
-    let div_hidden = document.querySelector('div.paywall-full-content[style]');
-    if (div_hidden) {
-      div_hidden.removeAttribute('class');
-      div_hidden.removeAttribute('style');
-    }
-  }
-  let ads = 'div.adZone';
   hideDOMStyle(ads);
 }
 

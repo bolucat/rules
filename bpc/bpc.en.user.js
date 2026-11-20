@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.9.4
+// @version         4.4.9.6
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -34,7 +34,6 @@
 // @match           *://*.ipolitics.ca/*
 // @match           *://*.japantimes.co.jp/*
 // @match           *://*.kathimerini.gr/*
-// @match           *://*.kompas.id/*
 // @match           *://*.livelaw.in/*
 // @match           *://*.nation.africa/*
 // @match           *://*.nautil.us/*
@@ -154,7 +153,6 @@
 // @exclude         *://*.tt.com/*
 // @exclude         *://*.tuttosport.com/*
 // @exclude         *://*.valeursactuelles.com/*
-// @exclude         *://*.wochenblatt.com/*
 // @grant           GM.xmlHttpRequest
 // @require         https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc_func.js
 // ==/UserScript==
@@ -2971,22 +2969,6 @@ else if (matchDomain('hbr.org')) {
   }
 }
 
-else if (matchDomain('hilltimes.com')) {
-  function hilltimes_main(node) {
-    getJsonUrl('div.paywallcont', '', 'div#entry-content');
-  }
-  let paywall_sel = 'div.paywallcont';
-  let paywall = document.querySelector(paywall_sel);
-  if (true) {
-    if (paywall)
-      hilltimes_main(paywall);
-    else
-      waitDOMElement(paywall_sel, 'DIV', hilltimes_main, false);
-  }
-  let banner = 'section.hide_this_section';
-  hideDOMStyle(banner);
-}
-
 else if (matchDomain('hindustantimes.com')) {
   if (!window.location.pathname.endsWith('-amp.html')) {
     let paywall = document.querySelector('.paywall');
@@ -3332,57 +3314,6 @@ else if (matchDomain('jpost.com')) {
 else if (matchDomain('kathimerini.gr')) {
   let ads = 'div.nx-billboard-ad-row';
   hideDOMStyle(ads);
-}
-
-else if (matchDomain('kompas.id')) {
-  let url_artikel = window.location.pathname.includes('/artikel/');
-  let delay = url_artikel ? 2500 : 0;
-  window.setTimeout(function () {
-    let paywall = document.querySelector('kompasid-paywall');
-    if (paywall) {
-      removeDOMElement(paywall);
-      if (url_artikel) {
-        let intro = document.querySelector('div.paywall');
-        removeDOMElement(intro);
-        let art_hidden = document.querySelector('div.non-paywall[style]');
-        if (art_hidden)
-          art_hidden.removeAttribute('style');
-        let audio_tts = document.querySelector('button.button-play-audio');
-        if (audio_tts) {
-          let audio_src_dom = document.querySelector('audio > source[src$=".mp3"]');
-          if (audio_src_dom) {
-            let audio_new = document.createElement('audio');
-            audio_new.src = audio_src_dom.src;
-            audio_new.setAttribute('controls', '');
-            audio_tts.parentNode.replaceChild(audio_new, audio_tts);
-          }
-        }
-        let gallery = document.querySelector('div.mx-auto > div > div.swiper-free-mode');
-        if (gallery) {
-          let article = gallery.parentNode.parentNode;
-          article.innerHTML = '';
-          let json_script = document.querySelector('script#__NUXT_DATA__');
-          if (json_script) {
-            try {
-              let pars = JSON.parse(json_script.text);
-              let img_pars = pars.filter(x => x && (typeof x === 'object') && x.src && x.caption);
-              for (let elem of img_pars) {
-                let figure = makeFigure(pars[elem.src], pars[elem.caption] + (elem.credit ? ' ' + pars[elem.credit] : ''), {alt: pars[elem.alt]});
-                figure.style = 'width: 80%; margin: 50px;';
-                article.appendChild(figure);
-              }
-            } catch (err) {
-              console.log(err);
-            }
-          }
-        }
-      } else {
-        let art_hidden = document.querySelector('section.paywall.hidden');
-        if (art_hidden)
-          art_hidden.classList.remove('hidden');
-      }
-    }
-  }, delay);
 }
 
 else if (matchDomain('latimes.com')) {
