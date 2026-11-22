@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.9.1
+// @version         4.4.9.2
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -220,8 +220,11 @@ else if (matchDomain('bild.de')) {
       if (!elem.innerText.length)
         removeDOMElement(elem);
     let article = document.querySelector('main > article');
-    if (article && article.innerText.length < 1000)
-      header_nofix('h2', '', 'BPC > no archive-fix');
+    if (article) {
+      removeDOMElement(article.querySelector('aside'));
+      if (article.innerText.length < 1500)
+        header_nofix('h2', '', 'BPC > no archive-fix');
+    }
     let ads = 'article aside > span';
     hideDOMStyle(ads, 2);
   }

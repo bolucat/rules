@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.9.7
+// @version         4.4.9.8
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -2349,13 +2349,20 @@ else if (matchDomain('business-standard.com')) {
 }
 
 else if (matchDomain('businessinsider.com')) {
+  let audio_tts = document.querySelector('div.audio-player[data-audio-url]');
+  if (audio_tts) {
+    let audio_new = document.createElement('audio');
+    audio_new.src = audio_tts.getAttribute('data-audio-url');
+    audio_new.setAttribute('controls', '');
+    audio_tts.parentNode.replaceChild(audio_new, audio_tts);
+  }
   let lazy_images = document.querySelectorAll('section.post-story-body-content div.lazy-holder[style] > img[class]');
   for (let elem of lazy_images) {
     elem.removeAttribute('class');
     elem.parentNode.removeAttribute('class');
     elem.parentNode.removeAttribute('style');
   }
-  let ads = 'div.masthead-ad, div.l-ad, div.in-post-sticky, aside.has-video-ad, div.ad-callout-wrapper';
+  let ads = 'div.masthead-ad, div.l-ad, div.in-post-sticky, aside.has-video-ad, div.ad-callout-wrapper, div[data-disable-for-sooth-user]';
   hideDOMStyle(ads);
 }
 
@@ -3343,7 +3350,7 @@ else if (matchDomain('livelaw.in')) {
       }
     }
   }
-  let ads = 'inside-post-ad, amp-ad';
+  let ads = 'div.inside-post-ad, amp-ad';
   hideDOMStyle(ads);
 }
 

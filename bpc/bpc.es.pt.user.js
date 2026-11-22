@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.4.9.0
+// @version         4.4.9.1
 // @description     Bypass Paywalls of Spanish & Portugese language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -760,7 +760,9 @@ else if (matchDomain('gazetadopovo.com.br')) {
 
 else if (matchDomain('globo.com')) {
   if (matchDomain('valor.globo.com')) {
-    if (window.location.pathname.startsWith('/google/amp/')) {
+    if (!window.location.pathname.startsWith('/google/amp/')) {
+      amp_redirect('div.paywall');
+    } else {
       amp_unhide_subscr_section();
       amp_images_replace();
     }
