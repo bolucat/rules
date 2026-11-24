@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.4.9.8
+// @version         4.4.9.9
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -5458,35 +5458,38 @@ else if (matchDomain(usa_mcc_domains) || document.querySelector('head > link[hre
 }
 
 else if (matchDomain(usa_mng_domains) || document.querySelector('head > link[rel="stylesheet"][id^="dfm-accuweather-"], footer li > a[href^="https://www.medianewsgroup.com"]')) {
-  if (window.location.pathname.endsWith('/amp/'))
-    amp_unhide_subscr_section('div.ampWrapperInside, div#paywall');
-  else if (true) {
-    let paywall_sel = '#server-paywall';
-    let paywall = document.querySelector(paywall_sel);
-    let article_sel = 'div.body-copy';
-    let article = document.querySelector(article_sel);
-    if (paywall && article) {
-      func_post = function () {
-        let slideshow = article.querySelector('div.article-slideshow');
-        if (slideshow) {
-          slideshow.removeAttribute('class');
-          let image_wrappers = slideshow.querySelectorAll('div.image-wrapper');
-          for (let elem of image_wrappers) {
-            elem.removeAttribute('class');
-            elem.style = 'margin: 20px 0px;';
-          }
-          let caption = 'div.mng-gallery-information-container, button.icon-close';
-          hideDOMStyle(caption, 2);
+  let paywall_sel = 'div[data-type="paywall"]';
+  let paywall = document.querySelector(paywall_sel);
+  let article_sel = 'div.body-copy';
+  let article = document.querySelector(article_sel);
+  if (paywall && article) {
+    func_post = function () {
+      let slideshow = article.querySelector('div.article-slideshow');
+      if (slideshow) {
+        slideshow.removeAttribute('class');
+        let image_wrappers = slideshow.querySelectorAll('div.image-wrapper');
+        for (let elem of image_wrappers) {
+          elem.removeAttribute('class');
+          elem.style = 'margin: 20px 0px;';
         }
-        if (iframe)
-          article.appendChild(iframe);
+        let caption = 'div.mng-gallery-information-container, button.icon-close';
+        hideDOMStyle(caption, 2);
       }
-      let iframe = article.querySelector('iframe');
-      getJsonUrl(paywall_sel, '', article_sel, {art_append: 1, art_class: 'body-copy'});
+      if (iframe)
+        article.appendChild(iframe);
     }
-    let ads = 'div.dfp-ad';
-    hideDOMStyle(ads);
+    let iframe = article.querySelector('iframe');
+    getJsonUrl(paywall_sel, '', article_sel, {art_append: 1, art_class: 'body-copy'});
+    let inert = document.querySelector('div#page[inert]');
+    if (inert)
+      inert.removeAttribute('inert');
+    let noscroll = document.querySelector('html.modal-open');
+    if (noscroll)
+      noscroll.classList.remove('modal-open');
+    hideDOMStyle('div.connext-modal-backdrop, div.trinity-player-iframe-wrapper', 2);
   }
+  let ads = 'div.dfp-ad';
+  hideDOMStyle(ads);
 }
 
 else if (document.querySelector('head > script[src*=".axate.io/"]')) {
