@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - nl/be
-// @version         4.4.9.0
+// @version         4.4.9.1
 // @description     Bypass Paywalls of Dutch language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.nl.user.js
@@ -335,13 +335,10 @@ else if (matchDomain(nl_dpg_adr_domains.concat(['hln.be']))) {
         article.appendChild(comments);
       if (readmore)
         article.appendChild(readmore);
+      let premium_label = article.querySelector('svg[aria-label="Premium artikel"]');
+      if (premium_label)
+        premium_label.style = 'width: 10%;';
     }
-    let article_divs = document.querySelectorAll(article_sel + ' > div:not(:empty)');
-    if (article_divs.length < 3)
-      article.before(googleSearchToolLink(url));
-    let premium_label = article.querySelector('svg[aria-label="Premium artikel"]');
-    if (premium_label)
-      premium_label.style = 'width: 10%;';
     let ads = 'span[style*="background-color:"]:has(> span[style*="min-height:"]), span > br, ' + article_sel + ' div:empty:not([class]), div[style*=";isolation:isolate;"], a[href^="https://www.google.com/preferences/source"]';
     hideDOMStyle(ads, 2);
   }

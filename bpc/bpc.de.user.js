@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.9.3
+// @version         4.4.9.4
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -259,9 +259,11 @@ else if (matchDomain('cicero.de')) {
 }
 
 else if (matchDomain('diepresse.com')) {
-  let paywall = document.querySelector('div.premium-content.hide');
-  if (paywall)
+  let paywall = document.querySelector('div.premium-content');
+  if (paywall) {
     paywall.removeAttribute('class');
+    paywall.removeAttribute('hidden');
+  }
   hideDOMStyle('div.paywall-container, div.ad');
 }
 
