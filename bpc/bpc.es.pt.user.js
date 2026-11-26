@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - es/pt/south america
-// @version         4.4.9.1
+// @version         4.4.9.2
 // @description     Bypass Paywalls of Spanish & Portugese language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.es.pt.user.js
@@ -106,14 +106,16 @@ else if (matchDomain('diariodenavarra.es')) {
   let paywall = document.querySelector('div#paywall_message');
   if (paywall) {
     removeDOMElement(paywall);
-    let json_script = getArticleJsonScript();
-    if (json_script) {
-      let json = JSON.parse(json_script.text);
-      if (json) {
-        let json_text = json.articleBody;
-        let article = document.querySelector('div.free-html');
-        if (json_text && article)
-          article.innerText = parseHtmlEntities(json_text);
+    let article = document.querySelector('div.c-detail__body > p');
+    if (article) {
+      let json_script = getArticleJsonScript();
+      if (json_script) {
+        let json = JSON.parse(json_script.text);
+        if (json) {
+          let json_text = json.articleBody;
+          if (json_text)
+            article.innerText = parseHtmlEntities(breakText(json_text));
+        }
       }
     }
   }

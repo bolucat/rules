@@ -1,10 +1,10 @@
 ![Adblock Plus 2.0]
-! Checksum: FmOl93aA5nMIL3GYrIY+nA
-! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1795566038-3600.patch
+! Checksum: 58soSGH447888oz7BdZqOQ
+! Diff-Path: ../patches/2_without_easylist/2_without_easylist-s-1795644706-3600.patch
 ! Title: AdGuard Base filter
 ! Description: This filter is necessary for quality ad blocking.
-! Version: 2.5.6.91
-! TimeUpdated: 2026-11-25T00:17:24+00:00
+! Version: 2.5.7.13
+! TimeUpdated: 2026-11-25T22:07:28+00:00
 ! Expires: 5 days (update frequency)
 ! Homepage: https://github.com/AdguardTeam/AdGuardFilters
 ! License: https://github.com/AdguardTeam/AdguardFilters/blob/master/LICENSE
@@ -23,6 +23,7 @@
 !
 !
 !
+||fozekikikiminu.com^
 ||reliablelinen.com^
 ||xtaztxiibmcgwv.com^
 ||qozkbwkxygxlrs.com^
@@ -8261,7 +8262,6 @@ ad.broadstreetads.com
 ||jssdk.donuheridimylo.com^
 ||jssdk.fegekejynewyhe.com^
 ||jssdk.fogavokygysypa.com^
-||jssdk.fozekikikiminu.com^
 ||jssdk.fubavavibosuta.com^
 ||jssdk.gajukogyxywahu.com^
 ||jssdk.gogukypynijoxy.com^
@@ -15348,6 +15348,7 @@ youporn.com##+js(remove-node-text, script, /window\.[\s\S]*?_zone_[\s\S]*?{"zone
 !
 ! NOTE: Regular rules
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/247076
 ! https://github.com/AdguardTeam/AdguardFilters/issues/247934
 knshow.com##+js(remove-node-text, script, abwall)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/247894
@@ -25094,6 +25095,11 @@ mob.hr##.side_banner
 !
 ! NOTE: Czech and Slovakian
 !
+startitup.sk##div[id*="taboola"]
+startitup.sk##div[id^="DESK_siusk_art"]
+startitup.sk##div[data-widget^="plista"]
+startitup.sk###topBrandingWrap-article
+startitup.sk##.adform-branding-wrap
 seznam.cz##.ad-leaderboard
 seznam.cz##.gadget-container > div.animated-height > div:not([id]):not([class]) > div.gadget[data-dot-data*="abTestVariant"]
 www.seznam.cz##div[style="height:300px;width:560px;"]
@@ -25145,7 +25151,7 @@ albert.cz##div[data-restriction="true"] > div[data-testid="image-container"]:has
 idnes.cz###r-nativeadvertorial
 centrum.cz##.sasic-ad
 zena.aktualne.cz##.e-ads-banner
-tvguru.cz,techsvet.cz##body .code-block
+startitup.sk,tvguru.cz,techsvet.cz##body .code-block
 tvguru.cz,techsvet.cz###leaderboard-bottom
 tvguru.cz,techsvet.cz##.mobileHide > div[style^="height:"]
 aktuality.sk##div:has(> .rs-advertisement:only-child)
@@ -27964,6 +27970,10 @@ indiatimes.com##.last8brdiv > div.sponsor_block
 !
 ! NOTE: Indonesian
 !
+kompas.com##.kcm
+kompas.com##.articleItem:has(> div[id^="div-gpt-ad"]:only-child)
+kompas.com##.native-wrap:has(> div[id^="div-gpt-ad"]:only-child)
+kompas.com##div[class^="ads-partner"]
 cnbcindonesia.com##header#header:style(position: fixed !important;)
 berbagi.app###_0xAbModal
 skripsitesisdisertasi.biz.id##div[style="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 999999; opacity: 0; cursor: pointer; background: transparent; pointer-events: auto;"]
@@ -30367,6 +30377,7 @@ roweroweporady.pl#@#.ad_container
 ||lib.wtg-ads.com/prebid/prebid_*.js$xhr,redirect=noop.txt
 !
 !
+strumyk.cv,strumyk.ca##.promo
 3d-info.pl##.a-wrap
 3d-info.pl##.elementor-widget-image:has(> .elementor-widget-container > a[target="_blank"] > img)
 nadmorski24.pl##.jsBanner
@@ -33253,7 +33264,7 @@ events.gry-online.pl##body:style(background-image: none !important;)
 ||assuredwhoa.com^$domain=gry-online.pl
 ||whoinasmuch.com^$domain=gry-online.pl
 ||contentyet.com^$domain=gry-online.pl
-$script,3p,denyallow=gracza.pl|dailymotion.com|googleapis.com|google.com|twitter.com,domain=gry-online.pl
+$script,3p,denyallow=gracza.pl|dailymotion.com|googleapis.com|google.com|twitter.com|unpkg.com,domain=gry-online.pl
 gry-online.pl#@#.adspace
 gry-online.pl##+js(set-constant, adbstatus, false)
 gry-online.pl##.top-extra-tlo > #baner-outer ~ div[id] > a[style^="display:block;width:100%;max-width:"] > img[src^="/im/"]
@@ -37476,6 +37487,8 @@ truyenqqhot.com##div[id^="ads_"]
 ##.topAd
 !+ NOT_OPTIMIZED
 ##.article-advert-container
+! Spil Games
+##.spil-internal-fallback
 !  SIDEARM Sports / sidearmsports.com
 ###global-top-ad
 ! Reach plc
@@ -38318,11 +38331,12 @@ designparty.sx##+js(abort-on-stack-trace, navigator.userAgent, _getBrowserCapabi
 limetorrents.lol##+js(no-window-open-if)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167788
 breitbart.com##+js(set-constant, BB_G.doing_popup, undefined)
+! https://github.com/AdguardTeam/AdguardFilters/issues/248076
 ! https://github.com/AdguardTeam/AdguardFilters/issues/194493
 ! https://github.com/AdguardTeam/AdguardFilters/issues/180532
 ! https://github.com/AdguardTeam/AdguardFilters/issues/168121
 ! skip video ads timer
-lookmovie.pn,lookmovie2.la,lookmovie2.to##.player-pre-init-ads:style(display: none !important;)
+! lookmovie.pn,lookmovie2.la,lookmovie2.to#$#.player-pre-init-ads { display: none !important; }
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167674
 ! https://github.com/AdguardTeam/AdguardFilters/issues/167012
 inxxx.com##+js(abort-current-script, Symbol, egoTab)
@@ -41668,6 +41682,9 @@ neowin.net##div[class^="banner-"]:style(height: 0!important; min-height: 0!impor
 ! /asset/jquery/slim-3.2.min.js$domain=avple.video|javhdfree.icu|nekolink.site|mambast.tk|netflav.com|fembed-hd.com|ndrama.xyz|pornhole.club|ffem.club|jvembed.com|dzmdplay.xyz|jav247.top|yuistream.xyz|javfu.net|iframe2videos.xyz|viplayer.cc|watchjavnow.xyz|cdn-myhdjav.info|embed-media.com|fembed9hd.com|cloudrls.com|vidgo.top
 !
 !
+! TrafficStars
+/do2/*/master|
+/do2/*/vast|
 ! https://github.com/AdguardTeam/AdguardFilters/issues/247123#issuecomment-6872786362
 ! uqload video player is an iframe so we need generic regex for Safari
 /^https:\/\/uqload\.[a-z]+\/[a-z0-9][a-z0-9][a-z0-9]+\/[a-z0-9][a-z0-9][a-z0-9][a-z0-9]+\.js/$script,match-case
@@ -42677,7 +42694,7 @@ gearspace.com,gleaks.pro,vi-control.net,nullforums.net,landyzone.co.uk,nullcave.
 ! In case if site uses third-party resources (iframe/players etc.) and it's broken on iOS/Safari use rule with hint
 !+ NOT_PLATFORM(ios, ext_safari)
 $script,3p,denyallow=tvableon.me|mega.co.nz|mega.nz|libs.baidu.com|ilfcdn.li|bytecdntp.com|doodcdn.io|intensedebate.com|vixcloud.co|rsc.cdn77.org|linkvertise.com|fastly.net|statically.io|sharecast.ws|b-cdn.net|bunnycdn.ru|bootstrapcdn.com|cdn.ampproject.org|cloudflare.com|cdn.staticfile.org|disqus.com|disquscdn.com|dmca.com|ebacdn.com|facebook.net|fastlylb.net|fbcdn.net|fluidplayer.com|fontawesome.com|github.io|google.com|googleapis.com|googletagmanager.com|gstatic.com|jquery.com|jsdelivr.net|jwpcdn.com|jwplatform.com|jwplayer.com|recaptcha.net|shrink.pe|twitter.com|ulogin.ru|unpkg.com|userapi.com|vidazoo.com|vk.com|yastatic.net|ytimg.com|zencdn.net|youtube.com|cackle.me|googleoptimize.com|vuukle.com|chatango.com|twimg.com|google-analytics.com|hcaptcha.com|media-imdb.com|blogger.com|hwcdn.net|instagram.com|wp.com|fastcomments.com|plyr.io|imgsmail.ru|cloudflare.net|rabbitstream.net|x.com|ko-fi.com|wsimg.com|sharethis.com|utteranc.es|cloudflareinsights.com|tailwindcss.com|capo6play.com|jpg5.su|jpg6.su|tolstoycomments.com|code.iconify.design|alicdn.com|addtoany.com|waust.at|highcharts.com|workers.dev,_,domain=5mio.org|furry34.com|animeidhentai.com|nhplayer.com|anime-odcinki.pl|multishows.top|flixcdn.cyou|moviesapi.to|willowmovies.com|fireflix.pages.dev|pornxbit.com|muchohentai.com|3eyedraven.watch
-$xhr,3p,denyallow=mega.co.nz|mega.nz|libs.baidu.com|ilfcdn.li|bytecdntp.com|doodcdn.io|intensedebate.com|vixcloud.co|cdn.plyr.io|rsc.cdn77.org|linkvertise.com|fastly.net|statically.io|sharecast.ws|b-cdn.net|bunnycdn.ru|bootstrapcdn.com|cdn.ampproject.org|cloudflare.com|cdn.staticfile.org|disqus.com|disquscdn.com|dmca.com|ebacdn.com|facebook.net|fastlylb.net|fbcdn.net|fluidplayer.com|fontawesome.com|github.io|google.com|googleapis.com|googletagmanager.com|gstatic.com|jquery.com|jsdelivr.net|jwpcdn.com|jwplatform.com|recaptcha.net|shrink.pe|twitter.com|ulogin.ru|unpkg.com|userapi.com|vidazoo.com|vk.com|yastatic.net|ytimg.com|zencdn.net|youtube.com|cackle.me|googleoptimize.com|vuukle.com|chatango.com|twimg.com|google-analytics.com|hcaptcha.com|media-imdb.com|blogger.com|hwcdn.net|instagram.com|wp.com|fastcomments.com|plyr.io|imgsmail.ru|cloudflare.net|rabbitstream.net|x.com|pp.ua|discord.com|cutcaptcha.net,_,domain=everia.club|projectfreetv.cyou|skidrowreloaded.com|kickassanime.*|dlhd.*|nxbrew.net|ziperto.com|lilymanga.net|bentomanga.top|bigcomics.bid|brmangas.top|cmoa1.top|janime.top|jpraw.xyz|kakuyomu.in|kkraw.com|komiku.win|lectormanga.top|lermanga.top|manga1000.top|manga1001.win|manga1001.xyz|mangajp.top|mangakl.su|mangavy.com|mangaz.win|scanita.top|shinigami-id.top|sushiscan.top|worldsports.me|poscitechs.xyz|harimanga.com|movieshubweb.com|animeflv.net|techcabal.net|nextgencloudtools.com|soap2day.day|flixrave.me|audioz.download|playdede.link|canna-power.to|canna.to|filecrypt.cc|dlhd.dad|3isk.icu|3isk.info|animesrbija.com|yts.lt|totalsportek.*|totalsportek.army|ext.to|eztvx.to|bypass.city|fileditchfiles.me|furry34.com|filecrypt.co|yts.*|yts.gg|yts.bz|streamtape.net|kaliscan.com|eztv.yt|leakgallery.com
+$xhr,3p,denyallow=mega.co.nz|mega.nz|libs.baidu.com|ilfcdn.li|bytecdntp.com|doodcdn.io|intensedebate.com|vixcloud.co|cdn.plyr.io|rsc.cdn77.org|linkvertise.com|fastly.net|statically.io|sharecast.ws|b-cdn.net|bunnycdn.ru|bootstrapcdn.com|cdn.ampproject.org|cloudflare.com|cdn.staticfile.org|disqus.com|disquscdn.com|dmca.com|ebacdn.com|facebook.net|fastlylb.net|fbcdn.net|fluidplayer.com|fontawesome.com|github.io|google.com|googleapis.com|googletagmanager.com|gstatic.com|jquery.com|jsdelivr.net|jwpcdn.com|jwplatform.com|recaptcha.net|shrink.pe|twitter.com|ulogin.ru|unpkg.com|userapi.com|vidazoo.com|vk.com|yastatic.net|ytimg.com|zencdn.net|youtube.com|cackle.me|googleoptimize.com|vuukle.com|chatango.com|twimg.com|google-analytics.com|hcaptcha.com|media-imdb.com|blogger.com|hwcdn.net|instagram.com|wp.com|fastcomments.com|plyr.io|imgsmail.ru|cloudflare.net|rabbitstream.net|x.com|pp.ua|discord.com|cutcaptcha.net|acecaptcha.com,_,domain=everia.club|projectfreetv.cyou|skidrowreloaded.com|kickassanime.*|dlhd.*|nxbrew.net|ziperto.com|lilymanga.net|bentomanga.top|bigcomics.bid|brmangas.top|cmoa1.top|janime.top|jpraw.xyz|kakuyomu.in|kkraw.com|komiku.win|lectormanga.top|lermanga.top|manga1000.top|manga1001.win|manga1001.xyz|mangajp.top|mangakl.su|mangavy.com|mangaz.win|scanita.top|shinigami-id.top|sushiscan.top|worldsports.me|poscitechs.xyz|harimanga.com|movieshubweb.com|animeflv.net|techcabal.net|nextgencloudtools.com|soap2day.day|flixrave.me|audioz.download|playdede.link|canna-power.to|canna.to|filecrypt.cc|dlhd.dad|3isk.icu|3isk.info|animesrbija.com|yts.lt|totalsportek.*|totalsportek.army|ext.to|eztvx.to|bypass.city|fileditchfiles.me|furry34.com|filecrypt.co|yts.*|yts.gg|yts.bz|streamtape.net|kaliscan.com|eztv.yt|leakgallery.com
 $subdocument,3p,denyallow=disqus.com,domain=love4u.net
 $image,3p,denyallow=googleapis.com,domain=vipbox1.org
 !
@@ -42688,6 +42705,13 @@ $image,3p,denyallow=googleapis.com,domain=vipbox1.org
 !
 ! NOTE: Specific rules
 !
+||ondemand.st/js/xk7m9p2.js
+||ondemand.to/js/xk7m9p2.js
+shrinkme.click##.smads
+pacogames.com##.grid > div.border:has(> div[id^="gp_st__"])
+eloshapes.com##div[id^="addverts-"]
+katfile.com###kfGridBot
+katfile.com###kfSideMore
 gamespot.com##.widget > .wp-block-gamespot-blocks-where-to-buy
 pahe.ink##div[style^="width:"][style*="max-width: 100%;"]
 androidauthority.com##div[data-content-wrapper] > div:has(> aside[aria-label] > div > a[href^="https://www.androidauthority.com/deals/"])
@@ -42776,7 +42800,7 @@ retrovault.ch##.rv-grid-ad
 ||scanwp.net/js/exit-popup.js
 scanwp.net##.v2-promo
 korben.info##.platform-promo-bar
-apkcube.com##aside[data-ad-frame]
+apkcube.com##aside[data-ad-frame] > *
 ||liveball.sx/public/js/custom_clickunder.js
 ||cdn.lbs.pw/rek/
 liveball.sx##a[href^="https://mercuryeasy.com/"]
@@ -42822,7 +42846,7 @@ bmwblog.com##.sticky-ad-widget-container
 bmwblog.com##div[id^="bmwbl-"]
 g2a.com##.inline-grid.text-foreground-subtitle > div[class$="size-3.5"]
 g2a.com###promo-banner
-czzbgnw.com,allpornstream.com##+js(no-window-open-if)
+oisauh.com,czzbgnw.com,allpornstream.com##+js(no-window-open-if)
 straitstimes.com##div[id^="below-article-thumbnails-"]
 straitstimes.com##.container > div.mx-auto:has(> div#am-widget)
 softpedia.com##.ovllogin > div.wide260.ta_left > *:not(.anewuser1)
@@ -42952,7 +42976,6 @@ eater.com##div[data-concert="medium_rectangle_gamestop_desktop"]
 eater.com##div[data-concert="connatix_right_rail"]
 eater.com##div[data-concert="medium_rectangle_variable"]
 adblock.turtlecute.org##button[style*="data:image"]
-*$3p,domain=adblock.turtlecute.org
 adblock.turtlecute.org##.test_block div[id$="_test"]
 ||adblock.turtlecute.org/js/*ad
 maritime-executive.com##.l1-ads-wrapper
@@ -63773,6 +63796,10 @@ circleofcricket.com###myModal:style(display: none !important;)
 circleofcricket.com##div.container-full.add:has(> a[href]:first-child)
 ||circleofcricket.com/assets/adv/
 !
+! Ad blocker tests (forks of d3ward's test)
+! This rule is necessary because of incorrect checks in the test
+*$3p,domain=adblock.turtlecute.org|paileactivist.github.io
+!
 ! App-Mind
 radio-osterreich.at,radio-australia.org,radio-hrvatska.com,radio-danmark.dk,radio-norge.org,internetradio-horen.de,fmradiofree.com##.right-sidebar
 !
@@ -64894,7 +64921,7 @@ forbes.com##.channel--ad
 firestream.site,stre4mpay.one,pooembed.eu,tpead.net,streamed.pk,bmovies.vip,sanet.st,yifysubtitles.ch,streamtape.com,streamtape.net,advertape.net,adblockeronstape.*,adblockplustape.*,adblockstreamtape.*,adblockstrtape.*,adblockstrtech.*,advertisertape.com,antiadtape.*,gettapeads.com,noblocktape.*,shavetape.*,stapadblockuser.*,stape.*,strcloud.*,streamadblocker.*,streamadblockplus.*,streamnoads.com,streamta.*,streamtapeadblock.*,streamtapeadblockuser.*,strtape.*,strtapeadblock.*,strtapeadblocker.*,strtapewithadblock.*,strtpe.*,tapeadsenjoyer.com,tapeadvertisement.com,tapeantiads.com,tapeblocker.com,tapelovesads.org,tapenoads.com,tapepops.com,tapewithadblock.org,watchadsontape.com,streamtape.*,wizja.cc,totalsportek.*,casthill.net,streamed.*,exposestrat.com,embedsports.top,nativesurge.net,yts.bz,yts.lt,yts.*,seir-sanduk.com,daddylive3.com,sterham.net,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,strumyk.net,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,filecrypt.cc,veplay.top,colegialasdeverdad.*,flixrave.me,anime4i.com,cuttyy.com,daddyhd.com,daddylive.*,zavalise.com,wooflix.tv,yassflix.net,swipebreed.net,eurekaddl.lat,en.tgo-tv.xyz,miztv.shop,vidlink.pro,knaben.xyz,powstream.*,rojadirectaenvivo.pl,ext.to,capo4play.com,wawacity.cfd,1337x.to,zone-telechargement.*,redecanais.in,streameast.*,thestreameast.*,anroll.net,anarchy-stream.com,freckledine.net,buffstreams.app,sanet.lc,1stream.eu,dl-protect.link,extreme-down.*,eztvx.to,skidrowreloaded.com,streambucket.net,modsfire.com,official.nbabite.com##+js(abort-on-property-read, Adcash)
 taifood-blog.asia,strcsh.xyz,streame.center,totalsporteki.st,totalsportekhd.st,cricwatch.io,cricwatch.*,tennisonline.im,tennisonline.*,posamari.me,sportfusion.me,nbabox.*,nbabox.im,ntv.st,ntvs.cx,ntv.cx,asiaflix.in,asiaflix.*,totalsportek.*,casthill.net,nativesurge.net,embedtv-5.icu,animeunity.*,pornhoarder.*,dlhd.*,vidsrc.*,builddiamond.net,playdede.link,ricstream.me,anime4i.vip,vipleague.*,swipebreed.net,eurekaddl.lat,sanet.st,buffsports.*##+js(abort-current-script, globalThis, adserverDomain)
 cloudorchestranova.com,yifysubtitles.ch,exposestrat.com,embedsports.top,seir-sanduk.com,daddylive3.com,sterham.net,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,filecrypt.cc,veplay.top,colegialasdeverdad.*,anime4i.com,cuttyy.com,puffytr.com,anizle.*,vidlink.pro,knaben.xyz,powstream.*,rojadirectaenvivo.pl,ext.to,capo4play.com,1337x.to,zone-telechargement.*,redecanais.in,freckledine.net,buffstreams.app,sanet.lc,1stream.eu##+js(abort-on-stack-trace, Element.prototype.hasAttribute, isActionAllowedOnElement)
-retrovault.ch,tossequip.net,thedaddy.li,dembed.st,up-4ever.net,frstream.life,strcsh.xyz,audioz.download,savefiles.com,missflight.net,grandemx.org,bembed.sbs,uqload.*,desicinema.se,dramavideo.se,torupload.com,stellar.rip,streame.center,totalsporteki.st,totalsportekhd.st,cricwatch.io,cricwatch.*,tennisonline.im,tennisonline.*,posamari.me,sportfusion.me,nbabox.*,nbabox.im,dartsstreams.me,soccerbox.st,soccerbox.*,thetvapp.plus,fbstream.is,fbstream.*,dollardescent.net,mappl.tv,lightflix.app,mapple.fun,mapple.*,embed.st,executeandship.com,embedindia.st,strikeout.im,strikeout.*,boxingbox.im,boxingbox.*,rugbybox.me,rugbybox.*,nflbox.sx,nflbox.*,f1live.me,f1live.*,www.viprow.lc,viprow.*,ninguno.cc,mmabox.me,mmabox.*,olympiclive.me,olympicweb.*,sportsonlinee.*,sportsonline.*,4k.beer,streamcash.to,anime.uniquestream.net,cine.su,nepu.*,vidzy.cc,fs16.lol,porneec.com,asiaflix.in,asiaflix.*,streamtape.com,yts.bz,yts.gg,yts.*,filecrypt.co,strumyk.*,powwideo.*,hornysimp.com,futemax.at,embdmstrplayer.com,pahe.ink,foulembeds.live,smksports.*,fileditchfiles.me,strumyk.cfd,dorawatch.one,streamingworld.xyz,streami.su,streamed.pk,streamed.*,visualnewshub.com,cloudnestra.com,cloudfam.io,thepibay.*,bypass.city,eztvx.to,ext.to,vidsrc.cc,sanet.st,yifysubtitles.ch,vinovo.to,livesporthub.shop,dstelemundo.site,7fractals.icu,epicplayplay.cfd,goalstreamer.shop,streameast7.com,buffztreamz.shop,rippleplay.shop,shd247.click,antenasport.top,gamestrend.net,exposestrat.com,embedsports.top,seir-sanduk.com,embedtv-5.icu,daddylive3.com,sterham.net,animeunity.*,vixcloud.*,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,worldsports.si,filecrypt.cc,veplay.top,colegialasdeverdad.*,anime4i.com,cuttyy.com,puffytr.com,anizm.*,anizle.*##+js(abort-on-property-read, aclib)
+ondemand.*,ondemand.st,ondemand.to,retrovault.ch,tossequip.net,thedaddy.li,dembed.st,up-4ever.net,frstream.life,strcsh.xyz,audioz.download,savefiles.com,missflight.net,grandemx.org,bembed.sbs,uqload.*,desicinema.se,dramavideo.se,torupload.com,stellar.rip,streame.center,totalsporteki.st,totalsportekhd.st,cricwatch.io,cricwatch.*,tennisonline.im,tennisonline.*,posamari.me,sportfusion.me,nbabox.*,nbabox.im,dartsstreams.me,soccerbox.st,soccerbox.*,thetvapp.plus,fbstream.is,fbstream.*,dollardescent.net,mappl.tv,lightflix.app,mapple.fun,mapple.*,embed.st,executeandship.com,embedindia.st,strikeout.im,strikeout.*,boxingbox.im,boxingbox.*,rugbybox.me,rugbybox.*,nflbox.sx,nflbox.*,f1live.me,f1live.*,www.viprow.lc,viprow.*,ninguno.cc,mmabox.me,mmabox.*,olympiclive.me,olympicweb.*,sportsonlinee.*,sportsonline.*,4k.beer,streamcash.to,anime.uniquestream.net,cine.su,nepu.*,vidzy.cc,fs16.lol,porneec.com,asiaflix.in,asiaflix.*,streamtape.com,yts.bz,yts.gg,yts.*,filecrypt.co,strumyk.*,powwideo.*,hornysimp.com,futemax.at,embdmstrplayer.com,pahe.ink,foulembeds.live,smksports.*,fileditchfiles.me,strumyk.cfd,dorawatch.one,streamingworld.xyz,streami.su,streamed.pk,streamed.*,visualnewshub.com,cloudnestra.com,cloudfam.io,thepibay.*,bypass.city,eztvx.to,ext.to,vidsrc.cc,sanet.st,yifysubtitles.ch,vinovo.to,livesporthub.shop,dstelemundo.site,7fractals.icu,epicplayplay.cfd,goalstreamer.shop,streameast7.com,buffztreamz.shop,rippleplay.shop,shd247.click,antenasport.top,gamestrend.net,exposestrat.com,embedsports.top,seir-sanduk.com,embedtv-5.icu,daddylive3.com,sterham.net,animeunity.*,vixcloud.*,buffsports.io,soccerstreams7.com,loadvid.com,telewizjada.top,ogladaj.in,istreameast.app,streamingnow.mov,watchug.to,primewire.tf,worldsports.si,filecrypt.cc,veplay.top,colegialasdeverdad.*,anime4i.com,cuttyy.com,puffytr.com,anizm.*,anizle.*##+js(abort-on-property-read, aclib)
 frstream.life,strcsh.xyz,hitcast.st,trendy48.*,trendy48.online,trend48.*,trend48.st,uqload.*,eztv.yt,thedaddy.li,streame.center,totalsporteki.st,totalsportekhd.st,cricwatch.io,cricwatch.*,tennisonline.im,tennisonline.*,posamari.me,ntv.st,ntvs.cx,ntv.cx,fbstream.is,fbstream.*,embed.st,streamcash.to,sololatino.net,dramavideo.se,powwideo.*##+js(abort-on-property-read, AtcshAltNm)
 jouasbgo.com,gosbagotui.com##+js(abort-on-stack-trace, Date, PopUnder)
 animeunity.*,vixcloud.*##+js(abort-on-stack-trace, setTimeout, runPop)
@@ -65926,7 +65953,7 @@ terashare.co##+js(no-window-open-if, !/sharing/link)
 ! https://github.com/AdguardTeam/AdguardFilters/issues/189854
 ! https://github.com/AdguardTeam/AdguardFilters/issues/166718
 x.com##+js(json-prune, $.data..["entries"\,"items"][?(@.*.content.promoted_metadata)])
-x.com##+js(json-prune, data.*.home_timeline_urt.instructions.*.entries.[-].content.content.promoted_metadata data.threaded_conversation_with_injections_v2.instructions.*.entries.*.content.items.[-].item.content.promoted_metadata)
+x.com##+js(json-prune, data.*.home_timeline_urt.instructions.*.entries.[-].content.content.promoted_metadata data.threaded_conversation_with_injections_v2.instructions.*.entries.*.content.items.[-].item.content.promoted_metadata data.search_by_raw_query.search_timeline.timeline.instructions.*.entries.[-].content.content.promoted_metadata)
 ! Home timeline ads
 ! Thread ads
 ! Media timeline ads
