@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - en
-// @version         4.5.0.0
+// @version         4.5.0.1
 // @description     Bypass Paywalls of English (& other) language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.en.user.js
@@ -3767,6 +3767,11 @@ else if (matchDomain('philonomist.com')) {
   }
 }
 
+else if (matchDomain('post-gazette.com')) {
+  let ads = 'div#leaderboard-ad, div.article-body__inline-ad';
+  hideDOMStyle(ads);
+}
+
 else if (matchDomain('project-syndicate.org')) {
   func_post = function () {
     let hidden_images = document.querySelectorAll('img[src][new-cursrc]');
@@ -5420,17 +5425,21 @@ else if (matchDomain(usa_lee_ent_domains.concat(ca_torstar_domains)) || document
     }
     return n;
   }
-  let paywall = document.querySelector('div.subscriber-offers');
-  removeDOMElement(paywall);
   let subscriber_only = document.querySelectorAll('div.subscriber-only');
   for (let elem of subscriber_only) {
-    if (elem.classList.contains('encrypted-content')) {
+    if (elem.classList.contains('encrypted-content'))
       elem.innerHTML = unscramble(elem.textContent);
-    }
     elem.removeAttribute('style');
     elem.removeAttribute('class');
   }
-  let banners = document.querySelectorAll('div.subscription-required, div.redacted-overlay');
+  let et_enabled = document.querySelector('div#article-content.et-enabled');
+  if (et_enabled) {
+    et_enabled.classList.remove('et-enabled');
+    let et_pars = et_enabled.querySelectorAll('div.et-text');
+    for (let elem of et_pars)
+      elem.innerHTML = unscramble(elem.textContent);
+  }
+  let banners = document.querySelectorAll('div.subscription-required, div.redacted-overlay, div.subscriber-offers');
   removeDOMElement(...banners);
   let ads = 'div.tnt-ads-container, div[class*="adLabelWrapper"], div.globalHeaderBillboard';
   hideDOMStyle(ads);

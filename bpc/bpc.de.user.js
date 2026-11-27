@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            Bypass Paywalls Clean - de/at/ch
-// @version         4.4.9.4
+// @version         4.4.9.5
 // @description     Bypass Paywalls of German language news sites
 // @author          magnolia1234
 // @downloadURL     https://gitflic.ru/project/magnolia1234/bypass-paywalls-clean-filters/blob/raw?file=userscript/bpc.de.user.js
@@ -378,19 +378,24 @@ else if (matchDomain('freiepresse.de')) {
 }
 
 else if (matchDomain('handelsblatt.com')) {
-  let paywall = document.querySelector('app-paywall');
-  if (paywall) {
-    removeDOMElement(paywall);
-    let article = document.querySelector('article');
-    if (article) {
-      let url = window.location.href;
-      article.after(googleSearchToolLink(url));
-      header_nofix('article', '', 'BPC > refresh page');
+  let paid = document.querySelector('header app-paid-marker');
+  if (paid) {
+    for (let i = 0; i < 5; i++) {
+      setTimeout(function () {
+        let paywall = document.querySelector('app-paywall[style="display: block;"]');
+        if (paywall) {
+          removeDOMElement(paywall, document.querySelector('div#bpc_archive'));
+          let article = document.querySelector('article');
+          if (article) {
+            let url = window.location.href;
+            article.after(googleSearchToolLink(url));
+          }
+        }
+      }, (i + 1) * 1000);
     }
   }
   window.localStorage.removeItem('HB.METERING');
-  let overlay = document.querySelector('div[id^="sp_message_container_"]');
-  removeDOMElement(overlay);
+  hideDOMStyle('div[id^="sp_message_container_"], app-ai-summary, app-loading-spinner', 2);
   let noscroll = document.querySelector('html[class]');
   if (noscroll)
     noscroll.removeAttribute('class');
